@@ -9,6 +9,7 @@ extern NSString * const WPAppAnalyticsDefaultsUserOptedOut;
 extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated;
 extern NSString * const WPAppAnalyticsKeyBlogID;
 extern NSString * const WPAppAnalyticsKeyPostID;
+extern NSString * const WPAppAnalyticsKeyPostAuthorID;
 extern NSString * const WPAppAnalyticsKeyFeedID;
 extern NSString * const WPAppAnalyticsKeyFeedItemID;
 extern NSString * const WPAppAnalyticsKeyIsJetpack;
@@ -42,19 +43,13 @@ extern NSString * const WPAppAnalyticsValueSiteTypeP2;
 /**
  *  @brief      Default initializer.
  *
- *  @param      accountService                  An instance of AccountService, used to fetch
- *                                              the default wpcom account (if available) and
- *                                              update settings relating to analytics.
  *  @param      lastVisibleScreenCallback       This block will be executed whenever this object
  *                                              needs to know the last visible screen for tracking
  *                                              purposes.
  *
  *  @returns    The initialized object.
  */
-- (instancetype)initWithAccountService:(AccountService *)accountService
-                lastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
-
-@property (nonatomic, readonly) AccountService *accountService;
+- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
 
 /**
  *  @brief      The current session count.

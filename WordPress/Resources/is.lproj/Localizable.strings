@@ -109,7 +109,7 @@
 /* Title of alert when theme activation fails */
 "Activation Error" = "Villa kom upp við virkjun";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Aðgerðaskrá";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -577,7 +577,6 @@
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Hafa samband við notendaþjónustuna";
 
@@ -924,9 +923,6 @@
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Útvært";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Aukaleg aflúsun";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -2414,8 +2410,7 @@
 "Super Admin" = "Ofur Stjórnandi";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Aðstoð";
 
 /* Button used to switch site */
@@ -2478,9 +2473,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Þetta notandanafn er ekki leyfilegt.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Möguleikinn á aukalegri aflúsun bætir við auka upplýsingum í atburðaskrá og hjálpar okkur við að leysa úr vandamálum sem geta komið upp í forritinu.";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2872,9 +2864,6 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Staðfesta innskráningu";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Útgáfa";
-
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Myndband, %@";
 
@@ -2934,9 +2923,6 @@
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Skoðaðu %@ fyrir meira";
 
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Kíktu í hjálparmiðstöðina til þess að fá svör við algengum spurningum eða til þess að hafa samband við okkur fyrir frekari aðstoð.";
-
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
@@ -2991,12 +2977,6 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress spjallborð";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress hjálparmiðstöð";
-
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress þarf leyfi til þess að nálgast núverandi staðsetningu tækisins þíns svo hægt sé að bæta henni við í færsluna þína. Vinsamlegast uppfærðu persónuverndarstillingarnar þínar.";
 
@@ -3009,8 +2989,7 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com aðgangur";
 
 /* Title for the Plans list header */

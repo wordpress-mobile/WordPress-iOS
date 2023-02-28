@@ -280,7 +280,7 @@ private extension NotificationActionsService {
 private extension NotificationActionsService {
 
     var commentService: CommentService {
-        return CommentService(managedObjectContext: managedObjectContext)
+        return CommentService(coreDataStack: ContextManager.shared)
     }
 
     var siteService: ReaderSiteService {

@@ -271,7 +271,7 @@ extension AppExtensionsService {
         })
     }
 
-    /// Saves a new post + media items to the shared container db and then uploads it in the background. 
+    /// Saves a new post + media items to the shared container db and then uploads it in the background.
     ///
     /// - Parameters:
     ///   - shareData: The shareData with which to create the post

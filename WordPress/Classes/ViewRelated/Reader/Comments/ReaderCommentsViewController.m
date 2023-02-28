@@ -32,7 +32,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                             ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
-@property (nonatomic, strong) AccountService *accountService;
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -79,14 +78,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
     controller.source = source;
-    controller.accountService = [[AccountService alloc] initWithManagedObjectContext:ContextManager.sharedInstance.mainContext];
     return controller;
 }
 
 + (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
-    controller.accountService = [[AccountService alloc] initWithManagedObjectContext:ContextManager.sharedInstance.mainContext];
     [controller setupWithPostID:postID siteID:siteID];
     [controller trackCommentsOpenedWithPostID:postID siteID:siteID source:source];
     return controller;
@@ -943,7 +940,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [weakSelf refreshTableViewAndNoResultsView];
     };
 
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     if (replyToComment) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
@@ -979,8 +976,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    CommentService *commentService = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     if (!comment.isLiked) {
         [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
@@ -1001,14 +997,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     self.failedToFetchComments = NO;
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
-        [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
-            if (success) {
-                success(hasMore);
-            }
-        } failure:failure];
-    }];
+    CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
+        if (success) {
+            success(hasMore);
+        }
+    } failure:failure];
 
     [self refreshNoResultsView];
 }
@@ -1018,15 +1012,13 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.failedToFetchComments = NO;
     [self.activityFooter startAnimating];
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
-        NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-        [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
-            if (success) {
-                success(hasMore);
-            }
-        } failure:failure];
-    }];
+    CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
+        if (success) {
+            success(hasMore);
+        }
+    } failure:failure];
 }
 
 - (void)syncContentEnded:(WPContentSyncHelper *)syncHelper

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-15 11:54:11+0000 */
+/* Translation-Revision-Date: 2023-02-17 17:33:05+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_CN */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "活动日志";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "活动日志";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "连接不可用";
 
-/* Support email label. */
-"Contact Email" = "联系电子邮件地址";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "联系支持人员";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "外部";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "额外除错";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "我的 WordPress 站点";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "我的申请单";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "我的十大咖啡馆";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "不用了";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "未设置";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "空间不足，无法上传";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "公开显示您对博客作出的评论。";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "显示用于更改联系人电子邮件的对话框。";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "显示所有粉丝";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "超级管理员";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "支持";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "不允许使用这个用户名。";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "“Extra Debug”功能会向活动日志中添加其他信息，可帮助我们解决应用程序中出现的问题。";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook 连接无法找到任何页面。Publicize 无法连接到 Facebook 个人资料，只能连接到已发布的页面。";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "请验证您的电子邮件地址（说明已发送至 %@）";
 
-/* Label in Support view displaying the app version. */
-"Version" = "版本";
-
 /* Description for the version label in the What's new page. */
 "Version " = "版本";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "查看站点";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "访问帮助中心了解常见问题的答案，或联系我们获取更多帮助。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 博客";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress 论坛";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress 帮助";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress 帮助中心";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress 媒体";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com 账户";
 
 /* Title for the Plans list header */
@@ -9887,6 +9854,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "切换到新版 Jetpack 应用";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "切换到 Jetpack 应用";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "请访问 jetpack.com 以了解详情";
 
@@ -9919,6 +9889,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 功能已移动。";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切换到 Jetpack 应用，以在设备上接收实时通知。";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "使用 Jetpack 应用获取通知";
@@ -10088,11 +10061,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The description in the Load WordPress screen */
 "migration.loadWordpress.description" = "您似乎已安装 WordPress 应用。";
 
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "打开 WordPress";
+
 /* The secondary button title in the Load WordPress screen */
 "migration.loadWordpress.secondaryButton" = "不，谢谢";
 
 /* The secondary description in the Load WordPress screen */
 "migration.loadWordpress.secondaryDescription" = "是否要通过 WordPress 应用程序传输数据并自动登录？";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "欢迎使用 Jetpack！";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍后再决定";

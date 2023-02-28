@@ -35,11 +35,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         return MediaService(managedObjectContext: mainContext)
     }()
 
-    private lazy var blogService: BlogService = {
-        return BlogService(managedObjectContext: mainContext)
-    }()
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

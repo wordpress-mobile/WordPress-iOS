@@ -24,7 +24,7 @@ class DashboardPostsSyncManager {
     // MARK: Initializer
 
     init(postService: PostService = PostService(managedObjectContext: ContextManager.shared.mainContext),
-         blogService: BlogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)) {
+         blogService: BlogService = BlogService(coreDataStack: ContextManager.shared)) {
         self.postService = postService
         self.blogService = blogService
     }

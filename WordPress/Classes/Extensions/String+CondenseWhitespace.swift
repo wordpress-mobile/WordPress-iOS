@@ -22,7 +22,7 @@ extension String {
     ///
     /// This is the last line
     /// ```
-    /// 
+    ///
     func condenseWhitespace() -> String {
         return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             .replacingOccurrences(of: "\\s\n", with: "\n", options: .regularExpression, range: nil)

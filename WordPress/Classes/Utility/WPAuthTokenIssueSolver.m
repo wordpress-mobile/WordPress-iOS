@@ -22,8 +22,7 @@
                 // alert instead of itself.
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showCancelReAuthenticationAlertAndOnOK:^{
-                        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-                        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+                        AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
                         [accountService removeDefaultWordPressComAccount];
                         onComplete();

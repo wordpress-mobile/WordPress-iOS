@@ -20,8 +20,8 @@ class ReaderCardService {
          siteInfoService: ReaderSiteInfoService? = nil) {
         self.service = service
         self.coreDataStack = coreDataStack
-        self.followedInterestsService = followedInterestsService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
-        self.siteInfoService = siteInfoService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
+        self.followedInterestsService = followedInterestsService ?? ReaderTopicService(coreDataStack: coreDataStack)
+        self.siteInfoService = siteInfoService ?? ReaderTopicService(coreDataStack: coreDataStack)
     }
 
     func fetch(isFirstPage: Bool, refreshCount: Int = 0, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {

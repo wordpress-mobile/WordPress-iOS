@@ -5,22 +5,19 @@ import XCTest
 
 class StatsWidgetsStoreTests: CoreDataTestCase {
     private var sut: StatsWidgetsStore!
-    private var blogService: BlogService!
 
-    override func setUpWithError() throws {
+    override func setUp() {
         deleteHomeWidgetData()
-        blogService = BlogService(managedObjectContext: mainContext)
-        sut = StatsWidgetsStore(blogService: blogService)
+        sut = StatsWidgetsStore(coreDataStack: contextManager)
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
         deleteHomeWidgetData()
-        blogService = nil
         sut = nil
     }
 
     func testStatsWidgetsDataInitializedAfterSignDidFinish() {
-        BlogBuilder(blogService.managedObjectContext)
+        BlogBuilder(contextManager.mainContext)
             .with(visible: true)
             .withAnAccount()
             .isHostedAtWPcom()
@@ -33,7 +30,7 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
     }
 
     func testStatsWidgetsDeletedAfterDefaultWPAccountRemoved() {
-        BlogBuilder(blogService.managedObjectContext)
+        BlogBuilder(contextManager.mainContext)
             .with(visible: true)
             .withAnAccount()
             .isHostedAtWPcom()

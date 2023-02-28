@@ -336,9 +336,6 @@
    Generic popup title for any type of error. */
 "Error" = "Greška";
 
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra Debug";
-
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Neuspjelo";
@@ -855,8 +852,7 @@
 "Status" = "Status";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Podrška";
 
 /* Menu item label for linking a specific tag.
@@ -1006,9 +1002,6 @@
    Username placeholder */
 "Username" = "Korisničko ime";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Verzija";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Inačica:";
 
@@ -1067,14 +1060,8 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPressov blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPressovi forumi";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPressova pomoć";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPressov centar za podršku";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress inačica prestara";

@@ -3,22 +3,20 @@ import Foundation
 extension AccountService {
 
     func mergeDuplicatesIfNecessary() {
-        guard let count = try? WPAccount.lookupNumberOfAccounts(in: managedObjectContext), count > 1 else {
-            return
-        }
+        coreDataStack.performAndSave { context in
+            guard let count = try? WPAccount.lookupNumberOfAccounts(in: context), count > 1 else {
+                return
+            }
 
-        let accounts = allAccounts()
-        let accountGroups = Dictionary(grouping: accounts) { $0.userID }
-        for group in accountGroups.values where group.count > 1 {
-            mergeDuplicateAccounts(accounts: group)
-        }
-
-        if managedObjectContext.hasChanges {
-            ContextManager.sharedInstance().save(managedObjectContext)
+            let accounts = (try? WPAccount.lookupAllAccounts(in: context)) ?? []
+            let accountGroups = Dictionary(grouping: accounts) { $0.userID }
+            for group in accountGroups.values where group.count > 1 {
+                self.mergeDuplicateAccounts(accounts: group, in: context)
+            }
         }
     }
 
-    private func mergeDuplicateAccounts(accounts: [WPAccount]) {
+    private func mergeDuplicateAccounts(accounts: [WPAccount], in context: NSManagedObjectContext) {
         // For paranoia
         guard accounts.count > 1 else {
             return
@@ -27,22 +25,21 @@ extension AccountService {
         // If one of the accounts is the default account, merge the rest into it.
         // Otherwise just use the first account.
         var destination = accounts.first!
-        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext), accounts.contains(defaultAccount) {
+        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context), accounts.contains(defaultAccount) {
             destination = defaultAccount
         }
 
         for account in accounts where account != destination {
-            mergeAccount(account: account, into: destination)
+            mergeAccount(account: account, into: destination, in: context)
         }
 
-        let service = BlogService(managedObjectContext: managedObjectContext)
-        service.deduplicateBlogs(for: destination)
+        destination.deduplicateBlogs()
     }
 
-    private func mergeAccount(account: WPAccount, into destination: WPAccount) {
+    private func mergeAccount(account: WPAccount, into destination: WPAccount, in context: NSManagedObjectContext) {
         // Move all blogs to the destination account
         destination.addBlogs(account.blogs)
-        managedObjectContext.delete(account)
+        context.deleteObject(account)
     }
 
 }

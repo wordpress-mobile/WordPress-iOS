@@ -65,9 +65,6 @@ class ReaderDetailCoordinator {
     private let commentService: CommentService
     private let commentsDisplayed: UInt = 1
 
-    /// Used for `RequestAuthenticator` creation and likes filtering logic.
-    private let accountService: AccountService
-
     /// Post Sharing Controller
     private let sharingController: PostSharingController
 
@@ -111,10 +108,9 @@ class ReaderDetailCoordinator {
     /// - Parameter service: a Reader Post Service
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
-         topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         topicService: ReaderTopicService = ReaderTopicService(coreDataStack: ContextManager.shared),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
-         commentService: CommentService = CommentService(managedObjectContext: ContextManager.sharedInstance().mainContext),
-         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         commentService: CommentService = CommentService(coreDataStack: ContextManager.shared),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
@@ -123,7 +119,6 @@ class ReaderDetailCoordinator {
         self.topicService = topicService
         self.postService = postService
         self.commentService = commentService
-        self.accountService = accountService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
         self.view = view

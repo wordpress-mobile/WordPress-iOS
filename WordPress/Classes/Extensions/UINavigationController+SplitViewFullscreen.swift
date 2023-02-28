@@ -54,9 +54,9 @@ extension UIView {
 
     /// Hides this view by inserting a snapshot into the view hierarchy.
     ///
-    /// - Parameter afterScreenUpdates: A Boolean value that specifies whether 
-    ///             the snapshot should be taken after recent changes have been 
-    ///             incorporated. Pass the value false to capture the screen in 
+    /// - Parameter afterScreenUpdates: A Boolean value that specifies whether
+    ///             the snapshot should be taken after recent changes have been
+    ///             incorporated. Pass the value false to capture the screen in
     ///             its current state, which might not include recent changes.
     @objc func hideWithBlankingSnapshot(afterScreenUpdates: Bool = false) {
         if subviews.first is BlankingView {

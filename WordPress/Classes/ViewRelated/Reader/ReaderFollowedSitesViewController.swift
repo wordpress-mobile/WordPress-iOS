@@ -177,7 +177,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
         isSyncing = true
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.fetchFollowedSites(success: {[weak self] in
             self?.isSyncing = false
             self?.configureNoResultsView()
@@ -212,7 +212,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
                                         object: nil,
                                         userInfo: [ReaderNotificationKeys.topic: site])
 
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forSite: site, success: { [weak self] follow in
             let siteURL = URL(string: site.siteURL)
             let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),

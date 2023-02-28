@@ -180,13 +180,9 @@ open class DeleteSiteViewController: UITableViewController {
 
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
 
-        if ZendeskUtils.zendeskEnabled {
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .deleteSite)
-        } else {
-            if let contact = URL(string: "https://support.wordpress.com/contact/") {
-                UIApplication.shared.open(contact)
-            }
-        }
+        let supportViewController = SupportTableViewController()
+        supportViewController.sourceTag = .deleteSite
+        supportViewController.showFromTabBar()
     }
 
     // MARK: - Delete Site Helpers
@@ -233,7 +229,7 @@ open class DeleteSiteViewController: UITableViewController {
                                     let context = ContextManager.shared.mainContext
                                     let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
                                     if let account = account {
-                                        AccountService(managedObjectContext: context).updateUserDetails(for: account,
+                                        AccountService(coreDataStack: ContextManager.sharedInstance()).updateUserDetails(for: account,
                                                                                                         success: {},
                                                                                                         failure: { _ in })
                                     }

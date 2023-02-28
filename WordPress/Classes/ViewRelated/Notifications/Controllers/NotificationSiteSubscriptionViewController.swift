@@ -64,7 +64,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     }
 
     private var sections: [Section] = []
-    private let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+    private let service = ReaderTopicService(coreDataStack: ContextManager.shared)
     private let siteId: Int
     private var siteTopic: ReaderSiteTopic?
     private let siteSubscription = SiteSubscription()
@@ -93,7 +93,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     // MARK: - Private methods
 
     private func setupData() {
-        siteTopic = service.findSiteTopic(withSiteID: NSNumber(value: siteId))
+        siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: ContextManager.shared.mainContext)
 
         siteSubscription.postsNotification = siteTopic?.postSubscription?.sendPosts ?? false
         siteSubscription.emailsNotification = siteTopic?.emailSubscription?.sendPosts ?? false
@@ -193,7 +193,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     }
 
     @objc func followingSiteStateToggled() {
-        if let siteTopic = service.findSiteTopic(withSiteID: NSNumber(value: siteId)), !siteTopic.following {
+        if let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: ContextManager.shared.mainContext), !siteTopic.following {
             navigationController?.popToRootViewController(animated: true)
         }
     }

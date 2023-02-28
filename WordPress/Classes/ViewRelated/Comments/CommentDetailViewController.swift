@@ -15,8 +15,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
-    private let accountService: AccountService
-
     private let containerStackView = UIStackView()
     private let tableView = UITableView(frame: .zero, style: .plain)
 
@@ -142,7 +140,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
 
     private lazy var commentService: CommentService = {
-        return .init(managedObjectContext: managedObjectContext)
+        return .init(coreDataStack: ContextManager.shared)
     }()
 
     /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
@@ -241,7 +239,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -254,7 +251,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -1122,20 +1118,15 @@ private extension CommentDetailViewController {
             return
         }
 
-        guard let reply = commentService.createReply(for: comment) else {
-            DDLogError("Failed creating comment reply.")
-            return
+        commentService.createReply(for: comment, content: content) { reply in
+            self.commentService.uploadComment(reply, success: { [weak self] in
+                self?.displayReplyNotice(success: true)
+                self?.refreshCommentReplyIfNeeded()
+            }, failure: { [weak self] error in
+                DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                self?.displayReplyNotice(success: false)
+            })
         }
-
-        reply.content = content
-
-        commentService.uploadComment(reply, success: { [weak self] in
-            self?.displayReplyNotice(success: true)
-            self?.refreshCommentReplyIfNeeded()
-        }, failure: { [weak self] error in
-            DDLogError("Failed uploading comment reply: \(String(describing: error))")
-            self?.displayReplyNotice(success: false)
-        })
     }
 
     func createPostCommentReply(content: String) {

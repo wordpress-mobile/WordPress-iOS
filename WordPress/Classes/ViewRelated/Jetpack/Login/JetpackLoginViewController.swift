@@ -210,9 +210,7 @@ class JetpackLoginViewController: UIViewController {
 
     private func openJetpackRemoteInstall() {
         trackStat(.selectedInstallJetpack)
-        let controller = JetpackRemoteInstallViewController(blog: blog,
-                                                            delegate: self,
-                                                            promptType: promptType)
+        let controller = JetpackRemoteInstallViewController(blog: blog, delegate: self)
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)

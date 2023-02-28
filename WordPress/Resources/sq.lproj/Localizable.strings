@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-11 07:29:08+0000 */
+/* Translation-Revision-Date: 2023-02-22 17:40:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sq_AL */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Regjistër Veprimtarish";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Regjistra Veprimtarie";
 
 /* Label for the Activity Type filter button */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blloqet janë pjesë lënde që mund t’i futni, risistemoni dhe stilizoni pa u dashur të dini si të programoni. Blloqet janë një rrugë e lehtë dhe moderne për të krijuar skema të hijshme.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Menu blloqesh";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1876,15 +1879,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Lidhje jo gati";
 
-/* Support email label. */
-"Contact Email" = "Email Kontaktesh";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Lidhuni Me Asistencën";
 
@@ -3098,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "E jashtme";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Diagnostikim Ekstra";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4691,9 +4687,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Sajtet e Mi në WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Çështjet e Mia";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Dhjetë Kafehanet e Mia Më të Mira";
 
@@ -5045,9 +5038,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Jo Tani";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "I pacaktuar";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Hapësirë e pamjaftueshme për ngarkim";
@@ -6882,9 +6872,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "E shfaqur publikisht kur komentoni në blogje.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Shfaq një dialog për ndryshimin e Email-it të Kontaktit.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Shfaq krejt ndjekësit";
 
@@ -7267,8 +7254,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Superpërgjegjës";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Asistencë";
 
 /* Button used to switch site */
@@ -7507,9 +7493,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Ai emër përdoruesi s’lejohet.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Veçoria Diagnostikim Ekstra përfshin të dhëna shtesë nga regjistrat e veprimtarisë, dhe mund të na ndihmojë për të diagnostikuar probleme me aplikacionin.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Lidhja Facebook s’gjen dot ndonjë Faqe. Publicize s’mund të lidhet me Profile Facebook, vetëm me Faqe të botuara.";
@@ -8605,9 +8588,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifikoni adresën tuaj email - udhëzimet u dërguan te %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Version";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Version ";
 
@@ -8720,9 +8700,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Vizitoni sajtin";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Vizitoni Qendrën e Ndihmës që të merrni përgjigje për pyetje të rëndomta, ose që të lidheni me ne për më tepër ndihmë.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9163,14 +9140,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Forume WordPress";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Ndihmë WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Qendër Ndihme WordPress";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "Media WordPress";
@@ -9220,8 +9191,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Llogari WordPress.com";
 
 /* Title for the Plans list header */
@@ -9980,6 +9950,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Vazhdo te Statistika";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Gati për përdorim të këtij sajti me aplikacionin.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "U bë";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të kalohen së shpejti te aplikacioni Jetpack për celular.";
 
@@ -9997,6 +9973,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Kujtoma më vonë";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Duke ujdisur Jetpack-un, pajtoheni me %@ tona";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Instaloni shtojcën e plotë";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Lidhuni me Asistencën";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "shtojcë Jetpack e plotë";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Terma dhe Kushte";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Ju lutemi, instaloni të plotë shtojcën Jetpack";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Shtoni një autor";
@@ -10033,6 +10027,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Shkruani një blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Mësoni më tepër";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Fshihe këtë";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Ky sajt përdor shtojcën %1$@, e cila nuk mbulon ende krejt veçoritë e aplikacionit. Ju lutemi, instaloni të plotë shtojcën Jetpack.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Ky sajt përdor shtojca individuale Jetpack, të cilat nuk mbulojnë ende krejt veçoritë e aplikacionit. Ju lutemi, instaloni të plotë shtojcën Jetpack.";
 
 /* Later today */
 "later today" = "më vonë, sot";
@@ -10168,6 +10174,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Jeni i futur!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Raportojeni këtë përdorues";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Mbrapsht";
@@ -10330,6 +10339,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Anëtarë sajti";
+
+/* Dismiss the current view */
+"support.button.close.title" = "U bë";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Dilni";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Prekeni, që të vizitoni sajtin e forumit të bashkësisë që nga një shfletues i jashtëm";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Vizitoni WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Bëni një pyetje te forumi i bashkësisë dhe merrni ndihmë nga grupi ynë i vullnetarëve.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Shfaq një dialog për ndryshimin e Email-it të Kontaktit";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "E paujdisur";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "Email";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Lidhuni me asistencën";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Diagnostiko";
+
+/* Support email label. */
+"support.row.email.title" = "Email";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "Forume WordPress";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "Qendër Ndihme WordPress";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Regjistra";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Çështje";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Version";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Aktivizoni  Diagnostikimin, që të përfshini të dhëna shtesë te regjistrat tuaj, të cilat mund të ndihmojë për të diagnostikuar probleme me aplikacionin.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "Llogari WordPress.com";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Të mëtejshme";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Forume Bashkësie";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Asistencë Me Përparësi";
+
+/* View title for Help & Support page. */
+"support.title" = "Ndihmë";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "këto objekte do të fshihen:";

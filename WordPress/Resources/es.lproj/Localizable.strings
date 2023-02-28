@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Registro de actividad";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Registros de actividad";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Conexión no disponible";
 
-/* Support email label. */
-"Contact Email" = "Correo electrónico de contacto";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contactar con el servicio de asistencia";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Externo";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Depuración extra";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Mis sitios en WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Mis tickets";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mis diez mejores cafeterías";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "No ahora";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Sin configurar";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "No hay espacio suficiente para subidas";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Se muestra públicamente cuando comentas en blogs.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Muestra un diálogo para cambiar el correo electrónico de contacto.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Muestra todos los seguidores";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Super Admin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Soporte";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Ese nombre de usuario no está permitido.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "La función Extra Debug incorpora más información de los registros de actividad y puede ayudarnos a solucionar problemas con la aplicación.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "La conexión con Facebook no puede encontrar ninguna página. Difundir no puede conectar con perfiles de Facebook, solo con páginas publicadas.";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifica tu dirección de correo electrónico - las instrucciones se enviaron a %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Versión";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Versión";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Visitar sitio";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Visita el centro de ayuda para obtener respuestas a preguntas frecuentes, o contáctanos para más ayuda.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Foros WordPress";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Ayuda de WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Centro de Ayuda WordPress";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "Medios de WordPress";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Cuenta de WordPress.com";
 
 /* Title for the Plans list header */

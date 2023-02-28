@@ -24,7 +24,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        commentService = CommentService(managedObjectContext: mainContext)
+        commentService = CommentService(coreDataStack: contextManager)
         accountService = makeAccountService()
     }
 
@@ -111,12 +111,13 @@ private extension CommentService_RepliesTests {
     func makeMockService() -> (CommentService, MockWordPressComRestApi) {
         let mockApi = MockWordPressComRestApi()
         let mockFactory = CommentServiceRemoteFactoryMock(restApi: mockApi)
-        return (.init(managedObjectContext: mainContext, commentServiceRemoteFactory: mockFactory), mockApi)
+        return (.init(coreDataStack: contextManager, commentServiceRemoteFactory: mockFactory), mockApi)
     }
 
     func makeAccountService() -> AccountService {
-        let service = AccountService(managedObjectContext: mainContext)
-        let account = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
+        let service = AccountService(coreDataStack: contextManager)
+        let accountID = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
+        let account = try! contextManager.mainContext.existingObject(with: accountID) as! WPAccount
         account.userID = NSNumber(value: authorID)
         service.setDefaultWordPressComAccount(account)
 
