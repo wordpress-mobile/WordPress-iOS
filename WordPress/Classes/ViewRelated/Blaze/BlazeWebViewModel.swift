@@ -8,6 +8,10 @@ protocol BlazeWebView {
 
 class BlazeWebViewModel {
 
+    // MARK: Public Variables
+
+    var isFlowCompleted = false
+
     // MARK: Private Variables
 
     private let source: BlazeWebViewCoordinator.Source
@@ -74,6 +78,7 @@ class BlazeWebViewModel {
         // Use this to track the current step and take actions accordingly
         // We should also block unknown urls
         currentStep = extractCurrentStep(from: request) ?? currentStep
+        updateIsFlowCompleted()
         view.reloadNavBar()
         return .allow
     }
@@ -85,7 +90,7 @@ class BlazeWebViewModel {
 
     // MARK: Helpers
 
-    func extractCurrentStep(from request: URLRequest) -> String? {
+    private func extractCurrentStep(from request: URLRequest) -> String? {
         guard let url = request.url,
               let baseURLString,
               url.absoluteString.hasPrefix(baseURLString) else {
@@ -106,6 +111,15 @@ class BlazeWebViewModel {
             else {
                 return BlazeFlowSteps.postsListStep
             }
+        }
+    }
+
+    private func updateIsFlowCompleted() {
+        if currentStep == remoteConfig.blazeFlowCompletedStep.value {
+            isFlowCompleted = true // mark flow as completed if completion step is reached
+        }
+        if currentStep == BlazeFlowSteps.blazeWidgetDefaultStep {
+            isFlowCompleted = false // reset flag is user start a new ad creation flow inside the web view
         }
     }
 }
