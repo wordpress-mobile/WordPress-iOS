@@ -14,7 +14,7 @@ class BlazeWebViewModel {
     private let blog: Blog
     private let postID: NSNumber?
     private let view: BlazeWebView
-    private var currentStep: String = Constants.undefinedStep
+    private var currentStep: String = BlazeFlowSteps.undefinedStep
     private let remoteConfig = RemoteConfig()
 
     // MARK: Initializer
@@ -45,6 +45,13 @@ class BlazeWebViewModel {
         return URL(string: urlString)
     }
 
+    private var baseURLString: String? {
+        guard let siteURL = blog.displayURL else {
+            return nil
+        }
+        return String(format: Constants.baseURLFormat, siteURL)
+    }
+
     // MARK: Public Functions
 
     func startBlazeFlow() {
@@ -66,7 +73,7 @@ class BlazeWebViewModel {
         // TODO: To be implemented
         // Use this to track the current step and take actions accordingly
         // We should also block unknown urls
-        currentStep = extractCurrentStep(from: request)
+        currentStep = extractCurrentStep(from: request) ?? currentStep
         view.reloadNavBar()
         return .allow
     }
@@ -78,16 +85,28 @@ class BlazeWebViewModel {
 
     // MARK: Helpers
 
-    func extractCurrentStep(from request: URLRequest) -> String {
-        if let baseURL = initialURL?.absoluteString,
-           let url = request.url,
-           url.absoluteString.hasPrefix(baseURL),
-           let step = url.fragment {
-            print("Request Intercepted with URL \(url)")
-            print("Step is: \(step)")
-            return step
+    func extractCurrentStep(from request: URLRequest) -> String? {
+        guard let url = request.url,
+              let baseURLString,
+              url.absoluteString.hasPrefix(baseURLString) else {
+            return nil
         }
-        return Constants.undefinedStep
+        if let query = url.query, query.contains(Constants.blazeWidgetQueryIdentifier) {
+            if let step = url.fragment {
+                return step
+            }
+            else {
+                return BlazeFlowSteps.blazeWidgetDefaultStep
+            }
+        }
+        else {
+            if let lastPathComponent = url.pathComponents.last, lastPathComponent == Constants.blazeCampaignsURLPath {
+                return BlazeFlowSteps.campaignsListStep
+            }
+            else {
+                return BlazeFlowSteps.postsListStep
+            }
+        }
     }
 }
 
@@ -99,8 +118,17 @@ extension BlazeWebViewModel: WebKitAuthenticatable {
 
 private extension BlazeWebViewModel {
     enum Constants {
+        static let baseURLFormat = "https://wordpress.com/advertising/%@"
         static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"
         static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d&source=%@"
+        static let blazeWidgetQueryIdentifier = "blazepress-widget"
+        static let blazeCampaignsURLPath = "campaigns"
+    }
+
+    enum BlazeFlowSteps {
         static let undefinedStep = "undefined"
+        static let postsListStep = "posts_list"
+        static let campaignsListStep = "campaigns_list"
+        static let blazeWidgetDefaultStep = "step_1"
     }
 }
