@@ -315,6 +315,36 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         XCTAssertTrue(view.loadCalled)
         XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-1&source=menu_item")
     }
+
+    func testIsCurrentStepDismissible() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, remoteConfigStore: remoteConfigStore)
+
+        // When
+        var url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
+        var request = URLRequest(url: url)
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertTrue(viewModel.isCurrentStepDismissible())
+
+        // When
+        url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-4"))
+        request = URLRequest(url: url)
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertFalse(viewModel.isCurrentStepDismissible())
+
+        // When
+        url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-5"))
+        request = URLRequest(url: url)
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertTrue(viewModel.isCurrentStepDismissible())
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
