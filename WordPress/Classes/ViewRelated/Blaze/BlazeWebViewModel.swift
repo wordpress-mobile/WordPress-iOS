@@ -12,6 +12,7 @@ class BlazeWebViewModel {
     // MARK: Public Variables
 
     var isFlowCompleted = false
+    private(set) var currentStep: String = BlazeFlowSteps.undefinedStep
 
     // MARK: Private Variables
 
@@ -19,7 +20,6 @@ class BlazeWebViewModel {
     private let blog: Blog
     private let postID: NSNumber?
     private let view: BlazeWebView
-    private var currentStep: String = BlazeFlowSteps.undefinedStep
     private let remoteConfig = RemoteConfig()
 
     // MARK: Initializer
