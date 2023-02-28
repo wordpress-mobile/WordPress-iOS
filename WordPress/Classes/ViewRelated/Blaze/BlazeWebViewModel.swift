@@ -20,18 +20,20 @@ class BlazeWebViewModel {
     private let blog: Blog
     private let postID: NSNumber?
     private let view: BlazeWebView
-    private let remoteConfig = RemoteConfig()
+    private let remoteConfig: RemoteConfig
 
     // MARK: Initializer
 
     init(source: BlazeSource,
          blog: Blog,
          postID: NSNumber?,
-         view: BlazeWebView) {
+         view: BlazeWebView,
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) {
         self.source = source
         self.blog = blog
         self.postID = postID
         self.view = view
+        self.remoteConfig = RemoteConfig(store: remoteConfigStore)
     }
 
     // MARK: Computed Variables
