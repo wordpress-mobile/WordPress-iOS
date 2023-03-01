@@ -28,6 +28,7 @@
         "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
+        "MainNavigationTests",
         "SignupTests\/testEmailSignup()",
         "StatsTests",
         "SupportScreenTests\/testSupportScreenLoads()"
