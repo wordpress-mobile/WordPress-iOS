@@ -598,13 +598,14 @@ private class MigrationCell: WPTableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: label.font.pointSize, weight: .semibold)
+        label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         return label
     }()
 
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        label.font = WPStyleGuide.fontForTextStyle(.body)
         return label
     }()
 
