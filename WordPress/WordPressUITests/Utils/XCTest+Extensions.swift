@@ -76,7 +76,7 @@ extension XCTestCase {
         static let tag = "tag \(Date().toString())"
     }
 
-    public func removeApp(_ appName: String = "WordPress", app: XCUIApplication = XCUIApplication()) {
+    public func removeApp(_ appName: String = XCUIApplication().label, app: XCUIApplication = XCUIApplication()) {
         app.terminate()
 
         let appToRemove = Constants.homeApp.icons[appName]
