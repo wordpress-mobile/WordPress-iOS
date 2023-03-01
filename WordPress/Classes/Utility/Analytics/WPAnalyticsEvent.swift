@@ -450,6 +450,7 @@ import Foundation
 
     // Help & Support
     case supportOpenMobileForumTapped
+    case supportOpenJetpackMigrationFAQ
 
     /// A String that represents the event
     var value: String {
@@ -1225,6 +1226,8 @@ import Foundation
         // Help & Support
         case .supportOpenMobileForumTapped:
             return "support_open_mobile_forum_tapped"
+        case .supportOpenJetpackMigrationFAQ:
+            return "support_open_jetpack_migration_faq_tapped"
         } // END OF SWITCH
     }
 

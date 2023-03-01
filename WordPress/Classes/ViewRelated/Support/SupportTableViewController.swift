@@ -347,6 +347,8 @@ private extension SupportTableViewController {
             guard let url = Constants.jetpackMigrationFAQsURL else {
                 return
             }
+
+            WPAnalytics.track(.supportOpenJetpackMigrationFAQ)
             UIApplication.shared.open(url)
         },
                                           accessibilityIdentifier: nil))
