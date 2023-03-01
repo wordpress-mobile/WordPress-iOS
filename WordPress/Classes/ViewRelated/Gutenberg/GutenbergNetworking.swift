@@ -13,6 +13,10 @@ struct GutenbergNetworkRequest {
     }
 
     func request(completion: @escaping CompletionHandler) {
+        if mapRequestVideoPressMetadata(completion: completion) {
+            return
+        }
+
         if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
             dotComRequest(with: dotComID, completion: completion)
         } else {
@@ -73,6 +77,31 @@ struct GutenbergNetworkRequest {
     private var selfHostedPath: String {
         let removedEditContext = path.replacingOccurrences(of: "context=edit", with: "context=view")
         return "wp-json\(removedEditContext)"
+    }
+
+    // MARK: - Map requests to services
+
+    /// Map `/videos/$guid` endpoint request to Media Service
+    ///
+    /// API reference: https://developer.wordpress.com/docs/api/1.1/get/videos/%24guid/
+    private func mapRequestVideoPressMetadata(completion: @escaping CompletionHandler) -> Bool {
+        let pattern = "^/wp/v2/media/videos/(?<id>\\w+)\\??.*"
+        let regex = try? NSRegularExpression(pattern: pattern)
+        guard
+            let match = regex?.firstMatch(in: path, options: [], range: NSRange(location: 0, length: path.utf8.count)),
+            let idRange = Range(match.range(withName: "id"), in: path) else
+        {
+            return false
+        }
+        let videoPressID = String(path[idRange])
+        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        mediaService.getMetadataFromVideoPressID(videoPressID, in: blog, success: { (metadata) in
+            completion(.success(metadata.asDictionary()))
+        }, failure: { (error) in
+            DDLogError("Unable to fetch VideoPress token for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            completion(.failure(NSError()))
+        })
+        return true
     }
 }
 
