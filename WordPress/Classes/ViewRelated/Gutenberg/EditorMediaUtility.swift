@@ -147,31 +147,18 @@ class EditorMediaUtility {
         return imageDownload
     }
 
-    static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?), Error> ) -> Void) {
+    static func fetchVideoPressMetadata(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(RemoteVideoPressVideo), Error> ) -> Void) {
         guard let videoPressID = media.videopressGUID else {
-            //the site can be a self-hosted site if there's no videopressGUID
-            if let videoURLString = media.remoteURL,
-                let videoURL = URL(string: videoURLString) {
-                completion(Result.success((videoURL: videoURL, posterURL: nil)))
-            } else {
-                DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
-                completion(Result.failure(NSError()))
-            }
+            DDLogError("Unable to find metadata for video with upload ID = \(media.uploadID).")
+            completion(Result.failure(NSError()))
             return
         }
+
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: post.blog, success: { (videoURLString, posterURLString) in
-            guard let videoURL = URL(string: videoURLString) else {
-                completion(Result.failure(NSError()))
-                return
-            }
-            var posterURL: URL?
-            if let validPosterURLString = posterURLString, let url = URL(string: validPosterURLString) {
-                posterURL = url
-            }
-            completion(Result.success((videoURL: videoURL, posterURL: posterURL)))
+        mediaService.getMetadataFromVideoPressID(videoPressID, in: post.blog, success: { (metadata) in
+            completion(Result.success(metadata))
         }, failure: { (error) in
-            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
             completion(Result.failure(error))
         })
     }

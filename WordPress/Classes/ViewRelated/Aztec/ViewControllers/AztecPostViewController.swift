@@ -2845,9 +2845,9 @@ extension AztecPostViewController {
            let videoPressID = videoSrcURL.host {
             // It's videoPress video so let's fetch the information for the video
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                videoAttachment.updateURL(URL(string: videoURLString))
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+            mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { (metadata) in
+                videoAttachment.updateURL(metadata.getPlayURL())
+                if let posterURL = metadata.posterURL {
                     videoAttachment.posterURL = posterURL
                 }
                 self.richTextView.refresh(videoAttachment)
@@ -3021,16 +3021,16 @@ extension AztecPostViewController {
         }
         // It's videoPress video so let's fetch the information for the video
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { [weak self] (videoURLString, posterURLString) in
+        mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { [weak self] (metadata) in
             guard let `self` = self else {
                 return
             }
-            guard let videoURL = URL(string: videoURLString) else {
+            guard let videoURL = metadata.getPlayURL() else {
                 self.displayUnableToPlayVideoAlert()
                 return
             }
             videoAttachment.updateURL(videoURL)
-            if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+            if let posterURL = metadata.posterURL {
                 videoAttachment.posterURL = posterURL
             }
             self.richTextView.refresh(videoAttachment)

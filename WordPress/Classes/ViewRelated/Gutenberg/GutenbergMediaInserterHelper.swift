@@ -259,7 +259,7 @@ class GutenbergMediaInserterHelper: NSObject {
             }
             switch media.mediaType {
             case .video:
-                EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
+                EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] (result) in
                     guard let strongSelf = self else {
                         return
                     }
@@ -267,11 +267,7 @@ class GutenbergMediaInserterHelper: NSObject {
                     case .failure:
                         strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
                     case .success(let value):
-                        var metadata: [String: Any] = [:]
-                        if let videopressGUID = media.videopressGUID {
-                            metadata["videopressGUID"] = videopressGUID
-                        }
-                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID, metadata: metadata)
+                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.originalURL, serverID: mediaServerID, metadata: value.toDict())
                     }
                 }
             default:
