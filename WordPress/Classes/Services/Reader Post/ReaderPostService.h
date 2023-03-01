@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 @import WordPressKit;
 @import WordPressShared;
@@ -10,7 +10,7 @@
 extern NSString * const ReaderPostServiceErrorDomain;
 extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
-@interface ReaderPostService : LocalCoreDataService
+@interface ReaderPostService : CoreDataService
 
 /**
  Fetches and saves the posts for the specified topic
@@ -188,16 +188,6 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
           forTopic:(NSManagedObjectID *)topicObjectID
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success;
-
-
-/**
- Get a cached site's ReaderPost with the specified ID.
- 
- @param postID ID of the post.
- @param siteID ID of th site the post belongs to.
- @return the matching ReaderPost.
- */
-- (ReaderPost *)findPostWithID:(NSNumber *)postID forSite:(NSNumber *)siteID;
 
 #pragma mark Internal
 

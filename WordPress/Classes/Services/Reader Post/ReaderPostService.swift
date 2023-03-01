@@ -3,10 +3,6 @@ import WordPressKit
 
 extension ReaderPostService {
 
-    private var defaultAccount: WPAccount? {
-        return try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
-    }
-
     // MARK: - Fetch Unblocked Posts
 
     /// Fetches a list of posts from the API and filters out the posts that belong to a blocked author.
@@ -19,11 +15,11 @@ extension ReaderPostService {
     ) {
         let maxRetries = RetryOption.maxRetries
         let retryOption = forceRetry || !isSilentlyFetchingPosts ? RetryOption.enabled(retry: 0, maxRetries: maxRetries) : .disabled
-        fetchUnblockedPostsWithRetries(topic: topic, earlierThan: date, retryOption: retryOption, success: success, failure: failure)
+        fetchUnblockedPostsWithRetries(topicObjectID: topic.objectID, earlierThan: date, retryOption: retryOption, success: success, failure: failure)
     }
 
     private func fetchUnblockedPostsWithRetries(
-        topic: ReaderAbstractTopic,
+        topicObjectID: NSManagedObjectID,
         earlierThan date: Date,
         retryOption: RetryOption,
         success: SuccessCallback? = nil,
@@ -32,16 +28,29 @@ extension ReaderPostService {
         // Don't pass the algorithm if fetching a brand new list.
         // When fetching the beginning of a date ordered list the date passed is "now".
         // If the passed date is equal to the current date we know we're starting from scratch.
-        let reqAlgorithm = date == Date() ? nil : topic.algorithm
+        guard let (reqAlgorithm, endpoint, count) = self.coreDataStack.performQuery({ context -> (String?, URL?, UInt)? in
+            guard let topic = try? context.existingObject(with: topicObjectID) as? ReaderAbstractTopic else {
+                return nil
+            }
+            return (
+                date == Date() ? nil : topic.algorithm,
+                URL(string: topic.path),
+                self.numberToSync(for: topic)
+            )
+        }) else {
+            success?(0, false)
+            return
+        }
+
         let remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiForRequest())
         remoteService.fetchPosts(
-            fromEndpoint: URL(string: topic.path),
+            fromEndpoint: endpoint,
             algorithm: reqAlgorithm,
-            count: numberToSync(for: topic),
+            count: count,
             before: date
         ) { posts, algorithm in
             self.processFetchedPostsForTopic(
-                topic,
+                topicObjectID: topicObjectID,
                 remotePosts: posts ?? [],
                 earlierThan: date,
                 deletingEarlier: false,
@@ -55,7 +64,7 @@ extension ReaderPostService {
     }
 
     private func processFetchedPostsForTopic(
-        _ topic: ReaderAbstractTopic,
+        topicObjectID: NSManagedObjectID,
         remotePosts posts: [Any],
         earlierThan date: Date,
         deletingEarlier: Bool,
@@ -64,25 +73,29 @@ extension ReaderPostService {
         success: SuccessCallback? = nil
     ) {
         // The passed-in topic might have missing data, the following code ensures fully realized object.
-        guard let posts = posts as? [RemoteReaderPost],
-              let topic = try? self.managedObjectContext.existingObject(with: topic.objectID) as? ReaderAbstractTopic
+        guard let posts = posts as? [RemoteReaderPost]
         else {
             success?(0, true)
             return
         }
 
         // Update topic locally
-        self.updateTopic(topic.objectID, withAlgorithm: algorithm)
+        self.updateTopic(topicObjectID, withAlgorithm: algorithm)
 
         // Filter out blocked posts
-        let filteredPosts = self.remotePostsByFilteringOutBlockedPosts(posts)
-        let hasMore = self.canLoadMorePosts(for: topic, remotePosts: posts, in: managedObjectContext)
+        let filteredPosts = self.coreDataStack.performQuery { context in
+            self.remotePostsByFilteringOutBlockedPosts(posts, in: context)
+        }
+        let hasMore = self.coreDataStack.performQuery { context in
+            guard let topic = try? context.existingObject(with: topicObjectID) as? ReaderAbstractTopic else { return false }
+            return self.canLoadMorePosts(for: topic, remotePosts: posts, in: context)
+        }
 
         // Persist filtered posts locally.
         self.persistRemotePosts(
             filteredPosts: filteredPosts,
             allPosts: posts,
-            topic: topic,
+            topicObjectID: topicObjectID,
             beforeDate: date,
             deletingEarlier: deletingEarlier,
             hasMoreContent: hasMore,
@@ -90,14 +103,14 @@ extension ReaderPostService {
         )
 
         // Fetch more posts when certain conditions are fulfilled. See method documentation for more details.
-        self.fetchMorePostsIfNeeded(filteredPosts: filteredPosts, allPosts: posts, topic: topic, retryOption: retryOption)
+        self.fetchMorePostsIfNeeded(filteredPosts: filteredPosts, allPosts: posts, topicObjectID: topicObjectID, retryOption: retryOption)
     }
 
     /// Persists the remote posts in Core Data.
     private func persistRemotePosts(
         filteredPosts: [RemoteReaderPost],
         allPosts posts: [RemoteReaderPost],
-        topic: ReaderAbstractTopic,
+        topicObjectID: NSManagedObjectID,
         beforeDate date: Date,
         deletingEarlier: Bool,
         hasMoreContent hasMore: Bool,
@@ -108,7 +121,7 @@ extension ReaderPostService {
         let allPostsAreFilteredOut = filteredPosts.isEmpty && !posts.isEmpty
         if !allPostsAreFilteredOut {
             let rank = date.timeIntervalSinceReferenceDate as NSNumber
-            self.mergePosts(filteredPosts, rankedLessThan: rank, forTopic: topic.objectID, deletingEarlier: deletingEarlier) { count, _ in
+            self.mergePosts(filteredPosts, rankedLessThan: rank, forTopic: topicObjectID, deletingEarlier: deletingEarlier) { count, _ in
                 success?(count, hasMore)
             }
         } else {
@@ -125,7 +138,7 @@ extension ReaderPostService {
     private func fetchMorePostsIfNeeded(
         filteredPosts: [RemoteReaderPost],
         allPosts posts: [RemoteReaderPost],
-        topic: ReaderAbstractTopic,
+        topicObjectID: NSManagedObjectID,
         retryOption: RetryOption
     ) {
         guard case let .enabled(retry, maxRetries) = retryOption, let lastPost = posts.last else {
@@ -134,7 +147,7 @@ extension ReaderPostService {
         let shouldContinueRetrying = filteredPosts.isEmpty && retry < maxRetries
         if shouldContinueRetrying {
             self.fetchUnblockedPostsWithRetries(
-                topic: topic,
+                topicObjectID: topicObjectID,
                 earlierThan: lastPost.sortDate,
                 retryOption: .enabled(retry: retry + 1, maxRetries: maxRetries)
             )
@@ -143,12 +156,12 @@ extension ReaderPostService {
     }
 
     /// Takes a list of remote posts and returns a new list without the blocked posts.
-    private func remotePostsByFilteringOutBlockedPosts(_ posts: [RemoteReaderPost]) -> [RemoteReaderPost] {
-        guard let account = self.defaultAccount else {
+    private func remotePostsByFilteringOutBlockedPosts(_ posts: [RemoteReaderPost], in context: NSManagedObjectContext) -> [RemoteReaderPost] {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return posts
         }
 
-        let blockedAuthors = Set(BlockedAuthor.find(.accountID(account.userID), context: managedObjectContext).map { $0.authorID })
+        let blockedAuthors = Set(BlockedAuthor.find(.accountID(account.userID), context: context).map { $0.authorID })
 
         guard !blockedAuthors.isEmpty else {
             return posts
