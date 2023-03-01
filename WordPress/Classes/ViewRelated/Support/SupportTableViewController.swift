@@ -333,6 +333,10 @@ private extension SupportTableViewController {
     // MARK: - Jetpack migration section
 
     private func createJetpackMigrationSection() -> ImmuTableSection? {
+        guard SupportConfiguration.isMigrationCardEnabled() else {
+            return nil
+        }
+
         var rows = [ImmuTableRow]()
         rows.append(MigrationRow(title: LocalizedText.jetpackMigrationTitle,
                                  description: LocalizedText.jetpackMigrationDescription,
