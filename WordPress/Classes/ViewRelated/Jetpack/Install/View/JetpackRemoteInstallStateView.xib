@@ -66,10 +66,10 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstItem="nWU-Jq-CLu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i2o-j9-ORU" secondAttribute="top" priority="750" id="BRv-RC-ze4"/>
-                                <constraint firstAttribute="trailing" secondItem="nWU-Jq-CLu" secondAttribute="trailing" constant="30" id="D1V-Av-iIt"/>
+                                <constraint firstAttribute="trailing" secondItem="nWU-Jq-CLu" secondAttribute="trailing" priority="750" constant="30" id="D1V-Av-iIt"/>
                                 <constraint firstItem="nWU-Jq-CLu" firstAttribute="centerX" secondItem="i2o-j9-ORU" secondAttribute="centerX" id="Hc9-Q4-NLZ"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="nWU-Jq-CLu" secondAttribute="bottom" id="KoR-ac-uyQ"/>
-                                <constraint firstItem="nWU-Jq-CLu" firstAttribute="leading" secondItem="i2o-j9-ORU" secondAttribute="leading" constant="30" id="s9x-VO-ri1"/>
+                                <constraint firstItem="nWU-Jq-CLu" firstAttribute="leading" secondItem="i2o-j9-ORU" secondAttribute="leading" priority="750" constant="30" id="s9x-VO-ri1"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -97,9 +97,6 @@
                             <state key="normal" title="Primary Button">
                                 <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="mainButtonAction:" destination="-1" eventType="touchUpInside" id="uD5-jW-rwF"/>
                             </connections>
