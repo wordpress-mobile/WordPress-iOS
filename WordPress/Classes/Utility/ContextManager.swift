@@ -135,6 +135,41 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
             save(context, .asynchronously)
         }
     }
+
+    static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
+        guard FileManager.default.fileExists(atPath: storeURL.path) else {
+            DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
+            return
+        }
+
+        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
+            !objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+        else {
+            return
+        }
+
+        DDLogWarn("Migration required for persistent store.")
+
+        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
+            fatalError("Can't find WordPress.momd")
+        }
+
+        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
+            fatalError("Can't get the object model's version info")
+        }
+
+        guard let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
+            fatalError("Can't parse the model versions")
+        }
+
+        let sortedModelNames = modelNames.sorted { $0.compare($1, options: .numeric) == .orderedAscending }
+        try CoreDataIterativeMigrator.iterativeMigrate(
+            sourceStore: storeURL,
+            storeType: NSSQLiteStoreType,
+            to: objectModel,
+            using: sortedModelNames
+        )
+    }
 }
 
 // MARK: - Private methods
@@ -236,40 +271,6 @@ private extension ContextManager {
         return persistentContainer
     }
 
-    static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
-        guard FileManager.default.fileExists(atPath: storeURL.path) else {
-            DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
-            return
-        }
-
-        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
-            objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
-        else {
-            return
-        }
-
-        DDLogWarn("Migration required for persistent store.")
-
-        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
-            fatalError("Can't find WordPress.momd")
-        }
-
-        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
-            fatalError("Can't get the object model's version info")
-        }
-
-        guard let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
-            fatalError("Can't parse the model versions")
-        }
-
-        let sortedModelNames = modelNames.sorted { $0.compare($1, options: .numeric) == .orderedAscending }
-        try CoreDataIterativeMigrator.iterativeMigrate(
-            sourceStore: storeURL,
-            storeType: NSSQLiteStoreType,
-            to: objectModel,
-            using: sortedModelNames
-        )
-    }
 }
 
 extension ContextManager {
