@@ -121,18 +121,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(void))failure;
 
 /**
- *  Obtains the  video url and poster image url for the video with the videoPressID
- *
- *  @param videoPressID ID of video in VideoPress
- *  @param blog         blog to use to access video references
- *  @param success      return block if videopress info is found
- *  @param failure      return block if not information found.
- */
-- (void)getMediaURLFromVideoPressID:(nonnull NSString *)videoPressID
-                             inBlog:(nonnull Blog *)blog
-                            success:(nullable void (^)(NSString * _Nonnull videoURL, NSString * _Nullable posterURL))success
-                            failure:(nullable void (^)(NSError * _Nonnull error))failure;
-/**
  *  Retrieves the metadata of a VideoPress video.
  *
  *  The metadata parameters can be found in the API reference:
