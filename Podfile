@@ -91,7 +91,7 @@ def shared_style_pods
 end
 
 def gutenberg_pods
-  gutenberg commit: '7e919fc14402c6c7613622524970b88bc623af91'
+  gutenberg tag: 'v1.89.1'
 end
 
 def gutenberg(options)
