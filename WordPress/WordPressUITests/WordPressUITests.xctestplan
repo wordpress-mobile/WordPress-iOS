@@ -29,6 +29,7 @@
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
         "SupportScreenTests\/testSupportScreenLoads()"
       ],
       "target" : {
