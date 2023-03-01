@@ -184,7 +184,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .blaze:
             return "blaze"
         case .jetpackMigrationSupportCard:
-            return "support_open_jetpack_migration_faq_tapped"
+            return "jetpack_migration_faq_card_remote_field"
             default:
                 return nil
         }
