@@ -412,8 +412,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Find existing tag by slug
     NSManagedObjectID * __block existingTopic = nil;
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * _Nonnull context) {
-        existingTopic = [[ReaderTagTopic lookupWithSlug:slug inContext:context] objectID];
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        existingTopic = [[ReaderTagTopic lookupWithSlug:slug inContext:self.coreDataStack.mainContext] objectID];
     }];
     if (existingTopic) {
         dispatch_async(dispatch_get_main_queue(), ^{
