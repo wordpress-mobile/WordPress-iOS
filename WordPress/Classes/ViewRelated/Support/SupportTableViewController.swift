@@ -579,22 +579,6 @@ private class ButtonCell: WPTableViewCellDefault {
 }
 
 private class MigrationCell: WPTableViewCell {
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.alignment = .leading
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 10
-        return stackView
-    }()
-
-    let logoImageView: UIImageView = {
-        let imageView = UIImageView(image: .init(named: "wp-migration-welcome"))
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-
     let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -607,6 +591,22 @@ private class MigrationCell: WPTableViewCell {
         label.numberOfLines = 0
         label.font = WPStyleGuide.fontForTextStyle(.body)
         return label
+    }()
+
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.alignment = .leading
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 10
+        return stackView
+    }()
+
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView(image: .init(named: "wp-migration-welcome"))
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
