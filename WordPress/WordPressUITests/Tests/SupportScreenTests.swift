@@ -19,4 +19,14 @@ class SupportScreenTests: XCTestCase {
             .visitForums()
             .assertForumsLoaded()
     }
+
+    func testContactUsCanBeLoadedDuringLogin() throws {
+        try PrologueScreen()
+            .selectContinue()
+            .selectHelp()
+            .contactSupport()
+            .assertCanNotSendEmptyMessage()
+            .enterText("A")
+            .assertCanSendMessage()
+    }
 }

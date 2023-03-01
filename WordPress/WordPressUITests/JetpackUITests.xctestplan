@@ -23,7 +23,8 @@
         "EditorAztecTests",
         "LoginTests\/testEmailMagicLinkLogin()",
         "SignupTests",
-        "SignupTests\/testEmailSignup()"
+        "SignupTests\/testEmailSignup()",
+        "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
