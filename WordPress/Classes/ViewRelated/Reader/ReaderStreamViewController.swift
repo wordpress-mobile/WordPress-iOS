@@ -37,7 +37,7 @@ import Combine
 
     // MARK: - Services
 
-    private lazy var readerPostService = ReaderPostService(managedObjectContext: coreDataStack.mainContext)
+    private lazy var readerPostService = ReaderPostService(coreDataStack: coreDataStack)
 
     // MARK: - Properties
 
