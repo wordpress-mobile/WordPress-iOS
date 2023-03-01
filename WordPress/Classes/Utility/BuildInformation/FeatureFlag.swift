@@ -47,6 +47,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackIndividualPluginSupport
     case blaze
     case siteCreationDomainPurchasing
+    case readerUserBlocking
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -149,6 +150,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .siteCreationDomainPurchasing:
             return false
+        case .readerUserBlocking:
+            return true
         }
     }
 
@@ -287,6 +290,8 @@ extension FeatureFlag {
             return "Blaze"
         case .siteCreationDomainPurchasing:
             return "Site Creation Domain Purchasing"
+        case .readerUserBlocking:
+            return "Reader User Blocking"
         }
     }
 

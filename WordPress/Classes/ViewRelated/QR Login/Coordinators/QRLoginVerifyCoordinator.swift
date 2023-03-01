@@ -15,12 +15,12 @@ class QRLoginVerifyCoordinator {
          parentCoordinator: QRLoginParentCoordinator,
          connectionChecker: QRLoginConnectionChecker = QRLoginInternetConnectionChecker(),
          service: QRLoginService? = nil,
-         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+         coreDataStack: CoreDataStack = ContextManager.shared) {
         self.token = token
         self.view = view
         self.connectionChecker = connectionChecker
         self.parentCoordinator = parentCoordinator
-        self.service = service ?? QRLoginService(managedObjectContext: context)
+        self.service = service ?? QRLoginService(coreDataStack: coreDataStack)
     }
 
     enum ViewState {

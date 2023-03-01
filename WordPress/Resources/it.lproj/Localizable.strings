@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-15 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-02-17 15:30:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: it */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Log attività";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "I log di attività";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Connessione non disponibile";
 
-/* Support email label. */
-"Contact Email" = "Email di contatto";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contatta il supporto";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Esterno";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Debug aggiuntivo";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "I miei siti in WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "I miei ticket";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "La Top Ten dei bar";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Non ora";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Non impostato";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Spazio di upload insufficiente.";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Mostrato pubblicamente quando commenti sui blog.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Visualizza una casella di dialogo per modificare l'e-mail di contatto.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Mostra tutti i follower";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Super Admin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Supporto";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Il nome utente che hai inserito non è consentito.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "La funzionalità di debug Extra contiene informazioni aggiuntive nel log delle attività e ci può aiutare a risolvere i problemi con l'app.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "La connessione a Facebook non riesce a trovare pagine. Pubblicizza non può connettersi ai profili Facebook, bensì solo alle pagine pubblicate.";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifica il tuo indirizzo email - istruzioni inviate a %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Versione";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Versione";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Visita il sito";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Visita il Centro Assistenza per trovare le risposte alle domande più comuni o contattaci se ti serve altro aiuto";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "I forums di WordPress";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Assistenza WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Centro d'assistenza di WordPress";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "Media WordPress";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Account WordPress.com";
 
 /* Title for the Plans list header */
@@ -9922,6 +9889,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Le funzionalità di Jetpack sono state trasferite.";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Passa all'app Jetpack per continuare a ricevere notifiche in tempo reale sul tuo dispositivo.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Ricevi le tue notifiche con l'app Jetpack";

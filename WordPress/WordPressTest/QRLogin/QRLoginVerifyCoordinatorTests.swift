@@ -8,7 +8,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testCoordinationStateIsSetOnInit() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -16,7 +16,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Verify the coordinator is in the right state
         XCTAssertEqual(coordinator.state, .verifyingCode)
@@ -25,7 +25,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testValidationRenderSuccess() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -33,7 +33,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         service.responseExpectation = .success
 
@@ -54,7 +54,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testValidationQRLoginError() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
 
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -62,7 +62,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         service.responseExpectation = .failure
         coordinator.start()
@@ -82,7 +82,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testValidationNoConnectionError() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: false)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -90,7 +90,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         service.responseExpectation = .failure
         coordinator.start()
@@ -113,7 +113,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testConfirmFromWaitingForUserVerificationAndSucceeds() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -121,7 +121,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Configure the mocks
         coordinator.state = .waitingForUserVerification
@@ -145,7 +145,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testConfirmFromWaitingForUserVerificationAndFails() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -153,7 +153,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Configure the mocks
         coordinator.state = .waitingForUserVerification
@@ -177,7 +177,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testConfirmFromWaitingForUserVerificationAndHasNoInternet() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: false)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -185,7 +185,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Configure the mocks
         coordinator.state = .waitingForUserVerification
@@ -210,7 +210,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testConfirmTappedFromErrorState() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -218,7 +218,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Configure the mocks
         coordinator.state = .error
@@ -237,7 +237,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testConfirmTappedFromDoneState() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -245,7 +245,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Configure the mocks
         coordinator.state = .done
@@ -265,7 +265,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     func testCancelButtonTapped() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()
-        let service = QRLoginServiceMock(managedObjectContext: mainContext)
+        let service = QRLoginServiceMock(coreDataStack: contextManager)
         let connectionChecker = QRConnectionCheckerMock(mockConnectionAvailable: true)
 
         let coordinator = QRLoginVerifyCoordinator(token: testToken,
@@ -273,7 +273,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
                                                    parentCoordinator: parentCoordinator,
                                                    connectionChecker: connectionChecker,
                                                    service: service,
-                                                   context: mainContext)
+                                                   coreDataStack: contextManager)
 
         // Trigger the action
         coordinator.cancel()

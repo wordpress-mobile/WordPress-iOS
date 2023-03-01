@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-14 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-02-17 15:29:28+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "活動記錄";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "活動記錄";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "無法連結";
 
-/* Support email label. */
-"Contact Email" = "聯絡電子郵件";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "聯絡支援團隊";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "外部";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "進階除錯";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "我在 WordPress 的網站";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "我的票證";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "我最愛的十家咖啡館";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "現在不要";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "未設定";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "上傳空間不足";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "當你在網誌中留言時會公開顯示。";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "顯示變更聯絡電子郵件的對話方塊。";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "顯示所有關注者";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "超級管理員";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "支援";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "不允許使用該使用者名稱。";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Extra Debug (修正額外錯誤) 功能包含活動記錄的其他資訊，還可協助我們疑難排解應用程式的問題。";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook 連結找不到任何頁面。Publicize 無法連結至 Facebook 個人檔案，只能連結至已發表的頁面。";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "驗證你的電子郵件地址 - 已將說明傳送至 %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "版本";
-
 /* Description for the version label in the What's new page. */
 "Version " = "版本";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "造訪網站";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "請造訪說明中心以取得常見問題的解答，或聯絡我們尋求進一步協助。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 網誌";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress 論壇";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress 說明";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress 說明中心";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress 媒體";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com 帳號";
 
 /* Title for the Plans list header */
@@ -9922,6 +9889,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 功能已經搬遷。";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切換至 Jetpack 應用程式，以繼續在你的裝置上接收即時通知。";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "透過 Jetpack 應用程式接收通知";

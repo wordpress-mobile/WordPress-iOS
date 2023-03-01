@@ -1,9 +1,10 @@
 import Foundation
 
-@objc class JetpackScanService: LocalCoreDataService {
+@objc class JetpackScanService: CoreDataService {
     private lazy var service: JetpackScanServiceRemote = {
-        let api = WordPressComRestApi.defaultApi(in: managedObjectContext,
-                                                 localeKey: WordPressComRestApi.LocaleKeyV2)
+        let api = coreDataStack.performQuery {
+            WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)
+        }
 
         return JetpackScanServiceRemote(wordPressComRestApi: api)
     }()

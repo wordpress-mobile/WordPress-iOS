@@ -126,8 +126,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
+            updateBlazeStatus(for: newBlog) { [weak self] in
+                self?.showBlogDetails(for: newBlog)
+            }
             showSitePicker(for: newBlog)
-            showBlogDetails(for: newBlog)
             updateNavigationTitle(for: newBlog)
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
@@ -425,8 +427,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
+        updateBlazeStatus(for: mainBlog) { [weak self] in
+            self?.showBlogDetails(for: mainBlog)
+        }
         showSitePicker(for: mainBlog)
-        showBlogDetails(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
@@ -816,9 +820,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
+            self.updateBlazeStatus(for: blog) {
+                self.updateChildViewController(for: blog)
+            }
+
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
-            self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
 
@@ -943,6 +950,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         self.blog = blog
+    }
+
+    // MARK: - Blaze
+
+    private func updateBlazeStatus(for blog: Blog?, completion: @escaping () -> Void) {
+        guard FeatureFlag.blaze.enabled,
+              let blog = blog,
+              let blazeService = BlazeService() else {
+            completion()
+            return
+        }
+
+        blazeService.updateStatus(for: blog, success: completion)
     }
 
     // MARK: - Blogging Prompts

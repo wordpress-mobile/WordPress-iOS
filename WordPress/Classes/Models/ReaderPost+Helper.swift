@@ -19,4 +19,26 @@ extension ReaderPost {
         return (comments as? Set<Comment>)?.first { $0.commentID == id }
     }
 
+    /// Get a cached site's ReaderPost with the specified ID.
+    ///
+    /// - Parameter postID: ID of the post.
+    /// - Parameter siteID: ID of the site the post belongs to.
+    /// - Returns: the matching `ReaderPost`, or `nil` if none is found.
+    static func lookup(withID postID: NSNumber, forSiteWithID siteID: NSNumber, in context: NSManagedObjectContext) throws -> ReaderPost? {
+        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "postID = %@ AND siteID = %@", postID, siteID)
+        request.fetchLimit = 1
+        return try context.fetch(request).first
+    }
+
+    /// Get a cached site's ReaderPost with the specified ID.
+    ///
+    /// - Parameter postID: ID of the post.
+    /// - Parameter siteID: ID of the site the post belongs to.
+    /// - Returns: the matching `ReaderPost`, or `nil` if none is found.
+    @objc(lookupWithID:forSiteWithID:inContext:)
+    static func objc_lookup(withID postID: NSNumber, forSiteWithID siteID: NSNumber, in context: NSManagedObjectContext) -> ReaderPost? {
+        try? lookup(withID: postID, forSiteWithID: siteID, in: context)
+    }
+
 }

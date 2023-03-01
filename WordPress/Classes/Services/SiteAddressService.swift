@@ -47,7 +47,7 @@ private extension DomainSuggestion {
 
 // MARK: - DomainsServiceAdapter
 
-@objc final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
+final class DomainsServiceAdapter: SiteAddressService {
 
     // MARK: Properties
 
@@ -66,23 +66,18 @@ private extension DomainSuggestion {
 
     // MARK: LocalCoreDataService
 
-    @objc override convenience init(managedObjectContext context: NSManagedObjectContext) {
+    @objc convenience init(coreDataStack: CoreDataStack) {
+        let api: WordPressComRestApi = coreDataStack.performQuery({
+                (try? WPAccount.lookupDefaultWordPressComAccount(in: $0))?.wordPressComRestApi
+            }) ?? WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
 
-        let api: WordPressComRestApi
-        if let wpcomApi =  (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi {
-            api = wpcomApi
-        } else {
-            api = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
-        }
-
-        self.init(managedObjectContext: context, api: api)
+        self.init(coreDataStack: coreDataStack, api: api)
     }
 
     // Used to help with testing
-    init(managedObjectContext context: NSManagedObjectContext, api: WordPressComRestApi) {
+    init(coreDataStack: CoreDataStack, api: WordPressComRestApi) {
         let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
-        self.domainsService = DomainsService(coreDataStack: ContextManager.shared, remote: remoteService)
-        super.init(managedObjectContext: context)
+        self.domainsService = DomainsService(coreDataStack: coreDataStack, remote: remoteService)
     }
 
     @objc func refreshDomains(siteID: Int, completion: @escaping (Bool) -> Void) {

@@ -76,6 +76,11 @@ class PostActionSheet {
                     actionSheetController.addDefaultActionWithTitle(Titles.share) { [weak self] _ in
                         self?.interactivePostViewDelegate?.share(post, fromView: view)
                     }
+                case .blaze:
+                    BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .postsList)
+                    actionSheetController.addDefaultActionWithTitle(Titles.blaze) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.blaze(post)
+                    }
                 case .more:
                     WordPressAppDelegate.crashLogging?.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
                 case .copyLink:
@@ -107,6 +112,7 @@ class PostActionSheet {
         static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
         static let edit = NSLocalizedString("Edit", comment: "Edit the post.")
         static let share = NSLocalizedString("Share", comment: "Share the post.")
+        static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
         static let copyLink = NSLocalizedString("Copy Link", comment: "Copy the post url and paste anywhere in phone")
     }
 }

@@ -78,6 +78,7 @@ import Foundation
     case readerArticleVisited
     case itemSharedReader
     case readerBlogBlocked
+    case readerAuthorBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
@@ -441,6 +442,12 @@ import Foundation
     case jetpackInstallFullPluginCardTapped
     case jetpackInstallFullPluginCardDismissed
 
+    // Blaze
+    case blazeFeatureDisplayed
+    case blazeFeatureTapped
+    case blazeContextualMenuAccessed
+    case blazeCardHidden
+
     // Help & Support
     case supportOpenMobileForumTapped
 
@@ -574,6 +581,8 @@ import Foundation
             return "item_shared_reader"
         case .readerBlogBlocked:
             return "reader_blog_blocked"
+        case .readerAuthorBlocked:
+            return "reader_author_blocked"
         case .readerChipsMoreToggled:
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
@@ -1202,6 +1211,16 @@ import Foundation
             return "jp_install_full_plugin_card_tapped"
         case .jetpackInstallFullPluginCardDismissed:
             return "jp_install_full_plugin_card_dismissed"
+
+        // Blaze
+        case .blazeFeatureDisplayed:
+            return "blaze_feature_displayed"
+        case .blazeFeatureTapped:
+            return "blaze_feature_tapped"
+        case .blazeContextualMenuAccessed:
+            return "blaze_feature_menu_accessed"
+        case .blazeCardHidden:
+            return "blaze_feature_hide_tapped"
 
         // Help & Support
         case .supportOpenMobileForumTapped:

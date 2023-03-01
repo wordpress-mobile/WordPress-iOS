@@ -22,7 +22,7 @@ final class ReaderShowMenuAction {
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
 
-        // Block button
+        // Block site button
         if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
             let handler: (UIAlertAction) -> Void = { action in
                 guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
@@ -41,6 +41,31 @@ final class ReaderShowMenuAction {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                                                style: .destructive,
                                                handler: handler)
+        }
+
+        // Block user button
+        if shouldShowBlockUserMenuItem(topic: readerTopic, post: post) {
+            let handler: (UIAlertAction) -> Void = { _ in
+                guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
+                    return
+                }
+                self.postUserBlockingWillBeginNotification(post)
+                let action = ReaderBlockUserAction(context: context)
+                action.execute(with: post, blocked: true) { result in
+                    switch result {
+                    case .success:
+                        ReaderHelpers.dispatchUserBlockedMessage(post: post, success: true)
+                    case .failure:
+                        ReaderHelpers.dispatchUserBlockedMessage(post: post, success: false)
+                    }
+                    self.postUserBlockingDidFinishNotification(post, result: result)
+                }
+            }
+            alertController.addActionWithTitle(
+                ReaderPostMenuButtonTitles.blockUser,
+                style: .destructive,
+                handler: handler
+            )
         }
 
         // Report post button
@@ -189,12 +214,18 @@ final class ReaderShowMenuAction {
             ReaderHelpers.topicIsFollowing(topic)
     }
 
-    private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
-        return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
-    }
-
     private func shouldShowReportUserMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         return shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post)
+    }
+
+    private func shouldShowBlockUserMenuItem(topic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+        return FeatureFlag.readerUserBlocking.enabled
+        && shouldShowReportUserMenuItem(readerTopic: topic, post: post)
+        && post.isWPCom
+    }
+
+    private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+        return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 
     private static func trackToggleCommentSubscription(isSubscribed: Bool, post: ReaderPost, sourceViewController: UIViewController) {
@@ -239,5 +270,17 @@ final class ReaderShowMenuAction {
         NotificationCenter.default.post(name: .ReaderSiteBlockingFailed,
                                         object: nil,
                                         userInfo: userInfo)
+    }
+
+    private func postUserBlockingWillBeginNotification(_ post: ReaderPost) {
+        NotificationCenter.default.post(name: .ReaderUserBlockingWillBegin,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post])
+    }
+
+    private func postUserBlockingDidFinishNotification(_ post: ReaderPost, result: Result<Void, Error>) {
+        let center = NotificationCenter.default
+        let userInfo: [String: Any] = [ReaderNotificationKeys.post: post, ReaderNotificationKeys.result: result]
+        center.post(name: .ReaderUserBlockingDidEnd, object: nil, userInfo: userInfo)
     }
 }
