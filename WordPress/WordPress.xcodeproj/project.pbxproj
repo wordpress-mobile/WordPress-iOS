@@ -8586,6 +8586,7 @@
 		E850CD4B77CF21E683104B5A /* Pods-WordPressStatsWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressStatsWidgets.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressStatsWidgets/Pods-WordPressStatsWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		EA14534229AD874C001F3143 /* JetpackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA14534329AD874E001F3143 /* JetpackUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JetpackUITests-Info.plist"; path = "/Users/tiagomarques/repos/WordPress-iOS/WordPress/JetpackUITests-Info.plist"; sourceTree = "<absolute>"; };
+		EA14534629AEF479001F3143 /* JetpackUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = JetpackUITests.xctestplan; sourceTree = "<group>"; };
 		EA78189327596B2F00554DFA /* ContactUsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsScreen.swift; sourceTree = "<group>"; };
 		EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
 		EAD2BF4127594DAB00A847BB /* StatsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTests.swift; sourceTree = "<group>"; };
@@ -10183,7 +10184,6 @@
 				FF37F90822385C9F00AFA3DB /* RELEASE-NOTES.txt */,
 				B565D41C3DB27630CD503F9A /* Pods */,
 				F5E156B425DDD53A00EEEDFB /* Recovered References */,
-				EA14534329AD874E001F3143 /* JetpackUITests-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -17637,6 +17637,8 @@
 				CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */,
 				CCA44DF422C4C4D6006E294F /* README.md */,
 				CCCF53BD237B13EA0035E9CA /* WordPressUITests.xctestplan */,
+				EA14534629AEF479001F3143 /* JetpackUITests.xctestplan */,
+				EA14534329AD874E001F3143 /* JetpackUITests-Info.plist */,
 			);
 			path = WordPressUITests;
 			sourceTree = "<group>";
