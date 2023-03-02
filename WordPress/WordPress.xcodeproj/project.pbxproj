@@ -5263,6 +5263,8 @@
 		FABB286C2603086900C8785C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABB286B2603086900C8785C /* AppImages.xcassets */; };
 		FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */; };
 		FAC086D825EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */; };
+		FAC1B81E29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */; };
+		FAC1B81F29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
 		FAD2538F26116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
@@ -8977,6 +8979,7 @@
 		FABB286B2603086900C8785C /* AppImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppImages.xcassets; sourceTree = "<group>"; };
 		FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsCell.swift; sourceTree = "<group>"; };
 		FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsCell.xib; sourceTree = "<group>"; };
+		FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeOverlayViewModel.swift; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
 		FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
@@ -12821,6 +12824,7 @@
 				FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */,
 				FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */,
 				FA4B203A29AE62C00089FE68 /* BlazeOverlayViewController.swift */,
+				FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */,
 			);
 			path = Blaze;
 			sourceTree = "<group>";
@@ -20927,6 +20931,7 @@
 				FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
 				9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */,
+				FAC1B81E29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */,
 				C81CCD84243BF7A600A83E27 /* NoResultsTenorConfiguration.swift in Sources */,
 				9A8ECE0F2254A3260043C8DA /* JetpackRemoteInstallViewController.swift in Sources */,
 				1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */,
@@ -24004,6 +24009,7 @@
 				FABB23AD2602FC2C00C8785C /* TenorDataSource.swift in Sources */,
 				FABB23AE2602FC2C00C8785C /* ReaderTopicService+Subscriptions.swift in Sources */,
 				98517E5A28220411001FFD45 /* BloggingPromptTableViewCell.swift in Sources */,
+				FAC1B81F29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */,
 				FABB23AF2602FC2C00C8785C /* TopCommentedPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB23B02602FC2C00C8785C /* Data.swift in Sources */,
 				FABB23B12602FC2C00C8785C /* AccountSettingsViewController.swift in Sources */,

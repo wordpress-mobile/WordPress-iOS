@@ -41,7 +41,7 @@ final class BlazeOverlayViewController: UIViewController {
     }()
 
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "flame-circle"))
+        let imageView = UIImageView(image: UIImage(named: viewModel.iconName))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -49,7 +49,7 @@ final class BlazeOverlayViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Title"
+        label.text = viewModel.title
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
@@ -62,7 +62,8 @@ final class BlazeOverlayViewController: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Description"
+        label.attributedText = viewModel.bulletedDescription(font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+                                                             textColor: .textSubtle)
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
@@ -82,7 +83,7 @@ final class BlazeOverlayViewController: UIViewController {
     private lazy var blazeButton: UIButton = {
         let button = FancyButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Blaze", for: .normal)
+        button.setTitle(viewModel.buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(blazeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -92,6 +93,7 @@ final class BlazeOverlayViewController: UIViewController {
     private let source: BlazeSource
     private let blog: Blog
     private let post: AbstractPost?
+    private let viewModel: BlazeOverlayViewModel
 
     // MARK: - Initializers
 
@@ -99,6 +101,7 @@ final class BlazeOverlayViewController: UIViewController {
         self.source = source
         self.blog = blog
         self.post = post
+        self.viewModel = BlazeOverlayViewModel(source: source, blog: blog, post: post)
         super.init(nibName: nil, bundle: nil)
     }
 
