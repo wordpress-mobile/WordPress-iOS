@@ -447,6 +447,10 @@ import Foundation
     case blazeFeatureTapped
     case blazeContextualMenuAccessed
     case blazeCardHidden
+    case blazeFlowStarted
+    case blazeFlowCanceled
+    case blazeFlowCompleted
+    case blazeFlowError
 
     // Help & Support
     case supportOpenMobileForumTapped
@@ -1221,6 +1225,15 @@ import Foundation
             return "blaze_feature_menu_accessed"
         case .blazeCardHidden:
             return "blaze_feature_hide_tapped"
+        case .blazeFlowStarted:
+            return "blaze_flow_started"
+        case .blazeFlowCanceled:
+            return "blaze_flow_canceled"
+        case .blazeFlowCompleted:
+            return "blaze_flow_completed"
+        case .blazeFlowError:
+            return "blaze_flow_error"
+
 
         // Help & Support
         case .supportOpenMobileForumTapped:

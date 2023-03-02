@@ -63,19 +63,26 @@ class BlazeWebViewModel {
 
     func startBlazeFlow() {
         guard let initialURL else {
-            // TODO: Track error
+            BlazeEventsTracker.trackBlazeFlowError(for: source, currentStep: currentStep)
             view.dismissView()
             return
         }
-        // TODO: Track flow started
         authenticatedRequest(for: initialURL, with: view.cookieJar) { [weak self] (request) in
-            self?.view.load(request: request)
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.view.load(request: request)
+            BlazeEventsTracker.trackBlazeFlowStarted(for: weakSelf.source)
         }
     }
 
     func dismissTapped() {
-        // TODO: Track event
         view.dismissView()
+        if isFlowCompleted {
+            BlazeEventsTracker.trackBlazeFlowCompleted(for: source, currentStep: currentStep)
+        } else {
+            BlazeEventsTracker.trackBlazeFlowCanceled(for: source, currentStep: currentStep)
+        }
     }
 
     func shouldNavigate(request: URLRequest) -> WebNavigationPolicy {
