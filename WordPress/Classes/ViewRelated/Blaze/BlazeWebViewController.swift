@@ -88,6 +88,8 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         }
     }
 
+    // MARK: Reachability Helpers
+
     private func reloadCurrentURL() {
         guard let currentRequestURL else {
             return
@@ -95,8 +97,6 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         let request = URLRequest(url: currentRequestURL)
         webView.load(request)
     }
-
-    // MARK: Reachability Helpers
 
     private func observeReachability() {
         if !observingReachability {
@@ -107,7 +107,6 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     private func reloadWhenConnectionRestored() {
         reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable { [weak self] in
-            print("HG: reloadWhenConnectionRestored called")
             self?.reloadCurrentURL()
         }
     }
