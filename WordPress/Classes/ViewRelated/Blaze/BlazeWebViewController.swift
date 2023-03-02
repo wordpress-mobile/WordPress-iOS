@@ -11,11 +11,11 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Lazy Loaded Views
 
-    private lazy var cancelButton: UIBarButtonItem = {
+    private lazy var dismissButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: Strings.cancelButtonTitle,
                                      style: .plain,
                                      target: self,
-                                     action: #selector(cancelButtonTapped))
+                                     action: #selector(dismissButtonTapped))
         return button
     }()
 
@@ -60,8 +60,9 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     private func configureNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = dismissButton
         configureNavBarAppearance()
+        reloadNavBar()
     }
 
     private func configureNavBarAppearance() {
@@ -86,11 +87,24 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         webView.configuration.websiteDataStore.httpCookieStore
     }
 
+    func reloadNavBar() {
+        guard let viewModel else {
+            dismissButton.isEnabled = true
+            dismissButton.title = Strings.cancelButtonTitle
+            return
+        }
+        dismissButton.isEnabled = viewModel.isCurrentStepDismissible()
+        dismissButton.title = viewModel.isFlowCompleted ? Strings.doneButtonTitle : Strings.cancelButtonTitle
+    }
+
+    func dismissView() {
+        dismiss(animated: true)
+    }
+
     // MARK: Actions
 
-    @objc func cancelButtonTapped() {
-        dismiss(animated: true)
-        viewModel?.cancelTapped()
+    @objc func dismissButtonTapped() {
+        viewModel?.dismissTapped()
     }
 }
 
@@ -116,6 +130,7 @@ private extension BlazeWebViewController {
                                                        value: "Blaze",
                                                        comment: "Name of a feature that allows the user to promote their posts.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        static let doneButtonTitle = NSLocalizedString("Done", comment: "Done. Action.")
     }
 
     enum Colors {
