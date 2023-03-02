@@ -52,7 +52,7 @@ class SupportTableViewController: UITableViewController {
         ZendeskUtils.fetchUserInformation()
 
         if SupportConfiguration.isMigrationCardEnabled() {
-            WPAnalytics.track(.supportMigrationFAQViewed)
+            WPAnalytics.track(.supportMigrationFAQCardViewed)
         }
     }
 
@@ -352,7 +352,7 @@ private extension SupportTableViewController {
                 return
             }
 
-            WPAnalytics.track(.supportMigrationFAQTapped)
+            WPAnalytics.track(.supportMigrationFAQButtonTapped)
             UIApplication.shared.open(url)
         },
                                           accessibilityIdentifier: nil))
@@ -502,7 +502,7 @@ private extension SupportTableViewController {
         static let jetpackMigrationTitle = NSLocalizedString("support.row.jetpackMigration.title", value: "Thank you for switching to the Jetpack app!", comment: "An informational card title in Support view")
         static let jetpackMigrationDescription = NSLocalizedString("support.row.jetpackMigration.description", value: "Our FAQ provides answers to common questions you may have.", comment: "An informational card description in Support view explaining what tapping the link on card does")
         static let jetpackMigrationButton = NSLocalizedString("support.button.jetpackMigration.title", value: "Visit our FAQ", comment: "Option in Support view to visit the Jetpack migration FAQ website.")
-        static let jetpackMigrationButtonAccessibilityHint = NSLocalizedString("support.button.jetpackMigation.accessibilityHint", value: "Tap to visit the Jetpack migration FAQ in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website.")
+        static let jetpackMigrationButtonAccessibilityHint = NSLocalizedString("support.button.jetpackMigation.accessibilityHint", value: "Tap to visit the Jetpack app FAQ in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website.")
     }
 
     // MARK: - User Defaults Keys
