@@ -574,7 +574,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getMetadataFromVideoPressID:videoPressID success:^(RemoteVideoPressVideo *metadata) {
+    [remote getMetadataFromVideoPressID:videoPressID isSitePrivate:blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
         if (success) {
             success(metadata);
         }
