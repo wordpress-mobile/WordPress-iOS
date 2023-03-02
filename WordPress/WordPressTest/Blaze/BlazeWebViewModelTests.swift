@@ -248,6 +248,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(policy, .allow)
+        XCTAssertFalse(externalURLHandler.openURLCalled)
     }
 
     func testExternalURLsBlocked() throws {
@@ -262,6 +263,8 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(policy, .cancel)
+        XCTAssertTrue(externalURLHandler.openURLCalled)
+        XCTAssertEqual(externalURLHandler.urlOpened?.absoluteString, invalidURL.absoluteString)
     }
 
     func testCallingShouldNavigateReloadsTheNavBar() throws {
