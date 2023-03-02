@@ -8,6 +8,11 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     private let webView: WKWebView
     private var viewModel: BlazeWebViewModel?
     private let progressView = WebProgressView()
+    private var reachabilityObserver: Any?
+    private var currentRequestURL: URL?
+    private var observingReachability: Bool {
+        return reachabilityObserver != nil
+    }
 
     // MARK: Lazy Loaded Views
 
@@ -43,6 +48,12 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         viewModel?.startBlazeFlow()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopWaitingForConnectionRestored()
+        ReachabilityUtils.dismissNoInternetConnectionNotice()
+    }
+
     // MARK: Private Helpers
 
     private func configureSubviews() {
@@ -75,6 +86,39 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         if #available(iOS 15.0, *) {
             navigationItem.compactScrollEdgeAppearance = appearance
         }
+    }
+
+    private func reloadCurrentURL() {
+        guard let currentRequestURL else {
+            return
+        }
+        let request = URLRequest(url: currentRequestURL)
+        webView.load(request)
+    }
+
+    // MARK: Reachability Helpers
+
+    private func observeReachability() {
+        if !observingReachability {
+            ReachabilityUtils.showNoInternetConnectionNotice()
+            reloadWhenConnectionRestored()
+        }
+    }
+
+    private func reloadWhenConnectionRestored() {
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable { [weak self] in
+            print("HG: reloadWhenConnectionRestored called")
+            self?.reloadCurrentURL()
+        }
+    }
+
+    private func stopWaitingForConnectionRestored() {
+        guard let reachabilityObserver = reachabilityObserver else {
+            return
+        }
+
+        NotificationCenter.default.removeObserver(reachabilityObserver)
+        self.reachabilityObserver = nil
     }
 
     // MARK: BlazeWebView
@@ -116,8 +160,30 @@ extension BlazeWebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
+
         let policy = viewModel.shouldNavigate(to: navigationAction.request, with: navigationAction.navigationType)
+        if policy == .allow {
+            currentRequestURL = navigationAction.request.mainDocumentURL
+        }
+
+        guard ReachabilityUtils.isInternetReachable() else {
+            observeReachability()
+            decisionHandler(.cancel)
+            return
+        }
+
         decisionHandler(policy)
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+
+        if !ReachabilityUtils.isInternetReachable() {
+            observeReachability()
+        } else {
+            // TODO: Track error here
+            DDLogError("Blaze WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
+        }
     }
 }
 
