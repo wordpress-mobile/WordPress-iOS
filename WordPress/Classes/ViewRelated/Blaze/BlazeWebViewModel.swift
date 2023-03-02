@@ -21,6 +21,7 @@ class BlazeWebViewModel {
     private let postID: NSNumber?
     private let view: BlazeWebView
     private let remoteConfig: RemoteConfig
+    private let externalURLHandler: ExternalURLHandler
     private var linkBehavior: LinkBehavior = .all
 
     // MARK: Initializer
@@ -29,12 +30,14 @@ class BlazeWebViewModel {
          blog: Blog,
          postID: NSNumber?,
          view: BlazeWebView,
-         remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) {
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+         externalURLHandler: ExternalURLHandler = UIApplication.shared) {
         self.source = source
         self.blog = blog
         self.postID = postID
         self.view = view
         self.remoteConfig = RemoteConfig(store: remoteConfigStore)
+        self.externalURLHandler = externalURLHandler
         setLinkBehavior()
     }
 
@@ -91,7 +94,7 @@ class BlazeWebViewModel {
         currentStep = extractCurrentStep(from: request) ?? currentStep
         updateIsFlowCompleted()
         view.reloadNavBar()
-        return linkBehavior.handle(request: request, with: type)
+        return linkBehavior.handle(request: request, with: type, externalURLHandler: externalURLHandler)
     }
 
     func isCurrentStepDismissible() -> Bool {

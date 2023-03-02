@@ -1,17 +1,31 @@
 import Foundation
 import WebKit
 
+protocol ExternalURLHandler {
+    func open(_ url: URL)
+}
+
+extension UIApplication: ExternalURLHandler {
+    func open(_ url: URL) {
+        open(url, options: [:], completionHandler: nil)
+    }
+}
+
 enum LinkBehavior {
     case all
     case hostOnly(URL)
     case urlOnly(URL)
     case withBaseURLOnly(String)
 
-    func handle(navigationAction: WKNavigationAction, for webView: WKWebView) -> WKNavigationActionPolicy {
-        return handle(request: navigationAction.request, with: navigationAction.navigationType)
+    func handle(navigationAction: WKNavigationAction,
+                for webView: WKWebView,
+                externalURLHandler: ExternalURLHandler = UIApplication.shared) -> WKNavigationActionPolicy {
+        return handle(request: navigationAction.request, with: navigationAction.navigationType, externalURLHandler: externalURLHandler)
     }
 
-    func handle(request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy {
+    func handle(request: URLRequest,
+                with type: WKNavigationType,
+                externalURLHandler: ExternalURLHandler = UIApplication.shared) -> WKNavigationActionPolicy {
         // We only want to apply this policy for links, not for all resource loads
         guard type == .linkActivated && request.url == request.mainDocumentURL else {
             return .allow
@@ -29,21 +43,21 @@ enum LinkBehavior {
             if request.url?.host == url.host {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationURL)
+                externalURLHandler.open(navigationURL)
                 return .cancel
             }
         case .urlOnly(let url):
             if request.url?.absoluteString == url.absoluteString {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationURL)
+                externalURLHandler.open(navigationURL)
                 return .cancel
             }
         case .withBaseURLOnly(let baseURL):
             if request.url?.absoluteString.hasPrefix(baseURL) ?? false {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationURL)
+                externalURLHandler.open(navigationURL)
                 return .cancel
             }
         }
