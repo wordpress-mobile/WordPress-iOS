@@ -107,7 +107,7 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter service: a Reader Post Service
     init(coreDataStack: CoreDataStack = ContextManager.shared,
-         readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         readerPostService: ReaderPostService = ReaderPostService(coreDataStack: ContextManager.shared),
          topicService: ReaderTopicService = ReaderTopicService(coreDataStack: ContextManager.shared),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          commentService: CommentService = CommentService(coreDataStack: ContextManager.shared),
@@ -365,8 +365,7 @@ class ReaderDetailCoordinator {
             return
         }
 
-        let postService = ReaderPostService(managedObjectContext: context)
-        postService.toggleSeen(for: post, success: {
+        readerPostService.toggleSeen(for: post, success: {
             NotificationCenter.default.post(name: .ReaderPostSeenToggled,
                                             object: nil,
                                             userInfo: [ReaderNotificationKeys.post: post])

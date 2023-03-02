@@ -469,7 +469,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topicInContext.following = newFollowValue;
     }];
 
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
     [postService setFollowing:newFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
 
     // Define success block
@@ -539,7 +539,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)refreshPostsForFollowedTopic
 {
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
     [postService refreshPostsForFollowedTopic];
 }
 

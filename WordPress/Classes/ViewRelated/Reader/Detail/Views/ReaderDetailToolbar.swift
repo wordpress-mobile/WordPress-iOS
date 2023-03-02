@@ -110,7 +110,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
 
-        let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
+        let service = ReaderPostService(coreDataStack: ContextManager.shared)
         service.toggleLiked(for: post, success: { [weak self] in
             self?.trackArticleDetailsLikedOrUnliked()
         }, failure: { [weak self] (error: Error?) in

@@ -11,7 +11,6 @@ struct JetpackRemoteInstallStateViewModel {
     let descriptionText: String
     let buttonTitleText: String
 
-    let hidesMainButton: Bool
     let hidesLoadingIndicator: Bool
     let hidesSupportButton: Bool
 }
@@ -22,9 +21,16 @@ class JetpackRemoteInstallStateView: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
-    @IBOutlet private var mainButton: NUXButton!
+    @IBOutlet private var mainButton: UIButton!
     @IBOutlet private var supportButton: UIButton!
-    @IBOutlet private var activityIndicatorContainer: UIView!
+
+    private var activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .medium)
+        view.color = Constants.MainButton.activityIndicatorColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,10 +47,9 @@ class JetpackRemoteInstallStateView: UIViewController {
         titleLabel.text = viewModel.titleText
         descriptionLabel.text = viewModel.descriptionText
 
-        mainButton.isHidden = viewModel.hidesMainButton
         mainButton.setTitle(viewModel.buttonTitleText, for: .normal)
 
-        activityIndicatorContainer.isHidden = viewModel.hidesLoadingIndicator
+        toggleLoading(!viewModel.hidesLoadingIndicator)
 
         supportButton.isHidden = viewModel.hidesSupportButton
     }
@@ -54,18 +59,50 @@ private extension JetpackRemoteInstallStateView {
     func setupUI() {
         WPStyleGuide.configureColors(view: view, tableView: nil)
 
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.title2)
-        titleLabel.textColor = .text
+        titleLabel.font = Constants.Title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.textColor = Constants.Title.color
 
-        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .textSubtle
+        descriptionLabel.font = Constants.Description.font
+        descriptionLabel.adjustsFontForContentSizeCategory = true
+        descriptionLabel.textColor = Constants.Description.color
 
+        configureTitleLabel(for: mainButton, font: Constants.MainButton.font)
+        mainButton.setTitleColor(Constants.MainButton.titleColor, for: .normal)
+        mainButton.setTitle(String(), for: .disabled)
+        mainButton.setBackgroundImage(Constants.MainButton.normalBackground, for: .normal)
+        mainButton.setBackgroundImage(Constants.MainButton.loadingBackground, for: .disabled)
         mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
-        supportButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        supportButton.setTitleColor(.primary, for: .normal)
-        supportButton.setTitle(NSLocalizedString("Contact Support", comment: "Contact Support button title"),
-                               for: .normal)
+        mainButton.addSubview(activityIndicator)
+        mainButton.pinSubviewAtCenter(activityIndicator)
+
+        configureTitleLabel(for: supportButton, font: Constants.SupportButton.font)
+        supportButton.setTitleColor(Constants.SupportButton.color, for: .normal)
+        supportButton.setTitle(Constants.SupportButton.text, for: .normal)
+    }
+
+    // enables multi-line support for the button.
+    func configureTitleLabel(for button: UIButton, font: UIFont) {
+        guard let label = button.titleLabel else {
+            return
+        }
+
+        label.font = font
+        label.adjustsFontForContentSizeCategory = true
+        label.textAlignment = .center
+        label.lineBreakMode = .byWordWrapping
+        button.pinSubviewToAllEdges(label)
+    }
+
+    func toggleLoading(_ loading: Bool) {
+        mainButton.isEnabled = !loading
+
+        if loading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
 
     @IBAction func mainButtonAction(_ sender: NUXButton) {
@@ -74,5 +111,33 @@ private extension JetpackRemoteInstallStateView {
 
     @IBAction func customSupportButtonAction(_ sender: UIButton) {
         delegate?.customerSupportButtonDidTouch()
+    }
+
+    // MARK: Constants
+
+    struct Constants {
+        struct Title {
+            static let font = WPStyleGuide.fontForTextStyle(.title2)
+            static let color = UIColor.text
+        }
+
+        struct Description {
+            static let font = WPStyleGuide.fontForTextStyle(.callout)
+            static let color = UIColor.textSubtle
+        }
+
+        struct MainButton {
+            static let normalBackground = UIImage.renderBackgroundImage(fill: .brand)
+            static let loadingBackground = UIImage.renderBackgroundImage(fill: .muriel(color: .jetpackGreen, .shade70))
+            static let titleColor = UIColor.white
+            static let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+            static let activityIndicatorColor = UIColor.white
+        }
+
+        struct SupportButton {
+            static let color = UIColor.brand
+            static let font = WPStyleGuide.fontForTextStyle(.body)
+            static let text = NSLocalizedString("Contact Support", comment: "Contact Support button title")
+        }
     }
 }

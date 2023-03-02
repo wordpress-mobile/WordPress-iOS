@@ -263,6 +263,10 @@ private class ReaderPostServiceMock: ReaderPostService {
     /// If we want to force an error
     var forceError = false
 
+    init() {
+        super.init(coreDataStack: ContextManager.forTesting())
+    }
+
     override func fetchPost(_ postID: UInt, forSite siteID: UInt, isFeed: Bool, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
         didCallFetchPostWithPostID = postID
         didCallFetchPostWithSiteID = siteID
