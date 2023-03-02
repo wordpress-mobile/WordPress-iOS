@@ -5,6 +5,8 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     // MARK: Private Variables
 
+    private var view: BlazeWebViewMock!
+    private var externalURLHandler: ExternalURLHandlerMock!
     private var remoteConfigStore = RemoteConfigStoreMock()
     private var blog: Blog!
     private static let blogURL  = "test.blog.com"
@@ -13,6 +15,8 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
+        view = BlazeWebViewMock()
+        externalURLHandler = ExternalURLHandlerMock()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(mainContext).with(url: Self.blogURL).build()
         remoteConfigStore.blazeNonDismissibleStep = "step-4"
@@ -23,8 +27,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testPostsListStep() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
         let request = URLRequest(url: url)
 
@@ -37,8 +40,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testPostsListStepWithPostsPath() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?source=menu_item"))
         let request = URLRequest(url: url)
 
@@ -51,8 +53,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCampaignsStep() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/campaigns?source=menu_item"))
         let request = URLRequest(url: url)
 
@@ -65,8 +66,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testDefaultWidgetStep() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2&source=menu_item"))
         let request = URLRequest(url: url)
 
@@ -79,8 +79,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testDefaultWidgetStepWithPostsPath() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2&source=menu_item"))
         let request = URLRequest(url: url)
 
@@ -93,8 +92,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testExtractStepFromFragment() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2&source=menu_item#step-2"))
         let request = URLRequest(url: url)
 
@@ -107,8 +105,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testExtractStepFromFragmentPostsPath() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2&source=menu_item#step-3"))
         let request = URLRequest(url: url)
 
@@ -121,8 +118,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testPostsListStepWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com"))
         let request = URLRequest(url: url)
 
@@ -135,8 +131,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testPostsListStepWithPostsPathWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts"))
         let request = URLRequest(url: url)
 
@@ -149,8 +144,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCampaignsStepWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/campaigns"))
         let request = URLRequest(url: url)
 
@@ -163,8 +157,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testDefaultWidgetStepWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2"))
         let request = URLRequest(url: url)
 
@@ -177,8 +170,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testDefaultWidgetStepWithPostsPathWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2"))
         let request = URLRequest(url: url)
 
@@ -191,8 +183,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testExtractStepFromFragmentWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2#step-2"))
         let request = URLRequest(url: url)
 
@@ -205,8 +196,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testExtractStepFromFragmentPostsPathWithoutQuery() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-3"))
         let request = URLRequest(url: url)
 
@@ -219,8 +209,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testInitialStep() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
 
         // Then
         XCTAssertEqual(viewModel.currentStep, "unspecified")
@@ -228,8 +217,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCurrentStepMaintainedIfExtractionFails() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let postsListURL = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
         let postsListRequest = URLRequest(url: postsListURL)
         let invalidURL = try XCTUnwrap(URL(string: "https://test.com/test?example=test"))
@@ -250,8 +238,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testInternalURLsAllowed() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let validURL = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
         var validRequest = URLRequest(url: validURL)
         validRequest.mainDocumentURL = validURL
@@ -265,8 +252,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testExternalURLsBlocked() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let invalidURL = try XCTUnwrap(URL(string: "https://test.com/test?example=test"))
         var invalidRequest = URLRequest(url: invalidURL)
         invalidRequest.mainDocumentURL = invalidURL
@@ -280,8 +266,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCallingShouldNavigateReloadsTheNavBar() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
         let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
         let request = URLRequest(url: url)
 
@@ -294,8 +279,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCallingDismissTappedDismissesTheView() {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
 
         // When
         viewModel.dismissTapped()
@@ -306,8 +290,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCallingStartBlazeSiteFlowLoadsTheView() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, externalURLHandler: externalURLHandler)
 
         // When
         viewModel.startBlazeFlow()
@@ -319,8 +302,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testCallingStartBlazePostFlowLoadsTheView() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: 1, view: view)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: 1, view: view, externalURLHandler: externalURLHandler)
 
         // When
         viewModel.startBlazeFlow()
@@ -332,8 +314,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testIsCurrentStepDismissible() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, remoteConfigStore: remoteConfigStore)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, remoteConfigStore: remoteConfigStore, externalURLHandler: externalURLHandler)
 
         // When
         var url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
@@ -362,8 +343,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
 
     func testIsFlowCompleted() throws {
         // Given
-        let view = BlazeWebViewMock()
-        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, remoteConfigStore: remoteConfigStore)
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, remoteConfigStore: remoteConfigStore, externalURLHandler: externalURLHandler)
 
         // When
         var url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
@@ -412,4 +392,15 @@ private class BlazeWebViewMock: BlazeWebView {
     }
 
     var cookieJar: WordPress.CookieJar = MockCookieJar()
+}
+
+private class ExternalURLHandlerMock: ExternalURLHandler {
+
+    var openURLCalled = false
+    var urlOpened: URL?
+
+    func open(_ url: URL) {
+        self.openURLCalled = true
+        self.urlOpened = url
+    }
 }
