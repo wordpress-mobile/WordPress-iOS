@@ -50,6 +50,10 @@ class SupportTableViewController: UITableViewController {
         }
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
         ZendeskUtils.fetchUserInformation()
+
+        if SupportConfiguration.isMigrationCardEnabled() {
+            WPAnalytics.track(.supportMigrationFAQViewed)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -344,11 +348,11 @@ private extension SupportTableViewController {
         rows.append(ButtonRow(title: LocalizedText.jetpackMigrationButton,
                               accessibilityHint: LocalizedText.jetpackMigrationButtonAccessibilityHint,
                               action: { _ in
-            guard let url = Constants.jetpackMigrationFAQsURL else {
+            guard let url = Constants.jetpackMigrationFAQURL else {
                 return
             }
 
-            WPAnalytics.track(.supportOpenJetpackMigrationFAQ)
+            WPAnalytics.track(.supportMigrationFAQTapped)
             UIApplication.shared.open(url)
         },
                                           accessibilityIdentifier: nil))
@@ -496,9 +500,9 @@ private extension SupportTableViewController {
         static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Email", comment: "Support email label.")
 
         static let jetpackMigrationTitle = NSLocalizedString("support.row.jetpackMigration.title", value: "Thank you for switching to the Jetpack app!", comment: "An informational card title in Support view")
-        static let jetpackMigrationDescription = NSLocalizedString("support.row.jetpackMigration.description", value: "Our FAQs provide answers to common questions you may have.", comment: "An informational card description in Support view explaining what tapping the link on card does")
-        static let jetpackMigrationButton = NSLocalizedString("support.button.jetpackMigration.title", value: "Visit our FAQs", comment: "Option in Support view to visit the Jetpack migration FAQs website.")
-        static let jetpackMigrationButtonAccessibilityHint = NSLocalizedString("support.button.jetpackMigation.accessibilityHint", value: "Tap to visit the Jetpack migration FAQs in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQs website.")
+        static let jetpackMigrationDescription = NSLocalizedString("support.row.jetpackMigration.description", value: "Our FAQ provide answers to common questions you may have.", comment: "An informational card description in Support view explaining what tapping the link on card does")
+        static let jetpackMigrationButton = NSLocalizedString("support.button.jetpackMigration.title", value: "Visit our FAQ", comment: "Option in Support view to visit the Jetpack migration FAQ website.")
+        static let jetpackMigrationButtonAccessibilityHint = NSLocalizedString("support.button.jetpackMigation.accessibilityHint", value: "Tap to visit the Jetpack migration FAQ in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website.")
     }
 
     // MARK: - User Defaults Keys
@@ -511,7 +515,7 @@ private extension SupportTableViewController {
 
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/mobile-app-support/")
-        static let jetpackMigrationFAQsURL = URL(string: "https://jetpack.com/support/switch-to-the-jetpack-app/")
+        static let jetpackMigrationFAQURL = URL(string: "https://jetpack.com/support/switch-to-the-jetpack-app/")
 
         static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
