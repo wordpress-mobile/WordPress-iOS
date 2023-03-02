@@ -237,12 +237,11 @@
 - (void)syncBlogs
 {
     id<CoreDataStack> coreDataStack = [ContextManager sharedInstance];
-    [coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+    [coreDataStack.mainContext performBlock:^{
+        WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:coreDataStack.mainContext];
         if (account == nil) {
             return;
         }
-
         BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:coreDataStack];
         [blogService syncBlogsForAccount:account success:nil failure:nil];
     }];
