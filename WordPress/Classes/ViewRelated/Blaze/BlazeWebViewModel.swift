@@ -95,8 +95,7 @@ class BlazeWebViewModel {
     }
 
     func isCurrentStepDismissible() -> Bool {
-        let nonDismissibleSteps = remoteConfig.blazeNonDismissibleSteps.value ?? []
-        return !nonDismissibleSteps.contains(currentStep)
+        return currentStep != remoteConfig.blazeNonDismissibleStep.value
     }
 
     func webViewDidFail(with error: Error) {
