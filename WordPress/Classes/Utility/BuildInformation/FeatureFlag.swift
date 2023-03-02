@@ -48,7 +48,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case blaze
     case siteCreationDomainPurchasing
     case readerUserBlocking
-    case jetpackMigrationSupportCard
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -153,8 +152,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .readerUserBlocking:
             return true
-        case .jetpackMigrationSupportCard:
-            return false
         }
     }
 
@@ -183,8 +180,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
-        case .jetpackMigrationSupportCard:
-            return "jetpack_migration_faq_card_remote_field"
             default:
                 return nil
         }
@@ -297,8 +292,6 @@ extension FeatureFlag {
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
             return "Reader User Blocking"
-        case .jetpackMigrationSupportCard:
-            return "Jetpack Migration FAQ card in Help & Support"
         }
     }
 

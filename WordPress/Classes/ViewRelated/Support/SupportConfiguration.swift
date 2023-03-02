@@ -27,12 +27,9 @@ enum SupportConfiguration {
     }
 
     static func isMigrationCardEnabled(
-        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
         isJetpack: Bool = AppConfiguration.isJetpack,
         migrationState: MigrationState = UserPersistentStoreFactory.instance().jetpackContentMigrationState
     ) -> Bool {
-        return isJetpack
-            && featureFlagStore.value(for: FeatureFlag.jetpackMigrationSupportCard)
-            && migrationState == .completed
+        return isJetpack && migrationState == .completed
     }
 }
