@@ -99,6 +99,10 @@ class BlazeWebViewModel {
         return !nonDismissibleSteps.contains(currentStep)
     }
 
+    func webViewDidFail(with error: Error) {
+        BlazeEventsTracker.trackBlazeFlowError(for: source, currentStep: currentStep)
+    }
+
     // MARK: Helpers
 
     private func setLinkBehavior() {

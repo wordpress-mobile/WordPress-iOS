@@ -181,7 +181,7 @@ extension BlazeWebViewController: WKNavigationDelegate {
         if !ReachabilityUtils.isInternetReachable() {
             observeReachability()
         } else {
-            // TODO: Track error here
+            viewModel?.webViewDidFail(with: error)
             DDLogError("Blaze WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
         }
     }
