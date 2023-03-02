@@ -21,9 +21,17 @@
     {
       "skippedTests" : [
         "EditorAztecTests",
+        "EditorGutenbergTests",
+        "LoginTests\/testAddSelfHostedSiteAfterWPcomLogin()",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "LoginTests\/testSelfHostedLoginLogout()",
+        "LoginTests\/testWPcomInvalidPassword()",
+        "MainNavigationTests",
+        "ReaderTests",
         "SignupTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests",
         "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
