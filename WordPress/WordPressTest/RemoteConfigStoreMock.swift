@@ -7,7 +7,7 @@ class RemoteConfigStoreMock: RemoteConfigStore {
     var removalDeadline: String?
     var phaseNewUsersBlogPostUrl: String?
     var phaseSelfHostedBlogPostUrl: String?
-    var blazeNonDismissibleSteps: [String]?
+    var blazeNonDismissibleStep: String?
     var blazeFlowCompletedStep: String?
 
     override func value(for key: String) -> Any? {
@@ -24,7 +24,7 @@ class RemoteConfigStoreMock: RemoteConfigStore {
             return phaseSelfHostedBlogPostUrl
         }
         if key == "blaze_non_dismissable_hash" {
-            return blazeNonDismissibleSteps
+            return blazeNonDismissibleStep
         }
         if key == "blaze_completed_step_hash" {
             return blazeFlowCompletedStep
