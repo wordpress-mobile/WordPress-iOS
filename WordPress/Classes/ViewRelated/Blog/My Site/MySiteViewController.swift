@@ -132,7 +132,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             createFABIfNeeded()
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
-            
+
             updateBlazeStatus(for: newBlog) { [weak self] in
                 self?.updateChildViewController(for: newBlog)
             }
@@ -434,7 +434,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
 
-        
+
         updateBlazeStatus(for: mainBlog) { [weak self] in
             self?.updateChildViewController(for: mainBlog)
         }
