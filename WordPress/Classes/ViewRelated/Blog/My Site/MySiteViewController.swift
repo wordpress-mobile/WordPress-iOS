@@ -126,14 +126,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            updateBlazeStatus(for: newBlog) { [weak self] in
-                self?.showBlogDetails(for: newBlog)
-            }
+            showBlogDetails(for: newBlog)
             showSitePicker(for: newBlog)
             updateNavigationTitle(for: newBlog)
-            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
+            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
+            
+            updateBlazeStatus(for: newBlog) { [weak self] in
+                self?.updateChildViewController(for: newBlog)
+            }
         }
 
         get {
@@ -427,12 +429,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        updateBlazeStatus(for: mainBlog) { [weak self] in
-            self?.showBlogDetails(for: mainBlog)
-        }
+        showBlogDetails(for: mainBlog)
         showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
+
+        
+        updateBlazeStatus(for: mainBlog) { [weak self] in
+            self?.updateChildViewController(for: mainBlog)
+        }
     }
 
     @objc
