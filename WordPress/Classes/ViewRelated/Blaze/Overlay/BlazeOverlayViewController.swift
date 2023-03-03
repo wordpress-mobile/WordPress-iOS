@@ -52,7 +52,7 @@ final class BlazeOverlayViewController: UIViewController {
         label.text = viewModel.title
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
-        label.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
+        label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .semibold)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .text
@@ -72,11 +72,16 @@ final class BlazeOverlayViewController: UIViewController {
 
     private lazy var footerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [blazeButton])
+
+        if let post {
+            let previewView = BlazePostPreviewView(post: post)
+            previewView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.insertArrangedSubview(previewView, at: 0)
+        }
+
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Metrics.stackViewSpacing
+        stackView.spacing = Metrics.footerStackViewSpacing
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
         return stackView
     }()
 
@@ -143,7 +148,7 @@ final class BlazeOverlayViewController: UIViewController {
             view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Metrics.margin),
             view.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Metrics.margin),
             blazeButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+            blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])
     }
 
@@ -168,6 +173,7 @@ extension BlazeOverlayViewController {
     private enum Metrics {
         static let margin: CGFloat = 20.0
         static let stackViewSpacing: CGFloat = 30.0
+        static let footerStackViewSpacing: CGFloat = 10.0
         static let closeButtonSize: CGFloat = 30.0
     }
 

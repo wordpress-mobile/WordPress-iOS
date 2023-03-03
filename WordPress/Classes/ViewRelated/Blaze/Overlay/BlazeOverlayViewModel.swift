@@ -27,10 +27,6 @@ struct BlazeOverlayViewModel {
         }
     }
 
-    var showPostPreview: Bool {
-        return post != nil
-    }
-
     func bulletedDescription(font: UIFont, textColor: UIColor) -> NSAttributedString {
         let bullet = "•  "
 
