@@ -78,6 +78,7 @@ import Foundation
     case readerArticleVisited
     case itemSharedReader
     case readerBlogBlocked
+    case readerAuthorBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
@@ -441,8 +442,20 @@ import Foundation
     case jetpackInstallFullPluginCardTapped
     case jetpackInstallFullPluginCardDismissed
 
+    // Blaze
+    case blazeFeatureDisplayed
+    case blazeFeatureTapped
+    case blazeContextualMenuAccessed
+    case blazeCardHidden
+    case blazeFlowStarted
+    case blazeFlowCanceled
+    case blazeFlowCompleted
+    case blazeFlowError
+
     // Help & Support
     case supportOpenMobileForumTapped
+    case supportMigrationFAQButtonTapped
+    case supportMigrationFAQCardViewed
 
     /// A String that represents the event
     var value: String {
@@ -574,6 +587,8 @@ import Foundation
             return "item_shared_reader"
         case .readerBlogBlocked:
             return "reader_blog_blocked"
+        case .readerAuthorBlocked:
+            return "reader_author_blocked"
         case .readerChipsMoreToggled:
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
@@ -1203,9 +1218,32 @@ import Foundation
         case .jetpackInstallFullPluginCardDismissed:
             return "jp_install_full_plugin_card_dismissed"
 
+        // Blaze
+        case .blazeFeatureDisplayed:
+            return "blaze_feature_displayed"
+        case .blazeFeatureTapped:
+            return "blaze_feature_tapped"
+        case .blazeContextualMenuAccessed:
+            return "blaze_feature_menu_accessed"
+        case .blazeCardHidden:
+            return "blaze_feature_hide_tapped"
+        case .blazeFlowStarted:
+            return "blaze_flow_started"
+        case .blazeFlowCanceled:
+            return "blaze_flow_canceled"
+        case .blazeFlowCompleted:
+            return "blaze_flow_completed"
+        case .blazeFlowError:
+            return "blaze_flow_error"
+
+
         // Help & Support
         case .supportOpenMobileForumTapped:
             return "support_open_mobile_forum_tapped"
+        case .supportMigrationFAQButtonTapped:
+            return "support_migration_faq_tapped"
+        case .supportMigrationFAQCardViewed:
+            return "support_migration_faq_viewed"
         } // END OF SWITCH
     }
 

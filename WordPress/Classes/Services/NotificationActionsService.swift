@@ -3,7 +3,7 @@ import CocoaLumberjack
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
-class NotificationActionsService: LocalCoreDataService {
+class NotificationActionsService: CoreDataService {
 
     /// Follows a Site referenced by a given NotificationBlock.
     ///
@@ -280,10 +280,10 @@ private extension NotificationActionsService {
 private extension NotificationActionsService {
 
     var commentService: CommentService {
-        return CommentService(coreDataStack: ContextManager.shared)
+        return CommentService(coreDataStack: coreDataStack)
     }
 
     var siteService: ReaderSiteService {
-        return ReaderSiteService(managedObjectContext: managedObjectContext)
+        return ReaderSiteService(coreDataStack: coreDataStack)
     }
 }

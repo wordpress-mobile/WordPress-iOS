@@ -223,7 +223,7 @@ extension PlanService {
                         success()
                         return
                 }
-                ContextManager.shared.performAndSave({ context in
+                self.coreDataStack.performAndSave({ context in
                     PlanStorage.updateHasDomainCredit(
                         planIdInt,
                         forSite: siteID,

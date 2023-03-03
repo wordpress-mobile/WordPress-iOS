@@ -8,20 +8,25 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     private let webView: WKWebView
     private var viewModel: BlazeWebViewModel?
     private let progressView = WebProgressView()
+    private var reachabilityObserver: Any?
+    private var currentRequestURL: URL?
+    private var observingReachability: Bool {
+        return reachabilityObserver != nil
+    }
 
     // MARK: Lazy Loaded Views
 
-    private lazy var cancelButton: UIBarButtonItem = {
+    private lazy var dismissButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: Strings.cancelButtonTitle,
                                      style: .plain,
                                      target: self,
-                                     action: #selector(cancelButtonTapped))
+                                     action: #selector(dismissButtonTapped))
         return button
     }()
 
     // MARK: Initializers
 
-    init(source: BlazeWebViewCoordinator.Source, blog: Blog, postID: NSNumber?) {
+    init(source: BlazeSource, blog: Blog, postID: NSNumber?) {
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
         viewModel = BlazeWebViewModel(source: source, blog: blog, postID: postID, view: self)
@@ -43,6 +48,12 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         viewModel?.startBlazeFlow()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopWaitingForConnectionRestored()
+        ReachabilityUtils.dismissNoInternetConnectionNotice()
+    }
+
     // MARK: Private Helpers
 
     private func configureSubviews() {
@@ -60,8 +71,9 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     private func configureNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = dismissButton
         configureNavBarAppearance()
+        reloadNavBar()
     }
 
     private func configureNavBarAppearance() {
@@ -76,6 +88,38 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         }
     }
 
+    // MARK: Reachability Helpers
+
+    private func reloadCurrentURL() {
+        guard let currentRequestURL else {
+            return
+        }
+        let request = URLRequest(url: currentRequestURL)
+        webView.load(request)
+    }
+
+    private func observeReachability() {
+        if !observingReachability {
+            ReachabilityUtils.showNoInternetConnectionNotice()
+            reloadWhenConnectionRestored()
+        }
+    }
+
+    private func reloadWhenConnectionRestored() {
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable { [weak self] in
+            self?.reloadCurrentURL()
+        }
+    }
+
+    private func stopWaitingForConnectionRestored() {
+        guard let reachabilityObserver = reachabilityObserver else {
+            return
+        }
+
+        NotificationCenter.default.removeObserver(reachabilityObserver)
+        self.reachabilityObserver = nil
+    }
+
     // MARK: BlazeWebView
 
     func load(request: URLRequest) {
@@ -86,11 +130,24 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         webView.configuration.websiteDataStore.httpCookieStore
     }
 
+    func reloadNavBar() {
+        guard let viewModel else {
+            dismissButton.isEnabled = true
+            dismissButton.title = Strings.cancelButtonTitle
+            return
+        }
+        dismissButton.isEnabled = viewModel.isCurrentStepDismissible()
+        dismissButton.title = viewModel.isFlowCompleted ? Strings.doneButtonTitle : Strings.cancelButtonTitle
+    }
+
+    func dismissView() {
+        dismiss(animated: true)
+    }
+
     // MARK: Actions
 
-    @objc func cancelButtonTapped() {
-        dismiss(animated: true)
-        viewModel?.cancelTapped()
+    @objc func dismissButtonTapped() {
+        viewModel?.dismissTapped()
     }
 }
 
@@ -102,11 +159,30 @@ extension BlazeWebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-        let policy = viewModel.shouldNavigate(request: navigationAction.request)
-        if let redirect = policy.redirectRequest {
-            load(request: redirect)
+
+        let policy = viewModel.shouldNavigate(to: navigationAction.request, with: navigationAction.navigationType)
+        if policy == .allow {
+            currentRequestURL = navigationAction.request.mainDocumentURL
         }
-        decisionHandler(policy.action)
+
+        guard ReachabilityUtils.isInternetReachable() else {
+            observeReachability()
+            decisionHandler(.cancel)
+            return
+        }
+
+        decisionHandler(policy)
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+
+        if !ReachabilityUtils.isInternetReachable() {
+            observeReachability()
+        } else {
+            viewModel?.webViewDidFail(with: error)
+            DDLogError("Blaze WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -116,6 +192,7 @@ private extension BlazeWebViewController {
                                                        value: "Blaze",
                                                        comment: "Name of a feature that allows the user to promote their posts.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        static let doneButtonTitle = NSLocalizedString("Done", comment: "Done. Action.")
     }
 
     enum Colors {

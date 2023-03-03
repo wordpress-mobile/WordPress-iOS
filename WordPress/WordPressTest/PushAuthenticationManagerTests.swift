@@ -48,7 +48,7 @@ class PushAuthenticationManagerTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: contextManager.mainContext)
+        mockPushAuthenticationService = MockPushAuthenticationService(coreDataStack: contextManager)
 
         pushAuthenticationManager = PushAuthenticationManager(pushAuthenticationService: mockPushAuthenticationService)
         pushAuthenticationManager?.alertControllerProxy = mockAlertControllerProxy
