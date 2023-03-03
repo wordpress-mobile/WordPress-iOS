@@ -40,8 +40,8 @@ struct RemoteConfig {
         RemoteConfigParameter<String>(key: "phase_self_hosted_blog_post", defaultValue: nil, store: store)
     }
 
-    var blazeNonDismissibleSteps: RemoteConfigParameter<[String]> {
-        RemoteConfigParameter<[String]>(key: "blaze_non_dismissable_hash", defaultValue: ["step-4"], store: store)
+    var blazeNonDismissibleStep: RemoteConfigParameter<String> {
+        RemoteConfigParameter<String>(key: "blaze_non_dismissable_hash", defaultValue: "step-4", store: store)
     }
 
     var blazeFlowCompletedStep: RemoteConfigParameter<String> {

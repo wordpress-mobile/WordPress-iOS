@@ -52,6 +52,7 @@ class JetpackRemoteInstallStateView: UIViewController {
         toggleLoading(!viewModel.hidesLoadingIndicator)
 
         supportButton.isHidden = viewModel.hidesSupportButton
+        view.layoutIfNeeded()
     }
 }
 

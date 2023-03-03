@@ -21,6 +21,8 @@ class BlazeWebViewModel {
     private let postID: NSNumber?
     private let view: BlazeWebView
     private let remoteConfig: RemoteConfig
+    private let externalURLHandler: ExternalURLHandler
+    private var linkBehavior: LinkBehavior = .all
 
     // MARK: Initializer
 
@@ -28,12 +30,15 @@ class BlazeWebViewModel {
          blog: Blog,
          postID: NSNumber?,
          view: BlazeWebView,
-         remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) {
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+         externalURLHandler: ExternalURLHandler = UIApplication.shared) {
         self.source = source
         self.blog = blog
         self.postID = postID
         self.view = view
         self.remoteConfig = RemoteConfig(store: remoteConfigStore)
+        self.externalURLHandler = externalURLHandler
+        setLinkBehavior()
     }
 
     // MARK: Computed Variables
@@ -85,20 +90,29 @@ class BlazeWebViewModel {
         }
     }
 
-    func shouldNavigate(request: URLRequest) -> WebNavigationPolicy {
+    func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy {
         currentStep = extractCurrentStep(from: request) ?? currentStep
         updateIsFlowCompleted()
         view.reloadNavBar()
-        // TODO: Block unknown URLs
-        return .allow
+        return linkBehavior.handle(request: request, with: type, externalURLHandler: externalURLHandler)
     }
 
     func isCurrentStepDismissible() -> Bool {
-        let nonDismissibleSteps = remoteConfig.blazeNonDismissibleSteps.value ?? []
-        return !nonDismissibleSteps.contains(currentStep)
+        return currentStep != remoteConfig.blazeNonDismissibleStep.value
+    }
+
+    func webViewDidFail(with error: Error) {
+        BlazeEventsTracker.trackBlazeFlowError(for: source, currentStep: currentStep)
     }
 
     // MARK: Helpers
+
+    private func setLinkBehavior() {
+        guard let baseURLString else {
+            return
+        }
+        self.linkBehavior = .withBaseURLOnly(baseURLString)
+    }
 
     private func extractCurrentStep(from request: URLRequest) -> String? {
         guard let url = request.url,

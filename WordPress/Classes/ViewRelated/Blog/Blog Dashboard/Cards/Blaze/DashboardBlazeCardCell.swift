@@ -15,7 +15,7 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
                 return
             }
             BlazeEventsTracker.trackBlazeFeatureTapped(for: .dashboardCard)
-            BlazeWebViewCoordinator.presentBlazeFlow(in: presentingViewController, source: .dashboardCard, blog: blog)
+            BlazeOverlayCoordinator.presentBlazeOverlay(in: presentingViewController, source: .dashboardCard, blog: blog)
         }
 
         let onEllipsisTap: () -> Void = { [weak self] in
