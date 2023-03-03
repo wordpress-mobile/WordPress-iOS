@@ -1670,10 +1670,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [BlazeEventsTracker trackBlazeFeatureTappedFor:BlazeSourceMenuItem];
     
-    [BlazeWebViewCoordinator presentBlazeFlowInViewController:self
-                                                       source:BlazeSourceMenuItem
-                                                         blog:self.blog
-                                                       postID:nil];
+    [BlazeOverlayCoordinator presentBlazeOverlayInViewController:self
+                                                          source:BlazeSourceMenuItem
+                                                            blog:self.blog
+                                                            post:nil];
 }
 
 - (void)showScan
