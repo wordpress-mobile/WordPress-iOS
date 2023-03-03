@@ -85,7 +85,7 @@ final class BlazePostPreviewView: UIView {
     // MARK: - Setup
 
     private func setupView() {
-        backgroundColor = .systemGroupedBackground
+        backgroundColor = UIColor(light: .systemGroupedBackground, dark: .secondarySystemBackground)
         layer.cornerRadius = Metrics.cornerRadius
 
         addSubview(stackView)
