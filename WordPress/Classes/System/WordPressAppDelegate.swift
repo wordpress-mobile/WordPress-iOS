@@ -517,7 +517,7 @@ extension WordPressAppDelegate {
         }
 
         // When a counterpart WordPress/Jetpack app is detected, ensure that the router can handle the URL.
-        // Passing a URL that the router couldn't handle results in opening the URL in Safari, which will
+        // Passing a URL that the router can't handle results in opening the URL in Safari, which will
         // cause the other app to "catch" the intent — and leads to a navigation loop between the two apps.
         //
         // TODO: Remove this after the Universal Link routes for the WordPress app are removed.
