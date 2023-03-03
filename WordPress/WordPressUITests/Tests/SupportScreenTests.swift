@@ -24,7 +24,7 @@ class SupportScreenTests: XCTestCase {
         try PrologueScreen()
             .selectContinue()
             .selectHelp()
-            .contactSupport()
+            .contactSupport(userEmail: WPUITestCredentials.contactSupportUserEmail)
             .assertCanNotSendEmptyMessage()
             .enterText("A")
             .assertCanSendMessage()
