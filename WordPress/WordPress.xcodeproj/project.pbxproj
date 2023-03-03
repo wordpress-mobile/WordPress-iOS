@@ -12824,14 +12824,9 @@
 		80C5239F2995977100B1C14B /* Blaze */ = {
 			isa = PBXGroup;
 			children = (
-				FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */,
-				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
-				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
-				FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */,
-				FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */,
-				FAC1B82029B1061D00E0C542 /* BlazeOverlayCoordinator.swift */,
-				FA4B203A29AE62C00089FE68 /* BlazeOverlayViewController.swift */,
-				FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */,
+				FAC1B82329B1F0E800E0C542 /* Overlay */,
+				FAC1B82429B1F13400E0C542 /* Webview */,
+				FAC1B82529B1F14D00E0C542 /* Helpers */,
 			);
 			path = Blaze;
 			sourceTree = "<group>";
@@ -17426,6 +17421,35 @@
 				FABB28462603067C00C8785C /* Launch Screen.storyboard */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		FAC1B82329B1F0E800E0C542 /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				FAC1B82029B1061D00E0C542 /* BlazeOverlayCoordinator.swift */,
+				FA4B203A29AE62C00089FE68 /* BlazeOverlayViewController.swift */,
+				FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */,
+			);
+			path = Overlay;
+			sourceTree = "<group>";
+		};
+		FAC1B82429B1F13400E0C542 /* Webview */ = {
+			isa = PBXGroup;
+			children = (
+				FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */,
+				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
+				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
+			);
+			path = Webview;
+			sourceTree = "<group>";
+		};
+		FAC1B82529B1F14D00E0C542 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */,
+				FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		FAD257252611B05300EDAF88 /* Colors and Styles */ = {
