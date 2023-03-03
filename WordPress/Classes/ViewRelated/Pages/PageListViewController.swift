@@ -516,7 +516,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func blazePage(_ page: AbstractPost) {
         BlazeEventsTracker.trackBlazeFeatureTapped(for: .pagesList)
-        BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: .pagesList, blog: blog, postID: page.postID)
+        BlazeOverlayCoordinator.presentBlazeOverlay(in: self, source: .pagesList, blog: blog, post: page)
     }
 
     fileprivate func editPage(_ page: Page) {
