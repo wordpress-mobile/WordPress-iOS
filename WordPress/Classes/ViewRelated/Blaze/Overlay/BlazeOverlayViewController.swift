@@ -25,6 +25,21 @@ final class BlazeOverlayViewController: UIViewController {
         return UIBarButtonItem(customView: closeButton)
     }()
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.bounces = false
+
+        scrollView.addSubview(stackView)
+        scrollView.pinSubviewToAllEdges(stackView)
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+
+        return scrollView
+    }()
+
     private lazy var stackView: UIStackView = {
         let subviews = [
             imageView,
@@ -141,16 +156,15 @@ final class BlazeOverlayViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = .basicBackground
-        view.addSubview(stackView)
+        view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView, insets: Metrics.contentInsets)
 
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Metrics.margin),
-            view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Metrics.margin),
-            view.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Metrics.margin),
             blazeButton.heightAnchor.constraint(equalToConstant: Metrics.blazeButtonHeight),
             blazeButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])
+
     }
 
     // MARK: - Button Action
@@ -181,7 +195,7 @@ extension BlazeOverlayViewController: BlazeWebViewControllerDelegate {
 extension BlazeOverlayViewController {
 
     private enum Metrics {
-        static let margin: CGFloat = 20.0
+        static let contentInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
         static let stackViewSpacing: CGFloat = 30.0
         static let footerStackViewSpacing: CGFloat = 10.0
         static let closeButtonSize: CGFloat = 30.0
