@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-17 15:29:08+0000 */
+/* Translation-Revision-Date: 2023-02-28 15:54:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "المكوِّنات عبارة عن أجزاء من المحتوى التي يمكنك إدراجها وإعادة ترتيبها وتصميمها من دون الحاجة إلى معرفة كيفية ترميزها. المكوِّنات عبارة عن طريقة سهلة وعصرية لك لإنشاء تخطيطات جميلة.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "قائمة المكوّنات";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "مدونة";
@@ -9692,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "التوهج";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "متابعة";
 
@@ -9959,6 +9965,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "المتابعة إلى الإحصاءات";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "مستعد لاستخدام هذا الموقع من خلال التطبيق.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "تم";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "ستنتقل ميزات الإحصاءات والقارئ والتنبيهات وغيرها من الميزات إلى تطبيق Jetpack للهاتف المحمول قريبًا.";
 
@@ -9976,6 +9988,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "ذكرني لاحقًا";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "يعني إعداد Jetpack أنك توافق على %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "تثبيت الإضافة الكاملة";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "الاتصال بالدعم";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "إضافة Jetpack الكاملة";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "الشروط والأحكام";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "يرجى تثبيت إضافة Jetpack الكاملة";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "إضافة مؤلف";
@@ -10012,6 +10042,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "كتابة مدونة";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "معرفة المزيد";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "إخفاء هذا";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "يستخدم هذا الموقع إضافة %1$@، التي لا تدعم كل ميزات التطبيق حتى الآن. يرجى تثبيت إضافة Jetpack الكاملة.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "يستخدم هذا الموقع إضافات Jetpack الفردية، التي لا تدعم كل ميزات التطبيق حتى الآن. يرجى تثبيت إضافة Jetpack الكاملة.";
 
 /* Later today */
 "later today" = "في وقتٍ لاحقٍ اليوم";
@@ -10147,6 +10189,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "لقد قمت بتسجيل الدخول!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "الإبلاغ عن هذا المستخدم";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "رجوع";
@@ -10309,6 +10354,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "أعضاء الموقع";
+
+/* Dismiss the current view */
+"support.button.close.title" = "تم";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "تسجيل الخروج";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "النقر لزيارة موقع المنتدى الاجتماعي على الويب في متصفح خارجي";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "زيارة وردبرس.أورج";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "اطرح سؤالاً في المنتدى الاجتماعي واحصل على المساعدة من مجموعة المتطوعين لدينا.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "يعرض نافذة لتغيير عنوان البريد الإلكتروني لجهة الاتصال.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "لم يتم التعيين";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "البريد الإلكتروني";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "الاتصال بالدعم";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "تصحيح الأخطاء";
+
+/* Support email label. */
+"support.row.email.title" = "البريد الإلكتروني";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "منتديات ووردبريس";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "مركز مساعدة ووردبريس";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "السجلات";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "التذاكر";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "الإصدار";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "قم بتمكين ميزة تصحيح الأخطاء لتضمين معلومات إضافية في سجلاتك التي يمكن أن تساعد على حل المشكلات في التطبيق.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "حساب WordPress.com";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "متقدم";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "المنتديات الاجتماعية";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "دعم ذو أولوية";
+
+/* View title for Help & Support page. */
+"support.title" = "مساعدة";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "سيتم حذف هذه العناصر:";

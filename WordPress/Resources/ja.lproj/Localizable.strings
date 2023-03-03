@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-15 09:54:11+0000 */
+/* Translation-Revision-Date: 2023-03-02 08:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "ブロックとは、コーディングについて知らなくても挿入、配置変更、スタイル設定が実行できる、コンテンツの集まりです。 ブロックを使うことで、簡単かつ洗練された方法で美しいレイアウトに仕上げることができます。";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "ブロックのメニュー";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "ブログ";
@@ -9959,6 +9962,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "統計に進む";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "このサイトとアプリを一緒に使用する準備ができました。";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "完了";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "統計、Reader、通知などの機能は、まもなく Jetpack モバイルアプリに移動します。";
 
@@ -9976,6 +9985,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "後で再通知";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Jetpack を設定することで、%@ に同意したものとみなされます";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "完全なプラグインをインストール";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "サポートに連絡";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "完全な Jetpack プラグイン";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "利用規約";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "完全な Jetpack プラグインをインストールしてください";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "投稿者を追加";
@@ -10012,6 +10039,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "ブログに投稿";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "さらに詳しく";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "非表示";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "このサイトが使用している %1$@ プラグインは、まだアプリのすべての機能をサポートしていません。 完全な Jetpack プラグインをインストールしてください。";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "このサイトが使用している個々の Jetpack プラグインは、まだアプリのすべての機能をサポートしていません。 完全な Jetpack プラグインをインストールしてください。";
 
 /* Later today */
 "later today" = "今日あとで";
@@ -10147,6 +10186,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "ログインしました !";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "このユーザーを報告";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "戻る";
@@ -10309,6 +10351,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "サイトメンバー";
+
+/* Dismiss the current view */
+"support.button.close.title" = "完了";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "ログアウト";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "タップすると、外部ブラウザーでコミュニティフォーラムのサイトにアクセスできます";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "WordPress.org にアクセス";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "コミュニティフォーラムで質問して、ボランティアグループからサポートを受けましょう。";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "連絡先メールアドレスの変更を促すダイアログを表示します。";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "未設定";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "メール";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "サポートに連絡";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "デバッグ";
+
+/* Support email label. */
+"support.row.email.title" = "メール";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress フォーラム";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress ヘルプセンター";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "ログ";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "チケット";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "バージョン";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "デバッグを有効化すると、アプリの問題のトラブルシューティングに役立つ追加情報をログに含めることができます。";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com アカウント";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "上級者向け";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "コミュニティフォーラム";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "優先サポート";
+
+/* View title for Help & Support page. */
+"support.title" = "ヘルプ";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "次の項目が削除されます:";

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-17 17:33:05+0000 */
+/* Translation-Revision-Date: 2023-03-01 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "区块菜单";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "博客";
@@ -9959,6 +9962,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "继续以使用统计数据功能";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "已准备好通过应用程序使用此站点。";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "完成";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "统计信息、阅读器、通知和其他功能即将移至 Jetpack 应用程序。";
 
@@ -9976,6 +9985,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "稍后提醒我";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "设置 Jetpack 即表示，您同意我们的 %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "安装完整的插件";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "联系支持人员";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "完整的 Jetpack 插件";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "条款和条件";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "请安装完整的 Jetpack 插件";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "添加作者";
@@ -10012,6 +10039,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "撰写博客";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "详细了解";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "隐藏此内容";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "此站点使用 %1$@ 插件，尚不支持该应用程序的全部功能。 请安装完整的 Jetpack 插件。";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "此站点使用独立 Jetpack 插件，尚不支持该应用程序的全部功能。 请安装完整的 Jetpack 插件。";
 
 /* Later today */
 "later today" = "稍后再说";
@@ -10147,6 +10186,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "举报此用户";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "返回";
@@ -10309,6 +10351,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "站点成员";
+
+/* Dismiss the current view */
+"support.button.close.title" = "完成";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "注销";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "轻点以在外部浏览器中访问社区论坛网站";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "访问 WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "在社区论坛中提问，从我们的志愿者群组获得帮助。";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "显示用于更改联系人电子邮件的对话框。";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "未设置";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "电子邮件";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "联系支持人员";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "调试";
+
+/* Support email label. */
+"support.row.email.title" = "电子邮件";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress 论坛";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress 帮助中心";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "日志";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "票据";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "版本";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "启用调试，在您的日志中包含有助于对应用程序问题进行故障排除的额外信息。";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com 账户";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "高级";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "社区论坛";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "优先支持";
+
+/* View title for Help & Support page. */
+"support.title" = "帮助";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
