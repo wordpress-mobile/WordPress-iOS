@@ -1,3 +1,7 @@
+22.0
+-----
+* [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
+
 21.9
 -----
 * [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for latter, etc.) [#20197]
