@@ -21,6 +21,18 @@ import Foundation
         WPAnalytics.track(.blazeCardHidden, properties: analyticsProperties(for: source))
     }
 
+    static func trackOverlayDisplayed(for source: BlazeSource) {
+        WPAnalytics.track(.blazeOverlayDisplayed, properties: analyticsProperties(for: source))
+    }
+
+    static func trackOverlayButtonTapped(for source: BlazeSource) {
+        WPAnalytics.track(.blazeOverlayButtonTapped, properties: analyticsProperties(for: source))
+    }
+
+    static func trackOverlayDismissed(for source: BlazeSource) {
+        WPAnalytics.track(.blazeOverlayDismissed, properties: analyticsProperties(for: source))
+    }
+
     static func trackBlazeFlowStarted(for source: BlazeSource) {
         WPAnalytics.track(.blazeFlowStarted, properties: analyticsProperties(for: source))
     }
