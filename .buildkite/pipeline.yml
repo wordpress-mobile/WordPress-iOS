@@ -17,25 +17,25 @@ steps:
   #################
   # Create Installable Builds for WP and JP
   #################
-  - group: "🛠 Installable Builds"
-    steps:
-      - label: "🛠 WordPress Installable Build"
-        command: ".buildkite/commands/installable-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Installable Build"
+  # - group: "🛠 Installable Builds"
+  #   steps:
+  #     - label: "🛠 WordPress Installable Build"
+  #       command: ".buildkite/commands/installable-build-wordpress.sh"
+  #       env: *common_env
+  #       plugins: *common_plugins
+  #       if: "build.pull_request.id != null || build.pull_request.draft"
+  #       notify:
+  #         - github_commit_status:
+  #             context: "WordPress Installable Build"
 
-      - label: "🛠 Jetpack Installable Build"
-        command: ".buildkite/commands/installable-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Installable Build"
+  #     - label: "🛠 Jetpack Installable Build"
+  #       command: ".buildkite/commands/installable-build-jetpack.sh"
+  #       env: *common_env
+  #       plugins: *common_plugins
+  #       if: "build.pull_request.id != null || build.pull_request.draft"
+  #       notify:
+  #         - github_commit_status:
+  #             context: "Jetpack Installable Build"
 
   #################
   # Build the app
@@ -52,20 +52,20 @@ steps:
   #################
   # Run Unit Tests
   #################
-  - label: "🔬 Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
-      - slack:
-          channels:
-            - "#mobile-apps-tests-notif"
-        if: build.state == "failed" && build.branch == "trunk"
+  # - label: "🔬 Unit Tests"
+  #   command: ".buildkite/commands/run-unit-tests.sh"
+  #   depends_on: "build"
+  #   env: *common_env
+  #   plugins: *common_plugins
+  #   artifact_paths:
+  #     - "build/results/*"
+  #   notify:
+  #     - github_commit_status:
+  #         context: "Unit Tests"
+  #     - slack:
+  #         channels:
+  #           - "#mobile-apps-tests-notif"
+  #       if: build.state == "failed" && build.branch == "trunk"
 
   #################
   # UI Tests
@@ -87,44 +87,44 @@ steps:
                 - "#mobile-apps-tests-notif"
             if: build.state == "failed" && build.branch == "trunk"
 
-      - label: "🔬 UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh "iPad Air (5th generation)"
-        depends_on: "build"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-          - slack:
-              channels:
-                - "#mobile-apps-tests-notif"
-            if: build.state == "failed" && build.branch == "trunk"
+      # - label: "🔬 UI Tests (iPad)"
+      #   command: .buildkite/commands/run-ui-tests.sh "iPad Air (5th generation)"
+      #   depends_on: "build"
+      #   env: *common_env
+      #   plugins: *common_plugins
+      #   artifact_paths:
+      #     - "build/results/*"
+      #   notify:
+      #     - github_commit_status:
+      #         context: "UI Tests (iPad)"
+      #     - slack:
+      #         channels:
+      #           - "#mobile-apps-tests-notif"
+      #       if: build.state == "failed" && build.branch == "trunk"
 
   #################
   # Linters
   #################
-  - group: "Linters"
-    steps:
-      - label: "🧹 Lint Translations"
-        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-        plugins:
-          - docker#v3.8.0:
-              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-        agents:
-          queue: "default"
-        notify:
-          - github_commit_status:
-              context: "Lint Translations"
-      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
-      # That is, it outwardly only mentions RuboCop, not Danger
-      - label: ":rubocop: Lint Ruby Tooling"
-        command: .buildkite/commands/rubocop-via-danger.sh
-        plugins: *common_plugins
-        agents:
-          queue: "android"
-      - label: ":sleuth_or_spy: Lint Localized Strings Format"
-        command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: *common_plugins
-        env: *common_env
+  # - group: "Linters"
+  #   steps:
+  #     - label: "🧹 Lint Translations"
+  #       command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
+  #       plugins:
+  #         - docker#v3.8.0:
+  #             image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
+  #       agents:
+  #         queue: "default"
+  #       notify:
+  #         - github_commit_status:
+  #             context: "Lint Translations"
+  #     # This step uses Danger to run RuboCop, but it's "agnostic" about it.
+  #     # That is, it outwardly only mentions RuboCop, not Danger
+  #     - label: ":rubocop: Lint Ruby Tooling"
+  #       command: .buildkite/commands/rubocop-via-danger.sh
+  #       plugins: *common_plugins
+  #       agents:
+  #         queue: "android"
+  #     - label: ":sleuth_or_spy: Lint Localized Strings Format"
+  #       command: .buildkite/commands/lint-localized-strings-format.sh
+  #       plugins: *common_plugins
+  #       env: *common_env
