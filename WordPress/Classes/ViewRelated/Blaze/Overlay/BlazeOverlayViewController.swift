@@ -160,11 +160,20 @@ final class BlazeOverlayViewController: UIViewController {
 
     @objc private func blazeButtonTapped() {
         guard let post else {
-            BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog)
+            BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, delegate: self)
             return
         }
 
-        BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, postID: post.postID)
+        BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, postID: post.postID, delegate: self)
+    }
+}
+
+// MARK: - BlazeWebViewControllerDelegate
+
+extension BlazeOverlayViewController: BlazeWebViewControllerDelegate {
+
+    func dismissBlazeWebViewController(_ controller: BlazeWebViewController) {
+        presentingViewController?.dismiss(animated: true)
     }
 }
 

@@ -31,12 +31,13 @@ import UIKit
     ///   - blog: `Blog` object representing the site that is being blazed
     ///   - postID: `NSNumber` representing the ID of the post being blazed. If `nil` is passed,
     ///    the blaze site flow is triggered. If a valid value is passed, the blaze post flow is triggered.
-    @objc(presentBlazeFlowInViewController:source:blog:postID:)
+    @objc(presentBlazeFlowInViewController:source:blog:postID:delegate:)
     static func presentBlazeFlow(in viewController: UIViewController,
                                  source: BlazeSource,
                                  blog: Blog,
-                                 postID: NSNumber? = nil) {
-        let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID)
+                                 postID: NSNumber? = nil,
+                                 delegate: BlazeWebViewControllerDelegate? = nil) {
+        let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID, delegate: delegate)
         let navigationViewController = UINavigationController(rootViewController: blazeViewController)
         navigationViewController.overrideUserInterfaceStyle = .light
         navigationViewController.modalPresentationStyle = .formSheet
