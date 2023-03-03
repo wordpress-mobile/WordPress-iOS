@@ -88,7 +88,7 @@ final class BlazeOverlayViewController: UIViewController {
     private lazy var blazeButton: UIButton = {
         let button = FancyButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(viewModel.buttonTitle, for: .normal)
+        button.setAttributedTitle(viewModel.buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(blazeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -147,6 +147,7 @@ final class BlazeOverlayViewController: UIViewController {
             view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Metrics.margin),
             view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Metrics.margin),
             view.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Metrics.margin),
+            blazeButton.heightAnchor.constraint(equalToConstant: Metrics.blazeButtonHeight),
             blazeButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])
@@ -184,6 +185,7 @@ extension BlazeOverlayViewController {
         static let stackViewSpacing: CGFloat = 30.0
         static let footerStackViewSpacing: CGFloat = 10.0
         static let closeButtonSize: CGFloat = 30.0
+        static let blazeButtonHeight: CGFloat = 44.0
     }
 
     enum Constants {

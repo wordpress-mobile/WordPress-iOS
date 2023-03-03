@@ -14,28 +14,28 @@ struct BlazeOverlayViewModel {
         return Strings.title
     }
 
-    var buttonTitle: String {
+    var buttonTitle: NSAttributedString {
         switch source {
         case .dashboardCard:
             fallthrough
         case .menuItem:
-            return Strings.blazeButtonTitle
+            return buttonTitleWithIcon(title: Strings.blazeButtonTitle)
         case .postsList:
             fallthrough
         case .pagesList:
-            return Strings.blazePostButtonTitle
+            return buttonTitleWithIcon(title: Strings.blazePostButtonTitle)
         }
     }
 
     func bulletedDescription(font: UIFont, textColor: UIColor) -> NSAttributedString {
         let bullet = "•  "
 
-        var descriptions: [String] = [
+        let descriptions: [String] = [
             Strings.description1,
             Strings.description2,
             Strings.description3
         ]
-        var mappedDescriptions = descriptions.map { return bullet + $0 }
+        let mappedDescriptions = descriptions.map { return bullet + $0 }
 
         var attributes = [NSAttributedString.Key: Any]()
         attributes[.font] = font
@@ -49,6 +49,20 @@ struct BlazeOverlayViewModel {
         return  NSAttributedString(string: string, attributes: attributes)
     }
 
+    private func buttonTitleWithIcon(title: String) -> NSAttributedString {
+        let string = NSMutableAttributedString(string: "\(title)  ")
+
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.bounds = CGRect(x: 0.0, y: -Metrics.iconOffset, width: Metrics.iconSize, height: Metrics.iconSize)
+        let iconSize = CGSize(width: Metrics.iconSize, height: Metrics.iconSize)
+        imageAttachment.image = UIImage(named: "icon-blaze")
+
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        string.append(imageString)
+
+        return string
+    }
+
     private enum Strings {
         static let title = NSLocalizedString("blaze.overlay.title", value: "Drive more traffic to your site with Blaze", comment: "Title for the Blaze overlay.")
 
@@ -58,5 +72,10 @@ struct BlazeOverlayViewModel {
 
         static let blazeButtonTitle = NSLocalizedString("blaze.overlay.buttonTitle", value: "Blaze a post now", comment: "Button title for a Blaze overlay prompting users to select a post to blaze.")
         static let blazePostButtonTitle = NSLocalizedString("blaze.overlay.withPost.buttonTitle", value: "Blaze this post", comment: "Button title for the Blaze overlay prompting users to blaze the selected post.")
+    }
+
+    private enum Metrics {
+        static let iconSize: CGFloat = 24.0
+        static let iconOffset: CGFloat = 5.0
     }
 }
