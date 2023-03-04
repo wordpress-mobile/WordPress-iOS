@@ -146,7 +146,7 @@ final class BlazeOverlayViewController: UIViewController {
         navigationItem.rightBarButtonItem = closeButtonItem
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .basicBackground
+        appearance.backgroundColor = Colors.backgroundColor
         appearance.shadowColor = .clear
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance
@@ -157,7 +157,7 @@ final class BlazeOverlayViewController: UIViewController {
     }
 
     private func setupView() {
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = Colors.backgroundColor
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView, insets: Metrics.contentInsets)
 
@@ -210,6 +210,7 @@ private extension BlazeOverlayViewController {
 
     enum Colors {
         static let blazeButtonBackgroundColor = UIColor(light: .black, dark: UIColor(red: 0.11, green: 0.11, blue: 0.118, alpha: 1))
+        static let backgroundColor = UIColor(light: .systemBackground, dark: .black)
     }
 
 }
