@@ -102,7 +102,9 @@ final class BlazeOverlayViewController: UIViewController {
 
     private lazy var blazeButton: UIButton = {
         let button = FancyButton()
+        button.isPrimary = true
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.primaryNormalBackgroundColor = Colors.blazeButtonBackgroundColor
         button.setAttributedTitle(viewModel.buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(blazeButtonTapped), for: .touchUpInside)
         return button
@@ -192,9 +194,9 @@ extension BlazeOverlayViewController: BlazeWebViewControllerDelegate {
     }
 }
 
-extension BlazeOverlayViewController {
+private extension BlazeOverlayViewController {
 
-    private enum Metrics {
+    enum Metrics {
         static let contentInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
         static let stackViewSpacing: CGFloat = 30.0
         static let footerStackViewSpacing: CGFloat = 10.0
@@ -204,6 +206,10 @@ extension BlazeOverlayViewController {
 
     enum Constants {
         static let closeButtonSystemName = "xmark.circle.fill"
+    }
+
+    enum Colors {
+        static let blazeButtonBackgroundColor = UIColor(light: .black, dark: UIColor(red: 0.11, green: 0.11, blue: 0.118, alpha: 1))
     }
 
 }
