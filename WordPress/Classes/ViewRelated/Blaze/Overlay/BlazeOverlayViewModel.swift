@@ -54,7 +54,6 @@ struct BlazeOverlayViewModel {
 
         let imageAttachment = NSTextAttachment()
         imageAttachment.bounds = CGRect(x: 0.0, y: -Metrics.iconOffset, width: Metrics.iconSize, height: Metrics.iconSize)
-        let iconSize = CGSize(width: Metrics.iconSize, height: Metrics.iconSize)
         imageAttachment.image = UIImage(named: "icon-blaze")
 
         let imageString = NSAttributedString(attachment: imageAttachment)
