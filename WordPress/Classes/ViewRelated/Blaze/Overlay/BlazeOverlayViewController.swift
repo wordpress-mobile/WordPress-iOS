@@ -201,7 +201,7 @@ private extension BlazeOverlayViewController {
         static let stackViewSpacing: CGFloat = 30.0
         static let footerStackViewSpacing: CGFloat = 10.0
         static let closeButtonSize: CGFloat = 30.0
-        static let blazeButtonHeight: CGFloat = 44.0
+        static let blazeButtonHeight: CGFloat = 54.0
     }
 
     enum Constants {
