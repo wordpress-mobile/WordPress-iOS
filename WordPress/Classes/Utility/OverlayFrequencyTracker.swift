@@ -1,6 +1,6 @@
 import Foundation
 
-class JetpackOverlayFrequencyTracker {
+class OverlayFrequencyTracker {
 
     private let frequencyConfig: FrequencyConfig
     private let phaseString: String?
@@ -93,7 +93,7 @@ class JetpackOverlayFrequencyTracker {
     }
 }
 
-extension JetpackOverlayFrequencyTracker {
+extension OverlayFrequencyTracker {
     struct FrequencyConfig {
         // MARK: Instance Variables
         let featureSpecificInDays: Int

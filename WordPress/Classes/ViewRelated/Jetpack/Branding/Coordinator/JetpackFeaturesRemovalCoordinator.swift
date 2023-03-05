@@ -13,7 +13,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case newUsers = "new_users"
         case selfHosted = "self_hosted"
 
-        var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
+        var frequencyConfig: OverlayFrequencyTracker.FrequencyConfig {
             switch self {
             case .one:
                 fallthrough
@@ -158,7 +158,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         coordinator.viewModel = viewModel
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
-        let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
+        let frequencyTracker = OverlayFrequencyTracker(frequencyConfig: frequencyConfig,
                                                               phaseString: frequencyTrackerPhaseString,
                                                               source: source)
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
