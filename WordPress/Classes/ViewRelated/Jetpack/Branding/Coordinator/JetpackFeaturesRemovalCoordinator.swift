@@ -34,7 +34,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case two
     }
 
-    enum OverlaySource: String {
+    enum JetpackOverlaySource: String, OverlaySource {
         case stats
         case notifications
         case reader
@@ -54,6 +54,25 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
                 return phase.rawValue // Shown once per phase
             default:
                 return nil // Phase is irrelevant.
+            }
+        }
+
+        var frequencyType: OverlayFrequencyType {
+            switch self {
+            case .stats:
+                fallthrough
+            case .notifications:
+                fallthrough
+            case .reader:
+                return .respectFrequencyConfig
+            case .card:
+                fallthrough
+            case .disabledEntryPoint:
+                return .alwaysShow
+            case .login:
+                fallthrough
+            case .appOpen:
+                return .showOnce
             }
         }
     }
@@ -140,7 +159,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentOverlayIfNeeded(in viewController: UIViewController,
-                                       source: OverlaySource,
+                                       source: JetpackOverlaySource,
                                        forced: Bool = false,
                                        fullScreen: Bool = false,
                                        blog: Blog? = nil,

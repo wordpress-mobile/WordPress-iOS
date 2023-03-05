@@ -1,10 +1,21 @@
 import Foundation
 
+protocol OverlaySource {
+    var rawValue: String { get }
+    var frequencyType: OverlayFrequencyType { get }
+}
+
+enum OverlayFrequencyType {
+    case showOnce
+    case alwaysShow
+    case respectFrequencyConfig
+}
+
 class OverlayFrequencyTracker {
 
     private let frequencyConfig: FrequencyConfig
     private let phaseString: String?
-    private let source: JetpackFeaturesRemovalCoordinator.OverlaySource
+    private let source: OverlaySource
     private let persistenceStore: UserPersistentRepository
 
     private var sourceDateKey: String {
@@ -36,7 +47,7 @@ class OverlayFrequencyTracker {
 
     init(frequencyConfig: FrequencyConfig = .defaultConfig,
          phaseString: String? = nil,
-         source: JetpackFeaturesRemovalCoordinator.OverlaySource,
+         source: OverlaySource,
          persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.frequencyConfig = frequencyConfig
         self.phaseString = phaseString
@@ -48,21 +59,13 @@ class OverlayFrequencyTracker {
         if forced {
             return true
         }
-        switch source {
-        case .stats:
-            fallthrough
-        case .notifications:
-            fallthrough
-        case .reader:
-            return frequenciesPassed()
-        case .card:
-            fallthrough
-        case .disabledEntryPoint:
-            return true
-        case .login:
-            fallthrough
-        case .appOpen:
+        switch source.frequencyType {
+        case .showOnce:
             return lastSavedSourceDate == nil
+        case .alwaysShow:
+            return true
+        case .respectFrequencyConfig:
+            return frequenciesPassed()
         }
     }
 
