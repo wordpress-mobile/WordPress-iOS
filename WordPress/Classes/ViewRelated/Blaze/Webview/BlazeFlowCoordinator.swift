@@ -21,7 +21,7 @@ import UIKit
     }
 }
 
-@objcMembers class BlazeWebViewCoordinator: NSObject {
+@objcMembers class BlazeFlowCoordinator: NSObject {
 
     /// Used to present the blaze flow. If the blaze overlay was never presented for the provided source,
     /// the overlay is shown. Otherwise, the blaze web view flow is presented.

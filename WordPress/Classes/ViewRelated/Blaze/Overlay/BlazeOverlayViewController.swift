@@ -183,11 +183,11 @@ final class BlazeOverlayViewController: UIViewController {
         BlazeEventsTracker.trackOverlayButtonTapped(for: source)
 
         guard let post else {
-            BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, delegate: self)
+            BlazeFlowCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, delegate: self)
             return
         }
 
-        BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, postID: post.postID, delegate: self)
+        BlazeFlowCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, postID: post.postID, delegate: self)
     }
 }
 

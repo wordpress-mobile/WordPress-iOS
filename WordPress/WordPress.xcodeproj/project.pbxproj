@@ -3655,8 +3655,8 @@
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
-		FA4B202F29A619130089FE68 /* BlazeWebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */; };
-		FA4B203029A619130089FE68 /* BlazeWebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */; };
+		FA4B202F29A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */; };
+		FA4B203029A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */; };
 		FA4B203529A786460089FE68 /* BlazeEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */; };
 		FA4B203629A786460089FE68 /* BlazeEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */; };
 		FA4B203829A8C48F0089FE68 /* AbstractPost+Blaze.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */; };
@@ -8922,7 +8922,7 @@
 		FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsScreen.swift; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
-		FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewCoordinator.swift; sourceTree = "<group>"; };
+		FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeFlowCoordinator.swift; sourceTree = "<group>"; };
 		FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeEventsTracker.swift; sourceTree = "<group>"; };
 		FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Blaze.swift"; sourceTree = "<group>"; };
 		FA4B203A29AE62C00089FE68 /* BlazeOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeOverlayViewController.swift; sourceTree = "<group>"; };
@@ -17440,7 +17440,7 @@
 		FAC1B82429B1F13400E0C542 /* Webview */ = {
 			isa = PBXGroup;
 			children = (
-				FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */,
+				FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */,
 				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
 				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
 			);
@@ -20574,7 +20574,7 @@
 				F5A34A9925DEF47D00C9654B /* WPMediaPicker+MediaPicker.swift in Sources */,
 				9A8ECE132254A3260043C8DA /* JetpackInstallError+Blocking.swift in Sources */,
 				43AF2F972107D3810069C012 /* QuickStartTourState.swift in Sources */,
-				FA4B202F29A619130089FE68 /* BlazeWebViewCoordinator.swift in Sources */,
+				FA4B202F29A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				9A38DC6B218899FB006A409B /* DiffContentValue.swift in Sources */,
 				7E4123C020F4097B00DF8486 /* FormattableTextContent.swift in Sources */,
@@ -23703,7 +23703,7 @@
 				FABB22A12602FC2C00C8785C /* MediaHost+Blog.swift in Sources */,
 				FABB22A22602FC2C00C8785C /* PlanListRow.swift in Sources */,
 				FABB22A32602FC2C00C8785C /* SiteCreationWizard.swift in Sources */,
-				FA4B203029A619130089FE68 /* BlazeWebViewCoordinator.swift in Sources */,
+				FA4B203029A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */,
 				FABB22A42602FC2C00C8785C /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift in Sources */,
 				C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */,
 				FABB22A52602FC2C00C8785C /* SignupEpilogueViewController.swift in Sources */,
