@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-@objc enum BlazeSource: Int {
+@objc enum BlazeSource: Int, OverlaySource {
     case dashboardCard
     case menuItem
     case postsList
@@ -18,6 +18,14 @@ import UIKit
         case .pagesList:
             return "pages_list"
         }
+    }
+
+    var key: String {
+        return description
+    }
+
+    var frequencyType: OverlayFrequencyTracker.FrequencyType {
+        return .showOnce
     }
 }
 
@@ -38,9 +46,10 @@ import UIKit
                              source: BlazeSource,
                              blog: Blog,
                              post: AbstractPost? = nil) {
-        let shouldShowOverlay = true
-        if shouldShowOverlay {
+        let frequencyTracker = OverlayFrequencyTracker(source: source, type: .blaze)
+        if frequencyTracker.shouldShow(forced: false) {
             presentBlazeOverlay(in: viewController, source: source, blog: blog, post: post)
+            frequencyTracker.track()
         } else {
             presentBlazeWebFlow(in: viewController, source: source, blog: blog, postID: post?.postID)
         }

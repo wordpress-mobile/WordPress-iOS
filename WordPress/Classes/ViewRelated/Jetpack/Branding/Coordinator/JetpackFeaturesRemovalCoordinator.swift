@@ -57,7 +57,11 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             }
         }
 
-        var frequencyType: OverlayFrequencyType {
+        var key: String {
+            return rawValue
+        }
+
+        var frequencyType: OverlayFrequencyTracker.FrequencyType {
             switch self {
             case .stats:
                 fallthrough
@@ -177,9 +181,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         coordinator.viewModel = viewModel
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
-        let frequencyTracker = OverlayFrequencyTracker(frequencyConfig: frequencyConfig,
-                                                              phaseString: frequencyTrackerPhaseString,
-                                                              source: source)
+        let frequencyTracker = OverlayFrequencyTracker(source: source,
+                                                       type: .featuresRemoval,
+                                                       frequencyConfig: frequencyConfig,
+                                                       phaseString: frequencyTrackerPhaseString)
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
             onWillDismiss?()
             onDidDismiss?()

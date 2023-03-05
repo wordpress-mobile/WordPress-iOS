@@ -1,37 +1,32 @@
 import Foundation
 
 protocol OverlaySource {
-    var rawValue: String { get }
-    var frequencyType: OverlayFrequencyType { get }
-}
-
-enum OverlayFrequencyType {
-    case showOnce
-    case alwaysShow
-    case respectFrequencyConfig
+    var key: String { get }
+    var frequencyType: OverlayFrequencyTracker.FrequencyType { get }
 }
 
 class OverlayFrequencyTracker {
 
+    private let source: OverlaySource
+    private let type: OverlayType
     private let frequencyConfig: FrequencyConfig
     private let phaseString: String?
-    private let source: OverlaySource
     private let persistenceStore: UserPersistentRepository
 
     private var sourceDateKey: String {
         guard let phaseString = phaseString else {
-            return "\(Constants.lastDateKeyPrefix)-\(source.rawValue)"
+            return "\(type.rawValue)\(Constants.lastDateKeyPrefix)-\(source.key)"
         }
-        return "\(Constants.lastDateKeyPrefix)-\(source.rawValue)-\(phaseString)"
+        return "\(type.rawValue)\(Constants.lastDateKeyPrefix)-\(source.key)-\(phaseString)"
     }
 
     private var lastSavedGenericDate: Date? {
         get {
-            let key = Constants.lastDateKeyPrefix
+            let key = "\(type.rawValue)\(Constants.lastDateKeyPrefix)"
             return persistenceStore.object(forKey: key) as? Date
         }
         set {
-            let key = Constants.lastDateKeyPrefix
+            let key = "\(type.rawValue)\(Constants.lastDateKeyPrefix)"
             persistenceStore.set(newValue, forKey: key)
         }
     }
@@ -45,13 +40,15 @@ class OverlayFrequencyTracker {
         }
     }
 
-    init(frequencyConfig: FrequencyConfig = .defaultConfig,
+    init(source: OverlaySource,
+         type: OverlayType,
+         frequencyConfig: FrequencyConfig = .defaultConfig,
          phaseString: String? = nil,
-         source: OverlaySource,
          persistenceStore: UserPersistentRepository = UserDefaults.standard) {
+        self.source = source
+        self.type = type
         self.frequencyConfig = frequencyConfig
         self.phaseString = phaseString
-        self.source = source
         self.persistenceStore = persistenceStore
     }
 
@@ -97,6 +94,18 @@ class OverlayFrequencyTracker {
 }
 
 extension OverlayFrequencyTracker {
+
+    enum FrequencyType {
+        case showOnce
+        case alwaysShow
+        case respectFrequencyConfig
+    }
+
+    enum OverlayType: String {
+        case featuresRemoval = "" // Empty string to make sure the generated keys are backwards compatible
+        case blaze
+    }
+
     struct FrequencyConfig {
         // MARK: Instance Variables
         let featureSpecificInDays: Int
