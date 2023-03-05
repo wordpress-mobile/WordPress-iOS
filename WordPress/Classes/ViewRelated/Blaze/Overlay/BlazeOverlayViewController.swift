@@ -140,6 +140,11 @@ final class BlazeOverlayViewController: UIViewController {
         setupView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        BlazeEventsTracker.trackOverlayDisplayed(for: source)
+    }
+
     // MARK: - Setup
 
     private func setupNavigationBar() {
@@ -172,10 +177,13 @@ final class BlazeOverlayViewController: UIViewController {
     // MARK: - Button Action
 
     @objc private func closeButtonTapped() {
+        BlazeEventsTracker.trackOverlayDismissed(for: source)
         dismiss(animated: true)
     }
 
     @objc private func blazeButtonTapped() {
+        BlazeEventsTracker.trackOverlayButtonTapped(for: source)
+
         guard let post else {
             BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: source, blog: blog, delegate: self)
             return

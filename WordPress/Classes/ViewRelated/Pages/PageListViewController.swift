@@ -515,7 +515,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func blazePage(_ page: AbstractPost) {
-        BlazeEventsTracker.trackBlazeFeatureTapped(for: .pagesList)
+        BlazeEventsTracker.trackEntryPointTapped(for: .pagesList)
         BlazeOverlayCoordinator.presentBlazeOverlay(in: self, source: .pagesList, blog: blog, post: page)
     }
 
@@ -776,7 +776,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.blazePage(page)
         })
 
-        BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .pagesList)
+        BlazeEventsTracker.trackEntryPointDisplayed(for: .pagesList)
     }
 
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {

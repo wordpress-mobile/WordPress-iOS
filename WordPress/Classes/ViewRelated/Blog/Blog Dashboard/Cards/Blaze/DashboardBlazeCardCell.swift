@@ -14,7 +14,7 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
                   let blog = self?.blog else {
                 return
             }
-            BlazeEventsTracker.trackBlazeFeatureTapped(for: .dashboardCard)
+            BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
             BlazeOverlayCoordinator.presentBlazeOverlay(in: presentingViewController, source: .dashboardCard, blog: blog)
         }
 
@@ -62,6 +62,6 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
-        BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .dashboardCard)
+        BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard)
     }
 }

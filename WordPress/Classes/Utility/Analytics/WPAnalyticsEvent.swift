@@ -443,10 +443,13 @@ import Foundation
     case jetpackInstallFullPluginCardDismissed
 
     // Blaze
-    case blazeFeatureDisplayed
-    case blazeFeatureTapped
+    case blazeEntryPointDisplayed
+    case blazeEntryPointTapped
     case blazeContextualMenuAccessed
     case blazeCardHidden
+    case blazeOverlayDisplayed
+    case blazeOverlayButtonTapped
+    case blazeOverlayDismissed
     case blazeFlowStarted
     case blazeFlowCanceled
     case blazeFlowCompleted
@@ -1219,14 +1222,20 @@ import Foundation
             return "jp_install_full_plugin_card_dismissed"
 
         // Blaze
-        case .blazeFeatureDisplayed:
-            return "blaze_feature_displayed"
-        case .blazeFeatureTapped:
-            return "blaze_feature_tapped"
+        case .blazeEntryPointDisplayed:
+            return "blaze_entry_point_displayed"
+        case .blazeEntryPointTapped:
+            return "blaze_entry_point_tapped"
         case .blazeContextualMenuAccessed:
-            return "blaze_feature_menu_accessed"
+            return "blaze_entry_point_menu_accessed"
         case .blazeCardHidden:
-            return "blaze_feature_hide_tapped"
+            return "blaze_entry_point_hide_tapped"
+        case .blazeOverlayDisplayed:
+            return "blaze_overlay_displayed"
+        case .blazeOverlayButtonTapped:
+            return "blaze_overlay_button_tapped"
+        case .blazeOverlayDismissed:
+            return "blaze_overlay_dismissed"
         case .blazeFlowStarted:
             return "blaze_flow_started"
         case .blazeFlowCanceled:

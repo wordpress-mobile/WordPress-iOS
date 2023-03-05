@@ -446,7 +446,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     if ([self shouldShowBlaze]) {
-        [BlazeEventsTracker trackBlazeFeatureDisplayedFor:BlazeSourceMenuItem];
+        [BlazeEventsTracker trackEntryPointDisplayedFor:BlazeSourceMenuItem];
     }
 }
 
@@ -1668,7 +1668,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showBlaze
 {
-    [BlazeEventsTracker trackBlazeFeatureTappedFor:BlazeSourceMenuItem];
+    [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
     
     [BlazeOverlayCoordinator presentBlazeOverlayInViewController:self
                                                           source:BlazeSourceMenuItem
