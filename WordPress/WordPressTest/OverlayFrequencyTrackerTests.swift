@@ -20,7 +20,7 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         // Given
         let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
-        let tracker = OverlayFrequencyTracker(source: .stats, persistenceStore: mockUserDefaults)
+        let tracker = OverlayFrequencyTracker(source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.stats, persistenceStore: mockUserDefaults)
 
         // When
         tracker.track()
@@ -39,7 +39,7 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         // Given
         let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-card"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
-        let tracker = OverlayFrequencyTracker(source: .card, persistenceStore: mockUserDefaults)
+        let tracker = OverlayFrequencyTracker(source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.card, persistenceStore: mockUserDefaults)
         mockUserDefaults.set(Date(), forKey: key)
         mockUserDefaults.set(Date(), forKey: genericKey)
 
@@ -52,7 +52,7 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-login-phaseString"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = OverlayFrequencyTracker(phaseString: "phaseString",
-                                                     source: .login,
+                                                     source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.login,
                                                      persistenceStore: mockUserDefaults)
 
         // When & Then
@@ -72,7 +72,7 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-app_open-phaseString"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = OverlayFrequencyTracker(phaseString: "phaseString",
-                                                     source: .appOpen,
+                                                     source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.appOpen,
                                                      persistenceStore: mockUserDefaults)
 
         // When & Then
@@ -92,7 +92,7 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-app_open-phaseString"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = OverlayFrequencyTracker(phaseString: "phaseString",
-                                                     source: .appOpen,
+                                                     source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.appOpen,
                                                      persistenceStore: mockUserDefaults)
 
         // When & Then
@@ -112,7 +112,7 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         let statsKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = OverlayFrequencyTracker(frequencyConfig: Constants.frequencyConfig,
-                                                     source: .stats,
+                                                     source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.stats,
                                                      persistenceStore: mockUserDefaults)
 
         // When & Then
@@ -140,10 +140,10 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         let statsKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let statsTracker = OverlayFrequencyTracker(frequencyConfig: Constants.frequencyConfig,
-                                                          source: .stats,
+                                                          source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.stats,
                                                           persistenceStore: mockUserDefaults)
         let readerTracker = OverlayFrequencyTracker(frequencyConfig: Constants.frequencyConfig,
-                                                          source: .reader,
+                                                          source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.reader,
                                                           persistenceStore: mockUserDefaults)
 
         // When & Then
