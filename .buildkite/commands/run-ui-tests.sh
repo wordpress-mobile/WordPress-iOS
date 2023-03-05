@@ -26,8 +26,6 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> find"
-find ./ | grep .xctestrun
 bundle exec fastlane test_without_building name:WordPressUITests device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
 set -e
