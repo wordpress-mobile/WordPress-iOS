@@ -21,9 +21,9 @@ struct BlazeOverlayViewModel {
         case .menuItem:
             return buttonTitleWithIcon(title: Strings.blazeButtonTitle)
         case .postsList:
-            fallthrough
-        case .pagesList:
             return buttonTitleWithIcon(title: Strings.blazePostButtonTitle)
+        case .pagesList:
+            return buttonTitleWithIcon(title: Strings.blazePageButtonTitle)
         }
     }
 
@@ -54,7 +54,6 @@ struct BlazeOverlayViewModel {
 
         let imageAttachment = NSTextAttachment()
         imageAttachment.bounds = CGRect(x: 0.0, y: -Metrics.iconOffset, width: Metrics.iconSize, height: Metrics.iconSize)
-        let iconSize = CGSize(width: Metrics.iconSize, height: Metrics.iconSize)
         imageAttachment.image = UIImage(named: "icon-blaze")
 
         let imageString = NSAttributedString(attachment: imageAttachment)
@@ -72,6 +71,8 @@ struct BlazeOverlayViewModel {
 
         static let blazeButtonTitle = NSLocalizedString("blaze.overlay.buttonTitle", value: "Blaze a post now", comment: "Button title for a Blaze overlay prompting users to select a post to blaze.")
         static let blazePostButtonTitle = NSLocalizedString("blaze.overlay.withPost.buttonTitle", value: "Blaze this post", comment: "Button title for the Blaze overlay prompting users to blaze the selected post.")
+        static let blazePageButtonTitle = NSLocalizedString("blaze.overlay.withPage.buttonTitle", value: "Blaze this page", comment: "Button title for the Blaze overlay prompting users to blaze the selected page.")
+
     }
 
     private enum Metrics {
