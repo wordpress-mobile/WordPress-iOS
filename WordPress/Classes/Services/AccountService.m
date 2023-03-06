@@ -482,7 +482,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogIds.count];
 
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+        // `defaultAccount` is only used in the `NSAssert` check below, but in our release builds
+        // `NSAssert` are ignored resulting in `defaultAccount` being unused and the compiler
+        // throwing an error. The `__unused` annotation lets us work aruond that.
+        __unused WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
 
         for (NSManagedObjectID *blogId in blogIds) {
             Blog *blog = [context existingObjectWithID:blogId error:nil];
