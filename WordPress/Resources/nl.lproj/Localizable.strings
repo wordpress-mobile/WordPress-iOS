@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-17 17:39:06+0000 */
+/* Translation-Revision-Date: 2023-03-01 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blokken zijn stukjes inhoud die je kunt invoegen, herschikken en stylen zonder dat je hoeft te weten hoe je moet coderen. Blokken zijn een gemakkelijke en moderne manier voor je om mooie lay-outs te maken.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Blokkenmenu";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -9692,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "volgen";
 
@@ -9959,6 +9965,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Doorgaan naar Statistieken";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Gereed om deze site met de app te gebruiken.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Gereed";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistieken, Lezer, Meldingen en andere functies worden binnenkort verplaatst naar de Jetpack mobiele app.";
 
@@ -9976,6 +9988,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Herinner mij hier later aan";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Door Jetpack in te stellen, ga je akkoord met onze %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "De volledige plug-in installeren";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Neem contact op met de ondersteuning";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "volledige Jetpack-plug-in";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Algemene voorwaarden";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Installeer de volledige Jetpack-plug-in";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Voeg een auteur toe";
@@ -10012,6 +10042,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Schrijf een blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Meer informatie";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Dit verbergen";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Deze site gebruikt de %1$@-plug-in. Deze ondersteunt nog niet alle functies van de app. Installeer de volledige Jetpack-plug-in.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Deze site gebruikt individuele Jetpack-plug-ins. Deze ondersteunen nog niet alle functies van de app. Installeer de volledige Jetpack-plug-in.";
 
 /* Later today */
 "later today" = "later vandaag";
@@ -10147,6 +10189,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Deze gebruiker rapporteren";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Terug";
@@ -10309,6 +10354,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Site-leden";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Gereed";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Uitloggen";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Tik om de website van het communityforum in een externe browser te bezoeken";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Ga naar WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Stel een vraag in het communityforum en krijg hulp van onze groep vrijwilligers.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Toont een dialoog om het contact e-mailadres te wijzigen.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Niet ingesteld";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "E-mail";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Neem contact op met de ondersteuning";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Debuggen";
+
+/* Support email label. */
+"support.row.email.title" = "E-mail";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress-forums";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress Help Center";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Logbestanden";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Tickets";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Versie";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Schakel debugging in om aanvullende informatie aan je logboeken toe te volgen. Deze informatie kan je helpen om problemen met de app op te lossen.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com-account";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Geavanceerd";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Communityforums";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Ondersteuning met prioriteit";
+
+/* View title for Help & Support page. */
+"support.title" = "Help";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";

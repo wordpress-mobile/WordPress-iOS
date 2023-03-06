@@ -250,14 +250,19 @@ extension CoreDataStack {
             throw ContextManager.ContextManagerError.missingDatabase
         }
 
+        try? migrateDatabaseIfNecessary(at: databaseLocation)
+
         mainContext.reset()
         try storeCoordinator.remove(store)
         let databaseReplaced = replaceDatabase(from: databaseLocation, to: currentDatabaseLocation)
 
         do {
+            let options = [NSMigratePersistentStoresAutomaticallyOption: true,
+                                 NSInferMappingModelAutomaticallyOption: true]
             try storeCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
                                                     configurationName: nil,
-                                                    at: currentDatabaseLocation)
+                                                    at: currentDatabaseLocation,
+                                                    options: options)
 
             if databaseReplaced {
                 // The database was replaced successfully and the store added with no errors so we
@@ -326,5 +331,13 @@ extension CoreDataStack {
         _ = try? FileManager.default.replaceItemAt(location, withItemAt: databaseBackup)
         _ = try? FileManager.default.replaceItemAt(locationShm, withItemAt: shmBackup)
         _ = try? FileManager.default.replaceItemAt(locationWal, withItemAt: walBackup)
+    }
+
+    private func migrateDatabaseIfNecessary(at databaseLocation: URL) throws {
+        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd"),
+              let objectModel = NSManagedObjectModel(contentsOf: modelFileURL) else {
+            return
+        }
+        try ContextManager.migrateDataModelsIfNecessary(storeURL: databaseLocation, objectModel: objectModel)
     }
 }
