@@ -25,9 +25,6 @@ install_cocoapods
 echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
-echo ">>>>>>>>>>>>PIPE>>>>>>>>>>>"
-ls -la
-echo "<<<<<<<<<<<PIPE<<<<<<<<<<<<"
 set +e
 bundle exec fastlane test_without_building name:JetpackPressUITests device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
