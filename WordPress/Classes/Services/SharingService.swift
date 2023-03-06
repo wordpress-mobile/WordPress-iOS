@@ -246,13 +246,13 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: The requested `PublicizeService` or nil.
     ///
-    @objc open func findPublicizeServiceNamed(_ name: String) -> PublicizeService? {
+    @objc open func findPublicizeServiceNamed(_ name: String, in context: NSManagedObjectContext) -> PublicizeService? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeService.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "serviceID = %@", name)
 
         var services: [PublicizeService]
         do {
-            services = try managedObjectContext.fetch(request) as! [PublicizeService]
+            services = try context.fetch(request) as! [PublicizeService]
         } catch let error as NSError {
             DDLogError("Error fetching Publicize Service named \(name) : \(error.localizedDescription)")
             services = []
@@ -266,14 +266,14 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: An array of `PublicizeService`.  The array is empty if no objects are cached.
     ///
-    @objc open func allPublicizeServices() -> [PublicizeService] {
+    @objc open func allPublicizeServices(in context: NSManagedObjectContext) -> [PublicizeService] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeService.classNameWithoutNamespaces())
         let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
         request.sortDescriptors = [sortDescriptor]
 
         var services: [PublicizeService]
         do {
-            services = try managedObjectContext.fetch(request) as! [PublicizeService]
+            services = try context.fetch(request) as! [PublicizeService]
         } catch let error as NSError {
             DDLogError("Error fetching Publicize Services: \(error.localizedDescription)")
             services = []
@@ -294,25 +294,21 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional callback block to be performed when core data has saved the changes.
     ///
     fileprivate func mergePublicizeServices(_ remoteServices: [RemotePublicizeService], success: (() -> Void)? ) {
-        managedObjectContext.perform {
-            let currentPublicizeServices = self.allPublicizeServices()
+        coreDataStack.performAndSave({ context in
+            let currentPublicizeServices = self.allPublicizeServices(in: context)
 
             // Create or update based on the contents synced.
             let servicesToKeep = remoteServices.map { (remoteService) -> PublicizeService in
-                let pubService = self.createOrReplaceFromRemotePublicizeService(remoteService)
-                return pubService
+                self.createOrReplaceFromRemotePublicizeService(remoteService, in: context)
             }
 
             // Delete any cached PublicizeServices that were not synced.
             for pubService in currentPublicizeServices {
                 if !servicesToKeep.contains(pubService) {
-                    self.managedObjectContext.delete(pubService)
+                    context.delete(pubService)
                 }
             }
-
-            // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-        }
+        }, completion: success, on: .main)
     }
 
 
@@ -322,11 +318,11 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: A `PublicizeService`.
     ///
-    fileprivate func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService) -> PublicizeService {
-        var pubService = findPublicizeServiceNamed(remoteService.serviceID)
+    fileprivate func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService, in context: NSManagedObjectContext) -> PublicizeService {
+        var pubService = findPublicizeServiceNamed(remoteService.serviceID, in: context)
         if pubService == nil {
             pubService = NSEntityDescription.insertNewObject(forEntityName: PublicizeService.classNameWithoutNamespaces(),
-                into: managedObjectContext) as? PublicizeService
+                into: context) as? PublicizeService
         }
         pubService?.connectURL = remoteService.connectURL
         pubService?.detail = remoteService.detail
