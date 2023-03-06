@@ -516,6 +516,22 @@ extension WordPressAppDelegate {
             return
         }
 
+        // When a counterpart WordPress/Jetpack app is detected, ensure that the router can handle the URL.
+        // Passing a URL that the router can't handle results in opening the URL in Safari, which will
+        // cause the other app to "catch" the intent — and leads to a navigation loop between the two apps.
+        //
+        // TODO: Remove this after the Universal Link routes for the WordPress app are removed.
+        //
+        // Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
+        if MigrationAppDetection.isCounterpartAppInstalled {
+            // If we can handle the URL, then let the UniversalLinkRouter do it.
+            guard UniversalLinkRouter.shared.canHandle(url: url) else {
+                // Otherwise, try to convert the URL to a WP Admin link and open it in Safari.
+                WPAdminConvertibleRouter.shared.handle(url: url)
+                return
+            }
+        }
+
         trackDeepLink(for: url) { url in
             UniversalLinkRouter.shared.handle(url: url)
         }
