@@ -116,55 +116,57 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func updateSharedForBlog(_ blog: Blog,
+    @objc open func updateSharedForBlog(
+        _ blog: Blog,
         shared: Bool,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
-        failure: ((NSError?) -> Void)?) {
+        failure: ((NSError?) -> Void)?
+    ) {
+        if pubConn.shared == shared {
+            success?()
+            return
+        }
 
-            if pubConn.shared == shared {
-                success?()
-                return
+        let oldValue = pubConn.shared
+        pubConn.shared = shared
+        ContextManager.sharedInstance().save(managedObjectContext)
+
+        let blogObjectID = blog.objectID
+        let siteID = pubConn.siteID
+        guard let remote = remoteForBlog(blog) else {
+            return
+        }
+        remote.updatePublicizeConnectionWithID(
+            pubConn.connectionID,
+            shared: shared,
+            forSite: siteID,
+            success: { remoteConnection in
+                let properties = [
+                    "service": pubConn.service,
+                    "is_site_wide": NSNumber(value: shared).stringValue
+                ]
+                WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
+
+                self.coreDataStack.performAndSave({ context in
+                    _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                }, completion: { result in
+                    switch result {
+                    case .success:
+                        success?()
+                    case let .failure(error):
+                        DDLogError("Error creating publicize connection from remote: \(error)")
+                        failure?(error as NSError)
+                    }
+                }, on: .main)
+            },
+            failure: { (error: NSError?) in
+                pubConn.shared = oldValue
+                ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
+                    failure?(error)
+                }, on: .main)
             }
-
-            let oldValue = pubConn.shared
-            pubConn.shared = shared
-            ContextManager.sharedInstance().save(managedObjectContext)
-
-            let blogObjectID = blog.objectID
-            let siteID = pubConn.siteID
-            guard let remote = remoteForBlog(blog) else {
-                return
-            }
-            remote.updatePublicizeConnectionWithID(
-                pubConn.connectionID,
-                shared: shared,
-                forSite: siteID,
-                success: { remoteConnection in
-                    let properties = [
-                        "service": pubConn.service,
-                        "is_site_wide": NSNumber(value: shared).stringValue
-                    ]
-                    WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
-
-                    self.coreDataStack.performAndSave({ context in
-                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
-                    }, completion: { result in
-                        switch result {
-                        case .success:
-                            success?()
-                        case let .failure(error):
-                            DDLogError("Error creating publicize connection from remote: \(error)")
-                            failure?(error as NSError)
-                        }
-                    }, on: .main)
-                },
-                failure: { (error: NSError?) in
-                    pubConn.shared = oldValue
-                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                        failure?(error)
-                    }, on: .main)
-            })
+        )
     }
 
 
