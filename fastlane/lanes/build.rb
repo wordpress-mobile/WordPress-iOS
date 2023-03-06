@@ -58,7 +58,7 @@ platform :ios do
   lane :build_jetpack_for_testing do |options|
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'JetpackUITests',
+      scheme: 'Jetpack',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
       device: options[:device],
@@ -91,7 +91,7 @@ platform :ios do
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
+      scheme: 'Jetpack',
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
