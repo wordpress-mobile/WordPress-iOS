@@ -223,34 +223,43 @@ open class SharingService: LocalCoreDataService {
     ///
     @objc open func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         // optimistically delete the connection locally.
-        let siteID = pubConn.siteID
-        managedObjectContext.delete(pubConn)
-        ContextManager.sharedInstance().save(managedObjectContext)
+        coreDataStack.performAndSave({ context in
+            let blogInContext = try context.existingObject(with: blog.objectID) as! Blog
+            let pubConnInContext = try context.existingObject(with: pubConn.objectID) as! PublicizeConnection
 
-        guard let remote = remoteForBlog(blog) else {
-            return
-        }
-        remote.deletePublicizeConnection(siteID,
-            connectionID: pubConn.connectionID,
-            success: {
-                let properties = [
-                    "service": pubConn.service
-                ]
-                WPAppAnalytics.track(.sharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
-                success?()
-            },
-            failure: { (error: NSError?) in
-                if let errorCode = error?.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
-                    if errorCode == self.SharingAPIErrorNotFound {
-                        // This is a special situation. If the call to disconnect the service returns not_found then the service
-                        // has probably already been disconnected and the call was made with stale data.
-                        // Assume this is the case and treat this error as a successful disconnect.
+            let siteID = pubConnInContext.siteID
+            context.delete(pubConnInContext)
+            return (siteID, pubConnInContext.connectionID, pubConnInContext.service, self.remoteForBlog(blogInContext))
+        }, completion: { result in
+            switch result {
+            case let .success((siteID, connectionID, service, remote)):
+                remote?.deletePublicizeConnection(
+                    siteID,
+                    connectionID: connectionID,
+                    success: {
+                        let properties = [
+                            "service": service
+                        ]
+                        WPAppAnalytics.track(.sharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
                         success?()
-                        return
+                    },
+                    failure: { (error: NSError?) in
+                        if let errorCode = error?.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
+                            if errorCode == self.SharingAPIErrorNotFound {
+                                // This is a special situation. If the call to disconnect the service returns not_found then the service
+                                // has probably already been disconnected and the call was made with stale data.
+                                // Assume this is the case and treat this error as a successful disconnect.
+                                success?()
+                                return
+                            }
+                        }
+                        failure?(error)
                     }
-                }
-                failure?(error)
-            })
+                )
+            case let .failure(error):
+                failure?(error as NSError)
+            }
+        }, on: .main)
     }
 
 
