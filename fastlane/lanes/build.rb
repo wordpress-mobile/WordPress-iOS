@@ -58,7 +58,7 @@ platform :ios do
   lane :build_jetpack_for_testing do |options|
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'Jetpack',
+      scheme: 'JetpackUITests',
       derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
       device: options[:device],
@@ -80,6 +80,10 @@ platform :ios do
   lane :test_without_building do |options|
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
+
+    p build_products_path
+    ls = `la -ls build_products_path`
+    p ls
 
     xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
