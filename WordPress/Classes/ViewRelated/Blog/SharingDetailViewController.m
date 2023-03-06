@@ -34,8 +34,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (self) {
         _blog = blog;
         _publicizeConnection = connection;
-        SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-        PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:connection.service];
+        PublicizeService *publicizeService = [PublicizeService lookupPublicizeServiceNamed:connection.service inContext:[self managedObjectContext]];
         if (publicizeService) {
             self.helper = [[SharingAuthorizationHelper alloc] initWithViewController:self
                                                                                 blog:self.blog

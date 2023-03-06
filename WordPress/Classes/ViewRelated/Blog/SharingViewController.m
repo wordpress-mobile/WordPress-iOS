@@ -90,8 +90,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)refreshPublicizers
 {
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    self.publicizeServices = [sharingService allPublicizeServices];
+    self.publicizeServices = [PublicizeService allPublicizeServicesInContext:[self managedObjectContext] error:nil];
 
     [self.tableView reloadData];
 }

@@ -1131,6 +1131,8 @@
 		4A2172FF28F688890006F4F1 /* Blog+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172FD28F688890006F4F1 /* Blog+Media.swift */; };
 		4A266B8F282B05210089CF3D /* JSONObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B8E282B05210089CF3D /* JSONObjectTests.swift */; };
 		4A266B91282B13A70089CF3D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */; };
+		4A358DE629B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
+		4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A526BDF296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
@@ -6619,6 +6621,7 @@
 		4A2172FD28F688890006F4F1 /* Blog+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Media.swift"; sourceTree = "<group>"; };
 		4A266B8E282B05210089CF3D /* JSONObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectTests.swift; sourceTree = "<group>"; };
 		4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
+		4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeService+Lookup.swift"; sourceTree = "<group>"; };
 		4A526BDD296BE9A50007B5BA /* CoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataService.m; sourceTree = "<group>"; };
 		4A526BDE296BE9A50007B5BA /* CoreDataService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataService.h; sourceTree = "<group>"; };
 		4A82C43028D321A300486CFF /* Blog+Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Post.swift"; sourceTree = "<group>"; };
@@ -10414,6 +10417,7 @@
 				E6374DBD1C444D8B00F24720 /* PublicizeConnection.swift */,
 				4A1E77C82988997C006281CC /* PublicizeConnection+Creation.swift */,
 				E6374DBE1C444D8B00F24720 /* PublicizeService.swift */,
+				4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */,
 				8BB185D424B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift */,
 				8BB185D324B66FE500A4CCE8 /* ReaderCard+CoreDataProperties.swift */,
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
@@ -20557,6 +20561,7 @@
 				F12FA5D92428FA8F0054DA21 /* AuthenticationService.swift in Sources */,
 				E16A76F11FC4758300A661E3 /* JetpackSiteRef.swift in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
+				4A358DE629B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */,
 				C7234A422832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */,
 				801D94EF2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
@@ -23550,6 +23555,7 @@
 				FABB21C22602FC2C00C8785C /* JetpackRestoreFailedViewController.swift in Sources */,
 				8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */,
 				FABB21C32602FC2C00C8785C /* ActionSheetViewController.swift in Sources */,
+				4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */,
 				C737553F27C80DD500C6E9A1 /* String+CondenseWhitespace.swift in Sources */,
 				FABB21C42602FC2C00C8785C /* PostService+Revisions.swift in Sources */,
 				FABB21C52602FC2C00C8785C /* SourcePostAttribution.m in Sources */,
