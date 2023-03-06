@@ -17,5 +17,6 @@ echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane build_jetpack_for_testing
 
 echo "--- :arrow_up: Upload Build Products"
+ls -la DerivedData/Build/Products/
 tar -cf build-products.tar DerivedData/Build/Products/
 upload_artifact build-products.tar
