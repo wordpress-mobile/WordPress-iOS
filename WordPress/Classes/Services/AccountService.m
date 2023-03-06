@@ -42,7 +42,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     NSManagedObjectID *accountID = account.objectID;
     void (^notifyAccountChange)(void) = ^{
-        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        NSManagedObjectContext *mainContext = self.coreDataStack.mainContext;
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
@@ -480,11 +480,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         return obj.objectID;
     }];
     NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogIds.count];
-    AccountServiceRemoteREST * __block remote = nil;
 
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
-        remote = [self remoteForAccount:defaultAccount];
 
         for (NSManagedObjectID *blogId in blogIds) {
             Blog *blog = [context existingObjectWithID:blogId error:nil];
@@ -497,11 +495,13 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             }
             blog.visible = visible;
         }
-    }];
-
-    [remote updateBlogsVisibility:blogVisibility success:nil failure:^(NSError *error) {
-        DDLogError(@"Error setting blog visibility: %@", error);
-    }];
+    } completion:^{
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
+        AccountServiceRemoteREST *remote = [self remoteForAccount:defaultAccount];
+        [remote updateBlogsVisibility:blogVisibility success:nil failure:^(NSError *error) {
+            DDLogError(@"Error setting blog visibility: %@", error);
+        }];
+    } onQueue:dispatch_get_main_queue()];
 }
 
 @end

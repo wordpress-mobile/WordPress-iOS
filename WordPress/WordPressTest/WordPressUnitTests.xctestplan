@@ -31,16 +31,16 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:WordPress.xcodeproj",
-        "identifier" : "E16AB92914D978240047A2E5",
-        "name" : "WordPressTest"
+        "containerPath" : "container:..\/WordPressFlux",
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:..\/WordPressFlux",
-        "identifier" : "WordPressFluxTests",
-        "name" : "WordPressFluxTests"
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "E16AB92914D978240047A2E5",
+        "name" : "WordPressTest"
       }
     }
   ],

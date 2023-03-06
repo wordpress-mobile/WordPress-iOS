@@ -41,7 +41,7 @@ class ReaderPostStreamService {
                 }
 
                 // Clean up
-                let serivce = ReaderPostService(managedObjectContext: context)
+                let serivce = ReaderPostService(coreDataStack: self.coreDataStack)
                 serivce.deletePostsInExcessOfMaxAllowed(for: readerTopic)
                 serivce.deletePostsFromBlockedSites()
             }, completion: {

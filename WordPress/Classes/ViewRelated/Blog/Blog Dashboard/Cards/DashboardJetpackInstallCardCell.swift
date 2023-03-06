@@ -9,13 +9,25 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
 
     private lazy var cardViewModel: JetpackRemoteInstallCardViewModel = {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
+            guard let self,
+                  let helper = JetpackInstallPluginHelper(self.blog) else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardDismissed, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
-            JetpackInstallPluginHelper.hideCard(for: self?.blog)
-            self?.presenterViewController?.reloadCardsLocally()
+            helper.hideCard()
+            self.presenterViewController?.reloadCardsLocally()
         }
 
         let onLearnMoreTap: () -> Void = {
+            guard let presenterViewController = self.presenterViewController else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardTapped, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
+            JetpackInstallPluginHelper.presentOverlayIfNeeded(in: presenterViewController,
+                                                              blog: self.blog,
+                                                              delegate: presenterViewController,
+                                                              force: true)
+
         }
         return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
                                                  onLearnMoreTap: onLearnMoreTap)
@@ -43,6 +55,7 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presenterViewController = viewController
+        cardView.updatePlugin(JetpackPlugin(from: blog.jetpackConnectionActivePlugins))
     }
 
     private func setupView() {

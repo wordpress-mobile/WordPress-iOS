@@ -106,8 +106,7 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
             showLoadingView()
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderSiteSearchService(managedObjectContext: context)
+        let service = ReaderSiteSearchService(coreDataStack: ContextManager.shared)
         service.performSearch(with: query,
                               page: page,
                               success: { [weak self] (feeds, hasMore, totalFeeds) in

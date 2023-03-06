@@ -1,18 +1,28 @@
 import WordPressAuthenticator
 
 final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
+
+    // MARK: Dependencies
+
     private unowned let viewController: UIViewController
+    private weak var installDelegate: JetpackRemoteInstallDelegate?
+    private let blog: Blog
 
-    private var presentingViewController: UIViewController {
-        return viewController.navigationController ?? viewController
-    }
+    // MARK: Methods
 
-    init(viewController: UIViewController) {
+    init(blog: Blog, viewController: UIViewController, installDelegate: JetpackRemoteInstallDelegate? = nil) {
+        self.blog = blog
         self.viewController = viewController
+        self.installDelegate = installDelegate
     }
 
     func navigateToPrimaryRoute() {
-        // TODO: Navigate to the installation flow.
+        let viewModel = WPComJetpackRemoteInstallViewModel()
+        let installViewController = JetpackRemoteInstallViewController(blog: blog,
+                                                                       delegate: installDelegate,
+                                                                       viewModel: viewModel)
+
+        viewController.navigationController?.pushViewController(installViewController, animated: true)
     }
 
     func navigateToSecondaryRoute() {
@@ -28,6 +38,7 @@ final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
     func navigateToLinkRoute(url: URL, source: String) {
         let webViewController = WebViewControllerFactory.controller(url: url, source: source)
         let navigationController = UINavigationController(rootViewController: webViewController)
+        let presentingViewController = viewController.navigationController ?? viewController
         presentingViewController.present(navigationController, animated: true)
     }
 }

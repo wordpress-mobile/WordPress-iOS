@@ -783,6 +783,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         shareController.sharePost(post, fromView: view, inViewController: self)
     }
 
+    func blaze(_ post: AbstractPost) {
+        BlazeEventsTracker.trackEntryPointTapped(for: .postsList)
+        BlazeOverlayCoordinator.presentBlazeOverlay(in: self, source: .postsList, blog: blog, post: post)
+    }
+
     // MARK: - Searching
 
     override func updateForLocalPostsMatchingSearchText() {
