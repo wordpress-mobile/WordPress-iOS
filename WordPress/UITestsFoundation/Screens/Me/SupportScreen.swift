@@ -45,18 +45,14 @@ public class SupportScreen: ScreenObject {
     }
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
-        app.cells["contact-support-button"].tap()
-        addContactInformationIfNeeded(userEmail)
-        return try ContactUsScreen()
-    }
-
-    private func addContactInformationIfNeeded(_ email: String) {
         let emailTextField = app.textFields["Email"]
-        if emailTextField.waitForExistence(timeout: 3) {
-            emailTextField.tap()
-            emailTextField.typeText(email)
-            app.buttons["OK"].tap()
-        }
+
+        app.cells["contact-support-button"].tap()
+        emailTextField.tap()
+        emailTextField.typeText(userEmail)
+        app.buttons["OK"].tap()
+
+        return try ContactUsScreen()
     }
 
     public func assertVisitForumButtonEnabled() -> SupportScreen {
