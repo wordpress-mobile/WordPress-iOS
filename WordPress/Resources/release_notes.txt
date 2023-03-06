@@ -1,2 +1,1 @@
 * [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for latter, etc.) [#20197]
-* [**] Reader: Add a button in the post menu to block an author and stop seeing their posts. [#20193]
