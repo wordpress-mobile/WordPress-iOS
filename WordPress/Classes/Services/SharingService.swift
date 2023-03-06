@@ -80,17 +80,26 @@ open class SharingService: LocalCoreDataService {
                     "service": keyring.service
                 ]
                 WPAppAnalytics.track(.sharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
-                do {
-                    let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                        success?(pubConn)
-                    }, on: .main)
 
-                } catch let error as NSError {
-                    DDLogError("Error creating publicize connection from remote: \(error)")
-                    failure?(error)
-                }
-
+                self.coreDataStack.performAndSave({ context -> NSManagedObjectID in
+                    let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                    try context.obtainPermanentIDs(for: [pubConn])
+                    return pubConn.objectID
+                }, completion: { result in
+                    let transformed = result.flatMap { objectID in
+                        Result {
+                            let object = try self.coreDataStack.mainContext.existingObject(with: objectID)
+                            return object as! PublicizeConnection
+                        }
+                    }
+                    switch transformed {
+                    case let .success(object):
+                        success?(object)
+                    case let .failure(error):
+                        DDLogError("Error creating publicize connection from remote: \(error)")
+                        failure?(error as NSError)
+                    }
+                }, on: .main)
             },
             failure: { (error: NSError?) in
                 failure?(error)
@@ -137,14 +146,18 @@ open class SharingService: LocalCoreDataService {
                         "is_site_wide": NSNumber(value: shared).stringValue
                     ]
                     WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
-                    do {
-                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-                    } catch let error as NSError {
-                        DDLogError("Error creating publicize connection from remote: \(error)")
-                        failure?(error)
-                    }
 
+                    self.coreDataStack.performAndSave({ context in
+                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                    }, completion: { result in
+                        switch result {
+                        case .success:
+                            success?()
+                        case let .failure(error):
+                            DDLogError("Error creating publicize connection from remote: \(error)")
+                            failure?(error as NSError)
+                        }
+                    }, on: .main)
                 },
                 failure: { (error: NSError?) in
                     pubConn.shared = oldValue
@@ -183,15 +196,17 @@ open class SharingService: LocalCoreDataService {
                 externalID: externalID,
                 forSite: siteID,
                 success: { remoteConnection in
-                    do {
-                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-
-                    } catch let error as NSError {
-                        DDLogError("Error creating publicize connection from remote: \(error)")
-                        failure?(error)
-                    }
-
+                    self.coreDataStack.performAndSave({ context in
+                        try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                    }, completion: { result in
+                        switch result {
+                        case .success:
+                            success?()
+                        case let .failure(error):
+                            DDLogError("Error creating publicize connection from remote: \(error)")
+                            failure?(error as NSError)
+                        }
+                    }, on: .main)
                 },
                 failure: failure)
     }
@@ -306,14 +321,16 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
-    fileprivate func createOrReplacePublicizeConnectionForBlogWithObjectID(_ blogObjectID: NSManagedObjectID,
-        remoteConnection: RemotePublicizeConnection) throws -> PublicizeConnection {
+    fileprivate func createOrReplacePublicizeConnectionForBlogWithObjectID(
+        _ blogObjectID: NSManagedObjectID,
+        remoteConnection: RemotePublicizeConnection,
+        in context: NSManagedObjectContext
+    ) throws -> PublicizeConnection {
+        let blog = try context.existingObject(with: blogObjectID) as! Blog
+        let pubConn = PublicizeConnection.createOrReplace(from: remoteConnection, in: context)
+        pubConn.blog = blog
 
-            let blog = try managedObjectContext.existingObject(with: blogObjectID) as! Blog
-            let pubConn = PublicizeConnection.createOrReplace(from: remoteConnection, in: self.managedObjectContext)
-            pubConn.blog = blog
-
-            return pubConn
+        return pubConn
     }
 
 
