@@ -6,8 +6,22 @@ import WordPressKit
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
 ///
-open class SharingService: LocalCoreDataService {
-    @objc let SharingAPIErrorNotFound = "not_found"
+@objc class SharingService: NSObject {
+    let SharingAPIErrorNotFound = "not_found"
+
+    private let coreDataStack: CoreDataStackSwift
+
+    /// The initialiser for Objective-C code.
+    ///
+    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    @objc
+    init(contextManager: ContextManager) {
+        self.coreDataStack = contextManager
+    }
+
+    init(coreDataStack: CoreDataStackSwift) {
+        self.coreDataStack = coreDataStack
+    }
 
     // MARK: - Publicize Related Methods
 
@@ -19,7 +33,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    @objc open func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog) else {
             return
         }
@@ -39,7 +53,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting an array of `KeyringConnection` objects
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    @objc open func fetchKeyringConnectionsForBlog(_ blog: Blog, success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func fetchKeyringConnectionsForBlog(_ blog: Blog, success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog) else {
             return
         }
@@ -61,7 +75,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting a `PublicizeConnection` parameter.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func createPublicizeConnectionForBlog(_ blog: Blog,
+    @objc func createPublicizeConnectionForBlog(_ blog: Blog,
         keyring: KeyringConnection,
         externalUserID: String?,
         success: ((PublicizeConnection) -> Void)?,
@@ -116,7 +130,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func updateSharedForBlog(
+    @objc func updateSharedForBlog(
         _ blog: Blog,
         shared: Bool,
         forPublicizeConnection pubConn: PublicizeConnection,
@@ -194,7 +208,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func updateExternalID(_ externalID: String,
+    @objc func updateExternalID(_ externalID: String,
         forBlog blog: Blog,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
@@ -238,7 +252,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         // optimistically delete the connection locally.
         coreDataStack.performAndSave({ context in
             let blogInContext = try context.existingObject(with: blog.objectID) as! Blog
@@ -369,7 +383,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    @objc open func syncSharingButtonsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func syncSharingButtonsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
@@ -391,7 +405,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    @objc open func updateSharingButtonsForBlog(_ blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func updateSharingButtonsForBlog(_ blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
 
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {

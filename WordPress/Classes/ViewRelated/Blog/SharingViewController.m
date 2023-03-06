@@ -323,7 +323,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)syncPublicizeServices
 {
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
     [sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf syncConnections];
@@ -362,7 +362,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         return;
     }
 
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];

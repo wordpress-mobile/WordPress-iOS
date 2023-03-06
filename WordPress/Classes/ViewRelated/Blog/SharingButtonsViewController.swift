@@ -554,7 +554,7 @@ import WordPressShared
     /// when finished.  Fails silently if there is an error.
     ///
     private func syncSharingButtons() {
-        let service = SharingService(managedObjectContext: viewContext)
+        let service = SharingService(coreDataStack: ContextManager.shared)
         service.syncSharingButtonsForBlog(self.blog,
             success: { [weak self] in
                 self?.reloadButtons()
@@ -651,7 +651,7 @@ import WordPressShared
     /// - Parameter refresh: True if the tableview sections should be reloaded.
     ///
     private func syncButtonChangesToBlog(_ refresh: Bool) {
-        let service = SharingService(managedObjectContext: viewContext)
+        let service = SharingService(coreDataStack: ContextManager.shared)
         service.updateSharingButtonsForBlog(blog,
             sharingButtons: buttons,
             success: {[weak self] in
