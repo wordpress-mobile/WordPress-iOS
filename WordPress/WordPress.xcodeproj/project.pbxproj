@@ -1133,6 +1133,8 @@
 		4A266B91282B13A70089CF3D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */; };
 		4A358DE629B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
+		4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
+		4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
 		4A526BDF296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
@@ -6622,6 +6624,7 @@
 		4A266B8E282B05210089CF3D /* JSONObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectTests.swift; sourceTree = "<group>"; };
 		4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeService+Lookup.swift"; sourceTree = "<group>"; };
+		4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharingButton+Lookup.swift"; sourceTree = "<group>"; };
 		4A526BDD296BE9A50007B5BA /* CoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataService.m; sourceTree = "<group>"; };
 		4A526BDE296BE9A50007B5BA /* CoreDataService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataService.h; sourceTree = "<group>"; };
 		4A82C43028D321A300486CFF /* Blog+Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Post.swift"; sourceTree = "<group>"; };
@@ -10443,6 +10446,7 @@
 				E1DB326B1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift */,
 				E10290731F30615A00DAC588 /* Role.swift */,
 				E6E27D611C6144DB0063F821 /* SharingButton.swift */,
+				4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */,
 				E6D170361EF9D8D10046D433 /* SiteInfo.swift */,
 				B06378BE253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift */,
 				B06378BF253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift */,
@@ -21418,6 +21422,7 @@
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				98B11B892216535100B7F2D7 /* StatsChildRowsView.swift in Sources */,
+				4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
 				C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */,
@@ -23668,6 +23673,7 @@
 				FABB22132602FC2C00C8785C /* BlogSiteVisibilityHelper.m in Sources */,
 				FABB22142602FC2C00C8785C /* TitleBadgeDisclosureCell.swift in Sources */,
 				FABB22152602FC2C00C8785C /* FormattableContent.swift in Sources */,
+				4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */,
 				FABB22162602FC2C00C8785C /* WebAddressWizardContent.swift in Sources */,
 				C7AFF87D283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				FABB22172602FC2C00C8785C /* VisitsSummaryStatsRecordValue+CoreDataProperties.swift in Sources */,

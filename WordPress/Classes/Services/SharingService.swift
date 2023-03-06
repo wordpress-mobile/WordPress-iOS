@@ -389,61 +389,26 @@ open class SharingService: LocalCoreDataService {
     ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
     fileprivate func mergeSharingButtonsForBlog(_ blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
-        managedObjectContext.perform {
-            var blog: Blog
-            do {
-                blog = try self.managedObjectContext.existingObject(with: blogObjectID) as! Blog
-            } catch let error as NSError {
-                DDLogError("Error fetching Blog: \(error)")
-                // Because of the error we'll bail early, but we still need to call
-                // the success callback if one was passed.
-                onComplete?()
-                return
-            }
+        coreDataStack.performAndSave({ context in
+            let blog = try context.existingObject(with: blogObjectID) as! Blog
 
-            let currentSharingbuttons = self.allSharingButtonsForBlog(blog)
+            let currentSharingbuttons = try SharingButton.allSharingButtons(for: blog, in: context)
 
             // Create or update based on the contents synced.
             let buttonsToKeep = remoteSharingButtons.map { (remoteButton) -> SharingButton in
-                return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog)
+                return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog, in: context)
             }
 
             // Delete any cached PublicizeServices that were not synced.
             for button in currentSharingbuttons {
                 if !buttonsToKeep.contains(button) {
-                    self.managedObjectContext.delete(button)
+                    context.delete(button)
                 }
             }
-
-            // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: onComplete, on: .main)
-        }
+        }, completion: { _ in
+            onComplete?()
+        }, on: .main)
     }
-
-
-    /// Returns an array of all cached `SharingButtons` objects.
-    ///
-    /// - Parameters
-    ///     - blog: A `Blog` object
-    ///
-    /// - Returns: An array of `SharingButton`s.  The array is empty if no objects are cached.
-    ///
-    @objc open func allSharingButtonsForBlog(_ blog: Blog) -> [SharingButton] {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: SharingButton.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "blog = %@", blog)
-        request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-
-        var buttons: [SharingButton]
-        do {
-            buttons = try managedObjectContext.fetch(request) as! [SharingButton]
-        } catch let error as NSError {
-            DDLogError("Error fetching Publicize Connections: \(error.localizedDescription)")
-            buttons = []
-        }
-
-        return buttons
-    }
-
 
     /// Composes a new `SharingButton`, or updates an existing one, with
     /// data represented by the passed `RemoteSharingButton`.
@@ -454,11 +419,11 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: A `SharingButton`.
     ///
-    fileprivate func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog) -> SharingButton {
-        var shareButton = findSharingButtonByID(remoteButton.buttonID, blog: blog)
+    fileprivate func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog, in context: NSManagedObjectContext) -> SharingButton {
+        var shareButton = try? SharingButton.lookupSharingButton(byID: remoteButton.buttonID, for: blog, in: context)
         if shareButton == nil {
             shareButton = NSEntityDescription.insertNewObject(forEntityName: SharingButton.classNameWithoutNamespaces(),
-                into: managedObjectContext) as? SharingButton
+                into: context) as? SharingButton
         }
 
         shareButton?.buttonID = remoteButton.buttonID
@@ -493,30 +458,6 @@ open class SharingService: LocalCoreDataService {
             btn.order = shareButton.order
             return btn
         }
-    }
-
-
-    /// Finds a cached `SharingButton` by its `buttonID` for the specified `Blog`
-    ///
-    /// - Parameters:
-    ///     - buttonID: The button ID of the `sharingButton`.
-    ///     - blog: The blog that owns the sharing button.
-    ///
-    /// - Returns: The requested `SharingButton` or nil.
-    ///
-    @objc open func findSharingButtonByID(_ buttonID: String, blog: Blog) -> SharingButton? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: SharingButton.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "buttonID = %@ AND blog = %@", buttonID, blog)
-
-        var buttons: [SharingButton]
-        do {
-            buttons = try managedObjectContext.fetch(request) as! [SharingButton]
-        } catch let error as NSError {
-            DDLogError("Error fetching shareing button \(buttonID) : \(error.localizedDescription)")
-            buttons = []
-        }
-
-        return buttons.first
     }
 
 

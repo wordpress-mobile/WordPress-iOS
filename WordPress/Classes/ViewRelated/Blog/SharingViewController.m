@@ -357,11 +357,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     // Sync sharing buttons if they have never been synced. Otherwise, the
     // management vc can worry about fetching the latest sharing buttons.
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    NSArray *buttons = [sharingService allSharingButtonsForBlog:self.blog];
+    NSArray *buttons = [SharingButton allSharingButtonsForBlog:self.blog inContext:[self managedObjectContext] error:nil];
     if ([buttons count] > 0) {
         return;
     }
+
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];
