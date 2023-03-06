@@ -1163,6 +1163,39 @@
 /* Notice that a page without content has been created */
 "Blank page created" = "Blank page created";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Display your work across millions of sites.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Hide this";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promote your content with Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Blaze a post now";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promote any post or page in only a few minutes for just a few dollars a day.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Track your campaigns performance and cancel at anytime.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Your content will appear on millions of WordPress and Tumblr sites.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Drive more traffic to your site with Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Blaze this page";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Blaze this post";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Block copied";
 
@@ -1196,6 +1229,9 @@
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blocked user";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2571,6 +2607,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -5917,6 +5954,9 @@ Please install the %3$@ to use the app with this site.";
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pages";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promote with Blaze";
+
 /* Comments Paging
    Discussion Settings
    Settings: Comments Paging preferences */
@@ -6304,6 +6344,9 @@ Please install the %3$@ to use the app with this site.";
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Posts that you like will appear here.";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promote with Blaze";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Dismiss";
 
@@ -6549,6 +6592,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Block this user";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Report this user";
@@ -7991,6 +8040,12 @@ Please install the %3$@ to use the app with this site.";
 /* Dismiss the current view */
 "support.button.close.title" = "Done";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tap to visit the Jetpack app FAQ in an external browser";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Visit our FAQ";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Log Out";
 
@@ -8026,6 +8081,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress Help Center";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Our FAQ provides answers to common questions you may have.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Thank you for switching to the Jetpack app!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Logs";
