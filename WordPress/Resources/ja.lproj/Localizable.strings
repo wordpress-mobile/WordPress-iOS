@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-02 08:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-03 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -9695,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "フォロー";
 
@@ -9963,7 +9966,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.stats.continue.title" = "統計に進む";
 
 /* The description text shown after the user has successfully installed the Jetpack plugin. */
-"jetpack.install-flow.success.description" = "このサイトとアプリを一緒に使用する準備ができました。";
+"jetpack.install-flow.success.description" = "アプリでこのサイトを使用する準備ができました。";
 
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完了";
@@ -10359,13 +10362,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "support.button.logOut.title" = "ログアウト";
 
 /* Accessibility hint, informing user the button can be used to visit the support forums website. */
-"support.button.visitForum.accessibilityHint" = "タップすると、外部ブラウザーでコミュニティフォーラムのサイトにアクセスできます";
+"support.button.visitForum.accessibilityHint" = "タップすると、外部ブラウザーでコミュニティーフォーラムのサイトにアクセスできます";
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "WordPress.org にアクセス";
 
 /* Suggestion in Support view to visit the Forums. */
-"support.row.communityForum.title" = "コミュニティフォーラムで質問して、ボランティアグループからサポートを受けましょう。";
+"support.row.communityForum.title" = "コミュニティーフォーラムで質問して、ボランティアグループからサポートを受けましょう。";
 
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "support.row.contactEmail.accessibilityHint" = "連絡先メールアドレスの変更を促すダイアログを表示します。";
@@ -10410,7 +10413,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "support.sectionHeader.advanced.title" = "上級者向け";
 
 /* Section header in Support view for the Forums. */
-"support.sectionHeader.forum.title" = "コミュニティフォーラム";
+"support.sectionHeader.forum.title" = "コミュニティーフォーラム";
 
 /* Section header in Support view for priority support. */
 "support.sectionHeader.prioritySupport.title" = "優先サポート";
