@@ -54,6 +54,7 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
     func configure(blog: Blog, viewController: BlogDetailsViewController?) {
         self.blog = blog
         self.presenterViewController = viewController
+        cardView.updatePlugin(JetpackPlugin(from: blog.jetpackConnectionActivePlugins))
     }
 
     private func setupView() {

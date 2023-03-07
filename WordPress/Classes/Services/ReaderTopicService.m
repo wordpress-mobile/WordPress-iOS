@@ -412,8 +412,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Find existing tag by slug
     NSManagedObjectID * __block existingTopic = nil;
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * _Nonnull context) {
-        existingTopic = [[ReaderTagTopic lookupWithSlug:slug inContext:context] objectID];
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        existingTopic = [[ReaderTagTopic lookupWithSlug:slug inContext:self.coreDataStack.mainContext] objectID];
     }];
     if (existingTopic) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -469,7 +469,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topicInContext.following = newFollowValue;
     }];
 
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
     [postService setFollowing:newFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
 
     // Define success block
@@ -539,7 +539,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)refreshPostsForFollowedTopic
 {
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
     [postService refreshPostsForFollowedTopic];
 }
 

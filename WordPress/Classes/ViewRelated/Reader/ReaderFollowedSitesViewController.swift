@@ -282,7 +282,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
     @objc func refreshPostsForFollowedTopic() {
-        let service = ReaderPostService(managedObjectContext: managedObjectContext())
+        let service = ReaderPostService(coreDataStack: ContextManager.shared)
         service.refreshPostsForFollowedTopic()
     }
 

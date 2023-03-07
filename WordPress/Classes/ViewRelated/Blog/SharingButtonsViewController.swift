@@ -78,8 +78,7 @@ import WordPressShared
                                                                 action: #selector(doneButtonTapped))
         }
 
-        let service = SharingService(managedObjectContext: viewContext)
-        buttons = service.allSharingButtonsForBlog(self.blog)
+        buttons = (try? SharingButton.allSharingButtons(for: blog, in: viewContext)) ?? []
         configureTableView()
         setupSections()
 
@@ -555,7 +554,7 @@ import WordPressShared
     /// when finished.  Fails silently if there is an error.
     ///
     private func syncSharingButtons() {
-        let service = SharingService(managedObjectContext: viewContext)
+        let service = SharingService(coreDataStack: ContextManager.shared)
         service.syncSharingButtonsForBlog(self.blog,
             success: { [weak self] in
                 self?.reloadButtons()
@@ -641,8 +640,7 @@ import WordPressShared
     /// `buttons` property and refreshes the button section and the more section.
     ///
     private func reloadButtons() {
-        let service = SharingService(managedObjectContext: viewContext)
-        buttons = service.allSharingButtonsForBlog(blog)
+        buttons = (try? SharingButton.allSharingButtons(for: blog, in: viewContext)) ?? []
 
         refreshButtonsSection()
         refreshMoreSection()
@@ -653,7 +651,7 @@ import WordPressShared
     /// - Parameter refresh: True if the tableview sections should be reloaded.
     ///
     private func syncButtonChangesToBlog(_ refresh: Bool) {
-        let service = SharingService(managedObjectContext: viewContext)
+        let service = SharingService(coreDataStack: ContextManager.shared)
         service.updateSharingButtonsForBlog(blog,
             sharingButtons: buttons,
             success: {[weak self] in

@@ -1,10 +1,15 @@
 22.0
 -----
 * [*] Remove large title in Reader and Notifications tabs. [#20271]
+* [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
 
 21.9
 -----
+* [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for later, etc.) [#20197]
 * [**] Reader: Add a button in the post menu to block an author and stop seeing their posts. [#20193]
+* [**] [Jetpack-only] Jetpack individual plugin support: Warns user about sites with only individual plugins not supporting all features of the app yet and gives the ability to install the full Jetpack plugin. [#20223]
+* [**] [Jetpack-only] Help: Display the Jetpack app FAQ card on Help screen when switching from the WordPress app to the Jetpack app is complete. [#20232]
+* [***] [Jetpack-only] Blaze: We added support for Blaze in the app. The user can now promote a post or page from the app to reach new audiences. [#20253]
 
 21.8
 -----
@@ -16,6 +21,7 @@
 * [*] Reader: Add ability to block a followed site. [#20053]
 * [*] Reader: Add ability to report a post's author. [#20064]
 * [*] [internal] Refactored the topic related features in the Reader tab (i.e. following, unfollowing, and search). [#20150]
+* [*] Fix inaccessible block settings within the unsupported block editor [https://github.com/WordPress/gutenberg/pull/48435]
 
 21.7
 -----

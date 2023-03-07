@@ -23,4 +23,9 @@ struct MigrationAppDetection {
 
         return .wordPressNotInstalled
     }
+
+    static var isCounterpartAppInstalled: Bool {
+        let scheme: AppScheme = AppConfiguration.isJetpack ? .wordpress : .jetpack
+        return UIApplication.shared.canOpen(app: scheme)
+    }
 }

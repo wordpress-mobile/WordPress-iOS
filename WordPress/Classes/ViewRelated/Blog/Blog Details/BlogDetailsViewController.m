@@ -446,7 +446,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     if ([self shouldShowBlaze]) {
-        [BlazeEventsTracker trackBlazeFeatureDisplayedFor:BlazeSourceMenuItem];
+        [BlazeEventsTracker trackEntryPointDisplayedFor:BlazeSourceMenuItem];
     }
 }
 
@@ -1668,12 +1668,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showBlaze
 {
-    [BlazeEventsTracker trackBlazeFeatureTappedFor:BlazeSourceMenuItem];
+    [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
     
-    [BlazeWebViewCoordinator presentBlazeFlowInViewController:self
-                                                       source:BlazeSourceMenuItem
-                                                         blog:self.blog
-                                                       postID:nil];
+    [BlazeOverlayCoordinator presentBlazeOverlayInViewController:self
+                                                          source:BlazeSourceMenuItem
+                                                            blog:self.blog
+                                                            post:nil];
 }
 
 - (void)showScan

@@ -5,7 +5,7 @@ class JetpackRemoteInstallCardView: UIView {
 
     // MARK: Properties
 
-    private let viewModel: JetpackRemoteInstallCardViewModel
+    private var viewModel: JetpackRemoteInstallCardViewModel
 
     private lazy var animation: Animation? = {
         effectiveUserInterfaceLayoutDirection == .leftToRight ?
@@ -94,6 +94,14 @@ class JetpackRemoteInstallCardView: UIView {
 
     // MARK: Functions
 
+    func updatePlugin(_ plugin: JetpackPlugin?) {
+        guard let plugin else {
+            return
+        }
+        viewModel.installedPlugin = plugin
+        noticeLabel.attributedText = viewModel.noticeLabel
+    }
+
     @objc func onLearnMoreTap() {
         viewModel.onLearnMoreTap()
     }
@@ -134,6 +142,8 @@ struct JetpackRemoteInstallCardViewModel {
 
     let onHideThisTap: UIActionHandler
     let onLearnMoreTap: () -> Void
+    var installedPlugin: JetpackPlugin
+
     var noticeLabel: NSAttributedString {
         switch installedPlugin {
         case .multiple:
@@ -148,8 +158,6 @@ struct JetpackRemoteInstallCardViewModel {
             return boldNoticeText
         }
     }
-
-    private let installedPlugin: JetpackPlugin
 
     init(onHideThisTap: @escaping UIActionHandler = { _ in },
          onLearnMoreTap: @escaping () -> Void = {},

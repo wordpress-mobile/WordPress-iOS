@@ -175,7 +175,7 @@
         [self.delegate sharingAuthorizationHelper:self willFetchKeyringsForService:self.publicizeService];
     }
 
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
     [sharingService fetchKeyringConnectionsForBlog:self.blog success:^(NSArray *keyringConnections) {
         if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didFetchKeyringsForService:)]) {
@@ -340,7 +340,7 @@
 
     [self dismissNavViewController];
 
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
 
     [sharingService updateExternalID:externalID forBlog:self.blog forPublicizeConnection:publicizeConnection success:^{
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didConnectToService:withPublicizeConnection:)]) {
@@ -367,7 +367,7 @@
 
     [self dismissNavViewController];
 
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     [sharingService createPublicizeConnectionForBlog:self.blog
                                              keyring:keyConn
                                       externalUserID:externalUserID

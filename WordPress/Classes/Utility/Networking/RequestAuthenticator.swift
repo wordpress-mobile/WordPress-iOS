@@ -298,6 +298,12 @@ class RequestAuthenticator: NSObject {
     }
 
     private func logErrorIfNeeded(_ error: Swift.Error) {
+
+        if let cookieError = error as? AuthenticationService.RequestAuthCookieError {
+            WordPressAppDelegate.crashLogging?.logMessage(cookieError.localizedDescription)
+            return
+        }
+
         let nsError = error as NSError
 
         switch nsError.code {

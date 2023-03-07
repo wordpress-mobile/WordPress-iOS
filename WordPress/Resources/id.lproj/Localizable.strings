@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-16 21:54:07+0000 */
+/* Translation-Revision-Date: 2023-02-28 12:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Menu blok";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -9692,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "contoh.com";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Promosikan";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "ikuti";
 
@@ -9959,6 +9965,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Lanjutkan ke Statistik";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Siap menggunakan situs ini dengan aplikasi.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Selesai";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistik, Reader, Pemberitahuan, dan berbagai fitur lain akan segera berpindah ke aplikasi Jetpack seluler.";
 
@@ -9976,6 +9988,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Ingatkan saya nanti";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Dengan menyiapkan Jetpack, Anda menyetujui %@ kami";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Instal plugin lengkap";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Dapatkan Bantuan";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "plugin Jetpack lengkap";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Syarat dan Ketentuan";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Mohon instal plugin Jetpack lengkap";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Tambah penulis";
@@ -10012,6 +10042,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Tulis blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Pelajari lebih lanjut";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Sembunyikan";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Situs ini menggunakan plugin %1$@ yang belum mendukung semua fitur aplikasi. Silakan pasang plugin Jetpack versi lengkap.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Situs ini menggunakan beberapa plugin individual Jetpack sekaligus yang belum mendukung semua fitur aplikasi. Silakan pasang plugin Jetpack versi lengkap.";
 
 /* Later today */
 "later today" = "belakangan hari ini";
@@ -10147,6 +10189,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Anda sudah login!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Laporkan pengguna ini";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Kembali";
@@ -10309,6 +10354,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Anggota situs";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Selesai";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Logout";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Ketuk untuk mengunjungi situs web forum komunitas di browser eksternal";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Kunjungi WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Ajukan pertanyaan di forum komunitas dan dapatkan bantuan dari komunitas relawan kami.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Menampilkan dialog untuk mengubah E-mail Kontak.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Belum Ditetapkan";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "E-mail";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Hubungi bantuan";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Debug";
+
+/* Support email label. */
+"support.row.email.title" = "E-mail";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "Forum WordPress";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "Pusat Bantuan WordPress";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Log";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Tiket";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Versi";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Tambahkan informasi lain dalam log dengan mengaktifkan fitur Debugging untuk membantu memecahkan masalah dalam aplikasi.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "Akun WordPress.com";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Tingkat Lanjut";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Forum Komunitas";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Bantuan Prioritas";
+
+/* View title for Help & Support page. */
+"support.title" = "Bantuan";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";

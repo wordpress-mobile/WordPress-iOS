@@ -9,6 +9,14 @@ public class SupportScreen: ScreenObject {
         $0.buttons["close-button"]
     }
 
+    private let contactSupportButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["contact-support-button"]
+    }
+
+    private let contactEmailFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Email"]
+    }
+
     private let visitForumsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["visit-wordpress-forums-button"]
     }
@@ -34,6 +42,17 @@ public class SupportScreen: ScreenObject {
             app: app,
             waitTimeout: 7
         )
+    }
+
+    public func contactSupport(userEmail: String) throws -> ContactUsScreen {
+        let emailTextField = app.textFields["Email"]
+
+        app.cells["contact-support-button"].tap()
+        emailTextField.tap()
+        emailTextField.typeText(userEmail)
+        app.buttons["OK"].tap()
+
+        return try ContactUsScreen()
     }
 
     public func assertVisitForumButtonEnabled() -> SupportScreen {

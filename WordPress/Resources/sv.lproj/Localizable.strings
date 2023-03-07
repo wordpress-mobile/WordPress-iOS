@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-22 07:55:02+0000 */
+/* Translation-Revision-Date: 2023-03-01 17:00:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Block är innehållsbitar som du kan lägga in, sortera om och stilsätta utan att du behöver kunna programmera eller koda. Block är ett enkelt och modernt sätt för dig att skapa vackra layouter.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Block-meny";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
@@ -2444,7 +2447,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Dismiss a view. Verb */
-"Dismiss" = "Stäng";
+"Dismiss" = "Avfärda";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Avfärda steget %@ i snabbstarten";
@@ -9692,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "följ";
 
@@ -9983,11 +9989,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Påminn mig senare";
 
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Genom att konfigurera Jetpack accepterar du våra %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Installera det fullständiga tillägget";
+
 /* Jetpack Plugin Modal secondary button title */
 "jetpack.plugin.modal.secondary.button.title" = "Kontakta supporten";
 
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "fullständigt Jetpack-tillägg";
+
 /* Jetpack Plugin Modal footnote terms and conditions */
 "jetpack.plugin.modal.terms" = "Villkor";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Installera det fullständiga Jetpack-tillägget";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Lägg till en författare";
@@ -10030,6 +10048,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "jetpackinstallcard.menu.hide" = "Dölj detta";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Den här webbplatsen använder tillägget %1$@, som inte stöder alla funktioner i appen än. Installera det fullständiga Jetpack-tillägget.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Den här webbplatsen använder enskilda Jetpack-tillägg, som inte stöder alla funktioner i appen än. Installera det fullständiga Jetpack-tillägget.";
 
 /* Later today */
 "later today" = "senare idag";
@@ -10337,8 +10361,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Logga ut";
 
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Tryck för att besöka communityforumets webbplats i en extern webbläsare";
+
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Besök WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Ställ en fråga i communityforumet och få hjälp av vår grupp med volontärer.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Visar en dialog för att ändra e-posten för kontakt.";
 
 /* Display value for Support email field if there is no user email address. */
 "support.row.contactEmail.emailNoteSet.detail" = "Inte inställt";
@@ -10363,6 +10396,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Loggar";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Biljetter";
 
 /* Label in Support view displaying the app version. */
 "support.row.version.title" = "Version";

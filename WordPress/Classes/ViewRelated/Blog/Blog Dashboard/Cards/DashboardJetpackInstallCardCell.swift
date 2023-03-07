@@ -55,6 +55,7 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presenterViewController = viewController
+        cardView.updatePlugin(JetpackPlugin(from: blog.jetpackConnectionActivePlugins))
     }
 
     private func setupView() {

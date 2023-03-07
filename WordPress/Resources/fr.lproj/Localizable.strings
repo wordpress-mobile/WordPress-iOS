@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-17 17:32:13+0000 */
+/* Translation-Revision-Date: 2023-03-01 13:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: fr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Les blocs sont des éléments de contenu que vous pouvez insérer, réorganiser et styliser sans avoir besoin de savoir coder. Les blocs sont un moyen simple et moderne de créer de belles mises en page.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Menu Blocs";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -9959,6 +9962,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Poursuivre vers la section Statistiques";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Vous pouvez désormais utiliser ce site avec l’application.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Terminé";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Les statistiques, le lecteur, les notifications et d’autres fonctionnalités vont bientôt être déplacées dans l’application mobile Jetpack.";
 
@@ -9976,6 +9985,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Me rappeler ultérieurement";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "En configurant Jetpack, vous acceptez nos %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Installer l’extension complète";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Contacter l’assistance";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "extension Jetpack complète";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Conditions générales";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Installez l’extension Jetpack complète";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Ajouter un auteur";
@@ -10012,6 +10039,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Tenir un blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Lire la suite";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Masquer ceci";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Ce site utilise l’extension %1$@, qui ne prend pas encore en charge toutes les fonctionnalités de l’application. Installez l’extension Jetpack complète.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Ce site utilise des extensions Jetpack individuelles, qui ne prennent pas encore en charge toutes les fonctionnalités de l’application. Installez l’extension Jetpack complète.";
 
 /* Later today */
 "later today" = "ultérieurement aujourd'hui";
@@ -10147,6 +10186,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Connexion établie.";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Signaler cet utilisateur";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Retour";
@@ -10309,6 +10351,69 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Membres du site";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Terminé";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Se déconnecter";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Appuyez pour visiter le site Web du forum communautaire dans un navigateur externe";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Visiter WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Posez une question dans le forum communautaire et obtenez de l’aide auprès de notre groupe de bénévoles.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Affiche une boite de dialogue pour changer l’adresse e-mail de contact.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Non défini";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "E-mail";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Contacter l’assistance";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Débogage";
+
+/* Support email label. */
+"support.row.email.title" = "E-mail";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "Forums WordPress";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "Centre d'assistance de WordPress";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Journaux";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Billets";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Activez le débogage pour inclure dans vos journaux des informations supplémentaires qui peuvent être utiles à la résolution de problèmes liés à l’application.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "Compte WordPress.com";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Avancé";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Forums communautaires";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Accès prioritaire à l’assistance";
+
+/* View title for Help & Support page. */
+"support.title" = "Aide";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "ces éléments vont être supprimés :";
