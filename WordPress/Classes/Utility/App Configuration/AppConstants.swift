@@ -48,6 +48,10 @@ extension AppConstants {
         static let workWithUsURL = "https://make.wordpress.org/mobile/handbook"
     }
 
+    struct AppRatings {
+        static let prompt = NSLocalizedString("What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the app")
+    }
+
     struct PostSignUpInterstitial {
         static let welcomeTitleText = NSLocalizedString("Welcome to WordPress", comment: "Post Signup Interstitial Title Text for WordPress iOS")
     }

@@ -6,8 +6,7 @@ extension NotificationsViewController {
     static let contactURL = "https://support.wordpress.com/contact/"
 
     func setupAppRatings() {
-        inlinePromptView.setupHeading(NSLocalizedString("What do you think about WordPress?",
-                                                        comment: "This is the string we display when prompting the user to review the app"))
+        inlinePromptView.setupHeading(AppConstants.AppRatings.prompt)
         let yesTitle = NSLocalizedString("I like it",
                                          comment: "This is one of the buttons we display inside of the prompt to review the app")
         let noTitle = NSLocalizedString("Could improve",
