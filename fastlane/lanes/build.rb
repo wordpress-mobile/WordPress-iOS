@@ -81,6 +81,7 @@ platform :ios do
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
+    p ">>>>>>>>>>>>>>>>>>>>>>>>>> #{File.join(build_products_path, '*.xctestrun')}"
     xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
     end.first
