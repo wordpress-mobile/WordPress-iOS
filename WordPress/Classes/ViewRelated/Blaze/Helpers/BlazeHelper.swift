@@ -1,8 +1,13 @@
 import Foundation
 
-final class BlazeHelper {
+@objcMembers final class BlazeHelper: NSObject {
 
-    static func isBlazeFlagEnabled(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> Bool {
+    /// Using two separate methods (rather than one method with a default argument) for Obj-C compatibility.
+    static func isBlazeFlagEnabled() -> Bool {
+        return isBlazeFlagEnabled(featureFlagStore: RemoteFeatureFlagStore())
+    }
+
+    static func isBlazeFlagEnabled(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
         guard AppConfiguration.isJetpack else {
             return false
         }
