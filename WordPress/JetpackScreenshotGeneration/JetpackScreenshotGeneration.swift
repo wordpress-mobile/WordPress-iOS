@@ -9,13 +9,12 @@ class JetpackScreenshotGeneration: XCTestCase {
     override func setUpWithError() throws {
         super.setUp()
 
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let app = XCUIApplication(bundleIdentifier: "com.automattic.jetpack")
 
         // This does the shared setup including injecting mocks and launching the app
-        setUpTestSuite(for: "Jetpack")
+        setUpTestSuite(for: app, removeBeforeLaunching: true)
 
         // The app is already launched so we can set it up for screenshots here
-        let app = XCUIApplication()
         setupSnapshot(app)
 
         if XCUIDevice.isPad {
@@ -30,9 +29,8 @@ class JetpackScreenshotGeneration: XCTestCase {
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        removeApp("Jetpack")
+        removeApp(XCUIApplication(bundleIdentifier: "com.automattic.jetpack"))
     }
 
     func testGenerateScreenshots() throws {

@@ -3,7 +3,7 @@ import XCTest
 
 extension XCTestCase {
 
-    public func setUpTestSuite(for appName: String? = nil, app: XCUIApplication = XCUIApplication()) {
+    public func setUpTestSuite(for app: XCUIApplication = XCUIApplication(), removeBeforeLaunching: Bool = false) {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
@@ -11,8 +11,8 @@ extension XCTestCase {
 
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
 
-        if let appName = appName {
-            removeApp(appName)
+        if removeBeforeLaunching {
+            removeApp(app)
         }
 
         app.activate()
@@ -76,7 +76,21 @@ extension XCTestCase {
         static let tag = "tag \(Date().toString())"
     }
 
-    public func removeApp(_ appName: String = XCUIApplication().label, app: XCUIApplication = XCUIApplication()) {
+    public func removeApp(_ app: XCUIApplication = XCUIApplication()) {
+        // We need to store the app name before calling `terminate()` if we want to delete it.
+        // Otherwise, we won't be able to access it to read its name as the test will fail with:
+        //
+        // > Failed to get matching snapshot: Application org.wordpress is not running
+        //
+        // Launch the app to access its name so we can deleted it from Springboard
+        switch app.state {
+        case .unknown, .notRunning:
+            app.launch()
+        case _:
+            break
+        }
+
+        let appName = app.label
         app.terminate()
 
         let appToRemove = Constants.homeApp.icons[appName]
