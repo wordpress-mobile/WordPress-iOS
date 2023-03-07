@@ -10,7 +10,7 @@ extension PostService {
     ///   - success: The success block accepts an optional list of Revisions
     ///   - failure: The failure block accepts an optional error
     func getPostRevisions(for post: AbstractPost,
-                          success: @escaping ([Revision]?) -> Void,
+                          success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
         guard let blogId = post.blog.dotComID,
             let postId = post.postID,
@@ -27,9 +27,7 @@ extension PostService {
                                         let revisions = self.syncPostRevisions(from: remoteRevisions ?? [],
                                                                                for: postId.intValue,
                                                                                with: blogId.intValue)
-                                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                                            success(revisions)
-                                        }, on: .main)
+                                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
                                     }
         }, failure: failure)
     }
