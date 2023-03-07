@@ -273,7 +273,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func subscribeToSiteSettingsUpdated() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogUpdated, object: nil, queue: nil) { [weak self] _ in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogSettingsUpdated, object: nil, queue: nil) { [weak self] _ in
             guard let blog = self?.blog else {
                 return
             }
