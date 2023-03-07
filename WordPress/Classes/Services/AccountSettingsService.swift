@@ -74,7 +74,7 @@ class AccountSettingsService {
     }
 
     func getSettingsAttempt(count: Int = 0, completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
-        self.remote.getSettings(
+        remote.getSettings(
             success: { settings in
                 self.coreDataStack.performAndSave({ context in
                     if let managedSettings = self.managedAccountSettingsWithID(self.userID, in: context) {
