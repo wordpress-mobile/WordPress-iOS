@@ -82,6 +82,8 @@ platform :ios do
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
     p ">>>>>>>>>>>>>>>>>>>>>>>>>> #{File.join(build_products_path, '*.xctestrun')}"
+    p ">>>>>>>>>>>>>>>>>>>>>>>>>> #{name}"
+
     xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
     end.first
