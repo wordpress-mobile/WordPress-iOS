@@ -1,3 +1,7 @@
+22.0
+-----
+* [*] Remove large title in Reader and Notifications tabs. [#20271]
+
 21.9
 -----
 * [**] Reader: Add a button in the post menu to block an author and stop seeing their posts. [#20193]
