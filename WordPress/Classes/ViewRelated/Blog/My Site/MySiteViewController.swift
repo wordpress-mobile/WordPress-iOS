@@ -132,10 +132,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             createFABIfNeeded()
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
-
-            updateBlazeStatus(for: newBlog) { [weak self] in
-                self?.updateChildViewController(for: newBlog)
-            }
+            updateBlazeStatus(for: newBlog)
         }
 
         get {
@@ -170,6 +167,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         startObservingQuickStart()
         startObservingOnboardingPrompt()
         subscribeToWillEnterForeground()
+        subscribeToSiteSettingsUpdated()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -272,6 +270,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func subscribeToPostPublished() {
         NotificationCenter.default.addObserver(self, selector: #selector(handlePostPublished), name: .newPostPublished, object: nil)
+    }
+
+    private func subscribeToSiteSettingsUpdated() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogUpdated, object: nil, queue: nil) { [weak self] _ in
+            guard let blog = self?.blog else {
+                return
+            }
+            self?.updateBlazeStatus(for: blog)
+        }
     }
 
     private func subscribeToWillEnterForeground() {
@@ -433,11 +440,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
-
-
-        updateBlazeStatus(for: mainBlog) { [weak self] in
-            self?.updateChildViewController(for: mainBlog)
-        }
+        updateBlazeStatus(for: mainBlog)
     }
 
     @objc
@@ -474,6 +477,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+                self.updateBlazeStatus(for: blog)
             }
         case .dashboard:
 
@@ -490,6 +494,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+                self.updateBlazeStatus(for: blog)
             }
         }
 
@@ -825,10 +830,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.updateBlazeStatus(for: blog) {
-                self.updateChildViewController(for: blog)
-            }
-
+            self.updateBlazeStatus(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.createFABIfNeeded()
@@ -959,15 +961,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Blaze
 
-    private func updateBlazeStatus(for blog: Blog?, completion: @escaping () -> Void) {
+    private func updateBlazeStatus(for blog: Blog) {
         guard BlazeHelper.isBlazeFlagEnabled(),
-              let blog = blog,
               let blazeService = BlazeService() else {
-            completion()
+            updateChildViewController(for: blog)
             return
         }
 
-        blazeService.updateStatus(for: blog, success: completion)
+        blazeService.updateStatus(for: blog) { [weak self] in
+            self?.updateChildViewController(for: blog)
+        }
     }
 
     // MARK: - Blogging Prompts
