@@ -3,12 +3,7 @@ import Foundation
 
 extension PostService {
 
-    /// PostService API to get the revisions list
-    ///
-    /// - Parameters:
-    ///   - post: A valid abstract post
-    ///   - success: The success block accepts an optional list of Revisions
-    ///   - failure: The failure block accepts an optional error
+    /// PostService API to get the revisions list and store them into the Core Data data store.
     func getPostRevisions(for post: AbstractPost,
                           success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
