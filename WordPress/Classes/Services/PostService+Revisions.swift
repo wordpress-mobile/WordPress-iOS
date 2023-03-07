@@ -19,9 +19,11 @@ extension PostService {
                                 postId: postId.intValue,
                                 success: { (remoteRevisions) in
                                     self.managedObjectContext.perform {
-                                        let revisions = self.syncPostRevisions(from: remoteRevisions ?? [],
-                                                                               for: postId.intValue,
-                                                                               with: blogId.intValue)
+                                        let _ = self.syncPostRevisions(
+                                            from: remoteRevisions ?? [],
+                                            for: postId.intValue,
+                                            with: blogId.intValue
+                                        )
                                         ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
                                     }
         }, failure: failure)
