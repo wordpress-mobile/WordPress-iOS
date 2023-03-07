@@ -1,5 +1,6 @@
 22.0
 -----
+* [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
 
 
 21.9

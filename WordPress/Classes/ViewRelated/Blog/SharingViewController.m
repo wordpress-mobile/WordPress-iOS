@@ -90,8 +90,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)refreshPublicizers
 {
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    self.publicizeServices = [sharingService allPublicizeServices];
+    self.publicizeServices = [PublicizeService allPublicizeServicesInContext:[self managedObjectContext] error:nil];
 
     [self.tableView reloadData];
 }
@@ -324,7 +323,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)syncPublicizeServices
 {
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
     [sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf syncConnections];
@@ -358,11 +357,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     // Sync sharing buttons if they have never been synced. Otherwise, the
     // management vc can worry about fetching the latest sharing buttons.
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    NSArray *buttons = [sharingService allSharingButtonsForBlog:self.blog];
+    NSArray *buttons = [SharingButton allSharingButtonsForBlog:self.blog inContext:[self managedObjectContext] error:nil];
     if ([buttons count] > 0) {
         return;
     }
+
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];
