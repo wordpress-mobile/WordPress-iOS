@@ -55,7 +55,7 @@ class AppFeedbackPromptView: UIView {
         leftButton.accessibilityIdentifier = "yes-button"
         buttonStack.addArrangedSubview(leftButton)
 
-        // Could be Better Button
+        // Could improve Button
         rightButton.translatesAutoresizingMaskIntoConstraints = false
         rightButton.backgroundColor = .secondaryButtonBackground
         rightButton.borderWidth = 1.0
