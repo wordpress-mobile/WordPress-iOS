@@ -53,9 +53,9 @@ extension NotificationsViewController {
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.inlinePromptView.setupHeading(NSLocalizedString("Could you tell us how we could improve?",
                                                                   comment: "This is the text we display to the user when we ask them for a review and they've indicated they don't like the app"))
-            let yesTitle = NSLocalizedString("Send Feedback",
+            let yesTitle = NSLocalizedString("Send feedback",
                                              comment: "This is one of the buttons we display when prompting the user for a review")
-            let noTitle = NSLocalizedString("No Thanks",
+            let noTitle = NSLocalizedString("No thanks",
                                             comment: "This is one of the buttons we display when prompting the user for a review")
             self?.inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
                 self?.gatherFeedback()
