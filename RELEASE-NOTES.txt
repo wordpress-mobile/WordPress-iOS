@@ -1,6 +1,6 @@
 22.0
 -----
-
+* [*] [internal] Refactored the Core Data operations (saving the site data) after a new site is created. [#20270]
 
 21.9
 -----
