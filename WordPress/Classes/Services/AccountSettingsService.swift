@@ -76,9 +76,17 @@ class AccountSettingsService {
     func getSettingsAttempt(count: Int = 0, completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
         self.remote.getSettings(
             success: { settings in
-                self.updateSettings(settings)
-                self.status = .idle
-                completion?(.success(settings))
+                self.coreDataStack.performAndSave({ context in
+                    if let managedSettings = self.managedAccountSettingsWithID(self.userID, in: context) {
+                        managedSettings.updateWith(settings)
+                    } else {
+                        self.createAccountSettings(self.userID, settings: settings, in: context)
+                    }
+                }, completion: {
+                    self.loadSettings()
+                    self.status = .idle
+                    completion?(.success(settings))
+                }, on: .main)
             },
             failure: { error in
                 let error = error as NSError
@@ -220,18 +228,6 @@ class AccountSettingsService {
         }
 
         return reverse
-    }
-
-    fileprivate func updateSettings(_ settings: AccountSettings) {
-        coreDataStack.performAndSave { context in
-            if let managedSettings = self.managedAccountSettingsWithID(self.userID, in: context) {
-                managedSettings.updateWith(settings)
-            } else {
-                self.createAccountSettings(self.userID, settings: settings, in: context)
-            }
-        }
-
-        loadSettings()
     }
 
     fileprivate func accountSettingsWithID(_ userID: Int) -> AccountSettings? {
