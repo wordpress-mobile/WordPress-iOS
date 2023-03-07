@@ -16,7 +16,6 @@ extension PublicizeService {
         try? lookupPublicizeServiceNamed(name, in: context)
     }
 
-
     /// Returns an array of all cached `PublicizeService` objects.
     ///
     /// - Returns: An array of `PublicizeService`.  The array is empty if no objects are cached.

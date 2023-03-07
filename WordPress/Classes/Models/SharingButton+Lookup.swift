@@ -2,9 +2,6 @@ extension SharingButton {
 
     /// Returns an array of all cached `SharingButtons` objects.
     ///
-    /// - Parameters
-    ///     - blog: A `Blog` object
-    ///
     /// - Returns: An array of `SharingButton`s.  The array is empty if no objects are cached.
     ///
     @objc(allSharingButtonsForBlog:inContext:error:)
@@ -18,7 +15,7 @@ extension SharingButton {
     /// Finds a cached `SharingButton` by its `buttonID` for the specified `Blog`
     ///
     /// - Parameters:
-    ///     - buttonID: The button ID of the `sharingButton`.
+    ///     - buttonID: The button ID of the `SharingButton`.
     ///     - blog: The blog that owns the sharing button.
     ///
     /// - Returns: The requested `SharingButton` or nil.
