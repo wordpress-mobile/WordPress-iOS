@@ -53,6 +53,7 @@ class AppFeedbackPromptView: UIView {
         leftButton.setTitleColor(.white, for: .normal)
         leftButton.titleLabel?.font = textFont
         leftButton.accessibilityIdentifier = "yes-button"
+        leftButton.titleLabel?.adjustsFontSizeToFitWidth = true
         buttonStack.addArrangedSubview(leftButton)
 
         // Could improve Button
@@ -64,6 +65,7 @@ class AppFeedbackPromptView: UIView {
         rightButton.setTitleColor(.text, for: .normal)
         rightButton.titleLabel?.font = textFont
         rightButton.accessibilityIdentifier = "no-button"
+        rightButton.titleLabel?.adjustsFontSizeToFitWidth = true
         buttonStack.addArrangedSubview(rightButton)
 
         setupConstraints()
