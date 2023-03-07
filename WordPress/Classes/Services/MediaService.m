@@ -676,53 +676,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 #pragma mark - Thumbnails
 
-- (void)thumbnailFileURLForMedia:(Media *)mediaInRandomContext
-                   preferredSize:(CGSize)preferredSize
-                      completion:(void (^)(NSURL * _Nullable, NSError * _Nullable))completion
-{
-    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
-    [self.managedObjectContext performBlock:^{
-        NSError *error;
-        Media *media = (Media *)[self.managedObjectContext existingObjectWithID:mediaID error:&error];
-        if (media == nil) {
-            completion(nil, error);
-            return;
-        }
-        [self.thumbnailService thumbnailURLForMedia:media
-                                      preferredSize:preferredSize
-                                       onCompletion:^(NSURL *url) {
-                                           completion(url, nil);
-                                       }
-                                            onError:^(NSError *error) {
-                                                completion(nil, error);
-                                            }];
-    }];
-}
-
-- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
-                 preferredSize:(CGSize)preferredSize
-                    completion:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion
-{
-    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
-    [self.managedObjectContext performBlock:^{
-        NSError *error;
-        Media *media = (Media *)[self.managedObjectContext existingObjectWithID:mediaID error:&error];
-        if (media == nil) {
-            completion(nil, error);
-            return;
-        }
-        [self.thumbnailService thumbnailURLForMedia:media
-                                      preferredSize:preferredSize
-                                       onCompletion:^(NSURL *url) {
-                                           UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-                                           completion(image, nil);
-                                       }
-                                            onError:^(NSError *error) {
-                                                completion(nil, error);
-                                            }];
-    }];
-}
-
 - (MediaThumbnailService *)thumbnailService
 {
     if (!_thumbnailService) {

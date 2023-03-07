@@ -142,32 +142,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
                         success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
-/**
- Gets a local thumbnail image file URL for the Media item, or generates one, if available.
-
- @discussion If the media asset is a video a frame of the video is returned.
-
- @param mediaInRandomContext the Media object from where to get the thumbnail.
- @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
-        exceed the maximum dimension of the UIScreen size.
- @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
- */
-- (void)thumbnailFileURLForMedia:(nonnull Media *)mediaInRandomContext
-                   preferredSize:(CGSize)preferredSize
-                      completion:(nonnull void (^)(NSURL * _Nullable url, NSError * _Nullable error))completion;
-/**
- Gets a thumbnail image for the Media item, or generates one, if available.
- 
- @discussion If the media asset is a video a frame of the video is returned.
-
- @param mediaInRandomContext the Media object from where to get the thumbnail.
- @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
-        exceed the maximum dimension of the UIScreen size.
- @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
- */
-- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
-                 preferredSize:(CGSize)preferredSize
-                    completion:(nonnull void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion;
 
 - (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
                             forMediaTypes:(nonnull NSSet *)mediaTypes
