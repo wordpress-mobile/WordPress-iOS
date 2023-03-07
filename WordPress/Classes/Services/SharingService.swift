@@ -172,7 +172,7 @@ import WordPressKit
                         WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: value.siteID)
 
                         self.coreDataStack.performAndSave({ context in
-                            _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                            try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
                         }, completion: { result in
                             switch result {
                             case .success:
