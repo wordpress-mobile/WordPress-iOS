@@ -10,6 +10,8 @@ common_params:
   - &common_env
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
     IMAGE_ID: xcode-14.2
+  - &lint_queue
+      queue: "linter"
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -39,15 +41,13 @@ steps:
 
       - label: ":rubocop: RuboCop"
         command: rubocop
-        agents:
-          queue: "linter"
+        agents: *lint_queue
 
       - label: ":swift: SwiftLint"
         command: swiftlint
-        agents:
-          queue: "linter"
+        agents: *lint_queue
 
-      - label: ":danger: Danger"
+      - label: ":warning: Danger"
         command: danger
-        agents:
-          queue: "linter"
+        agents: *lint_queue
+
