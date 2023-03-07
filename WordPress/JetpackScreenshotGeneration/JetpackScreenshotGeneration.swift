@@ -9,7 +9,7 @@ class JetpackScreenshotGeneration: XCTestCase {
     override func setUpWithError() throws {
         super.setUp()
 
-        let app = XCUIApplication(bundleIdentifier: "com.automattic.jetpack")
+        let app = XCUIApplication.jetpack
 
         // This does the shared setup including injecting mocks and launching the app
         setUpTestSuite(for: app, removeBeforeLaunching: true)
@@ -30,7 +30,7 @@ class JetpackScreenshotGeneration: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        removeApp(XCUIApplication(bundleIdentifier: "com.automattic.jetpack"))
+        removeApp(.jetpack)
     }
 
     func testGenerateScreenshots() throws {
@@ -95,4 +95,9 @@ extension ScreenObject {
 
         return self
     }
+}
+
+extension XCUIApplication {
+
+    static let jetpack = XCUIApplication(bundleIdentifier: "com.automattic.jetpack")
 }
