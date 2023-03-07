@@ -29,8 +29,8 @@ class JetpackScreenshotGeneration: XCTestCase {
     }
 
     override func tearDown() {
-        super.tearDown()
         removeApp(.jetpack)
+        super.tearDown()
     }
 
     func testGenerateScreenshots() throws {
