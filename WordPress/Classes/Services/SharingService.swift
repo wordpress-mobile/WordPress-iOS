@@ -304,7 +304,7 @@ import WordPressKit
     ///     - remoteServices: An array of `RemotePublicizeService` objects to merge.
     ///     - success: An optional callback block to be performed when core data has saved the changes.
     ///
-    fileprivate func mergePublicizeServices(_ remoteServices: [RemotePublicizeService], success: (() -> Void)? ) {
+    private func mergePublicizeServices(_ remoteServices: [RemotePublicizeService], success: (() -> Void)? ) {
         coreDataStack.performAndSave({ context in
             let currentPublicizeServices = (try? PublicizeService.allPublicizeServices(in: context)) ?? []
 
@@ -329,7 +329,7 @@ import WordPressKit
     ///
     /// - Returns: A `PublicizeService`.
     ///
-    fileprivate func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService, in context: NSManagedObjectContext) -> PublicizeService {
+    private func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService, in context: NSManagedObjectContext) -> PublicizeService {
         var pubService = try? PublicizeService.lookupPublicizeServiceNamed(remoteService.serviceID, in: context)
         if pubService == nil {
             pubService = NSEntityDescription.insertNewObject(forEntityName: PublicizeService.classNameWithoutNamespaces(),
@@ -361,7 +361,7 @@ import WordPressKit
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
-    fileprivate func createOrReplacePublicizeConnectionForBlogWithObjectID(
+    private func createOrReplacePublicizeConnectionForBlogWithObjectID(
         _ blogObjectID: NSManagedObjectID,
         remoteConnection: RemotePublicizeConnection,
         in context: NSManagedObjectContext
@@ -428,7 +428,7 @@ import WordPressKit
     ///     - remoteSharingButtons: An array of `RemoteSharingButton` objects to merge.
     ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
-    fileprivate func mergeSharingButtonsForBlog(_ blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
+    private func mergeSharingButtonsForBlog(_ blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
         coreDataStack.performAndSave({ context in
             let blog = try context.existingObject(with: blogObjectID) as! Blog
 
@@ -459,7 +459,7 @@ import WordPressKit
     ///
     /// - Returns: A `SharingButton`.
     ///
-    fileprivate func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog, in context: NSManagedObjectContext) -> SharingButton {
+    private func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog, in context: NSManagedObjectContext) -> SharingButton {
         var shareButton = try? SharingButton.lookupSharingButton(byID: remoteButton.buttonID, for: blog, in: context)
         if shareButton == nil {
             shareButton = NSEntityDescription.insertNewObject(forEntityName: SharingButton.classNameWithoutNamespaces(),
@@ -486,7 +486,7 @@ import WordPressKit
     ///
     /// - Returns: An array of `RemoteSharingButton` objects.
     ///
-    fileprivate func remoteShareButtonsFromShareButtons(_ shareButtons: [SharingButton]) -> [RemoteSharingButton] {
+    private func remoteShareButtonsFromShareButtons(_ shareButtons: [SharingButton]) -> [RemoteSharingButton] {
         return shareButtons.map { (shareButton) -> RemoteSharingButton in
             let btn = RemoteSharingButton()
             btn.buttonID = shareButton.buttonID
@@ -508,7 +508,7 @@ import WordPressKit
     ///
     /// - Parameter blog: The blog to use for the rest api.
     ///
-    fileprivate func remoteForBlog(_ blog: Blog) -> SharingServiceRemote? {
+    private func remoteForBlog(_ blog: Blog) -> SharingServiceRemote? {
         guard let api = blog.wordPressComRestApi() else {
             return nil
         }
