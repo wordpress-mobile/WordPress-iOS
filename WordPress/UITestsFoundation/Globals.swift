@@ -106,4 +106,5 @@ extension ScreenObject {
 public enum Apps {
 
     public static let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+    public static let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 }
