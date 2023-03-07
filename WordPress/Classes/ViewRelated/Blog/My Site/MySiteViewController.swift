@@ -960,7 +960,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - Blaze
 
     private func updateBlazeStatus(for blog: Blog?, completion: @escaping () -> Void) {
-        guard FeatureFlag.blaze.enabled,
+        guard BlazeHelper.isBlazeFlagEnabled(),
               let blog = blog,
               let blazeService = BlazeService() else {
             completion()

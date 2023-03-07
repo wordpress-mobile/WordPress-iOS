@@ -2,8 +2,15 @@ import Foundation
 
 final class BlazeHelper {
 
+    static func isBlazeFlagEnabled(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> Bool {
+        guard AppConfiguration.isJetpack else {
+            return false
+        }
+        return featureFlagStore.value(for: FeatureFlag.blaze)
+    }
+
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard FeatureFlag.blaze.enabled && blog.isBlazeApproved else {
+        guard isBlazeFlagEnabled() && blog.isBlazeApproved else {
             return false
         }
 

@@ -186,7 +186,7 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.share)
             }
 
-            if FeatureFlag.blaze.enabled && post.canBlaze {
+            if BlazeHelper.isBlazeFlagEnabled() && post.canBlaze {
                 buttons.append(.blaze)
             }
 

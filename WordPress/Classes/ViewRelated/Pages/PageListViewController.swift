@@ -767,7 +767,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addBlazeAction(to controller: UIAlertController, for page: AbstractPost) {
-        guard FeatureFlag.blaze.enabled && page.canBlaze else {
+        guard BlazeHelper.isBlazeFlagEnabled() && page.canBlaze else {
             return
         }
 
