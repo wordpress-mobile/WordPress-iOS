@@ -8,9 +8,9 @@ extension NotificationsViewController {
     func setupAppRatings() {
         inlinePromptView.setupHeading(NSLocalizedString("What do you think about WordPress?",
                                                         comment: "This is the string we display when prompting the user to review the app"))
-        let yesTitle = NSLocalizedString("I Like It",
+        let yesTitle = NSLocalizedString("I like it",
                                          comment: "This is one of the buttons we display inside of the prompt to review the app")
-        let noTitle = NSLocalizedString("Could Be Better",
+        let noTitle = NSLocalizedString("Could improve",
                                         comment: "This is one of the buttons we display inside of the prompt to review the app")
 
         inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
