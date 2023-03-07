@@ -36,6 +36,8 @@ class PostCardStatusViewModel: NSObject {
 
     private let isInternetReachable: Bool
 
+    private let isBlazeFlagEnabled: Bool
+
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -52,9 +54,12 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    init(post: Post, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
+    init(post: Post,
+         isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
+         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
+        self.isBlazeFlagEnabled = isBlazeFlagEnabled
         super.init()
     }
 
@@ -186,7 +191,7 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.share)
             }
 
-            if BlazeHelper.isBlazeFlagEnabled() && post.canBlaze {
+            if isBlazeFlagEnabled && post.canBlaze {
                 buttons.append(.blaze)
             }
 
