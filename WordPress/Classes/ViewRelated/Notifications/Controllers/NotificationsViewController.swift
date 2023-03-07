@@ -247,12 +247,14 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return
         }
 
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
-        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-            setupAppRatings()
-            self.showInlinePrompt()
-        }
+//        if shouldShowPrimeForPush {
+//            setupNotificationPrompt()
+//        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
+//            setupAppRatings()
+//            self.showInlinePrompt()
+//        }
+        setupAppRatings()
+        self.showInlinePrompt()
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -1652,11 +1654,11 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull,
-            userDefaults.notificationPrimerAlertWasDisplayed,
-            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
-            return
-        }
+//        guard inlinePromptView.alpha != WPAlphaFull,
+//            userDefaults.notificationPrimerAlertWasDisplayed,
+//            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
+//            return
+//        }
 
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: 0, options: .curveEaseIn, animations: {
             self.inlinePromptView.isHidden = false
