@@ -20,12 +20,15 @@ public extension XCTestCase {
         app.terminate()
 
         let appToRemove = Apps.springboard.icons[appName]
-        if appToRemove.exists {
-            appToRemove.firstMatch.press(forDuration: 1)
-            waitAndTap(Apps.springboard.buttons["Remove App"])
-            waitAndTap(Apps.springboard.alerts.buttons["Delete App"])
-            waitAndTap(Apps.springboard.alerts.buttons["Delete"])
+
+        guard appToRemove.exists else {
+            return
         }
+
+        appToRemove.firstMatch.press(forDuration: 1)
+        waitAndTap(Apps.springboard.buttons["Remove App"])
+        waitAndTap(Apps.springboard.alerts.buttons["Delete App"])
+        waitAndTap(Apps.springboard.alerts.buttons["Delete"])
     }
 
 }
