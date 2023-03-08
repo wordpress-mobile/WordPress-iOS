@@ -25,7 +25,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 final class NotificationSyncMediator {
     /// Returns the Main Managed Context
     ///
-    fileprivate let contextManager: CoreDataStack
+    fileprivate let contextManager: CoreDataStackSwift
 
     /// Sync Service Remote
     ///
@@ -71,7 +71,7 @@ final class NotificationSyncMediator {
     ///     - manager: ContextManager Instance
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    init?(manager: CoreDataStack, dotcomAPI: WordPressComRestApi) {
+    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }
@@ -311,7 +311,7 @@ private extension NotificationSyncMediator {
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: @escaping (([String]) -> Void)) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
-            contextManager.performAndSave { context in
+            contextManager.performAndSave({ context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
                 var localHashes = [String: String]()
@@ -320,19 +320,16 @@ private extension NotificationSyncMediator {
                     localHashes[note.notificationId] = note.notificationHash ?? ""
                 }
 
-                let outdatedIds = remoteHashes
+                return remoteHashes
                     .filter { remote in
                         let localHash = localHashes[remote.notificationId]
                         return localHash == nil || localHash != remote.notificationHash
                     }
                     .map { $0.notificationId }
-
-                DispatchQueue.main.async {
-                    completion(outdatedIds)
-                }
-
+            }, completion: { outdatedIds in
+                completion(outdatedIds)
                 done()
-            }
+            }, on: .main)
         })
     }
 
