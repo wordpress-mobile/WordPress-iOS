@@ -4,6 +4,7 @@ import Gridicons
 import WordPressShared
 import SVProgressHUD
 import WordPressFlux
+import SwiftUI
 
 class AppSettingsViewController: UITableViewController {
     enum Sections: Int {
@@ -247,17 +248,6 @@ class AppSettingsViewController: UITableViewController {
         return { [weak self] row in
             let controller = DebugMenuViewController(style: .insetGrouped)
             self?.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-
-    func pushPrimaryColorPicker() -> ImmuTableAction {
-        return { [weak self] row in
-            let vc = UIColorPickerViewController()
-            vc.title = "Primary Color"
-            vc.view.backgroundColor = .listBackground
-            vc.supportsAlpha = false
-
-            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
@@ -507,16 +497,15 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [settingsRow]
 
+        let appColorRow = SwiftUIRow {
+            AppColorPicker()
+        }
+        rows.insert(appColorRow, at: 0)
+
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }
-
-        let primaryColorRow = NavigationItemRow(
-            title: NSLocalizedString("Primary Color", comment: "Navigates to color picker screen to change the app's primary color"),
-            action: pushPrimaryColorPicker()
-        )
-        rows.insert(primaryColorRow, at: 0)
 
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             let initialScreen = NavigationItemRow(title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"), detail: MySiteSettings().defaultSection.title, action: pushInitialScreenSettings())
@@ -544,6 +533,20 @@ private extension AppSettingsViewController {
             headerText: otherHeader,
             rows: rows,
             footerText: nil)
+    }
+}
+
+/// - TODO: move somewhere else later
+struct AppColorPicker: View {
+    @State private var color = Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
+
+    var body: some View {
+        ColorPicker(title, selection: $color, supportsOpacity: false)
+            .font(.callout)
+    }
+
+    private var title: String {
+        NSLocalizedString("App Color", comment: "Navigates to color picker screen to change the app's primary color")
     }
 }
 

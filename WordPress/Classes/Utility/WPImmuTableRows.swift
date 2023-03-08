@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 import Gridicons
-
+import SwiftUI
 
 struct NavigationItemRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
@@ -449,5 +449,36 @@ class ExpandableRow: ImmuTableRow {
         cell.expandableTextView.attributedText = expandedText
         cell.expanded = expanded
         cell.urlCallback = onLinkTap
+    }
+}
+
+struct SwiftUIRow<T: View>: ImmuTableRow {
+    static var cell: ImmuTableCell {
+        .class(WPTableViewCellDefault.self)
+    }
+
+    var action: ImmuTableAction?
+    var content: () -> T
+
+    func configureCell(_ cell: UITableViewCell) {
+        if #available(iOS 16.0, *) {
+            cell.contentConfiguration = UIHostingConfiguration {
+                content()
+            }
+        } else {
+            cell.contentView.subviews.forEach { $0.removeFromSuperview() }
+
+            let host = UIHostingController(rootView: content())
+            host.view.backgroundColor = .clear
+            host.view.translatesAutoresizingMaskIntoConstraints = false
+
+            cell.contentView.addSubview(host.view)
+            NSLayoutConstraint.activate([
+                host.view.leadingAnchor.constraint(equalTo: cell.layoutMarginsGuide.leadingAnchor),
+                host.view.trailingAnchor.constraint(equalTo: cell.layoutMarginsGuide.trailingAnchor),
+                host.view.topAnchor.constraint(equalTo: cell.layoutMarginsGuide.topAnchor),
+                host.view.bottomAnchor.constraint(equalTo: cell.layoutMarginsGuide.bottomAnchor)
+            ])
+        }
     }
 }
