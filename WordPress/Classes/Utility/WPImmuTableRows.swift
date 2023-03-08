@@ -457,10 +457,13 @@ struct SwiftUIRow<T: View>: ImmuTableRow {
         .class(WPTableViewCellDefault.self)
     }
 
+    var selectionStyle: UITableViewCell.SelectionStyle = .default
     var action: ImmuTableAction?
     var content: () -> T
 
     func configureCell(_ cell: UITableViewCell) {
+        cell.selectionStyle = selectionStyle
+
         if #available(iOS 16.0, *) {
             cell.contentConfiguration = UIHostingConfiguration {
                 content()

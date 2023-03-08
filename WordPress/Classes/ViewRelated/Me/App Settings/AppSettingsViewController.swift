@@ -497,7 +497,7 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [settingsRow]
 
-        let appColorRow = SwiftUIRow {
+        let appColorRow = SwiftUIRow(selectionStyle: .none) {
             AppColorPicker()
         }
         rows.insert(appColorRow, at: 0)
@@ -541,12 +541,27 @@ struct AppColorPicker: View {
     @State private var color = Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
 
     var body: some View {
-        ColorPicker(title, selection: $color, supportsOpacity: false)
-            .font(.callout)
+        ColorPicker(selection: $color, supportsOpacity: false) {
+            HStack {
+                Text(colorPickerTitle)
+
+                Spacer()
+                Button(action: {
+                    print("reset app color")
+                }, label: {
+                    Text(resetButtonTitle)
+                })
+            }
+        }
+        .font(.callout)
     }
 
-    private var title: String {
-        NSLocalizedString("App Color", comment: "Navigates to color picker screen to change the app's primary color")
+    private var colorPickerTitle: String {
+        NSLocalizedString("App Color", comment: "Navigates to color picker screen to change the app primary color")
+    }
+
+    private var resetButtonTitle: String {
+        NSLocalizedString("Reset", comment: "Restores default app primary color")
     }
 }
 
