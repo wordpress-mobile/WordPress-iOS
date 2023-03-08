@@ -250,6 +250,17 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushPrimaryColorPicker() -> ImmuTableAction {
+        return { [weak self] row in
+            let vc = UIColorPickerViewController()
+            vc.title = "Primary Color"
+            vc.view.backgroundColor = .listBackground
+            vc.supportsAlpha = false
+
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
     func pushAppIconSwitcher() -> ImmuTableAction {
         return { [weak self] row in
             let controller = AppIconViewController()
@@ -500,6 +511,12 @@ private extension AppSettingsViewController {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }
+
+        let primaryColorRow = NavigationItemRow(
+            title: NSLocalizedString("Primary Color", comment: "Navigates to color picker screen to change the app's primary color"),
+            action: pushPrimaryColorPicker()
+        )
+        rows.insert(primaryColorRow, at: 0)
 
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             let initialScreen = NavigationItemRow(title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"), detail: MySiteSettings().defaultSection.title, action: pushInitialScreenSettings())
