@@ -21,7 +21,7 @@ extension UIColor {
     }
 
     static var filterBarBackground: UIColor {
-        return UIColor(light: .white, dark: .gray(.shade100))
+        return .secondarySystemGroupedBackground
     }
 
     static var filterBarSelected: UIColor {
