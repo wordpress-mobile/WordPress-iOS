@@ -147,6 +147,41 @@ class EditorMediaUtility {
         return imageDownload
     }
 
+    static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, withToken: Bool = false, completion: @escaping ( Result<(URL), Error> ) -> Void) {
+        // Return the attachment url it it's not a VideoPress video
+        if media.videopressGUID == nil {
+            guard let videoURLString = media.remoteURL, let videoURL = URL(string: videoURLString) else {
+                DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
+                completion(Result.failure(NSError()))
+                return
+            }
+            completion(Result.success(videoURL))
+        }
+        else {
+            fetchVideoPressMetadata(for: media, in: post) { result in
+                switch result {
+                case .success((let metadata)):
+                    if withToken {
+                        guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
+                            DDLogWarn("Failed getting video play URL for media with upload ID: \(media.uploadID)")
+                            return
+                        }
+                        completion(Result.success(videoURL))
+                    }
+                    else {
+                        guard let videoURL = metadata.originalURL else {
+                            DDLogWarn("Failed getting original URL for media with upload ID: \(media.uploadID)")
+                            return
+                        }
+                        completion(Result.success(videoURL))
+                    }
+                case .failure(let error):
+                    completion(Result.failure(error))
+                }
+            }
+        }
+    }
+
     static func fetchVideoPressMetadata(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(RemoteVideoPressVideo), Error> ) -> Void) {
         guard let videoPressID = media.videopressGUID else {
             DDLogError("Unable to find metadata for video with upload ID = \(media.uploadID).")
