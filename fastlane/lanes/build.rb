@@ -240,17 +240,17 @@ platform :ios do
     )
   end
 
-  # Builds the WordPress app for an Installable Build ("WordPress Alpha" scheme), and uploads it to App Center
+  # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
-  desc 'Builds and uploads an installable build'
-  lane :build_and_upload_wordpress_installable_build do
+  desc 'Builds and uploads a Prototype Build'
+  lane :build_and_upload_wordpress_prototype_build do
     sentry_check_cli_installed
 
     alpha_code_signing
 
-    build_and_upload_installable_build(
+    build_and_upload_prototype_build(
       scheme: 'WordPress Alpha',
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
@@ -258,17 +258,17 @@ platform :ios do
     )
   end
 
-  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to App Center
+  # Builds the Jetpack app for a Prototype Build ("Jetpack" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
-  desc 'Builds and uploads a Jetpack installable build'
-  lane :build_and_upload_jetpack_installable_build do
+  desc 'Builds and uploads a Jetpack prototype build'
+  lane :build_and_upload_jetpack_prototype_build do
     sentry_check_cli_installed
 
     jetpack_alpha_code_signing
 
-    build_and_upload_installable_build(
+    build_and_upload_prototype_build(
       scheme: 'Jetpack',
       output_app_name: 'Jetpack Alpha',
       appcenter_app_name: 'jetpack-installable-builds',
@@ -281,11 +281,11 @@ platform :ios do
   #################################################
 
 
-  # Generates a build number for Installable Builds, based on the PR number and short commit SHA1
+  # Generates a build number for Prototype Builds, based on the PR number and short commit SHA1
   #
   # @note This function uses Buildkite-specific ENV vars
   #
-  def generate_installable_build_number
+  def generate_prototype_build_number
     if ENV['BUILDKITE']
       commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
       branch = ENV.fetch('BUILDKITE_BRANCH', nil)
@@ -303,13 +303,13 @@ platform :ios do
 
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
-  def build_and_upload_installable_build(scheme:, output_app_name:, appcenter_app_name:, sentry_project_slug:)
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, sentry_project_slug:)
     configuration = 'Release-Alpha'
 
     # Get the current build version, and update it if needed
     version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = generate_installable_build_number
+    build_number = generate_prototype_build_number
     UI.message("Updating build version to #{build_number}")
     versions['VERSION_LONG'] = build_number
     new_config = Xcodeproj::Config.new(versions)
