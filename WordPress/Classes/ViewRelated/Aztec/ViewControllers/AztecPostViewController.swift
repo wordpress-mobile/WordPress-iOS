@@ -2846,8 +2846,8 @@ extension AztecPostViewController {
             // It's videoPress video so let's fetch the information for the video
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { (metadata) in
-                videoAttachment.updateURL(metadata.getPlayURL())
-                if let posterURL = metadata.posterURL {
+                videoAttachment.updateURL(metadata.getURLWithToken(url: metadata.originalURL))
+                if let posterURL = metadata.getURLWithToken(url: metadata.posterURL) {
                     videoAttachment.posterURL = posterURL
                 }
                 self.richTextView.refresh(videoAttachment)
@@ -3025,12 +3025,12 @@ extension AztecPostViewController {
             guard let `self` = self else {
                 return
             }
-            guard let videoURL = metadata.getPlayURL() else {
+            guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
                 self.displayUnableToPlayVideoAlert()
                 return
             }
             videoAttachment.updateURL(videoURL)
-            if let posterURL = metadata.posterURL {
+            if let posterURL = metadata.getURLWithToken(url: metadata.posterURL) {
                 videoAttachment.posterURL = posterURL
             }
             self.richTextView.refresh(videoAttachment)

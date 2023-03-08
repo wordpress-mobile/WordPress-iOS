@@ -72,7 +72,7 @@ class StoryMediaLoader {
                     EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] result in
                         switch result {
                         case .success((let metadata)):
-                            guard let videoURL = metadata.getPlayURL() else {
+                            guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
                                 DDLogWarn("Failed getting video play URL for media with upload ID: \(media.uploadID)")
                                 return
                             }
