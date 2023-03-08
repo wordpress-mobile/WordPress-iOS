@@ -363,6 +363,14 @@ platform :ios do
       reuse_identifier: "prototype-build-link-#{appcenter_app_name}",
       body: comment_body
     )
+
+    # Attach version information as Buildkite metadata and annotation
+    appcenter_id = lane_context.dig(SharedValues::APPCENTER_BUILD_INFORMATION, 'id')
+    metadata = versions.merge(build_type: 'Prototype', 'appcenter:id': appcenter_id)
+    buildkite_metadata(set: metadata)
+    appcenter_install_url = "https://install.appcenter.ms/orgs/#{APPCENTER_OWNER_NAME}/apps/#{appcenter_app_name}/releases/#{appcenter_id}"
+    list = metadata.map { |k, v| " - **#{k}**: #{v}" }.join("\n")
+    buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
