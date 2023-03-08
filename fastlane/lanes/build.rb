@@ -85,7 +85,7 @@ platform :ios do
       path.include?(options[:name])
     end.first
 
-    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}. xctestrun path is #{xctestrun_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
     inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
 
