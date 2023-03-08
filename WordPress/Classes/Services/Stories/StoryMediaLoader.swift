@@ -69,13 +69,9 @@ class StoryMediaLoader {
                         self.downloadTasks.append(task)
                     }
                 case .video:
-                    EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] result in
+                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post, withToken: true) { [weak self] result in
                         switch result {
-                        case .success((let metadata)):
-                            guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
-                                DDLogWarn("Failed getting video play URL for media with upload ID: \(media.uploadID)")
-                                return
-                            }
+                        case .success((let videoURL)):
                             self?.queue.async {
                                 self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
                             }

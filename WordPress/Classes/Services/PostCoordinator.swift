@@ -298,12 +298,12 @@ class PostCoordinator: NSObject {
                 }
                 switch media.mediaType {
                 case .video:
-                    EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { (result) in
+                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
                         switch result {
                         case .failure:
                             handleSingleMediaFailure()
-                        case .success(let metadata):
-                            media.remoteURL = metadata.originalURL?.absoluteString
+                        case .success(let videoURL):
+                            media.remoteURL = videoURL.absoluteString
                             successHandler()
                         }
                     }
