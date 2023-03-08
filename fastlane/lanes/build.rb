@@ -81,9 +81,6 @@ platform :ios do
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
-    p ">>>>>>>>>>>>>>>>>>>>>>>>>> #{File.join(build_products_path, '*.xctestrun')}"
-    p ">>>>>>>>>>>>>>>>>>>>>>>>>> #{name}"
-
     xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
     end.first
@@ -94,7 +91,7 @@ platform :ios do
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'JetpackUITests',
+      scheme: 'WordPress',
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
