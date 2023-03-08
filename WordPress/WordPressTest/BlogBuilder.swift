@@ -98,12 +98,24 @@ final class BlogBuilder {
         return self
     }
 
+    func isBlazeApproved() -> Self {
+        blog.isBlazeApproved = true
+
+        return self
+    }
+
     func with(modules: [String]) -> Self {
         set(blogOption: "active_modules", value: modules)
     }
 
     func with(blogID: Int) -> Self {
         blog.blogID = blogID as NSNumber
+
+        return self
+    }
+
+    func with(url: String) -> Self {
+        blog.url = url
 
         return self
     }

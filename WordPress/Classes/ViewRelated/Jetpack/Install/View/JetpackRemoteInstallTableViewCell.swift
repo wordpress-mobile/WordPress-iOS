@@ -10,12 +10,23 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
     private lazy var cardViewModel: JetpackRemoteInstallCardViewModel = {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
+            guard let self,
+                  let helper = JetpackInstallPluginHelper(self.blog) else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardDismissed, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
-            JetpackInstallPluginHelper.hideCard(for: self?.blog)
-            self?.presenterViewController?.reloadTableView()
+            helper.hideCard()
+            self.presenterViewController?.reloadTableView()
         }
         let onLearnMoreTap: () -> Void = {
+            guard let presenterViewController = self.presenterViewController else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardTapped, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
+            JetpackInstallPluginHelper.presentOverlayIfNeeded(in: presenterViewController,
+                                                              blog: self.blog,
+                                                              delegate: presenterViewController,
+                                                              force: true)
         }
         return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
                                                  onLearnMoreTap: onLearnMoreTap)
@@ -43,6 +54,7 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
     func configure(blog: Blog, viewController: BlogDetailsViewController?) {
         self.blog = blog
         self.presenterViewController = viewController
+        cardView.updatePlugin(JetpackPlugin(from: blog.jetpackConnectionActivePlugins))
     }
 
     private func setupView() {
@@ -54,7 +66,7 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
 // MARK: - BlogDetailsViewController view model
 
-extension BlogDetailsViewController {
+extension BlogDetailsViewController: JetpackRemoteInstallDelegate {
 
     @objc func jetpackInstallSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
@@ -64,6 +76,18 @@ extension BlogDetailsViewController {
                                          footerTitle: nil,
                                          category: .jetpackInstallCard)
         return section
+    }
+
+    func jetpackRemoteInstallCompleted() {
+        dismiss(animated: true)
+    }
+
+    func jetpackRemoteInstallCanceled() {
+        dismiss(animated: true)
+    }
+
+    func jetpackRemoteInstallWebviewFallback() {
+        // No op
     }
 
 }

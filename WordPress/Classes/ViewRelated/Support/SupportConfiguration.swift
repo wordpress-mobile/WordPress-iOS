@@ -25,4 +25,11 @@ enum SupportConfiguration {
             return .zendesk
         }
     }
+
+    static func isMigrationCardEnabled(
+        isJetpack: Bool = AppConfiguration.isJetpack,
+        migrationState: MigrationState = UserPersistentStoreFactory.instance().jetpackContentMigrationState
+    ) -> Bool {
+        return isJetpack && migrationState == .completed
+    }
 }

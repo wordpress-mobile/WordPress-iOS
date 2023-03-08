@@ -87,6 +87,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic capabilities;
 @dynamic quickStartTours;
 @dynamic quickStartTypeValue;
+@dynamic isBlazeApproved;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
@@ -609,6 +610,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsEmbedVariation: @"10.2"];
         case BlogFeatureFileDownloadsStats:
             return [self isHostedAtWPcom];
+        case BlogFeatureBlaze:
+            return [self isBlazeApproved];
     }
 }
 

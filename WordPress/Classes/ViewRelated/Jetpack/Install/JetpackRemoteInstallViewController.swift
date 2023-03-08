@@ -118,6 +118,9 @@ private extension JetpackRemoteInstallViewController {
 
     /// Completes the Jetpack installation flow.
     func complete() {
+        if let siteID = blog.dotComID?.stringValue {
+            RecentJetpackInstallReceipt.shared.store(siteID)
+        }
         delegate?.jetpackRemoteInstallCompleted()
     }
 }

@@ -30,10 +30,14 @@ import Combine
     ///
     /// There is nothing really wrong with keeping the blocking logic in `ReaderSiteBlockingController` but this
     /// view controller is very large, with over 2000 lines of code!
-    private let siteBlockingController = ReaderSiteBlockingController()
+    private let siteBlockingController = ReaderPostBlockingController()
 
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     private let sharingController = PostSharingController()
+
+    // MARK: - Services
+
+    private lazy var readerPostService = ReaderPostService(coreDataStack: coreDataStack)
 
     // MARK: - Properties
 
@@ -358,13 +362,13 @@ import Combine
             displayLoadingStream()
         }
 
-        if let readerTopic {
-            readerTopic.objectWillChange
-                .sink { [weak self] _ in
-                    self?.updateStreamHeaderIfNeeded()
-                }
-                .store(in: &cancellables)
-        }
+        // Make sure the header is in-sync with the `readerTopic` object if it exists.
+        readerTopic?
+            .objectWillChange
+            .sink { [weak self] _ in
+                self?.updateStreamHeaderIfNeeded()
+            }
+            .store(in: &cancellables)
     }
 
 
@@ -798,14 +802,27 @@ import Combine
     }
 
     private func removeBlockedPosts() {
-        guard let topic = readerTopic as? ReaderSiteTopic,
-              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext),
-              let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
-        else {
+        // Fetch account
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext) else {
             return
         }
+
+        // Author Predicate
+        var predicates = [NSPredicate]()
+        let blockedAuthors = BlockedAuthor.find(.accountID(account.userID), context: viewContext).map { $0.authorID }
+        if !blockedAuthors.isEmpty {
+            predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.authorID)) IN %@", blockedAuthors))
+        }
+
+        // Site Predicate
+        if let topic = readerTopic as? ReaderSiteTopic,
+           let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext) {
+            predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.siteID)) = %@", blocked.blogID))
+        }
+
+        // Execute
         let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
-        request.predicate = NSPredicate(format: "siteID = %@", blocked.blogID)
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
         let result = (try? viewContext.fetch(request)) ?? []
         for post in result {
             viewContext.deleteObject(post)
@@ -824,7 +841,6 @@ import Combine
         header.configureHeader(topic)
     }
 
-
     func showManageSites(animated: Bool = true) {
         let controller = ReaderFollowedSitesViewController.controller()
         navigationController?.pushViewController(controller, animated: animated)
@@ -838,7 +854,19 @@ import Combine
 
     /// Update the post card when a site is blocked from post details.
     ///
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {
+        guard case .success = result,
+              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+              let indexPath = content.indexPath(forObject: post)
+        else {
+            return
+        }
+        recentlyBlockedSitePostObjectIDs.remove(post.objectID)
+        updateAndPerformFetchRequest()
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didEndBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {
         guard case .success = result,
               let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
               let indexPath = content.indexPath(forObject: post)
@@ -1079,13 +1107,17 @@ import Combine
             }
 
             if ReaderHelpers.isTopicSearchTopic(topic) {
-                let service = ReaderPostService(managedObjectContext: context)
+                let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 service.fetchPosts(for: topic, atOffset: 0, deletingEarlier: false, success: success, failure: failure)
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, success: success, failure: failure)
             } else {
-                let service = ReaderPostService(managedObjectContext: context)
-                service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
+                if FeatureFlag.readerUserBlocking.enabled {
+                    self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: Date(), forceRetry: true, success: success, failure: failure)
+                } else {
+                    let service = ReaderPostService(coreDataStack: ContextManager.shared)
+                    service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
+                }
             }
         }
     }
@@ -1141,7 +1173,7 @@ import Combine
                 }
             }
 
-            let service = ReaderPostService(managedObjectContext: context)
+            let service = ReaderPostService(coreDataStack: ContextManager.shared)
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 assertionFailure("Search topics should no have a gap to fill.")
                 service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
@@ -1200,15 +1232,18 @@ import Combine
             }
 
             if ReaderHelpers.isTopicSearchTopic(topic) {
-                let service = ReaderPostService(managedObjectContext: context)
+                let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 let offset = UInt(self.content.contentCount)
                 service.fetchPosts(for: topic, atOffset: UInt(offset), deletingEarlier: false, success: success, failure: failure)
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
             } else {
-                let service = ReaderPostService(managedObjectContext: context)
-                let earlierThan = sortDate
-                service.fetchPosts(for: topic, earlierThan: earlierThan, success: success, failure: failure)
+                if FeatureFlag.readerUserBlocking.enabled {
+                    self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: sortDate, success: success, failure: failure)
+                } else {
+                    let service = ReaderPostService(coreDataStack: ContextManager.shared)
+                    service.fetchPosts(for: topic, earlierThan: sortDate, success: success, failure: failure)
+                }
             }
         }
     }
@@ -1611,7 +1646,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         let shouldLoadMoreItems = syncHelper.hasMoreContent
         && !syncHelper.isSyncing
         && !cleanupAndRefreshAfterScrolling
-        && !siteBlockingController.isBlockingSites
+        && !siteBlockingController.isBlockingPosts
+        && !readerPostService.isSilentlyFetchingPosts
         if shouldLoadMoreItems {
             syncHelper.syncMoreContent()
         }

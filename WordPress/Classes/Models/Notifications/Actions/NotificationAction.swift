@@ -19,7 +19,7 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
     }()
 
     private(set) lazy var actionsService: NotificationActionsService? = {
-        return NotificationActionsService(managedObjectContext: mainContext!)
+        return NotificationActionsService(coreDataStack: ContextManager.shared)
     }()
 
     init(on: Bool) {

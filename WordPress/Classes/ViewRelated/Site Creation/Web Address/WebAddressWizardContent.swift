@@ -365,10 +365,14 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
-        let domainSuggestionProperties: [String: AnyObject] = [
+        var domainSuggestionProperties: [String: Any] = [
             "chosen_domain": domainSuggestion.domainName as AnyObject,
             "search_term": lastSearchQuery as AnyObject
         ]
+
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
+        }
 
         WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
     }

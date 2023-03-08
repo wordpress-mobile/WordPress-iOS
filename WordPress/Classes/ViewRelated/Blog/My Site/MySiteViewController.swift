@@ -126,12 +126,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
+            showSitePicker(for: newBlog)
             updateNavigationTitle(for: newBlog)
-            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
+            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
+
+            updateBlazeStatus(for: newBlog) { [weak self] in
+                self?.updateChildViewController(for: newBlog)
+            }
         }
 
         get {
@@ -187,6 +191,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        displayJetpackInstallOverlayIfNeeded()
 
         displayOverlayIfNeeded()
 
@@ -423,10 +429,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
+
+
+        updateBlazeStatus(for: mainBlog) { [weak self] in
+            self?.updateChildViewController(for: mainBlog)
+        }
     }
 
     @objc
@@ -814,11 +825,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
+            self.updateBlazeStatus(for: blog) {
+                self.updateChildViewController(for: blog)
+            }
+
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
-            self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
+
+            self.displayJetpackInstallOverlayIfNeeded()
         }
 
         return sitePickerViewController
@@ -941,6 +957,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         self.blog = blog
     }
 
+    // MARK: - Blaze
+
+    private func updateBlazeStatus(for blog: Blog?, completion: @escaping () -> Void) {
+        guard FeatureFlag.blaze.enabled,
+              let blog = blog,
+              let blazeService = BlazeService() else {
+            completion()
+            return
+        }
+
+        blazeService.updateStatus(for: blog, success: completion)
+    }
+
     // MARK: - Blogging Prompts
 
     @objc func handlePostPublished() {
@@ -1049,5 +1078,33 @@ private extension MySiteViewController {
                 JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
             }
         }
+    }
+}
+
+// MARK: Jetpack Install Plugin Overlay
+
+private extension MySiteViewController {
+    func displayJetpackInstallOverlayIfNeeded() {
+        JetpackInstallPluginHelper.presentOverlayIfNeeded(in: self, blog: blog, delegate: self)
+    }
+
+    func dismissOverlayAndRefresh() {
+        dismiss(animated: true) {
+            self.pulledToRefresh()
+        }
+    }
+}
+
+extension MySiteViewController: JetpackRemoteInstallDelegate {
+    func jetpackRemoteInstallCompleted() {
+        dismissOverlayAndRefresh()
+    }
+
+    func jetpackRemoteInstallCanceled() {
+        dismissOverlayAndRefresh()
+    }
+
+    func jetpackRemoteInstallWebviewFallback() {
+        // no op
     }
 }
