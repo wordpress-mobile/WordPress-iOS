@@ -1,6 +1,7 @@
-* [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for latter, etc.) [#20197]
-* [**] Reader: Add a button in the post menu to block an author and stop seeing their posts. [#20193]
-* [**] Jetpack individual plugin support: Warns user about sites with only individual plugins not supporting all features of the app yet and gives the ability to install the full Jetpack plugin. [#20223]
-* [**] Help: Display the Jetpack app FAQ card on Help screen when switching from the WordPress app to the Jetpack app is complete. [#20232]
-* [***] Blaze: We added support for Blaze in the app. The user can now promote a post or page from the app to reach new audiences. [#20253]
+Hot news—Jetpack now supports Blaze, so you can reach new readers by promoting a post or page from within the app.
 
+We’ve added a little extra support for sites with individual plugins. These plugins don’t support all app features yet, but you can always install the full Jetpack plugin instead. Ready to launch?
+
+We also added a post-migration FAQ card to the Help screen, which you’ll see after switching from the WordPress app over to Jetpack.
+
+Finally, there’s a new button to the Post menu that lets you block an author so their posts no longer appear in your content feed.
