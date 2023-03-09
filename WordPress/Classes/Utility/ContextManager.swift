@@ -10,7 +10,7 @@ public protocol CoreDataStackSwift: CoreDataStack {
 
     /// Execute the given block with a background context and save the changes _if the block does not throw an error_.
     ///
-    /// This function _does not block_ its running thread. The block is executed in background and the its return value
+    /// This function _does not block_ its running thread. The block is executed in background and the return value
     /// (or an error) is passed onto the `completion` block which is executed on the given `queue`.
     ///
     /// - Parameters:
@@ -24,7 +24,7 @@ public protocol CoreDataStackSwift: CoreDataStack {
     /// Execute the given block with a background context and save the changes _if the block does not throw an error_.
     ///
     /// - Parameter block: A closure that uses the given `NSManagedObjectContext` to make Core Data model changes.
-    /// The changes are only saved if the block does not throw an error.
+    ///     The changes are only saved if the block does not throw an error.
     /// - Returns: The value returned by the `block`
     /// - Throws: The error thrown by the `block`, in which case the Core Data changes made by the `block` is discarded.
     func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T

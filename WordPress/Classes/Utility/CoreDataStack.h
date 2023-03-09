@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// This function _blocks_ its running thread. The changed made by the `aBlock` argument are saved before this
 /// function returns.
 ///
-/// - Parameter aBlock: A closure which uses the given `NSManagedObjectContext` to make Core Data model changes.
+/// - Parameter aBlock: A block which uses the given `NSManagedObjectContext` to make Core Data model changes.
 - (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock;
 
 /// Execute the given block with a background context and save the changes _if the block does not throw an error_.
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// - Parameters:
 ///   - aBlock: A block which uses the given `NSManagedObjectContext` to make Core Data model changes.
-///   - completion: A closure which is called after the changes made by the `block` are saved.
+///   - completion: A block which is called after the changes made by the `block` are saved.
 ///   - queue: A queue on which to execute the `completion` block.
 - (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^ _Nullable)(void))completion onQueue:(dispatch_queue_t)queue;
 
