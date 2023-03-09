@@ -27,6 +27,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    private let showsFAB: Bool
+
     private var isShowingDashboard: Bool {
         return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
     }
@@ -98,11 +100,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil, mySiteSettings: MySiteSettings = MySiteSettings()) {
+    init(
+        meScenePresenter: ScenePresenter,
+        blogService: BlogService? = nil,
+        mySiteSettings: MySiteSettings = MySiteSettings(),
+        showsFAB: Bool = FeatureFlag.showMySiteFAB.enabled
+    ) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.mySiteSettings = mySiteSettings
-
+        self.showsFAB = showsFAB
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -660,6 +667,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - FAB
 
     private func createFABIfNeeded() {
+        guard showsFAB else {
+            return
+        }
         createButtonCoordinator?.removeCreateButton()
         createButtonCoordinator = makeCreateButtonCoordinator()
         createButtonCoordinator?.add(to: view,

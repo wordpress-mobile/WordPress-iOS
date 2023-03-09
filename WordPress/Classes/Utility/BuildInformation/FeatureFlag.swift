@@ -48,6 +48,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case blaze
     case siteCreationDomainPurchasing
     case readerUserBlocking
+    case showMySiteFAB
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -152,6 +153,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .readerUserBlocking:
             return true
+        case .showMySiteFAB:
+            return false
         }
     }
 
@@ -180,8 +183,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
-            default:
-                return nil
+        default:
+            return nil
         }
     }
 }
@@ -292,6 +295,8 @@ extension FeatureFlag {
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
             return "Reader User Blocking"
+        case .showMySiteFAB:
+            return "Show My Site FAB"
         }
     }
 
