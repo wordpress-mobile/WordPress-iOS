@@ -14,93 +14,7 @@ common_params:
 # This is the default pipeline – it will build and test the app
 steps:
 
-  #################
-  # Create Installable Builds for WP and JP
-  #################
-  - group: "🛠 Installable Builds"
-    steps:
-      - label: "🛠 WordPress Installable Build"
-        command: ".buildkite/commands/installable-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Installable Build"
 
-      - label: "🛠 Jetpack Installable Build"
-        command: ".buildkite/commands/installable-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Installable Build"
-
-  #################
-  # Build the app
-  #################
-  - label: "🛠 Build for Testing"
-    key: "build"
-    command: ".buildkite/commands/build-for-testing.sh"
-    env: *common_env
-    plugins: *common_plugins
-    notify:
-      - github_commit_status:
-          context: "Build for Testing"
-
-  #################
-  # Run Unit Tests
-  #################
-  - label: "🔬 Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
-      - slack:
-          channels:
-            - "#mobile-apps-tests-notif"
-        if: build.state == "failed" && build.branch == "trunk"
-
-  #################
-  # UI Tests
-  #################
-  - group: "🔬 UI Tests"
-    steps:
-      - label: "🔬 UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
-        depends_on: "build"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPhone)"
-          - slack:
-              channels:
-                - "#mobile-apps-tests-notif"
-            if: build.state == "failed" && build.branch == "trunk"
-
-      - label: "🔬 UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh "iPad Air (5th generation)"
-        depends_on: "build"
-        env: *common_env
-        plugins: *common_plugins
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-          - slack:
-              channels:
-                - "#mobile-apps-tests-notif"
-            if: build.state == "failed" && build.branch == "trunk"
 
   #################
   # Linters
@@ -117,14 +31,23 @@ steps:
         notify:
           - github_commit_status:
               context: "Lint Translations"
-      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
-      # That is, it outwardly only mentions RuboCop, not Danger
-      - label: ":rubocop: Lint Ruby Tooling"
-        command: .buildkite/commands/rubocop-via-danger.sh
-        plugins: *common_plugins
-        agents:
-          queue: "android"
+
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: *common_plugins
         env: *common_env
+
+      - label: ":rubocop: RuboCop"
+        command: rubocop
+        agents:
+          queue: "linter"
+
+      - label: ":swift: SwiftLint"
+        command: swiftlint
+        agents:
+          queue: "linter"
+
+      - label: ":danger: Danger"
+        command: danger
+        agents:
+          queue: "linter"
