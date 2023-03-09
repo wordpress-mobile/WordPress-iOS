@@ -25,7 +25,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 final class NotificationSyncMediator {
     /// Returns the Main Managed Context
     ///
-    fileprivate let contextManager: CoreDataStackSwift
+    private let contextManager: CoreDataStackSwift
 
     /// Sync Service Remote
     ///
