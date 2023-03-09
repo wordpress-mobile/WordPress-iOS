@@ -8,6 +8,18 @@ let ContextManagerModelNameCurrent = "$CURRENT"
 
 public protocol CoreDataStackSwift: CoreDataStack {
 
+    /// Execute the given block with a background context and save the changes.
+    ///
+    /// This function _does not block_ its running thread. The block is executed in background and its return value
+    /// is passed onto the `completion` block which is executed on the given `queue`.
+    ///
+    /// - Parameters:
+    ///   - block: A closure which uses the given `NSManagedObjectContext` to make Core Data model changes.
+    ///   - completion: A closure which is called with the return value of the `block`, after the changed made
+    ///         by the `block` is saved.
+    ///   - queue: A queue on which to execute the completion block.
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) -> T, completion: ((T) -> Void)?, on queue: DispatchQueue)
+
     /// Execute the given block with a background context and save the changes _if the block does not throw an error_.
     ///
     /// This function _does not block_ its running thread. The block is executed in background and the return value
@@ -126,6 +138,17 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
                 done()
             }
         })
+    }
+
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) -> T, completion: ((T) -> Void)?, on queue: DispatchQueue) {
+        performAndSave(
+            block,
+            completion: { (result: Result<T, Error>) in
+                // It's safe to force-unwrap here, since the `block` does not throw an error.
+                completion?(try! result.get())
+            },
+            on: queue
+        )
     }
 
     public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
