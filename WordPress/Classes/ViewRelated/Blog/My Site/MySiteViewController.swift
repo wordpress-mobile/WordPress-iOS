@@ -132,7 +132,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             createFABIfNeeded()
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
-            updateBlazeStatus(for: newBlog)
+            updateBlazeStatusAndReloadChildViewController(for: newBlog)
         }
 
         get {
@@ -277,7 +277,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             guard let blog = self?.blog else {
                 return
             }
-            self?.updateBlazeStatus(for: blog)
+            self?.updateBlazeStatusAndReloadChildViewController(for: blog)
         }
     }
 
@@ -440,7 +440,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
-        updateBlazeStatus(for: mainBlog)
+        updateBlazeStatusAndReloadChildViewController(for: mainBlog)
     }
 
     @objc
@@ -470,22 +470,32 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
-            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
-                guard let self = self else {
-                    return
-                }
 
-                self.updateNavigationTitle(for: blog)
-                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
-                self.updateBlazeStatus(for: blog)
+            let pulledToRefresh: () -> Void = {
+                self.blogDetailsViewController?.pulledToRefresh(with: self.refreshControl) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.updateNavigationTitle(for: blog)
+                    self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+                    self.updateBlazeStatusAndReloadChildViewController(for: blog)
+                }
             }
+
+            updateBlazeStatus(for: blog, completion: pulledToRefresh)
+
         case .dashboard:
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
             /// the dashboard updating fast.
-            blogDashboardViewController?.pulledToRefresh { [weak self] in
-                self?.refreshControl.endRefreshing()
+            let pulledToRefresh: () -> Void = {
+                self.blogDashboardViewController?.pulledToRefresh { [weak self] in
+                    self?.refreshControl.endRefreshing()
+                }
             }
+
+            updateBlazeStatus(for: blog, completion: pulledToRefresh)
 
             blogService.syncBlogAndAllMetadata(blog) { [weak self] in
                 guard let self = self else {
@@ -494,7 +504,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
-                self.updateBlazeStatus(for: blog)
             }
         }
 
@@ -830,7 +839,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.updateBlazeStatus(for: blog)
+            self.updateBlazeStatusAndReloadChildViewController(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.createFABIfNeeded()
@@ -961,15 +970,21 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Blaze
 
-    private func updateBlazeStatus(for blog: Blog) {
+    private func updateBlazeStatusAndReloadChildViewController(for blog: Blog) {
+        updateBlazeStatus(for: blog) { [weak self] in
+            self?.updateChildViewController(for: blog)
+        }
+    }
+
+    private func updateBlazeStatus(for blog: Blog, completion: @escaping () -> Void) {
         guard BlazeHelper.isBlazeFlagEnabled(),
               let blazeService = BlazeService() else {
-            updateChildViewController(for: blog)
+            completion()
             return
         }
 
-        blazeService.updateStatus(for: blog) { [weak self] in
-            self?.updateChildViewController(for: blog)
+        blazeService.updateStatus(for: blog) {
+            completion()
         }
     }
 
