@@ -93,7 +93,7 @@ platform :ios do
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'Jetpack',
+      scheme: 'JetpackUITests',
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
