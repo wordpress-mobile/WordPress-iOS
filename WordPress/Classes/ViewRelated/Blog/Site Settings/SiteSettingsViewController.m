@@ -1138,7 +1138,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService updateSettingsForBlog:self.blog success:^{
-        [NSNotificationCenter.defaultCenter postNotificationName:WPBlogUpdatedNotification object:nil];
+        [NSNotificationCenter.defaultCenter postNotificationName:WPBlogSettingsUpdatedNotification object:nil];
     } failure:^(NSError *error) {
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         DDLogError(@"Error while trying to update BlogSettings: %@", error);

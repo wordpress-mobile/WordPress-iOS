@@ -516,7 +516,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func blazePage(_ page: AbstractPost) {
         BlazeEventsTracker.trackEntryPointTapped(for: .pagesList)
-        BlazeOverlayCoordinator.presentBlazeOverlay(in: self, source: .pagesList, blog: blog, post: page)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .pagesList, blog: blog, post: page)
     }
 
     fileprivate func editPage(_ page: Page) {
@@ -767,7 +767,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addBlazeAction(to controller: UIAlertController, for page: AbstractPost) {
-        guard FeatureFlag.blaze.enabled && page.canBlaze else {
+        guard BlazeHelper.isBlazeFlagEnabled() && page.canBlaze else {
             return
         }
 

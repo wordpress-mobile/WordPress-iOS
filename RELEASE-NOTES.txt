@@ -13,6 +13,10 @@
 * [**] [Jetpack-only] Help: Display the Jetpack app FAQ card on Help screen when switching from the WordPress app to the Jetpack app is complete. [#20232]
 * [***] [Jetpack-only] Blaze: We added support for Blaze in the app. The user can now promote a post or page from the app to reach new audiences. [#20253]
 
+21.8.1
+-----
+* [**] [internal] Fixes a crash that happens in the background when the weekly roundup notification is being processed. [#20275]
+
 21.8
 -----
 * [*] [WordPress-only] We have redesigned and simplified the landing screen. [#20061]

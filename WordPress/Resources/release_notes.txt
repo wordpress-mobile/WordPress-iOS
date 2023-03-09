@@ -1,1 +1,4 @@
-* [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for latter, etc.) [#20197]
+Good words are read
+The WordPress logo is blue
+There are no new updates
+Sorry to disappoint you
