@@ -138,18 +138,41 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
+    /// This way we ensure features are not removed before reloading the UI.
+    /// But if this function is called from a background thread, we determine if the Jetpack Features
+    /// are enabled based on the removal phase regardless of the app UI state.
     /// Default root view coordinator is used.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
+        guard Thread.isMainThread else {
+            return shouldEnableJetpackFeatures()
+        }
         return jetpackFeaturesEnabled(rootViewCoordinator: .shared)
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
     /// This way we ensure features are not removed before reloading the UI.
+    /// But if this function is called from a background thread, we determine if the Jetpack Features
+    /// are enabled based on the removal phase regardless of the app UI state.
     /// Using two separate methods (rather than one method with a default argument) because Obj-C.
     /// - Returns: `true` if UI type is normal, and `false` if UI type is simplified.
     static func jetpackFeaturesEnabled(rootViewCoordinator: RootViewCoordinator) -> Bool {
+        guard Thread.isMainThread else {
+            return shouldEnableJetpackFeatures()
+        }
         return rootViewCoordinator.currentAppUIType == .normal
+    }
+
+
+    /// Used to determine if the Jetpack features are enabled based on the removal phase regardless of the app UI state.
+    private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> Bool {
+        let phase = generalPhase()
+        switch phase {
+        case .four, .newUsers, .selfHosted:
+            return false
+        default:
+            return true
+        }
     }
 
     /// Used to display feature-specific or feature-collection overlays.
