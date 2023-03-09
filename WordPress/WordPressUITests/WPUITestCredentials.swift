@@ -14,4 +14,5 @@ struct WPUITestCredentials {
     static let signupUsername: String = "e2eflowsignuptestingmobile"
     static let signupDisplayName: String = "Eeflowsignuptestingmobile"
     static let signupPassword: String = "mocked_password"
+    static let contactSupportUserEmail: String = "user@test.zzz"
 }

@@ -34,8 +34,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (self) {
         _blog = blog;
         _publicizeConnection = connection;
-        SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-        PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:connection.service];
+        PublicizeService *publicizeService = [PublicizeService lookupPublicizeServiceNamed:connection.service inContext:[self managedObjectContext]];
         if (publicizeService) {
             self.helper = [[SharingAuthorizationHelper alloc] initWithViewController:self
                                                                                 blog:self.blog
@@ -206,7 +205,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)updateSharedGlobally:(BOOL)shared
 {
     __weak __typeof(self) weakSelf = self;
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     [sharingService updateSharedForBlog:self.blog
                                  shared:shared
                  forPublicizeConnection:self.publicizeConnection
@@ -225,7 +224,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         return;
     }
 
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
 
     __weak __typeof(self) weakSelf = self;
     if (self.helper == nil) {
@@ -243,7 +242,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)disconnectPublicizeConnection
 {
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:nil failure:^(NSError *error) {
         DDLogError([error description]);
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
