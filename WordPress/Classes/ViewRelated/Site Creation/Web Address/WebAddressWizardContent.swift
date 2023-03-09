@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import SwiftUI
 
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
@@ -35,7 +36,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private let table: UITableView
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
+    private let searchBar = UISearchBar()
     private var sitePromptView: SitePromptView!
+    private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -148,18 +151,36 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         ])
         largeTitleView.textAlignment = .natural
         promptView.textAlignment = .natural
+        promptView.font = .systemFont(ofSize: 17)
     }
 
     private func loadHeaderView() {
-        let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
-        let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
-        let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
-        let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
-        searchHeader.addSubview(searchTextField)
-        searchHeader.addConstraints([top, bottom, leading, trailing])
-        searchHeader.addTopBorder(withColor: .divider)
-        searchHeader.addBottomBorder(withColor: .divider)
-        searchHeader.backgroundColor = searchTextField.backgroundColor
+
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            searchBar.searchBarStyle = UISearchBar.Style.default
+            searchBar.translatesAutoresizingMaskIntoConstraints = false
+            WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
+            searchBar.setImage(UIImage(), for: .search, state: .normal)
+            searchHeader.addSubview(searchBar)
+//           searchBar.delegate = self
+
+            NSLayoutConstraint.activate([
+                searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
+                searchHeader.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
+                searchBar.topAnchor.constraint(equalTo: searchHeader.topAnchor, constant: 1),
+                searchHeader.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 1)
+            ])
+        } else {
+            searchHeader.addSubview(searchTextField)
+            searchHeader.backgroundColor = searchTextField.backgroundColor
+            let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
+            let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
+            let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
+            let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
+            searchHeader.addConstraints([top, bottom, leading, trailing])
+            searchHeader.addTopBorder(withColor: .divider)
+            searchHeader.addBottomBorder(withColor: .divider)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -359,8 +380,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func query(from textField: UITextField?) -> String? {
         guard let text = textField?.text,
-            !text.isEmpty else {
-                return siteCreator.information?.title
+              !text.isEmpty else {
+            return siteCreator.information?.title
         }
 
         return text
@@ -404,21 +425,42 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     // MARK: - Search logic
 
     private func setAddressHintVisibility(isHidden: Bool) {
-        sitePromptView.isHidden = isHidden
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            let hostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
+            hostingController.view?.isHidden = isHidden
+        } else {
+            sitePromptView.isHidden = isHidden
+        }
     }
 
     private func addAddressHintView() {
-        sitePromptView = SitePromptView(frame: .zero)
-        sitePromptView.isUserInteractionEnabled = false
-        sitePromptView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(sitePromptView)
-        NSLayoutConstraint.activate([
-            sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
-            sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
-            sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
-            sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
-        ])
-        setAddressHintVisibility(isHidden: true)
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            let hostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
+            guard let siteCreationView = hostingController.view else {
+                return
+            }
+            siteCreationView.isUserInteractionEnabled = false
+            siteCreationView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(siteCreationView)
+            NSLayoutConstraint.activate([
+                siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+                containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
+                siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
+                containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 50)
+            ])
+        } else {
+            sitePromptView = SitePromptView(frame: .zero)
+            sitePromptView.isUserInteractionEnabled = false
+            sitePromptView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(sitePromptView)
+            NSLayoutConstraint.activate([
+                sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
+                sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
+                sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
+                sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
+            ])
+            setAddressHintVisibility(isHidden: true)
+        }
     }
 
     // MARK: - Others
@@ -429,7 +471,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
         static let invalidQuery = NSLocalizedString("Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9.",
-                                                 comment: "This is shown to the user when their domain search query contains invalid characters.")
+                                                    comment: "This is shown to the user when their domain search query contains invalid characters.")
         static let noConnection: String = NSLocalizedString("No connection",
                                                             comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
         static let serverError: String = NSLocalizedString("There was a problem",
@@ -447,7 +489,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let suggestions: String = NSLocalizedString("Suggestions",
                                                            comment: "Suggested domains")
         static let noMatch: String = NSLocalizedString("This domain is unavailable",
-                                                           comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
+                                                       comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
     }
 }
 

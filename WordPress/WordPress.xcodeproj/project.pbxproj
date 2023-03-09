@@ -252,6 +252,8 @@
 		08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */; };
 		08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */; };
 		08C42C31281807880034720B /* ReaderSubscribeCommentsActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */; };
+		08CBC77929AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */; };
+		08CBC77A29AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */; };
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
@@ -5731,6 +5733,7 @@
 		08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+WPMediaAsset.h"; sourceTree = "<group>"; };
 		08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+WPMediaAsset.m"; sourceTree = "<group>"; };
 		08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscribeCommentsActionTests.swift; sourceTree = "<group>"; };
+		08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEmptySiteTemplate.swift; sourceTree = "<group>"; };
 		08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 45.xcdatamodel"; sourceTree = "<group>"; };
 		08CC67781C49B65A00153AD7 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
 		08CC67791C49B65A00153AD7 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
@@ -15682,6 +15685,7 @@
 				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
 				467D3DF925E4436000EB9CB0 /* SitePromptView.swift */,
 				467D3E0B25E4436D00EB9CB0 /* SitePromptView.xib */,
+				08CBC77829AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift */,
 			);
 			path = "Web Address";
 			sourceTree = "<group>";
@@ -21898,6 +21902,7 @@
 				46F583AF2624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
 				3234B8E7252FA0930068DA40 /* ReaderSitesCardCell.swift in Sources */,
 				C7234A4E2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift in Sources */,
+				08CBC77929AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */,
@@ -23746,6 +23751,7 @@
 				8B92D69727CD51FA001F5371 /* DashboardGhostCardCell.swift in Sources */,
 				FABB23122602FC2C00C8785C /* WPImmuTableRows.swift in Sources */,
 				800035BE291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift in Sources */,
+				08CBC77A29AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */,
 				FABB23132602FC2C00C8785C /* WordPress-87-88.xcmappingmodel in Sources */,
 				FABB23142602FC2C00C8785C /* UsersService.swift in Sources */,
 				FABB23152602FC2C00C8785C /* SharePost+UIActivityItemSource.swift in Sources */,
