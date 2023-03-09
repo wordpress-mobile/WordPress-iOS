@@ -27,7 +27,7 @@ ls -la DerivedData/Build/Products/
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:JetpackUITests device:"$DEVICE"
+bundle exec fastlane test_without_building name:WordPressUITests device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
 set -e
 

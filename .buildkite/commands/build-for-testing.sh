@@ -14,7 +14,7 @@ echo "--- Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane build_jetpack_for_testing
+bundle exec fastlane build_for_testing
 
 echo "--- :arrow_up: Upload Build Products"
 ls -la DerivedData/Build/Products/
