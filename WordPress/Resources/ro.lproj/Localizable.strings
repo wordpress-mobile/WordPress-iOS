@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-22 07:59:20+0000 */
+/* Translation-Revision-Date: 2023-03-06 16:40:40+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "A fost creată o pagină goală";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "bloc citat";
@@ -1150,6 +1153,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Site-ul este blocat";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Utilizatorul este blocat";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2500,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Refuză";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Îți afișezi munca pe milioane de site-uri.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Ascunde asta";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promovează-ți conținutul cu Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Promovează un articol acum";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promovezi orice articol sau pagină în numai câteva minute pentru câțiva dolari pe zi.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Urmărești performanța campaniilor tale și poți să le anulezi oricând.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Conținutul tău va apărea pe milioane de site-uri WordPress și Tumblr.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Cu Blaze, aduci mai mult trafic pe site";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Promovează această pagină";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Promovează acest articol";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Refuză";
 
@@ -10157,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "altele";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promovează cu Blaze";
+
 /* No comment provided by engineer. */
 "password" = "parolă";
 
@@ -10175,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opțiuni imagine reprezentativă";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promovează cu Blaze";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Accesează Setări site pentru a le reactiva";
 
@@ -10189,6 +10232,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Ești autentificat!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Blochează acest utilizator";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Raportează acest utilizator";
@@ -10358,6 +10407,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Gata";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Atinge pentru a mergi la Întrebări frecvente pentru aplicația Jetpack într-un navigator extern";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Mergi la Întrebări frecvente";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Dezautentificare";
 
@@ -10393,6 +10448,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Centru de ajutor WordPress";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Întrebări frecvente oferă răspunsuri la întrebările generale pe care le au utilizatorii.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Îți mulțumim că ai comutat la aplicația Jetpack!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Jurnale";
