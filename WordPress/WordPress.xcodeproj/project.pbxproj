@@ -508,7 +508,7 @@
 		17C1D7DD26735631006C8970 /* EmojiRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C1D7DB26735631006C8970 /* EmojiRenderer.swift */; };
 		17C2FF0925D4852400CDB712 /* UnifiedProloguePages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */; };
 		17C3F8BF25E4438200EFFE12 /* notifications-button-text-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 17C3F8BE25E4438100EFFE12 /* notifications-button-text-content.json */; };
-		17C3FA6F25E591D200EFFE12 /* UIFont+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C3FA6E25E591D200EFFE12 /* UIFont+Styles.swift */; };
+		17C3FA6F25E591D200EFFE12 /* UIFont+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C3FA6E25E591D200EFFE12 /* UIFont+Weight.swift */; };
 		17C64BD2248E26A200AF09D7 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C64BD1248E26A200AF09D7 /* AppAppearance.swift */; };
 		17CE77ED20C6C2F3001DEA5A /* ReaderSiteSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */; };
 		17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */; };
@@ -4326,7 +4326,7 @@
 		FABB22602602FC2C00C8785C /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		FABB22612602FC2C00C8785C /* WPStyleGuide+AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574CE101B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift */; };
 		FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E88C621C9A10A0055C014 /* ErrorStateViewConfiguration.swift */; };
-		FABB22632602FC2C00C8785C /* UIFont+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C3FA6E25E591D200EFFE12 /* UIFont+Styles.swift */; };
+		FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C3FA6E25E591D200EFFE12 /* UIFont+Weight.swift */; };
 		FABB22642602FC2C00C8785C /* PostChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E4E375227A033A0007D752 /* PostChart.swift */; };
 		FABB22652602FC2C00C8785C /* PageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4631359024AD013F0017E65C /* PageCoordinator.swift */; };
 		FABB22662602FC2C00C8785C /* Blog+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43290D03215C28D800F6B398 /* Blog+QuickStart.swift */; };
@@ -6054,7 +6054,7 @@
 		17C1D7DB26735631006C8970 /* EmojiRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiRenderer.swift; sourceTree = "<group>"; };
 		17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedProloguePages.swift; sourceTree = "<group>"; };
 		17C3F8BE25E4438100EFFE12 /* notifications-button-text-content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-button-text-content.json"; sourceTree = "<group>"; };
-		17C3FA6E25E591D200EFFE12 /* UIFont+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Styles.swift"; sourceTree = "<group>"; };
+		17C3FA6E25E591D200EFFE12 /* UIFont+Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Weight.swift"; sourceTree = "<group>"; };
 		17C64BD1248E26A200AF09D7 /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchService.swift; sourceTree = "<group>"; };
 		17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchViewController.swift; sourceTree = "<group>"; };
@@ -14793,6 +14793,7 @@
 		B587796C19B799D800E57C5A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F407AF1529BA835B008BA5B9 /* Font */,
 				4326191322FCB8BE003C7642 /* Colors and Styles */,
 				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
@@ -14852,8 +14853,6 @@
 				57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */,
 				3250490624F988220036B47F /* Interpolation.swift */,
 				8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */,
-				17C3FA6E25E591D200EFFE12 /* UIFont+Styles.swift */,
-				17C1D6902670E4A2006C8970 /* UIFont+Fitting.swift */,
 				FE02F95E269DC14A00752A44 /* Comment+Interface.swift */,
 				C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */,
 				179A70EF2729834B006DAC0A /* Binding+OnChange.swift */,
@@ -16653,6 +16652,15 @@
 				F198FFB2256D4AB7001266EB /* Supporting Files */,
 			);
 			path = WordPressIntents;
+			sourceTree = "<group>";
+		};
+		F407AF1529BA835B008BA5B9 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				17C3FA6E25E591D200EFFE12 /* UIFont+Weight.swift */,
+				17C1D6902670E4A2006C8970 /* UIFont+Fitting.swift */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		F41BDD772910AFB900B7F2B0 /* Navigation */ = {
@@ -20983,7 +20991,7 @@
 				4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
 				731E88C921C9A10B0055C014 /* ErrorStateViewConfiguration.swift in Sources */,
-				17C3FA6F25E591D200EFFE12 /* UIFont+Styles.swift in Sources */,
+				17C3FA6F25E591D200EFFE12 /* UIFont+Weight.swift in Sources */,
 				73E4E376227A033A0007D752 /* PostChart.swift in Sources */,
 				4631359124AD013F0017E65C /* PageCoordinator.swift in Sources */,
 				43290D04215C28D800F6B398 /* Blog+QuickStart.swift in Sources */,
@@ -23770,7 +23778,7 @@
 				8B8E50B727A4692000C89979 /* DashboardPostListErrorCell.swift in Sources */,
 				FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */,
 				46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
-				FABB22632602FC2C00C8785C /* UIFont+Styles.swift in Sources */,
+				FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */,
 				FABB22642602FC2C00C8785C /* PostChart.swift in Sources */,
 				FE4DC5AA293A84F8008F322F /* WordPressExportRoute.swift in Sources */,
 				FABB22652602FC2C00C8785C /* PageCoordinator.swift in Sources */,
