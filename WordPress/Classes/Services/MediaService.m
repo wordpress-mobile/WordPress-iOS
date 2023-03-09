@@ -679,7 +679,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (MediaThumbnailService *)thumbnailService
 {
     if (!_thumbnailService) {
-        _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        _thumbnailService = [[MediaThumbnailService alloc] initWithContextManager:[ContextManager sharedInstance]];
         if (self.concurrentThumbnailGeneration) {
             _thumbnailService.exportQueue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
         }

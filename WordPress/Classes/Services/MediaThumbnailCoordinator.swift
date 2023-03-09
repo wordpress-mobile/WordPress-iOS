@@ -9,7 +9,7 @@ class MediaThumbnailCoordinator: NSObject {
 
     @objc static let shared = MediaThumbnailCoordinator()
 
-    private var coreDataStack: CoreDataStack {
+    private var coreDataStack: CoreDataStackSwift {
         ContextManager.shared
     }
 
@@ -48,11 +48,9 @@ class MediaThumbnailCoordinator: NSObject {
             }
         }
 
-        coreDataStack.performAndSave { context in
-            let mediaThumbnailService = MediaThumbnailService(managedObjectContext: context)
-            mediaThumbnailService.exportQueue = self.queue
-            mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
-        }
+        let mediaThumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
+        mediaThumbnailService.exportQueue = self.queue
+        mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
     }
 
     /// Tries to generate a thumbnail for the specified media object that is stub with the size requested
@@ -80,13 +78,11 @@ class MediaThumbnailCoordinator: NSObject {
             return
         }
 
-        coreDataStack.performAndSave { context in
-            let mediaService = MediaService(managedObjectContext: context)
-            mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
-                onCompletion(loadedMedia, nil)
-            }, failure: { (error) in
-                onCompletion(nil, error)
-            })
-        }
+        let mediaService = MediaService(managedObjectContext: coreDataStack.mainContext)
+        mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
+            onCompletion(loadedMedia, nil)
+        }, failure: { (error) in
+            onCompletion(nil, error)
+        })
     }
 }
