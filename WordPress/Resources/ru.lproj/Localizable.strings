@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-08 12:17:15+0000 */
+/* Translation-Revision-Date: 2023-03-01 15:54:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Блоки - это части содержимого, которые можно вставлять, переставлять и стилизовать, без необходимости использования кода. Блоки - это простой и современный способ создавать красивые макеты.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Меню \"Блоки\"";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Блог";
@@ -9692,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "подписка";
 
@@ -9959,6 +9965,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Перейти к статистике";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Сайт готов к использованию в приложении.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Готово";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Статистика, Чтиво, Уведомления и другие функции скоро переедут в мобильное приложение Jetpack.";
 
@@ -9976,6 +9988,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Напомнить мне позже";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Устанавливая Jetpack, вы принимаете наши %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Установить полнофункциональный плагин";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Обратитесь в службу поддержки";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Правила и условия";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Установите полнофункциональный плагин Jetpack";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Добавление автора";
@@ -10012,6 +10039,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Ведение блога";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Подробнее";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Свернуть";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "На этом сайте используется плагин %1$@, который пока поддерживает не все функции приложения. Установите полнофункциональный плагин Jetpack.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "На этом сайте используются отдельные плагины Jetpack, которые пока поддерживают не все функции приложения. Установите полнофункциональный плагин Jetpack.";
 
 /* Later today */
 "later today" = "позже сегодня";
@@ -10147,6 +10186,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Вход выполнен!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Пожаловаться на этого пользователя";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Назад";
@@ -10309,6 +10351,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Пользователи сайта";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Готово";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Выйти";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Нажмите, чтобы перейти на сайт форума сообщества во внешнем браузере";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Посетите WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Задайте вопрос на форуме сообщества, и наши волонтёры вам помогут.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Показывает диалог для изменения контактного адреса эл. почты.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Не указана";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "Электронная почта";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Обратиться в службу поддержки";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Отладка";
+
+/* Support email label. */
+"support.row.email.title" = "Электронная почта";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "Форумы WordPress";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "Помощь WordPress";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Журналы";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Билеты";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Версия";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Включите функцию отладки, чтобы в журналы включалась дополнительная информация, которая поможет в устранении неполадок приложения.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "Учётная запись WordPress.com";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Дополнительно";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Форумы сообщества";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Приоритетная поддержка";
+
+/* View title for Help & Support page. */
+"support.title" = "Справка";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";

@@ -5,12 +5,12 @@ import Foundation
     private static let currentStepPropertyKey = "current_step"
     private static let errorPropertyKey = "error"
 
-    static func trackBlazeFeatureDisplayed(for source: BlazeSource) {
-        WPAnalytics.track(.blazeFeatureDisplayed, properties: analyticsProperties(for: source))
+    static func trackEntryPointDisplayed(for source: BlazeSource) {
+        WPAnalytics.track(.blazeEntryPointDisplayed, properties: analyticsProperties(for: source))
     }
 
-    static func trackBlazeFeatureTapped(for source: BlazeSource) {
-        WPAnalytics.track(.blazeFeatureTapped, properties: analyticsProperties(for: source))
+    static func trackEntryPointTapped(for source: BlazeSource) {
+        WPAnalytics.track(.blazeEntryPointTapped, properties: analyticsProperties(for: source))
     }
 
     static func trackContextualMenuAccessed(for source: BlazeSource) {
@@ -19,6 +19,18 @@ import Foundation
 
     static func trackHideThisTapped(for source: BlazeSource) {
         WPAnalytics.track(.blazeCardHidden, properties: analyticsProperties(for: source))
+    }
+
+    static func trackOverlayDisplayed(for source: BlazeSource) {
+        WPAnalytics.track(.blazeOverlayDisplayed, properties: analyticsProperties(for: source))
+    }
+
+    static func trackOverlayButtonTapped(for source: BlazeSource) {
+        WPAnalytics.track(.blazeOverlayButtonTapped, properties: analyticsProperties(for: source))
+    }
+
+    static func trackOverlayDismissed(for source: BlazeSource) {
+        WPAnalytics.track(.blazeOverlayDismissed, properties: analyticsProperties(for: source))
     }
 
     static func trackBlazeFlowStarted(for source: BlazeSource) {

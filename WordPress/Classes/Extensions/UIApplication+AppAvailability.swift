@@ -3,6 +3,7 @@ import Foundation
 enum AppScheme: String {
     case wordpress = "wordpress://"
     case wordpressMigrationV1 = "wordpressmigration+v1://"
+    case jetpack = "jetpack://"
 }
 
 extension UIApplication {

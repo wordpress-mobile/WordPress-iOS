@@ -275,13 +275,13 @@ struct PeopleService {
     /// Nukes all users from Core Data.
     ///
     func removeManagedPeople() {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
             request.predicate = NSPredicate(format: "siteID = %@", NSNumber(value: siteID))
             if let objects = (try? context.fetch(request)) as? [NSManagedObject] {
                 objects.forEach { context.delete($0) }
             }
-        }
+        }, completion: nil, on: .main)
     }
 
     /// Validates Invitation Recipients.

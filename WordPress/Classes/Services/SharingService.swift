@@ -6,8 +6,22 @@ import WordPressKit
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
 ///
-open class SharingService: LocalCoreDataService {
-    @objc let SharingAPIErrorNotFound = "not_found"
+@objc class SharingService: NSObject {
+    let SharingAPIErrorNotFound = "not_found"
+
+    private let coreDataStack: CoreDataStackSwift
+
+    /// The initialiser for Objective-C code.
+    ///
+    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    @objc
+    init(contextManager: ContextManager) {
+        self.coreDataStack = contextManager
+    }
+
+    init(coreDataStack: CoreDataStackSwift) {
+        self.coreDataStack = coreDataStack
+    }
 
     // MARK: - Publicize Related Methods
 
@@ -19,7 +33,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    @objc open func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog) else {
             return
         }
@@ -39,7 +53,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting an array of `KeyringConnection` objects
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    @objc open func fetchKeyringConnectionsForBlog(_ blog: Blog, success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func fetchKeyringConnectionsForBlog(_ blog: Blog, success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog) else {
             return
         }
@@ -61,7 +75,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting a `PublicizeConnection` parameter.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func createPublicizeConnectionForBlog(_ blog: Blog,
+    @objc func createPublicizeConnectionForBlog(_ blog: Blog,
         keyring: KeyringConnection,
         externalUserID: String?,
         success: ((PublicizeConnection) -> Void)?,
@@ -71,7 +85,8 @@ open class SharingService: LocalCoreDataService {
             return
         }
         let dotComID = blog.dotComID!
-        remote.createPublicizeConnection(dotComID,
+        remote.createPublicizeConnection(
+            dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
             success: { remoteConnection in
@@ -79,17 +94,26 @@ open class SharingService: LocalCoreDataService {
                     "service": keyring.service
                 ]
                 WPAppAnalytics.track(.sharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
-                do {
-                    let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                        success?(pubConn)
-                    }, on: .main)
 
-                } catch let error as NSError {
-                    DDLogError("Error creating publicize connection from remote: \(error)")
-                    failure?(error)
-                }
-
+                self.coreDataStack.performAndSave({ context -> NSManagedObjectID in
+                    let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                    try context.obtainPermanentIDs(for: [pubConn])
+                    return pubConn.objectID
+                }, completion: { result in
+                    let transformed = result.flatMap { objectID in
+                        Result {
+                            let object = try self.coreDataStack.mainContext.existingObject(with: objectID)
+                            return object as! PublicizeConnection
+                        }
+                    }
+                    switch transformed {
+                    case let .success(object):
+                        success?(object)
+                    case let .failure(error):
+                        DDLogError("Error creating publicize connection from remote: \(error)")
+                        failure?(error as NSError)
+                    }
+                }, on: .main)
             },
             failure: { (error: NSError?) in
                 failure?(error)
@@ -106,50 +130,72 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func updateSharedForBlog(_ blog: Blog,
+    @objc func updateSharedForBlog(
+        _ blog: Blog,
         shared: Bool,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
-        failure: ((NSError?) -> Void)?) {
+        failure: ((NSError?) -> Void)?
+    ) {
+        typealias PubConnUpdateResult = (oldValue: Bool, siteID: NSNumber, connectionID: NSNumber, service: String, remote: SharingServiceRemote?)
 
-            if pubConn.shared == shared {
-                success?()
-                return
-            }
+        let blogObjectID = blog.objectID
+        coreDataStack.performAndSave({ context -> PubConnUpdateResult in
+            let blogInContext = try context.existingObject(with: blogObjectID) as! Blog
+            let pubConnInContext = try context.existingObject(with: pubConn.objectID) as! PublicizeConnection
+            let oldValue = pubConnInContext.shared
+            pubConnInContext.shared = shared
+            return (
+                oldValue: oldValue,
+                siteID: pubConnInContext.siteID,
+                connectionID: pubConnInContext.connectionID,
+                service: pubConnInContext.service,
+                remote: self.remoteForBlog(blogInContext)
+            )
+        }, completion: { result in
+            switch result {
+            case let .success(value):
+                if value.oldValue == shared {
+                    success?()
+                    return
+                }
 
-            let oldValue = pubConn.shared
-            pubConn.shared = shared
-            ContextManager.sharedInstance().save(managedObjectContext)
+                value.remote?.updatePublicizeConnectionWithID(
+                    value.connectionID,
+                    shared: shared,
+                    forSite: value.siteID,
+                    success: { remoteConnection in
+                        let properties = [
+                            "service": value.service,
+                            "is_site_wide": NSNumber(value: shared).stringValue
+                        ]
+                        WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: value.siteID)
 
-            let blogObjectID = blog.objectID
-            let siteID = pubConn.siteID
-            guard let remote = remoteForBlog(blog) else {
-                return
-            }
-            remote.updatePublicizeConnectionWithID(pubConn.connectionID,
-                shared: shared,
-                forSite: siteID,
-                success: { remoteConnection in
-                    let properties = [
-                        "service": pubConn.service,
-                        "is_site_wide": NSNumber(value: shared).stringValue
-                    ]
-                    WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
-                    do {
-                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-                    } catch let error as NSError {
-                        DDLogError("Error creating publicize connection from remote: \(error)")
-                        failure?(error)
+                        self.coreDataStack.performAndSave({ context in
+                            try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                        }, completion: { result in
+                            switch result {
+                            case .success:
+                                success?()
+                            case let .failure(error):
+                                DDLogError("Error creating publicize connection from remote: \(error)")
+                                failure?(error as NSError)
+                            }
+                        }, on: .main)
+                    },
+                    failure: { (error: NSError?) in
+                        self.coreDataStack.performAndSave({ context in
+                            let pubConnInContext = try context.existingObject(with: pubConn.objectID) as! PublicizeConnection
+                            pubConnInContext.shared = value.oldValue
+                        }, completion: { _ in
+                            failure?(error)
+                        }, on: .main)
                     }
-
-                },
-                failure: { (error: NSError?) in
-                    pubConn.shared = oldValue
-                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                        failure?(error)
-                    }, on: .main)
-            })
+                )
+            case let .failure(error):
+                failure?(error as NSError)
+            }
+        }, on: .main)
     }
 
 
@@ -162,7 +208,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func updateExternalID(_ externalID: String,
+    @objc func updateExternalID(_ externalID: String,
         forBlog blog: Blog,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
@@ -181,15 +227,17 @@ open class SharingService: LocalCoreDataService {
                 externalID: externalID,
                 forSite: siteID,
                 success: { remoteConnection in
-                    do {
-                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-
-                    } catch let error as NSError {
-                        DDLogError("Error creating publicize connection from remote: \(error)")
-                        failure?(error)
-                    }
-
+                    self.coreDataStack.performAndSave({ context in
+                        try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
+                    }, completion: { result in
+                        switch result {
+                        case .success:
+                            success?()
+                        case let .failure(error):
+                            DDLogError("Error creating publicize connection from remote: \(error)")
+                            failure?(error as NSError)
+                        }
+                    }, on: .main)
                 },
                 failure: failure)
     }
@@ -204,82 +252,45 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    @objc open func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         // optimistically delete the connection locally.
-        let siteID = pubConn.siteID
-        managedObjectContext.delete(pubConn)
-        ContextManager.sharedInstance().save(managedObjectContext)
+        coreDataStack.performAndSave({ context in
+            let blogInContext = try context.existingObject(with: blog.objectID) as! Blog
+            let pubConnInContext = try context.existingObject(with: pubConn.objectID) as! PublicizeConnection
 
-        guard let remote = remoteForBlog(blog) else {
-            return
-        }
-        remote.deletePublicizeConnection(siteID,
-            connectionID: pubConn.connectionID,
-            success: {
-                let properties = [
-                    "service": pubConn.service
-                ]
-                WPAppAnalytics.track(.sharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
-                success?()
-            },
-            failure: { (error: NSError?) in
-                if let errorCode = error?.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
-                    if errorCode == self.SharingAPIErrorNotFound {
-                        // This is a special situation. If the call to disconnect the service returns not_found then the service
-                        // has probably already been disconnected and the call was made with stale data.
-                        // Assume this is the case and treat this error as a successful disconnect.
+            let siteID = pubConnInContext.siteID
+            context.delete(pubConnInContext)
+            return (siteID, pubConnInContext.connectionID, pubConnInContext.service, self.remoteForBlog(blogInContext))
+        }, completion: { result in
+            switch result {
+            case let .success((siteID, connectionID, service, remote)):
+                remote?.deletePublicizeConnection(
+                    siteID,
+                    connectionID: connectionID,
+                    success: {
+                        let properties = [
+                            "service": service
+                        ]
+                        WPAppAnalytics.track(.sharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
                         success?()
-                        return
+                    },
+                    failure: { (error: NSError?) in
+                        if let errorCode = error?.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
+                            if errorCode == self.SharingAPIErrorNotFound {
+                                // This is a special situation. If the call to disconnect the service returns not_found then the service
+                                // has probably already been disconnected and the call was made with stale data.
+                                // Assume this is the case and treat this error as a successful disconnect.
+                                success?()
+                                return
+                            }
+                        }
+                        failure?(error)
                     }
-                }
-                failure?(error)
-            })
-    }
-
-
-    // MARK: - Public PublicizeService Methods
-
-
-    /// Finds a cached `PublicizeService` matching the specified service name.
-    ///
-    /// - Parameter name: The name of the service. This is the `serviceID` attribute for a `PublicizeService` object.
-    ///
-    /// - Returns: The requested `PublicizeService` or nil.
-    ///
-    @objc open func findPublicizeServiceNamed(_ name: String) -> PublicizeService? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeService.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "serviceID = %@", name)
-
-        var services: [PublicizeService]
-        do {
-            services = try managedObjectContext.fetch(request) as! [PublicizeService]
-        } catch let error as NSError {
-            DDLogError("Error fetching Publicize Service named \(name) : \(error.localizedDescription)")
-            services = []
-        }
-
-        return services.first
-    }
-
-
-    /// Returns an array of all cached `PublicizeService` objects.
-    ///
-    /// - Returns: An array of `PublicizeService`.  The array is empty if no objects are cached.
-    ///
-    @objc open func allPublicizeServices() -> [PublicizeService] {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeService.classNameWithoutNamespaces())
-        let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
-        request.sortDescriptors = [sortDescriptor]
-
-        var services: [PublicizeService]
-        do {
-            services = try managedObjectContext.fetch(request) as! [PublicizeService]
-        } catch let error as NSError {
-            DDLogError("Error fetching Publicize Services: \(error.localizedDescription)")
-            services = []
-        }
-
-        return services
+                )
+            case let .failure(error):
+                failure?(error as NSError)
+            }
+        }, on: .main)
     }
 
 
@@ -293,26 +304,22 @@ open class SharingService: LocalCoreDataService {
     ///     - remoteServices: An array of `RemotePublicizeService` objects to merge.
     ///     - success: An optional callback block to be performed when core data has saved the changes.
     ///
-    fileprivate func mergePublicizeServices(_ remoteServices: [RemotePublicizeService], success: (() -> Void)? ) {
-        managedObjectContext.perform {
-            let currentPublicizeServices = self.allPublicizeServices()
+    private func mergePublicizeServices(_ remoteServices: [RemotePublicizeService], success: (() -> Void)? ) {
+        coreDataStack.performAndSave({ context in
+            let currentPublicizeServices = (try? PublicizeService.allPublicizeServices(in: context)) ?? []
 
             // Create or update based on the contents synced.
             let servicesToKeep = remoteServices.map { (remoteService) -> PublicizeService in
-                let pubService = self.createOrReplaceFromRemotePublicizeService(remoteService)
-                return pubService
+                self.createOrReplaceFromRemotePublicizeService(remoteService, in: context)
             }
 
             // Delete any cached PublicizeServices that were not synced.
             for pubService in currentPublicizeServices {
                 if !servicesToKeep.contains(pubService) {
-                    self.managedObjectContext.delete(pubService)
+                    context.delete(pubService)
                 }
             }
-
-            // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-        }
+        }, completion: success, on: .main)
     }
 
 
@@ -322,11 +329,11 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: A `PublicizeService`.
     ///
-    fileprivate func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService) -> PublicizeService {
-        var pubService = findPublicizeServiceNamed(remoteService.serviceID)
+    private func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService, in context: NSManagedObjectContext) -> PublicizeService {
+        var pubService = try? PublicizeService.lookupPublicizeServiceNamed(remoteService.serviceID, in: context)
         if pubService == nil {
             pubService = NSEntityDescription.insertNewObject(forEntityName: PublicizeService.classNameWithoutNamespaces(),
-                into: managedObjectContext) as? PublicizeService
+                into: context) as? PublicizeService
         }
         pubService?.connectURL = remoteService.connectURL
         pubService?.detail = remoteService.detail
@@ -354,14 +361,16 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
-    fileprivate func createOrReplacePublicizeConnectionForBlogWithObjectID(_ blogObjectID: NSManagedObjectID,
-        remoteConnection: RemotePublicizeConnection) throws -> PublicizeConnection {
+    private func createOrReplacePublicizeConnectionForBlogWithObjectID(
+        _ blogObjectID: NSManagedObjectID,
+        remoteConnection: RemotePublicizeConnection,
+        in context: NSManagedObjectContext
+    ) throws -> PublicizeConnection {
+        let blog = try context.existingObject(with: blogObjectID) as! Blog
+        let pubConn = PublicizeConnection.createOrReplace(from: remoteConnection, in: context)
+        pubConn.blog = blog
 
-            let blog = try managedObjectContext.existingObject(with: blogObjectID) as! Blog
-            let pubConn = PublicizeConnection.createOrReplace(from: remoteConnection, in: self.managedObjectContext)
-            pubConn.blog = blog
-
-            return pubConn
+        return pubConn
     }
 
 
@@ -374,7 +383,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    @objc open func syncSharingButtonsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func syncSharingButtonsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
@@ -396,7 +405,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    @objc open func updateSharingButtonsForBlog(_ blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc func updateSharingButtonsForBlog(_ blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
 
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
@@ -419,62 +428,27 @@ open class SharingService: LocalCoreDataService {
     ///     - remoteSharingButtons: An array of `RemoteSharingButton` objects to merge.
     ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
-    fileprivate func mergeSharingButtonsForBlog(_ blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
-        managedObjectContext.perform {
-            var blog: Blog
-            do {
-                blog = try self.managedObjectContext.existingObject(with: blogObjectID) as! Blog
-            } catch let error as NSError {
-                DDLogError("Error fetching Blog: \(error)")
-                // Because of the error we'll bail early, but we still need to call
-                // the success callback if one was passed.
-                onComplete?()
-                return
-            }
+    private func mergeSharingButtonsForBlog(_ blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
+        coreDataStack.performAndSave({ context in
+            let blog = try context.existingObject(with: blogObjectID) as! Blog
 
-            let currentSharingbuttons = self.allSharingButtonsForBlog(blog)
+            let currentSharingbuttons = try SharingButton.allSharingButtons(for: blog, in: context)
 
             // Create or update based on the contents synced.
             let buttonsToKeep = remoteSharingButtons.map { (remoteButton) -> SharingButton in
-                return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog)
+                return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog, in: context)
             }
 
             // Delete any cached PublicizeServices that were not synced.
             for button in currentSharingbuttons {
                 if !buttonsToKeep.contains(button) {
-                    self.managedObjectContext.delete(button)
+                    context.delete(button)
                 }
             }
-
-            // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: onComplete, on: .main)
-        }
+        }, completion: { _ in
+            onComplete?()
+        }, on: .main)
     }
-
-
-    /// Returns an array of all cached `SharingButtons` objects.
-    ///
-    /// - Parameters
-    ///     - blog: A `Blog` object
-    ///
-    /// - Returns: An array of `SharingButton`s.  The array is empty if no objects are cached.
-    ///
-    @objc open func allSharingButtonsForBlog(_ blog: Blog) -> [SharingButton] {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: SharingButton.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "blog = %@", blog)
-        request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-
-        var buttons: [SharingButton]
-        do {
-            buttons = try managedObjectContext.fetch(request) as! [SharingButton]
-        } catch let error as NSError {
-            DDLogError("Error fetching Publicize Connections: \(error.localizedDescription)")
-            buttons = []
-        }
-
-        return buttons
-    }
-
 
     /// Composes a new `SharingButton`, or updates an existing one, with
     /// data represented by the passed `RemoteSharingButton`.
@@ -485,11 +459,11 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: A `SharingButton`.
     ///
-    fileprivate func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog) -> SharingButton {
-        var shareButton = findSharingButtonByID(remoteButton.buttonID, blog: blog)
+    private func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog, in context: NSManagedObjectContext) -> SharingButton {
+        var shareButton = try? SharingButton.lookupSharingButton(byID: remoteButton.buttonID, for: blog, in: context)
         if shareButton == nil {
             shareButton = NSEntityDescription.insertNewObject(forEntityName: SharingButton.classNameWithoutNamespaces(),
-                into: managedObjectContext) as? SharingButton
+                into: context) as? SharingButton
         }
 
         shareButton?.buttonID = remoteButton.buttonID
@@ -512,7 +486,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: An array of `RemoteSharingButton` objects.
     ///
-    fileprivate func remoteShareButtonsFromShareButtons(_ shareButtons: [SharingButton]) -> [RemoteSharingButton] {
+    private func remoteShareButtonsFromShareButtons(_ shareButtons: [SharingButton]) -> [RemoteSharingButton] {
         return shareButtons.map { (shareButton) -> RemoteSharingButton in
             let btn = RemoteSharingButton()
             btn.buttonID = shareButton.buttonID
@@ -527,30 +501,6 @@ open class SharingService: LocalCoreDataService {
     }
 
 
-    /// Finds a cached `SharingButton` by its `buttonID` for the specified `Blog`
-    ///
-    /// - Parameters:
-    ///     - buttonID: The button ID of the `sharingButton`.
-    ///     - blog: The blog that owns the sharing button.
-    ///
-    /// - Returns: The requested `SharingButton` or nil.
-    ///
-    @objc open func findSharingButtonByID(_ buttonID: String, blog: Blog) -> SharingButton? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: SharingButton.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "buttonID = %@ AND blog = %@", buttonID, blog)
-
-        var buttons: [SharingButton]
-        do {
-            buttons = try managedObjectContext.fetch(request) as! [SharingButton]
-        } catch let error as NSError {
-            DDLogError("Error fetching shareing button \(buttonID) : \(error.localizedDescription)")
-            buttons = []
-        }
-
-        return buttons.first
-    }
-
-
     // MARK: Private Instance Methods
 
 
@@ -558,7 +508,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Parameter blog: The blog to use for the rest api.
     ///
-    fileprivate func remoteForBlog(_ blog: Blog) -> SharingServiceRemote? {
+    private func remoteForBlog(_ blog: Blog) -> SharingServiceRemote? {
         guard let api = blog.wordPressComRestApi() else {
             return nil
         }

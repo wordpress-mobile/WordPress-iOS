@@ -84,15 +84,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func quickStartEnabled(for blog: Blog) -> Bool {
-        let enabled = QuickStartFactory.collections(for: blog).isEmpty == false
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
-            if enabled { // If quick start exists, remove it to clean up.
-                QuickStartTourGuide.shared.remove(from: blog)
-            }
-            return false
-        }
-
-        return enabled
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && QuickStartFactory.collections(for: blog).isEmpty == false
     }
 
     /// Provides a tour to suggest to the user

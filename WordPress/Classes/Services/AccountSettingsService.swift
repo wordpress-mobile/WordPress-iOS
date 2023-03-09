@@ -23,6 +23,14 @@ protocol AccountSettingsRemoteInterface {
     func closeAccount(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
 }
 
+extension AccountSettingsRemoteInterface {
+    func updateSetting(_ change: AccountSettingsChange) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            self.updateSetting(change, success: continuation.resume, failure: continuation.resume(throwing:))
+        }
+    }
+}
+
 extension AccountSettingsRemote: AccountSettingsRemoteInterface {}
 
 
@@ -51,14 +59,14 @@ class AccountSettingsService {
 
     var stallTimer: Timer?
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
 
     convenience init(userID: Int, api: WordPressComRestApi) {
         let remote = AccountSettingsRemote.remoteWithApi(api)
         self.init(userID: userID, remote: remote)
     }
 
-    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStack = ContextManager.sharedInstance()) {
+    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
         self.userID = userID
         self.remote = remote
         self.coreDataStack = coreDataStack
@@ -66,11 +74,19 @@ class AccountSettingsService {
     }
 
     func getSettingsAttempt(count: Int = 0, completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
-        self.remote.getSettings(
+        remote.getSettings(
             success: { settings in
-                self.updateSettings(settings)
-                self.status = .idle
-                completion?(.success(settings))
+                self.coreDataStack.performAndSave({ context in
+                    if let managedSettings = self.managedAccountSettingsWithID(self.userID, in: context) {
+                        managedSettings.updateWith(settings)
+                    } else {
+                        self.createAccountSettings(self.userID, settings: settings, in: context)
+                    }
+                }, completion: {
+                    self.loadSettings()
+                    self.status = .idle
+                    completion?(.success(settings))
+                }, on: .main)
             },
             failure: { error in
                 let error = error as NSError
@@ -111,23 +127,33 @@ class AccountSettingsService {
     }
 
     func saveChange(_ change: AccountSettingsChange, finished: ((Bool) -> ())? = nil) {
-        guard let reverse = try? applyChange(change) else {
+        Task { @MainActor in
+            do {
+                try await saveChange(change)
+                finished?(true)
+            } catch {
+                NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: self, userInfo: [NSUnderlyingErrorKey: error])
+                finished?(false)
+            }
+        }
+    }
+
+    func saveChange(_ change: AccountSettingsChange) async throws {
+        guard let reverse = try? await applyChange(change) else {
             return
         }
-        remote.updateSetting(change, success: {
-            finished?(true)
-        }) { (error) -> Void in
+        do {
+            try await remote.updateSetting(change)
+        } catch {
             do {
                 // revert change
-                try self.applyChange(reverse)
+                try await self.applyChange(reverse)
             } catch {
                 DDLogError("Error reverting change \(error)")
             }
             DDLogError("Error saving account settings change \(error)")
 
-            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: self, userInfo: [NSUnderlyingErrorKey: error])
-
-            finished?(false)
+            throw error
         }
     }
 
@@ -185,34 +211,23 @@ class AccountSettingsService {
         settings = accountSettingsWithID(self.userID)
     }
 
-    @discardableResult fileprivate func applyChange(_ change: AccountSettingsChange) throws -> AccountSettingsChange {
-        var reverse: Result<AccountSettingsChange, Error>! = nil
-        coreDataStack.performAndSave { context in
+    @discardableResult fileprivate func applyChange(_ change: AccountSettingsChange) async throws -> AccountSettingsChange {
+        let reverse = try await coreDataStack.performAndSave({ context in
             guard let settings = self.managedAccountSettingsWithID(self.userID, in: context) else {
                 DDLogError("Tried to apply a change to nonexistent settings (ID: \(self.userID)")
-                reverse = .failure(Errors.notFound)
-                return
+                throw Errors.notFound
             }
 
-            reverse = .success(settings.applyChange(change))
+            let reverse = settings.applyChange(change)
             settings.account.applyChange(change)
+            return reverse
+        })
+
+        await MainActor.run {
+            self.loadSettings()
         }
 
-        loadSettings()
-
-        return try reverse.get()
-    }
-
-    fileprivate func updateSettings(_ settings: AccountSettings) {
-        coreDataStack.performAndSave { context in
-            if let managedSettings = self.managedAccountSettingsWithID(self.userID, in: context) {
-                managedSettings.updateWith(settings)
-            } else {
-                self.createAccountSettings(self.userID, settings: settings, in: context)
-            }
-        }
-
-        loadSettings()
+        return reverse
     }
 
     fileprivate func accountSettingsWithID(_ userID: Int) -> AccountSettings? {

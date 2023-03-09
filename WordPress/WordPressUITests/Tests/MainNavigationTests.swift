@@ -10,6 +10,7 @@ class MainNavigationTests: XCTestCase {
         try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         mySiteScreen = try TabNavComponent()
             .goToMySiteScreen()
+            .goToMenu()
     }
 
     override func tearDownWithError() throws {
@@ -25,7 +26,6 @@ class MainNavigationTests: XCTestCase {
         XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
         try mySiteScreen
-            .goToMenu()
             .goToPeople()
 
         XCTAssertTrue(PeopleScreen.isLoaded(), "PeopleScreen screen isn't loaded.")

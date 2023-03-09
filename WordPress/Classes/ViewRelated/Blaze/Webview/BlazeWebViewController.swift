@@ -1,9 +1,15 @@
 import UIKit
 import WebKit
 
+@objc protocol BlazeWebViewControllerDelegate {
+    func dismissBlazeWebViewController(_ controller: BlazeWebViewController)
+}
+
 class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Private Variables
+
+    private weak var delegate: BlazeWebViewControllerDelegate?
 
     private let webView: WKWebView
     private var viewModel: BlazeWebViewModel?
@@ -26,7 +32,8 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Initializers
 
-    init(source: BlazeSource, blog: Blog, postID: NSNumber?) {
+    init(source: BlazeSource, blog: Blog, postID: NSNumber?, delegate: BlazeWebViewControllerDelegate?) {
+        self.delegate = delegate
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
         viewModel = BlazeWebViewModel(source: source, blog: blog, postID: postID, view: self)
@@ -141,6 +148,12 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     }
 
     func dismissView() {
+
+        if let delegate {
+            delegate.dismissBlazeWebViewController(self)
+            return
+        }
+
         dismiss(animated: true)
     }
 
