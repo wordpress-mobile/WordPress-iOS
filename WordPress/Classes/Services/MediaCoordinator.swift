@@ -543,26 +543,20 @@ class MediaCoordinator: NSObject {
     }
 
     /// Encapsulates an observer block and an optional observed media item or post.
-    struct MediaObserver {
-        let media: Media?
-        let post: AbstractPost?
+    private struct MediaObserver {
+        let mediaObjectID: NSManagedObjectID?
+        let postObjectID: NSManagedObjectID?
         let onUpdate: ObserverBlock
 
-        init(onUpdate: @escaping ObserverBlock) {
-            self.media = nil
-            self.post = nil
-            self.onUpdate = onUpdate
-        }
-
         init(media: Media?, onUpdate: @escaping ObserverBlock) {
-            self.media = media
-            self.post = nil
+            self.mediaObjectID = media?.objectID
+            self.postObjectID = nil
             self.onUpdate = onUpdate
         }
 
         init(post: AbstractPost, onUpdate: @escaping ObserverBlock) {
-            self.media = nil
-            self.post = post
+            self.mediaObjectID = nil
+            self.postObjectID = post.objectID
             self.onUpdate = onUpdate
         }
     }
@@ -570,15 +564,13 @@ class MediaCoordinator: NSObject {
     /// Utility method to return all observers for a specific media item,
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
-    private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
+    private func observersForMedia(withObjectID mediaObjectID: NSManagedObjectID, originalPostIDs: [NSManagedObjectID]) -> [MediaObserver] {
+        let mediaObservers = self.mediaObservers.values.filter({ $0.mediaObjectID == mediaObjectID })
 
         let postObservers = self.mediaObservers.values.filter({
-            guard let posts = media.posts as? Set<AbstractPost>,
-                let post = $0.post else { return false }
+            guard let postObjectID = $0.postObjectID else { return false }
 
-            let originals = posts.map({ $0.original ?? $0 })
-            return originals.contains(post)
+            return originalPostIDs.contains(postObjectID)
         })
 
         return mediaObservers + postObservers + wildcardObservers
@@ -588,7 +580,7 @@ class MediaCoordinator: NSObject {
     /// observing _all_ media items.
     ///
     private var wildcardObservers: [MediaObserver] {
-        return mediaObservers.values.filter({ $0.media == nil && $0.post == nil })
+        return mediaObservers.values.filter({ $0.mediaObjectID == nil && $0.postObjectID == nil })
     }
 
     // MARK: - Notifying observers
@@ -629,8 +621,21 @@ class MediaCoordinator: NSObject {
     }
 
     func notifyObserversForMedia(_ media: Media, ofStateChange state: MediaState) {
+        let originalPostIDs: [NSManagedObjectID] = coreDataStack.performQuery { context in
+            guard let mediaInContext = try? context.existingObject(with: media.objectID) as? Media else {
+                return []
+            }
+
+            return mediaInContext.posts?.compactMap { (object: AnyHashable) in
+                guard let post = object as? AbstractPost else {
+                    return nil
+                }
+                return (post.original ?? post).objectID
+            } ?? []
+        }
+
         queue.async {
-            self.observersForMedia(media).forEach({ observer in
+            self.observersForMedia(withObjectID: media.objectID, originalPostIDs: originalPostIDs).forEach({ observer in
                 DispatchQueue.main.async {
                     if let media = self.mainContext.object(with: media.objectID) as? Media {
                         observer.onUpdate(media, state)
