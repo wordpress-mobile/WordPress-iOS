@@ -373,15 +373,13 @@ private extension PersonViewController {
             return
         }
 
-        let updated = service.updateUser(user, role: newRole) { (error, reloadedPerson) in
-            self.person = reloadedPerson
-            self.retryUpdatingRole(newRole)
+        service.updateUser(user, role: newRole) { updated in
+            self.person = updated
+            WPAnalytics.track(.personUpdated)
+        } failure: { [weak self] _, reloadedPerson in
+            self?.person = reloadedPerson
+            self?.retryUpdatingRole(newRole)
         }
-
-        // Optimistically refresh the UI
-        self.person = updated
-
-        WPAnalytics.track(.personUpdated)
     }
 
     func retryUpdatingRole(_ newRole: String) {
