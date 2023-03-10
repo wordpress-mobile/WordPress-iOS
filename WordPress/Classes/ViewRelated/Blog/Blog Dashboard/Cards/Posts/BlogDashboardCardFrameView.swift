@@ -189,12 +189,18 @@ class BlogDashboardCardFrameView: UIView {
 
         mainStackView.addArrangedSubview(headerStackView)
 
-        headerStackView.addArrangedSubviews([
-            iconImageView,
-            titleLabel,
-            chevronImageView,
-            ellipsisButton
-        ])
+        let subviews: [UIView]
+        if FeatureFlag.mySiteCardsUITweaks.enabled {
+            subviews = [titleLabel, ellipsisButton]
+        } else {
+            subviews = [
+                iconImageView,
+                titleLabel,
+                chevronImageView,
+                ellipsisButton
+            ]
+        }
+        headerStackView.addArrangedSubviews(subviews)
     }
 
     func configureButtonContainerStackView() {

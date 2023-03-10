@@ -48,6 +48,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case blaze
     case siteCreationDomainPurchasing
     case readerUserBlocking
+    case mySiteCardsUITweaks
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -151,6 +152,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteCreationDomainPurchasing:
             return false
         case .readerUserBlocking:
+            return true
+        case .mySiteCardsUITweaks:
             return true
         }
     }
@@ -292,6 +295,8 @@ extension FeatureFlag {
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
             return "Reader User Blocking"
+        case .mySiteCardsUITweaks:
+             return "My Site Cards UI Tweaks"
         }
     }
 
