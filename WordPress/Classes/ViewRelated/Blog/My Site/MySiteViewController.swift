@@ -132,7 +132,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             createFABIfNeeded()
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
-            updateBlazeStatusAndReloadChildViewController(for: newBlog)
         }
 
         get {
@@ -167,7 +166,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         startObservingQuickStart()
         startObservingOnboardingPrompt()
         subscribeToWillEnterForeground()
-        subscribeToSiteSettingsUpdated()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -270,15 +268,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func subscribeToPostPublished() {
         NotificationCenter.default.addObserver(self, selector: #selector(handlePostPublished), name: .newPostPublished, object: nil)
-    }
-
-    private func subscribeToSiteSettingsUpdated() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogSettingsUpdated, object: nil, queue: nil) { [weak self] _ in
-            guard let blog = self?.blog else {
-                return
-            }
-            self?.updateBlazeStatusAndReloadChildViewController(for: blog)
-        }
     }
 
     private func subscribeToWillEnterForeground() {
@@ -440,7 +429,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
-        updateBlazeStatusAndReloadChildViewController(for: mainBlog)
     }
 
     @objc
@@ -471,31 +459,23 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         switch section {
         case .siteMenu:
 
-            let pulledToRefresh: () -> Void = {
-                self.blogDetailsViewController?.pulledToRefresh(with: self.refreshControl) { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.updateNavigationTitle(for: blog)
-                    self.sitePickerViewController?.blogDetailHeaderView.blog = blog
-                    self.updateBlazeStatusAndReloadChildViewController(for: blog)
+            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+                guard let self = self else {
+                    return
                 }
+
+                self.updateNavigationTitle(for: blog)
+                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
 
-            updateBlazeStatus(for: blog, completion: pulledToRefresh)
 
         case .dashboard:
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
             /// the dashboard updating fast.
-            let pulledToRefresh: () -> Void = {
-                self.blogDashboardViewController?.pulledToRefresh { [weak self] in
-                    self?.refreshControl.endRefreshing()
-                }
+            blogDashboardViewController?.pulledToRefresh { [weak self] in
+                self?.refreshControl.endRefreshing()
             }
-
-            updateBlazeStatus(for: blog, completion: pulledToRefresh)
 
             blogService.syncBlogAndAllMetadata(blog) { [weak self] in
                 guard let self = self else {
@@ -504,6 +484,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+                self.blogDashboardViewController?.reloadCardsLocally()
             }
         }
 
@@ -839,9 +820,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.updateBlazeStatusAndReloadChildViewController(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
+            self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
 
@@ -966,26 +947,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         self.blog = blog
-    }
-
-    // MARK: - Blaze
-
-    private func updateBlazeStatusAndReloadChildViewController(for blog: Blog) {
-        updateBlazeStatus(for: blog) { [weak self] in
-            self?.updateChildViewController(for: blog)
-        }
-    }
-
-    private func updateBlazeStatus(for blog: Blog, completion: @escaping () -> Void) {
-        guard BlazeHelper.isBlazeFlagEnabled(),
-              let blazeService = BlazeService() else {
-            completion()
-            return
-        }
-
-        blazeService.updateStatus(for: blog) {
-            completion()
-        }
     }
 
     // MARK: - Blogging Prompts

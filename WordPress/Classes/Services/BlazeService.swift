@@ -1,7 +1,7 @@
 import Foundation
 import WordPressKit
 
-final class BlazeService {
+@objc final class BlazeService: NSObject {
 
     private let contextManager: CoreDataStack
     private let remote: BlazeServiceRemote
@@ -18,21 +18,25 @@ final class BlazeService {
         self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
     }
 
+    @objc class func createService() -> BlazeService? {
+        self.init()
+    }
+
     // MARK: - Methods
 
-    /// Fetches and updates blaze status from the server.
+    /// Fetches a site's blaze status from the server, and updates the blog's isBlazeApproved property.
     ///
     /// - Parameters:
     ///   - blog: A blog
     ///   - completion: Closure to be called on success
-    func updateStatus(for blog: Blog,
-                      completion: (() -> Void)? = nil) {
+    @objc func getStatus(for blog: Blog,
+                         completion: (() -> Void)? = nil) {
         guard let siteId = blog.dotComID?.intValue else {
             DDLogError("Invalid site ID for Blaze")
             completion?()
             return
         }
-
+        
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):

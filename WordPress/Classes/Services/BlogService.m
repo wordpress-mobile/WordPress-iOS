@@ -185,6 +185,14 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
+    
+    if ([BlazeHelper isBlazeFlagEnabled]) {
+        BlazeService *blazeService = [BlazeService createService];
+        dispatch_group_enter(syncGroup);
+        [blazeService getStatusFor:blog completion:^{
+            dispatch_group_leave(syncGroup);
+        }];
+    }
 
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
