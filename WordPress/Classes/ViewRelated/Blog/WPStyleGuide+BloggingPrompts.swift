@@ -2,7 +2,7 @@
 ///
 extension WPStyleGuide {
     public struct BloggingPrompts {
-        static let promptContentFont = UIFont.current.prominent(style: .headline, weight: .semibold)
+        static let promptContentFont = UIFont.styles.prominent(style: .headline, weight: .semibold)
         static let answerInfoButtonFont = WPStyleGuide.fontForTextStyle(.caption1)
         static let answerInfoButtonColor = UIColor.textSubtle
         static let buttonTitleFont = WPStyleGuide.fontForTextStyle(.subheadline)

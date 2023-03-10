@@ -2,7 +2,7 @@ import UIKit
 
 extension UIFont {
 
-    static let current: FontStyles = {
+    static let styles: FontStyles = {
         return .init(prominent: UIFont.prominentFont(style:weight:))
     }()
 
