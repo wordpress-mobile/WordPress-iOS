@@ -160,11 +160,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _readerNavigationController.navigationBar.translucent = NO;
         _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
-        // Set a clear scroll edge background to allow for featured images that extend behind the navigation area.
-        UINavigationBarAppearance *appearance =_readerNavigationController.navigationBar.scrollEdgeAppearance;
-        appearance.backgroundColor = [UIColor clearColor];
-        _readerNavigationController.navigationBar.scrollEdgeAppearance = appearance;
-
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
         _readerNavigationController.tabBarItem.image = readerTabBarImage;
         _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
