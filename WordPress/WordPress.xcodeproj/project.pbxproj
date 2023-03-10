@@ -2061,6 +2061,13 @@
 		8BA6F7C429BB54D000026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
 		8BA6F7C529BB54D400026408 /* AppColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */; };
 		8BA6F7C629BB54D800026408 /* AppColorPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */; };
+		8BA6F7C729BB6B4900026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7C829BB6B4A00026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7C929BB6B4A00026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7CA29BB6B4B00026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7CB29BB6B5300026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7CC29BB6B5400026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7CD29BB6B5400026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
 		8BA77BCB2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
 		8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */; };
 		8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */; };
@@ -20417,6 +20424,7 @@
 				0107E0BF28F97D5000DE87DB /* FeatureFlagOverrideStore.swift in Sources */,
 				0107E11528FD7FE500DE87DB /* AppConfiguration.swift in Sources */,
 				0107E0C028F97D5000DE87DB /* WordPressHomeWidgetToday.swift in Sources */,
+				8BA6F7CD29BB6B5400026408 /* AppColor.swift in Sources */,
 				0107E0C128F97D5000DE87DB /* FlexibleCard.swift in Sources */,
 				0107E0C228F97D5000DE87DB /* VerticalCard.swift in Sources */,
 				0107E0C328F97D5000DE87DB /* ThisWeekWidgetStats.swift in Sources */,
@@ -22274,6 +22282,7 @@
 				3F6BC05C25B24773007369D3 /* FeatureFlagOverrideStore.swift in Sources */,
 				3FD675EA25C87A25009AB3C1 /* WordPressHomeWidgetToday.swift in Sources */,
 				3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */,
+				8BA6F7C929BB6B4A00026408 /* AppColor.swift in Sources */,
 				3F568A1F254213B60048A9E4 /* VerticalCard.swift in Sources */,
 				3F8B306825D1D4B8005A2903 /* ThisWeekWidgetStats.swift in Sources */,
 				3F5C861A25C9EA2500BABE64 /* HomeWidgetAllTimeData.swift in Sources */,
@@ -22384,6 +22393,7 @@
 				433ADC1B223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
 				4326191622FCB9F8003C7642 /* MurielColor.swift in Sources */,
 				73B05D2921374F1E0073ECAA /* Constants.m in Sources */,
+				8BA6F7CA29BB6B4B00026408 /* AppColor.swift in Sources */,
 				736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */,
 				73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */,
 				436110DE22C41B02000773AD /* BuildConfiguration.swift in Sources */,
@@ -22484,6 +22494,7 @@
 				74021A1E202E164D006CC39F /* CocoaLumberjack.swift in Sources */,
 				74E44AD52031E83C00556205 /* ExtensionNotificationManager.swift in Sources */,
 				74448F552044BC7600BD4CDA /* CategoryTree.swift in Sources */,
+				8BA6F7C829BB6B4A00026408 /* AppColor.swift in Sources */,
 				FAD2539126116A1600EDAF88 /* AppStyleGuide.swift in Sources */,
 				74021A09202E1323006CC39F /* ShareSegueHandler.swift in Sources */,
 				74021A01202E12F4006CC39F /* SharedCoreDataStack.swift in Sources */,
@@ -22560,6 +22571,7 @@
 				809620EF28E540D700940A5D /* ExtensionPresentationAnimator.swift in Sources */,
 				809620F028E540D700940A5D /* String+RegEx.swift in Sources */,
 				809620F128E540D700940A5D /* AppStyleGuide.swift in Sources */,
+				8BA6F7CB29BB6B5300026408 /* AppColor.swift in Sources */,
 				809620F228E540D700940A5D /* CocoaLumberjack.swift in Sources */,
 				809620F328E540D700940A5D /* SharedCoreDataStack.swift in Sources */,
 				809620F428E540D700940A5D /* ShareExtensionAbstractViewController.swift in Sources */,
@@ -22636,6 +22648,7 @@
 				8096215028E55C9400940A5D /* ExtensionNotificationManager.swift in Sources */,
 				8096215128E55C9400940A5D /* CategoryTree.swift in Sources */,
 				8096215228E55C9400940A5D /* AppStyleGuide.swift in Sources */,
+				8BA6F7CC29BB6B5400026408 /* AppColor.swift in Sources */,
 				8096215328E55C9400940A5D /* ShareSegueHandler.swift in Sources */,
 				8096215428E55C9400940A5D /* SharedCoreDataStack.swift in Sources */,
 				8096215528E55C9400940A5D /* FeatureFlagOverrideStore.swift in Sources */,
@@ -22776,6 +22789,7 @@
 				4020B2BE2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */,
 				74402F2E2005344700A1D4A2 /* ExtensionPresentationAnimator.swift in Sources */,
 				74D06FE91FE0782000AF1788 /* String+RegEx.swift in Sources */,
+				8BA6F7C729BB6B4900026408 /* AppColor.swift in Sources */,
 				FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */,
 				938CF3DD1EF1BE7F00AF838E /* CocoaLumberjack.swift in Sources */,
 				746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */,

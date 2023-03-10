@@ -55,7 +55,11 @@ extension UIColor {
     }
 
     /// Muriel primary color
-    static var primary = muriel(color: .primary)
+    static var primary: UIColor {
+        AppColor.uiColor
+    }
+    /// - TODO: cleanup later
+//    static var primary = muriel(color: .primary)
     static var primaryLight = muriel(color: .primary, .shade30)
     static var primaryDark = muriel(color: .primary, .shade70)
     class func primary(_ shade: MurielColorShade) -> UIColor {
