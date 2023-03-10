@@ -80,7 +80,7 @@ final class QuickStartPromptViewController: UIViewController {
         siteDescriptionLabel.textColor = .textSubtle
 
         promptTitleLabel.numberOfLines = 0
-        promptTitleLabel.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
+        promptTitleLabel.font = UIFont.current.prominent(style: .title2, weight: .semibold)
         promptTitleLabel.adjustsFontForContentSizeCategory = true
         promptTitleLabel.adjustsFontSizeToFitWidth = true
         promptTitleLabel.textColor = .text

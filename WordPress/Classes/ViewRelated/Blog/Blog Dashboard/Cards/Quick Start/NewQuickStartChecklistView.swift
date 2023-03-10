@@ -38,7 +38,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
+        label.font = UIFont.current.prominent(style: .title2, weight: .semibold)
         label.textColor = .text
         label.numberOfLines = 0
         return label
