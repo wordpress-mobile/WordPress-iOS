@@ -36,7 +36,7 @@ import WordPressKit
             completion?()
             return
         }
-        
+
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):
