@@ -28,7 +28,7 @@ final class DashboardSingleStatView: UIView {
     private lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .bold)
+        label.font = UIFont.current.prominent(style: .title1, weight: .bold)
         label.textColor = .text
         label.isAccessibilityElement = false
         return label

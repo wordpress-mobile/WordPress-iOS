@@ -46,7 +46,7 @@ final class QuickActionButton: UIButton {
 
     private func configureTitleLabel() {
         titleLabel?.adjustsFontForContentSizeCategory = true
-        titleLabel?.font = WPStyleGuide.serifFontForTextStyle(.body, fontWeight: .semibold)
+        titleLabel?.font = UIFont.current.prominent(style: .body, weight: .semibold)
         setTitleColor(.text, for: .normal)
     }
 

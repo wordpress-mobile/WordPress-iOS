@@ -13,7 +13,7 @@ class DashboardFailureCardCell: UICollectionViewCell, Reusable {
         let title = UILabel()
         title.textColor = .secondaryLabel
         title.text = Strings.title
-        title.font = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .semibold)
+        title.font = UIFont.current.prominent(style: .headline, weight: .semibold)
         title.textAlignment = .center
         return title
     }()
