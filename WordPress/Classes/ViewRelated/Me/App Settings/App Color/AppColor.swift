@@ -2,6 +2,8 @@ import SwiftUI
 
 enum AppColor {
 
+    // MARK: API
+
     static private(set) var color: Color = savedColor ?? defaultColor {
         didSet {
             savedColor = color
@@ -13,12 +15,12 @@ enum AppColor {
     }
 
     static var defaultColor: Color {
-        if AppConfiguration.isWordPress {
-            return Color(UIColor.muriel(color: .init(name: .wordPressBlue)))
-        } else if AppConfiguration.isJetpack {
-            return Color(UIColor.muriel(color: .init(name: .jetpackGreen)))
-        } else {
-            assertionFailure("unsupported configuration")
+        switch appConfig {
+        case .wordpress:
+            return .muriel(.wordPressBlue)
+        case .jetpack:
+            return .muriel(.jetpackGreen)
+        case .unknown:
             return .red
         }
     }
@@ -26,6 +28,8 @@ enum AppColor {
     static func update(with newColor: Color) {
         color = newColor
     }
+
+    // MARK: Helpers
 
     private static var savedColor: Color? {
         get {
@@ -48,6 +52,31 @@ enum AppColor {
         .init(suiteName: WPAppGroupName) ?? .standard
     }
 
-    private static let defaultsKey = "AppColorComponents"
+    private static var defaultsKey: String {
+        "\(appConfig.rawValue).AppColorComponents"
+    }
 
+    private static var appConfig: AppConfig {
+        if AppConfiguration.isWordPress {
+            return .wordpress
+        } else if AppConfiguration.isJetpack {
+            return .jetpack
+        } else {
+            assertionFailure("unsupported configuration")
+            return .unknown
+        }
+    }
+
+    private enum AppConfig: String {
+        case wordpress = "Wordpress"
+        case jetpack = "Jetpack"
+        case unknown = "Unknown"
+    }
+
+}
+
+private extension Color {
+    static func muriel(_ name: MurielColorName) -> Self {
+        .init(UIColor.muriel(color: .init(name: name)))
+    }
 }

@@ -2058,6 +2058,9 @@
 		8BA6F7BC29B9F8D000026408 /* AppColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */; };
 		8BA6F7BE29BA19F200026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
 		8BA6F7C029BA1A0000026408 /* AppColorPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */; };
+		8BA6F7C429BB54D000026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
+		8BA6F7C529BB54D400026408 /* AppColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */; };
+		8BA6F7C629BB54D800026408 /* AppColorPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */; };
 		8BA77BCB2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
 		8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */; };
 		8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */; };
@@ -23531,6 +23534,7 @@
 				FABB21A32602FC2C00C8785C /* CommentsViewController.m in Sources */,
 				FABB21A42602FC2C00C8785C /* SiteSettingsViewController+SiteManagement.swift in Sources */,
 				FABB21A52602FC2C00C8785C /* Follow.swift in Sources */,
+				8BA6F7C529BB54D400026408 /* AppColorPickerView.swift in Sources */,
 				FABB21A62602FC2C00C8785C /* BlogJetpackSettingsService.swift in Sources */,
 				FABB21A72602FC2C00C8785C /* MenuItemTypeViewController.m in Sources */,
 				80535DC3294BDE2B00873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */,
@@ -24642,6 +24646,7 @@
 				FABB24F42602FC2C00C8785C /* NoticePresenter.swift in Sources */,
 				FABB24F52602FC2C00C8785C /* ReaderTagTopic.swift in Sources */,
 				FABB24F62602FC2C00C8785C /* Media.swift in Sources */,
+				8BA6F7C629BB54D800026408 /* AppColorPickerViewModel.swift in Sources */,
 				9839CEBC26FAA0530097406E /* CommentModerationBar.swift in Sources */,
 				837966A3299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */,
 				17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */,
@@ -24956,6 +24961,7 @@
 				FABB25DC2602FC2C00C8785C /* ThemeIdHelper.swift in Sources */,
 				FABB25DD2602FC2C00C8785C /* BottomScrollAnalyticsTracker.swift in Sources */,
 				FABB25DE2602FC2C00C8785C /* UserProfile.swift in Sources */,
+				8BA6F7C429BB54D000026408 /* AppColor.swift in Sources */,
 				FABB25DF2602FC2C00C8785C /* PickerTableViewCell.swift in Sources */,
 				FABB25E02602FC2C00C8785C /* StoryEditor.swift in Sources */,
 				2481B180260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */,
