@@ -34,7 +34,11 @@ class RootViewCoordinator {
     // MARK: Private instance variables
 
     private(set) var rootViewPresenter: RootViewPresenter
-    private(set) var currentAppUIType: AppUIType
+    private var currentAppUIType: AppUIType {
+        didSet {
+            JetpackFeaturesRemovalCoordinator.currentAppUIType = currentAppUIType
+        }
+    }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
 
