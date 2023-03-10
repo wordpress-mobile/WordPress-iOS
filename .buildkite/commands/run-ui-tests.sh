@@ -38,7 +38,7 @@ if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
 fi
 
 echo "--- 📦 Zipping test results"
-cd build/results/ && zip -rq Jetpack.xcresult.zip Jetpack.xcresult && cd -
+cd build/results/ && zip -rq Jetpack.xcresult.zip WordPress.xcresult && cd -
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
