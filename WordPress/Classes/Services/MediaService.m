@@ -44,6 +44,9 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     NSParameterAssert(post == nil || blog == post.blog);
     NSParameterAssert(blog.managedObjectContext == self.managedObjectContext);
+    NSParameterAssert(self.managedObjectContext == ContextManager.sharedInstance.mainContext);
+    NSAssert(NSThread.isMainThread, @"%s is only safe to be called from the main thread", __FUNCTION__);
+
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
     __block Media *media;
     __block NSSet<NSString *> *allowedFileTypes = [NSSet set];
@@ -78,40 +81,38 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         return nil;
     }
     NSManagedObjectID *mediaObjectID = media.objectID;
-    [self.managedObjectContext performBlock:^{
-        // Setup completion handlers
-        void(^completionWithMedia)(Media *) = ^(Media *media) {
-            media.remoteStatus = MediaRemoteStatusLocal;
-            media.error = nil;
-            // Pre-generate a thumbnail image, see the method notes.
-            [self exportPlaceholderThumbnailForMedia:media
-                                          completion:^(NSURL *url){
-                                              if (thumbnailCallback) {
-                                                  thumbnailCallback(media, url);
-                                              }
-                                          }];
-            if (completion) {
-                completion(media, nil);
-            }
-        };
-        void(^completionWithError)( NSError *) = ^(NSError *error) {
-            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
-            if (mediaInContext) {
-                mediaInContext.error = error;
-                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            }
-            if (completion) {
-                completion(media, error);
-            }
-        };
+    // Setup completion handlers
+    void(^completionWithMedia)(Media *) = ^(Media *media) {
+        media.remoteStatus = MediaRemoteStatusLocal;
+        media.error = nil;
+        // Pre-generate a thumbnail image, see the method notes.
+        [self exportPlaceholderThumbnailForMedia:media
+                                      completion:^(NSURL *url){
+                                          if (thumbnailCallback) {
+                                              thumbnailCallback(media, url);
+                                          }
+                                      }];
+        if (completion) {
+            completion(media, nil);
+        }
+    };
+    void(^completionWithError)( NSError *) = ^(NSError *error) {
+        Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+        if (mediaInContext) {
+            mediaInContext.error = error;
+            mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }
+        if (completion) {
+            completion(media, error);
+        }
+    };
 
-        // Export based on the type of the exportable.
-        MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        importService.allowableFileExtensions = allowedFileTypes;
-        NSProgress *importProgress = [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
-        [createProgress addChild:importProgress withPendingUnitCount:1];
-    }];
+    // Export based on the type of the exportable.
+    MediaImportService *importService = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    importService.allowableFileExtensions = allowedFileTypes;
+    NSProgress *importProgress = [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+    [createProgress addChild:importProgress withPendingUnitCount:1];
     if (progress != nil) {
         *progress = createProgress;
     }

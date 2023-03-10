@@ -6,7 +6,7 @@ import CocoaLumberjack
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
 ///
-open class MediaImportService: LocalCoreDataService {
+open class MediaImportService: NSObject {
 
     private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
@@ -33,6 +33,20 @@ open class MediaImportService: LocalCoreDataService {
     ///
     public typealias OnError = (Error) -> Void
 
+    private let coreDataStack: CoreDataStackSwift
+
+    /// The initialiser for Objective-C code.
+    ///
+    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    @objc
+    convenience init(contextManager: ContextManager) {
+        self.init(coreDataStack: contextManager)
+    }
+
+    init(coreDataStack: CoreDataStackSwift) {
+        self.coreDataStack = coreDataStack
+    }
+
     // MARK: - Instance methods
 
     /// Imports media from a PHAsset to the Media object, asynchronously.
@@ -40,8 +54,11 @@ open class MediaImportService: LocalCoreDataService {
     /// - Parameters:
     ///     - exportable: the exportable resource where data will be read from.
     ///     - media: the media object to where media will be imported to.
-    ///     - onCompletion: Called if the Media was successfully created and the asset's data imported to the absoluteLocalURL.
-    ///     - onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
+    ///     - onCompletion: Called if the Media was successfully created and the asset's data imported to the
+    ///         absoluteLocalURL. This closure is called on the main thread. The closure's `media` argument is also
+    ///         bound to the main context (`CoreDataStack.mainContext`).
+    ///     - onError: Called if an error was encountered during creation, error convertible to NSError with a
+    ///         localized description. This closure is called on the main thread.
     ///
     /// - Returns: a progress object that report the current state of the import process.
     ///
@@ -52,23 +69,39 @@ open class MediaImportService: LocalCoreDataService {
             guard let exporter = self.makeExporter(for: exportable) else {
                 preconditionFailure("An exporter needs to be availale")
             }
-            let exportProgress = exporter.export(onCompletion: { export in
-                self.managedObjectContext.perform {
-                    self.configureMedia(media, withExport: export)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                        onCompletion(media)
+            let exportProgress = exporter.export(
+                onCompletion: { export in
+                    self.coreDataStack.performAndSave({ context in
+                        let mediaInContext = try context.existingObject(with: media.objectID) as! Media
+                        self.configureMedia(mediaInContext, withExport: export)
+                    }, completion: { result in
+                        let transformed = result.flatMap {
+                            Result {
+                                try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
+                            }
+                        }
+                        switch transformed {
+                        case let .success(media):
+                            onCompletion(media)
+                        case let .failure(error):
+                            onError(error)
+                        }
                     }, on: .main)
+                },
+                onError: { error in
+                    MediaImportService.logExportError(error)
+                    // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
+                    DispatchQueue.main.async {
+                        onError(error)
+                    }
                 }
-            }, onError: { mediaExportError in
-                self.handleExportError(mediaExportError, errorHandler: onError)
-            }
             )
             progress.addChild(exportProgress, withPendingUnitCount: 1)
         }
         return progress
     }
 
-    func makeExporter(for exportable: ExportableAsset) -> MediaExporter? {
+    private func makeExporter(for exportable: ExportableAsset) -> MediaExporter? {
         switch exportable {
         case let asset as PHAsset:
             let exporter = MediaAssetExporter(asset: asset)
@@ -120,21 +153,9 @@ open class MediaImportService: LocalCoreDataService {
         DDLogError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
     }
 
-    /// Handle the OnError callback and logging any errors encountered.
-    ///
-    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
-        MediaImportService.logExportError(error)
-        // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
-        if let errorHandler = errorHandler {
-            self.managedObjectContext.perform {
-                errorHandler(error)
-            }
-        }
-    }
-
     // MARK: - Media export configurations
 
-    fileprivate var exporterImageOptions: MediaImageExporter.Options {
+    private var exporterImageOptions: MediaImageExporter.Options {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
@@ -142,14 +163,14 @@ open class MediaImportService: LocalCoreDataService {
         return options
     }
 
-    fileprivate var exporterVideoOptions: MediaVideoExporter.Options {
+    private var exporterVideoOptions: MediaVideoExporter.Options {
         var options = MediaVideoExporter.Options()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
         options.exportPreset = MediaSettings().maxVideoSizeSetting.videoPreset
         return options
     }
 
-    fileprivate var exporterURLOptions: MediaURLExporter.Options {
+    private var exporterURLOptions: MediaURLExporter.Options {
         var options = MediaURLExporter.Options()
         options.allowableFileExtensions = allowableFileExtensions
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
@@ -161,7 +182,7 @@ open class MediaImportService: LocalCoreDataService {
     /// - Note: Eventually we'll rewrite MediaSettings.imageSizeForUpload to do this for us, but want to leave
     ///   that class alone while implementing MediaExportService.
     ///
-    fileprivate func exporterMaximumImageSize() -> CGFloat? {
+    private func exporterMaximumImageSize() -> CGFloat? {
         let maxUploadSize = MediaSettings().imageSizeForUpload
         if maxUploadSize < Int.max {
             return CGFloat(maxUploadSize)
@@ -171,7 +192,7 @@ open class MediaImportService: LocalCoreDataService {
 
     /// Configure Media with a MediaExport.
     ///
-    fileprivate func configureMedia(_ media: Media, withExport export: MediaExport) {
+    private func configureMedia(_ media: Media, withExport export: MediaExport) {
         media.absoluteLocalURL = export.url
         media.filename = export.url.lastPathComponent
         media.mediaType = (export.url as NSURL).assetMediaType
