@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-01 17:00:30+0000 */
+/* Translation-Revision-Date: 2023-03-06 07:06:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -1150,6 +1150,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blockerade användare";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2497,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9649,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Avfärda";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Visa ditt arbete på miljontals webbplatser.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Dölj detta";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
 
@@ -10190,6 +10200,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
 
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Blockera denna användare";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Rapportera denna användare";
 
@@ -10357,6 +10370,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss the current view */
 "support.button.close.title" = "Klar";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Besök våra vanliga frågor";
 
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Logga ut";

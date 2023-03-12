@@ -716,18 +716,6 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 }
 
-extension MediaCoordinator: Uploader {
-    func resume() {
-        coreDataStack.performAndSave { context in
-            Media
-                .failedMediaForUpload(automatedRetry: true, in: context)
-                .forEach() {
-                    self.retryMedia($0, automatedRetry: true)
-                }
-        }
-    }
-}
-
 extension MediaCoordinator {
     // Based on user logs we've collected for users, we've noticed the app sometimes
     // trying to upload a Media object and failing because the underlying file has disappeared from

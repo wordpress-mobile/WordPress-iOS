@@ -1,14 +1,24 @@
 22.0
 -----
-
+* [*] Remove large title in Reader and Notifications tabs. [#20271]
+* [*] Reader: Change the following button cog icon. [#20274]
+* [*] [Jetpack-only] Change the dark background color of toolbars and top tabs across the whole app. [#20278]
+* [*] Change the Reader's navigation bar background color to match other screens. [#20278]
+* [*] [internal] Refactored the Core Data operations (saving the site data) after a new site is created. [#20270]
+* [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
+* [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
 
 21.9
 -----
-* [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for latter, etc.) [#20197]
+* [*] [internal] Refactored fetching posts in the Reader tab, including post related operations (i.e. like/unlike, save for later, etc.) [#20197]
 * [**] Reader: Add a button in the post menu to block an author and stop seeing their posts. [#20193]
 * [**] [Jetpack-only] Jetpack individual plugin support: Warns user about sites with only individual plugins not supporting all features of the app yet and gives the ability to install the full Jetpack plugin. [#20223]
 * [**] [Jetpack-only] Help: Display the Jetpack app FAQ card on Help screen when switching from the WordPress app to the Jetpack app is complete. [#20232]
 * [***] [Jetpack-only] Blaze: We added support for Blaze in the app. The user can now promote a post or page from the app to reach new audiences. [#20253]
+
+21.8.1
+-----
+* [**] [internal] Fixes a crash that happens in the background when the weekly roundup notification is being processed. [#20275]
 
 21.8
 -----

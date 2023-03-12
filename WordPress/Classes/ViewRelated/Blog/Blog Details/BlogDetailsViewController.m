@@ -1670,10 +1670,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
     
-    [BlazeOverlayCoordinator presentBlazeOverlayInViewController:self
-                                                          source:BlazeSourceMenuItem
-                                                            blog:self.blog
-                                                            post:nil];
+    [BlazeFlowCoordinator presentBlazeInViewController:self
+                                                source:BlazeSourceMenuItem
+                                                  blog:self.blog
+                                                  post:nil];
 }
 
 - (void)showScan
@@ -1777,7 +1777,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (BOOL)shouldShowBlaze
 {
-    return [Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze];
+    return [BlazeHelper isBlazeFlagEnabled] && [self.blog supports:BlogFeatureBlaze];
 }
 
 #pragma mark - Remove Site

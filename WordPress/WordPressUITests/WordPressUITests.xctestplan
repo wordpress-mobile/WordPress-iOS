@@ -28,7 +28,10 @@
         "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
+        "MainNavigationTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests\/testContactUsCanBeLoadedDuringLogin()",
         "SupportScreenTests\/testSupportScreenLoads()"
       ],
       "target" : {

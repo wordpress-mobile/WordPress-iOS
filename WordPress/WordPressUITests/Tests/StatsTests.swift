@@ -8,6 +8,7 @@ class StatsTests: XCTestCase {
         setUpTestSuite()
         _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         statsScreen = try MySiteScreen()
+            .goToMenu()
             .goToStatsScreen()
             .switchTo(mode: .insights)
             .refreshStatsIfNeeded()
@@ -20,14 +21,12 @@ class StatsTests: XCTestCase {
     }
 
     let insightsStats: [String] = [
-        "Views",
-        "2,243",
-        "Posts",
-        "2",
-        "Visitors",
-        "1,201",
-        "Best views ever",
-        "48"
+        "Your views in the last 7-days are -9 (-82%) lower than the previous 7-days. ",
+        "Thursday",
+        "34% of views",
+        "Best Hour",
+        "4 AM",
+        "25% of views"
     ]
 
     let yearsStats: [String] = [

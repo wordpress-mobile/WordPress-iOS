@@ -24,13 +24,12 @@ final class BlazeService {
     ///
     /// - Parameters:
     ///   - blog: A blog
-    ///   - success: Closure to be called on success
-    ///   - failure: Closure to be caleld on failure
+    ///   - completion: Closure to be called on success
     func updateStatus(for blog: Blog,
-                      success: (() -> Void)? = nil,
-                      failure: ((Error) -> Void)? = nil) {
+                      completion: (() -> Void)? = nil) {
         guard let siteId = blog.dotComID?.intValue else {
-            failure?(BlazeServiceError.invalidSiteId)
+            DDLogError("Invalid site ID for Blaze")
+            completion?()
             return
         }
 
@@ -42,7 +41,7 @@ final class BlazeService {
 
                     guard let blog = Blog.lookup(withObjectID: blog.objectID, in: context) else {
                         DDLogError("Unable to update isBlazeApproved value for blog")
-                        failure?(BlazeServiceError.blogNotFound)
+                        completion?()
                         return
                     }
 
@@ -50,21 +49,13 @@ final class BlazeService {
                     DDLogInfo("Successfully updated isBlazeApproved value for blog: \(approved)")
 
                 }, completion: {
-                    success?()
+                    completion?()
                 }, on: .main)
 
             case .failure(let error):
                 DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
-                failure?(error)
+                completion?()
             }
         }
-    }
-}
-
-extension BlazeService {
-
-    enum BlazeServiceError: Error {
-        case invalidSiteId
-        case blogNotFound
     }
 }
