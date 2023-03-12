@@ -154,6 +154,8 @@
 		01CE5013290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5014290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5015290A890F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
+		01DBFD8729BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
+		01DBFD8829BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01E78D1D296EA54F00FB6863 /* StatsPeriodHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
 		02761EC222700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */; };
@@ -5647,6 +5649,7 @@
 		015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalInsightsCellTests.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
+		01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNativeConnectionService.swift; sourceTree = "<group>"; };
 		01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodHelperTests.swift; sourceTree = "<group>"; };
 		02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+SectionHelpers.swift"; sourceTree = "<group>"; };
 		02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDetailsSubsectionToSectionCategoryTests.swift; sourceTree = "<group>"; };
@@ -14217,6 +14220,7 @@
 				9A8ECE1A2254ADFA0043C8DA /* View */,
 				9A8ECE082254A3260043C8DA /* ViewModel */,
 				9A8ECE042254A3260043C8DA /* Webview */,
+				01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */,
 			);
 			path = Install;
 			sourceTree = "<group>";
@@ -21671,6 +21675,7 @@
 				2420BEF125D8DAB300966129 /* Blog+Lookup.swift in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
 				2F09D134245223D300956257 /* HeaderDetailsContentStyles.swift in Sources */,
+				01DBFD8729BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */,
 				403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */,
 				4A9B81E32921AE03007A05D1 /* ContextManager.swift in Sources */,
 				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
@@ -24309,6 +24314,7 @@
 				FABB246D2602FC2C00C8785C /* ReaderSelectInterestsViewController.swift in Sources */,
 				FABB246E2602FC2C00C8785C /* ReaderShowMenuAction.swift in Sources */,
 				3FFDEF882918596B00B625CE /* MigrationDoneViewModel.swift in Sources */,
+				01DBFD8829BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */,
 				08A73440298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */,
 				FABB246F2602FC2C00C8785C /* NSURLCache+Helpers.swift in Sources */,
 				FABB24702602FC2C00C8785C /* String+Extensions.swift in Sources */,

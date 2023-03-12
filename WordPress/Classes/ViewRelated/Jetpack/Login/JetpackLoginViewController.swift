@@ -27,6 +27,7 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var jetpackImage: UIImageView!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
     @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
+    @IBOutlet fileprivate weak var connectUserButton: NUXButton!
     @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
     @IBOutlet private var tacButton: UIButton!
     @IBOutlet private var faqButton: UIButton!
@@ -111,17 +112,20 @@ class JetpackLoginViewController: UIViewController {
     // MARK: - UI Helpers
 
     func updateMessageAndButton() {
-        guard let jetPack = blog.jetpack else {
+        guard let jetpack = blog.jetpack else {
             return
         }
 
         var message: String
 
-        if jetPack.isConnected {
-            message = jetPack.isUpdatedToRequiredVersion ? Constants.Jetpack.isUpdated : Constants.Jetpack.updateRequired
+        if jetpack.isSiteConnection {
+            message = promptType.connectMessage
+        } else if jetpack.isConnected {
+            message = jetpack.isUpdatedToRequiredVersion ? Constants.Jetpack.isUpdated : Constants.Jetpack.updateRequired
         } else {
-            message = promptType.message
+            message = promptType.installMessage
         }
+
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
 
@@ -129,8 +133,12 @@ class JetpackLoginViewController: UIViewController {
         installJetpackButton.isHidden = blog.hasJetpack
         installJetpackButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
+        connectUserButton.setTitle(Constants.Buttons.connectUserTitle, for: .normal)
+        connectUserButton.isHidden = !(blog.hasJetpack && jetpack.isSiteConnection)
+        connectUserButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
-        signinButton.isHidden = !blog.hasJetpack
+        signinButton.isHidden = !(blog.hasJetpack && !jetpack.isSiteConnection)
 
         let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
                                                 lineBreakMode: .byWordWrapping,
@@ -226,6 +234,10 @@ class JetpackLoginViewController: UIViewController {
         openJetpackRemoteInstall()
     }
 
+    @IBAction func didTouchConnectUserAccountButton(_ sender: Any) {
+        openInstallJetpackURL()
+    }
+
     @IBAction func didTouchTacButton(_ sender: Any) {
         openWebView(for: .tac)
     }
@@ -275,7 +287,7 @@ public enum JetpackLoginPromptType {
         }
     }
 
-    var message: String {
+    var installMessage: String {
         switch self {
         case .stats:
             return NSLocalizedString("To use stats on your site, you'll need to install the Jetpack plugin.",
@@ -283,6 +295,19 @@ public enum JetpackLoginPromptType {
         case .notifications:
             return NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from notifications")
+        }
+    }
+
+    var connectMessage: String {
+        switch self {
+        case .stats:
+            return NSLocalizedString("jetpack.install.connectUser.stats.description",
+                                     value: "To use stats on your site, you'll need to connect the Jetpack plugin to your user account.",
+                                     comment: "Message asking the user if they want to set up Jetpack from stats by connecting their user account")
+        case .notifications:
+            return NSLocalizedString("jetpack.install.connectUser.notifications.description",
+                                     value: "To get helpful notifications on your phone from your WordPress site, you'll need to connect to your user account.",
+                                     comment: "Message asking the user if they want to set up Jetpack from notifications")
         }
     }
 }
@@ -309,6 +334,7 @@ private enum Constants {
         static let faqTitle = NSLocalizedString("Jetpack FAQ", comment: "Title of the button which opens the Jetpack FAQ page.")
         static let jetpackInstallTitle = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation.")
         static let loginTitle = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
+        static let connectUserTitle = NSLocalizedString("jetpack.install.connectUser.button.title", value: "Connect your user account", comment: "Title of a button for connecting user account to Jetpack.")
     }
 
     enum Jetpack {
