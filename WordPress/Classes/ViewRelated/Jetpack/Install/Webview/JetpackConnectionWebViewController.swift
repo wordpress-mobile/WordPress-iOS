@@ -368,6 +368,8 @@ private extension JetpackConnectionWebViewController {
             return
         }
 
+        WPAnalytics.track(.jetpackPluginConnectUserAccountStarted)
+
         /// Observe all types of redictions happening on WKWebView which are not triggering decidePolicy delegate
         subscriptions.removeAll()
         webView.publisher(for: \.url)
@@ -389,6 +391,8 @@ private extension JetpackConnectionWebViewController {
             case .failure(let error):
                 DDLogError("Failed fetching Jetpack connection URL: \(error.localizedDescription)")
                 self.delegate?.jetpackConnectionCanceled()
+
+                WPAnalytics.track(.jetpackPluginConnectUserAccountFailed)
             }
         }
     }
@@ -404,11 +408,17 @@ private extension JetpackConnectionWebViewController {
                     case .success(let user):
                         if user.isConnected {
                             DDLogInfo("Jetpack user is connected after native connection flow is completed")
+
+                            WPAnalytics.track(.jetpackPluginConnectUserAccountCompleted)
                         } else {
                             DDLogError("Jetpack user is not connected after native connection flow is completed")
+
+                            WPAnalytics.track(.jetpackPluginConnectUserAccountFailed)
                         }
                     case .failure(let error):
                         DDLogError("Failed fetching Jetpack user: \(error.localizedDescription)")
+
+                        WPAnalytics.track(.jetpackPluginConnectUserAccountFailed)
                     }
 
                     self.handleMobileRedirect()
