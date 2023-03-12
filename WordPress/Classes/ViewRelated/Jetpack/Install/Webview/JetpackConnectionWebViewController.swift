@@ -2,7 +2,8 @@ import UIKit
 import WebKit
 import Gridicons
 import WordPressAuthenticator
-
+import Alamofire
+import Combine
 
 protocol JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted()
@@ -22,6 +23,10 @@ class JetpackConnectionWebViewController: UIViewController {
     fileprivate var account: WPAccount?
 
     private var analyticsErrorWasTracked = false
+
+    /// Only used to handle site-connection state and establish user-connection required for the app
+    private var nativeConnectionService: JetpackNativeConnectionService?
+    private var subscriptions: Set<AnyCancellable> = []
 
     init(blog: Blog) {
         self.blog = blog
@@ -56,7 +61,11 @@ class JetpackConnectionWebViewController: UIViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(JetpackConnectionWebViewController.cancel))
         }
 
-        startConnectionFlow()
+        if let jetpack = blog.jetpack, jetpack.isSiteConnection {
+            startNativeConnectionFlow()
+        } else {
+            startConnectionFlow()
+        }
     }
 
     func startConnectionFlow() {
@@ -241,11 +250,15 @@ private extension JetpackConnectionWebViewController {
         service.syncBlog(
             blog,
             success: { [weak self] in
-                guard let account = self?.account ?? self?.defaultAccount() else {
-                    // If there's no account let's pretend this worked
-                    // We don't know what to do, but at least it will dismiss
-                    // the connection flow and refresh the site state
-                    success()
+                guard let self else { return }
+
+                guard let account = self.account ?? self.defaultAccount() else {
+                    // There could be no account in some cases where user has connected
+                    // their site to .com account on webView
+                    // without logging into the account in the app
+                    self.startObservingLoginNotifications()
+                    WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: self.blog.jetpack?.connectedEmail)
+
                     return
                 }
                 service.associateSyncedBlogs(
@@ -319,6 +332,8 @@ private extension JetpackConnectionWebViewController {
         account = notification.object as? WPAccount
         if let redirect = pendingDotComRedirect {
             performDotComLogin(redirect: redirect)
+        } else {
+            delegate?.jetpackConnectionCompleted()
         }
     }
 
@@ -336,6 +351,69 @@ private extension JetpackConnectionWebViewController {
                 return
             }
             DDLogDebug(message)
+        }
+    }
+}
+
+/// If Jetpack is in site-connection state (Jetpack plugin is connected to the site but the site is not connected to .com account)
+/// JetpackConnectionWebViewController conection flows that use jetpack/connect/ URL do not work
+/// Using Jetpack REST APIs to fetch the required connection URLs to establish user-connection state
+/// See https://github.com/wordpress-mobile/WordPress-iOS/issues/16489
+///
+private extension JetpackConnectionWebViewController {
+    func startNativeConnectionFlow() {
+        guard let api = blog.wordPressOrgRestApi else {
+            DDLogInfo("WordPressOrgRestAPI not loaded to perform native Jetpack connection")
+            startConnectionFlow()
+            return
+        }
+
+        /// Observe all types of redictions happening on WKWebView which are not triggering decidePolicy delegate
+        subscriptions.removeAll()
+        webView.publisher(for: \.url)
+            .sink { [weak self] url in
+                guard let self, let siteURL = self.blog.url else { return }
+                self.handleNativeConnection(url?.absoluteString ?? "", siteURL: siteURL)
+            }
+            .store(in: &subscriptions)
+
+        nativeConnectionService = JetpackNativeConnectionService(api: api)
+
+        nativeConnectionService?.fetchJetpackConnectionURL() { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success(let url):
+                let request = URLRequest(url: url)
+                self.webView.load(request)
+            case .failure(let error):
+                DDLogError("Failed fetching Jetpack connection URL: \(error.localizedDescription)")
+                self.delegate?.jetpackConnectionCanceled()
+            }
+        }
+    }
+
+    func handleNativeConnection(_ url: String, siteURL: String) {
+        let plansPage = "https://wordpress.com/jetpack/connect/plans"
+        // When the web view navigates to Jetpack plans page we can assume that the setup has completed.
+        if url.hasPrefix(plansPage) {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.nativeConnectionService?.fetchJetpackUser() { result in
+                    switch result {
+                    case .success(let user):
+                        if user.isConnected {
+                            DDLogInfo("Jetpack user is connected after native connection flow is completed")
+                        } else {
+                            DDLogError("Jetpack user is not connected after native connection flow is completed")
+                        }
+                    case .failure(let error):
+                        DDLogError("Failed fetching Jetpack user: \(error.localizedDescription)")
+                    }
+
+                    self.handleMobileRedirect()
+                }
+            }
         }
     }
 }

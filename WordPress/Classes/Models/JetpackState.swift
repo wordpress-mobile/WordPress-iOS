@@ -25,6 +25,13 @@
         return true
     }
 
+    /// Return true is Jetpack has site-connection: Jetpack connected to the site but not connected to .com account)
+    var isSiteConnection: Bool {
+        let isUserConnected = connectedUsername != nil || connectedEmail != nil
+
+        return isConnected && !isUserConnected
+    }
+
     /// Returns YES if the detected version meets the app requirements.
 
     /// - SeeAlso: JetpackVersionMinimumRequired
