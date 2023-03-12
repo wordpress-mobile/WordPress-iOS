@@ -135,6 +135,7 @@ class JetpackLoginViewController: UIViewController {
 
         connectUserButton.setTitle(Constants.Buttons.connectUserTitle, for: .normal)
         connectUserButton.isHidden = !(blog.hasJetpack && jetpack.isSiteConnection)
+        connectUserButton.titleLabel?.numberOfLines = 2
         connectUserButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
