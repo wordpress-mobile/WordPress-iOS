@@ -25,7 +25,7 @@
         return true
     }
 
-    /// Return true is Jetpack has site-connection: Jetpack connected to the site but not connected to .com account)
+    /// Return true is Jetpack has site-connection (Jetpack plugin connected to the site but not connected to WP.com account)
     var isSiteConnection: Bool {
         let isUserConnected = connectedUsername != nil || connectedEmail != nil
 

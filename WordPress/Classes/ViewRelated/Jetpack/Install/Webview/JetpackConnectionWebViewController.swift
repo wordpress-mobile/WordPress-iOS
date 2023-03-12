@@ -2,7 +2,6 @@ import UIKit
 import WebKit
 import Gridicons
 import WordPressAuthenticator
-import Alamofire
 import Combine
 
 protocol JetpackConnectionWebDelegate {
