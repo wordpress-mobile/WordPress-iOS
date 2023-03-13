@@ -52,6 +52,21 @@ final class AuthenticatedImageDownload: AsyncOperation {
     }
 }
 
+struct VideoMetadata: Encodable {
+    public let videopressGUID: String?
+
+    public func asDictionary() -> [String: Any] {
+        guard
+            let data = try? JSONEncoder().encode(self),
+            let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+        else {
+            assertionFailure("Encoding of VideoMetadata failed")
+            return [String: Any]()
+        }
+        return dictionary
+    }
+}
+
 class EditorMediaUtility {
 
     private struct Constants {
@@ -196,5 +211,9 @@ class EditorMediaUtility {
             DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
             completion(Result.failure(error))
         })
+    }
+
+    static func getVideoMetadata(media: Media) -> VideoMetadata {
+        return VideoMetadata(videopressGUID: media.videopressGUID)
     }
 }
