@@ -89,8 +89,9 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}. xctestrun path is #{xctestrun_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
-    if options[:name] != 'Jetpack'
-      inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
+    # Temporary skip Buildkite Analytics for Jetpack (not setup)
+    if options[:name] != 'Jetpack' && buildkite_ci?
+      inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path)
       scheme_name = 'WordPress'
     elsif options[:name] == 'Jetpack'
       scheme_name = 'JetpackUITests'
