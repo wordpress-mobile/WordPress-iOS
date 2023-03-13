@@ -15641,9 +15641,17 @@
 			isa = PBXGroup;
 			children = (
 				C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */,
-				C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */,
+				C9C21D8829BF4998009F68E5 /* Views */,
 			);
 			path = LockScreenWidgets;
+			sourceTree = "<group>";
+		};
+		C9C21D8829BF4998009F68E5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		CC098B8116A9EB0400450976 /* HTML */ = {
