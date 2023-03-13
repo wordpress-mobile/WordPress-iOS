@@ -115,7 +115,7 @@ private extension BloggingRemindersScheduleFormatter {
     static func stringToAttributedString(_ string: String) -> NSAttributedString {
         // When the app is in a background state, return the non-emphasized plain String instead.
         // Parsing a HTML string in the background may lead to a crash.
-        // Refer to ReaderCommentsViewController.m:1088 for a similar scenario and explanation.
+        // Refer to https://github.com/wordpress-mobile/WordPress-iOS/pull/17678 for a similar scenario and explanation.
         if UIApplication.shared.applicationState == .background {
             return .init(string: string.removedHTMLEmphases())
         }
