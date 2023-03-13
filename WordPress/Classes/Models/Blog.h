@@ -102,7 +102,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureSmartframeEmbed,
     /// Does the blog support File Downloads section in stats?
     BlogFeatureFileDownloadsStats,
-
+    /// Does the blog support Blaze?
+    BlogFeatureBlaze,
+    
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -164,6 +166,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 @property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quickStartTypeValue;
+@property (nonatomic, assign, readwrite) BOOL isBlazeApproved;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites

@@ -29,7 +29,7 @@ final class ReaderSaveForLaterAction {
     }
 
     private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
-        let readerPostService = ReaderPostService(managedObjectContext: context)
+        let readerPostService = ReaderPostService(coreDataStack: ContextManager.shared)
 
         readerPostService.toggleSavedForLater(for: post, success: {
             if origin == .otherStream {

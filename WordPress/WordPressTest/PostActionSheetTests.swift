@@ -5,12 +5,14 @@ import XCTest
 
 private typealias Titles = PostActionSheet.Titles
 
-class PostActionSheetTests: XCTestCase {
+class PostActionSheetTests: CoreDataTestCase {
 
     private var postActionSheet: PostActionSheet!
     private var viewControllerMock: UIViewControllerMock!
     private var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
     private var view: UIView!
+
+    private let featureFlags = FeatureFlagOverrideStore()
 
     override func setUp() {
         viewControllerMock = UIViewControllerMock()
@@ -145,6 +147,25 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallView)
     }
 
+    func testCallDelegateWhenBlazeTapped() throws {
+        try featureFlags.override(FeatureFlag.blaze, withValue: true)
+
+        let blog = BlogBuilder(mainContext)
+            .isBlazeApproved()
+            .build()
+
+        let post = PostBuilder(mainContext, blog: blog)
+            .published()
+            .build()
+
+        let viewModel = PostCardStatusViewModel(post: post, isBlazeFlagEnabled: true)
+
+        postActionSheet.show(for: viewModel, from: view)
+        tap("Promote with Blaze", in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallBlaze)
+    }
+
     func testCallsDelegateWhenCancelAutoUploadIsTapped() {
         let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
 
@@ -198,6 +219,7 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     private(set) var didCallCancelAutoUpload = false
     private(set) var didCallShare = false
     private(set) var didCallCopyLink = false
+    private(set) var didCallBlaze = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -245,5 +267,9 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     func copyLink(_ post: AbstractPost) {
         didCallCopyLink = true
+    }
+
+    func blaze(_ post: AbstractPost) {
+        didCallBlaze = true
     }
 }

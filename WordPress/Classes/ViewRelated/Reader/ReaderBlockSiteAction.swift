@@ -7,7 +7,7 @@ final class ReaderBlockSiteAction {
     }
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil, failure: ((Error?) -> Void)? = nil) {
-        let service = ReaderSiteService(managedObjectContext: context)
+        let service = ReaderSiteService(coreDataStack: ContextManager.shared)
         service.flagSite(withID: post.siteID,
                          asBlocked: asBlocked,
                          success: {

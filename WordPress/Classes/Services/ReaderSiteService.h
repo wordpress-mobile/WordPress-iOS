@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 #import "ReaderTopicService.h"
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
@@ -9,7 +9,7 @@ typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
 
 extern NSString * const ReaderSiteServiceErrorDomain;
 
-@interface ReaderSiteService : LocalCoreDataService
+@interface ReaderSiteService : CoreDataService
 
 /**
  Follow a site by its URL.

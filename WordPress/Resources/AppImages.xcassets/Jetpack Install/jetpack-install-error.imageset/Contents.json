@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "jetpack-install-error.pdf"
+      "filename" : "jetpack-install-error.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

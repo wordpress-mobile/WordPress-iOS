@@ -50,6 +50,10 @@ class SupportTableViewController: UITableViewController {
         }
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
         ZendeskUtils.fetchUserInformation()
+
+        if SupportConfiguration.isMigrationCardEnabled() {
+            WPAnalytics.track(.supportMigrationFAQCardViewed)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -120,7 +124,8 @@ private extension SupportTableViewController {
                                 DestructiveButtonRow.self,
                                 SupportEmailRow.self,
                                 SupportForumRow.self,
-                                SupportForumButtonRow.self],
+                                ButtonRow.self,
+                                MigrationRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
@@ -157,10 +162,10 @@ private extension SupportTableViewController {
             rows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
                                         action: nil,
                                         accessibilityIdentifier: "visit-wordpress-forums-prompt"))
-            rows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
-                                              accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
-                                              action: visitForumsSelected(),
-                                              accessibilityIdentifier: "visit-wordpress-forums-button"))
+            rows.append(ButtonRow(title: LocalizedText.visitWpForumsButton,
+                                  accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
+                                  action: visitForumsSelected(),
+                                  accessibilityIdentifier: "visit-wordpress-forums-button"))
             helpSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: rows, footerText: nil)
         }
 
@@ -191,7 +196,7 @@ private extension SupportTableViewController {
         }
 
         // Create and return table
-        let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
+        let sections = [createJetpackMigrationSection(), helpSection, informationSection, logOutSections].compactMap { $0 }
         return ImmuTable(sections: sections)
     }
 
@@ -329,6 +334,30 @@ private extension SupportTableViewController {
             actionHandler.logOut(with: self)
         }
     }
+    // MARK: - Jetpack migration section
+
+    private func createJetpackMigrationSection() -> ImmuTableSection? {
+        guard SupportConfiguration.isMigrationCardEnabled() else {
+            return nil
+        }
+
+        var rows = [ImmuTableRow]()
+        rows.append(MigrationRow(title: LocalizedText.jetpackMigrationTitle,
+                                 description: LocalizedText.jetpackMigrationDescription,
+                                 action: nil))
+        rows.append(ButtonRow(title: LocalizedText.jetpackMigrationButton,
+                              accessibilityHint: LocalizedText.jetpackMigrationButtonAccessibilityHint,
+                              action: { _ in
+            guard let url = Constants.jetpackMigrationFAQURL else {
+                return
+            }
+
+            WPAnalytics.track(.supportMigrationFAQButtonTapped)
+            UIApplication.shared.open(url)
+        },
+                                          accessibilityIdentifier: nil))
+        return ImmuTableSection(headerText: nil, rows: rows, footerText: nil)
+    }
 
     // MARK: - ImmuTableRow Struct
 
@@ -388,12 +417,13 @@ private extension SupportTableViewController {
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.selectionStyle = .none
+            cell.accessibilityIdentifier = accessibilityIdentifier
             WPStyleGuide.configureTableViewCell(cell)
         }
     }
 
-    struct SupportForumButtonRow: ImmuTableRow {
-        typealias CellType = SupportForumButtonCell
+    struct ButtonRow: ImmuTableRow {
+        typealias CellType = ButtonCell
 
         static let cell = ImmuTableCell.class(CellType.self)
 
@@ -410,11 +440,31 @@ private extension SupportTableViewController {
 
             cell.button.setTitle(title, for: .normal)
             cell.button.accessibilityHint = accessibilityHint
+            cell.accessibilityIdentifier = accessibilityIdentifier
             cell.button.addAction(UIAction { _ in
                 action?(self)
+                cell.setSelected(false, animated: true)
             }, for: .touchUpInside)
         }
 
+    }
+
+    struct MigrationRow: ImmuTableRow {
+        typealias CellType = MigrationCell
+        static let cell = ImmuTableCell.class(CellType.self)
+
+        let title: String
+        let description: String
+        let action: ImmuTableAction?
+
+        func configureCell(_ cell: UITableViewCell) {
+            guard let cell = cell as? CellType else {
+                return
+            }
+
+            cell.titleLabel.text = title
+            cell.descriptionLabel.text = description
+        }
     }
 
     // MARK: - Helpers
@@ -448,6 +498,11 @@ private extension SupportTableViewController {
         static let wpAccount = NSLocalizedString("support.sectionHeader.account.title", value: "WordPress.com Account", comment: "WordPress.com sign-out section header title")
         static let logOutButtonTitle = NSLocalizedString("support.button.logOut.title", value: "Log Out", comment: "Button for confirming logging out from WordPress.com account")
         static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Email", comment: "Support email label.")
+
+        static let jetpackMigrationTitle = NSLocalizedString("support.row.jetpackMigration.title", value: "Thank you for switching to the Jetpack app!", comment: "An informational card title in Support view")
+        static let jetpackMigrationDescription = NSLocalizedString("support.row.jetpackMigration.description", value: "Our FAQ provides answers to common questions you may have.", comment: "An informational card description in Support view explaining what tapping the link on card does")
+        static let jetpackMigrationButton = NSLocalizedString("support.button.jetpackMigration.title", value: "Visit our FAQ", comment: "Option in Support view to visit the Jetpack migration FAQ website.")
+        static let jetpackMigrationButtonAccessibilityHint = NSLocalizedString("support.button.jetpackMigation.accessibilityHint", value: "Tap to visit the Jetpack app FAQ in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website.")
     }
 
     // MARK: - User Defaults Keys
@@ -460,13 +515,14 @@ private extension SupportTableViewController {
 
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/mobile-app-support/")
+        static let jetpackMigrationFAQURL = URL(string: "https://jetpack.com/support/switch-to-the-jetpack-app/")
 
         static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
 }
 
-private class SupportForumButtonCell: WPTableViewCellDefault {
+private class ButtonCell: WPTableViewCellDefault {
 
     let button: SpotlightableButton = {
         let button = SpotlightableButton(type: .custom)
@@ -523,5 +579,71 @@ private class SupportForumButtonCell: WPTableViewCellDefault {
         static let padding: CGFloat = 16.0
         static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
         static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
+    }
+}
+
+private class MigrationCell: WPTableViewCell {
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        return label
+    }()
+
+    let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = WPStyleGuide.fontForTextStyle(.body)
+        return label
+    }()
+
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.alignment = .leading
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 10
+        return stackView
+    }()
+
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView(image: .init(named: "wp-migration-welcome"))
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setup() {
+        selectionStyle = .none
+
+        contentView.addSubview(stackView)
+        stackView.addArrangedSubview(logoImageView)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(descriptionLabel)
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: LayoutConstants.topBottomPadding),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -LayoutConstants.topBottomPadding),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutConstants.sidePadding),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -LayoutConstants.sidePadding),
+            logoImageView.heightAnchor.constraint(equalToConstant: LayoutConstants.imageSize.height),
+            logoImageView.widthAnchor.constraint(equalToConstant: LayoutConstants.imageSize.width)
+        ])
+    }
+
+    enum LayoutConstants {
+        static let topBottomPadding: CGFloat = 16
+        static let sidePadding: CGFloat = 20
+        static let imageSize = CGSize(width: 56, height: 30)
     }
 }

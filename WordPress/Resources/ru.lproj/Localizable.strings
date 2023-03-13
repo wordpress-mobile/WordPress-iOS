@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-01 15:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-06 07:07:14+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
@@ -2494,6 +2494,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9997,6 +9998,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal secondary button title */
 "jetpack.plugin.modal.secondary.button.title" = "Обратитесь в службу поддержки";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "Полнофункциональный плагин Jetpack";
 
 /* Jetpack Plugin Modal footnote terms and conditions */
 "jetpack.plugin.modal.terms" = "Правила и условия";

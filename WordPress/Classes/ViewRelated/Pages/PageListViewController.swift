@@ -514,6 +514,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         QuickStartTourGuide.shared.visited(.newPage)
     }
 
+    private func blazePage(_ page: AbstractPost) {
+        BlazeEventsTracker.trackEntryPointTapped(for: .pagesList)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .pagesList, blog: blog, post: page)
+    }
+
     fileprivate func editPage(_ page: Page) {
         guard !PostCoordinator.shared.isUploading(post: page) else {
             presentAlertForPageBeingUploaded()
@@ -668,6 +673,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.viewPost(page)
                 })
 
+                addBlazeAction(to: alertController, for: page)
                 addSetParentAction(to: alertController, for: page, at: indexPath)
                 addSetHomepageAction(to: alertController, for: page, at: indexPath)
                 addSetPostsPageAction(to: alertController, for: page, at: indexPath)
@@ -758,6 +764,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func deletePost(_ apost: AbstractPost) {
         super.deletePost(apost)
+    }
+
+    private func addBlazeAction(to controller: UIAlertController, for page: AbstractPost) {
+        guard BlazeHelper.isBlazeFlagEnabled() && page.canBlaze else {
+            return
+        }
+
+        let buttonTitle = NSLocalizedString("pages.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the page with Blaze.")
+        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
+            self?.blazePage(page)
+        })
+
+        BlazeEventsTracker.trackEntryPointDisplayed(for: .pagesList)
     }
 
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {

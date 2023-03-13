@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-22 22:24:00+0000 */
+/* Translation-Revision-Date: 2023-03-06 09:53:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "Boş sayfa oluşturuldu";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Alıntı";
@@ -1150,6 +1153,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Engellenmiş site";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Engellenen kullanıcı";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2500,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Kapat";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Çalışmalarınızı milyonlarca sitede sergileyin.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Bunu gizle";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "İçeriğinizi Blaze ile öne çıkarın";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Şimdi bir yazı yaz";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Günde sadece birkaç dolar karşılığında herhangi bir yazıyı veya sayfayı sadece birkaç dakika içinde tanıtın.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Kampanyalarınızın performansını takip edin ve istediğiniz zaman iptal edin.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "İçeriğiniz milyonlarca WordPress ve Tumblr sitesinde görünecektir.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Blaze ile sitenize daha fazla trafik çekin";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Bu sayfayı Blazeleyin";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Bu yazıyı Blazeleyin";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Kapat";
 
@@ -10157,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "diğer";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Blaze ile tanıt";
+
 /* No comment provided by engineer. */
 "password" = "parola";
 
@@ -10175,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Öne çıkan görsel seçenekleri";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Blaze ile tanıt";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Tekrar açmak için Site Ayarlarını ziyaret edin";
 
@@ -10189,6 +10232,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Oturum açtınız!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Bu kullanıcıyı engelle";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Bu kullanıcıyı bildir";
@@ -10358,6 +10407,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Bitti";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Jetpack uygulaması SSS bölümünü harici bir tarayıcıda ziyaret etmek için dokunun";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "SSS bölümümüzü ziyaret edin";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Çıkış yap";
 
@@ -10393,6 +10448,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress yardım merkezi";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Sıkça sorulan sorulara SSS bölümümüzden yanıt bulabilirsiniz.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Jetpack uygulamasına geçtiğiniz için teşekkür ederiz!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Günlükler";

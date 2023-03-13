@@ -8,9 +8,8 @@ import WordPressKit
         if let capabilitiesServiceRemote {
             self.capabilitiesServiceRemote = capabilitiesServiceRemote
         } else {
-            var api: WordPressComRestApi!
-            coreDataStack.performAndSave {
-                api = WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)
+            let api = coreDataStack.performQuery {
+                WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)
             }
 
             self.capabilitiesServiceRemote = JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)

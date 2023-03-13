@@ -10,7 +10,7 @@ final class ReaderFollowAction {
             WPAnalytics.track(.readerListNotificationMenuOff)
         }
 
-        let postService = ReaderPostService(managedObjectContext: context)
+        let postService = ReaderPostService(coreDataStack: ContextManager.shared)
         postService.toggleFollowing(for: post, success: completion, failure: failure)
     }
 }

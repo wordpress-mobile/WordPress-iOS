@@ -19,6 +19,7 @@ class PostCardStatusViewModel: NSObject {
         case cancelAutoUpload
         case share
         case copyLink
+        case blaze
     }
 
     struct ButtonGroups: Equatable {
@@ -34,6 +35,8 @@ class PostCardStatusViewModel: NSObject {
     private let autoUploadInteractor = PostAutoUploadInteractor()
 
     private let isInternetReachable: Bool
+
+    private let isBlazeFlagEnabled: Bool
 
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
@@ -51,9 +54,12 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    init(post: Post, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
+    init(post: Post,
+         isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
+         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
+        self.isBlazeFlagEnabled = isBlazeFlagEnabled
         super.init()
     }
 
@@ -183,6 +189,10 @@ class PostCardStatusViewModel: NSObject {
                     buttons.append(.stats)
                 }
                 buttons.append(.share)
+            }
+
+            if isBlazeFlagEnabled && post.canBlaze {
+                buttons.append(.blaze)
             }
 
             if post.status == .publish || post.status == .draft {

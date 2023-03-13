@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-02 18:03:20+0000 */
+/* Translation-Revision-Date: 2023-03-06 12:46:51+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -2494,6 +2494,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -10186,6 +10187,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du bist angemeldet!";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Diesen Benutzer blockieren";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Diesen Benutzer melden";

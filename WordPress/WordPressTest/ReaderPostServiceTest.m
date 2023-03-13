@@ -11,7 +11,7 @@
 
 @interface ReaderPostService()
 
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic;
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context;
 
 @end
 
@@ -29,23 +29,24 @@
     remotePost.content = @"";
     remotePost.postTitle = str;
     remotePost.summary = str;
+    remotePost.organizationID = @0;
+    remotePost.sortRank = @1;
 
     return remotePost;
 }
 
 - (void)testDeletePostsWithoutATopic {
     id<CoreDataStack> coreDataStack = [self coreDataStackForTesting];
-    NSManagedObjectContext *context = [coreDataStack mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
-    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    [coreDataStack saveContext:context];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:coreDataStack];
+    [coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
+        [service createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
+    }];
 
+    XCTAssertEqual([coreDataStack.mainContext countForFetchRequest:[ReaderPost fetchRequest] error:nil], 1);
     [service deletePostsWithNoTopic];
-    XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");
-
-
+    XCTAssertEqual([coreDataStack.mainContext countForFetchRequest:[ReaderPost fetchRequest] error:nil], 0, @"The post should have been deleted.");
 }
 
 @end

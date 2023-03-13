@@ -71,7 +71,7 @@ final class SiteCreationWizardLauncher {
     private func initStep(_ step: SiteCreationStep) -> WizardStep {
         switch step {
         case .address:
-            let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            let addressService = DomainsServiceAdapter(coreDataStack: ContextManager.shared)
             return WebAddressStep(creator: self.creator, service: addressService)
         case .design:
             // we call dropLast to remove .siteAssembly
