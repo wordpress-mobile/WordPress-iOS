@@ -104,7 +104,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureFileDownloadsStats,
     /// Does the blog support Blaze?
     BlogFeatureBlaze,
-    
+    /// Does the blog support listing and editing Pages?
+    BlogFeaturePages,
+
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
