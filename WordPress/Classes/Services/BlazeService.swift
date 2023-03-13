@@ -31,35 +31,35 @@ import WordPressKit
     ///   - completion: Closure to be called on success
     @objc func getStatus(for blog: Blog,
                          completion: (() -> Void)? = nil) {
+
+        guard BlazeHelper.isBlazeFlagEnabled() else {
+            updateBlog(blog, isBlazeApproved: false, completion: completion)
+            return
+        }
+
         guard let siteId = blog.dotComID?.intValue else {
             DDLogError("Invalid site ID for Blaze")
-            completion?()
+            updateBlog(blog, isBlazeApproved: false, completion: completion)
             return
         }
 
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):
-
-                self.contextManager.performAndSave({ context in
-
-                    guard let blog = Blog.lookup(withObjectID: blog.objectID, in: context) else {
-                        DDLogError("Unable to update isBlazeApproved value for blog")
-                        completion?()
-                        return
-                    }
-
-                    blog.isBlazeApproved = approved
-                    DDLogInfo("Successfully updated isBlazeApproved value for blog: \(approved)")
-
-                }, completion: {
-                    completion?()
-                }, on: .main)
-
+                self.updateBlog(blog, isBlazeApproved: approved, completion: completion)
             case .failure(let error):
                 DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
-                completion?()
+                self.updateBlog(blog, isBlazeApproved: false, completion: completion)
             }
         }
+    }
+
+    private func updateBlog(_ blog: Blog, isBlazeApproved: Bool, completion: (() -> Void)? = nil) {
+        contextManager.performAndSave({ context in
+            blog.isBlazeApproved = isBlazeApproved
+            DDLogInfo("Successfully updated isBlazeApproved value for blog: \(isBlazeApproved)")
+        }, completion: {
+            completion?()
+        }, on: .main)
     }
 }
