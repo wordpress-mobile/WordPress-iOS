@@ -11,6 +11,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case unifiedPrologueCarousel
     case todayWidget
+    case lockScreenWidget
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
@@ -73,6 +74,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unifiedPrologueCarousel:
             return true
         case .todayWidget:
+            return true
+        case .lockScreenWidget:
             return true
         case .milestoneNotifications:
             return true
@@ -218,6 +221,8 @@ extension FeatureFlag {
             return "Unified Prologue Carousel"
         case .todayWidget:
             return "iOS 14 Today Widget"
+        case .lockScreenWidget:
+            return "iOS 16 Widget in Lock Screen"
         case .milestoneNotifications:
             return "Milestone notifications"
         case .bloggingReminders:
@@ -300,6 +305,8 @@ extension FeatureFlag {
         case .debugMenu:
             return false
         case .todayWidget:
+            return false
+        case .lockScreenWidget:
             return false
         case .weeklyRoundup:
             return false
