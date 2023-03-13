@@ -21,7 +21,7 @@ struct AppColorPickerView: View {
     }
 
     private var colorPickerTitle: String {
-        NSLocalizedString("App Color", comment: "Navigates to color picker screen to change the app primary color")
+        NSLocalizedString("Accent Color", comment: "Navigates to color picker screen to change the app accent color")
     }
 
     private var resetButtonTitle: String {

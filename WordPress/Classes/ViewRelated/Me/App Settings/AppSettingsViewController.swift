@@ -82,6 +82,7 @@ class AppSettingsViewController: UITableViewController {
         let tableSections = [
             mediaTableSection(),
             privacyTableSection(),
+            appearanceTableSection(),
             otherTableSection()
         ]
         return ImmuTable(optionalSections: tableSections)
@@ -204,7 +205,7 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func pushAppearanceSettings() -> ImmuTableAction {
+    func pushColorModeSettings() -> ImmuTableAction {
         return { [weak self] row in
             let values = UIUserInterfaceStyle.allStyles
 
@@ -476,63 +477,78 @@ private extension AppSettingsViewController {
         )
     }
 
+    func appearanceTableSection() -> ImmuTableSection {
+        var rows: [ImmuTableRow] = []
+
+        let colorModeRow = NavigationItemRow(
+            title: NSLocalizedString("Color Mode", comment: "The title of the app color mode settings screen"),
+            detail: AppAppearance.current.appearanceDescription,
+            action: pushColorModeSettings()
+        )
+        rows.append(colorModeRow)
+
+        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
+            let appIconRow = NavigationItemRow(
+                title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
+                action: pushAppIconSwitcher()
+            )
+            rows.append(appIconRow)
+        }
+
+        let appColorRow = SwiftUIRow(selectionStyle: .none) {
+            AppColorPickerView()
+        }
+        rows.append(appColorRow)
+
+        return ImmuTableSection(
+            headerText: NSLocalizedString("Appearance", comment: "The title of the app appearance settings section"),
+            rows: rows,
+            footerText: nil
+        )
+    }
+
     func otherTableSection() -> ImmuTableSection {
-        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
-
-        let debugRow = NavigationItemRow(
-            title: NSLocalizedString("Debug", comment: "Navigates to debug menu only available in development builds"),
-            icon: .gridicon(.bug),
-            action: pushDebugMenu()
-        )
-
-        let iconRow = NavigationItemRow(
-            title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
-            action: pushAppIconSwitcher()
-        )
+        var rows: [ImmuTableRow] = []
 
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
         )
-
-        var rows: [ImmuTableRow] = [settingsRow]
-
-        let appColorRow = SwiftUIRow(selectionStyle: .none) {
-            AppColorPickerView()
-        }
-        rows.insert(appColorRow, at: 0)
-
-        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
-            // We don't show custom icons for Jetpack
-            rows.insert(iconRow, at: 0)
-        }
+        rows.append(settingsRow)
 
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
-            let initialScreen = NavigationItemRow(title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"), detail: MySiteSettings().defaultSection.title, action: pushInitialScreenSettings())
-
+            let initialScreen = NavigationItemRow(
+                title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"),
+                detail: MySiteSettings().defaultSection.title,
+                action: pushInitialScreenSettings()
+            )
             rows.append(initialScreen)
         }
 
         if FeatureFlag.debugMenu.enabled {
+            let debugRow = NavigationItemRow(
+                title: NSLocalizedString("Debug", comment: "Navigates to debug menu only available in development builds"),
+                icon: .gridicon(.bug),
+                action: pushDebugMenu()
+            )
             rows.append(debugRow)
         }
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
-            let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
-                                                 action: presentWhatIsNew())
+            let whatIsNewRow = NavigationItemRow(
+                title: AppConstants.Settings.whatIsNewTitle,
+                action: presentWhatIsNew()
+            )
             rows.append(whatIsNewRow)
         }
 
-        let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
-
-        rows.insert(appearanceRow, at: 0)
-
         return ImmuTableSection(
-            headerText: otherHeader,
+            headerText: NSLocalizedString("Other", comment: "Link to About section (contains info about the app)"),
             rows: rows,
-            footerText: nil)
+            footerText: nil
+        )
     }
 }
 
