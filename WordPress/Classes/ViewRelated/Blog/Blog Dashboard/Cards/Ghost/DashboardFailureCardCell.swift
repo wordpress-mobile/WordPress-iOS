@@ -13,7 +13,7 @@ class DashboardFailureCardCell: UICollectionViewCell, Reusable {
         let title = UILabel()
         title.textColor = .secondaryLabel
         title.text = Strings.title
-        title.font = UIFont.styles.prominent(textStyle: .headline, weight: .semibold)
+        title.font = AppStyleGuide.prominentFont(textStyle: .headline, weight: .semibold)
         title.textAlignment = .center
         return title
     }()
