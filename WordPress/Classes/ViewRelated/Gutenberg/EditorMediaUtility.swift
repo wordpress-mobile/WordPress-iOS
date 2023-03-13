@@ -162,7 +162,7 @@ class EditorMediaUtility {
                 switch result {
                 case .success((let metadata)):
                     if withToken {
-                        guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
+                        guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) ?? metadata.originalURL else {
                             DDLogWarn("Failed getting video play URL for media with upload ID: \(media.uploadID)")
                             return
                         }
