@@ -99,7 +99,7 @@ struct GutenbergNetworkRequest {
             completion(.success(metadata.asDictionary()))
         }, failure: { (error) in
             DDLogError("Unable to fetch VideoPress token for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            completion(.failure(NSError()))
+            completion(.failure(error as NSError))
         })
         return true
     }
