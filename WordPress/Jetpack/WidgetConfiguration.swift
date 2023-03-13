@@ -16,6 +16,7 @@ import Foundation
             @objc static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
             @objc static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
             @objc static let userDefaultsJetpackFeaturesDisabledKey = "JetpackJPFeaturesDisabledKey"
+            @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
             @objc static let todayKind = "JetpackHomeWidgetToday"
             @objc static let allTimeKind = "JetpackHomeWidgetAllTime"
             @objc static let thisWeekKind = "JetpackHomeWidgetThisWeek"
