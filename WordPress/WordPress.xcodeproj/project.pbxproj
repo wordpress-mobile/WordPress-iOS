@@ -2858,6 +2858,10 @@
 		C957C20626DCC1770037628F /* LandInTheEditorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */; };
 		C957C20726DCC1770037628F /* LandInTheEditorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */; };
 		C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
+		C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
+		C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
+		C9C21D7B29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */; };
+		C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */; };
 		C9F1D4B72706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */; };
 		C9F1D4B82706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */; };
 		C9F1D4BA2706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */; };
@@ -8090,6 +8094,8 @@
 		C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandInTheEditorHelper.swift; sourceTree = "<group>"; };
 		C99B039B2602F3CB00CA71EB /* WordPress 117.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 117.xcdatamodel"; sourceTree = "<group>"; };
 		C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewViewController.swift; sourceTree = "<group>"; };
+		C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidget.swift; sourceTree = "<group>"; };
+		C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetsView.swift; sourceTree = "<group>"; };
 		C9D7DDBF2613B84500104E95 /* WordPress 119.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 119.xcdatamodel"; sourceTree = "<group>"; };
 		C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHomepageViewController.swift; sourceTree = "<group>"; };
 		C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageEditorNavigationBarManager.swift; sourceTree = "<group>"; };
@@ -11028,6 +11034,7 @@
 			children = (
 				3F8EEC4D25B4817000EC9DAE /* StatsWidgets.swift */,
 				3F8EEC6F25B4849A00EC9DAE /* SiteListProvider.swift */,
+				C9C21D7529BECFAE009F68E5 /* LockScreenWidgets */,
 				3FFDDCB925B8A65F008D5BDD /* Widgets */,
 				3FB34ABB25672A59001A74A6 /* Model */,
 				3FFDDC0325B89F0C008D5BDD /* Cache */,
@@ -15628,6 +15635,15 @@
 				C81CCD71243BF7A500A83E27 /* TenorStrings.swift */,
 			);
 			path = Tenor;
+			sourceTree = "<group>";
+		};
+		C9C21D7529BECFAE009F68E5 /* LockScreenWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */,
+				C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */,
+			);
+			path = LockScreenWidgets;
 			sourceTree = "<group>";
 		};
 		CC098B8116A9EB0400450976 /* HTML */ = {
@@ -20386,6 +20402,7 @@
 			files = (
 				0107E0B428F97D5000DE87DB /* Constants.m in Sources */,
 				01CE5012290A890B00A9C2E0 /* TracksConfiguration.swift in Sources */,
+				C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
 				0107E0B528F97D5000DE87DB /* StatsWidgetEntry.swift in Sources */,
 				0107E0B628F97D5000DE87DB /* HomeWidgetCache.swift in Sources */,
 				0107E18C29000E2A00DE87DB /* AppStyleGuide.swift in Sources */,
@@ -20406,6 +20423,7 @@
 				0107E0C328F97D5000DE87DB /* ThisWeekWidgetStats.swift in Sources */,
 				0107E0C428F97D5000DE87DB /* HomeWidgetAllTimeData.swift in Sources */,
 				0107E0C528F97D5000DE87DB /* GroupedViewData.swift in Sources */,
+				C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				0107E0C628F97D5000DE87DB /* FeatureFlag.swift in Sources */,
 				0107E0C728F97D5000DE87DB /* StatsWidgets.swift in Sources */,
 				0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */,
@@ -22241,6 +22259,7 @@
 			files = (
 				3F1FD30D2548B0A80060C53A /* Constants.m in Sources */,
 				01CE500C290A88BF00A9C2E0 /* TracksConfiguration.swift in Sources */,
+				C9C21D7B29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
 				3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */,
 				3FA53E9D256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
 				0107E18D29000E3300DE87DB /* AppStyleGuide.swift in Sources */,
@@ -22261,6 +22280,7 @@
 				3F5C861A25C9EA2500BABE64 /* HomeWidgetAllTimeData.swift in Sources */,
 				3FE20C1525CF165700A15525 /* GroupedViewData.swift in Sources */,
 				3F6BC04B25B2474C007369D3 /* FeatureFlag.swift in Sources */,
+				C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				3F8EEC4E25B4817000EC9DAE /* StatsWidgets.swift in Sources */,
 				3FA59B9A258289E30073772F /* StatsValueView.swift in Sources */,
 				0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */,
