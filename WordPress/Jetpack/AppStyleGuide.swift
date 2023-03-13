@@ -34,3 +34,10 @@ extension AppStyleGuide {
     static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
     static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site-jetpack")
 }
+
+// MARK: - Fonts
+extension AppStyleGuide {
+    static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        WPStyleGuide.fontForTextStyle(textStyle, fontWeight: weight)
+    }
+}
