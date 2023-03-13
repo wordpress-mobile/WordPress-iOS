@@ -80,7 +80,7 @@ final class QuickStartPromptViewController: UIViewController {
         siteDescriptionLabel.textColor = .textSubtle
 
         promptTitleLabel.numberOfLines = 0
-        promptTitleLabel.font = UIFont.styles.prominent(style: .title2, weight: .semibold)
+        promptTitleLabel.font = UIFont.styles.prominent(textStyle: .title2, weight: .semibold)
         promptTitleLabel.adjustsFontForContentSizeCategory = true
         promptTitleLabel.adjustsFontSizeToFitWidth = true
         promptTitleLabel.textColor = .text

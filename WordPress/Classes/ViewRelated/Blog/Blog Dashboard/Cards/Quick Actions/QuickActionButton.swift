@@ -46,7 +46,7 @@ final class QuickActionButton: UIButton {
 
     private func configureTitleLabel() {
         titleLabel?.adjustsFontForContentSizeCategory = true
-        titleLabel?.font = UIFont.styles.prominent(style: .body, weight: .semibold)
+        titleLabel?.font = UIFont.styles.prominent(textStyle: .body, weight: .semibold)
         setTitleColor(.text, for: .normal)
     }
 

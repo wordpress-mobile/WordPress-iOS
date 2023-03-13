@@ -20,6 +20,6 @@ class QuickStartChecklistHeader: UITableViewHeaderFooterView, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         imageView.image = AppStyleGuide.quickStartExistingSite
-        titleLabel.font = UIFont.styles.prominent(style: .title1, weight: .semibold)
+        titleLabel.font = UIFont.styles.prominent(textStyle: .title1, weight: .semibold)
     }
 }

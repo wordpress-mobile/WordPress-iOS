@@ -9,7 +9,7 @@ struct FontStyles {
 
 extension FontStyles {
 
-    func prominent(style: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
-        return prominent(style, weight)
+    func prominent(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        return prominent(textStyle, weight)
     }
 }

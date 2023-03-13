@@ -28,7 +28,7 @@ final class DashboardSingleStatView: UIView {
     private lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.styles.prominent(style: .title1, weight: .bold)
+        label.font = UIFont.styles.prominent(textStyle: .title1, weight: .bold)
         label.textColor = .text
         label.isAccessibilityElement = false
         return label
