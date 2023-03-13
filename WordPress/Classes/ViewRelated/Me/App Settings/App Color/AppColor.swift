@@ -2,49 +2,44 @@ import SwiftUI
 
 enum AppColor {
 
+    enum Accent: String, CaseIterable {
+        case `default`
+        case green
+        case blue
+        case orange
+        case purple
+        case pink
+    }
+
     // MARK: API
 
-    static private(set) var color: Color = savedColor ?? defaultColor {
+    static private(set) var accent: Accent = savedAccent ?? .default {
         didSet {
-            savedColor = color
+            savedAccent = accent
         }
     }
 
-    static var uiColor: UIColor {
-        .init(color)
+    static var accentColor: Color {
+        accent.color
     }
 
-    static var defaultColor: Color {
-        switch appConfig {
-        case .wordpress:
-            return .muriel(.wordPressBlue)
-        case .jetpack:
-            return .muriel(.jetpackGreen)
-        case .unknown:
-            return .red
-        }
-    }
-
-    static func update(with newColor: Color) {
-        color = newColor
+    static func updateAccent(with newAccent: Accent) {
+        accent = newAccent
     }
 
     // MARK: Helpers
 
-    private static var savedColor: Color? {
+    private static var savedAccent: Accent? {
         get {
-            guard
-                let components = defaults.array(forKey: defaultsKey) as? [CGFloat], !components.isEmpty,
-                let cgColorSpace: CGColorSpace = .init(name: CGColorSpace.sRGB),
-                let cgColor = CGColor(colorSpace: cgColorSpace, components: components)
-            else {
+            guard let rawValue = defaults.string(forKey: savedAccentKey) else {
                 return nil
             }
-            return Color(cgColor)
+            return Accent(rawValue: rawValue)
         }
         set {
-            let components = newValue?.cgColor?.components ?? []
-            defaults.set(components, forKey: defaultsKey)
+            if let newValue {
+                defaults.set(newValue.rawValue, forKey: savedAccentKey)
+            }
         }
     }
 
@@ -52,8 +47,8 @@ enum AppColor {
         .init(suiteName: WPAppGroupName) ?? .standard
     }
 
-    private static var defaultsKey: String {
-        "\(appConfig.rawValue).AppColorComponents"
+    private static var savedAccentKey: String {
+        "\(appConfig.rawValue).AppColor.Accent"
     }
 
     private static var appConfig: AppConfig {
@@ -73,6 +68,57 @@ enum AppColor {
         case unknown = "Unknown"
     }
 
+    private static var defaultAccentColor: Color {
+        switch appConfig {
+        case .wordpress:
+            return .muriel(.wordPressBlue)
+        case .jetpack:
+            return .muriel(.jetpackGreen)
+        case .unknown:
+            return .red
+        }
+    }
+
+}
+
+extension AppColor.Accent: Identifiable, CustomStringConvertible {
+    var id: String {
+        rawValue
+    }
+
+    var description: String {
+        switch self {
+        case .`default`:
+            return AppLocalizedString("Default", comment: "Title for the Default app accent color")
+        case .green:
+            return AppLocalizedString("Green", comment: "Title for the Green app accent color")
+        case .blue:
+            return AppLocalizedString("Blue", comment: "Title for the Blue app accent color")
+        case .orange:
+            return AppLocalizedString("Orange", comment: "Title for the Orange app accent color")
+        case .purple:
+            return AppLocalizedString("Purple", comment: "Title for the Purple app accent color")
+        case .pink:
+            return AppLocalizedString("Pink", comment: "Title for the Pink app accent color")
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .`default`:
+            return AppColor.defaultAccentColor
+        case .green:
+            return .muriel(.green)
+        case .blue:
+            return .muriel(.blue)
+        case .orange:
+            return .muriel(.orange)
+        case .purple:
+            return .muriel(.purple)
+        case .pink:
+            return .muriel(.pink)
+        }
+    }
 }
 
 private extension Color {

@@ -259,6 +259,14 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushAppColorList() -> ImmuTableAction {
+        return { [weak self] row in
+            let vc = UIHostingController(rootView: AppColorListView())
+            vc.title = self?.accentColorTitle
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
             WPAnalytics.track(.privacySettingsOpened)
@@ -495,9 +503,11 @@ private extension AppSettingsViewController {
             rows.append(appIconRow)
         }
 
-        let appColorRow = SwiftUIRow(selectionStyle: .none) {
-            AppColorPickerView()
-        }
+        let appColorRow = NavigationItemRow(
+            title: accentColorTitle,
+            detail: AppColor.accent.description,
+            action: pushAppColorList()
+        )
         rows.append(appColorRow)
 
         return ImmuTableSection(
@@ -505,6 +515,10 @@ private extension AppSettingsViewController {
             rows: rows,
             footerText: nil
         )
+    }
+
+    var accentColorTitle: String {
+        NSLocalizedString("Accent Color", comment: "The title of the app accent color")
     }
 
     func otherTableSection() -> ImmuTableSection {

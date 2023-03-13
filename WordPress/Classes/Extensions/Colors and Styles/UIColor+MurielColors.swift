@@ -56,7 +56,7 @@ extension UIColor {
 
     /// Muriel primary color
     static var primary: UIColor {
-        AppColor.uiColor
+        UIColor(AppColor.accentColor)
     }
     /// - TODO: cleanup later
 //    static var primary = muriel(color: .primary)

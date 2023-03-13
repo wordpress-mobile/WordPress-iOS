@@ -2055,12 +2055,10 @@
 		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
 		8BA125EB27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA125EA27D8F5E4008B779F /* UIView+PinSubviewPriority.swift */; };
 		8BA125EC27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA125EA27D8F5E4008B779F /* UIView+PinSubviewPriority.swift */; };
-		8BA6F7BC29B9F8D000026408 /* AppColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */; };
+		8BA6F7BC29B9F8D000026408 /* AppColorListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorListView.swift */; };
 		8BA6F7BE29BA19F200026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
-		8BA6F7C029BA1A0000026408 /* AppColorPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */; };
 		8BA6F7C429BB54D000026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
-		8BA6F7C529BB54D400026408 /* AppColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */; };
-		8BA6F7C629BB54D800026408 /* AppColorPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */; };
+		8BA6F7C529BB54D400026408 /* AppColorListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BB29B9F8D000026408 /* AppColorListView.swift */; };
 		8BA6F7C729BB6B4900026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
 		8BA6F7C829BB6B4A00026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
 		8BA6F7C929BB6B4A00026408 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6F7BD29BA19F200026408 /* AppColor.swift */; };
@@ -7308,9 +7306,8 @@
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
 		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
 		8BA125EA27D8F5E4008B779F /* UIView+PinSubviewPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+PinSubviewPriority.swift"; sourceTree = "<group>"; };
-		8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorPickerView.swift; sourceTree = "<group>"; };
+		8BA6F7BB29B9F8D000026408 /* AppColorListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorListView.swift; sourceTree = "<group>"; };
 		8BA6F7BD29BA19F200026408 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
-		8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorPickerViewModel.swift; sourceTree = "<group>"; };
 		8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderCardDiscoverAttributionView.xib; sourceTree = "<group>"; };
 		8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderDetailToolbar.xib; sourceTree = "<group>"; };
 		8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailToolbar.swift; sourceTree = "<group>"; };
@@ -13431,8 +13428,7 @@
 			isa = PBXGroup;
 			children = (
 				8BA6F7BD29BA19F200026408 /* AppColor.swift */,
-				8BA6F7BB29B9F8D000026408 /* AppColorPickerView.swift */,
-				8BA6F7BF29BA1A0000026408 /* AppColorPickerViewModel.swift */,
+				8BA6F7BB29B9F8D000026408 /* AppColorListView.swift */,
 			);
 			path = "App Color";
 			sourceTree = "<group>";
@@ -21164,7 +21160,6 @@
 				3FB1929526C79EC6000F5AA3 /* Date+TimeStrings.swift in Sources */,
 				178DDD57266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */,
 				73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */,
-				8BA6F7C029BA1A0000026408 /* AppColorPickerViewModel.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
 				E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */,
@@ -21535,7 +21530,7 @@
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */,
 				E1E49CE41C4902EE002393A4 /* ImmuTableViewController.swift in Sources */,
-				8BA6F7BC29B9F8D000026408 /* AppColorPickerView.swift in Sources */,
+				8BA6F7BC29B9F8D000026408 /* AppColorListView.swift in Sources */,
 				D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */,
 				9A162F2321C26D7500FDC035 /* RevisionPreviewViewController.swift in Sources */,
 				467D3DFA25E4436000EB9CB0 /* SitePromptView.swift in Sources */,
@@ -23548,7 +23543,7 @@
 				FABB21A32602FC2C00C8785C /* CommentsViewController.m in Sources */,
 				FABB21A42602FC2C00C8785C /* SiteSettingsViewController+SiteManagement.swift in Sources */,
 				FABB21A52602FC2C00C8785C /* Follow.swift in Sources */,
-				8BA6F7C529BB54D400026408 /* AppColorPickerView.swift in Sources */,
+				8BA6F7C529BB54D400026408 /* AppColorListView.swift in Sources */,
 				FABB21A62602FC2C00C8785C /* BlogJetpackSettingsService.swift in Sources */,
 				FABB21A72602FC2C00C8785C /* MenuItemTypeViewController.m in Sources */,
 				80535DC3294BDE2B00873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */,
@@ -24660,7 +24655,6 @@
 				FABB24F42602FC2C00C8785C /* NoticePresenter.swift in Sources */,
 				FABB24F52602FC2C00C8785C /* ReaderTagTopic.swift in Sources */,
 				FABB24F62602FC2C00C8785C /* Media.swift in Sources */,
-				8BA6F7C629BB54D800026408 /* AppColorPickerViewModel.swift in Sources */,
 				9839CEBC26FAA0530097406E /* CommentModerationBar.swift in Sources */,
 				837966A3299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */,
 				17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */,
