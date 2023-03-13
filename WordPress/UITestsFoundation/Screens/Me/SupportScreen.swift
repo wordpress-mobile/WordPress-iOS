@@ -76,7 +76,7 @@ public class SupportScreen: ScreenObject {
     }
 
     public func assertForumsLoaded() {
-        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+        let safari = Apps.safari
         guard safari.wait(for: .runningForeground, timeout: 4) else {
             XCTFail("Safari wait failed")
             return
