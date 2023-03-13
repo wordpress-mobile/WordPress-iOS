@@ -991,14 +991,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
     [rows addObject:mediaRow];
 
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                             accessibilityIdentifier:@"Site Pages Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypePages]
-                                                 callback:^{
-        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
-                                                 }];
-    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
-    [rows addObject:pagesRow];
+    if ([self.blog supports:BlogFeaturePages]) {
+        BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                                 accessibilityIdentifier:@"Site Pages Row"
+                                                        image:[UIImage gridiconOfType:GridiconTypePages]
+                                                     callback:^{
+            [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
+                                                     }];
+        pagesRow.quickStartIdentifier = QuickStartTourElementPages;
+        [rows addObject:pagesRow];
+    }
 
     BlogDetailsRow *commentsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
