@@ -2846,9 +2846,11 @@ extension AztecPostViewController {
             // It's videoPress video so let's fetch the information for the video
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { (metadata) in
-                videoAttachment.updateURL(metadata.getURLWithToken(url: metadata.originalURL))
-                if let posterURL = metadata.getURLWithToken(url: metadata.posterURL) {
-                    videoAttachment.posterURL = posterURL
+                if let originalURL = metadata.originalURL {
+                    videoAttachment.updateURL(metadata.getURLWithToken(url: originalURL) ?? originalURL)
+                }
+                if let posterURL = metadata.posterURL {
+                    videoAttachment.posterURL = metadata.getURLWithToken(url: posterURL) ?? posterURL
                 }
                 self.richTextView.refresh(videoAttachment)
             }, failure: { (error) in
@@ -3025,16 +3027,17 @@ extension AztecPostViewController {
             guard let `self` = self else {
                 return
             }
-            guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
+            guard let originalURL = metadata.originalURL else {
                 self.displayUnableToPlayVideoAlert()
                 return
             }
-            videoAttachment.updateURL(videoURL)
-            if let posterURL = metadata.getURLWithToken(url: metadata.posterURL) {
-                videoAttachment.posterURL = posterURL
+            let newVideoURL = metadata.getURLWithToken(url: originalURL) ?? originalURL
+            videoAttachment.updateURL(newVideoURL)
+            if let posterURL = metadata.posterURL {
+                videoAttachment.posterURL = metadata.getURLWithToken(url: posterURL) ?? posterURL
             }
             self.richTextView.refresh(videoAttachment)
-            self.displayVideoPlayer(for: videoURL)
+            self.displayVideoPlayer(for: newVideoURL)
         }, failure: { [weak self] (error) in
             self?.displayUnableToPlayVideoAlert()
             DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")

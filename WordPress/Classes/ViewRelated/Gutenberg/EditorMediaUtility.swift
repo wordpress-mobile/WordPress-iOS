@@ -161,19 +161,15 @@ class EditorMediaUtility {
             fetchVideoPressMetadata(for: media, in: post) { result in
                 switch result {
                 case .success((let metadata)):
+                    guard let originalURL = metadata.originalURL else {
+                        DDLogWarn("Failed getting original URL for media with upload ID: \(media.uploadID)")
+                        return
+                    }
                     if withToken {
-                        guard let videoURL = metadata.getURLWithToken(url: metadata.originalURL) else {
-                            DDLogWarn("Failed getting video play URL for media with upload ID: \(media.uploadID)")
-                            return
-                        }
-                        completion(Result.success(videoURL))
+                        completion(Result.success(metadata.getURLWithToken(url: originalURL) ?? originalURL))
                     }
                     else {
-                        guard let videoURL = metadata.originalURL else {
-                            DDLogWarn("Failed getting original URL for media with upload ID: \(media.uploadID)")
-                            return
-                        }
-                        completion(Result.success(videoURL))
+                        completion(Result.success(originalURL))
                     }
                 case .failure(let error):
                     completion(Result.failure(error))
