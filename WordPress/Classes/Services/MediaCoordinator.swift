@@ -470,7 +470,10 @@ class MediaCoordinator: NSObject {
     func addObserver(_ onUpdate: @escaping ObserverBlock, for media: Media? = nil) -> UUID {
         let uuid = UUID()
 
-        let observer = MediaObserver(media: media, onUpdate: onUpdate)
+        let observer = MediaObserver(
+            subject: media.flatMap({ .media(id: $0.objectID) }) ?? .all,
+            onUpdate: onUpdate
+        )
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -494,7 +497,7 @@ class MediaCoordinator: NSObject {
         let uuid = UUID()
 
         let original = post.original ?? post
-        let observer = MediaObserver(post: original, onUpdate: onUpdate)
+        let observer = MediaObserver(subject: .post(id: original.objectID), onUpdate: onUpdate)
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -543,42 +546,28 @@ class MediaCoordinator: NSObject {
     }
 
     /// Encapsulates an observer block and an optional observed media item or post.
-    struct MediaObserver {
-        let media: Media?
-        let post: AbstractPost?
+    private struct MediaObserver {
+        enum Subject: Equatable {
+            case media(id: NSManagedObjectID)
+            case post(id: NSManagedObjectID)
+            case all
+        }
+
+        let subject: Subject
         let onUpdate: ObserverBlock
-
-        init(onUpdate: @escaping ObserverBlock) {
-            self.media = nil
-            self.post = nil
-            self.onUpdate = onUpdate
-        }
-
-        init(media: Media?, onUpdate: @escaping ObserverBlock) {
-            self.media = media
-            self.post = nil
-            self.onUpdate = onUpdate
-        }
-
-        init(post: AbstractPost, onUpdate: @escaping ObserverBlock) {
-            self.media = nil
-            self.post = post
-            self.onUpdate = onUpdate
-        }
     }
 
-    /// Utility method to return all observers for a specific media item,
-    /// including any 'wildcard' observers that are observing _all_ media items.
+    /// Utility method to return all observers for a `Media` item with the given `NSManagedObjectID`
+    /// and part of the posts with given `NSManagedObjectID`s, including any 'wildcard' observers
+    /// that are observing _all_ media items.
     ///
-    private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
+    private func observersForMedia(withObjectID mediaObjectID: NSManagedObjectID, originalPostIDs: [NSManagedObjectID]) -> [MediaObserver] {
+        let mediaObservers = self.mediaObservers.values.filter({ $0.subject == .media(id: mediaObjectID) })
 
         let postObservers = self.mediaObservers.values.filter({
-            guard let posts = media.posts as? Set<AbstractPost>,
-                let post = $0.post else { return false }
+            guard case let .post(postObjectID) = $0.subject else { return false }
 
-            let originals = posts.map({ $0.original ?? $0 })
-            return originals.contains(post)
+            return originalPostIDs.contains(postObjectID)
         })
 
         return mediaObservers + postObservers + wildcardObservers
@@ -588,7 +577,7 @@ class MediaCoordinator: NSObject {
     /// observing _all_ media items.
     ///
     private var wildcardObservers: [MediaObserver] {
-        return mediaObservers.values.filter({ $0.media == nil && $0.post == nil })
+        return mediaObservers.values.filter({ $0.subject == .all })
     }
 
     // MARK: - Notifying observers
@@ -629,8 +618,21 @@ class MediaCoordinator: NSObject {
     }
 
     func notifyObserversForMedia(_ media: Media, ofStateChange state: MediaState) {
+        let originalPostIDs: [NSManagedObjectID] = coreDataStack.performQuery { context in
+            guard let mediaInContext = try? context.existingObject(with: media.objectID) as? Media else {
+                return []
+            }
+
+            return mediaInContext.posts?.compactMap { (object: AnyHashable) in
+                guard let post = object as? AbstractPost else {
+                    return nil
+                }
+                return (post.original ?? post).objectID
+            } ?? []
+        }
+
         queue.async {
-            self.observersForMedia(media).forEach({ observer in
+            self.observersForMedia(withObjectID: media.objectID, originalPostIDs: originalPostIDs).forEach({ observer in
                 DispatchQueue.main.async {
                     if let media = self.mainContext.object(with: media.objectID) as? Media {
                         observer.onUpdate(media, state)
