@@ -4,7 +4,7 @@ struct SiteCreationEmptySiteTemplate: View {
     private enum Constants {
         static let innerCornerRadius: CGFloat = 8
         static let containerCornerRadius: CGFloat = 16
-        static let containerStackSpacing: CGFloat = 16
+        static let containerStackSpacing: CGFloat = 0
         static let siteBarHeight: CGFloat = 38
         static let siteBarStackSpacing: CGFloat = 8
         static let iconScaleFactor = 0.85
@@ -24,7 +24,7 @@ struct SiteCreationEmptySiteTemplate: View {
                     colors: [Constants.backgroundColor, Constants.innerRectangleBackgroundColor]
                 ),
                 startPoint: .top,
-                endPoint: .bottom
+                endPoint: .center
             )
         )
         .cornerRadius(Constants.containerCornerRadius)
@@ -80,26 +80,36 @@ struct SiteCreationEmptySiteTemplate: View {
 
     private var tooltip: some View {
         ZStack {
-            HStack {
                 VStack(spacing: Constants.siteBarStackSpacing) {
-                    Text("YourSiteName.com")
-                        .font(.caption)
+                    HStack {
+                        HStack {
+                            Text("YourSiteName.com")
+                                .font(.caption)
+                                .padding(5)
+                        }
                         .background(Constants.tooltipTextBackgroundColor)
-                    Text("Like the example above, a domain allows people to find and visit your site from their web browser.")
+                        .cornerRadius(5)
+                        Spacer()
+                    }
+                    Text(Strings.searchBarString)
                         .font(.footnote)
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(.secondary)
                 }
-                Spacer()
-            }
-            .padding(.init(top: 16, leading: 8, bottom: 16, trailing: 8))
+            .padding(.init(top: 16, leading: 16, bottom: 16, trailing: 16))
         }
-        .cornerRadius(Constants.innerCornerRadius)
-        .border(.white.opacity(0.2), width: 1)
+        .overlay( /// apply a rounded border
+            RoundedRectangle(cornerRadius: 5)
+                .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
+        )
+        .background(Color.white)
     }
 }
 
-struct SiteCreationEmptySiteTemplate_Previews: PreviewProvider {
-    static var previews: some View {
-        SiteCreationEmptySiteTemplate()
+private extension SiteCreationEmptySiteTemplate {
+    enum Strings {
+        static let searchBarString = NSLocalizedString(
+            "Like the example above, a domain allows people to find and visit your site from their web browser.",
+            comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation."
+        )
     }
 }
