@@ -557,8 +557,9 @@ class MediaCoordinator: NSObject {
         let onUpdate: ObserverBlock
     }
 
-    /// Utility method to return all observers for a specific media item,
-    /// including any 'wildcard' observers that are observing _all_ media items.
+    /// Utility method to return all observers for a `Media` item with the given `NSManagedObjectID`
+    /// and part of the posts with given `NSManagedObjectID`s, including any 'wildcard' observers
+    /// that are observing _all_ media items.
     ///
     private func observersForMedia(withObjectID mediaObjectID: NSManagedObjectID, originalPostIDs: [NSManagedObjectID]) -> [MediaObserver] {
         let mediaObservers = self.mediaObservers.values.filter({ $0.subject == .media(id: mediaObjectID) })
