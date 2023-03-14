@@ -307,8 +307,8 @@
     }
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWith:asset blog:self.blog post: self.post progress:nil thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+    MediaImportService *service = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    [service createMediaWith:asset blog:self.blog post: self.post receiveUpdate:nil thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
@@ -322,13 +322,13 @@
 -(void)addMediaFromURL:(NSURL *)url
            completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWith:url
-                     blog:self.blog
-                     post:self.post
-                         progress:nil
-                   thumbnailCallback:nil
-                          completion:^(Media *media, NSError *error) {
+    MediaImportService *service = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    [service createMediaWith:url
+                        blog:self.blog
+                        post:self.post
+               receiveUpdate:nil
+           thumbnailCallback:nil
+                  completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {

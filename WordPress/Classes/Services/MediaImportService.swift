@@ -6,11 +6,11 @@ import CocoaLumberjack
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
 ///
-open class MediaImportService: NSObject {
+class MediaImportService: NSObject {
 
     private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
-    @objc public lazy var importQueue: DispatchQueue = {
+    @objc lazy var importQueue: DispatchQueue = {
         return MediaImportService.defaultImportQueue
     }()
 
@@ -27,11 +27,11 @@ open class MediaImportService: NSObject {
 
     /// Completion handler for a created Media object.
     ///
-    public typealias MediaCompletion = (Media) -> Void
+    typealias MediaCompletion = (Media) -> Void
 
     /// Error handler.
     ///
-    public typealias OnError = (Error) -> Void
+    typealias OnError = (Error) -> Void
 
     private let coreDataStack: CoreDataStackSwift
 
@@ -49,6 +49,182 @@ open class MediaImportService: NSObject {
 
     // MARK: - Instance methods
 
+    /// Create a media object using the url provided as the source of media.
+    ///
+    /// - Note: All blocks arguments are called from the main thread. The `Media` argument in the blocks is bound to
+    ///     the main context.
+    ///
+    /// - Warning: This function must be called from the main thread.
+    ///
+    /// This functions returns a `Media` instance. To ensure the returned `Media` instance continue to be a valid
+    /// instance, it can't be bound to a background context which are all temporary context. The only long living
+    /// context is the main context. And the safe way to create and return an object bound to the main context is
+    /// doing it from the main thread, which is why this function must be called from the main thread.
+    ///
+    /// - Parameters:
+    ///   - exportable: an object that implements the exportable interface
+    ///   - blog: the blog object to associate to the media
+    ///   - post: the post object to associate to the media
+    ///   - thumbnailCallback: a block that will be invoked when the thumbail for the media object is ready
+    ///   - completion: a block that will be invoked when the media is created, on success it will return a valid Media
+    ///         object, on failure it will return a nil Media and an error object with the details.
+    ///
+    /// - Returns: A NSProgress that tracks the progress of the export process
+    ///
+    /// - SeeAlso: `createMedia(with:blog:post:thumbnailCallback:completion:)`
+    func createMedia(
+        with exportable: ExportableAsset,
+        blog: Blog,
+        post: AbstractPost?,
+        thumbnailCallback: ((Media, URL) -> Void)?,
+        completion: @escaping (Media?, Error?) -> Void
+    ) -> (Media, Progress)? {
+        assert(Thread.isMainThread, "\(#function) can only be called from the main thread")
+
+        guard let media = try? createMedia(with: exportable, blogObjectID: blog.objectID, postObjectID: post?.objectID, in: coreDataStack.mainContext) else {
+            return nil
+        }
+
+        coreDataStack.saveContextAndWait(coreDataStack.mainContext)
+
+        let blogInContext: Blog
+        do {
+            blogInContext = try coreDataStack.mainContext.existingObject(with: blog.objectID) as! Blog
+        } catch {
+            completion(nil, error)
+            return nil
+        }
+
+        let createProgress = self.import(exportable, to: media, blog: blogInContext, thumbnailCallback: thumbnailCallback) {
+            switch $0 {
+            case let .success(media):
+                completion(media, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+
+        return (media, createProgress)
+    }
+
+    /// Create a media object using the url provided as the source of media.
+    ///
+    /// Unlike `createMedia(with:blog:post:thumbnailCallback:completion:)`, this function can be called from any thread.
+    ///
+    /// - Note: All blocks arguments are called from the main thread. The `Media` argument in the blocks is bound to
+    ///     the main context.
+    ///
+    /// - Parameters:
+    ///   - exportable: an object that implements the exportable interface
+    ///   - blog: the blog object to associate to the media
+    ///   - post: the post object to associate to the media
+    ///   - progress: a NSProgress that tracks the progress of the export process.
+    ///   - receiveUpdate: a block that will be invoked with the created `Media` instance.
+    ///   - thumbnailCallback: a block that will be invoked when the thumbail for the media object is ready
+    ///   - completion: a block that will be invoked when the media is created, on success it will return a valid Media
+    ///         object, on failure it will return a nil Media and an error object with the details.
+    @objc
+    @discardableResult
+    func createMedia(
+        with exportable: ExportableAsset,
+        blog: Blog,
+        post: AbstractPost?,
+        receiveUpdate: ((Media) -> Void)?,
+        thumbnailCallback: ((Media, URL) -> Void)?,
+        completion: @escaping (Media?, Error?) -> Void
+    ) -> Progress {
+        let createProgress = Progress.discreteProgress(totalUnitCount: 1)
+        coreDataStack.performAndSave({ context in
+            let media = try self.createMedia(with: exportable, blogObjectID: blog.objectID, postObjectID: post?.objectID, in: context)
+            try context.obtainPermanentIDs(for: [media])
+            return media.objectID
+        }, completion: { (result: Result<NSManagedObjectID, Error>) in
+            let transformed = result.flatMap { mediaObjectID in
+                Result {
+                    (
+                        try self.coreDataStack.mainContext.existingObject(with: mediaObjectID) as! Media,
+                        try self.coreDataStack.mainContext.existingObject(with: blog.objectID) as! Blog
+                    )
+                }
+            }
+            switch transformed {
+            case let .success((media, blog)):
+                let progress = self.import(exportable, to: media, blog: blog, thumbnailCallback: thumbnailCallback) {
+                    switch $0 {
+                    case let .success(media):
+                        completion(media, nil)
+                    case let .failure(error):
+                        completion(nil, error)
+                    }
+                }
+                createProgress.addChild(progress, withPendingUnitCount: 1)
+                receiveUpdate?(media)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }, on: .main)
+        return createProgress
+    }
+
+    private func createMedia(with exportable: ExportableAsset, blogObjectID: NSManagedObjectID, postObjectID: NSManagedObjectID?, in context: NSManagedObjectContext) throws -> Media {
+        let blogInContext = try context.existingObject(with: blogObjectID) as! Blog
+        let postInContext = try postObjectID.flatMap(context.existingObject(with:)) as? AbstractPost
+
+        let media = postInContext.flatMap(Media.makeMedia(post:)) ?? Media.makeMedia(blog: blogInContext)
+        media.mediaType = exportable.assetMediaType
+        media.remoteStatus = .processing
+        return media
+    }
+
+    private func `import`(_ exportable: ExportableAsset, to media: Media, blog: Blog,
+                          thumbnailCallback: ((Media, URL) -> Void)?,
+                          completion: @escaping (Result<Media, Error>) -> Void) -> Progress {
+        assert(Thread.isMainThread)
+        assert(media.managedObjectContext == coreDataStack.mainContext)
+        assert(blog.managedObjectContext == coreDataStack.mainContext)
+
+        var allowedFileTypes = blog.allowedFileTypes as? Set<String> ?? []
+        // HEIC isn't supported when uploading an image, so we filter it out (http://git.io/JJAae)
+        allowedFileTypes.remove("heic")
+
+        let completion: (Result<Media, Error>) -> Void = { result in
+            self.coreDataStack.performAndSave({ context in
+                let media = try context.existingObject(with: media.objectID) as! Media
+                switch result {
+                case let .success(media):
+                    media.remoteStatus = .local
+                    media.error = nil
+                case let .failure(error):
+                    media.remoteStatus = .failed
+                    media.error = error
+                }
+            }, completion: { result in
+                let transformed = result.flatMap {
+                    Result {
+                        try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
+                    }
+                }
+
+                if case let .success(media) = transformed {
+                    // Pre-generate a thumbnail image, see the method notes.
+                    self.exportPlaceholderThumbnail(for: media) { url in
+                        assert(Thread.isMainThread)
+                        guard let url, let media = try? self.coreDataStack.mainContext.existingObject(with: media.objectID) as? Media else {
+                            return
+                        }
+                        thumbnailCallback?(media, url)
+                    }
+                }
+
+                completion(transformed)
+            }, on: .main)
+        }
+
+        // TODO: 🤮
+        self.allowableFileExtensions = allowedFileTypes
+        return self.import(exportable, to: media, completion: completion)
+    }
+
     /// Imports media from a PHAsset to the Media object, asynchronously.
     ///
     /// - Parameters:
@@ -62,8 +238,7 @@ open class MediaImportService: NSObject {
     ///
     /// - Returns: a progress object that report the current state of the import process.
     ///
-    @objc(importResource:toMedia:onCompletion:onError:)
-    func `import`(_ exportable: ExportableAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) -> Progress? {
+    private func `import`(_ exportable: ExportableAsset, to media: Media, completion: @escaping (Result<Media, Error>) -> Void) -> Progress {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
             guard let exporter = self.makeExporter(for: exportable) else {
@@ -75,24 +250,20 @@ open class MediaImportService: NSObject {
                         let mediaInContext = try context.existingObject(with: media.objectID) as! Media
                         self.configureMedia(mediaInContext, withExport: export)
                     }, completion: { result in
-                        let transformed = result.flatMap {
-                            Result {
-                                try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
+                        completion(
+                            result.flatMap {
+                                Result {
+                                    try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
+                                }
                             }
-                        }
-                        switch transformed {
-                        case let .success(media):
-                            onCompletion(media)
-                        case let .failure(error):
-                            onError(error)
-                        }
+                        )
                     }, on: .main)
                 },
                 onError: { error in
                     MediaImportService.logExportError(error)
                     // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
                     DispatchQueue.main.async {
-                        onError(error)
+                        completion(.failure(error))
                     }
                 }
             )
@@ -127,6 +298,30 @@ open class MediaImportService: NSObject {
             return exporter
         default:
             return nil
+        }
+    }
+
+    /// Generate a thumbnail image for the Media asset so that consumers of the absoluteThumbnailLocalURL property
+    /// will have an image ready to load, without using the async methods provided via MediaThumbnailService.
+    ///
+    /// This is primarily used as a placeholder image throughout the code-base, particulary within the editors.
+    ///
+    /// Note: Ideally we wouldn't need this at all, but the synchronous usage of absoluteThumbnailLocalURL across the code-base
+    ///       to load a thumbnail image is relied on quite heavily. In the future, transitioning to asynchronous thumbnail loading
+    ///       via the new thumbnail service methods is much preferred, but would indeed take a good bit of refactoring away from
+    ///       using absoluteThumbnailLocalURL.
+    func exportPlaceholderThumbnail(for media: Media, completion: ((URL?) -> Void)?) {
+        let thumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
+        thumbnailService.thumbnailURL(forMedia: media, preferredSize: .zero) { url in
+            self.coreDataStack.performAndSave({ context in
+                let mediaInContext = try context.existingObject(with: media.objectID) as! Media
+                // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.
+                mediaInContext.absoluteThumbnailLocalURL = url
+            }, completion: { _ in
+                completion?(url)
+            }, on: .main)
+        } onError: { error in
+            DDLogError("Error occurred exporting placeholder thumbnail: \(error)")
         }
     }
 

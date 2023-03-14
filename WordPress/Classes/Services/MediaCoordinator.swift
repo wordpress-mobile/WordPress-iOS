@@ -138,10 +138,9 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog that the asset should be added to.
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
-    @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) {
         let coordinator = mediaLibraryProgressCoordinator
-        return addMedia(from: asset, blog: blog, post: nil, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        addMedia(from: asset, blog: blog, post: nil, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -154,54 +153,86 @@ class MediaCoordinator: NSObject {
     @discardableResult
     func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = self.coordinator(for: post)
-        return addMedia(from: asset, blog: post.blog, post: post, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, post: post, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
-    @discardableResult
-    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    /// Create a `Media` instance from the main context and upload the asset to the Meida Library.
+    ///
+    /// - Warning: This function must be called from the main thread.
+    ///
+    /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:thumbnailCallback:completion:)`
+    private func addMedia(from asset: ExportableAsset, post: AbstractPost, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         coordinator.track(numberOfItems: 1)
-        let service = mediaServiceFactory.create(mainContext)
+        let service = MediaImportService(coreDataStack: coreDataStack)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
-        var creationProgress: Progress? = nil
-        let mediaOptional = service.createMedia(with: asset,
-                            blog: blog,
-                            post: post,
-                            progress: &creationProgress,
-                            thumbnailCallback: { [weak self] media, url in
-                                self?.thumbnailReady(url: url, for: media)
-                            },
-                            completion: { [weak self] media, error in
-                                guard let strongSelf = self else {
-                                    return
-                                }
-                                if let error = error as NSError? {
-                                    if let media = media {
-                                        coordinator.attach(error: error as NSError, toMediaID: media.uploadID)
-                                        strongSelf.fail(error as NSError, media: media)
-                                    } else {
-                                        // If there was an error and we don't have a media object we just say to the coordinator that one item was finished
-                                        coordinator.finishOneItem()
-                                    }
-                                    return
-                                }
-                                guard let media = media, !media.isDeleted else {
-                                    return
-                                }
-
-                                strongSelf.trackUploadOf(media, analyticsInfo: analyticsInfo)
-
-                                let uploadProgress = strongSelf.uploadMedia(media)
-                                totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
-        })
-        guard let media = mediaOptional else {
+        let result = service.createMedia(
+            with: asset,
+            blog: post.blog,
+            post: post,
+            thumbnailCallback: { [weak self] media, url in
+                self?.thumbnailReady(url: url, for: media)
+            },
+            completion: { [weak self] media, error in
+                self?.handleMediaImportResult(coordinator: coordinator, totalProgress: totalProgress, analyticsInfo: analyticsInfo, media: media, error: error)
+            }
+        )
+        guard let (media, creationProgress) = result else {
             return nil
         }
+
         processing(media)
-        if let creationProgress = creationProgress {
-            totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
-            coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
-        }
+
+        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
+        coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
+
         return media
+    }
+
+    /// Create a `Media` instance and upload the asset to the Meida Library.
+    ///
+    /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:receiveUpdate:thumbnailCallback:completion:)`
+    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) {
+        coordinator.track(numberOfItems: 1)
+        let service = MediaImportService(coreDataStack: coreDataStack)
+        let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
+        let creationProgress = service.createMedia(
+            with: asset,
+            blog: blog,
+            post: post,
+            receiveUpdate: { media in
+                self.processing(media)
+                coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
+            },
+            thumbnailCallback: { [weak self] media, url in
+                self?.thumbnailReady(url: url, for: media)
+            },
+            completion: { [weak self] media, error in
+                self?.handleMediaImportResult(coordinator: coordinator, totalProgress: totalProgress, analyticsInfo: analyticsInfo, media: media, error: error)
+            }
+        )
+
+        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
+    }
+
+    private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?) -> Void {
+        if let error = error as NSError? {
+            if let media = media {
+                coordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+                fail(error as NSError, media: media)
+            } else {
+                // If there was an error and we don't have a media object we just say to the coordinator that one item was finished
+                coordinator.finishOneItem()
+            }
+            return
+        }
+        guard let media = media, !media.isDeleted else {
+            return
+        }
+
+        trackUploadOf(media, analyticsInfo: analyticsInfo)
+
+        let uploadProgress = uploadMedia(media)
+        totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
     }
 
     /// Retry the upload of a media object that previously has failed.
@@ -330,13 +361,13 @@ class MediaCoordinator: NSObject {
             self.fail(nserror, media: media)
         }
 
-        coreDataStack.performAndSave { context in
-            let service = self.mediaServiceFactory.create(context)
-            var progress: Progress? = nil
-            service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
-            if let progress {
-                resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
-            }
+        // For some reason, this `MediaService` instance has to be created with the main context, otherwise
+        // the successfully uploaded media is shown as a "local" assets incorrectly.
+        let service = self.mediaServiceFactory.create(coreDataStack.mainContext)
+        var progress: Progress? = nil
+        service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
+        if let progress {
+            resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
         }
 
         uploading(media, progress: resultProgress)
