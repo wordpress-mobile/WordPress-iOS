@@ -1,7 +1,6 @@
 #!/bin/bash -eu
 
-# FIXIT-13.1: Prototype Builds want the latest version of Sentry CLI
-brew update
+# Sentry CLI needs to be up-to-date
 brew upgrade sentry-cli
 
 echo "--- :rubygems: Setting up Gems"
