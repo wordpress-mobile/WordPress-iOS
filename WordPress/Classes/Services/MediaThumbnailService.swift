@@ -45,6 +45,8 @@ class MediaThumbnailService: NSObject {
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
     @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
+        // We can use the main context here because we only read the `Media` instance, without changing it, and all
+        // the time consuming work is done in background queues.
         let context = coreDataStack.mainContext
         context.perform {
             var objectInContext: NSManagedObject?
@@ -157,7 +159,7 @@ class MediaThumbnailService: NSObject {
     private func downloadThumbnail(
         forMedia media: Media,
         preferredSize: CGSize,
-    callbackQueue: DispatchQueue,
+        callbackQueue: DispatchQueue,
         onCompletion: @escaping (UIImage?) -> Void,
         onError: @escaping (Error) -> Void
     ) {

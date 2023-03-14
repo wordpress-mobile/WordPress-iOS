@@ -78,8 +78,10 @@ class MediaThumbnailCoordinator: NSObject {
             return
         }
 
+        // It's only safe to use the main context as this MediaService instance's context because a Media object is
+        // leaked out of MediaService's lifecycle (MediaService.managedObjectContext's to be exact).
         let mediaService = MediaService(managedObjectContext: coreDataStack.mainContext)
-        mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
+        mediaService.getMediaWithID(mediaID, in: media.blog, success: { loadedMedia in
             onCompletion(loadedMedia, nil)
         }, failure: { (error) in
             onCompletion(nil, error)
