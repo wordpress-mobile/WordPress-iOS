@@ -5,12 +5,14 @@ import Gridicons
 final class AuthenticatedImageDownload: AsyncOperation {
     let url: URL
     let blog: Blog
+    private let callbackQueue: DispatchQueue
     private let onSuccess: (UIImage) -> ()
     private let onFailure: (Error) -> ()
 
-    init(url: URL, blog: Blog, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
+    init(url: URL, blog: Blog, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
         self.url = url
         self.blog = blog
+        self.callbackQueue = callbackQueue
         self.onSuccess = onSuccess
         self.onFailure = onFailure
     }
@@ -29,7 +31,7 @@ final class AuthenticatedImageDownload: AsyncOperation {
                 ImageDownloader.shared.downloadImage(for: request) { (image, error) in
                     self.state = .isFinished
 
-                    DispatchQueue.main.async {
+                    self.callbackQueue.async {
                         guard let image = image else {
                             DDLogError("Unable to download image for attachment with url = \(String(describing: request.url)). Details: \(String(describing: error?.localizedDescription))")
                             if let error = error {
@@ -44,11 +46,14 @@ final class AuthenticatedImageDownload: AsyncOperation {
                         self.onSuccess(image)
                     }
                 }
-        },
+            },
             onFailure: { error in
                 self.state = .isFinished
-                self.onFailure(error)
-        })
+                self.callbackQueue.async {
+                    self.onFailure(error)
+                }
+            }
+        )
     }
 }
 
@@ -140,6 +145,7 @@ class EditorMediaUtility {
         let imageDownload = AuthenticatedImageDownload(
             url: requestURL,
             blog: post.blog,
+            callbackQueue: .main,
             onSuccess: success,
             onFailure: failure)
 

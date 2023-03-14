@@ -9,6 +9,7 @@
 * [*] [internal] Refactored the Core Data operations (saving the site data) after a new site is created. [#20270]
 * [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
 * [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
+* [*] [internal] Refactor uploading media assets. [#20294]
 
 21.9
 -----
