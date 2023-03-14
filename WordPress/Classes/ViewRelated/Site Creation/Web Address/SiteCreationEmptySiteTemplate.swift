@@ -55,7 +55,7 @@ struct SiteCreationEmptySiteTemplate: View {
                 Image(systemName: "lock")
                     .scaleEffect(x: Constants.iconScaleFactor, y: Constants.iconScaleFactor)
                     .foregroundColor(.secondary)
-                Text("https://yoursitename.com")
+                Text(Strings.searchBarSiteAddress)
                     .font(.caption)
                     .accentColor(Color.primary)
                 Spacer()
@@ -83,7 +83,7 @@ struct SiteCreationEmptySiteTemplate: View {
                 VStack(spacing: Constants.siteBarStackSpacing) {
                     HStack {
                         HStack {
-                            Text("YourSiteName.com")
+                            Text(Strings.tooltipSiteName)
                                 .font(.caption)
                                 .padding(5)
                         }
@@ -91,7 +91,7 @@ struct SiteCreationEmptySiteTemplate: View {
                         .cornerRadius(5)
                         Spacer()
                     }
-                    Text(Strings.searchBarString)
+                    Text(Strings.tooltipDescription)
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
@@ -99,7 +99,7 @@ struct SiteCreationEmptySiteTemplate: View {
         }
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: 5)
-                .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
+                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
         )
         .background(Color.white)
     }
@@ -107,9 +107,19 @@ struct SiteCreationEmptySiteTemplate: View {
 
 private extension SiteCreationEmptySiteTemplate {
     enum Strings {
-        static let searchBarString = NSLocalizedString(
+        static let tooltipSiteName = NSLocalizedString(
+            "YourSiteName.com",
+            comment: "Site name that is placed in the tooltip view."
+        )
+
+        static let tooltipDescription = NSLocalizedString(
             "Like the example above, a domain allows people to find and visit your site from their web browser.",
-            comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation."
+            comment: "Site name description that sits in the template website view."
+        )
+
+        static let searchBarSiteAddress = NSLocalizedString(
+            "https://yoursitename.com",
+            comment: "Template site address for the search bar."
         )
     }
 }

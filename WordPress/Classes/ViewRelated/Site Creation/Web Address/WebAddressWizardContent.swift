@@ -39,6 +39,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private let searchBar = UISearchBar()
     private var sitePromptView: SitePromptView!
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
+    private lazy var hostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -160,9 +161,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             searchBar.searchBarStyle = UISearchBar.Style.default
             searchBar.translatesAutoresizingMaskIntoConstraints = false
             WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
-            searchBar.setImage(UIImage(), for: .search, state: .normal)
             searchHeader.addSubview(searchBar)
-//           searchBar.delegate = self
+            searchBar.delegate = self
 
             NSLayoutConstraint.activate([
                 searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
@@ -322,7 +322,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func restoreSearchIfNeeded() {
-        search(withInputFrom: searchTextField)
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            search(searchBar.text)
+        } else {
+            search(query(from: searchTextField))
+        }
     }
 
     private func prepareViewIfNeeded() {
@@ -389,7 +393,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     @objc
     private func textChanged(sender: UITextField) {
-        search(withInputFrom: sender)
+        search(sender.text)
     }
 
     private func clearSelectionAndCreateSiteButton() {
@@ -413,8 +417,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         searchTextField.setIcon(isLoading: isLoading)
     }
 
-    private func search(withInputFrom textField: UITextField) {
-        guard let query = query(from: textField), query.isEmpty == false else {
+    private func search(_ string: String?) {
+        guard let query = string, query.isEmpty == false else {
             clearContent()
             return
         }
@@ -426,7 +430,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setAddressHintVisibility(isHidden: Bool) {
         if FeatureFlag.siteCreationDomainPurchasing.enabled {
-            let hostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
             hostingController.view?.isHidden = isHidden
         } else {
             sitePromptView.isHidden = isHidden
@@ -435,7 +438,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func addAddressHintView() {
         if FeatureFlag.siteCreationDomainPurchasing.enabled {
-            let hostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
             guard let siteCreationView = hostingController.view else {
                 return
             }
@@ -446,7 +448,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                 siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
                 containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
                 siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
-                containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 50)
+                containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 0)
             ])
         } else {
             sitePromptView = SitePromptView(frame: .zero)
@@ -511,6 +513,19 @@ extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         clearSelectionAndCreateSiteButton()
         return true
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension WebAddressWizardContent: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        hostingController.view.isHidden = true
+        clearSelectionAndCreateSiteButton()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        search(searchText)
     }
 }
 
@@ -621,7 +636,12 @@ extension WebAddressWizardContent: UITableViewDelegate {
 
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
-        searchTextField.resignFirstResponder()
+
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            searchBar.resignFirstResponder()
+        } else {
+            searchTextField.resignFirstResponder()
+        }
     }
 
     func retry() {
