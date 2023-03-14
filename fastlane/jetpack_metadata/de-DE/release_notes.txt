@@ -1,0 +1,7 @@
+Tolle Neuigkeiten: Jetpack unterstützt jetzt Blaze, sodass du neue Leser erreichen kannst, indem du einen Beitrag oder eine Seite in der App bewirbst.
+
+Wir stellen Websites zusätzlichen Support bereit – mit individuellen Plugins. Diese Plugins unterstützen noch nicht alle App-Funktionen, du kannst stattdessen jedoch jederzeit das vollständige Jetpack-Plugin installieren. Bist du bereit?
+
+Wir haben auch eine FAQ-Karte nach Migrationsabschluss zum Hilfe-Bildschirm hinzugefügt, der dir nach dem Wechsel von der WordPress-App zu Jetpack angezeigt wird.
+
+Zu guter Letzt gibt es einen neuen Button im Menü für Beiträge, mit dem du einen Autor blockieren kannst. Die entsprechenden Posts werden dann nicht mehr in deinem Inhalts-Feed angezeigt.
