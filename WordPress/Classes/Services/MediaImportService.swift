@@ -20,9 +20,6 @@ class MediaImportService: NSObject {
     ///
     @objc static let preferredImageCompressionQuality = 0.9
 
-    /// Allows the caller to designate supported import file types
-    @objc var allowableFileExtensions = Set<String>()
-
     static let defaultAllowableFileExtensions = Set<String>(["docx", "ppt", "mp4", "ppsx", "3g2", "mpg", "ogv", "pptx", "xlsx", "jpeg", "xls", "mov", "key", "3gp", "png", "avi", "doc", "pdf", "gif", "odt", "pps", "m4v", "wmv", "jpg"])
 
     /// Completion handler for a created Media object.
@@ -220,9 +217,7 @@ class MediaImportService: NSObject {
             }, on: .main)
         }
 
-        // TODO: 🤮
-        self.allowableFileExtensions = allowedFileTypes
-        return self.import(exportable, to: media, completion: completion)
+        return self.import(exportable, to: media, allowableFileExtensions: allowedFileTypes, completion: completion)
     }
 
     /// Imports media from a PHAsset to the Media object, asynchronously.
@@ -238,10 +233,10 @@ class MediaImportService: NSObject {
     ///
     /// - Returns: a progress object that report the current state of the import process.
     ///
-    private func `import`(_ exportable: ExportableAsset, to media: Media, completion: @escaping (Result<Media, Error>) -> Void) -> Progress {
+    private func `import`(_ exportable: ExportableAsset, to media: Media, allowableFileExtensions: Set<String>, completion: @escaping (Result<Media, Error>) -> Void) -> Progress {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
-            guard let exporter = self.makeExporter(for: exportable) else {
+            guard let exporter = self.makeExporter(for: exportable, allowableFileExtensions: allowableFileExtensions) else {
                 preconditionFailure("An exporter needs to be availale")
             }
             let exportProgress = exporter.export(
@@ -272,7 +267,7 @@ class MediaImportService: NSObject {
         return progress
     }
 
-    private func makeExporter(for exportable: ExportableAsset) -> MediaExporter? {
+    private func makeExporter(for exportable: ExportableAsset, allowableFileExtensions: Set<String>) -> MediaExporter? {
         switch exportable {
         case let asset as PHAsset:
             let exporter = MediaAssetExporter(asset: asset)
@@ -288,7 +283,7 @@ class MediaImportService: NSObject {
             let exporter = MediaURLExporter(url: url)
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
-            exporter.urlOptions = self.exporterURLOptions
+            exporter.urlOptions = self.exporterURLOptions(allowableFileExtensions: allowableFileExtensions)
             return exporter
         case let stockPhotosMedia as StockPhotosMedia:
             let exporter = MediaExternalExporter(externalAsset: stockPhotosMedia)
@@ -365,7 +360,7 @@ class MediaImportService: NSObject {
         return options
     }
 
-    private var exporterURLOptions: MediaURLExporter.Options {
+    private func exporterURLOptions(allowableFileExtensions: Set<String>) -> MediaURLExporter.Options {
         var options = MediaURLExporter.Options()
         options.allowableFileExtensions = allowableFileExtensions
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
