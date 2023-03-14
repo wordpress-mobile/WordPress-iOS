@@ -825,8 +825,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
+        }
 
-            self.displayJetpackInstallOverlayIfNeeded()
+        sitePickerViewController.onBlogListDismiss = { [weak self] in
+            self?.displayJetpackInstallOverlayIfNeeded()
         }
 
         return sitePickerViewController
