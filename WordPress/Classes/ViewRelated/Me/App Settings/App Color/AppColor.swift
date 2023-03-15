@@ -15,7 +15,12 @@ enum AppColor {
 
     static private(set) var accent: Accent = savedAccent ?? .default {
         didSet {
-            savedAccent = accent
+            if accent != oldValue {
+                savedAccent = accent
+
+                NotificationCenter.default
+                    .post(name: .appColorDidUpdateAccent, object: accent)
+            }
         }
     }
 
@@ -119,6 +124,10 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
             return .muriel(.pink)
         }
     }
+}
+
+extension Foundation.Notification.Name {
+    static let appColorDidUpdateAccent = Self("appColorDidUpdateAccent")
 }
 
 private extension Color {
