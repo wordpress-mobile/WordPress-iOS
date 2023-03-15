@@ -16,6 +16,7 @@ import Foundation
             @objc static let userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
             @objc static let userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
             @objc static let userDefaultsJetpackFeaturesDisabledKey = "WordPressJPFeaturesDisabledKey"
+            @objc static let lockScreenTodayViewsKind = "WordPressLockScreenWidgetTodayViews"
             @objc static let todayKind = "WordPressHomeWidgetToday"
             @objc static let allTimeKind = "WordPressHomeWidgetAllTime"
             @objc static let thisWeekKind = "WordPressHomeWidgetThisWeek"

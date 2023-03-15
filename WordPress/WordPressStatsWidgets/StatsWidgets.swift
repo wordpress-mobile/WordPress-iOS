@@ -7,5 +7,8 @@ struct WordPressStatsWidgets: WidgetBundle {
         WordPressHomeWidgetToday()
         WordPressHomeWidgetThisWeek()
         WordPressHomeWidgetAllTime()
+        if AppConfiguration.isJetpack, #available(iOS 16.0, *) {
+            LockScreenStatsWidget()
+        }
     }
 }
