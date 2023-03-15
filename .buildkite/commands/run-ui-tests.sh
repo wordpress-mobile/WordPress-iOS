@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
-DEVICE=$1
+APP=$1
+DEVICE=$2
 
 echo "Running UI tests on $DEVICE. The iOS version will be the latest available in the CI host."
 
@@ -13,8 +14,8 @@ else
 fi
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products-jetpack.tar
-tar -xf build-products.tar
+download_artifact build-products-$APP.tar
+tar -xf build-products-$APP.tar
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
