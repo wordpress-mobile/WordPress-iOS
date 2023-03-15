@@ -12,6 +12,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case four
         case newUsers = "new_users"
         case selfHosted = "self_hosted"
+        case staticScreens = "static_screens"
 
         var frequencyConfig: OverlayFrequencyTracker.FrequencyConfig {
             switch self {
@@ -99,6 +100,9 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
             return .four
         }
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalStaticPosters) {
+            return .staticScreens
+        }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree) {
             return .three
         }
@@ -118,7 +122,8 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         }
 
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour)
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalStaticPosters) {
             return .two
         }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree)
