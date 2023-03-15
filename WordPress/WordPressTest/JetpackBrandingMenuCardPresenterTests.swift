@@ -232,6 +232,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         remoteFeatureFlagsStore.removalPhaseFour = false
         remoteFeatureFlagsStore.removalPhaseNewUsers = false
         remoteFeatureFlagsStore.removalPhaseSelfHosted = false
+        remoteFeatureFlagsStore.removalPhaseStaticScreens = false
 
         // Set phase
         switch phase {
@@ -249,6 +250,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             remoteFeatureFlagsStore.removalPhaseNewUsers = true
         case .selfHosted:
             remoteFeatureFlagsStore.removalPhaseSelfHosted = true
+        case .staticScreens:
+            remoteFeatureFlagsStore.removalPhaseStaticScreens = true
         }
     }
 }
