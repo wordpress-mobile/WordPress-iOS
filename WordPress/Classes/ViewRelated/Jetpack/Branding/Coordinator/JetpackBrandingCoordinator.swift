@@ -27,6 +27,8 @@ class JetpackBrandingCoordinator {
         case .two:
             fallthrough
         case .three:
+            fallthrough
+        case .staticScreens:
             return true
         default:
             return false
