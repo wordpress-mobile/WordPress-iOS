@@ -288,7 +288,7 @@ extension FeatureFlag {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
         case .jetpackFeaturesRemovalStaticPosters:
-            return "Jetpack Features Removal Static Posters Phase"
+            return "Jetpack Features Removal Static Screens Phase"
         case .wordPressSupportForum:
             return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
