@@ -79,7 +79,7 @@ platform :ios do
   desc 'Run tests without building'
   lane :test_without_building do |options|
     # Find the referenced .xctestrun file based on its name
-    build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products', options[:name])
+    build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
     xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
