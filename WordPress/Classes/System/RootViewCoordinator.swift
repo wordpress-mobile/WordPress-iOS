@@ -48,7 +48,7 @@ class RootViewCoordinator {
          windowManager: WindowManager?) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
-        if Self.shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore) {
+        if Self.shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: featureFlagStore) {
             self.currentAppUIType = .normal
             self.rootViewPresenter = WPTabBarController()
         }
@@ -64,7 +64,7 @@ class RootViewCoordinator {
     // MARK: JP Features State
 
     /// Used to determine if the Jetpack features are enabled based on the removal phase.
-    private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+    private static func shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .four, .newUsers, .selfHosted:
@@ -84,7 +84,7 @@ class RootViewCoordinator {
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
     @discardableResult
     func reloadUIIfNeeded(blog: Blog?) -> Bool {
-        let newUIType: AppUIType = Self.shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore) ? .normal : .simplified
+        let newUIType: AppUIType = Self.shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: featureFlagStore) ? .normal : .simplified
         let oldUIType = currentAppUIType
         guard newUIType != oldUIType, let windowManager else {
             return false
