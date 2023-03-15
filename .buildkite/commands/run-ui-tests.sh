@@ -24,7 +24,6 @@ echo "--- :cocoapods: Setting up Pods"
 install_cocoapods
 
 echo "--- 🔬 Testing"
-ls -la DerivedData/Build/Products/
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e

@@ -14,7 +14,6 @@ echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 🔬 Testing"
-ls -la DerivedData/Build/Products/
 set +e
 bundle exec fastlane test_without_building name:WordPressUnitTests
 TESTS_EXIT_STATUS=$?

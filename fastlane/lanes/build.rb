@@ -85,8 +85,6 @@ platform :ios do
       path.include?(options[:name])
     end.first
 
-    puts "build_products_path is #{build_products_path} and xctestrun_path is #{xctestrun_path}"
-
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
     # Temporary skip Buildkite Analytics for tests running on Jetpack builds as it's not setup yet
