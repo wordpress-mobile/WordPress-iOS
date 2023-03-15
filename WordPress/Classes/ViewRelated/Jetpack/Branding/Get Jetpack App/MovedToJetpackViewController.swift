@@ -165,16 +165,30 @@ final class MovedToJetpackViewController: UIViewController {
     // MARK: - Button action
 
     @objc private func jetpackButtonTapped() {
-        // TODO: Show Jetpack app
+        // Try to export WordPress data to a shared location before redirecting the user.
+        ContentMigrationCoordinator.shared.startAndDo { _ in
+            JetpackRedirector.redirectToJetpack()
+        }
     }
 
     @objc private func learnMoreButtonTapped() {
-        // TODO: Show Jetpack support article
+        guard let url = URL(string: Constants.learnMoreButtonURL) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.learnMoreWebViewSource)
+        let navigationController = UINavigationController(rootViewController: webViewController)
+        self.present(navigationController, animated: true)
     }
 
 }
 
 extension MovedToJetpackViewController {
+
+    private enum Constants {
+        static let learnMoreButtonURL = "https://jetpack.com/support/switch-to-the-jetpack-app/"
+        static let learnMoreWebViewSource = "jp_removal_static_poster"
+    }
 
     private enum Metrics {
         static let stackViewMargin: CGFloat = 30
