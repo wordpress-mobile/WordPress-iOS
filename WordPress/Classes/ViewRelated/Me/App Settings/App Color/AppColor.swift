@@ -89,17 +89,17 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
     var description: String {
         switch self {
         case .`default`:
-            return AppLocalizedString("Default", comment: "Title for the Default app accent color")
+            return AppLocalizedString("color.default", comment: "Title for the `Default` app accent color")
         case .green:
-            return AppLocalizedString("Green", comment: "Title for the Green app accent color")
+            return AppLocalizedString("color.green", comment: "Title for the `Green` app accent color")
         case .blue:
-            return AppLocalizedString("Blue", comment: "Title for the Blue app accent color")
+            return AppLocalizedString("color.blue", comment: "Title for the `Blue` app accent color")
         case .orange:
-            return AppLocalizedString("Orange", comment: "Title for the Orange app accent color")
+            return AppLocalizedString("color.orange", comment: "Title for the `Orange` app accent color")
         case .purple:
-            return AppLocalizedString("Purple", comment: "Title for the Purple app accent color")
+            return AppLocalizedString("color.purple", comment: "Title for the `Purple` app accent color")
         case .pink:
-            return AppLocalizedString("Pink", comment: "Title for the Pink app accent color")
+            return AppLocalizedString("color.pink", comment: "Title for the `Pink` app accent color")
         }
     }
 
