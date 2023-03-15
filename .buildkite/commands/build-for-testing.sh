@@ -17,5 +17,5 @@ echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane "build_$1_for_testing"
 
 echo "--- :arrow_up: Upload Build Products"
-tar -cf build-products.tar DerivedData/Build/Products/$1
-upload_artifact build-products.tar
+tar -cf build-products-$1.tar DerivedData/Build/Products/
+upload_artifact build-products-$1.tar

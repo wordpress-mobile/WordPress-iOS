@@ -13,7 +13,7 @@ else
 fi
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products.tar
+download_artifact build-products-jetpack.tar
 tar -xf build-products.tar
 
 echo "--- :rubygems: Setting up Gems"
