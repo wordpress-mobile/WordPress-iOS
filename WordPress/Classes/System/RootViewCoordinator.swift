@@ -34,7 +34,11 @@ class RootViewCoordinator {
     // MARK: Private instance variables
 
     private(set) var rootViewPresenter: RootViewPresenter
-    private(set) var currentAppUIType: AppUIType
+    private var currentAppUIType: AppUIType {
+        didSet {
+            updateJetpackFeaturesRemovalCoordinatorState()
+        }
+    }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
 
@@ -53,6 +57,7 @@ class RootViewCoordinator {
             let meScenePresenter = MeScenePresenter()
             self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
         }
+        updateJetpackFeaturesRemovalCoordinatorState()
         updatePromptsIfNeeded()
     }
 
@@ -67,6 +72,10 @@ class RootViewCoordinator {
         default:
             return true
         }
+    }
+
+    private func updateJetpackFeaturesRemovalCoordinatorState() {
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = currentAppUIType
     }
 
     // MARK: UI Reload

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 09:54:11+0000 */
+/* Translation-Revision-Date: 2023-03-09 11:54:30+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "已建立空白頁面";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "封鎖引文";
@@ -1152,7 +1155,7 @@ translators: Block name. %s: The localized block name */
 "Blocked site" = "封鎖的網站";
 
 /* Notice title when blocking a user succeeds. */
-"Blocked user" = "已封鎖使用者";
+"Blocked user" = "已封鎖的使用者";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -9659,10 +9662,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.dashboard.card.title" = "使用 Blaze 宣傳你的內容";
 
 /* Button title for a Blaze overlay prompting users to select a post to blaze. */
-"blaze.overlay.buttonTitle" = "現在就使用 Blaze 宣傳文章";
+"blaze.overlay.buttonTitle" = "立即使用 Blaze 宣傳文章";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "追蹤行銷活動的效果；可以隨時取消。";
+"blaze.overlay.descriptionOne" = "只要幾分鐘就能宣傳任何文章或頁面；每天只需支付幾美元。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "追蹤行銷活動成效，並可隨時取消。";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "你的內容會出現在數百萬個 WordPress 和 Tumblr 網站上。";
@@ -10227,6 +10233,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "你已登入！";
 
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "封鎖此使用者";
 
@@ -10399,7 +10408,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "support.button.close.title" = "完成";
 
 /* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
-"support.button.jetpackMigation.accessibilityHint" = "輕觸以在外部瀏覽器造訪 Jetpack 應用程式常見問題集";
+"support.button.jetpackMigation.accessibilityHint" = "點選以在外部瀏覽器造訪 Jetpack 應用程式常見問題集";
 
 /* Option in Support view to visit the Jetpack migration FAQ website. */
 "support.button.jetpackMigration.title" = "造訪我們的常見問題集";

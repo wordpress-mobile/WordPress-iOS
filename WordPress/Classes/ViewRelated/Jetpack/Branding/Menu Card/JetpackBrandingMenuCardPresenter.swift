@@ -19,7 +19,6 @@ class JetpackBrandingMenuCardPresenter {
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
     private let featureFlagStore: RemoteFeatureFlagStore
-    private let rootViewCoordinator: RootViewCoordinator
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
         return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
     }
@@ -30,14 +29,12 @@ class JetpackBrandingMenuCardPresenter {
          remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          persistenceStore: UserPersistentRepository = UserDefaults.standard,
-         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider(),
-         rootViewCoordinator: RootViewCoordinator = .shared) {
+         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.blog = blog
         self.remoteConfigStore = remoteConfigStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
         self.featureFlagStore = featureFlagStore
-        self.rootViewCoordinator = rootViewCoordinator
     }
 
     // MARK: Public Functions
@@ -65,7 +62,7 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(rootViewCoordinator: rootViewCoordinator)
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(featureFlagStore: featureFlagStore)
         switch (phase, jetpackFeaturesEnabled) {
         case (.three, true):
             return true
@@ -80,7 +77,7 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(rootViewCoordinator: rootViewCoordinator)
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(featureFlagStore: featureFlagStore)
         switch (phase, jetpackFeaturesEnabled) {
         case (.four, false):
             fallthrough
