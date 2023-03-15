@@ -29,7 +29,11 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let formattedMedia = media.map { item in
-            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt)
+            var metadata: [String: String] = [:]
+            if let videopressGUID = item.videopressGUID {
+                metadata["videopressGUID"] = videopressGUID
+            }
+            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: metadata)
         }
         callback(formattedMedia)
     }
