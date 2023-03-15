@@ -113,7 +113,8 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureJetpackBanner() {
-        guard JetpackBrandingVisibility.all.enabled else {
+        guard JetpackBrandingVisibility.all.enabled,
+              JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures() else {
             jetpackBannerView.removeFromSuperview()
             return
         }
