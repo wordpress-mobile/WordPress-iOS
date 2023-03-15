@@ -13,7 +13,7 @@ cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/projec
 echo "--- Installing Secrets"
 bundle exec fastlane run configure_apply
 
-echo "--- :hammer_and_wrench: :wordpress: Building"
+echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane "build_$1_for_testing"
 
 echo "--- :arrow_up: Upload Build Products"
