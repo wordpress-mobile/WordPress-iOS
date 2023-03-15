@@ -33,6 +33,8 @@ struct JetpackBrandingTextProvider {
             return Strings.phaseTwoText
         case .three:
             return phaseThreeText()
+        case .staticScreens:
+            return phaseStaticScreensText()
         default:
             return Strings.defaultText
         }
@@ -59,6 +61,15 @@ struct JetpackBrandingTextProvider {
         }
 
         return String(format: movingInString, featureName, dateString)
+    }
+
+    private func phaseStaticScreensText() -> String {
+        guard let screen = screen, let featureName = screen.featureName else {
+            return Strings.defaultText // Screen not provided, or was opted out by defining a nil featureName
+        }
+
+        let stringFormat = isPlural ? Strings.phaseStaticScreensPluralTextFormat : Strings.phaseStaticScreensSingularTextFormat
+        return String(format: stringFormat, featureName)
     }
 
     private func dateString(now: Date, deadline: Date) -> String? {
@@ -108,6 +119,22 @@ private extension JetpackBrandingTextProvider {
         static let phaseThreeSingularMovingInText = NSLocalizedString("jetpack.branding.badge_banner.moving_in.singular",
                                                                       value: "%@ is moving in %@",
                                                                       comment: "Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks")
+        static let phaseStaticScreensPluralTextFormat = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_in_days.plural",
+            value: "%@ are moving in a few days",
+            comment: """
+            Title of a badge or banner indicating when a feature in plural form will be removed in a few days.
+            The '%@' part will be replaced with the feature name. Example: Menus are moving in a few days.
+            """
+        )
+        static let phaseStaticScreensSingularTextFormat = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_in_days.singular",
+            value: "%@ is moving in a few days",
+            comment: """
+            Title of a badge or banner indicating when a feature in singular form will be removed in a few days.
+            The '%@' part will be replaced with the feature name. Example: Activity is moving in a few days.
+            """
+        )
     }
 
     private var isPlural: Bool {
