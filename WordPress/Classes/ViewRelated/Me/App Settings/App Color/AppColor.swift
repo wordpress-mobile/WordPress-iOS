@@ -113,15 +113,30 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
         case .`default`:
             return AppColor.defaultAccentColor
         case .green:
-            return .muriel(.green)
+            return .dynamic(
+                light: .muriel(.green),
+                dark: .muriel(.green)
+            )
         case .blue:
-            return .muriel(.blue)
+            return .dynamic(
+                light: .muriel(.blue),
+                dark: .muriel(.blue)
+            )
         case .orange:
-            return .muriel(.orange)
+            return .dynamic(
+                light: .muriel(.orange),
+                dark: .muriel(.orange)
+            )
         case .purple:
-            return .muriel(.purple)
+            return .dynamic(
+                light: .muriel(.purple),
+                dark: .muriel(.purple)
+            )
         case .pink:
-            return .muriel(.pink)
+            return .dynamic(
+                light: .muriel(.pink),
+                dark: .muriel(.pink)
+            )
         }
     }
 }
@@ -131,7 +146,20 @@ extension Foundation.Notification.Name {
 }
 
 private extension Color {
-    static func muriel(_ name: MurielColorName) -> Self {
-        .init(UIColor.muriel(color: .init(name: name)))
+    static func muriel(
+        _ name: MurielColorName,
+        shade: MurielColorShade = .shade50
+    ) -> Self {
+        .init(
+            UIColor.muriel(color: .init(name: name, shade: shade))
+        )
+    }
+
+    static func dynamic(light: Color, dark: Color) -> Color {
+        Color(UIColor(
+            dynamicProvider: {
+                $0.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
+            })
+        )
     }
 }
