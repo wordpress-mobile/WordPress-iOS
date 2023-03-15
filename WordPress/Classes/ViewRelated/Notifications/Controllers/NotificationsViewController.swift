@@ -632,7 +632,8 @@ extension NotificationsViewController {
     /// Called on view load to determine whether the Jetpack banner should be shown on the view
     /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
     func configureJetpackBanner() {
-        guard JetpackBrandingVisibility.all.enabled else {
+        guard JetpackBrandingVisibility.all.enabled,
+              JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures() else {
             return
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.notifications)
