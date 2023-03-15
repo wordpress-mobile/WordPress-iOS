@@ -531,7 +531,8 @@ import Combine
             return
         }
 
-        guard JetpackBrandingVisibility.all.enabled else {
+        guard JetpackBrandingVisibility.all.enabled,
+              JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures() else {
             return
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)
