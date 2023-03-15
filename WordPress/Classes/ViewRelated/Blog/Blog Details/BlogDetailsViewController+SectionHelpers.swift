@@ -56,39 +56,39 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowStats() -> Bool {
-        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        return JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
     }
 
     @objc func shouldAddJetpackSection() -> Bool {
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.shouldShowJetpackSection
     }
 
     @objc func shouldAddGeneralSection() -> Bool {
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.shouldShowJetpackSection == false
     }
 
     @objc func shouldAddPersonalizeSection() -> Bool {
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.supports(.themeBrowsing) || blog.supports(.menus)
     }
 
     @objc func shouldAddSharingRow() -> Bool {
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.supports(.sharing)
     }
 
     @objc func shouldAddPeopleRow() -> Bool {
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.supports(.people)
