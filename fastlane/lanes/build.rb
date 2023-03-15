@@ -36,7 +36,7 @@ platform :ios do
   # @called_by CI
   #
   desc 'Build WordPress for Testing'
-  lane :build_for_testing do |options|
+  lane :build_wordpress_for_testing do |options|
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
