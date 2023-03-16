@@ -455,22 +455,23 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
     
-    if (!self.shouldUseStaticScreens) {
-        // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
-        NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
-        if (count > 0 || ![self welcomeNotificationSeen]) {
-            notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
-            notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
-        } else {
-            notificationsTabBarItem.image = self.notificationsTabBarImage;
-            notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-        }
+    if (self.shouldUseStaticScreens) {
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        return;
+    }
 
-        if (UIApplication.sharedApplication.isCreatingScreenshots) {
-            notificationsTabBarItem.image = self.notificationsTabBarImage;
-            notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-        }
+    // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
+    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
+    if (count > 0 || ![self welcomeNotificationSeen]) {
+        notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+    }
+
+    if (UIApplication.sharedApplication.isCreatingScreenshots) {
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
