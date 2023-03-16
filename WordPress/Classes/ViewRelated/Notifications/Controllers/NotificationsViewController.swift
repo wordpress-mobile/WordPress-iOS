@@ -2015,7 +2015,12 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
-        InteractiveNotificationsManager.shared.requestAuthorization { _ in
+        InteractiveNotificationsManager.shared.requestAuthorization { allowed in
+            if allowed {
+                // User has allowed notifications so we don't need to show the inline prompt
+                UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
+            }
+
             DispatchQueue.main.async {
                 controller.dismiss(animated: true)
             }
