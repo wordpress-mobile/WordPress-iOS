@@ -34,7 +34,7 @@ struct JetpackBrandingTextProvider {
         case .three:
             return phaseThreeText()
         case .staticScreens:
-            return Strings.phaseStaticScreensText
+            return staticScreensPhaseText()
         default:
             return Strings.defaultText
         }
@@ -61,6 +61,14 @@ struct JetpackBrandingTextProvider {
         }
 
         return String(format: movingInString, featureName, dateString)
+    }
+
+    private func staticScreensPhaseText() -> String {
+        guard let screen = screen, let featureName = screen.featureName else {
+            return Strings.defaultText // Screen not provided, or was opted out by defining a nil featureName
+        }
+
+        return Strings.phaseStaticScreensText
     }
 
     private func dateString(now: Date, deadline: Date) -> String? {
