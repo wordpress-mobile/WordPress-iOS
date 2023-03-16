@@ -164,7 +164,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
+        UIViewController *rootViewController;
+        if (self.shouldUseStaticScreens) {
+            rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+        } else {
+            rootViewController = self.makeReaderTabViewController;
+        }
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
         _readerNavigationController.navigationBar.translucent = NO;
         _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
