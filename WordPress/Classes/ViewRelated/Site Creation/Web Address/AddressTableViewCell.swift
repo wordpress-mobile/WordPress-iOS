@@ -84,6 +84,10 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
 
     // MARK: - Updating UI
 
+    func update(with viewModel: ViewModel?) {
+        
+    }
+
     public func addBorder(isFirstCell: Bool = false, isLastCell: Bool = false) {
         if isFirstCell {
             let border = addTopBorder(withColor: .divider)
