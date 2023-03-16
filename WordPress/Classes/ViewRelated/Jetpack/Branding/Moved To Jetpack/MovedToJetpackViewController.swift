@@ -105,6 +105,7 @@ final class MovedToJetpackViewController: UIViewController {
 
     private let source: MovedToJetpackSource
     private let viewModel: MovedToJetpackViewModel
+    private let tracker: MovedToJetpackEventsTracker
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
@@ -118,6 +119,7 @@ final class MovedToJetpackViewController: UIViewController {
     @objc init(source: MovedToJetpackSource) {
         self.source = source
         self.viewModel = MovedToJetpackViewModel(source: source)
+        self.tracker = MovedToJetpackEventsTracker(source: source)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -135,9 +137,10 @@ final class MovedToJetpackViewController: UIViewController {
         animationView.play()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         animationView.currentProgress = 1.0
+        tracker.trackScreenDisplayed()
     }
 
     // MARK: - Navigation overrides
@@ -177,8 +180,9 @@ final class MovedToJetpackViewController: UIViewController {
 
     @objc private func jetpackButtonTapped() {
         // Try to export WordPress data to a shared location before redirecting the user.
-        ContentMigrationCoordinator.shared.startAndDo { _ in
+        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
             JetpackRedirector.redirectToJetpack()
+            self?.tracker.trackJetpackButtonTapped()
         }
     }
 
@@ -190,6 +194,8 @@ final class MovedToJetpackViewController: UIViewController {
         let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.learnMoreWebViewSource)
         let navigationController = UINavigationController(rootViewController: webViewController)
         self.present(navigationController, animated: true)
+
+        tracker.trackJetpackLinkTapped()
     }
 }
 
