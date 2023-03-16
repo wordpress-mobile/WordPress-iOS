@@ -30,6 +30,10 @@ enum AppColor {
         accent.color
     }
 
+    static func accentColor(_ shade: MurielColorShade) -> Color {
+        .muriel(accent.murielName, shade: shade)
+    }
+
     static func updateAccent(with newAccent: Accent) {
         accent = newAccent
     }
@@ -118,44 +122,65 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
         switch self {
         case .pink:
             return .dynamic(
-                light: .muriel(.pink, shade: .shade60),
-                dark: .muriel(.pink, shade: .shade60)
+                light: .muriel(murielName, shade: .shade60),
+                dark: .muriel(murielName, shade: .shade60)
             )
         case .red:
             return .dynamic(
-                light: .muriel(.red, shade: .shade60),
-                dark: .muriel(.red, shade: .shade60)
+                light: .muriel(murielName, shade: .shade60),
+                dark: .muriel(murielName, shade: .shade60)
             )
         case .orange:
             return .dynamic(
-                light: .muriel(.orange),
-                dark: .muriel(.orange)
+                light: .muriel(murielName),
+                dark: .muriel(murielName)
             )
         case .yellow:
             return .dynamic(
-                light: .muriel(.yellow),
-                dark: .muriel(.yellow)
+                light: .muriel(murielName),
+                dark: .muriel(murielName)
             )
         case .celadon:
             return .dynamic(
-                light: .muriel(.celadon, shade: .shade60),
-                dark: .muriel(.celadon, shade: .shade60)
+                light: .muriel(murielName, shade: .shade60),
+                dark: .muriel(murielName, shade: .shade60)
             )
         case .wooCommercePurple:
             return .dynamic(
-                light: .muriel(.wooCommercePurple, shade: .shade60),
-                dark: .muriel(.wooCommercePurple, shade: .shade60)
+                light: .muriel(murielName, shade: .shade60),
+                dark: .muriel(murielName, shade: .shade60)
             )
         case .jetpackGreen:
             return .dynamic(
-                light: .muriel(.jetpackGreen),
-                dark: .muriel(.jetpackGreen)
+                light: .muriel(murielName),
+                dark: .muriel(murielName)
             )
         case .wordPressBlue:
             return .dynamic(
-                light: .muriel(.wordPressBlue),
-                dark: .muriel(.wordPressBlue)
+                light: .muriel(murielName),
+                dark: .muriel(murielName)
             )
+        }
+    }
+
+    fileprivate var murielName: MurielColorName {
+        switch self {
+        case .pink:
+            return .pink
+        case .red:
+            return .red
+        case .orange:
+            return .orange
+        case .yellow:
+            return .yellow
+        case .celadon:
+            return .celadon
+        case .wooCommercePurple:
+            return .wooCommercePurple
+        case .jetpackGreen:
+            return .jetpackGreen
+        case .wordPressBlue:
+            return .wordPressBlue
         }
     }
 

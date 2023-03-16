@@ -32,19 +32,39 @@ extension UIColor {
         return muriel(color: newColor)
     }
 }
+
 // MARK: - Basic Colors
 extension UIColor {
+
+    /// - Note: as part of this task: https://jetpackmobile.wordpress.com/2023/03/10/trial-task-user-defined-app-color/
+    /// we decided to replace `primary`, `accent` and `brand` colors with user customizable `AppColor.accentColor`
+    /// long term goal is to unify these 3 colors into a single `accent` color.
+
+    /// Muriel primary color
+    static var primary: UIColor {
+        UIColor(AppColor.accentColor)
+    }
+    class func primary(_ shade: MurielColorShade) -> UIColor {
+        UIColor(AppColor.accentColor(shade))
+    }
+    static var primaryLight: UIColor {
+        primary(.shade30)
+    }
+    static var primaryDark: UIColor {
+        primary(.shade70)
+    }
+
     /// Muriel accent color
-    static var accent = muriel(color: .accent)
-    static var accentDark = muriel(color: .accent, .shade70)
+    static var accent: UIColor {
+        UIColor(AppColor.accentColor)
+    }
     class func accent(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .accent, shade)
+        UIColor(AppColor.accentColor(shade))
     }
 
     /// Muriel brand color
-    static var brand = muriel(color: .brand)
-    class func brand(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .brand, shade)
+    static var brand: UIColor {
+        UIColor(AppColor.accentColor)
     }
 
     /// Muriel error color
@@ -52,18 +72,6 @@ extension UIColor {
     static var errorDark = muriel(color: .error, .shade70)
     class func error(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: .error, shade)
-    }
-
-    /// Muriel primary color
-    static var primary: UIColor {
-        UIColor(AppColor.accentColor)
-    }
-    /// - TODO: cleanup later
-//    static var primary = muriel(color: .primary)
-    static var primaryLight = muriel(color: .primary, .shade30)
-    static var primaryDark = muriel(color: .primary, .shade70)
-    class func primary(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .primary, shade)
     }
 
     /// Muriel editor primary color
@@ -243,12 +251,18 @@ extension UIColor {
     }
 
     static var barButtonItemTitle: UIColor {
-        return UIColor(light: UIColor.primary(.shade50), dark: UIColor.primary(.shade30))
+        return UIColor(light: primary(.shade50), dark: primary(.shade30))
     }
 
-// MARK: - WP Fancy Buttons
-    static var primaryButtonBackground = primary
-    static var primaryButtonDownBackground = muriel(color: .primary, .shade80)
+    // MARK: - WP Fancy Buttons
+
+    static var primaryButtonBackground: UIColor {
+        primary
+    }
+
+    static var primaryButtonDownBackground: UIColor {
+        primary(.shade80)
+    }
 
     static var secondaryButtonBackground: UIColor {
         return UIColor(light: .white, dark: .systemGray5)
