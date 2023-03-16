@@ -28,7 +28,7 @@ final class WidgetsViewModelMapperTests: XCTestCase {
         let data = makeTodayData(stats: todayStats, date: Date())
 
         let sut = makeSUT(data)
-        let statsURL = sut.getStateURL()
+        let statsURL = sut.getStatsURL()
 
         XCTAssertEqual(statsURL?.absoluteString, "https://wordpress.com/stats/day/0?source=widget")
     }

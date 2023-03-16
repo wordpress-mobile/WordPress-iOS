@@ -15,6 +15,6 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
 
     func statsURL(_ data: HomeWidgetData) -> URL? {
         let mapper = LockScreenWidgetViewModelMapper(data: data)
-        return mapper.getStateURL()
+        return mapper.getStatsURL()
     }
 }

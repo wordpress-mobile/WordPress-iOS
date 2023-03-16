@@ -17,7 +17,7 @@ struct LockScreenWidgetViewModelMapper {
     // define statsURL, views, date, siteName
     // HomeWidgetTodayData, HomeWidgetAllTimeData, HomeWidgetThisWeekData conform to it
     // to reduce the type converting
-    func getStateURL() -> URL? {
+    func getStatsURL() -> URL? {
         if let todayData = data as? HomeWidgetTodayData {
             return todayData.statsURL
         } else if let allTimeData = data as? HomeWidgetAllTimeData {
