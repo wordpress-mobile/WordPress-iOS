@@ -114,7 +114,7 @@ final class DomainsServiceAdapter: SiteAddressService {
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
         domainsService.getDomainSuggestions(query: query,
                                             quantity: domainRequestQuantity,
-                                            domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
+                                            domainSuggestionType: .freeAndPaid,
                                             success: { domainSuggestions in
             completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
         },
