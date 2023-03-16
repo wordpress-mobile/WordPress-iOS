@@ -130,11 +130,18 @@ final class MovedToJetpackViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.delegate = self
         setupView()
         animationView.play()
     }
 
-    // MARK: - Setup
+    // MARK: - Navigation overrides
+
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    // MARK: - View setup
 
     private func setupView() {
         view.backgroundColor = .basicBackground
@@ -179,7 +186,19 @@ final class MovedToJetpackViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: webViewController)
         self.present(navigationController, animated: true)
     }
+}
 
+// MARK: - UINavigationControllerDelegate
+
+extension MovedToJetpackViewController: UINavigationControllerDelegate {
+
+    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return supportedInterfaceOrientations
+    }
+
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
+    }
 }
 
 extension MovedToJetpackViewController {
