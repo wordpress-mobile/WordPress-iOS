@@ -1,5 +1,8 @@
 import Foundation
 
+/// `StaticScreensTabBarWrapper` is used as the root presenter when Jetpack features are disabled
+///  but not fully removed. The class wraps around `WPTabBarController`
+///  but disables all Reader and Notifications functionality
 class StaticScreensTabBarWrapper: RootViewPresenter {
 
     // MARK: Private Variables
