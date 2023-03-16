@@ -558,7 +558,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (currentViewController != nil) {
         return currentViewController.supportedInterfaceOrientations;
     }
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    return super.supportedInterfaceOrientations;
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
