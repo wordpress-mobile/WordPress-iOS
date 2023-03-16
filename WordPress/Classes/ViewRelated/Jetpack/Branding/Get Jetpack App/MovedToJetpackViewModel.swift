@@ -75,43 +75,43 @@ extension MovedToJetpackViewModel {
     private enum Strings {
 
         static let statsTitle = NSLocalizedString(
-            "getJetpackApp.stats.title",
+            "movedToJetpack.stats.title",
             value: "Stats have moved to the Jetpack app.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
         static let readerTitle = NSLocalizedString(
-            "getJetpackApp.reader.title",
+            "movedToJetpack.reader.title",
             value: "Reader has moved to the Jetpack app.",
             comment: "Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app."
         )
 
         static let notificationsTitle = NSLocalizedString(
-            "getJetpackApp.notifications.title",
+            "movedToJetpack.notifications.title",
             value: "Notifications have moved to the Jetpack app.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
         static let description = NSLocalizedString(
-            "getJetpackApp.description",
+            "movedToJetpack.description",
             value: "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app, and can now only be found in the Jetpack app.",
             comment: "Description for the static screen displayed prompting users to switch the Jetpack app."
         )
 
         static let hint = NSLocalizedString(
-            "getJetpackApp.hint",
+            "movedToJetpack.hint",
             value: "Switching is free and only takes a minute.",
             comment: "Hint for the static screen displayed prompting users to switch the Jetpack app."
         )
 
         static let jetpackButtonTitle = NSLocalizedString(
-            "getJetpackApp.jetpackButtonTitle",
+            "movedToJetpack.jetpackButtonTitle",
             value: "Switch to the Jetpack app",
             comment: "Title for a button that prompts users to switch to the Jetpack app."
         )
 
         static let learnMoreButtonTitle = NSLocalizedString(
-            "getJetpackApp.learnMoreButtonTitle",
+            "movedToJetpack.learnMoreButtonTitle",
             value: "Learn more at jetpack.com",
             comment: "Title for a button that displays a blog post in a web view."
         )
