@@ -186,7 +186,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         guard let currentAppUIType else {
             return shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: featureFlagStore)
         }
-        return currentAppUIType == .normal
+        return currentAppUIType != .simplified
     }
 
 

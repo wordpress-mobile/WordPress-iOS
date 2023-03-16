@@ -48,6 +48,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
+@property (nonatomic, assign) BOOL shouldUseStaticScreens;
+
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
@@ -79,10 +81,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 #pragma mark - Instance methods
 
-- (instancetype)init
+- (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens
 {
     self = [super init];
     if (self) {
+        _shouldUseStaticScreens = shouldUseStaticScreens;
         [self setDelegate:self];
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
@@ -128,6 +131,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                          context:nil];
     }
     return self;
+}
+
+- (instancetype)init
+{
+    return [self initWithStaticScreens:NO];
 }
 
 - (void)dealloc
