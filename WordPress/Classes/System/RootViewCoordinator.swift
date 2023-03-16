@@ -63,7 +63,7 @@ class RootViewCoordinator {
 
     // MARK: JP Features State
 
-    /// Used to determine if the Jetpack features are enabled based on the removal phase.
+    /// Used to determine if the Jetpack features are to be displayed or not based on the removal phase.
     private static func shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
