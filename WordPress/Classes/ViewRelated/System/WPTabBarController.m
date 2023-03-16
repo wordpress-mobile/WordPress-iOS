@@ -471,27 +471,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     
 }
 
-- (void) showReaderBadge:(NSNotification *)notification
-{
-    UIImage *readerTabBarImage = [[UIImage imageNamed:@"icon-tab-reader-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
-
-    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
-        [self hideReaderBadge:nil];
-    }
-}
-
--(BOOL) welcomeNotificationSeen
+- (BOOL)welcomeNotificationSeen
 {
     NSUserDefaults *standardUserDefaults = [UserPersistentStoreFactory userDefaultsInstance];
     NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
-}
-
-- (void) hideReaderBadge:(NSNotification *)notification
-{
-    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
