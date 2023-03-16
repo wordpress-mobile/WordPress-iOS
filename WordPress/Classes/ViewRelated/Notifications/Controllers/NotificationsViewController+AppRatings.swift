@@ -22,6 +22,7 @@ extension NotificationsViewController {
         }
 
         AppRatingUtility.shared.userWasPromptedToReview()
+        WPAnalytics.track(.appReviewsSawPrompt)
     }
 
     private func likedApp() {

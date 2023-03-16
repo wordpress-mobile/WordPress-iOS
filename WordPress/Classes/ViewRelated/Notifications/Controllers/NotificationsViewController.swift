@@ -1665,8 +1665,6 @@ internal extension NotificationsViewController {
         UIView.animate(withDuration: WPAnimationDurationDefault * 0.5, delay: WPAnimationDurationDefault * 0.75, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
         })
-
-        WPAnalytics.track(.appReviewsSawPrompt)
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
