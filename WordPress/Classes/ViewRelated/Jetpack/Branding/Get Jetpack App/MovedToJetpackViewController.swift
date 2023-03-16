@@ -22,7 +22,6 @@ final class MovedToJetpackViewController: UIViewController {
         /// Configure spacing
         stackView.spacing = Metrics.stackViewSpacing
         stackView.setCustomSpacing(Metrics.hintToJetpackButtonSpacing, after: hintLabel)
-        stackView.setCustomSpacing(Metrics.buttonSpacing, after: jetpackButton)
 
         return stackView
     }()
@@ -194,7 +193,6 @@ extension MovedToJetpackViewController {
         static let stackViewMargin: CGFloat = 30
         static let stackViewSpacing: CGFloat = 20
         static let hintToJetpackButtonSpacing: CGFloat = 40
-        static let buttonSpacing: CGFloat = 10
         static let buttonHeight: CGFloat = 50
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
