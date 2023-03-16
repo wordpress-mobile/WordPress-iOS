@@ -619,11 +619,16 @@ extension WebAddressWizardContent: UITableViewDataSource {
         }
 
         let domainSuggestion = data[indexPath.row]
-        cell.update(with: domainSuggestion)
-        cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
-        if !domainPurchasingEnabled {
+        if domainPurchasingEnabled {
+            let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
+            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, tags: tags)
+            cell.update(with: viewModel)
+        } else {
+            cell.update(with: domainSuggestion)
             cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
+            cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
         }
+
         return cell
     }
 
@@ -643,7 +648,7 @@ extension WebAddressWizardContent: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // Prevent selection if it's the no matches cell
-        return (!hasExactMatch && indexPath.section == 0) ? nil : indexPath
+        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? nil : indexPath
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
