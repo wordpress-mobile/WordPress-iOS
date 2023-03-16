@@ -509,7 +509,7 @@ private extension NotificationSettingsViewController {
         var showBadge: Bool {
             switch self {
             case .blog:
-                return JetpackBrandingVisibility.all.enabled && JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures()
+                return JetpackBrandingVisibility.all.enabled && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
             default:
                 return false
             }

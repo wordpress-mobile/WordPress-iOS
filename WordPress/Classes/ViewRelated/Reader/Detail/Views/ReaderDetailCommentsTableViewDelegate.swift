@@ -118,7 +118,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         /// We used this method to show the Jetpack badge rather than setting `tableFooterView` because it scaled better with Dynamic type.
         guard section == 0,
               JetpackBrandingVisibility.all.enabled,
-              JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures() else {
+              JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return nil
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.readerDetail)

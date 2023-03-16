@@ -532,7 +532,7 @@ import Combine
         }
 
         guard JetpackBrandingVisibility.all.enabled,
-              JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures() else {
+              JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)

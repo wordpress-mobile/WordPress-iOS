@@ -34,17 +34,4 @@ class JetpackBrandingCoordinator {
             return false
         }
     }
-
-    /// Determines if the Jetpack banner or badge should be shown for Stats, Reader, or Notifications.
-    ///
-    /// - Returns: true if we should show the banner or badge.
-    static func shouldShowBannerOrBadgeForMainFeatures() -> Bool {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
-        switch phase {
-        case .two, .three:
-            return true
-        default:
-            return false
-        }
-    }
 }

@@ -633,7 +633,7 @@ extension NotificationsViewController {
     /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
     func configureJetpackBanner() {
         guard JetpackBrandingVisibility.all.enabled,
-              JetpackBrandingCoordinator.shouldShowBannerOrBadgeForMainFeatures() else {
+              JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.notifications)
