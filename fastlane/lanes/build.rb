@@ -88,6 +88,7 @@ platform :ios do
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
     # Temporary skip Buildkite Analytics for tests running on Jetpack builds as it's not setup yet
+    # To be added in: https://github.com/wordpress-mobile/WordPress-iOS/issues/20336
     if options[:name] != 'Jetpack' && buildkite_ci?
       inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path)
       scheme_name = 'WordPress'
