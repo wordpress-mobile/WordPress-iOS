@@ -44,6 +44,7 @@ class AppFeedbackPromptView: UIView {
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         buttonStack.axis = .horizontal
         buttonStack.spacing = LayoutConstants.buttonSpacing
+        buttonStack.isLayoutMarginsRelativeArrangement = true
         addSubview(buttonStack)
 
         // Yes Button
@@ -53,7 +54,6 @@ class AppFeedbackPromptView: UIView {
         leftButton.setTitleColor(.white, for: .normal)
         leftButton.titleLabel?.font = textFont
         leftButton.accessibilityIdentifier = "yes-button"
-        leftButton.titleLabel?.adjustsFontSizeToFitWidth = true
         buttonStack.addArrangedSubview(leftButton)
 
         // Could improve Button
@@ -65,7 +65,6 @@ class AppFeedbackPromptView: UIView {
         rightButton.setTitleColor(.text, for: .normal)
         rightButton.titleLabel?.font = textFont
         rightButton.accessibilityIdentifier = "no-button"
-        rightButton.titleLabel?.adjustsFontSizeToFitWidth = true
         buttonStack.addArrangedSubview(rightButton)
 
         setupConstraints()
@@ -79,20 +78,23 @@ class AppFeedbackPromptView: UIView {
         leftButton.removeTarget(nil, action: nil, for: .touchUpInside)
         leftButton.setTitle(title, for: .normal)
         leftButton.on(.touchUpInside, call: tapHandler)
+        evaluateStackAxisMode()
     }
 
     func setupNoButton(title: String, tapHandler: @escaping (UIControl) -> Void) {
         rightButton.removeTarget(nil, action: nil, for: .touchUpInside)
         rightButton.setTitle(title, for: .normal)
         rightButton.on(.touchUpInside, call: tapHandler)
+        evaluateStackAxisMode()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        evaluateStackAxisMode()
+    }
 
-        buttonStack.axis = .horizontal
-        buttonStack.isLayoutMarginsRelativeArrangement = true
-
+    /// Evaluate the width of the buttons to determine if the stack view should go into vertical mode.
+    private func evaluateStackAxisMode() {
         // measure the width of the view with the new font sizes to see if the buttons are too wide.
         leftButton.updateFontSizeToMatchSystem()
         rightButton.updateFontSizeToMatchSystem()
