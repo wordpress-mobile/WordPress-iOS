@@ -3,17 +3,19 @@ import SwiftUI
 enum AppColor {
 
     enum Accent: String, CaseIterable {
-        case `default`
-        case green
-        case blue
-        case orange
-        case purple
         case pink
+        case red
+        case orange
+        case yellow
+        case celadon
+        case wooCommercePurple
+        case jetpackGreen
+        case wordPressBlue
     }
 
     // MARK: API
 
-    static private(set) var accent: Accent = savedAccent ?? .default {
+    static private(set) var accent: Accent = savedAccent ?? defaultAccent {
         didSet {
             if accent != oldValue {
                 savedAccent = accent
@@ -33,6 +35,17 @@ enum AppColor {
     }
 
     // MARK: Helpers
+
+    private static var defaultAccent: Accent {
+        switch appConfig {
+        case .wordpress:
+            return .wordPressBlue
+        case .jetpack:
+            return .jetpackGreen
+        case .unknown:
+            return .red
+        }
+    }
 
     private static var savedAccent: Accent? {
         get {
@@ -73,17 +86,6 @@ enum AppColor {
         case unknown = "Unknown"
     }
 
-    private static var defaultAccentColor: Color {
-        switch appConfig {
-        case .wordpress:
-            return .muriel(.wordPressBlue)
-        case .jetpack:
-            return .muriel(.jetpackGreen)
-        case .unknown:
-            return .red
-        }
-    }
-
 }
 
 extension AppColor.Accent: Identifiable, CustomStringConvertible {
@@ -93,51 +95,76 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .`default`:
-            return AppLocalizedString("color.default", comment: "Title for the `Default` app accent color")
-        case .green:
-            return AppLocalizedString("color.green", comment: "Title for the `Green` app accent color")
-        case .blue:
-            return AppLocalizedString("color.blue", comment: "Title for the `Blue` app accent color")
-        case .orange:
-            return AppLocalizedString("color.orange", comment: "Title for the `Orange` app accent color")
-        case .purple:
-            return AppLocalizedString("color.purple", comment: "Title for the `Purple` app accent color")
         case .pink:
             return AppLocalizedString("color.pink", comment: "Title for the `Pink` app accent color")
+        case .red:
+            return AppLocalizedString("color.red", comment: "Title for the `Red` app accent color")
+        case .orange:
+            return AppLocalizedString("color.orange", comment: "Title for the `Orange` app accent color")
+        case .yellow:
+            return AppLocalizedString("color.yellow", comment: "Title for the `Yellow` app accent color")
+        case .celadon:
+            return AppLocalizedString("color.celadon", comment: "Title for the `Celadon` app accent color")
+        case .wooCommercePurple:
+            return AppLocalizedString("color.wooCommercePurple", comment: "Title for the `WooCommerce Purple` app accent color")
+        case .jetpackGreen:
+            return AppLocalizedString("color.jetpackGreen", comment: "Title for the `Jetpack Green` app accent color")
+        case .wordPressBlue:
+            return AppLocalizedString("color.wordPressBlue", comment: "Title for the `WordPress Blue` app accent color")
         }
     }
 
     var color: Color {
         switch self {
-        case .`default`:
-            return AppColor.defaultAccentColor
-        case .green:
+        case .pink:
             return .dynamic(
-                light: .muriel(.green),
-                dark: .muriel(.green)
+                light: .muriel(.pink, shade: .shade60),
+                dark: .muriel(.pink, shade: .shade60)
             )
-        case .blue:
+        case .red:
             return .dynamic(
-                light: .muriel(.blue),
-                dark: .muriel(.blue)
+                light: .muriel(.red, shade: .shade60),
+                dark: .muriel(.red, shade: .shade60)
             )
         case .orange:
             return .dynamic(
                 light: .muriel(.orange),
                 dark: .muriel(.orange)
             )
-        case .purple:
+        case .yellow:
             return .dynamic(
-                light: .muriel(.purple),
-                dark: .muriel(.purple)
+                light: .muriel(.yellow),
+                dark: .muriel(.yellow)
             )
-        case .pink:
+        case .celadon:
             return .dynamic(
-                light: .muriel(.pink),
-                dark: .muriel(.pink)
+                light: .muriel(.celadon, shade: .shade60),
+                dark: .muriel(.celadon, shade: .shade60)
+            )
+        case .wooCommercePurple:
+            return .dynamic(
+                light: .muriel(.wooCommercePurple, shade: .shade60),
+                dark: .muriel(.wooCommercePurple, shade: .shade60)
+            )
+        case .jetpackGreen:
+            return .dynamic(
+                light: .muriel(.jetpackGreen),
+                dark: .muriel(.jetpackGreen)
+            )
+        case .wordPressBlue:
+            return .dynamic(
+                light: .muriel(.wordPressBlue),
+                dark: .muriel(.wordPressBlue)
             )
         }
+    }
+
+    static var allCasesSorted: [Self] {
+        var all = allCases
+        let firstAccent = AppColor.defaultAccent
+        all.removeAll(where: { $0 == firstAccent })
+        all.insert(firstAccent, at: 0)
+        return all
     }
 }
 

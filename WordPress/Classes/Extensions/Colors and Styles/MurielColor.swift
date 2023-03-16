@@ -12,6 +12,7 @@ enum MurielColorName: String, CustomStringConvertible {
     case red
     case yellow
     case jetpackGreen
+    case wooCommercePurple
 
     var description: String {
         // can't use .capitalized because it lowercases the P and B in "wordPressBlue"

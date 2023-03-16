@@ -38,7 +38,7 @@ struct AppColorListView: View {
 final class AppColorListViewModel: ObservableObject {
 
     var allAccents: [AppColor.Accent] {
-        AppColor.Accent.allCases
+        AppColor.Accent.allCasesSorted
     }
 
     @Published var selectedAccent = AppColor.accent {
