@@ -115,7 +115,7 @@ final class MovedToJetpackViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(source: MovedToJetpackSource) {
+    @objc init(source: MovedToJetpackSource) {
         self.source = source
         self.viewModel = MovedToJetpackViewModel(source: source)
         super.init(nibName: nil, bundle: nil)

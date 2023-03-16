@@ -189,10 +189,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (_notificationsNavigationController) {
         return _notificationsNavigationController;
     }
-
-    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
-    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
-    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
+    UIViewController *rootViewController;
+    if (self.shouldUseStaticScreens) {
+        rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceNotifications];
+    } else {
+        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
+        self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
+        rootViewController = self.notificationsViewController;
+    }
+    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
     self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
     NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
@@ -287,6 +292,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
+    if (self.shouldUseStaticScreens) {
+        return @[
+            self.mySitesCoordinator.rootViewController,
+            self.readerNavigationController,
+            self.notificationsNavigationController
+        ];
+    }
+
     return @[
         self.mySitesCoordinator.rootViewController,
         self.readerNavigationController,
@@ -434,21 +447,28 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)updateNotificationBadgeVisibility
 {
-    // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
-    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    if (count > 0 || ![self welcomeNotificationSeen]) {
-        notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
+    
+    if (!self.shouldUseStaticScreens) {
+        // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
+        NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
+        if (count > 0 || ![self welcomeNotificationSeen]) {
+            notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
+            notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
+        } else {
+            notificationsTabBarItem.image = self.notificationsTabBarImage;
+            notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        }
+
+        if( UIApplication.sharedApplication.isCreatingScreenshots ) {
+            notificationsTabBarItem.image = self.notificationsTabBarImage;
+            notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        }
     } else {
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
-
-    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
-        notificationsTabBarItem.image = self.notificationsTabBarImage;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-    }
+    
 }
 
 - (void) showReaderBadge:(NSNotification *)notification
