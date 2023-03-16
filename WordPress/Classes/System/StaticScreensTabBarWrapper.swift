@@ -54,7 +54,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
     }
 
     func showReaderTab() {
-        // Do nothing
+        tabBarController.showReaderTab()
     }
 
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
