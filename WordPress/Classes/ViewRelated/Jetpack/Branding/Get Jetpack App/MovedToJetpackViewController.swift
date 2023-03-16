@@ -135,6 +135,11 @@ final class MovedToJetpackViewController: UIViewController {
         animationView.play()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        animationView.currentProgress = 1.0
+    }
+
     // MARK: - Navigation overrides
 
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
