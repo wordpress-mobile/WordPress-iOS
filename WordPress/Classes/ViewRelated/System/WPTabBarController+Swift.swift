@@ -93,4 +93,17 @@ extension WPTabBarController {
     @objc func setupColors() {
         tabBar.isTranslucent = false
     }
+
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        guard let selectedViewController else {
+            return super.supportedInterfaceOrientations
+        }
+
+        if let splitViewController = selectedViewController as? WPSplitViewController,
+           let topDetailViewController = splitViewController.topDetailViewController {
+            return topDetailViewController.supportedInterfaceOrientations
+        }
+
+        return selectedViewController.supportedInterfaceOrientations
+    }
 }

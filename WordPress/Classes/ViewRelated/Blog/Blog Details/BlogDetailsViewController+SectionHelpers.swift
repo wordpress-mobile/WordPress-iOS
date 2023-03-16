@@ -56,7 +56,21 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowStats() -> Bool {
-        return JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+    }
+
+    /// Convenience method that returns the view controller for Stats based on the features removal state.
+    ///
+    /// - Returns: Either the actual Stats view, or the static poster for Stats.
+    @objc func viewControllerForStats() -> UIViewController {
+        guard shouldShowStats() else {
+            return MovedToJetpackViewController(source: .stats)
+        }
+
+        let statsView = StatsViewController()
+        statsView.blog = blog
+        statsView.navigationItem.largeTitleDisplayMode = .never
+        return statsView
     }
 
     @objc func shouldAddJetpackSection() -> Bool {

@@ -464,7 +464,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     // Required to add / remove "Home" section when switching between regular and compact width
     [self configureTableViewData];
 
@@ -1638,11 +1638,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{    
+{
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
-    StatsViewController *statsView = [StatsViewController new];
-    statsView.blog = self.blog;
-    statsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *statsView = [self viewControllerForStats];
 
     // Calling `showDetailViewController:sender:` should do this automatically for us,
     // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
