@@ -65,7 +65,7 @@ class RootViewCoordinator {
 
     // MARK: JP Features State
 
-    /// Used to determine if the expected app UI type based on the removal phase.
+    /// Used to determine the expected app UI type based on the removal phase.
     private static func appUIType(featureFlagStore: RemoteFeatureFlagStore) -> AppUIType {
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
