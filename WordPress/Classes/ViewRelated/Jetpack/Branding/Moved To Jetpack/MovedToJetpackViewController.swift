@@ -5,6 +5,35 @@ final class MovedToJetpackViewController: UIViewController {
 
     // MARK: - Subviews
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.bounces = false
+
+        /// Configure constraints
+        scrollView.addSubview(containerView)
+        scrollView.pinSubviewToAllEdges(containerView)
+
+        return scrollView
+    }()
+
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        /// Configure constraints
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Metrics.stackViewMargin),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Metrics.stackViewMargin),
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+
+        return view
+    }()
+
     private lazy var stackView: UIStackView = {
         let subviews = [
             animationContainerView,
@@ -152,12 +181,12 @@ final class MovedToJetpackViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = .basicBackground
-        view.addSubview(stackView)
+        view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView)
 
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.stackViewMargin),
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            containerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            containerView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, constant: 0),
             jetpackButton.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             jetpackButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             jetpackButton.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
