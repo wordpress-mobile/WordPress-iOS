@@ -466,7 +466,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
         }
 
-        if( UIApplication.sharedApplication.isCreatingScreenshots ) {
+        if (UIApplication.sharedApplication.isCreatingScreenshots) {
             notificationsTabBarItem.image = self.notificationsTabBarImage;
             notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
         }
