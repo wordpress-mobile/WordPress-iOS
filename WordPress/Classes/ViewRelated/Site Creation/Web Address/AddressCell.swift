@@ -77,6 +77,9 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
               let attributedString = AddressCell.processName(suggestion?.domainName) else {
             return nil
         }
+        guard FeatureFlag.siteCreationDomainPurchasing.enabled else {
+            return attributedString
+        }
         let mutable = NSMutableAttributedString(attributedString: attributedString)
         mutable.append(.init(string: " (\(cost))", attributes: TextStyleAttributes.defaults))
         return mutable
