@@ -197,6 +197,12 @@ extension Foundation.Notification.Name {
     static let appColorDidUpdateAccent = Self("appColorDidUpdateAccent")
 }
 
+@objc extension NSNotification {
+    static var appColorDidUpdateAccent: NSString {
+        Foundation.Notification.Name.appColorDidUpdateAccent.rawValue as NSString
+    }
+}
+
 private extension Color {
     static func muriel(
         _ name: MurielColorName,

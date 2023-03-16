@@ -326,10 +326,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         super.init(frame: frame)
         setupViews()
         observeManagedObjectsChange()
+
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateAppearance), name: .appColorDidUpdateAccent, object: nil)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -415,6 +422,11 @@ private extension DashboardPromptsCardCell {
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
         presenterViewController?.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    @objc
+    private func updateAppearance() {
+        answerButton.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
     }
 
     // MARK: - Managed object observer

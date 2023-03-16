@@ -104,6 +104,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         self.mySiteSettings = mySiteSettings
 
         super.init(nibName: nil, bundle: nil)
+
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateAppearance), name: .appColorDidUpdateAccent, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -279,6 +282,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                                selector: #selector(displayOverlayIfNeeded),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
+    }
+
+    @objc
+    func updateAppearance() {
+        guard AppConfiguration.isWordPress else {
+            return
+        }
+        /// - Note: workaround to update navigation bar tint
+        navigationController?.isNavigationBarHidden = true
+        DispatchQueue.main.async {
+            self.navigationController?.isNavigationBarHidden = false
+            self.setupNavBarAppearance()
+        }
     }
 
     func updateNavigationTitle(for blog: Blog) {

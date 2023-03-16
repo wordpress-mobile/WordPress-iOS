@@ -195,6 +195,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         // While we're onscreen, please, update rows with animations
         tableViewHandler.updateRowAnimation = .fade
+        reloadVisibleCells()
 
         // Tracking
         WPAnalytics.track(WPAnalyticsStat.openedNotificationsList)
@@ -596,6 +597,15 @@ private extension NotificationsViewController {
         handler.cacheRowHeights = false
         handler.delegate = self
         tableViewHandler = handler
+    }
+
+    func reloadVisibleCells() {
+        guard let visibleIndexPaths = tableView.indexPathsForVisibleRows else {
+            return
+        }
+        tableView.beginUpdates()
+        tableView.reloadRows(at: visibleIndexPaths, with: .none)
+        tableView.endUpdates()
     }
 
     func setupInlinePrompt() {

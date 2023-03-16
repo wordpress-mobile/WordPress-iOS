@@ -17,19 +17,32 @@ class FloatingActionButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        layer.backgroundColor = UIColor.primary.cgColor
-        tintColor = .white
-        refreshShadow()
+        updateAppearance()
+
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateAppearance), name: .appColorDidUpdateAccent, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func draw(_ rect: CGRect) {
         super.draw(rect)
 
         layer.cornerRadius = rect.size.width / 2
+    }
+
+    @objc
+    private func updateAppearance() {
+        layer.backgroundColor = UIColor.primary.cgColor
+        tintColor = .white
+
+        refreshShadow()
     }
 
     private func refreshShadow() {
@@ -41,6 +54,7 @@ class FloatingActionButton: UIButton {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        refreshShadow()
+
+        updateAppearance()
     }
 }

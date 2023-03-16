@@ -116,6 +116,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                                      name:WordPressAuthenticator.WPSigninDidFinishNotification
                                                    object:nil];
 
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(setupColors)
+                                                     name:NSNotification.appColorDidUpdateAccent
+                                                   object:nil];
+
         // Watch for application badge number changes
         [[UIApplication sharedApplication] addObserver:self
                                             forKeyPath:WPApplicationIconBadgeNumberKeyPath
@@ -132,6 +137,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
     [self stopWatchingQuickTours];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];

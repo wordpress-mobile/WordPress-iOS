@@ -6,7 +6,9 @@ extension WPStyleGuide {
         static let answerInfoButtonFont = WPStyleGuide.fontForTextStyle(.caption1)
         static let answerInfoButtonColor = UIColor.textSubtle
         static let buttonTitleFont = WPStyleGuide.fontForTextStyle(.subheadline)
-        static let buttonTitleColor = UIColor.primary
+        static var buttonTitleColor: UIColor {
+            .primary
+        }
         static let answeredLabelColor = UIColor.muriel(name: .green, .shade50)
     }
 }

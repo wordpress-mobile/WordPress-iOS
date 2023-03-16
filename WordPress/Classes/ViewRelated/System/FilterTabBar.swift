@@ -216,6 +216,9 @@ class FilterTabBar: UIControl {
     }
 
     private func commonInit() {
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateAppearance), name: .appColorDidUpdateAccent, object: nil)
+
         tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         tabBarHeightConstraint?.isActive = true
 
@@ -260,9 +263,18 @@ class FilterTabBar: UIControl {
         ])
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Tabs
 
     private var tabs: [UIButton] = []
+
+    @objc
+    private func updateAppearance() {
+        WPStyleGuide.configureFilterTabBar(self)
+    }
 
     private func refreshTabs() {
         tabs.forEach({ $0.removeFromSuperview() })

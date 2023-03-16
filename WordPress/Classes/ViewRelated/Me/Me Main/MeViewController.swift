@@ -28,6 +28,10 @@ class MeViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,7 +47,10 @@ class MeViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateAppearance), name: .appColorDidUpdateAccent, object: nil)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.accessibilityIdentifier = "Me Table"
@@ -70,6 +77,18 @@ class MeViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         registerUserActivity()
+    }
+
+    @objc
+    private func updateAppearance() {
+        guard AppConfiguration.isWordPress else {
+            return
+        }
+        /// - Note: workaround to update navigation bar tint
+        navigationController?.isNavigationBarHidden = true
+        DispatchQueue.main.async {
+            self.navigationController?.isNavigationBarHidden = false
+        }
     }
 
     @objc fileprivate func accountDidChange() {

@@ -113,10 +113,17 @@ class BlogDetailHeaderView: UIView {
         super.init(frame: .zero)
 
         setupChildViews(items: items)
+
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateAppearance), name: .appColorDidUpdateAccent, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Child View Initialization
@@ -143,6 +150,11 @@ class BlogDetailHeaderView: UIView {
 
         let showsActionRow = items.count > 0
         setupConstraintsForChildViews(showsActionRow)
+    }
+
+    @objc
+    private func updateAppearance() {
+        titleView.subtitleButton.setTitleColor(.primary, for: .normal)
     }
 
     // MARK: - Constraints
