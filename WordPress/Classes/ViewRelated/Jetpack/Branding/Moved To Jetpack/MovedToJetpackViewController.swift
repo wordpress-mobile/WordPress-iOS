@@ -116,7 +116,7 @@ final class MovedToJetpackViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(source: MovedToJetpackSource) {
+    @objc init(source: MovedToJetpackSource) {
         self.source = source
         self.viewModel = MovedToJetpackViewModel(source: source)
         self.tracker = MovedToJetpackEventsTracker(source: source)
@@ -140,6 +140,11 @@ final class MovedToJetpackViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tracker.trackScreenDisplayed()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        animationView.currentProgress = 1.0
     }
 
     // MARK: - Navigation overrides
