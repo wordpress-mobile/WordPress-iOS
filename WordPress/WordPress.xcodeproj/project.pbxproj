@@ -11273,7 +11273,7 @@
 				3FFA5ED32876216700830E28 /* Button */,
 				3F43704228932EE900475B6E /* Coordinator */,
 				80535DB62946C74B00873161 /* Menu Card */,
-				FA332AD229C1F98000182FBB /* Get Jetpack App */,
+				FA332AD229C1F98000182FBB /* Moved To Jetpack */,
 			);
 			path = Branding;
 			sourceTree = "<group>";
@@ -17285,13 +17285,13 @@
 			name = "App Configuration";
 			sourceTree = "<group>";
 		};
-		FA332AD229C1F98000182FBB /* Get Jetpack App */ = {
+		FA332AD229C1F98000182FBB /* Moved To Jetpack */ = {
 			isa = PBXGroup;
 			children = (
 				FA332ACF29C1F97A00182FBB /* MovedToJetpackViewController.swift */,
 				FA332AD329C1FC7A00182FBB /* MovedToJetpackViewModel.swift */,
 			);
-			path = "Get Jetpack App";
+			path = "Moved To Jetpack";
 			sourceTree = "<group>";
 		};
 		FA4F65B52594589C00EAA9F5 /* Jetpack Restore */ = {
