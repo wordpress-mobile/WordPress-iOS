@@ -53,6 +53,7 @@ final class AuthenticatedImageDownload: AsyncOperation {
 }
 
 class EditorMediaUtility {
+    private static let InternalInconsistencyError = NSError(domain: NSExceptionName.internalInconsistencyException.rawValue, code: 0)
 
     private struct Constants {
         static let placeholderDocumentLink = URL(string: "documentUploading://")!
@@ -152,7 +153,7 @@ class EditorMediaUtility {
         if media.videopressGUID == nil {
             guard let videoURLString = media.remoteURL, let videoURL = URL(string: videoURLString) else {
                 DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
-                completion(Result.failure(NSError()))
+                completion(Result.failure(InternalInconsistencyError))
                 return
             }
             completion(Result.success(videoURL))
@@ -163,7 +164,7 @@ class EditorMediaUtility {
                 case .success((let metadata)):
                     guard let originalURL = metadata.originalURL else {
                         DDLogError("Failed getting original URL for media with upload ID: \(media.uploadID)")
-                        completion(Result.failure(NSError()))
+                        completion(Result.failure(InternalInconsistencyError))
                         return
                     }
                     if withToken {
@@ -182,7 +183,7 @@ class EditorMediaUtility {
     static func fetchVideoPressMetadata(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(RemoteVideoPressVideo), Error> ) -> Void) {
         guard let videoPressID = media.videopressGUID else {
             DDLogError("Unable to find metadata for video with upload ID = \(media.uploadID).")
-            completion(Result.failure(NSError()))
+            completion(Result.failure(InternalInconsistencyError))
             return
         }
 
