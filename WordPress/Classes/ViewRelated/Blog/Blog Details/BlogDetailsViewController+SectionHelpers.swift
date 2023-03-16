@@ -56,7 +56,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowStats() -> Bool {
-        return JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
     }
 
     /// Convenience method that returns the view controller for Stats based on the features removal state.
