@@ -139,8 +139,12 @@ final class MovedToJetpackViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animationView.currentProgress = 1.0
         tracker.trackScreenDisplayed()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        animationView.currentProgress = 1.0
     }
 
     // MARK: - Navigation overrides
