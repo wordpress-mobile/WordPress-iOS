@@ -49,7 +49,7 @@ extension AppConstants {
     }
 
     struct AppRatings {
-        static let prompt = NSLocalizedString("What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the app")
+        static let prompt = NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
     }
 
     struct PostSignUpInterstitial {

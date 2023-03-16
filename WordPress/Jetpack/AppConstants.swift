@@ -49,7 +49,7 @@ extension AppConstants {
     }
 
     struct AppRatings {
-        static let prompt = NSLocalizedString("What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the app")
+        static let prompt = NSLocalizedString("appRatings.jetpack.prompt", value: "What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the Jetpack app")
     }
 
     struct PostSignUpInterstitial {
