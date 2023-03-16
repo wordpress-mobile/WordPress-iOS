@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-final class AddressCell: UITableViewCell, ModelSettableCell {
+final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
     static var estimatedSize: CGSize {
         return CGSize(width: 320, height: 45)
     }
@@ -16,7 +16,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
 
     var model: DomainSuggestion? {
         didSet {
-            title.attributedText = AddressCell.processName(model)
+            title.attributedText = AddressTableViewCell.processName(model)
         }
     }
 
@@ -74,7 +74,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
 
     public static func processName(_ suggestion: DomainSuggestion?) -> NSAttributedString? {
         guard let cost = suggestion?.costString,
-              let attributedString = AddressCell.processName(suggestion?.domainName) else {
+              let attributedString = AddressTableViewCell.processName(suggestion?.domainName) else {
             return nil
         }
         guard FeatureFlag.siteCreationDomainPurchasing.enabled else {
@@ -99,7 +99,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
     }
 }
 
-extension AddressCell {
+extension AddressTableViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
@@ -108,6 +108,6 @@ extension AddressCell {
     }
 
     func preferredContentSizeDidChange() {
-        title.attributedText = AddressCell.processName(model)
+        title.attributedText = AddressTableViewCell.processName(model)
     }
 }

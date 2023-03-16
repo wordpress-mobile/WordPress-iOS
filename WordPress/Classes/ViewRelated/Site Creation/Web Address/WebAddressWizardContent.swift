@@ -231,7 +231,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
         let cellCount = hasExactMatch ? data.count : data.count + 1
-        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressCell.estimatedSize.height)
+        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
     }
 
@@ -322,7 +322,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupCells() {
-        let cellName = AddressCell.cellReuseIdentifier()
+        let cellName = AddressTableViewCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
@@ -373,7 +373,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setupTable() {
         table.dataSource = self
-        table.estimatedRowHeight = AddressCell.estimatedSize.height
+        table.estimatedRowHeight = AddressTableViewCell.estimatedSize.height
         setupTableBackground()
         setupTableSeparator()
         setupCells()
@@ -604,12 +604,12 @@ extension WebAddressWizardContent: UITableViewDataSource {
             return newCell
         }()
 
-        cell.textLabel?.attributedText = AddressCell.processName("\(lastSearchQuery ?? "").wordpress.com")
+        cell.textLabel?.attributedText = AddressTableViewCell.processName("\(lastSearchQuery ?? "").wordpress.com")
         return cell
     }
 
     func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressCell.cellReuseIdentifier()) as? AddressCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressTableViewCell.cellReuseIdentifier()) as? AddressTableViewCell else {
             assertionFailure("This is a programming error - AddressCell has not been properly registered!")
             return UITableViewCell()
         }
