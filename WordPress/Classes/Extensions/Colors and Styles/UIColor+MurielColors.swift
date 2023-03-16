@@ -79,6 +79,9 @@ extension UIColor {
     class func warning(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: .warning, shade)
     }
+
+    /// Muriel jetpack green color
+    static var jetpackGreen = muriel(color: .jetpackGreen)
 }
 
 // MARK: - Grays
