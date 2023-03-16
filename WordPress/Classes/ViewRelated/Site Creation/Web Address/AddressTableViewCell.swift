@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
+final class AddressTableViewCell: UITableViewCell {
 
     // MARK: - Constants
 
@@ -19,14 +19,6 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
     // MARK: - Views
 
     var borders = [UIView]()
-
-    @IBOutlet weak var title: UILabel!
-
-    var model: DomainSuggestion? {
-        didSet {
-            title.attributedText = AddressTableViewCell.processName(model)
-        }
-    }
 
     // MARK: - Init
 
@@ -64,28 +56,18 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
     }
 
     override func prepareForReuse() {
-        title.attributedText = nil
+        update(with: nil as DomainSuggestion?)
         borders.forEach({ $0.removeFromSuperview() })
         borders = []
     }
 
-    // MARK: - Reacting to Traits Changes
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
-    }
-
-    private func preferredContentSizeDidChange() {
-        title.attributedText = AddressTableViewCell.processName(model)
-    }
-
     // MARK: - Updating UI
 
+    func update(with model: DomainSuggestion?) {
+        self.textLabel?.attributedText = AddressTableViewCell.processName(model)
+    }
+
     func update(with viewModel: ViewModel?) {
-        
     }
 
     public func addBorder(isFirstCell: Bool = false, isLastCell: Bool = false) {

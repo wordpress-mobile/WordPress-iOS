@@ -325,9 +325,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupCells() {
-        let cellName = AddressTableViewCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
+        let cellName = String(describing: AddressTableViewCell.self)
+        table.register(AddressTableViewCell.self, forCellReuseIdentifier: cellName)
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         table.cellLayoutMarginsFollowReadableWidth = true
     }
@@ -375,6 +374,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
+        if !domainPurchasingEnabled {
+            table.separatorStyle = .none
+        }
         table.dataSource = self
         table.estimatedRowHeight = AddressTableViewCell.estimatedSize.height
         setupTableBackground()
@@ -611,13 +613,13 @@ extension WebAddressWizardContent: UITableViewDataSource {
     }
 
     func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressTableViewCell.cellReuseIdentifier()) as? AddressTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressTableViewCell.self)) as? AddressTableViewCell else {
             assertionFailure("This is a programming error - AddressCell has not been properly registered!")
             return UITableViewCell()
         }
 
         let domainSuggestion = data[indexPath.row]
-        cell.model = domainSuggestion
+        cell.update(with: domainSuggestion)
         cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
         if !domainPurchasingEnabled {
             cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
