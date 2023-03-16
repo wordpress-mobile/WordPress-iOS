@@ -4,6 +4,17 @@ import Foundation
     case stats
     case reader
     case notifications
+
+    var description: String {
+        switch self {
+        case .stats:
+            return "stats"
+        case .reader:
+            return "reader"
+        case .notifications:
+            return "notifications"
+        }
+    }
 }
 
 struct MovedToJetpackViewModel {
