@@ -48,6 +48,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
+@property (nonatomic, assign) BOOL shouldUseStaticScreens;
+
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
@@ -79,10 +81,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 #pragma mark - Instance methods
 
-- (instancetype)init
+- (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens
 {
     self = [super init];
     if (self) {
+        _shouldUseStaticScreens = shouldUseStaticScreens;
         [self setDelegate:self];
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
@@ -130,6 +133,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return self;
 }
 
+- (instancetype)init
+{
+    return [self initWithStaticScreens:NO];
+}
+
 - (void)dealloc
 {
     [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
@@ -156,7 +164,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
+        UIViewController *rootViewController;
+        if (self.shouldUseStaticScreens) {
+            rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+        } else {
+            rootViewController = self.makeReaderTabViewController;
+        }
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
         _readerNavigationController.navigationBar.translucent = NO;
         _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
@@ -181,10 +195,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (_notificationsNavigationController) {
         return _notificationsNavigationController;
     }
-
-    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
-    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
-    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
+    UIViewController *rootViewController;
+    if (self.shouldUseStaticScreens) {
+        rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceNotifications];
+    } else {
+        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
+        self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
+        rootViewController = self.notificationsViewController;
+    }
+    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
     self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
     NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
@@ -279,16 +298,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    if (AppConfiguration.showsReader) {
+    if (self.shouldUseStaticScreens) {
         return @[
             self.mySitesCoordinator.rootViewController,
             self.readerNavigationController,
-            self.notificationsSplitViewController
+            self.notificationsNavigationController
         ];
     }
-    
+
     return @[
         self.mySitesCoordinator.rootViewController,
+        self.readerNavigationController,
         self.notificationsSplitViewController
     ];
 }
@@ -433,9 +453,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)updateNotificationBadgeVisibility
 {
+    UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
+    
+    if (self.shouldUseStaticScreens) {
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+        return;
+    }
+
     // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
-    UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
     if (count > 0 || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
@@ -444,33 +471,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
 
-    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
+    if (UIApplication.sharedApplication.isCreatingScreenshots) {
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
+    
 }
 
-- (void) showReaderBadge:(NSNotification *)notification
-{
-    UIImage *readerTabBarImage = [[UIImage imageNamed:@"icon-tab-reader-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
-
-    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
-        [self hideReaderBadge:nil];
-    }
-}
-
--(BOOL) welcomeNotificationSeen
+- (BOOL)welcomeNotificationSeen
 {
     NSUserDefaults *standardUserDefaults = [UserPersistentStoreFactory userDefaultsInstance];
     NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
-}
-
-- (void) hideReaderBadge:(NSNotification *)notification
-{
-    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
@@ -540,6 +552,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    UIViewController *currentViewController = self.selectedViewController;
+    if (currentViewController != nil) {
+        return currentViewController.supportedInterfaceOrientations;
+    }
+    return super.supportedInterfaceOrientations;
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
