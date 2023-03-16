@@ -43,6 +43,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalPhaseFour
     case jetpackFeaturesRemovalPhaseNewUsers
     case jetpackFeaturesRemovalPhaseSelfHosted
+    case jetpackFeaturesRemovalStaticPosters
     case wordPressSupportForum
     case jetpackIndividualPluginSupport
     case blaze
@@ -142,6 +143,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
+        case .jetpackFeaturesRemovalStaticPosters:
+            return false
         case .wordPressSupportForum:
             return true
         case .jetpackIndividualPluginSupport:
@@ -174,6 +177,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_new_users"
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return "jp_removal_self_hosted"
+        case .jetpackFeaturesRemovalStaticPosters:
+            return "jp_removal_static_posters"
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
         case .wordPressSupportForum:
@@ -282,6 +287,8 @@ extension FeatureFlag {
             return "Jetpack Features Removal Phase For New Users"
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
+        case .jetpackFeaturesRemovalStaticPosters:
+            return "Jetpack Features Removal Static Screens Phase"
         case .wordPressSupportForum:
             return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
