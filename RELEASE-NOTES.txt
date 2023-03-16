@@ -11,7 +11,7 @@
 * [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
 * [*] [internal] Refactor uploading media assets. [#20294]
 * [*] Block editor: Allow new block transforms for most blocks. [https://github.com/WordPress/gutenberg/pull/48792]
-* [**] Fix dictation regression for devices running iOS 16 and later. [https://github.com/WordPress/gutenberg/pull/49056]
+* [**] Block editor: Fix dictation regression for devices running iOS 16 and later. [https://github.com/WordPress/gutenberg/pull/49056]
 
 21.9
 -----
