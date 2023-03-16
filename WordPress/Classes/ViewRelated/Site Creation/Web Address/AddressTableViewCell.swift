@@ -2,16 +2,24 @@ import UIKit
 import WordPressKit
 
 final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
+
+    // MARK: - Constants
+
     static var estimatedSize: CGSize {
         return CGSize(width: 320, height: 45)
     }
+
     private struct TextStyleAttributes {
         static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                               .foregroundColor: UIColor.textSubtle]
         static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                                 .foregroundColor: UIColor.text]
     }
+
+    // MARK: - Views
+
     var borders = [UIView]()
+
     @IBOutlet weak var title: UILabel!
 
     var model: DomainSuggestion? {
@@ -19,6 +27,8 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
             title.attributedText = AddressTableViewCell.processName(model)
         }
     }
+
+    // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,6 +47,8 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
         accessibilityHint = NSLocalizedString("Selects this domain to use for your site.",
                                               comment: "Accessibility hint for a domain in the Site Creation domains list.")
     }
+
+    // MARK: - Lifecycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,6 +69,21 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
         borders = []
     }
 
+    // MARK: - Reacting to Traits Changes
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    private func preferredContentSizeDidChange() {
+        title.attributedText = AddressTableViewCell.processName(model)
+    }
+
+    // MARK: - Updating UI
+
     public func addBorder(isFirstCell: Bool = false, isLastCell: Bool = false) {
         if isFirstCell {
             let border = addTopBorder(withColor: .divider)
@@ -71,6 +98,8 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
             borders.append(border)
         }
     }
+
+    // MARK: - Helpers
 
     public static func processName(_ suggestion: DomainSuggestion?) -> NSAttributedString? {
         guard let cost = suggestion?.costString,
@@ -96,18 +125,5 @@ final class AddressTableViewCell: UITableViewCell, ModelSettableCell {
         completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
         return completeDomainName
-    }
-}
-
-extension AddressTableViewCell {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
-    }
-
-    func preferredContentSizeDidChange() {
-        title.attributedText = AddressTableViewCell.processName(model)
     }
 }
