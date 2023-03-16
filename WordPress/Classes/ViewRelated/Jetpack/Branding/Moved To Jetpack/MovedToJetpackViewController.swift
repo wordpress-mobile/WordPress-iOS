@@ -27,7 +27,7 @@ final class MovedToJetpackViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Metrics.stackViewMargin),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Metrics.stackViewMargin),
+            stackView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: Metrics.stackViewMargin),
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
@@ -248,7 +248,7 @@ extension MovedToJetpackViewController {
     }
 
     private enum Metrics {
-        static let stackViewMargin: CGFloat = 30
+        static let stackViewMargin: CGFloat = 20
         static let stackViewSpacing: CGFloat = 20
         static let hintToJetpackButtonSpacing: CGFloat = 40
         static let buttonHeight: CGFloat = 50
