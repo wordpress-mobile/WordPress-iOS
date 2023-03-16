@@ -162,7 +162,8 @@ class EditorMediaUtility {
                 switch result {
                 case .success((let metadata)):
                     guard let originalURL = metadata.originalURL else {
-                        DDLogWarn("Failed getting original URL for media with upload ID: \(media.uploadID)")
+                        DDLogError("Failed getting original URL for media with upload ID: \(media.uploadID)")
+                        completion(Result.failure(NSError()))
                         return
                     }
                     if withToken {
