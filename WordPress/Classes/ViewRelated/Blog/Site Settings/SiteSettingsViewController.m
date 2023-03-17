@@ -956,7 +956,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     NSParameterAssert([blog supportsSiteManagementServices]);
 
     [WPAppAnalytics track:WPAnalyticsStatSiteSettingsStartOverAccessed withBlog:self.blog];
-    if (self.blog.hasPaidPlan) {
+    if ([SupportConfigurationObjC isStartOverSupportEnabled] && self.blog.hasPaidPlan) {
         StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
