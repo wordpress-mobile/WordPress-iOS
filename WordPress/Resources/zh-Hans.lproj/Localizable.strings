@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-01 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-03-09 09:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
@@ -1150,6 +1150,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "被隐藏的站点";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "已屏蔽用户";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2497,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9649,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "忽略";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "在数以百万计的站点上展示您的作品。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "隐藏此内容";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "使用 Blaze 推广您的内容";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "立即大力宣传文章";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "每天只需几美元即可在几分钟内推广任意文章或页面。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "追踪您的活动的效果，并随时取消。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "数百万个 WordPress 和 Tumblr 站点上都会显示您的内容。";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "使用 Blaze 提高您站点的流量";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "大力宣传此页面";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "大力宣传此文章";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "忽略";
 
@@ -10154,6 +10188,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "其他";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "大力宣传并推广";
+
 /* No comment provided by engineer. */
 "password" = "密码";
 
@@ -10172,6 +10209,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "特色图片选项";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "大力宣传并推广";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "访问“站点设置”以重新打开";
 
@@ -10186,6 +10226,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "读者通知用户屏蔽失败";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "屏蔽此用户";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "举报此用户";
@@ -10355,6 +10401,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "完成";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "轻按以在外部浏览器中访问 Jetpack 应用程序常见问题解答";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "访问我们的常见问题解答";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "注销";
 
@@ -10390,6 +10442,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress 帮助中心";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "我们的常见问题解答可以回答您可能遇到的常见问题。";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "感谢您切换至 Jetpack 应用程序！";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "日志";

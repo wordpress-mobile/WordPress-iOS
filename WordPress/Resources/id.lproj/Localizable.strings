@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-28 12:54:10+0000 */
+/* Translation-Revision-Date: 2023-03-09 11:54:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -1150,6 +1150,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Situs yang diblokir";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Pengguna diblokir";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2497,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9649,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Tutup";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Tunjukkan karya Anda di jutaan situs.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Tutup";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promosikan konten dengan Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Blaze-kan pos sekarang";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promosikan pos atau halaman apa saja dalam hitungan menit dengan biaya harian sangat terjangkau.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Pantau performa kampanye Anda dan batalkan kapan saja.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Konten Anda akan muncul di jutaan situs WordPress dan Tumblr.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Tingkatkan jumlah pengunjung situs Anda dengan Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Blaze-kan halaman ini";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Promosikan pos ini dengan Blaze";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Tutup";
 
@@ -10157,6 +10191,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "lainnya";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promosikan dengan Blaze";
+
 /* No comment provided by engineer. */
 "password" = "Kata sandi";
 
@@ -10175,6 +10212,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Pilihan Gambar Andalan";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promosikan dengan Blaze";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Buka Pengaturan Situs untuk menyalakan kembali";
 
@@ -10189,6 +10229,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Anda sudah login!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "pembaca.pemberitahuan.pengguna.blokir.gagal";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Blokir pengguna ini";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Laporkan pengguna ini";
@@ -10358,6 +10404,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Selesai";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Ketuk untuk membuka halaman Tanya Jawab Umum aplikasi Jetpack di browser eksternal";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Buka halaman Tanya Jawab Umum";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Logout";
 
@@ -10393,6 +10445,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Pusat Bantuan WordPress";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Tanya Jawab Umum akan menjawab berbagai pertanyaan yang umum diajukan.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Terima kasih sudah berpindah ke aplikasi Jetpack!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Log";

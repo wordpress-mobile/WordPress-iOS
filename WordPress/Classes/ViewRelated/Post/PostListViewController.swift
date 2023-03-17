@@ -785,7 +785,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func blaze(_ post: AbstractPost) {
         BlazeEventsTracker.trackEntryPointTapped(for: .postsList)
-        BlazeOverlayCoordinator.presentBlazeOverlay(in: self, source: .postsList, blog: blog, post: post)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }
 
     // MARK: - Searching

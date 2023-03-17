@@ -48,6 +48,10 @@ extension AppConstants {
         static let workWithUsURL = "https://automattic.com/work-with-us"
     }
 
+    struct AppRatings {
+        static let prompt = NSLocalizedString("appRatings.jetpack.prompt", value: "What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the Jetpack app")
+    }
+
     struct PostSignUpInterstitial {
         static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
     }

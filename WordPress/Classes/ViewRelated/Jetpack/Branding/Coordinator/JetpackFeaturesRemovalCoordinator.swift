@@ -13,7 +13,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case newUsers = "new_users"
         case selfHosted = "self_hosted"
 
-        var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
+        var frequencyConfig: OverlayFrequencyTracker.FrequencyConfig {
             switch self {
             case .one:
                 fallthrough
@@ -34,7 +34,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case two
     }
 
-    enum OverlaySource: String {
+    enum JetpackOverlaySource: String, OverlaySource {
         case stats
         case notifications
         case reader
@@ -56,7 +56,32 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
                 return nil // Phase is irrelevant.
             }
         }
+
+        var key: String {
+            return rawValue
+        }
+
+        var frequencyType: OverlayFrequencyTracker.FrequencyType {
+            switch self {
+            case .stats:
+                fallthrough
+            case .notifications:
+                fallthrough
+            case .reader:
+                return .respectFrequencyConfig
+            case .card:
+                fallthrough
+            case .disabledEntryPoint:
+                return .alwaysShow
+            case .login:
+                fallthrough
+            case .appOpen:
+                return .showOnce
+            }
+        }
     }
+
+    static var currentAppUIType: RootViewCoordinator.AppUIType?
 
     static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> GeneralPhase {
         if AppConfiguration.isJetpack {
@@ -115,18 +140,37 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
-    /// Default root view coordinator is used.
+    /// This way we ensure features are not removed before reloading the UI.
+    /// But if the current app UI type is not set, we determine if the Jetpack Features
+    /// are enabled based on the removal phase regardless of the app UI state.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
-        return jetpackFeaturesEnabled(rootViewCoordinator: .shared)
+        return jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore())
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
     /// This way we ensure features are not removed before reloading the UI.
+    /// But if the current app UI type is not set, we determine if the Jetpack Features
+    /// are enabled based on the removal phase regardless of the app UI state.
     /// Using two separate methods (rather than one method with a default argument) because Obj-C.
     /// - Returns: `true` if UI type is normal, and `false` if UI type is simplified.
-    static func jetpackFeaturesEnabled(rootViewCoordinator: RootViewCoordinator) -> Bool {
-        return rootViewCoordinator.currentAppUIType == .normal
+    static func jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        guard let currentAppUIType else {
+            return shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore)
+        }
+        return currentAppUIType == .normal
+    }
+
+
+    /// Used to determine if the Jetpack features are enabled based on the removal phase regardless of the app UI state.
+    private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        let phase = generalPhase(featureFlagStore: featureFlagStore)
+        switch phase {
+        case .four, .newUsers, .selfHosted:
+            return false
+        default:
+            return true
+        }
     }
 
     /// Used to display feature-specific or feature-collection overlays.
@@ -140,7 +184,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentOverlayIfNeeded(in viewController: UIViewController,
-                                       source: OverlaySource,
+                                       source: JetpackOverlaySource,
                                        forced: Bool = false,
                                        fullScreen: Bool = false,
                                        blog: Blog? = nil,
@@ -158,9 +202,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         coordinator.viewModel = viewModel
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
-        let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
-                                                              phaseString: frequencyTrackerPhaseString,
-                                                              source: source)
+        let frequencyTracker = OverlayFrequencyTracker(source: source,
+                                                       type: .featuresRemoval,
+                                                       frequencyConfig: frequencyConfig,
+                                                       phaseString: frequencyTrackerPhaseString)
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
             onWillDismiss?()
             onDidDismiss?()

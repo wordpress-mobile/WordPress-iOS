@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-22 17:40:11+0000 */
+/* Translation-Revision-Date: 2023-03-11 13:42:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sq_AL */
@@ -1150,6 +1150,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Sajti u bllokua";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Përdoruesi u bllokua";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2491,6 +2494,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -6221,7 +6225,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Resend" = "Ridërgoje";
 
 /* Title of the reset button */
-"Reset" = "Riktheje në fillimet";
+"Reset" = "Riktheje te parazgjedhjet";
 
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Zero filtër Lloj Veprimtarish";
@@ -9633,6 +9637,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Hidhe tej";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Shfaqeni punën tuaj nëpër miliona sajte.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Fshihe këtë";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promovoni lëndën tuaj përmes Blaze-it";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Shpini më tepër trafik te sajti juaj, përmes Blaze-it";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Promovojeni këtë faqe në Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Promovojeni këtë postim në Blaze";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Hidhe tej";
 
@@ -10142,6 +10164,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "tjetër";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promovojeni me Blaze";
+
 /* No comment provided by engineer. */
 "password" = "fjalëkalim";
 
@@ -10160,6 +10185,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Mundësi Figure të Zgjedhur";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promovojeni me Blaze";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Për t’i aktivizuar, vizitoni Rregullime Sajti";
 
@@ -10174,6 +10202,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Jeni i futur!";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Bllokoje këtë përdorues";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Raportojeni këtë përdorues";
@@ -10343,6 +10374,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "U bë";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Prekeni, që të vizitoni PBR mbi aplikacionin Jetpack në një shfletues të jashtëm";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Vizitoni PBR tona";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Dilni";
 
@@ -10378,6 +10415,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Qendër Ndihme WordPress";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "PBR tonat japin përgjigje për pyetjet më të rëndomta që mund të keni.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Faleminderit për kalimin në aplikacionin Jetpack!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Regjistra";

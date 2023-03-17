@@ -158,7 +158,7 @@ class PostActionSheetTests: CoreDataTestCase {
             .published()
             .build()
 
-        let viewModel = PostCardStatusViewModel(post: post)
+        let viewModel = PostCardStatusViewModel(post: post, isBlazeFlagEnabled: true)
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Promote with Blaze", in: viewControllerMock.viewControllerPresented)

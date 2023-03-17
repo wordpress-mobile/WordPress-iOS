@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-01 18:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-09 10:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: it */
@@ -1150,6 +1150,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Sito bloccato";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Utente bloccato";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2497,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9649,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Ignora";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Mostra il tuo lavoro su milioni di siti.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Nascondi";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promuovi i tuoi contenuti con Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Diffondi un articolo ora";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promuovi qualsiasi articolo o pagina in pochi minuti per pochi dollari al giorno.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Tieni traccia delle prestazioni delle tue campagne e annulla in qualsiasi momento.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Il tuo contenuto verrà visualizzato su un milione di siti WordPress e Tumblr.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Attira più traffico sul tuo sito con Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Diffondi questa pagina";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Diffondi questo articolo";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Ignora";
 
@@ -10157,6 +10191,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "altro";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promuovi con la Blaze";
+
 /* No comment provided by engineer. */
 "password" = "password";
 
@@ -10175,6 +10212,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opzioni per le immagini in primo piano";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promuovi con la Blaze";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Visita le Impostazioni del sito per riattivare";
 
@@ -10189,6 +10229,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Sei connesso!";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Blocca questo utente";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Segnala questo utente";
@@ -10358,6 +10401,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Fatto";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tocca per visitare le domande frequenti sull'app di Jetpack in un browser esterno";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Visita le domande frequenti";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Esci";
 
@@ -10393,6 +10442,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "Centro d'assistenza di WordPress";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Le nostre domande frequenti forniscono risposte ai dubbi più comuni che potresti avere.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Grazie per essere passato all'app di Jetpack.";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Log";

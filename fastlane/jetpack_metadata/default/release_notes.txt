@@ -1,1 +1,7 @@
-You can now block sites that you follow, as well as report a post’s author for spam, inappropriate content, or possible harm. No jokes here—stay safe out there.
+Hot news—Jetpack now supports Blaze, so you can reach new readers by promoting a post or page from within the app.
+
+We’ve added a little extra support for sites with individual plugins. These plugins don’t support all app features yet, but you can always install the full Jetpack plugin instead. Ready to launch?
+
+We also added a post-migration FAQ card to the Help screen, which you’ll see after switching from the WordPress app over to Jetpack.
+
+Finally, there’s a new button to the Post menu that lets you block an author so their posts no longer appear in your content feed.

@@ -33,3 +33,10 @@ extension AppStyleGuide {
     static let aboutAppIcon = UIImage(named: "icon-wp")
     static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site")
 }
+
+// MARK: - Fonts
+extension AppStyleGuide {
+    static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight)
+    }
+}

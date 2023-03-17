@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-01 17:00:30+0000 */
+/* Translation-Revision-Date: 2023-03-13 18:30:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "En blank sida har skapats";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citatblock";
@@ -1150,6 +1153,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blockerade användare";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2500,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Avfärda";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Visa ditt arbete på miljontals webbplatser.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Dölj detta";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Marknadsför ditt innehåll med Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Marknadsför ett inlägg nu";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Marknadsför valfritt inlägg eller valfri sida på bara några minuter, för endast några kronor om dagen.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Se hur dina kampanjer presterar och avbryt när du vill.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Ditt innehåll kommer att visas på miljontals WordPress- och Tumblr-webbplatser.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Få mer trafik till din webbplats med Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Marknadsför den här sidan";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Marknadsför det här inlägget";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
 
@@ -10157,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "övrigt";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Marknadsför med Blaze";
+
 /* No comment provided by engineer. */
 "password" = "lösenord";
 
@@ -10175,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Marknadsför med Blaze";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Gå till Webbplatsinställningar för att aktivera igen";
 
@@ -10189,6 +10232,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Blockera denna användare";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Rapportera denna användare";
@@ -10358,6 +10407,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Klar";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tryck för att besöka Jetpack-appens sida med vanliga frågor i en extern webbläsare";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Besök våra vanliga frågor";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Logga ut";
 
@@ -10393,6 +10448,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress hjälpcenter";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Vår sida med vanliga frågor ger dig svar på eventuella frågor du kan tänkas ha.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Tack för att du byter till Jetpack-appen!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Loggar";

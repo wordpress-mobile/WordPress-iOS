@@ -529,8 +529,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 //
 private extension NotificationsViewController {
     func setupNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
 
         // Don't show 'Notifications' in the next-view back button
         // we are using a space character because we need a non-empty string to ensure a smooth
@@ -1665,8 +1665,6 @@ internal extension NotificationsViewController {
         UIView.animate(withDuration: WPAnimationDurationDefault * 0.5, delay: WPAnimationDurationDefault * 0.75, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
         })
-
-        WPAnalytics.track(.appReviewsSawPrompt)
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
@@ -2015,7 +2013,12 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
-        InteractiveNotificationsManager.shared.requestAuthorization { _ in
+        InteractiveNotificationsManager.shared.requestAuthorization { allowed in
+            if allowed {
+                // User has allowed notifications so we don't need to show the inline prompt
+                UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
+            }
+
             DispatchQueue.main.async {
                 controller.dismiss(animated: true)
             }

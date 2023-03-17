@@ -92,7 +92,8 @@ class ReaderTabViewController: UIViewController {
 
         // Settings Button
         settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
-        settingsButton.setImage(.gridicon(.cog), for: .normal)
+        settingsButton.contentEdgeInsets = ReaderTabConstants.settingsButtonContentEdgeInsets
+        settingsButton.setImage(.gridicon(.readerFollowing), for: .normal)
         settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
         let settingsButton = UIBarButtonItem(customView: settingsButton)
@@ -103,8 +104,8 @@ class ReaderTabViewController: UIViewController {
     override func loadView() {
         view = readerTabView
 
-        navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     @objc func willEnterForeground() {
@@ -196,6 +197,7 @@ extension ReaderTabViewController {
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
         static let discoverIndex = 1
         static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
+        static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
     }
 }
 

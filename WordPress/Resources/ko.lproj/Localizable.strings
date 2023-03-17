@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-28 15:54:10+0000 */
+/* Translation-Revision-Date: 2023-03-09 13:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "빈 페이지를 만들었습니다";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "인용 차단";
@@ -1150,6 +1153,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "차단한 사이트";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "차단한 사용자";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2494,6 +2500,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -9645,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "무시";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "수백만 개 사이트에 작업을 표시하세요.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Blaze로 콘텐츠 홍보";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "지금 글 Blaze";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "하루에 적은 금액으로 단 몇 분 만에 글 또는 페이지를 홍보하세요.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "언제든지 캠페인 성과를 추적하고 취소하세요.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "콘텐츠가 수백만 개의 워드프레스 및 Tumblr 사이트에 표시됩니다.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Blaze를 통해 사이트에 더 많은 트래픽 유도";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "이 페이지 Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "이 글 Blaze";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
 
@@ -10157,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "기타";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Blaze로 홍보";
+
 /* No comment provided by engineer. */
 "password" = "비밀번호";
 
@@ -10175,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "특성 이미지 옵션";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Blaze로 홍보";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "사이트 설정으로 이동하여 다시 켜기";
 
@@ -10189,6 +10232,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "로그인되었습니다!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "이 사용자 차단";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "이 사용자 신고";
@@ -10358,6 +10407,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "완료";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "외부 브라우저에서 젯팩 앱 FAQ를 눌러서 방문";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "FAQ 방문";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "로그아웃";
 
@@ -10393,6 +10448,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "워드프레스 도움말 센터";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "궁금할 수도 있는 일반적인 질문에 대한 답변이 FAQ에 있습니다.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "젯팩 앱으로 전환해 주셔서 감사합니다!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "로그";

@@ -41,6 +41,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     private func addSubviews() {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.statsTitle
+        frameView.titleHint = Strings.statsTitleHint
         frameView.icon = UIImage.gridicon(.statsAlt, size: Constants.iconSize)
         self.frameView = frameView
 
@@ -124,7 +125,8 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
 private extension DashboardStatsCardCell {
 
     enum Strings {
-        static let statsTitle = NSLocalizedString("Today's Stats", comment: "Title for the card displaying today's stats.")
+        static let statsTitle = NSLocalizedString("my-sites.stats.card.title", value: "Today's Stats", comment: "Title for the card displaying today's stats.")
+        static let statsTitleHint = NSLocalizedString("my-sites.stats.card.title.hint", value: "Stats", comment: "The part of the title that needs to be emphasized")
         static let nudgeButtonTitle = NSLocalizedString("Interested in building your audience? Check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
         static let nudgeButtonHint = NSLocalizedString("top tips", comment: "The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...'")
     }

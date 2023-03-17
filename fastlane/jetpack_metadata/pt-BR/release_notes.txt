@@ -1,1 +1,7 @@
-Agora você pode bloquear sites que segue ou até reportar o autor de um post por spam, conteúdo impróprio ou possível dano. Levamos a segurança a sério.
+Notícia urgente: agora o Jetpack é compatível com o Blaze! Promova um post ou página pelo aplicativo para alcançar novos leitores.
+
+Adicionamos um pouco mais de compatibilidade para sites com plugins individuais. Esses plugins ainda não são compatíveis com todas as funcionalidades do aplicativo, mas você pode instalar o plugin do Jetpack se preferir. Tudo pronto para publicar?
+
+Além disso, adicionamos um cartão de perguntas frequentes sobre o período pós-migração. Para ver, mude do aplicativo do WordPress para o Jetpack.
+
+Por fim, tem um novo botão no menu Post que permite bloquear um autor para que os posts de autoria dele não apareçam mais no seu feed.

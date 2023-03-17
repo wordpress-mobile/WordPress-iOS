@@ -113,6 +113,13 @@ private extension BloggingRemindersScheduleFormatter {
     }
 
     static func stringToAttributedString(_ string: String) -> NSAttributedString {
+        // When the app is in a background state, return the non-emphasized plain String instead.
+        // Parsing a HTML string in the background may lead to a crash.
+        // Refer to https://github.com/wordpress-mobile/WordPress-iOS/pull/17678 for a similar scenario and explanation.
+        if UIApplication.shared.applicationState == .background {
+            return .init(string: string.removedHTMLEmphases())
+        }
+
         let htmlData = NSString(string: string).data(using: String.Encoding.unicode.rawValue) ?? Data()
         let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
 
@@ -174,5 +181,15 @@ private extension BloggingRemindersScheduleFormatter {
 
         static let everydayRemindersShortDescription = NSLocalizedString("Every day",
                                                                                  comment: "Short title telling the user they will receive a blogging reminder every day of the week.")
+    }
+}
+
+private extension String {
+    /// Convenient method to remove HTML emphasis tags from a given string.
+    func removedHTMLEmphases() -> String {
+        guard let expression = try? NSRegularExpression(pattern: "</?strong>", options: .caseInsensitive) else {
+            return self
+        }
+        return expression.stringByReplacingMatches(in: self, range: NSMakeRange(0, self.count), withTemplate: String())
     }
 }
