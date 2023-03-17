@@ -5,24 +5,18 @@ final class WidgetsViewModelMapperTests: XCTestCase {
     func testSingleStatViewModel() {
         let views = 649875
         let date = Date()
-        let title = "Views"
-        let dateRange = "Today"
-        let footer = "Views Today"
+        let title = "Views Today"
         let todayStats = makeTodayWidgetStats(views: views)
         let data = makeTodayData(stats: todayStats, date: date)
 
         let sut = makeSUT(data)
         let viewModel = sut.getLockScreenSingleStatViewModel(
-            title: title,
-            dateRange: dateRange,
-            footer: footer
+            title: title
         )
 
         XCTAssertEqual(viewModel.siteName, data.siteName)
         XCTAssertEqual(viewModel.title, title)
         XCTAssertEqual(viewModel.value, views.abbreviatedString())
-        XCTAssertEqual(viewModel.dateRange, dateRange)
-        XCTAssertEqual(viewModel.footer, footer)
         XCTAssertEqual(viewModel.updatedTime, date)
     }
 

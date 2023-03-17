@@ -7,9 +7,7 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
     func buildSiteSelectedView(_ data: HomeWidgetData) -> LockScreenSingleStatView {
         let mapper = LockScreenWidgetViewModelMapper(data: data)
         let viewModel = mapper.getLockScreenSingleStatViewModel(
-            title: LocalizableStrings.viewsTitle,
-            dateRange: LocalizableStrings.todayWidgetTitle,
-            footer: LocalizableStrings.viewsInTodayTitle
+            title: LocalizableStrings.viewsInTodayTitle
         )
         return LockScreenSingleStatView(viewModel: viewModel)
     }
