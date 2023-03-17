@@ -20,6 +20,8 @@ extension NotificationsViewController {
             case .denied:
                 self?.setupWinback()
             default:
+                // The user has already allowed notifications so we set the inline prompt to acknowledged so it isn't called anymore
+                UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
                 break
             }
         }
