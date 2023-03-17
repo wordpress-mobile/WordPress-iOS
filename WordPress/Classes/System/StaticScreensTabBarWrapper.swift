@@ -54,7 +54,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
     }
 
     func showReaderTab() {
-        // Do nothing
+        tabBarController.showReaderTab()
     }
 
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
@@ -138,18 +138,18 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
     }
 
     func showNotificationsTab() {
-        // Do nothing
+        tabBarController.showNotificationsTab()
     }
 
     func showNotificationsTabForNote(withID notificationID: String) {
-        // Do nothing
+        tabBarController.showNotificationsTab()
     }
 
     func switchNotificationsTabToNotificationSettings() {
-        // Do nothing
+        tabBarController.showNotificationsTab()
     }
 
     func popNotificationsTabToRoot() {
-        // Do nothing
+        // Do nothing since static notification tab will never have a stack
     }
 }
