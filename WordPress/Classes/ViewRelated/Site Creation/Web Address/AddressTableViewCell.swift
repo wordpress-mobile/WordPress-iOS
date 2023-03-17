@@ -91,31 +91,6 @@ final class AddressTableViewCell: UITableViewCell {
         }
     }
 
-    // MARK: - Lifecycle
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        styleCheckmark()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        if domainPurchasingEnabled {
-            super.setSelected(selected, animated: animated)
-        } else {
-            accessoryType = selected ? .checkmark : .none
-        }
-    }
-
-    private func styleCheckmark() {
-        tintColor = .primary(.shade40)
-    }
-
-    override func prepareForReuse() {
-        update(with: nil as DomainSuggestion?)
-        borders.forEach({ $0.removeFromSuperview() })
-        borders = []
-    }
-
     // MARK: - Updating UI
 
     /// This is the new update method and it's called when `domainPurchasing` feature flag is enabled.
@@ -233,6 +208,29 @@ final class AddressTableViewCell: UITableViewCell {
 // MARK: - Old Table View Cell Design
 
 extension AddressTableViewCell {
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        styleCheckmark()
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        if domainPurchasingEnabled {
+            super.setSelected(selected, animated: animated)
+        } else {
+            accessoryType = selected ? .checkmark : .none
+        }
+    }
+
+    private func styleCheckmark() {
+        tintColor = .primary(.shade40)
+    }
+
+    override func prepareForReuse() {
+        update(with: nil as DomainSuggestion?)
+        borders.forEach({ $0.removeFromSuperview() })
+        borders = []
+    }
 
     func update(with model: DomainSuggestion?) {
         self.textLabel?.attributedText = AddressTableViewCell.processName(model?.domainName)
