@@ -3,6 +3,7 @@ import WidgetKit
 
 @available(iOS 16.0, *)
 struct LockScreenSingleStatView: View {
+    @Environment(\.sizeCategory) var sizeCategory
     @Environment(\.widgetFamily) var family: WidgetFamily
     let viewModel: LockScreenSingleStatViewModel
 
@@ -13,18 +14,37 @@ struct LockScreenSingleStatView: View {
                 VStack(alignment: .leading) {
                     Text(viewModel.siteName)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11))
+                        .font(.caption2)
                         .minimumScaleFactor(0.8)
                         .lineLimit(1)
-                    Text(viewModel.value)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 20, weight: .bold))
-                        .minimumScaleFactor(0.5)
-                        .foregroundColor(.white)
-                    Text("\(viewModel.title) \(viewModel.dateRange)")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11))
-                        .minimumScaleFactor(0.8)
+                    if sizeCategory <= ContentSizeCategory.large {
+                        VStack {
+                            Text(viewModel.value)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.title3)
+                                .minimumScaleFactor(0.5)
+                                .foregroundColor(.white)
+                            Text("\(viewModel.title) \(viewModel.dateRange)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.caption2)
+                                .minimumScaleFactor(0.8)
+                        }
+                    } else {
+                        HStack {
+                            Text(viewModel.value)
+                                .font(.title3)
+                                .minimumScaleFactor(0.1)
+                                .foregroundColor(.white)
+                            VStack {
+                                Text(viewModel.title)
+                                    .font(.headline)
+                                    .minimumScaleFactor(0.5)
+                                Text(viewModel.dateRange)
+                                    .font(.headline)
+                                    .minimumScaleFactor(0.5)
+                            }
+                        }
+                    }
                 }
                 .padding(
                     EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
@@ -41,7 +61,7 @@ struct LockScreenSingleStatView_Previews: PreviewProvider {
     static let viewModel = LockScreenSingleStatViewModel(
         siteName: "My WordPress Site",
         title: "Views",
-        value: "649",
+        value: 649123.abbreviatedString(),
         dateRange: "Today",
         updatedTime: Date()
     )
