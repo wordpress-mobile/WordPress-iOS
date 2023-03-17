@@ -1,4 +1,4 @@
-¡Noticias frescas! Ahora, Jetpack es compatible con Blaze, así que podrás llegar a nuevos lectores promocionando entradas o páginas en la aplicación.
+¡Noticias frescas! Ahora Jetpack es compatible con Blaze, así que podrás promocionar entradas o páginas en la aplicación para llegar a nuevos lectores.
 
 Hemos añadido soporte adicional para los sitios con plugins individuales. Estos plugins todavía no son compatibles con todas las funciones de la aplicación, pero tienes la opción de instalar el plugin completo de Jetpack en su lugar. ¿Lo tienes todo listo para empezar?
 
