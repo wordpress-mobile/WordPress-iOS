@@ -8,7 +8,8 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
         let mapper = LockScreenWidgetViewModelMapper(data: data)
         let viewModel = mapper.getLockScreenSingleStatViewModel(
             title: LocalizableStrings.viewsTitle,
-            dateRange: LocalizableStrings.todayWidgetTitle
+            dateRange: LocalizableStrings.todayWidgetTitle,
+            footer: LocalizableStrings.viewsInTodayTitle
         )
         return LockScreenSingleStatView(viewModel: viewModel)
     }

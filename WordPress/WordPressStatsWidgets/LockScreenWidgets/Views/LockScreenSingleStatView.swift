@@ -21,7 +21,7 @@ struct LockScreenSingleStatView: View {
                         .font(.system(size: 20, weight: .bold))
                         .minimumScaleFactor(0.5)
                         .foregroundColor(.white)
-                    Text("\(viewModel.title) \(viewModel.dateRange)")
+                    Text(viewModel.footer)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.system(size: 11))
                         .minimumScaleFactor(0.8)
@@ -43,6 +43,7 @@ struct LockScreenSingleStatView_Previews: PreviewProvider {
         title: "Views",
         value: "649",
         dateRange: "Today",
+        footer: "Views Today",
         updatedTime: Date()
     )
 

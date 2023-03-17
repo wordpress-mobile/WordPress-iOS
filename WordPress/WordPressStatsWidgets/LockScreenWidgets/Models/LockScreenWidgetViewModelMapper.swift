@@ -3,12 +3,17 @@ import Foundation
 struct LockScreenWidgetViewModelMapper {
     let data: HomeWidgetData
 
-    func getLockScreenSingleStatViewModel(title: String, dateRange: String) -> LockScreenSingleStatViewModel {
+    func getLockScreenSingleStatViewModel(
+        title: String,
+        dateRange: String,
+        footer: String
+    ) -> LockScreenSingleStatViewModel {
         LockScreenSingleStatViewModel(
             siteName: getSiteName(),
             title: title,
             value: getViews(),
             dateRange: dateRange,
+            footer: footer,
             updatedTime: data.date
         )
     }
