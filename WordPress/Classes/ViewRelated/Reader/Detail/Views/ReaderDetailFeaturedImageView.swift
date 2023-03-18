@@ -79,29 +79,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     /// Listens for contentOffset changes to track when the user scrolls
     private var scrollViewObserver: NSKeyValueObservation?
 
-    /// Flag indicating whether the navigation bar appearance needs restoration when the view disappears. Default is `false`.
-    ///
-    /// Flag changes to `true` when this view changes the navigation bar tint color. In other words, when the `navBarTintColor` setter is called.
-    private var navigationBarAppearanceNeedsRestoration = false
-
-    /// The original navigation bar tint color.
-    ///
-    /// This property is used to restore the navigation bar tint color to its original value.
-    private var previousNavBarTintColor: UIColor?
-
     /// The navigation bar tint color changes depending on whether the featured image is visible or not.
     private var navBarTintColor: UIColor? {
         get {
             return navigationBar?.tintColor
         }
         set(newValue) {
-            // Ideally, we should be setting the navigationItem's tint color, but for some reason that didn't work.
-            // self.navigationItem?.setTintColor(.red)
-            if previousNavBarTintColor == nil {
-                self.previousNavBarTintColor = navigationBar?.tintColor
-            }
-            self.navigationBar?.tintColor = useCompatibilityMode ? .textInverted : newValue
-            self.navigationBarAppearanceNeedsRestoration = true
+            self.navigationItem?.setTintColor(useCompatibilityMode ? .textInverted : newValue)
         }
     }
 
@@ -126,7 +110,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func viewWillDisappear() {
         scrollViewObserver?.invalidate()
         scrollViewObserver = nil
-        restoreNavigationBarAppearanceIfNeeded()
     }
 
     // MARK: - Public: Configuration
@@ -303,13 +286,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         updateNavigationBar(with: offsetY)
     }
 
-    private func restoreNavigationBarAppearanceIfNeeded() {
-        guard navigationBarAppearanceNeedsRestoration else {
-            return
-        }
-        self.navigationBar?.tintColor = previousNavBarTintColor
-    }
-
     private func hideLoading() {
         UIView.animate(withDuration: 0.3, animations: {
             self.loadingView.alpha = 0.0
@@ -403,7 +379,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func reset() {
-        navigationBar?.tintColor = useCompatibilityMode ? .appBarTint : Styles.endTintColor
+        navigationItem?.setTintColor(useCompatibilityMode ? .appBarTint : Styles.endTintColor)
 
         resetStatusBarStyle()
         heightConstraint.constant = 0
@@ -460,5 +436,21 @@ extension ReaderDetailFeaturedImageView: UIGestureRecognizerDelegate {
 
         /// Do not accept the touch if outside the featured image view
         return isOutsideView == false
+    }
+}
+
+// MARK: - Private: Navigation Item Extension
+
+private extension UINavigationItem {
+
+    func setTintColor(_ color: UIColor?) {
+        self.leftBarButtonItem?.tintColor = color
+        self.rightBarButtonItem?.tintColor = color
+        self.leftBarButtonItems?.forEach {
+            $0.tintColor = color
+        }
+        self.rightBarButtonItems?.forEach {
+            $0.tintColor = color
+        }
     }
 }
