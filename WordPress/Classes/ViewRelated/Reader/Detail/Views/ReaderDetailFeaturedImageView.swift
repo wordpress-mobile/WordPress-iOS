@@ -60,6 +60,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     private var post: ReaderPost?
     private weak var scrollView: UIScrollView?
     private weak var navigationBar: UINavigationBar?
+    private weak var navigationItem: UINavigationItem?
 
     private var currentStatusBarStyle: UIStatusBarStyle = .lightContent {
         didSet {
@@ -72,13 +73,29 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     /// Listens for contentOffset changes to track when the user scrolls
     private var scrollViewObserver: NSKeyValueObservation?
 
-    /// Stores the nav bar appearance before we change it to transparent
-    /// this allows us to reset it when the view disappears
-    private var originalNavBarAppearance: NavBarAppearance?
+    /// Flag indicating whether the navigation bar appearance needs restoration when the view disappears. Default is `false`.
+    ///
+    /// Flag changes to `true` when this view changes the navigation bar tint color. In other words, when the `navBarTintColor` setter is called.
+    private var navigationBarAppearanceNeedsRestoration = false
 
-    private var navBarTintColor: UIColor = Styles.endTintColor {
-        didSet {
-            navigationBar?.setItemTintColor(useCompatibilityMode ? .textInverted : navBarTintColor)
+    /// The original navigation bar tint color.
+    ///
+    /// This property is used to restore the navigation bar tint color to its original value.
+    private var previousNavBarTintColor: UIColor?
+
+    /// The navigation bar tint color changes depending on whether the featured image is visible or not.
+    private var navBarTintColor: UIColor? {
+        get {
+            return navigationBar?.tintColor
+        }
+        set(newValue) {
+            // Ideally, we should be setting the navigationItem's tint color, but for some reason that didn't work.
+            // self.navigationItem?.setTintColor(.red)
+            if previousNavBarTintColor == nil {
+                self.previousNavBarTintColor = navigationBar?.tintColor
+            }
+            self.navigationBar?.tintColor = useCompatibilityMode ? .textInverted : newValue
+            self.navigationBarAppearanceNeedsRestoration = true
         }
     }
 
@@ -102,38 +119,29 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func viewWillDisappear() {
         scrollViewObserver?.invalidate()
         scrollViewObserver = nil
-
         restoreNavigationBarAppearanceIfNeeded()
     }
 
     // MARK: - Public: Configuration
 
-    func configure(scrollView: UIScrollView, navigationBar: UINavigationBar?) {
-        guard self.navigationBar == nil, self.scrollView == nil else {
+    func configure(scrollView: UIScrollView, navigationBar: UINavigationBar?, navigationItem: UINavigationItem) {
+        guard self.scrollView == nil else {
             configureNavigationBar()
             addScrollObserver()
             return
         }
-
-        // Navigation Bar
         self.navigationBar = navigationBar
-
-        // Save the original appearance
-        if let navBar = navigationBar {
-            originalNavBarAppearance = NavBarAppearance(navigationBar: navBar)
-        }
-
+        self.navigationItem = navigationItem
         self.scrollView = scrollView
-
-        configureNavigationBar()
-        addScrollObserver()
-        addTapGesture()
+        self.configureNavigationBar()
+        self.addScrollObserver()
+        self.addTapGesture()
     }
 
     func configure(for post: ReaderPost, with statusBarUpdater: UpdatableStatusBarStyle) {
         self.post = post
         self.statusBarUpdater = statusBarUpdater
-        isLoaded = false
+        self.isLoaded = false
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -143,6 +151,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     // MARK: - Public: Helpers
+
     public func updateUI() {
         scrollViewDidScroll()
     }
@@ -155,15 +164,22 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         updateInitialHeight(resetContentOffset: false)
     }
 
-    func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
-        guard let navigationBar = navigationBar,
-              useCompatibilityMode == false else {
+    func applyTransparentNavigationBarAppearance() {
+        guard let navigationItem, !useCompatibilityMode
+        else {
             return
         }
 
-        navigationBar.standardAppearance.configureWithTransparentBackground()
+        // Transparent navigation bar
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationItem.compactScrollEdgeAppearance = appearance
+        }
 
-        NavBarAppearance.transparent.apply(navigationBar)
         if isLoaded, imageView.image == nil {
             navBarTintColor = Styles.endTintColor
         }
@@ -172,14 +188,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     func restoreNavigationBarAppearanceIfNeeded() {
-        guard
-            let navBar = navigationBar,
-            let appearance = originalNavBarAppearance
-        else {
+        guard navigationBarAppearanceNeedsRestoration else {
             return
         }
-
-        appearance.apply(navBar)
+        self.navigationBar?.tintColor = previousNavBarTintColor
     }
 
     private func hideLoading() {
@@ -193,7 +205,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: Config
     private func configureNavigationBar() {
-        applyTransparentNavigationBarAppearance(to: navigationBar)
+        self.applyTransparentNavigationBarAppearance()
     }
 
     private func addScrollObserver() {
@@ -222,8 +234,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
         delegate?.didTapFeaturedImage(imageView)
     }
-
-
 
     // MARK: - Private: Scroll Handlers
     private func scrollViewDidScroll () {
@@ -263,10 +273,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
-        guard navigationBar != nil else {
-            return
-        }
-
         let fullProgress = (offset / heightConstraint.constant)
         let progress = fullProgress.clamp(min: 0, max: 1)
 
@@ -442,49 +448,6 @@ extension ReaderDetailFeaturedImageView: UIGestureRecognizerDelegate {
         return isOutsideView == false
     }
 }
-
-/// Represents the appearance for a navigation bar
-struct NavBarAppearance {
-    var backgroundImage: UIImage?
-    var shadowImage: UIImage?
-    var backgroundColor: UIColor?
-    var tintColor: UIColor?
-    var isTranslucent: Bool = false
-    var titleTextAttributes: [NSAttributedString.Key: Any]?
-
-    func apply(_ navigationBar: UINavigationBar) {
-        navigationBar.isTranslucent = isTranslucent
-        navigationBar.setItemTintColor(tintColor)
-        navigationBar.titleTextAttributes = titleTextAttributes ?? nil
-
-        let appearance = navigationBar.standardAppearance
-        appearance.backgroundImage = backgroundImage ?? nil
-        appearance.shadowImage = shadowImage ?? nil
-        appearance.backgroundColor = backgroundColor ?? nil
-    }
-
-    static var transparent: NavBarAppearance {
-        return NavBarAppearance(backgroundImage: UIImage(),
-                                shadowImage: UIImage(),
-                                backgroundColor: .clear,
-                                tintColor: .clear,
-                                isTranslucent: false,
-                                titleTextAttributes: nil)
-    }
-}
-
-private extension NavBarAppearance {
-    init(navigationBar: UINavigationBar) {
-        let appearance = navigationBar.standardAppearance
-        backgroundImage = appearance.backgroundImage
-        shadowImage = appearance.shadowImage
-        backgroundColor = appearance.backgroundColor
-        isTranslucent = navigationBar.isTranslucent
-        tintColor = navigationBar.tintColor
-        titleTextAttributes = navigationBar.titleTextAttributes
-    }
-}
-
 
 // MARK: - UINavigationBar Tint Color Helper Extension
 private extension UINavigationBar {
