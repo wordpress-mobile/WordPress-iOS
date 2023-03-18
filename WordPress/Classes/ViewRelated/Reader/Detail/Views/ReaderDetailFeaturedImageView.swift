@@ -9,6 +9,9 @@ protocol UpdatableStatusBarStyle: UIViewController {
 }
 
 class ReaderDetailFeaturedImageView: UIView, NibLoadable {
+
+    // MARK: - Constants
+
     struct Constants {
         struct multipliers {
             static let maxPortaitHeight: CGFloat = 0.70
@@ -24,26 +27,28 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         static let endTintColor: UIColor = .text
     }
 
-    // MARK: - IBOutlets
-    @IBOutlet weak var imageView: CachedAnimatedImageView!
-    @IBOutlet weak var gradientView: UIView!
-    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loadingView: UIView!
+    // MARK: - Private: IBOutlets
+
+    @IBOutlet private weak var imageView: CachedAnimatedImageView!
+    @IBOutlet private weak var gradientView: UIView!
+    @IBOutlet private weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loadingView: UIView!
 
     // MARK: - Public: Properties
+
     weak var delegate: ReaderDetailFeaturedImageViewDelegate?
 
     /// Keeps track if the featured image is loading
-    var isLoading: Bool = false
+    private(set) var isLoading: Bool = false
 
     /// Keeps track of if we've loaded the image before
-    var isLoaded: Bool = false
+    private(set) var isLoaded: Bool = false
 
     /// Temporary work around until white headers are shipped app-wide,
     /// allowing Reader Detail to use a blue navbar.
     var useCompatibilityMode: Bool = false {
         didSet {
-            updateUI()
+            updateIfNotLoading()
         }
     }
 
@@ -58,6 +63,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
+
     private weak var scrollView: UIScrollView?
     private weak var navigationBar: UINavigationBar?
     private weak var navigationItem: UINavigationItem?
@@ -103,6 +109,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     private var timeoutTimer: Timer?
 
     // MARK: - View Methods
+
     deinit {
         scrollViewObserver?.invalidate()
     }
@@ -147,155 +154,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        updateUI()
+        updateIfNotLoading()
     }
 
-    // MARK: - Public: Helpers
+    // MARK: - Public: Fetching Featured Image
 
-    public func updateUI() {
-        scrollViewDidScroll()
-    }
-
-    public func deviceDidRotate() {
-        guard !useCompatibilityMode else {
-            return
-        }
-
-        updateInitialHeight(resetContentOffset: false)
-    }
-
-    func applyTransparentNavigationBarAppearance() {
-        guard let navigationItem, !useCompatibilityMode
-        else {
-            return
-        }
-
-        // Transparent navigation bar
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        if #available(iOS 15.0, *) {
-            navigationItem.compactScrollEdgeAppearance = appearance
-        }
-
-        if isLoaded, imageView.image == nil {
-            navBarTintColor = Styles.endTintColor
-        }
-
-        updateUI()
-    }
-
-    func restoreNavigationBarAppearanceIfNeeded() {
-        guard navigationBarAppearanceNeedsRestoration else {
-            return
-        }
-        self.navigationBar?.tintColor = previousNavBarTintColor
-    }
-
-    private func hideLoading() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.loadingView.alpha = 0.0
-        }) { (_) in
-            self.loadingView.isHidden = true
-            self.loadingView.alpha = 1.0
-        }
-    }
-
-    // MARK: - Private: Config
-    private func configureNavigationBar() {
-        self.applyTransparentNavigationBarAppearance()
-    }
-
-    private func addScrollObserver() {
-        guard scrollViewObserver == nil,
-              let scrollView = self.scrollView else {
-            return
-        }
-
-        scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
-            self?.scrollViewDidScroll()
-        }
-    }
-
-    // MARK: - Tap Gesture
-    private func addTapGesture() {
-        guard let scrollView = scrollView else {
-            return
-        }
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
-        tapGesture.cancelsTouchesInView = false
-        tapGesture.delegate = self
-        scrollView.addGestureRecognizer(tapGesture)
-    }
-
-    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        delegate?.didTapFeaturedImage(imageView)
-    }
-
-    // MARK: - Private: Scroll Handlers
-    private func scrollViewDidScroll () {
-        guard !isLoading else {
-            return
-        }
-
-        update()
-    }
-
-    private func update() {
-        guard
-            !useCompatibilityMode,
-            imageSize != nil,
-            let scrollView = self.scrollView
-        else {
-            reset()
-            return
-        }
-
-        let offsetY = scrollView.contentOffset.y
-
-        updateFeaturedImageHeight(with: offsetY)
-        updateNavigationBar(with: offsetY)
-    }
-
-    private func updateFeaturedImageHeight(with offset: CGFloat) {
-        let height = featuredImageHeight()
-
-        guard height > 0 else {
-            return
-        }
-
-        let y = height - ((offset - topMargin()) + height)
-
-        heightConstraint.constant = max(y, 0)
-    }
-
-    private func updateNavigationBar(with offset: CGFloat) {
-        let fullProgress = (offset / heightConstraint.constant)
-        let progress = fullProgress.clamp(min: 0, max: 1)
-
-        let tintColor = UIColor.interpolate(from: Styles.startTintColor,
-                                            to: Styles.endTintColor,
-                                            with: progress)
-
-        if traitCollection.userInterfaceStyle == .light {
-            currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
-        } else {
-            currentStatusBarStyle = .lightContent
-        }
-
-        navBarTintColor = tintColor
-    }
-
-    static func shouldDisplayFeaturedImage(with post: ReaderPost) -> Bool {
-        let imageURL = URL(string: post.featuredImage)
-
-        return imageURL != nil && !post.contentIncludesFeaturedImage()
-    }
-
-    // MARK: - Private: Network Helpers
     public func load(completion: @escaping () -> Void) {
         guard
             !useCompatibilityMode,
@@ -365,6 +228,155 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
     }
 
+    // MARK: - Public: Helpers
+
+    public func deviceDidRotate() {
+        guard !useCompatibilityMode else {
+            return
+        }
+
+        updateInitialHeight(resetContentOffset: false)
+    }
+
+    static func shouldDisplayFeaturedImage(with post: ReaderPost) -> Bool {
+        let imageURL = URL(string: post.featuredImage)
+        return imageURL != nil && !post.contentIncludesFeaturedImage()
+    }
+
+    // MARK: - Private: Config
+
+    private func configureNavigationBar() {
+        self.applyTransparentNavigationBarAppearance()
+    }
+
+    private func addScrollObserver() {
+        guard scrollViewObserver == nil,
+              let scrollView = self.scrollView else {
+            return
+        }
+
+        scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
+            self?.scrollViewDidScroll()
+        }
+    }
+
+    // MARK: - Private: Tap Gesture
+
+    private func addTapGesture() {
+        guard let scrollView = scrollView else {
+            return
+        }
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func imageTapped(_ sender: UITapGestureRecognizer) {
+        delegate?.didTapFeaturedImage(imageView)
+    }
+
+    // MARK: - Private: Updating UI and Handling Scrolls
+
+    /// Updates the UI if the image is not loading.
+    private func updateIfNotLoading() {
+        guard !isLoading else {
+            return
+        }
+        self.update()
+    }
+
+    private func update() {
+        guard
+            !useCompatibilityMode,
+            imageSize != nil,
+            let scrollView = self.scrollView
+        else {
+            reset()
+            return
+        }
+
+        let offsetY = scrollView.contentOffset.y
+
+        updateFeaturedImageHeight(with: offsetY)
+        updateNavigationBar(with: offsetY)
+    }
+
+    private func restoreNavigationBarAppearanceIfNeeded() {
+        guard navigationBarAppearanceNeedsRestoration else {
+            return
+        }
+        self.navigationBar?.tintColor = previousNavBarTintColor
+    }
+
+    private func hideLoading() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingView.alpha = 0.0
+        }) { (_) in
+            self.loadingView.isHidden = true
+            self.loadingView.alpha = 1.0
+        }
+    }
+
+    private func scrollViewDidScroll() {
+        self.updateIfNotLoading()
+    }
+
+    private func updateFeaturedImageHeight(with offset: CGFloat) {
+        let height = featuredImageHeight()
+
+        guard height > 0 else {
+            return
+        }
+
+        let y = height - ((offset - topMargin()) + height)
+
+        heightConstraint.constant = max(y, 0)
+    }
+
+    private func updateNavigationBar(with offset: CGFloat) {
+        let fullProgress = (offset / heightConstraint.constant)
+        let progress = fullProgress.clamp(min: 0, max: 1)
+
+        let tintColor = UIColor.interpolate(from: Styles.startTintColor,
+                                            to: Styles.endTintColor,
+                                            with: progress)
+
+        if traitCollection.userInterfaceStyle == .light {
+            currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
+        } else {
+            currentStatusBarStyle = .lightContent
+        }
+
+        navBarTintColor = tintColor
+    }
+
+    private func applyTransparentNavigationBarAppearance() {
+        guard let navigationItem, !useCompatibilityMode
+        else {
+            return
+        }
+
+        // Transparent navigation bar
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationItem.compactScrollEdgeAppearance = appearance
+        }
+
+        if isLoaded, imageView.image == nil {
+            navBarTintColor = Styles.endTintColor
+        }
+
+        updateIfNotLoading()
+    }
+
+    // MARK: - Private: Network Helpers
+
     private func didFinishLoading(timedOut: Bool = false) {
         // Don't reset the scroll position if we timed out to prevent a jump
         // if the user has started reading / scrolling
@@ -391,7 +403,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func reset() {
-        navigationBar?.setItemTintColor(useCompatibilityMode ? .appBarTint : Styles.endTintColor)
+        navigationBar?.tintColor = useCompatibilityMode ? .appBarTint : Styles.endTintColor
 
         resetStatusBarStyle()
         heightConstraint.constant = 0
@@ -407,6 +419,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     // MARK: - Private: Calculations
+
     private func featuredImageHeight() -> CGFloat {
         guard
             let imageSize = self.imageSize,
@@ -439,6 +452,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 }
 
 // MARK: - UIGestureRecognizerDelegate
+
 extension ReaderDetailFeaturedImageView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let touchPoint = touch.location(in: self)
@@ -446,24 +460,5 @@ extension ReaderDetailFeaturedImageView: UIGestureRecognizerDelegate {
 
         /// Do not accept the touch if outside the featured image view
         return isOutsideView == false
-    }
-}
-
-// MARK: - UINavigationBar Tint Color Helper Extension
-private extension UINavigationBar {
-    func setItemTintColor(_ color: UIColor?) {
-        tintColor = color
-
-        items?.forEach { $0.setTintColor(color) }
-    }
-}
-
-private extension UINavigationItem {
-    /// Forcibly sets the tint color of all the button items
-    func setTintColor(_ color: UIColor?) {
-        leftBarButtonItem?.tintColor = color
-        leftBarButtonItems?.forEach { $0.tintColor = color }
-        rightBarButtonItem?.tintColor = color
-        rightBarButtonItems?.forEach { $0.tintColor = color }
     }
 }
