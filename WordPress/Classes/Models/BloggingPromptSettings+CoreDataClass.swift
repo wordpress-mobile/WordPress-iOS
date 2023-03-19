@@ -10,7 +10,7 @@ public class BloggingPromptSettings: NSManagedObject {
         self.reminderTime = remoteSettings.reminderTime
         self.promptRemindersEnabled = remoteSettings.promptRemindersEnabled
         self.isPotentialBloggingSite = remoteSettings.isPotentialBloggingSite
-        updatePromptSettingsIfNecessary(siteID: String(siteID), enabled: isPotentialBloggingSite)
+        updatePromptSettingsIfNecessary(siteID: Int(siteID), enabled: isPotentialBloggingSite)
         self.reminderDays = reminderDays ?? BloggingPromptSettingsReminderDays(context: context)
         reminderDays?.configure(with: remoteSettings.reminderDays)
     }
@@ -24,12 +24,10 @@ public class BloggingPromptSettings: NSManagedObject {
         return dateFormatter.date(from: reminderTime)
     }
 
-    private func updatePromptSettingsIfNecessary(siteID: String, enabled: Bool) {
-        let repository = UserPersistentStoreFactory.instance()
-        var promptsEnabledSettings = repository.promptsEnabledSettings
-        if promptsEnabledSettings[siteID] == nil {
-            promptsEnabledSettings[siteID] = enabled
-            repository.promptsEnabledSettings = promptsEnabledSettings
+    private func updatePromptSettingsIfNecessary(siteID: Int, enabled: Bool) {
+        let service = BlogDashboardPersonalizationService(siteID: siteID)
+        if !service.hasPreference(for: .prompts) {
+            service.setEnabled(enabled, for: .prompts)
         }
     }
 
