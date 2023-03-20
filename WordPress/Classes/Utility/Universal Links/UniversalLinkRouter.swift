@@ -170,7 +170,7 @@ struct UniversalLinkRouter: LinkRouter {
         }
 
         for matchedRoute in matches {
-            if matchedRoute.jetpackPowered && !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+            if matchedRoute.jetpackPowered && !JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() {
                 // Display overlay
                 RootViewCoordinator.sharedPresenter.mySitesCoordinator.displayJetpackOverlayForDisabledEntryPoint()
 

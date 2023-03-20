@@ -62,7 +62,7 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(featureFlagStore: featureFlagStore)
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(featureFlagStore: featureFlagStore)
         switch (phase, jetpackFeaturesEnabled) {
         case (.three, true):
             return true
@@ -77,7 +77,7 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(featureFlagStore: featureFlagStore)
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures(featureFlagStore: featureFlagStore)
         switch (phase, jetpackFeaturesEnabled) {
         case (.four, false):
             fallthrough

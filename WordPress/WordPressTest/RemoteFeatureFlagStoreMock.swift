@@ -9,6 +9,7 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
     var removalPhaseFour = false
     var removalPhaseNewUsers = false
     var removalPhaseSelfHosted = false
+    var removalPhaseStaticScreens = false
 
     override func value(for flag: OverrideableFlag) -> Bool {
         guard let flag = flag as? WordPress.FeatureFlag else {
@@ -27,6 +28,8 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
             return removalPhaseNewUsers
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return removalPhaseSelfHosted
+        case .jetpackFeaturesRemovalStaticPosters:
+            return removalPhaseStaticScreens
         default:
             return super.value(for: flag)
         }

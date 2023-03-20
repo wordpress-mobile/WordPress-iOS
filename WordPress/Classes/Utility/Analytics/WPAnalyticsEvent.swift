@@ -455,6 +455,11 @@ import Foundation
     case blazeFlowCompleted
     case blazeFlowError
 
+    // Moved to Jetpack static screen
+    case removeStaticPosterDisplayed
+    case removeStaticPosterButtonTapped
+    case removeStaticPosterLinkTapped
+
     // Help & Support
     case supportOpenMobileForumTapped
     case supportMigrationFAQButtonTapped
@@ -1245,6 +1250,13 @@ import Foundation
         case .blazeFlowError:
             return "blaze_flow_error"
 
+        // Moved to Jetpack static screen
+        case .removeStaticPosterDisplayed:
+            return "remove_static_poster_displayed"
+        case .removeStaticPosterButtonTapped:
+            return "remove_static_poster_get_jetpack_tapped"
+        case .removeStaticPosterLinkTapped:
+            return "remove_static_poster_link_tapped"
 
         // Help & Support
         case .supportOpenMobileForumTapped:

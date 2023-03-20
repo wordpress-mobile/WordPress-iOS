@@ -15,6 +15,7 @@ final class SitePickerViewController: UIViewController {
     var siteIconPresenter: SiteIconPickerPresenter?
     var siteIconPickerPresenter: SiteIconPickerPresenter?
     var onBlogSwitched: ((Blog) -> Void)?
+    var onBlogListDismiss: (() -> Void)?
 
     let meScenePresenter: ScenePresenter
     let blogService: BlogService
@@ -125,7 +126,9 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
                 return
             }
             self?.switchToBlog(blog)
-            controller?.dismiss(animated: true)
+            controller?.dismiss(animated: true) {
+                self?.onBlogListDismiss?()
+            }
         }
 
         let navigationController = UINavigationController(rootViewController: blogListController)

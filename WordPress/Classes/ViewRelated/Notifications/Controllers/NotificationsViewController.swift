@@ -1594,16 +1594,10 @@ private extension NotificationsViewController {
     }
 
     var noResultsMessageText: String? {
-        guard AppConfiguration.showsReader else {
-            return nil
-        }
         return filter.noResultsMessage
     }
 
     var noResultsButtonText: String? {
-        guard AppConfiguration.showsReader else {
-            return nil
-        }
         return filter.noResultsButtonTitle
     }
 
