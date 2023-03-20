@@ -12,6 +12,7 @@ final class BlazeCardView: UIView {
         let label = UILabel()
         label.font = Style.titleLabelFont
         label.text = Strings.title
+        label.textColor = .text
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -22,6 +23,7 @@ final class BlazeCardView: UIView {
         let label = UILabel()
         label.font = Style.descriptionLabelFont
         label.text = Strings.description
+        label.textColor = .textSubtle
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
