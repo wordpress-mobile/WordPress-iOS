@@ -36,9 +36,8 @@ extension UIColor {
 // MARK: - Basic Colors
 extension UIColor {
 
-    /// - Note: as part of this task: https://jetpackmobile.wordpress.com/2023/03/10/trial-task-user-defined-app-color/
-    /// we decided to replace `primary`, `accent` and `brand` colors with user customizable `AppColor.accentColor`
-    /// long term goal is to unify these 3 colors into a single `accent` color.
+    /// - Note: We decided to replace `primary`, `accent` and `brand` colors with user customizable `AppColor.accentColor`,
+    /// however long term goal here is also to unify these 3 colors into a single `appAccent` color.
 
     /// Muriel primary color
     static var primary: UIColor {

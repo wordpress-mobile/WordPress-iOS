@@ -19,13 +19,30 @@ final class DashboardStatsNudgeView: UIView {
         return label
     }()
 
+    private let title: String
+    private let hint: String?
+
     // MARK: - Init
 
-    convenience init(title: String, hint: String?, insets: UIEdgeInsets = Constants.margins) {
-        self.init(frame: .zero)
+    init(title: String, hint: String?, insets: UIEdgeInsets = Constants.margins) {
+        self.title = title
+        self.hint = hint
+
+        super.init(frame: .zero)
 
         setup(insets: insets)
-        setTitle(title: title, hint: hint)
+        updateTitleLabel()
+
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(updateTitleLabel), name: .appColorDidUpdateAccent, object: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - View setup
@@ -37,11 +54,7 @@ final class DashboardStatsNudgeView: UIView {
         prepareForVoiceOver()
     }
 
-    @objc private func buttonTapped() {
-        onTap?()
-    }
-
-    private func setTitle(title: String, hint: String?) {
+    @objc private func updateTitleLabel() {
         let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.iconSize).withTintColor(.primary))
         externalAttachment.bounds = Constants.iconBounds
 
@@ -59,6 +72,10 @@ final class DashboardStatsNudgeView: UIView {
         titleString.append(attachmentString)
 
         titleLabel.attributedText = titleString
+    }
+
+    @objc private func buttonTapped() {
+        onTap?()
     }
 
     private enum Constants {

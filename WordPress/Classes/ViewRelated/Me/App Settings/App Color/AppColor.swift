@@ -100,21 +100,21 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
     var description: String {
         switch self {
         case .pink:
-            return AppLocalizedString("color.pink", comment: "Title for the `Pink` app accent color")
+            return AppLocalizedString("color.pink", value: "Pink", comment: "Title for the `Pink` app accent color")
         case .red:
-            return AppLocalizedString("color.red", comment: "Title for the `Red` app accent color")
+            return AppLocalizedString("color.red", value: "Red", comment: "Title for the `Red` app accent color")
         case .orange:
-            return AppLocalizedString("color.orange", comment: "Title for the `Orange` app accent color")
+            return AppLocalizedString("color.orange", value: "Orange", comment: "Title for the `Orange` app accent color")
         case .yellow:
-            return AppLocalizedString("color.yellow", comment: "Title for the `Yellow` app accent color")
+            return AppLocalizedString("color.yellow", value: "Yellow", comment: "Title for the `Yellow` app accent color")
         case .celadon:
-            return AppLocalizedString("color.celadon", comment: "Title for the `Celadon` app accent color")
+            return AppLocalizedString("color.celadon", value: "Celadon", comment: "Title for the `Celadon` app accent color")
         case .wooCommercePurple:
-            return AppLocalizedString("color.wooCommercePurple", comment: "Title for the `WooCommerce Purple` app accent color")
+            return AppLocalizedString("color.wooCommercePurple", value: "WooCommerce Purple", comment: "Title for the `WooCommerce Purple` app accent color")
         case .jetpackGreen:
-            return AppLocalizedString("color.jetpackGreen", comment: "Title for the `Jetpack Green` app accent color")
+            return AppLocalizedString("color.jetpackGreen", value: "Jetpack Green", comment: "Title for the `Jetpack Green` app accent color")
         case .wordPressBlue:
-            return AppLocalizedString("color.wordPressBlue", comment: "Title for the `WordPress Blue` app accent color")
+            return AppLocalizedString("color.wordPressBlue", value: "WordPress Blue", comment: "Title for the `WordPress Blue` app accent color")
         }
     }
 

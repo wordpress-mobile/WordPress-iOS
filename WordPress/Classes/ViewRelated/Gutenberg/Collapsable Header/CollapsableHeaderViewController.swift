@@ -154,16 +154,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
     private var minHeaderHeight: CGFloat = 0
 
-    private var accentColor: UIColor {
-        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .primary, .shade40)
-            } else {
-                return UIColor.muriel(color: .primary, .shade50)
-            }
-        }
-    }
-
     // MARK: - Static Helpers
     public static func closeButton(target: Any?, action: Selector) -> UIBarButtonItem {
         let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -422,7 +412,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
         primaryActionButton.titleLabel?.adjustsFontSizeToFitWidth = true
         primaryActionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        primaryActionButton.backgroundColor = accentColor
+        primaryActionButton.backgroundColor = .primary
         primaryActionButton.layer.cornerRadius = 8
     }
 

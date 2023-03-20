@@ -489,7 +489,7 @@ private extension AppSettingsViewController {
         var rows: [ImmuTableRow] = []
 
         let colorModeRow = NavigationItemRow(
-            title: NSLocalizedString("settings.color.mode.title", comment: "The title for the app 'Color Mode' setting."),
+            title: NSLocalizedString("settings.color.mode.title", value: "Color Mode", comment: "The title for the app 'Color Mode' setting."),
             detail: AppAppearance.current.appearanceDescription,
             action: pushColorModeSettings()
         )
@@ -518,7 +518,7 @@ private extension AppSettingsViewController {
     }
 
     var accentColorTitle: String {
-        NSLocalizedString("settings.accent.color.title", comment: "The title for the app 'Accent Color' setting.")
+        NSLocalizedString("settings.accent.color.title", value: "Accent Color", comment: "The title for the app 'Accent Color' setting.")
     }
 
     func otherTableSection() -> ImmuTableSection {
