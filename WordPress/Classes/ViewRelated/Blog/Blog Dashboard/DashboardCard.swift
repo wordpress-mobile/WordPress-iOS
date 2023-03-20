@@ -18,10 +18,10 @@ enum DashboardCard: String, CaseIterable {
     case nextPost = "create_next"
     case createPost = "create_first"
     case jetpackBadge
-
-    // Card placeholder for when loading data
+    /// Card placeholder for when loading data
     case ghost
     case failure
+    case personalize
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
@@ -52,6 +52,8 @@ enum DashboardCard: String, CaseIterable {
         case .domainsDashboardCard:
             /// TODO
             return DashboardFailureCardCell.self
+        case .personalize:
+            return BlogDashboardPersonalizeCardCell.self
         }
     }
 
@@ -88,6 +90,8 @@ enum DashboardCard: String, CaseIterable {
             return BlazeHelper.shouldShowCard(for: blog)
         case .domainsDashboardCard:
             return DomainsDashboardCardHelper.shouldShowCard(for: blog)
+        case .personalize:
+            return AppConfiguration.isJetpack && FeatureFlag.personalizeHomeTab.enabled
         }
     }
 
@@ -110,6 +114,14 @@ enum DashboardCard: String, CaseIterable {
             return false
         }
     }
+
+    static let personalizableCards: [DashboardCard] = [
+        .todaysStats,
+        .draftPosts,
+        .scheduledPosts,
+        .blaze,
+        .prompts
+    ]
 
     /// Includes all cards that should be fetched from the backend
     /// The `String` should match its identifier on the backend.

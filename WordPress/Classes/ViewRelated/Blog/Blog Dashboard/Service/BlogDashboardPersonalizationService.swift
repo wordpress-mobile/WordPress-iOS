@@ -52,7 +52,7 @@ private func makeKey(for card: DashboardCard) -> String? {
         return "prompts-enabled-site-settings"
     case .domainsDashboardCard:
         return "domains-dashboard-enabled-site-settings"
-    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost:
+    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize:
         return nil
     }
 }
