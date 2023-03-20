@@ -2,37 +2,35 @@ import WidgetKit
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct LockScreenStatsWidget: Widget {
-    private let placeholderContent = HomeWidgetTodayData(
-        siteID: 0,
-        siteName: "My WordPress Site",
-        url: "",
-        timeZone: TimeZone.current,
-        date: Date(),
-        stats: TodayWidgetStats(views: 649,
-                                visitors: 572,
-                                likes: 16,
-                                comments: 8))
+struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
+    private let config: T
+
+    init(config: T) {
+        self.config = config
+    }
+
+    @available(*, deprecated, renamed: "init(config:)")
+    init() {
+        fatalError("Please use init(config: SingleStatWidgetConfig) to provide the config")
+    }
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind,
+            kind: config.kind,
             intent: SelectSiteIntent.self,
-            provider: SiteListProvider<HomeWidgetTodayData>(
+            provider: SiteListProvider<T.WidgetData>(
                 service: StatsWidgetsService(),
-                placeholderContent: placeholderContent,
+                placeholderContent: config.placeholderContent,
                 widgetKind: .today
             )
         ) { (entry: StatsWidgetEntry) -> LockScreenStatsWidgetsView in
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,
-                viewProvider: LockScreenSingleStatWidgetViewProvider(
-                    title: LocalizableStrings.viewsInTodayTitle
-                )
+                viewProvider: config.viewProvider
             )
         }
-        .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
-        .description(LocalizableStrings.todayPreviewDescription)
+        .configurationDisplayName(config.displayName)
+        .description(config.description)
         .supportedFamilies(supportedFamilies())
     }
 }
@@ -44,6 +42,6 @@ extension LockScreenStatsWidget {
         guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
             return []
         }
-        return [.accessoryRectangular]
+        return config.supportFamilies
     }
 }
