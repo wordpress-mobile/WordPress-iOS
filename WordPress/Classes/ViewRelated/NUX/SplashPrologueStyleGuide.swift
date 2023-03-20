@@ -15,10 +15,14 @@ struct SplashPrologueStyleGuide {
     }
 
     /// Use the same shade for light and dark modes
-    private static let primaryButtonColor: UIColor = .muriel(color: .primary)
+    private static var primaryButtonColor: UIColor {
+        .primary
         .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
-    private static let primaryButtonHighlightedColor: UIColor = .muriel(color: .primary, .shade60)
+    }
+    private static var primaryButtonHighlightedColor: UIColor {
+        .primary(.shade60)
         .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+    }
 
     private static let secondaryButtonColor: UIColor = .white
     private static let secondaryButtonHighlightedColor: UIColor = .muriel(color: .gray, .shade5)

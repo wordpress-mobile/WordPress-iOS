@@ -59,12 +59,9 @@ struct MurielColor {
     }
 
     // MARK: - Muriel's semantic colors
-    static let accent = AppStyleGuide.accent
-    static let brand = AppStyleGuide.brand
     static let divider = AppStyleGuide.divider
     static let error = AppStyleGuide.error
     static let gray = AppStyleGuide.gray
-    static let primary = AppStyleGuide.primary
     static let success = AppStyleGuide.success
     static let text = AppStyleGuide.text
     static let textSubtle = AppStyleGuide.textSubtle

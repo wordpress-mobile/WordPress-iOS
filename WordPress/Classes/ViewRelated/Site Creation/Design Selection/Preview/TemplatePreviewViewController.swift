@@ -44,16 +44,6 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         return ghost
     }()
 
-    private var accentColor: UIColor {
-        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .primary, .shade40)
-            } else {
-                return UIColor.muriel(color: .primary, .shade50)
-            }
-        }
-    }
-
     init(demoURL: String, selectedPreviewDevice: PreviewDevice?, onDismissWithDeviceSelected: ((PreviewDevice) -> ())?) {
         self.demoURL = demoURL
         self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDevice.default
@@ -101,7 +91,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
 
     private func styleButtons() {
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
-        primaryActionButton.backgroundColor = accentColor
+        primaryActionButton.backgroundColor = .primary
         primaryActionButton.layer.cornerRadius = 8
         primaryActionButton.setTitle(NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"), for: .normal)
     }

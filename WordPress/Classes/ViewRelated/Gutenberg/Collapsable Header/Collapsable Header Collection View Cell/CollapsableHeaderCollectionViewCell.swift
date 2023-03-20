@@ -12,7 +12,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var checkmarkImageView: UIImageView! {
         didSet {
             checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
-            checkmarkImageView.tintColor = accentColor
+            checkmarkImageView.tintColor = .primary
         }
     }
 
@@ -32,16 +32,6 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
         imageView.cancelImageDownload()
         previewURL = nil
         stopGhostAnimation()
-    }
-
-    var accentColor: UIColor {
-        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .primary, .shade40)
-            } else {
-                return UIColor.muriel(color: .primary, .shade50)
-            }
-        }
     }
 
     var borderColor: UIColor {
@@ -94,7 +84,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     private func styleSelectedBorder(animated: Bool = false) {
-        let imageBorderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
+        let imageBorderColor = isSelected ? UIColor.primary.cgColor : borderColor.cgColor
         let imageBorderWidth = isSelected ? 2 : borderWith
         guard animated else {
             imageView.layer.borderColor = imageBorderColor

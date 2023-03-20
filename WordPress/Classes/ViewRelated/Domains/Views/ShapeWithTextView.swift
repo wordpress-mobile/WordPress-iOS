@@ -35,7 +35,9 @@ struct ShapeWithTextView: View {
         // large rounded rectangle
         static let largeRoundedRectangleCornerRadius: CGFloat = 8.0
         static let largeRoundedRectangleTextPadding: CGFloat = 12.0
-        static let largeRoundedRectangleDefaultTextColor = Color(UIColor.muriel(color: .primary))
+        static var largeRoundedRectangleDefaultTextColor: Color {
+            .init(UIColor.primary)
+        }
         // small rounded rectangle
         static let smallRoundedRectangleCornerRadius: CGFloat = 4.0
         static let smallRoundedRectangleInsets = EdgeInsets(top: 4.0, leading: 8.0, bottom: 4.0, trailing: 8.0)

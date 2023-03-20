@@ -21,7 +21,7 @@ class ReaderInterestsStyleGuide {
     public class func applyCellLabelStyle(label: UILabel, isSelected: Bool) {
         label.font = WPStyleGuide.fontForTextStyle(.body)
         label.textColor = isSelected ? .white : .text
-        label.backgroundColor = isSelected ? .muriel(color: .primary, .shade40) : .quaternaryBackground
+        label.backgroundColor = isSelected ? .primary(.shade40) : .quaternaryBackground
     }
 
     // MARK: - Compact Collection View Cell Styles

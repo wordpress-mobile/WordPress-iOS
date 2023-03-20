@@ -14,12 +14,9 @@ struct AppStyleGuide {
 
 // MARK: - Colors
 extension AppStyleGuide {
-    static let accent = MurielColor(name: .jetpackGreen)
-    static let brand = MurielColor(name: .jetpackGreen)
     static let divider = MurielColor(name: .gray, shade: .shade10)
     static let error = MurielColor(name: .red)
     static let gray = MurielColor(name: .gray)
-    static let primary = MurielColor(name: .jetpackGreen)
     static let success = MurielColor(name: .green)
     static let text = MurielColor(name: .gray, shade: .shade80)
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
