@@ -26,7 +26,9 @@ struct LockScreenStatsWidget: Widget {
         ) { (entry: StatsWidgetEntry) -> LockScreenStatsWidgetsView in
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,
-                viewProvider: LockScreenSingleStatWidgetViewProvider()
+                viewProvider: LockScreenSingleStatWidgetViewProvider(
+                    title: LocalizableStrings.viewsInTodayTitle
+                )
             )
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)

@@ -4,10 +4,12 @@ import SwiftUI
 struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvider {
     typealias SiteSelectedView = LockScreenSingleStatView
 
+    let title: String
+
     func buildSiteSelectedView(_ data: HomeWidgetData) -> LockScreenSingleStatView {
         let mapper = LockScreenWidgetViewModelMapper(data: data)
         let viewModel = mapper.getLockScreenSingleStatViewModel(
-            title: LocalizableStrings.viewsInTodayTitle
+            title: title
         )
         return LockScreenSingleStatView(viewModel: viewModel)
     }
