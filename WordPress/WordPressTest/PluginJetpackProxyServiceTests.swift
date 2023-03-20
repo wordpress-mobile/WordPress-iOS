@@ -33,7 +33,6 @@ class PluginJetpackProxyServiceTests: XCTestCase {
         }
 
         // verify that the path is correct
-        let pathParam = params["path"] as? String ?? String()
         XCTAssertEqual(params["path"], "\(expectedPath)&_method=\(expectedMethod)")
 
         // verify that the body is correct
