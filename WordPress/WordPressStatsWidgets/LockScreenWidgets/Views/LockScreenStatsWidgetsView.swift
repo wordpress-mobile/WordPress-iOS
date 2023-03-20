@@ -3,9 +3,21 @@ import WidgetKit
 
 protocol LockScreenStatsWidgetsViewProvider {
     associatedtype SiteSelectedView: View
+    associatedtype LoggedOutView: View
+    associatedtype NoSiteView: View
+    associatedtype NoDataView: View
 
     @ViewBuilder
     func buildSiteSelectedView(_ data: HomeWidgetData) -> SiteSelectedView
+
+    @ViewBuilder
+    func buildLoggedOutView() -> LoggedOutView
+
+    @ViewBuilder
+    func buildNoSiteView() -> NoSiteView
+
+    @ViewBuilder
+    func buildNoDataView() -> NoDataView
 
     func statsURL(_ data: HomeWidgetData) -> URL?
 }
@@ -21,9 +33,22 @@ struct LockScreenStatsWidgetsView<T: LockScreenStatsWidgetsViewProvider>: View {
             viewProvider
                 .buildSiteSelectedView(data)
                 .widgetURL(viewProvider.statsURL(data))
-        default:
-            // TODO: Build view for loggedOut, noSite, noData status
-            Text("Build Later")
+        case .loggedOut:
+            viewProvider
+                .buildLoggedOutView()
+                .widgetURL(nil)
+        case .noSite:
+            viewProvider
+                .buildNoSiteView()
+                .widgetURL(nil)
+        case .noData:
+            viewProvider
+                .buildNoDataView()
+                .widgetURL(nil)
+        case .disabled:
+            // TODO: Remove disabled case when adding lock screen TimeLineProvider and Entry
+            // Lock Screen widget should not have disable status
+            EmptyView()
         }
     }
 }

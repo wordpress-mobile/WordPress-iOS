@@ -21,6 +21,7 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
             provider: SiteListProvider<T.WidgetData>(
                 service: StatsWidgetsService(),
                 placeholderContent: config.placeholderContent,
+                // TODO: remove widgetKind in creating lock screen widget provider and entry PR
                 widgetKind: .today
             )
         ) { (entry: StatsWidgetEntry) -> LockScreenStatsWidgetsView in
