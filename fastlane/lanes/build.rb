@@ -96,7 +96,7 @@ platform :ios do
     # - (WordPress, WordPressUnitTests)
     #
     # Because we only support those two modes, we can infer the scheme name from the xctestrun name
-    scheme = options[:name].include? 'Jetpack' ? 'JetpackUITests' : 'WordPress'
+    scheme = options[:name] == 'Jetpack' ? 'JetpackUITests' : 'WordPress'
 
     run_tests(
       workspace: WORKSPACE_PATH,
