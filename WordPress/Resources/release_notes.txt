@@ -1,13 +1,10 @@
 * [*] Remove large title in Reader and Notifications tabs. [#20271]
 * [*] Reader: Change the following button cog icon. [#20274]
-* [*] [Jetpack-only] Change the dark background color of toolbars and top tabs across the whole app. [#20278]
 * [*] Change the Reader's navigation bar background color to match other screens. [#20278]
 * [*] Tweak My Site Dashboard Cards UI. [#20303]
-* [*] [Jetpack-only] Change My Sites tab bar icon. [#20310]
 * [*] [internal] Refactored the Core Data operations (saving the site data) after a new site is created. [#20270]
 * [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
 * [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
 * [*] [internal] Refactor uploading media assets. [#20294]
 * [*] Block editor: Allow new block transforms for most blocks. [https://github.com/WordPress/gutenberg/pull/48792]
 * [*] Visual improvements were made to the in-app survey along with updated text to differentiate between the WordPress and Jetpack apps. [#20276]
-
