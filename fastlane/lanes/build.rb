@@ -88,11 +88,19 @@ platform :ios do
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
     inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
-    scheme_name = (!options[:name] == 'Jetpack' ? 'JetpackUITests' : 'WordPress')
+    # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
+    #
+    # Their scheme and xctestrun name pairing are:
+    #
+    # - (JetpackUITests, JetpackUITests)
+    # - (WordPress, WordPressUnitTests)
+    #
+    # Because we only support those two modes, we can infer the scheme name from the xctestrun name
+    scheme = options[:name].include? 'Jetpack' ? 'JetpackUITests' : 'WordPress'
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: scheme_name,
+      scheme: scheme,
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
