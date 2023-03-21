@@ -30,6 +30,18 @@ enum DataMigrationError: LocalizedError, CustomNSError {
         case .dataNotReadyToImport: return "The data wasn't ready to import"
         }
     }
+
+    static var errorDomain: String {
+        return String(describing: DataMigrationError.self)
+    }
+
+    var errorUserInfo: [String: Any] {
+        var userInfo = [String: Any]()
+        if let errorDescription {
+            userInfo[NSDebugDescriptionErrorKey] = errorDescription
+        }
+        return userInfo
+    }
 }
 
 final class DataMigrator {
