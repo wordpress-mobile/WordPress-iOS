@@ -8,9 +8,6 @@ struct SiteCreationEmptySiteTemplate: View {
         static let siteBarHeight: CGFloat = 38
         static let siteBarStackSpacing: CGFloat = 8
         static let iconScaleFactor = 0.85
-        static let backgroundColor = Color(red: 116/255, green: 116/255, blue: 128/255, opacity: 0.15)
-        static let tooltipTextBackgroundColor = Color(red: 242/255, green: 241/255, blue: 246/255)
-        static let innerRectangleBackgroundColor = Color.white.opacity(0.5)
     }
 
     var body: some View {
@@ -21,7 +18,7 @@ struct SiteCreationEmptySiteTemplate: View {
         .background(
             LinearGradient(
                 gradient: Gradient(
-                    colors: [Constants.backgroundColor, Constants.innerRectangleBackgroundColor]
+                    colors: [Color.emptySiteGradientInitial, Color.DS.Background.primary]
                 ),
                 startPoint: .top,
                 endPoint: .center
@@ -34,7 +31,15 @@ struct SiteCreationEmptySiteTemplate: View {
         VStack(spacing: Constants.siteBarStackSpacing) {
             siteBarHStack
             Rectangle()
-                .fill(Constants.innerRectangleBackgroundColor)
+                .fill(
+                    LinearGradient(
+                        gradient: Gradient(
+                            colors: [Color.emptySiteTooltipGradientInitial, Color.DS.Background.primary]
+                        ),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
                 .frame(height: 100)
                 .cornerRadius(Constants.innerCornerRadius)
         }
@@ -54,27 +59,27 @@ struct SiteCreationEmptySiteTemplate: View {
             HStack(spacing: Constants.siteBarStackSpacing) {
                 Image(systemName: "lock")
                     .scaleEffect(x: Constants.iconScaleFactor, y: Constants.iconScaleFactor)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color.DS.Foreground.secondary)
                 Text(Strings.searchBarSiteAddress)
                     .font(.caption)
-                    .accentColor(Color.primary)
+                    .accentColor(Color.DS.Foreground.primary)
                 Spacer()
             }
             .padding([.leading, .trailing], Constants.siteBarStackSpacing)
         }
         .frame(height: Constants.siteBarHeight)
-        .background(Color.white)
+        .background(Color.DS.Background.primary)
         .cornerRadius(Constants.innerCornerRadius)
     }
 
     private var plusView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: Constants.innerCornerRadius)
-                .fill(Color.white)
+                .fill(Color.DS.Background.primary)
                 .frame(width: Constants.siteBarHeight, height: Constants.siteBarHeight)
             Image(systemName: "plus")
                 .scaleEffect(x: Constants.iconScaleFactor, y: Constants.iconScaleFactor)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.DS.Foreground.secondary)
         }
     }
 
@@ -87,21 +92,23 @@ struct SiteCreationEmptySiteTemplate: View {
                                 .font(.caption)
                                 .padding(5)
                         }
-                        .background(Constants.tooltipTextBackgroundColor)
+                        .background(Color.DS.Background.secondary)
                         .cornerRadius(5)
                         Spacer()
                     }
                     Text(Strings.tooltipDescription)
                         .font(.footnote)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color.DS.Foreground.secondary)
                 }
             .padding(.init(top: 16, leading: 16, bottom: 16, trailing: 16))
         }
-        .overlay( /// apply a rounded border
+        .background(Color.emptySiteTooltipBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 5))
+        .overlay(
             RoundedRectangle(cornerRadius: 5)
-                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                .strokeBorder(Color.emptySiteTooltipBorder, lineWidth: 0.8)
         )
-        .background(Color.white)
+        .padding(.bottom, 8)
     }
 }
 
@@ -122,4 +129,11 @@ private extension SiteCreationEmptySiteTemplate {
             comment: "Template site address for the search bar."
         )
     }
+}
+
+private extension Color {
+    static let emptySiteGradientInitial = Color("emptySiteGradientInitial")
+    static let emptySiteTooltipGradientInitial = Color("emptySiteTooltipGradientInitial")
+    static let emptySiteTooltipBackground = Color("emptySiteTooltipBackground")
+    static let emptySiteTooltipBorder = Color("emptySiteTooltipBorder")
 }

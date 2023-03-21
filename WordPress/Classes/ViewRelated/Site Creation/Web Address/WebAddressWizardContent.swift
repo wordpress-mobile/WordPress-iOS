@@ -161,6 +161,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             searchBar.searchBarStyle = UISearchBar.Style.default
             searchBar.translatesAutoresizingMaskIntoConstraints = false
             WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
+            searchBar.layer.borderWidth = 0
             searchHeader.addSubview(searchBar)
             searchBar.delegate = self
 
