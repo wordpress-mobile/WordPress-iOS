@@ -21,6 +21,7 @@ NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const HttpsPrefix = @"https://";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
+NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotification";
 
 @implementation BlogService
 
@@ -184,6 +185,12 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
+    
+    BlazeService *blazeService = [BlazeService createService];
+    dispatch_group_enter(syncGroup);
+    [blazeService getStatusFor:blog completion:^{
+        dispatch_group_leave(syncGroup);
+    }];
 
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
@@ -212,8 +219,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 Blog *blogInContext = (Blog *)[context objectWithID:blogID];
                 [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
-
-            }];
+            } completion:nil onQueue:dispatch_get_main_queue()];
         };
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {

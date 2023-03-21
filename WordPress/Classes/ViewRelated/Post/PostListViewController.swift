@@ -784,7 +784,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func blaze(_ post: AbstractPost) {
-        // TODO: Show Blaze webview with post details filled out
+        BlazeEventsTracker.trackEntryPointTapped(for: .postsList)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .postsList, blog: blog, post: post)
     }
 
     // MARK: - Searching

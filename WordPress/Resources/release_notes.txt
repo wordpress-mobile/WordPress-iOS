@@ -1,3 +1,10 @@
-Say hello to our shiny new in-app landing screen! It almost makes you want to look at it all day and not publish anything new. Almost.
-
-You can now block sites that you follow, as well as report a post’s author for spam, inappropriate content, or possible harm. No jokes here—stay safe out there.
+* [*] Remove large title in Reader and Notifications tabs. [#20271]
+* [*] Reader: Change the following button cog icon. [#20274]
+* [*] Change the Reader's navigation bar background color to match other screens. [#20278]
+* [*] Tweak My Site Dashboard Cards UI. [#20303]
+* [*] [internal] Refactored the Core Data operations (saving the site data) after a new site is created. [#20270]
+* [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
+* [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
+* [*] [internal] Refactor uploading media assets. [#20294]
+* [*] Block editor: Allow new block transforms for most blocks. [https://github.com/WordPress/gutenberg/pull/48792]
+* [*] Visual improvements were made to the in-app survey along with updated text to differentiate between the WordPress and Jetpack apps. [#20276]

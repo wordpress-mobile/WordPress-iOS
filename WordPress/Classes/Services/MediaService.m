@@ -568,15 +568,15 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }];
 }
 
-- (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
+- (void)getMetadataFromVideoPressID:(NSString *)videoPressID
                              inBlog:(Blog *)blog
-                            success:(void (^)(NSString *videoURL, NSString *posterURL))success
+                            success:(void (^)(RemoteVideoPressVideo *metadata))success
                             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getVideoURLFromVideoPressID:videoPressID success:^(NSURL *videoURL, NSURL *posterURL) {
+    [remote getMetadataFromVideoPressID:videoPressID isSitePrivate:blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
         if (success) {
-            success(videoURL.absoluteString, posterURL.absoluteString);
+            success(metadata);
         }
     } failure:^(NSError * error) {
         if (failure) {
@@ -676,57 +676,10 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 #pragma mark - Thumbnails
 
-- (void)thumbnailFileURLForMedia:(Media *)mediaInRandomContext
-                   preferredSize:(CGSize)preferredSize
-                      completion:(void (^)(NSURL * _Nullable, NSError * _Nullable))completion
-{
-    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
-    [self.managedObjectContext performBlock:^{
-        NSError *error;
-        Media *media = (Media *)[self.managedObjectContext existingObjectWithID:mediaID error:&error];
-        if (media == nil) {
-            completion(nil, error);
-            return;
-        }
-        [self.thumbnailService thumbnailURLForMedia:media
-                                      preferredSize:preferredSize
-                                       onCompletion:^(NSURL *url) {
-                                           completion(url, nil);
-                                       }
-                                            onError:^(NSError *error) {
-                                                completion(nil, error);
-                                            }];
-    }];
-}
-
-- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
-                 preferredSize:(CGSize)preferredSize
-                    completion:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion
-{
-    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
-    [self.managedObjectContext performBlock:^{
-        NSError *error;
-        Media *media = (Media *)[self.managedObjectContext existingObjectWithID:mediaID error:&error];
-        if (media == nil) {
-            completion(nil, error);
-            return;
-        }
-        [self.thumbnailService thumbnailURLForMedia:media
-                                      preferredSize:preferredSize
-                                       onCompletion:^(NSURL *url) {
-                                           UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-                                           completion(image, nil);
-                                       }
-                                            onError:^(NSError *error) {
-                                                completion(nil, error);
-                                            }];
-    }];
-}
-
 - (MediaThumbnailService *)thumbnailService
 {
     if (!_thumbnailService) {
-        _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        _thumbnailService = [[MediaThumbnailService alloc] initWithContextManager:[ContextManager sharedInstance]];
         if (self.concurrentThumbnailGeneration) {
             _thumbnailService.exportQueue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
         }

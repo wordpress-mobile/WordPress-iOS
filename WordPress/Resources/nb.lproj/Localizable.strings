@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -337,7 +337,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Aktivitetslogg";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogger";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -1306,15 +1306,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Tilkobling ikke tilgjengelig";
 
-/* Support email label. */
-"Contact Email" = "Kontakt-epost";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontakt kundestøtte";
 
@@ -1757,6 +1753,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -2142,9 +2139,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Eksterne";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Ekstra debugging";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -3197,9 +3191,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Mine nettsteder i WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Mine kundestøttebilletter";
-
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder
@@ -3459,9 +3450,6 @@ translators: Block name. %s: The localized block name */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Ikke nå";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Ikke satt";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Ikke nok lagringsplass for å laste opp";
@@ -4862,9 +4850,6 @@ translators: Block name. %s: The localized block name */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Vises offentlig når du kommenterer på blogger.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Viser en dialog for å endre kontakt e-post.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Viser alle følgere";
 
@@ -5177,8 +5162,7 @@ translators: Block name. %s: The localized block name */
 "Super Admin" = "Superadmin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Support";
 
 /* Button used to switch site */
@@ -5351,9 +5335,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Det brukernavnet er ikke tillatt.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Extra Debug-funksjonen inkluderer ekstra informasjon i aktivitetslogger, og kan hjelpe oss med å feilsøke problemer med appen.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook-tilkoblingen kan ikke finne noen sider. Publisering kan ikke koble til Facebook-profiler, kun publiserte sider.";
@@ -6146,9 +6127,6 @@ translators: Block name. %s: The localized block name */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Bekreft din e-postadresse - instruksjoner sendt til %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Versjon";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Versjon:";
 
@@ -6243,9 +6221,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Besøk nettstedet";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Besøk hjelpesenteret for å få svar på vanlige spørsmål, eller kontakte oss for mer hjelp.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -6516,14 +6491,8 @@ translators: Block name. %s: The localized block name */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress-blogg";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress forum";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Hjelp med WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Wordpress hjelpesenter";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress-medier";
@@ -6561,8 +6530,7 @@ translators: Block name. %s: The localized block name */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com-konto";
 
 /* Title for the Plans list header */

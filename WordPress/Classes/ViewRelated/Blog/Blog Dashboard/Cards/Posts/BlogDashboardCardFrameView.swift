@@ -91,7 +91,14 @@ class BlogDashboardCardFrameView: UIView {
     /// The title at the header
     var title: String? {
         didSet {
-            titleLabel.text = title
+            self.setNeedsDisplay()
+        }
+    }
+
+    /// The part in the title that needs to be highlighted
+    var titleHint: String? {
+        didSet {
+            self.setNeedsDisplay()
         }
     }
 
@@ -99,6 +106,7 @@ class BlogDashboardCardFrameView: UIView {
     var icon: UIImage? {
         didSet {
             iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
+            iconImageView.isHidden = icon == nil
         }
     }
 
@@ -132,16 +140,25 @@ class BlogDashboardCardFrameView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        backgroundColor = .listForeground
-
-        layer.cornerRadius = Constants.cornerRadius
-
-        configureMainStackView()
+        self.backgroundColor = .listForeground
+        self.configureMainStackView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+
+        // Update view background
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = Constants.cornerRadius
+
+        // Update title label
+        if let title {
+            self.titleLabel.attributedText = Self.titleAttributedText(title: title, hint: titleHint, font: titleLabel.font)
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -187,13 +204,7 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         mainStackView.addArrangedSubview(headerStackView)
-
-        headerStackView.addArrangedSubviews([
-            iconImageView,
-            titleLabel,
-            chevronImageView,
-            ellipsisButton
-        ])
+        headerStackView.addArrangedSubviews([titleLabel, ellipsisButton])
     }
 
     func configureButtonContainerStackView() {
@@ -205,7 +216,6 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         buttonContainerStackView.addArrangedSubviews([
-            chevronImageView,
             ellipsisButton
         ])
     }
@@ -272,6 +282,17 @@ class BlogDashboardCardFrameView: UIView {
         else {
             onViewTap?()
         }
+    }
+
+    private static func titleAttributedText(title: String, hint: String?, font: UIFont?) -> NSAttributedString {
+        let titleString = NSMutableAttributedString(string: title)
+        if let hint = hint, let range = title.nsRange(of: hint) {
+            titleString.addAttributes([
+                .foregroundColor: UIColor.primary,
+                .font: font as Any
+            ], range: range)
+        }
+        return titleString
     }
 
     private enum Constants {

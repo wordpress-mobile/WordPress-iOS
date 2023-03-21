@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-15 20:54:08+0000 */
+/* Translation-Revision-Date: 2023-03-13 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -293,7 +293,7 @@ translators: Block name. %s: The localized block name */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* antwoordde op je bericht";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* heeft een nieuw bericht aan haar site toegevoegd";
+"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* heeft een nieuw bericht aan hun site toegevoegd";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* liked je bericht";
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Activiteitenlog";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Activiteiten logs";
 
 /* Label for the Activity Type filter button */
@@ -1161,6 +1161,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blokken zijn stukjes inhoud die je kunt invoegen, herschikken en stylen zonder dat je hoeft te weten hoe je moet coderen. Blokken zijn een gemakkelijke en moderne manier voor je om mooie lay-outs te maken.";
 
+/* No comment provided by engineer. */
+"Blocks menu" = "Blokkenmenu";
+
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
@@ -1178,6 +1181,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's bezoeker";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Bloggen";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Blogging herinneringen";
@@ -1486,7 +1492,7 @@ translators: Block name. %s: The localized block name */
 "Checking purchases…" = "Aankopen worden gecontroleerd...";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Checking stats" = "Statistieken controleren...";
+"Checking stats" = "Statistieken aan het controleren";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Van %@ onderliggend";
@@ -1527,7 +1533,7 @@ translators: Block name. %s: The localized block name */
 "Choose a theme" = "Kies een thema";
 
 /* Select the site's intent. Subtitle */
-"Choose a topic from the list below or type your own." = "Kies een onderwerp van de lijst hieronder of typ je eigen";
+"Choose a topic from the list below or type your own." = "Kies een onderwerp van de lijst hieronder of typ je eigen.";
 
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Kies een unieke site pictogram";
@@ -1753,7 +1759,7 @@ translators: Block name. %s: The localized block name */
 "Completed" = "Afgerond";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your notifications" = "Afgerond: Controleer je meldingen";
+"Completed: Check your notifications" = "Afgerond: controleer je meldingen";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Afgerond: Kies je site statistieken";
@@ -1768,7 +1774,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a unique site icon" = "Afgerond: kies een unieke site pictogram";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Connect with other sites" = "Afgerond: Maak verbinding met andere sites";
+"Completed: Connect with other sites" = "Afgerond: maak verbinding met andere sites";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Afgerond: Ga verder met de site setup";
@@ -1789,7 +1795,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Social sharing" = "Afgerond: sociaal delen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload photos or videos" = "Afgerond: Foto’s of video’s uploaden";
+"Completed: Upload photos or videos" = "Afgerond: foto’s of video’s uploaden";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Afgerond: Bekijk je site";
@@ -1873,15 +1879,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Verbinding niet beschikbaar";
 
-/* Support email label. */
-"Contact Email" = "E-mail contactpersoon";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Neem contact op met Support";
 
@@ -2492,6 +2494,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -3099,9 +3102,6 @@ translators: Block name. %s: The localized block name */
 /* Section title for the external table section in the blog details screen */
 "External" = "Extern";
 
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra debug";
-
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Mislukt";
@@ -3417,7 +3417,7 @@ translators: Block name. %s: The localized block name */
 "Get to know the Jetpack app" = "Leer de Jetpack-app gebruiken";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
-"Get to know the WordPress app" = "Leer de WordPress-app gebruiken";
+"Get to know the WordPress app" = "Leer de WordPress app gebruiken";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
 "Get to know the app" = "Leer de app kennen";
@@ -3444,7 +3444,7 @@ translators: Block name. %s: The localized block name */
 "Give it a try by adding a few blocks to your post or page!" = "Probeer het door een paar blokken toe te voegen aan je bericht of pagina!";
 
 /* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Geef je %@-website een naam";
+"Give your %@ website a name" = "Geef je %@ site een naam";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Geef je site een naam die zijn personaliteit en onderwerp reflecteerd. De eerste indruk telt!";
@@ -4078,10 +4078,10 @@ translators: Block name. %s: The localized block name */
 "Last week you had %1$@ views and %2$@ comments." = "Vorige week had je %1$@ weergaven en %2$@ reacties.";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
-"Last week you had %1$@ views and %2$@ likes." = "Vorige week had je %1$@ weergaven en %2$@ likes.";
+"Last week you had %1$@ views and %2$@ likes." = "Vorige week had je %1$@ weergaven en %2$@ vind-ik-leuks.";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "Vorige week had je %1$@ bezoeken, %2$@ reacties en %3$@ likes.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "Vorige week had je %1$@ bezoeken, %2$@ reacties en %3$@ vind-ik-leuks.";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
 "Last week you had %@ views." = "Vorige week had je %@ weergaven.";
@@ -4694,9 +4694,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Mijn sites in WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Mijn tickets";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mijn toptien cafés";
 
@@ -5048,9 +5045,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Niet nu";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Niet ingesteld";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Niet genoeg ruimte om te uploaden";
@@ -5890,12 +5884,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Projects" = "Projecten";
 
 /* Title of the notification presented when a prompt is skipped */
-"Prompt skipped" = "Prompt overgeslagen";
+"Prompt skipped" = "Opdracht overgeslagen";
 
 /* Title label for blogging prompts in the create new bottom action sheet.
    Title label for the Prompts card in My Sites tab.
    View title for Blogging Prompts list. */
-"Prompts" = "Prompts";
+"Prompts" = "Opdrachten";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -6564,7 +6558,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to discover new themes" = "Selecteer %@ om nieuwe thema's te ontdekken";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to find other sites." = "Selecteer %@ om andere sites te zoeken";
+"Select %@ to find other sites." = "Selecteer %@ om andere sites te zoeken.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Selecteer %@ om te zien hoe je site presteert.";
@@ -6627,7 +6621,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select paragraph style" = "Alineastijl selecteren";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ tab to get updates on the go." = "Selecteer het tabblad %@ om onderweg updates te ontvangen.";
+"Select the %@ tab to get updates on the go." = "Selecteer de tab %@ om onderweg updates te ontvangen.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Selecteer %@ om je social media accounts toe te voegen";
@@ -6887,9 +6881,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Wordt openbaar getoond als je reageert op blogs.";
-
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Toont een dialoog om het contact e-mailadres te wijzigen.";
 
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Geeft alle volgers weer";
@@ -7206,10 +7197,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Stay in the loop" = "Blijf op de hoogte";
 
 /* Subtitle giving the user more context about why to enable notifications. */
-"Stay in touch with like and comment notifications." = "Blijf in contact met meldingen van likes en reacties.";
+"Stay in touch with like and comment notifications." = "Blijf in contact met meldingen van vind-ik-leuks en reacties.";
 
 /* Subtitle giving the user more context about why to enable notifications. */
-"Stay in touch with your audience with like and comment notifications." = "Blijf in contact met je publiek met meldingen van likes en reacties.";
+"Stay in touch with your audience with like and comment notifications." = "Blijf in contact met je publiek met meldingen van vind-ik-leuks en reacties.";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Staying up to date with notifications" = "Op de hoogte blijven met meldingen";
@@ -7276,8 +7267,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Superbeheerder";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Ondersteuning";
 
 /* Button used to switch site */
@@ -7516,9 +7506,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Deze gebruikersnaam is niet toegestaan.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "De functie Extra Debug bevat aanvullende informatie in activiteitenlogboeken en kan ons helpen om problemen met de app op te lossen.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "De Facebook verbinding kan geen pagina's vinden. Publiceren kan niet verbinden met Facebook profielen, alleen met gepubliceerde pagina's.";
@@ -8614,9 +8601,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifieer je e-mailadres - instructies verzonden aan %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Versie";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Versie ";
 
@@ -8686,7 +8670,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View more" = "Meer weergeven";
 
 /* Menu title to show more prompts. */
-"View more prompts" = "Bekijk meer prompts";
+"View more prompts" = "Bekijk meer opdrachten";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Bekijk je site";
@@ -8729,9 +8713,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Bezoek de site";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Breng een bezoek aan het Help Center voor antwoorden op algemene vragen of neem contact met ons op voor meer hulp.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9172,14 +9153,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress forums";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress ondersteuning";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress help centrum";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress media";
@@ -9229,8 +9204,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com account";
 
 /* Title for the Plans list header */
@@ -9448,7 +9422,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Je moet je account verifiëren alvorens je een bericht kan publiceren.\nGeen zorgen, je bericht is veilig en wordt als concept opgeslagen.";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"You received *50 likes* on your comment" = "Je hebt *50 likes* ontvangen op je reactie";
+"You received *50 likes* on your comment" = "Je hebt *50 vind-ik-leuks* ontvangen op je reactie";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Je ontving *50 vind-ik-leukss* op je site vandaag";
@@ -9526,7 +9500,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your free WordPress.com address is" = "Je gratis WordPress.com adres is";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Je nieuwste bericht <a href=\"\">%1$@<\/a> heeft <strong>%2$d<\/strong> likes gekregen.";
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Je nieuwste bericht <a href=\"\">%1$@<\/a> heeft <strong>%2$d<\/strong> vind-ik-leuks gekregen.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Je nieuwste bericht <a href=\"\">%@<\/a> heeft <strong>één<\/strong> like gekregen.";
@@ -9672,6 +9646,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Negeren";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Stel je werk tentoon op miljoenen sites.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Dit verbergen";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promoot je content met Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Blaze nu een bericht";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promoot in een paar minuten elke post of pagina voor slechts enkele euro’s per dag.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Volg de prestaties van je campagne en annuleer op elk gewenst moment.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Je content zal op miljoenen WordPress en Tumblr sites verschijnen.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Zorg er met Blaze voor dat meer mensen je site bezoeken";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Negeren";
 
@@ -9687,8 +9685,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "verbindingen";
 
+/* Customize Insights description */
+"customizeInsightsCell.content" = "Maak je eigen aangepaste dashboard en kies welke rapporten moeten worden weergegeven. Richt je op de gegevens die het meest van belang zijn.";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "Tik om deze kaart te negeren";
+
 /* Customize Insights button title */
 "customizeInsightsCell.dismissButton.title" = "Afwijzen";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "Je inzichten aanpassen";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "Tik om inzichten aan te passen";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "Probeer het nu";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
@@ -9699,13 +9712,28 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "bijv. 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Meer";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "volgen";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "Stel je blogging herinneringen in";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "Bewerk herinneringen";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "Ga door met bloggen en controleer achteraf om te zien of bezoekers blijven komen op je site.";
 
 /* A hint to users that they've set up blogging reminders. */
 "growAudienceCell.bloggingReminders.completed.tip" = "Je hebt blogging herinneringen ingesteld";
@@ -9717,16 +9745,40 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "growAudienceCell.dismiss" = "Afwijzen";
 
 /* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Ontdek blogs om te volgen";
+
+/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Opnieuw doen";
 
 /* A detailed message to users indicating that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.details" = "Blijf doorgaan! Likes en opmerkingen zijn een goede manier om een netwerk te bouwen. Ga naar Reader om meer berichten te vinden.";
 
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "Je bent verbonden met andere blogs";
+
 /* A detailed message to users about growing the audience for their site through reader discover. */
 "growAudienceCell.readerDiscover.details" = "Verbind met andere bloggers door hun berichten te volgen, een like te geven en erop te reageren.";
 
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "Berichten delen inschakelen";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "Verbind met meer netwerken";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "Wanneer je je volgende bericht publiceert, zal het automatisch gedeeld worden op je verbonden netwerken.";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "Delen is ingesteld!";
+
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
 "growAudienceCell.social.title" = "Deel nieuwe berichten automatisch op je social media, om te starten met het brengen van dat publiek naar je site.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "Een tip om je publiek te laten groeien";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "Weergaven op je site tot zover";
 
 /* Description for view count. Singular. */
 "growAudienceCell.viewsCount.singular" = "Bekijk je site tot zover";
@@ -9773,6 +9825,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Opslaan als concept";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Opslaan als concept";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Opslaan als concept";
 
@@ -9802,6 +9860,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ wordt over %2$@ verplaatst";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "%@ worden binnenkort verplaatst";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "%@ wordt binnenkort verplaatst";
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Aangedreven door Jetpack";
@@ -9843,10 +9907,22 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.newUsers.subtitle" = "Met Jetpack kun je meer doen met je WordPress-site. Overstappen is gratis en duurt maar een minuut.";
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Geef WordPress een boost met Jetpack";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "Doorgaan naar Meldingen";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Doe dit later";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistieken, Reader, meldingen en andere functies die door Jetpack aangedreven worden, zijn verwijderd uit de WordPress-app.";
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack-functies zijn verplaatst.";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Schakel over naar de Jetpack-app om realtime meldingen te blijven ontvangen op je apparaat.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Ontvang meldingen met de Jetpack-app";
@@ -9903,6 +9979,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.selfHosted.title" = "Je site heeft de Jetpack-plugin";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Doorgaan zonder Jetpack";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Probeer de Jetpack-app";
 
 /* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
@@ -9910,6 +9989,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Doorgaan naar Statistieken";
+
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Gereed om deze site met de app te gebruiken.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Gereed";
 
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistieken, Lezer, Meldingen en andere functies worden binnenkort verplaatst naar de Jetpack mobiele app.";
@@ -9928,6 +10013,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Herinner mij hier later aan";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Door Jetpack in te stellen, ga je akkoord met onze %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "De volledige plug-in installeren";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Neem contact op met de ondersteuning";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "volledige Jetpack-plug-in";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Algemene voorwaarden";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Installeer de volledige Jetpack-plug-in";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Voeg een auteur toe";
@@ -9963,7 +10066,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.prologue.prompt.watchStats" = "Bekijk je statistieken";
 
 /* Write a blog prompt for the jetpack prologue */
-"jetpack.prologue.prompt.writeBlog" = "Schrijf een blog.";
+"jetpack.prologue.prompt.writeBlog" = "Schrijf een blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Meer informatie";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Dit verbergen";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Deze site gebruikt de %1$@-plug-in. Deze ondersteunt nog niet alle functies van de app. Installeer de volledige Jetpack-plug-in.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Deze site gebruikt individuele Jetpack-plug-ins. Deze ondersteunen nog niet alle functies van de app. Installeer de volledige Jetpack-plug-in.";
 
 /* Later today */
 "later today" = "later vandaag";
@@ -9989,6 +10104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Duidelijk";
 
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "Hulp nodig?";
+
 /* The title in the Delete WordPress screen */
 "migration.deleteWordpress.title" = "Je hebt de WordPress-app niet meer nodig";
 
@@ -10010,17 +10128,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The description in the Load WordPress screen */
 "migration.loadWordpress.description" = "Het lijkt erop dat je de WordPress-app geïnstalleerd hebt.";
 
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Open WordPress";
+
 /* The secondary button title in the Load WordPress screen */
 "migration.loadWordpress.secondaryButton" = "Nee, dank je";
 
 /* The secondary description in the Load WordPress screen */
 "migration.loadWordpress.secondaryDescription" = "Wil je je gegevens verplaatsen van de WordPress-app en automatisch aanmelden?";
 
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Welkom bij Jetpack!";
+
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Later beslissen";
 
 /* Footer for the migration notifications screen. */
 "migration.notifications.footer" = "Tik op Toestaan wanneer je de melding krijgt om meldingen van WordPress te blijven ontvangen.";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "Toestaan";
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Je krijgt dezelfde meldingen, maar ze komen nu van de Jetpack-app.";
@@ -10064,6 +10191,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Afwijzen";
 
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "Verwijderen";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "Opnieuw proberen";
+
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opties uitgelichte afbeelding";
 
@@ -10079,6 +10212,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
 "qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Tik op '%@' en ga terug naar je webbrowser om door te gaan.";
 
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Deze gebruiker rapporteren";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "Terug";
+
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Afwijzen";
 
@@ -10091,11 +10233,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of follow conversations tooltip. */
 "readerDetail.followConversationTooltipTitle.accessibilityLabel" = "Volg conversatie";
 
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "Meer op WordPress.com";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "Meer van %1$@";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "Meer";
+
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Openen in Safari";
 
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "Delen";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nieuw";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Afwijzen";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "Verwijderen";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "Media opties";
 
 /* Share extension error dialog retry button label. */
 "shareModularViewController.retryAlert.accept" = "Opnieuw proberen";
@@ -10106,11 +10269,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog text. */
 "shareModularViewController.retryAlert.message" = "Oeps, er is iets fout gegaan tijdens het delen. Probeer het opnieuw, het kan een glitch zijn geweest.";
 
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "Fout tijdens delen";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Meldingen weergeven";
 
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Herinneringen";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "Afgelopen 7 dagen";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Vorige 7 dagen";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* hoger dan de vorige 7 dagen";
+
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* minder dan de vorige 7 dagen";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "Hetzelfde als de vorige 7 dagen";
 
 /* Stats insights views higher than previous 7 days */
 "stats.insights.label.views.sevenDays.higher" = "Je hebt de afgelopen 7dagen %@ meer weergaven gehad dan de vorige 7 dagen.\n";
@@ -10120,6 +10301,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Stats insights label shown when the user's view count is the same as the previous 7 days. */
 "stats.insights.label.views.sevenDays.same" = "Je hebt de afgelopen 7 dagen hetzelfde aantal weergaven gehad als de vorige 7 dagen.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "Afgelopen 7 dagen";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "Vorige 7 dagen";
 
 /* Stats insights visitors higher than previous 7 days */
 "stats.insights.label.visitors.sevenDays.higher" = "Je hebt de afgelopen 7dagen %@ meer bezoekers gehad dan de vorige 7 dagen.\n";
@@ -10137,7 +10324,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.latestPostSummary.createPost" = "Bericht aanmaken";
 
 /* Title for Likes count in Latest Post Summary stats card. */
-"stats.insights.latestPostSummary.likes" = "Likes";
+"stats.insights.latestPostSummary.likes" = "Vind-ik-leuks";
 
 /* Prompt shown in the 'Latest Post Summary' stats card if a user hasn't yet published anything. */
 "stats.insights.latestPostSummary.noData" = "Publiceer een eerste bericht en kijk dan nog eens hier.";
@@ -10155,7 +10342,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.management.inactiveCards" = "Inactieve kaarten";
 
 /* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
-"stats.insights.management.noCardsPrompt" = "No inactive cards remaining";
+"stats.insights.management.noCardsPrompt" = "Geen inactieve kaarten meer";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Annuleren";
@@ -10192,6 +10379,84 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Site-leden";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Gereed";
+
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tik om de veelgestelde vragen van de Jetpack-app in een externe browser te bezoeken";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Bezoek onze veelgestelde vragen pagina";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Uitloggen";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Tik om de website van het communityforum in een externe browser te bezoeken";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Ga naar WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Stel een vraag in het communityforum en krijg hulp van onze groep vrijwilligers.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Toont een dialoog om het contact e-mailadres te wijzigen.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Niet ingesteld";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "E-mail";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Neem contact op met de ondersteuning";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Debuggen";
+
+/* Support email label. */
+"support.row.email.title" = "E-mail";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress-forums";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress Help Center";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Bij de veelgestelde vragen kun je antwoorden vinden op vragen die je zelf misschien ook wilde stellen.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Bedankt voor het overschakelen naar de Jetpack-app!";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Logbestanden";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Tickets";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Versie";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Schakel debugging in om aanvullende informatie aan je logboeken toe te volgen. Deze informatie kan je helpen om problemen met de app op te lossen.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com-account";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Geavanceerd";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Communityforums";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Ondersteuning met prioriteit";
+
+/* View title for Help & Support page. */
+"support.title" = "Help";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
@@ -10247,6 +10512,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Log in bij Jetpack om de statistieken van vandaag te zien.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Kan de statistieken van deze week niet laden.";
+
 /* Title of the no site view in this week widget */
 "widget.thisweek.nosite.view.title" = "Maak een site aan of voeg er een toe om de statistieken van deze week te zien.";
 
@@ -10267,6 +10535,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Vind-ik-leuks";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Kan site statistieken niet laden.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Kan de statistieken van vandaag niet laden.";
 
 /* Title of the no site view in today widget */
 "widget.today.nosite.view.title" = "Maak een site aan of voeg er een toe om de statistieken van vandaag te zien.";

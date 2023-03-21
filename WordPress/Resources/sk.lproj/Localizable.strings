@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-11-01 10:41:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -201,7 +201,7 @@
    Title for the activity list */
 "Activity" = "Aktivita";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Záznamy o činnosti";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -875,15 +875,11 @@
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Pripojenie nie je dostupné";
 
-/* Support email label. */
-"Contact Email" = "Kontaktný e-mail";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontaktovať podporu";
 
@@ -1207,6 +1203,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -1452,9 +1449,6 @@
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Externý";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra Debug";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -2262,9 +2256,6 @@
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Moja webová stránka je vo WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Moje tickety";
-
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder
@@ -2463,9 +2454,6 @@
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Teraz nie";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Nie je nastavené";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Nedostatok miesta na nahranie";
@@ -3743,8 +3731,7 @@
 "Super Admin" = "Super administrátor";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Podpora";
 
 /* Button used to switch site */
@@ -3859,9 +3846,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Toto používateľské meno nie je povolené.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Funkcia Extra Debug obsahuje dodatočné informácie v záznamoch o činnosti a môže nám dopomôcť vychytať problémy s aplikáciou.";
 
 /* Message shown when a GIF failed to load while trying to add it to the Media library. */
 "The GIF could not be added to the Media Library." = "GIF formát sa nepodarilo pripojiť do Knižnice médií. ";
@@ -4494,9 +4478,6 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Overte prihlásenie";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Verzia";
-
 /* Version of a plugin to install
    Version of an installed plugin */
 "Version %@" = "Verzia %@";
@@ -4585,9 +4566,6 @@
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Navštíviť webovú stránku";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Navštívte centrum nápovedy a získajte odpovede na vaše najčastejšie otázky, alebo nás kontaktujte pre získanie ďalšej pomoci.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -4702,14 +4680,8 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress Fóra";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Pomoc WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress Centrum Pomoci";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress média";
@@ -4747,8 +4719,7 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Účet WordPress.com";
 
 /* Title for the Plans list header */

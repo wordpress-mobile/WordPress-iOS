@@ -230,14 +230,12 @@ extension ReaderTabViewModel {
     }
 
     private func clearFlags() {
-        let context = ContextManager.sharedInstance().mainContext
-        ReaderPostService(managedObjectContext: context).clearInUseFlags()
+        ReaderPostService(coreDataStack: ContextManager.shared).clearInUseFlags()
         ReaderTopicService(coreDataStack: ContextManager.shared).clearInUseFlags()
     }
 
     private func clearTopics(removeAllTopics removeAll: Bool) {
-        let context = ContextManager.sharedInstance().mainContext
-        ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
+        ReaderPostService(coreDataStack: ContextManager.shared).deletePostsWithNoTopic()
 
         if removeAll {
             ReaderTopicService(coreDataStack: ContextManager.shared).deleteAllTopics()
@@ -247,8 +245,7 @@ extension ReaderTabViewModel {
     }
 
     private func clearSavedPosts() {
-        let context = ContextManager.sharedInstance().mainContext
-        ReaderPostService(managedObjectContext: context).clearSavedPostFlags()
+        ReaderPostService(coreDataStack: ContextManager.shared).clearSavedPostFlags()
     }
 
     private func clearSearchSuggestions() {

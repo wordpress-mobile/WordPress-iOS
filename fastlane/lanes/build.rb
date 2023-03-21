@@ -36,7 +36,7 @@ platform :ios do
   # @called_by CI
   #
   desc 'Build WordPress for Testing'
-  lane :build_for_testing do |options|
+  lane :build_wordpress_for_testing do |options|
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
@@ -85,13 +85,22 @@ platform :ios do
       path.include?(options[:name])
     end.first
 
-    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
 
     inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
+    # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
+    #
+    # Their scheme and xctestrun name pairing are:
+    #
+    # - (JetpackUITests, JetpackUITests)
+    # - (WordPress, WordPressUnitTests)
+    #
+    # Because we only support those two modes, we can infer the scheme name from the xctestrun name
+    scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
+      scheme: scheme,
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
@@ -240,109 +249,40 @@ platform :ios do
     )
   end
 
-  # Builds the WordPress app for an Installable Build ("WordPress Alpha" scheme), and uploads it to App Center
+  # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
-  desc 'Builds and uploads an installable build'
-  lane :build_and_upload_installable_build do
+  desc 'Builds and uploads a Prototype Build'
+  lane :build_and_upload_wordpress_prototype_build do
     sentry_check_cli_installed
 
     alpha_code_signing
 
-    # Get the current build version, and update it if needed
-    version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
-    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = generate_installable_build_number
-    UI.message("Updating build version to #{build_number}")
-    versions['VERSION_LONG'] = build_number
-    new_config = Xcodeproj::Config.new(versions)
-    new_config.save_as(Pathname.new(version_config_path))
-
-    gym(
+    build_and_upload_prototype_build(
       scheme: 'WordPress Alpha',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Alpha',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
-      export_method: 'enterprise',
-      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
+      output_app_name: 'WordPress Alpha',
+      appcenter_app_name: 'WPiOS-One-Offs',
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS
     )
-
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WPiOS-One-Offs',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      destinations: 'Collaborators',
-      notify_testers: false
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
 
-  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to App Center
+  # Builds the Jetpack app for a Prototype Build ("Jetpack" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
-  desc 'Builds and uploads a Jetpack installable build'
-  lane :build_and_upload_jetpack_installable_build do
+  desc 'Builds and uploads a Jetpack prototype build'
+  lane :build_and_upload_jetpack_prototype_build do
     sentry_check_cli_installed
 
     jetpack_alpha_code_signing
 
-    # Get the current build version, and update it if needed
-    version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
-    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = generate_installable_build_number
-    UI.message("Updating build version to #{build_number}")
-    versions['VERSION_LONG'] = build_number
-    new_config = Xcodeproj::Config.new(versions)
-    new_config.save_as(Pathname.new(version_config_path))
-
-    gym(
+    build_and_upload_prototype_build(
       scheme: 'Jetpack',
-      workspace: WORKSPACE_PATH,
-      configuration: 'Release-Alpha',
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'Jetpack Alpha',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
-      export_method: 'enterprise',
-      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
+      output_app_name: 'Jetpack Alpha',
+      appcenter_app_name: 'jetpack-installable-builds',
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK
     )
-
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'jetpack-installable-builds',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      destinations: 'Collaborators',
-      notify_testers: false
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    post_installable_build_pr_comment(app_name: 'Jetpack', build_number: build_number, url_slug: 'jetpack-installable-builds')
   end
 
   #################################################
@@ -350,11 +290,11 @@ platform :ios do
   #################################################
 
 
-  # Generates a build number for Installable Builds, based on the PR number and short commit SHA1
+  # Generates a build number for Prototype Builds, based on the PR number and short commit SHA1
   #
   # @note This function uses Buildkite-specific ENV vars
   #
-  def generate_installable_build_number
+  def generate_prototype_build_number
     if ENV['BUILDKITE']
       commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
       branch = ENV.fetch('BUILDKITE_BRANCH', nil)
@@ -370,39 +310,88 @@ platform :ios do
     end
   end
 
-  # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
+  # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
-  # Use this only after `upload_to_app_center` as been called, as it announces how said App Center build can be installed.
-  #
-  # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
-  # @param [String] build_number The App Center's build number for this build
-  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in App Center (e.g. `WPiOS-One-Offs`)
-  #
-  # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
-  #
-  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)
-    UI.message("Successfully built and uploaded installable build `#{build_number}` to App Center.")
+  # rubocop:disable Metrics/AbcSize
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, sentry_project_slug:)
+    configuration = 'Release-Alpha'
 
-    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
+    # Get the current build version, and update it if needed
+    version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
+    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
+    build_number = generate_prototype_build_number
+    UI.message("Updating build version to #{build_number}")
+    versions['VERSION_LONG'] = build_number
+    new_config = Xcodeproj::Config.new(versions)
+    new_config.save_as(Pathname.new(version_config_path))
 
-    install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
-    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{CGI.escape(install_url)}&choe=UTF-8"
-    comment_body = <<~COMMENT_BODY
-      You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
-        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below to access App Center</li>
-        <li>Then installing the build number <code>#{build_number}</code> on your iPhone</li>
-      </ul>
-      <img src='#{qr_code_url}' width='150' height='150' />
-      If you need access to App Center, please ask a maintainer to add you.
-    COMMENT_BODY
+    # Build
+    gym(
+      scheme: scheme,
+      workspace: WORKSPACE_PATH,
+      configuration: configuration,
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: output_app_name,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
+      export_method: 'enterprise',
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
+    )
+
+    # Upload to App Center
+    commit = ENV.fetch('BUILDKITE_COMMIT', 'Unknown')
+    pr = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
+    release_notes = <<~NOTES
+      - Branch: \`#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}\`\n
+      - Commit: [#{commit[0...7]}](https://github.com/#{GITHUB_REPO}/commit/#{commit})\n
+      - Pull Request: [\##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
+    NOTES
+
+    appcenter_upload(
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
+      app_name: appcenter_app_name,
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      release_notes: release_notes,
+      destinations: 'Collaborators',
+      notify_testers: false
+    )
+
+    # Upload dSYMs to Sentry
+    sentry_upload_dsym(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: sentry_project_slug,
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    # Post PR Comment
+    comment_body = prototype_build_details_comment(
+      app_display_name: output_app_name,
+      app_center_org_name: APPCENTER_OWNER_NAME,
+      metadata: { Configuration: configuration },
+      fold: true
+    )
 
     comment_on_pr(
-      project: 'wordpress-mobile/wordpress-ios',
+      project: GITHUB_REPO,
       pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
-      reuse_identifier: "installable-build-link--#{url_slug}",
+      reuse_identifier: "prototype-build-link-#{appcenter_app_name}",
       body: comment_body
     )
+
+    # Attach version information as Buildkite metadata and annotation
+    appcenter_id = lane_context.dig(SharedValues::APPCENTER_BUILD_INFORMATION, 'id')
+    metadata = versions.merge(build_type: 'Prototype', 'appcenter:id': appcenter_id)
+    buildkite_metadata(set: metadata)
+    appcenter_install_url = "https://install.appcenter.ms/orgs/#{APPCENTER_OWNER_NAME}/apps/#{appcenter_app_name}/releases/#{appcenter_id}"
+    list = metadata.map { |k, v| " - **#{k}**: #{v}" }.join("\n")
+    buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
+  # rubocop:enable Metrics/AbcSize
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'

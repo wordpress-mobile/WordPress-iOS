@@ -1,5 +1,7 @@
-Fizemos alguns ajustes nas sugestões de publicação para que você possa responder a sugestões antigas ou desativar as novas (mesmo sem conseguir imaginar por que você faria isso).
+Notícia urgente: agora o Jetpack é compatível com o Blaze! Promova um post ou página pelo aplicativo para alcançar novos leitores.
 
-Você não verá a opção de ler o código QR de login se sua conta usar a autenticação em dois fatores.
+Adicionamos um pouco mais de compatibilidade para sites com plugins individuais. Esses plugins ainda não são compatíveis com todas as funcionalidades do aplicativo, mas você pode instalar o plugin do Jetpack se preferir. Tudo pronto para publicar?
 
-A visualização Estatísticas mostra, de forma consistente, os dados mais recentes do dia, mesmo se a data mudar enquanto o aplicativo está em segundo plano. Um dia normal de trabalho.
+Além disso, adicionamos um cartão de perguntas frequentes sobre o período pós-migração. Para ver, mude do aplicativo do WordPress para o Jetpack.
+
+Por fim, tem um novo botão no menu Post que permite bloquear um autor para que os posts de autoria dele não apareçam mais no seu feed.

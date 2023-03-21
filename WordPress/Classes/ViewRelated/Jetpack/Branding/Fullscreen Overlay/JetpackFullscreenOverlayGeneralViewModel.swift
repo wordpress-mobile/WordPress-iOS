@@ -4,14 +4,14 @@ import Foundation
 /// Should be used for feature-specific and feature-collection overlays.
 final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewModel {
     let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
-    let source: JetpackFeaturesRemovalCoordinator.OverlaySource
+    let source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource
     let blog: Blog?
     let actionInfoText: NSAttributedString?
 
     let coordinator: JetpackDefaultOverlayCoordinator?
 
     init(phase: JetpackFeaturesRemovalCoordinator.GeneralPhase,
-         source: JetpackFeaturesRemovalCoordinator.OverlaySource,
+         source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource,
          blog: Blog?,
          actionInfoText: NSAttributedString? = nil,
          coordinator: JetpackDefaultOverlayCoordinator) {
@@ -198,14 +198,14 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
     var footnote: String? {
         switch phase {
         case .one:
-            return nil
+            fallthrough
         case .two:
+            fallthrough
+        case .newUsers:
             return nil
         case .three:
             fallthrough
         case .four:
-            fallthrough
-        case .newUsers:
             fallthrough
         case .selfHosted:
             return Strings.General.footnote

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-14 13:54:11+0000 */
+/* Translation-Revision-Date: 2023-03-09 13:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "활동 기록";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "활동 기록";
 
 /* Label for the Activity Type filter button */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "빈 페이지를 만들었습니다";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "인용 차단";
@@ -1151,6 +1154,9 @@ translators: Block name. %s: The localized block name */
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "차단한 사이트";
 
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "차단한 사용자";
+
 /* Blocklist Title
    Settings: Comments Blocklist */
 "Blocklist" = "차단 목록";
@@ -1160,6 +1166,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "블록은 코드를 작성하는 방법을 몰라도 삽입, 재정렬 및 스타일 지정이 가능한 콘텐츠 조각입니다. 블록은 아름다운 레이아웃을 생성할 수 있는 쉽고 현대적인 방법입니다.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "블록 메뉴";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "블로그";
@@ -1876,15 +1885,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "사용할 수 없는 연결";
 
-/* Support email label. */
-"Contact Email" = "연락처 이메일";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "지원팀에 문의";
 
@@ -2495,6 +2500,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -3101,9 +3107,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "외부";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "기타 디버그";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4700,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "내 워드프레스 사이트";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "내 티켓";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "상위 10개 카페";
 
@@ -5051,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "나중에";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "설정 안 함";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "업로드할 수 있는 충분한 공간이 없음";
@@ -6891,9 +6888,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "블로그에 댓글을 달 때 공개됩니다.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "연락처 이메일을 변경하기 위한 대화 상자를 표시합니다.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "팔로워를 모두 표시합니다.";
 
@@ -7279,8 +7273,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "최고 관리자";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "지원";
 
 /* Button used to switch site */
@@ -7519,9 +7512,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "해당 사용자명은 허용되지 않습니다.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "추가 디버그 기능을 사용하면 활동 로그에 추가 정보가 포함되므로 앱 문제 해결에 유용합니다.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "페이스북 페이지를 찾을 수 없습니다. 페이스북 프로필은 연결할 수 없으며 공개된 페이지로만 연결할 수 있습니다.";
@@ -8617,9 +8607,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "이메일 주소 확인 - %@에 지침 전송";
 
-/* Label in Support view displaying the app version. */
-"Version" = "버전";
-
 /* Description for the version label in the What's new page. */
 "Version " = "버전";
 
@@ -8732,9 +8719,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "사이트 방문";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "도움말 센터에서 일반적인 질문에 대한 답변을 얻거나 문의하기를 통해 추가 지원을 받으세요.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9159,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "워드프레스 블로그";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "워드프레스 포럼";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "워드프레스 도움말";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "워드프레스 헬프 센터";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "워드프레스 미디어";
@@ -9232,8 +9210,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "워드프레스닷컴";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com 계정";
 
 /* Title for the Plans list header */
@@ -9675,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "무시";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "수백만 개 사이트에 작업을 표시하세요.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Blaze로 콘텐츠 홍보";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "지금 글 Blaze";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "하루에 적은 금액으로 단 몇 분 만에 글 또는 페이지를 홍보하세요.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "언제든지 캠페인 성과를 추적하고 취소하세요.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "콘텐츠가 수백만 개의 워드프레스 및 Tumblr 사이트에 표시됩니다.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Blaze를 통해 사이트에 더 많은 트래픽 유도";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "이 페이지 Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "이 글 Blaze";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
 
@@ -9724,6 +9731,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "팔로우";
@@ -9923,6 +9933,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "젯팩 기능이 제거되었습니다.";
 
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "젯팩 앱으로 전환하여 계속 기기에서 실시간 알림을 받으세요.";
+
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "젯팩 앱으로 알림 받기";
 
@@ -9989,6 +10002,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "통계로 계속";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "앱에서 이 사이트를 이용할 준비가 되었습니다.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "완료";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "통계, 리더, 알림 및 기타 기능이 곧 젯팩 모바일 앱으로 이동합니다.";
 
@@ -10006,6 +10025,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "나중에 다시 알림";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "젯팩을 설정하면 %@에 동의하는 것입니다.";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "전체 플러그인 설치";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "지원 문의";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "전체 젯팩 플러그인";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "이용 약관";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "전체 젯팩 플러그인을 설치하세요.";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "글쓴이 추가";
@@ -10042,6 +10079,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "블로그 작성";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "더 알아보기";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "숨기기";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "이 사이트에서는 %1$@ 플러그인을 사용하고 있어서 아직 앱의 모든 기능이 지원되지 않습니다. 전체 젯팩 플러그인을 설치하세요.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "이 사이트에서는 개별 젯팩 플러그인을 사용하고 있어서 아직 앱의 모든 기능이 지원되지 않습니다. 전체 젯팩 플러그인을 설치하세요.";
 
 /* Later today */
 "later today" = "오늘 중";
@@ -10145,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "기타";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Blaze로 홍보";
+
 /* No comment provided by engineer. */
 "password" = "비밀번호";
 
@@ -10163,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "특성 이미지 옵션";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Blaze로 홍보";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "사이트 설정으로 이동하여 다시 켜기";
 
@@ -10177,6 +10232,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "로그인되었습니다!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "이 사용자 차단";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "이 사용자 신고";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "뒤로";
@@ -10234,6 +10298,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "프롬프트 표시";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "알림";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "최근 7일";
@@ -10336,6 +10403,84 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "사이트 회원";
+
+/* Dismiss the current view */
+"support.button.close.title" = "완료";
+
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "외부 브라우저에서 젯팩 앱 FAQ를 눌러서 방문";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "FAQ 방문";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "로그아웃";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "눌러서 외부 브라우저에서 커뮤니티 포럼 웹사이트 방문";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "WordPress.org 방문";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "커뮤니티 포럼에서 질문하고 자원봉사자 그룹으로부터 도움말을 받으세요.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "연락처 이메일 변경을 위한 대화 상자가 표시됩니다.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "설정 안 함";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "이메일";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "지원 문의";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "디버그";
+
+/* Support email label. */
+"support.row.email.title" = "이메일";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "워드프레스 포럼";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "워드프레스 도움말 센터";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "궁금할 수도 있는 일반적인 질문에 대한 답변이 FAQ에 있습니다.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "젯팩 앱으로 전환해 주셔서 감사합니다!";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "로그";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "티켓";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "버전";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "앱의 문제 해결에 도움이 되는 추가 정보가 로그에 포함되도록 디버깅을 활성화하세요.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "워드프레스닷컴 계정";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "고급";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "커뮤니티 포럼";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "우선 지원";
+
+/* View title for Help & Support page. */
+"support.title" = "도움말";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "다음 항목이 삭제됩니다.";

@@ -36,6 +36,7 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
+CGFloat const BlogDetailGridiconSize = 24.0;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailQuickStartSectionHeaderHeight = 48.0;
 CGFloat const BlogDetailSectionTitleHeaderHeight = 40.0;
@@ -443,6 +444,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [WPAnalytics trackEvent:WPAnalyticsEventJetpackInstallFullPluginCardViewed
                      properties:@{WPAppAnalyticsKeyTabSource: @"site_menu"}];
     }
+    
+    if ([self shouldShowBlaze]) {
+        [BlazeEventsTracker trackEntryPointDisplayedFor:BlazeSourceMenuItem];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -459,7 +464,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     // Required to add / remove "Home" section when switching between regular and compact width
     [self configureTableViewData];
 
@@ -537,7 +542,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             }
             break;
         case BlogDetailsSubsectionBlaze:
-            if ([self.blog supports:BlogFeatureBlaze]) {
+            if ([self shouldShowBlaze]) {
                 self.restorableSelectedIndexPath = indexPath;
                 [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
@@ -868,6 +873,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                          [weakSelf showActivity];
                                                      }]];
     }
+    
+    if ([self shouldShowBlaze]) {
+        [rows addObject:[self blazeRow]];
+    }
 
 // Temporarily disabled
 //    if ([self.blog supports:BlogFeaturePlans] && ![self.blog isWPForTeams]) {
@@ -940,15 +949,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:settingsRow];
     }
     
-    if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
-                                      accessibilityIdentifier:@"Blaze Row"
-                                                        image:[UIImage imageNamed:@"icon-blaze"]
-                                                   imageColor:nil
-                                                renderingMode:UIImageRenderingModeAlwaysOriginal
-                                                     callback:^{
-                                                         [weakSelf showBlaze];
-                                                     }]];
+    if ([self shouldShowBlaze]) {
+        [rows addObject:[self blazeRow]];
     }
     NSString *title = @"";
 
@@ -959,6 +961,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
 }
 
+- (BlogDetailsRow *)blazeRow
+{
+    __weak __typeof(self) weakSelf = self;
+    CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
+    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
+    BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                             accessibilityIdentifier:@"Blaze Row"
+                                                               image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
+                                                          imageColor:nil
+                                                       renderingMode:UIImageRenderingModeAlwaysOriginal
+                                                            callback:^{
+                                                                [weakSelf showBlaze];
+                                                            }];
+    blazeRow.showsSelectionState = NO;
+    return blazeRow;
+}
 
 - (BlogDetailsSection *)publishTypeSectionViewModel
 {
@@ -982,14 +1000,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
     [rows addObject:mediaRow];
 
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                             accessibilityIdentifier:@"Site Pages Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypePages]
-                                                 callback:^{
-        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
-                                                 }];
-    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
-    [rows addObject:pagesRow];
+    if ([self.blog supports:BlogFeaturePages]) {
+        BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                                 accessibilityIdentifier:@"Site Pages Row"
+                                                        image:[UIImage gridiconOfType:GridiconTypePages]
+                                                     callback:^{
+            [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
+                                                     }];
+        pagesRow.quickStartIdentifier = QuickStartTourElementPages;
+        [rows addObject:pagesRow];
+    }
 
     BlogDetailsRow *commentsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
@@ -1620,11 +1640,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{    
+{
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
-    StatsViewController *statsView = [StatsViewController new];
-    statsView.blog = self.blog;
-    statsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *statsView = [self viewControllerForStats];
 
     // Calling `showDetailViewController:sender:` should do this automatically for us,
     // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
@@ -1659,7 +1677,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showBlaze
 {
-    // TODO: Show Blaze screen
+    [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
+    
+    [BlazeFlowCoordinator presentBlazeInViewController:self
+                                                source:BlazeSourceMenuItem
+                                                  blog:self.blog
+                                                  post:nil];
 }
 
 - (void)showScan
@@ -1759,6 +1782,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (BOOL)shouldShowJetpackInstallCard
 {
     return ![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog];
+}
+
+- (BOOL)shouldShowBlaze
+{
+    return [BlazeHelper isBlazeFlagEnabled] && [self.blog supports:BlogFeatureBlaze];
 }
 
 #pragma mark - Remove Site

@@ -1,5 +1,7 @@
-Hemos introducido algunos cambios en los estímulos para bloguear, de manera que ahora puedes responder a estímulos antiguos o desactivar los nuevos (aunque nos extrañaría mucho que quisieras desactivarlos).
+¡Noticias frescas! Ahora Jetpack es compatible con Blaze, así que podrás promocionar entradas o páginas en la aplicación para llegar a nuevos lectores.
 
-El código QR de escaneado de acceso no se mostrará si tu cuenta utiliza la autenticación de dos factores.
+Hemos añadido soporte adicional para los sitios con plugins individuales. Estos plugins todavía no son compatibles con todas las funciones de la aplicación, pero tienes la opción de instalar el plugin completo de Jetpack en su lugar. ¿Lo tienes todo listo para empezar?
 
-La vista Estadísticas muestra los datos más recientes del día, incluso si la fecha cambia mientras la aplicación está funcionando en segundo plano en el dispositivo. Forma parte del trabajo.
+Además, hemos añadido una tarjeta de preguntas frecuentes tras la migración a la pantalla Ayuda. Esta tarjeta se mostrará cuando pases de la aplicación de WordPress a Jetpack.
+
+Por último, hay un botón en el menú Publicar que permite bloquear a un autor; de esta manera, sus entradas dejarán de aparecer en tu feed de contenido.

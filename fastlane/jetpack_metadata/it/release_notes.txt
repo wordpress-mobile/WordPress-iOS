@@ -1,5 +1,7 @@
-Abbiamo apportato alcune modifiche alle richieste di blog in modo da poter rispondere alle vecchie richieste o disabilitarne di nuove (sebbene non riusciamo a immaginare perché lo dovresti fare).
+Grandi notizie: Jetpack ora supporta Blaze. In questo modo puoi raggiungere nuovi lettori promuovendo un articolo o una pagina dall'interno dell'app.
 
-Non vedrai il codice QR Scan Login se il tuo account utilizza l'autenticazione a due fattori.
+Abbiamo aggiunto un piccolo supporto extra per i siti con plugin individuali. Questi plugin non supportano ancora tutte le funzionalità dell'app, ma puoi sempre installare il plugin Jetpack completo. Pronto per il lancio?
 
-La vista Statistiche mostra costantemente i dati più recenti della giornata, anche se la data cambia mentre l'app è in background sul dispositivo. Tutto in una giornata lavorativa.
+Abbiamo anche aggiunto una scheda per le domande frequenti sulla migrazione dell'articolo alla schermata Guida, che vedrai dopo il passaggio dall'app di WordPress a Jetpack.
+
+Infine, è presente un nuovo pulsante nel menu Articolo che ti consente di bloccare un autore in modo che i suoi articoli non appaiano più nel feed del contenuto.

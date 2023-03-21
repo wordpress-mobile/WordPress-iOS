@@ -1200,7 +1200,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
                 .videoPressBlock: false,
                 .unsupportedBlockEditor: false,
                 .canEnableUnsupportedBlockEditor: false,
-                .isAudioBlockMediaUploadEnabled: false,
+                .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
                 .mediaFilesCollectionBlock: false,
                 .reusableBlock: false,
                 .shouldUseFastImage: !post.blog.isPrivate(),

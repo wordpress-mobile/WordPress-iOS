@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: da_DK */
 
 /* Age between dates over one day.
@@ -29,7 +29,7 @@
 /* Theme Activate action title */
 "Activate" = "Aktiver";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogs";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -397,6 +397,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -488,9 +489,6 @@
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Uddrag";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Ekstra fejlretning";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -1386,8 +1384,7 @@
 "Submitting for Review..." = "Sender til godkendelse...";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Support";
 
 /* Button used to switch site */
@@ -1591,9 +1588,6 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Brugernavne skal være på mindst 4 tegn.";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Version";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Version";
 
@@ -1661,17 +1655,13 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress-fora";
-
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress-versionen er for gammel";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com konto";
 
 /* WordPress.com Notification Settings Title */

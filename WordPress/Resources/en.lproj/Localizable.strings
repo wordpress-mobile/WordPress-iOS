@@ -881,6 +881,12 @@
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Apply";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "What do you think about Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "What do you think about WordPress?";
+
 /* Approve action. Verb
    Approve comment (verb)
    Approves a Comment
@@ -1163,6 +1169,39 @@
 /* Notice that a page without content has been created */
 "Blank page created" = "Blank page created";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Display your work across millions of sites.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Hide this";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promote your content with Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Blaze a post now";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promote any post or page in only a few minutes for just a few dollars a day.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Track your campaign's performance and cancel at anytime.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Your content will appear on millions of WordPress and Tumblr sites.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Drive more traffic to your site with Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Blaze this page";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Blaze this post";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Block copied";
 
@@ -1196,6 +1235,9 @@
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blocked user";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2013,9 +2055,6 @@
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Could Be Better";
-
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Could not check site purchases.";
 
@@ -2571,6 +2610,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -3835,9 +3875,6 @@
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "I Like It";
-
 /* Title of a button style */
 "Icon & Text" = "Icon & Text";
 
@@ -4216,6 +4253,9 @@
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Moving to the Jetpack app in a few days.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";
@@ -5180,6 +5220,27 @@ Please install the %3$@ to use the app with this site.";
 /* Option to move Insight up in the view. */
 "Move up" = "Move up";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app, and can now only be found in the Jetpack app.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Switching is free and only takes a minute.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Switch to the Jetpack app";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Learn more at jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Notifications have moved to the Jetpack app.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Reader has moved to the Jetpack app.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Stats have moved to the Jetpack app.";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Moves the comment to the Trash.";
 
@@ -5207,6 +5268,18 @@ Please install the %3$@ to use the app with this site.";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "My Top Ten Cafes";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Work on a draft post";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "draft post";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Today's Stats";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Stats";
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
@@ -5525,9 +5598,6 @@ Please install the %3$@ to use the app with this site.";
    Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
 "No thanks" = "No thanks";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "No Thanks";
-
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "No themes matching your search";
 
@@ -5631,6 +5701,18 @@ Please install the %3$@ to use the app with this site.";
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Notifications Unread";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Could improve";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "I like it";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "No thanks";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Send feedback";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Dismiss";
@@ -5916,6 +5998,9 @@ Please install the %3$@ to use the app with this site.";
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pages";
+
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promote with Blaze";
 
 /* Comments Paging
    Discussion Settings
@@ -6304,6 +6389,9 @@ Please install the %3$@ to use the app with this site.";
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Posts that you like will appear here.";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promote with Blaze";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Dismiss";
 
@@ -6549,6 +6637,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Block this user";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Report this user";
@@ -7277,9 +7371,6 @@ Please install the %3$@ to use the app with this site.";
 /* Button title. Sends a email verification link (Magin link) for signing in. */
 "Send email verification link" = "Send email verification link";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Send Feedback";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Send Link";
 
@@ -7991,6 +8082,12 @@ Please install the %3$@ to use the app with this site.";
 /* Dismiss the current view */
 "support.button.close.title" = "Done";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tap to visit the Jetpack app FAQ in an external browser";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Visit our FAQ";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Log Out";
 
@@ -8026,6 +8123,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress Help Center";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Our FAQ provides answers to common questions you may have.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Thank you for switching to the Jetpack app!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Logs";
@@ -8763,8 +8866,7 @@ Please install the %3$@ to use the app with this site.";
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Today's Prompt 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Today's Stats";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9868,9 +9970,6 @@ Please install the %3$@ to use the app with this site.";
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "What do you think about WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?";
 
@@ -10132,9 +10231,6 @@ Please install the %3$@ to use the app with this site.";
 /* Caption displayed during the login flow. */
 "wordpress.prologue.splash.caption" = "Write, edit, and publish
 from anywhere.";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Work With Us";

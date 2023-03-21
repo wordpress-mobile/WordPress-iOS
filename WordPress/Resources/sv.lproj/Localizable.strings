@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-15 11:54:11+0000 */
+/* Translation-Revision-Date: 2023-03-13 18:30:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Aktivitetslogg";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetsloggar";
 
 /* Label for the Activity Type filter button */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "En blank sida har skapats";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citatblock";
@@ -1151,6 +1154,9 @@ translators: Block name. %s: The localized block name */
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
 
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blockerade användare";
+
 /* Blocklist Title
    Settings: Comments Blocklist */
 "Blocklist" = "Blockeringslista";
@@ -1160,6 +1166,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Block är innehållsbitar som du kan lägga in, sortera om och stilsätta utan att du behöver kunna programmera eller koda. Block är ett enkelt och modernt sätt för dig att skapa vackra layouter.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Block-meny";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
@@ -1876,15 +1885,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Anslutning är inte tillgänglig";
 
-/* Support email label. */
-"Contact Email" = "E-post för kontakt";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontakta support";
 
@@ -2448,7 +2453,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Dismiss a view. Verb */
-"Dismiss" = "Stäng";
+"Dismiss" = "Avfärda";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Avfärda steget %@ i snabbstarten";
@@ -2495,6 +2500,7 @@ translators: Block name. %s: The localized block name */
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -3101,9 +3107,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Externt";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra felsökning";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4700,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Mina WordPress-webbplatser";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Mina ärenden";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mina tio favoritcaféer";
 
@@ -5051,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Inte nu";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Inte angivet";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Tillgängligt utrymme är inte tillräckligt för denna uppladdning";
@@ -6891,9 +6888,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Visas offentligt när du kommenterar på bloggar.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Visar en dialog för att ändra e-posten för kontakt.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Visar alla följare";
 
@@ -7279,8 +7273,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Superadmin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Hjälp";
 
 /* Button used to switch site */
@@ -7519,9 +7512,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Det användarnamnet är inte tillåtet.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Funktionen Extra felsökning innehåller ytterligare information i aktivitetsloggar som kan hjälpa oss åtgärda problem med appen.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook-kopplingen hittar inga sidor. Publicize kan inte kopplas till Facebook-profiler, utan endast till publicerade sidor.";
@@ -8617,9 +8607,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Bekräfta din e-postadress – instruktioner har skickats till %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Version";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Version ";
 
@@ -8732,9 +8719,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Besök webbplats";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Besök Hjälpcentret för att få svar på vanliga frågor, eller kontakta oss för att få mer hjälp.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9159,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress-blogg";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress-forum";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress-hjälp";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress-hjälp";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress Media";
@@ -9232,8 +9210,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com-konto";
 
 /* Title for the Plans list header */
@@ -9675,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Avfärda";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Visa ditt arbete på miljontals webbplatser.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Dölj detta";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Marknadsför ditt innehåll med Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Marknadsför ett inlägg nu";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Marknadsför valfritt inlägg eller valfri sida på bara några minuter, för endast några kronor om dagen.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Se hur dina kampanjer presterar och avbryt när du vill.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Ditt innehåll kommer att visas på miljontals WordPress- och Tumblr-webbplatser.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Få mer trafik till din webbplats med Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Marknadsför den här sidan";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Marknadsför det här inlägget";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
 
@@ -9724,6 +9731,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "följ";
@@ -9992,6 +10002,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Fortsätt till statistik";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Redo att använda denna webbplats med appen.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Klar";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistik, läsare, aviseringar och andra funktioner kommer snart att flyttas över till Jetpack-mobilappen.";
 
@@ -10009,6 +10025,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Påminn mig senare";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Genom att konfigurera Jetpack accepterar du våra %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Installera det fullständiga tillägget";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Kontakta supporten";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "fullständigt Jetpack-tillägg";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Villkor";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Installera det fullständiga Jetpack-tillägget";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Lägg till en författare";
@@ -10045,6 +10079,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Skriv en blogg";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Lär dig mer";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Dölj detta";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Den här webbplatsen använder tillägget %1$@, som inte stöder alla funktioner i appen än. Installera det fullständiga Jetpack-tillägget.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Den här webbplatsen använder enskilda Jetpack-tillägg, som inte stöder alla funktioner i appen än. Installera det fullständiga Jetpack-tillägget.";
 
 /* Later today */
 "later today" = "senare idag";
@@ -10148,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "övrigt";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Marknadsför med Blaze";
+
 /* No comment provided by engineer. */
 "password" = "lösenord";
 
@@ -10166,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Marknadsför med Blaze";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Gå till Webbplatsinställningar för att aktivera igen";
 
@@ -10180,6 +10232,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Blockera denna användare";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Rapportera denna användare";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Tillbaka";
@@ -10342,6 +10403,84 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Webbplatsmedlemmar";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Klar";
+
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tryck för att besöka Jetpack-appens sida med vanliga frågor i en extern webbläsare";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Besök våra vanliga frågor";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Logga ut";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Tryck för att besöka communityforumets webbplats i en extern webbläsare";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Besök WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Ställ en fråga i communityforumet och få hjälp av vår grupp med volontärer.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Visar en dialog för att ändra e-posten för kontakt.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Inte inställt";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "E-post";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Kontakta supporten";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Felsök";
+
+/* Support email label. */
+"support.row.email.title" = "E-post";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress-forum";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress hjälpcenter";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Vår sida med vanliga frågor ger dig svar på eventuella frågor du kan tänkas ha.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Tack för att du byter till Jetpack-appen!";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Loggar";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Biljetter";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Version";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Aktivera felsökning för att inkludera ytterligare information i dina loggar som kan hjälpa till att felsöka problem med appen.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com-konto";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Avancerat";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Community-forum";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Prioriterad support";
+
+/* View title for Help & Support page. */
+"support.title" = "Hjälp";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Dessa saker kommer att raderas:";

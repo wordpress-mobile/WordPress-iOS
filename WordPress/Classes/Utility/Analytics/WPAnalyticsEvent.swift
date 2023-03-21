@@ -78,6 +78,7 @@ import Foundation
     case readerArticleVisited
     case itemSharedReader
     case readerBlogBlocked
+    case readerAuthorBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
@@ -441,8 +442,28 @@ import Foundation
     case jetpackInstallFullPluginCardTapped
     case jetpackInstallFullPluginCardDismissed
 
+    // Blaze
+    case blazeEntryPointDisplayed
+    case blazeEntryPointTapped
+    case blazeContextualMenuAccessed
+    case blazeCardHidden
+    case blazeOverlayDisplayed
+    case blazeOverlayButtonTapped
+    case blazeOverlayDismissed
+    case blazeFlowStarted
+    case blazeFlowCanceled
+    case blazeFlowCompleted
+    case blazeFlowError
+
+    // Moved to Jetpack static screen
+    case removeStaticPosterDisplayed
+    case removeStaticPosterButtonTapped
+    case removeStaticPosterLinkTapped
+
     // Help & Support
     case supportOpenMobileForumTapped
+    case supportMigrationFAQButtonTapped
+    case supportMigrationFAQCardViewed
 
     /// A String that represents the event
     var value: String {
@@ -574,6 +595,8 @@ import Foundation
             return "item_shared_reader"
         case .readerBlogBlocked:
             return "reader_blog_blocked"
+        case .readerAuthorBlocked:
+            return "reader_author_blocked"
         case .readerChipsMoreToggled:
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
@@ -1203,9 +1226,45 @@ import Foundation
         case .jetpackInstallFullPluginCardDismissed:
             return "jp_install_full_plugin_card_dismissed"
 
+        // Blaze
+        case .blazeEntryPointDisplayed:
+            return "blaze_entry_point_displayed"
+        case .blazeEntryPointTapped:
+            return "blaze_entry_point_tapped"
+        case .blazeContextualMenuAccessed:
+            return "blaze_entry_point_menu_accessed"
+        case .blazeCardHidden:
+            return "blaze_entry_point_hide_tapped"
+        case .blazeOverlayDisplayed:
+            return "blaze_overlay_displayed"
+        case .blazeOverlayButtonTapped:
+            return "blaze_overlay_button_tapped"
+        case .blazeOverlayDismissed:
+            return "blaze_overlay_dismissed"
+        case .blazeFlowStarted:
+            return "blaze_flow_started"
+        case .blazeFlowCanceled:
+            return "blaze_flow_canceled"
+        case .blazeFlowCompleted:
+            return "blaze_flow_completed"
+        case .blazeFlowError:
+            return "blaze_flow_error"
+
+        // Moved to Jetpack static screen
+        case .removeStaticPosterDisplayed:
+            return "remove_static_poster_displayed"
+        case .removeStaticPosterButtonTapped:
+            return "remove_static_poster_get_jetpack_tapped"
+        case .removeStaticPosterLinkTapped:
+            return "remove_static_poster_link_tapped"
+
         // Help & Support
         case .supportOpenMobileForumTapped:
             return "support_open_mobile_forum_tapped"
+        case .supportMigrationFAQButtonTapped:
+            return "support_migration_faq_tapped"
+        case .supportMigrationFAQCardViewed:
+            return "support_migration_faq_viewed"
         } // END OF SWITCH
     }
 

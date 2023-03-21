@@ -1,5 +1,7 @@
-Eski talepleri yanıtlayabilmeniz veya yeni talepleri devre dışı bırakabilmeniz için blog taleplerinde bazı ince ayarlar yaptık. (Neden yapacağınızı anlayamasak da.)
+Sıcak haber—Jetpack artık Blaze'i destekliyor, böylece uygulamadan bir yazıyı veya sayfayı tanıtarak yeni okuyuculara ulaşabilirsiniz.
 
-Hesabınızda iki faktörlü kimlik doğrulama kullanılıyorsa Giriş Tarama QR kodunu görmezsiniz.
+Bireysel eklentilere sahip siteler için biraz fazladan destek ekledik. Bu eklentiler henüz tüm uygulama özelliklerini desteklemiyor, ancak bu eklentiler yerine her zaman tam Jetpack eklentisini yükleyebilirsiniz. Başlamaya hazır mısınız?
 
-İstatistikler görünümü, uygulama cihazın arka planında çalışırken tarih değişse bile günün en son verilerini tutarlı bir şekilde gösterir. Hepsi bir günlük iş.
+Ayrıca Yardım ekranına, WordPress uygulamasından Jetpack'e geçtikten sonra göreceğiniz bir geçiş sonrası SSS kartı ekledik.
+
+Son olarak, Yazı menüsünde bir yazarı engellemenize olanak tanıyan yeni bir düğme var, böylece engellediğiniz yazarın yazıları artık içerik beslemenizde görünmez.

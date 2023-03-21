@@ -1,5 +1,7 @@
-Kami menerapkan beberapa perubahan kecil pada prompt blogging agar Anda dapat menjawab prompt lama atau menonaktifkan yang baru. (Meski kami tidak mengerti alasan Anda melakukannya.)
+Berita terbaru—Jetpack kini mendukung Blaze agar Anda dapat menjangkau pembaca baru dengan mempromosikan pos atau halaman dari dalam aplikasi.
 
-Layar Pindai Kode QR untuk Login tidak lagi ditampilkan jika akun Anda menggunakan otentikasi dua faktor.
+Kami menambahkan plugin individual untuk mendukung situs. Plugin ini belum mendukung semua fitur aplikasi. Untuk itu, Anda dapat menginstal plugin Jetpack versi lengkap. Siap meluncur?
 
-Tampilan Statistik selalu menampilkan data harian terbaru, meski tanggalnya berubah saat aplikasi berfungsi di latar belakang perangkat. Totalitas kerja yang kami nikmati.
+Kami juga menambahkan kartu FAQ pascamigrasi ke layar Bantuan, yang akan Anda temukan setelah beralih dari aplikasi WordPress ke Jetpack.
+
+Terakhir, tersedia tombol baru menu Pos untuk memblokir penulis sehingga posnya tidak akan muncul di feed konten Anda.

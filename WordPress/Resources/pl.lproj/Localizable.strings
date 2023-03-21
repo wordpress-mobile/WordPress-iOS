@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-02-13 11:57:04+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: pl */
 
 /* Per-year postfix shown after a domain's cost. */
@@ -159,7 +159,7 @@
    Title for the activity list */
 "Activity" = "Aktywność";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Dziennik aktywności";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -717,7 +717,6 @@
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontakt z pomocą techniczną";
 
@@ -976,6 +975,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -1181,9 +1181,6 @@
 
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Eksportowanie zawartości…";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Dodatkowy debug";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -2884,8 +2881,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Super admin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Wsparcie";
 
 /* Menu item label for linking a specific tag.
@@ -3258,9 +3254,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* two factor code placeholder */
 "Verification code" = "Kod weryfikacyjny";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Wersja";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Wersja ";
 
@@ -3414,12 +3407,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Forum WordPressa";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Centrum pomocy WordPressa";
-
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "Profil WordPress";
 
@@ -3435,8 +3422,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Konto WordPress.com";
 
 /* Title for the Plans list header */

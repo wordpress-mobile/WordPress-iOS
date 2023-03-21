@@ -6,11 +6,10 @@ extension NotificationsViewController {
     static let contactURL = "https://support.wordpress.com/contact/"
 
     func setupAppRatings() {
-        inlinePromptView.setupHeading(NSLocalizedString("What do you think about WordPress?",
-                                                        comment: "This is the string we display when prompting the user to review the app"))
-        let yesTitle = NSLocalizedString("I Like It",
+        inlinePromptView.setupHeading(AppConstants.AppRatings.prompt)
+        let yesTitle = NSLocalizedString("notifications.appRatings.prompt.yes.buttonTitle", value: "I like it",
                                          comment: "This is one of the buttons we display inside of the prompt to review the app")
-        let noTitle = NSLocalizedString("Could Be Better",
+        let noTitle = NSLocalizedString("notifications.appRatings.prompt.no.buttonTitle", value: "Could improve",
                                         comment: "This is one of the buttons we display inside of the prompt to review the app")
 
         inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
@@ -22,6 +21,7 @@ extension NotificationsViewController {
         }
 
         AppRatingUtility.shared.userWasPromptedToReview()
+        WPAnalytics.track(.appReviewsSawPrompt)
     }
 
     private func likedApp() {
@@ -54,9 +54,9 @@ extension NotificationsViewController {
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.inlinePromptView.setupHeading(NSLocalizedString("Could you tell us how we could improve?",
                                                                   comment: "This is the text we display to the user when we ask them for a review and they've indicated they don't like the app"))
-            let yesTitle = NSLocalizedString("Send Feedback",
+            let yesTitle = NSLocalizedString("notifications.appRatings.sendFeedback.yes.buttonTitle", value: "Send feedback",
                                              comment: "This is one of the buttons we display when prompting the user for a review")
-            let noTitle = NSLocalizedString("No Thanks",
+            let noTitle = NSLocalizedString("notifications.appRatings.sendFeedback.no.buttonTitle", value: "No thanks",
                                             comment: "This is one of the buttons we display when prompting the user for a review")
             self?.inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
                 self?.gatherFeedback()

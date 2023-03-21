@@ -8,8 +8,37 @@ let ContextManagerModelNameCurrent = "$CURRENT"
 
 public protocol CoreDataStackSwift: CoreDataStack {
 
+    /// Execute the given block with a background context and save the changes.
+    ///
+    /// This function _does not block_ its running thread. The block is executed in background and its return value
+    /// is passed onto the `completion` block which is executed on the given `queue`.
+    ///
+    /// - Parameters:
+    ///   - block: A closure which uses the given `NSManagedObjectContext` to make Core Data model changes.
+    ///   - completion: A closure which is called with the return value of the `block`, after the changed made
+    ///         by the `block` is saved.
+    ///   - queue: A queue on which to execute the completion block.
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) -> T, completion: ((T) -> Void)?, on queue: DispatchQueue)
+
+    /// Execute the given block with a background context and save the changes _if the block does not throw an error_.
+    ///
+    /// This function _does not block_ its running thread. The block is executed in background and the return value
+    /// (or an error) is passed onto the `completion` block which is executed on the given `queue`.
+    ///
+    /// - Parameters:
+    ///   - block: A closure that uses the given `NSManagedObjectContext` to make Core Data model changes. The changes
+    ///         are only saved if the block does not throw an error.
+    ///   - completion: A closure which is called with the `block`'s execution result, which is either an error thrown
+    ///         by the `block` or the return value of the `block`.
+    ///   - queue: A queue on which to execute the completion block.
     func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue)
 
+    /// Execute the given block with a background context and save the changes _if the block does not throw an error_.
+    ///
+    /// - Parameter block: A closure that uses the given `NSManagedObjectContext` to make Core Data model changes.
+    ///     The changes are only saved if the block does not throw an error.
+    /// - Returns: The value returned by the `block`
+    /// - Throws: The error thrown by the `block`, in which case the Core Data changes made by the `block` is discarded.
     func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T
 
 }
@@ -111,6 +140,17 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         })
     }
 
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) -> T, completion: ((T) -> Void)?, on queue: DispatchQueue) {
+        performAndSave(
+            block,
+            completion: { (result: Result<T, Error>) in
+                // It's safe to force-unwrap here, since the `block` does not throw an error.
+                completion?(try! result.get())
+            },
+            on: queue
+        )
+    }
+
     public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             performAndSave(block, completion: continuation.resume(with:), on: DispatchQueue.global())
@@ -134,6 +174,41 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         } else {
             save(context, .asynchronously)
         }
+    }
+
+    static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
+        guard FileManager.default.fileExists(atPath: storeURL.path) else {
+            DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
+            return
+        }
+
+        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
+            !objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+        else {
+            return
+        }
+
+        DDLogWarn("Migration required for persistent store.")
+
+        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
+            fatalError("Can't find WordPress.momd")
+        }
+
+        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
+            fatalError("Can't get the object model's version info")
+        }
+
+        guard let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
+            fatalError("Can't parse the model versions")
+        }
+
+        let sortedModelNames = modelNames.sorted { $0.compare($1, options: .numeric) == .orderedAscending }
+        try CoreDataIterativeMigrator.iterativeMigrate(
+            sourceStore: storeURL,
+            storeType: NSSQLiteStoreType,
+            to: objectModel,
+            using: sortedModelNames
+        )
     }
 }
 
@@ -236,40 +311,6 @@ private extension ContextManager {
         return persistentContainer
     }
 
-    static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
-        guard FileManager.default.fileExists(atPath: storeURL.path) else {
-            DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
-            return
-        }
-
-        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
-            objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
-        else {
-            return
-        }
-
-        DDLogWarn("Migration required for persistent store.")
-
-        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
-            fatalError("Can't find WordPress.momd")
-        }
-
-        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
-            fatalError("Can't get the object model's version info")
-        }
-
-        guard let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
-            fatalError("Can't parse the model versions")
-        }
-
-        let sortedModelNames = modelNames.sorted { $0.compare($1, options: .numeric) == .orderedAscending }
-        try CoreDataIterativeMigrator.iterativeMigrate(
-            sourceStore: storeURL,
-            storeType: NSSQLiteStoreType,
-            to: objectModel,
-            using: sortedModelNames
-        )
-    }
 }
 
 extension ContextManager {

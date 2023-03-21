@@ -5,6 +5,7 @@
 
 
 @class Media;
+@class RemoteVideoPressVideo;
 @class Blog;
 @class AbstractPost;
 @protocol ExportableAsset;
@@ -120,17 +121,20 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(void))failure;
 
 /**
- *  Obtains the  video url and poster image url for the video with the videoPressID
+ *  Retrieves the metadata of a VideoPress video.
  *
- *  @param videoPressID ID of video in VideoPress
- *  @param blog         blog to use to access video references
- *  @param success      return block if videopress info is found
- *  @param failure      return block if not information found.
+ *  The metadata parameters can be found in the API reference:
+ *  https://developer.wordpress.com/docs/api/1.1/get/videos/%24guid/
+ *
+ *  @param videoPressID ID of the video in VideoPress.
+ *  @param success a block to be executed when the metadata is fetched successfully.
+ *  @param failure a block to be executed when the metadata can't be fetched.
  */
-- (void)getMediaURLFromVideoPressID:(nonnull NSString *)videoPressID
+- (void)getMetadataFromVideoPressID:(nonnull NSString *)videoPressID
                              inBlog:(nonnull Blog *)blog
-                            success:(nullable void (^)(NSString * _Nonnull videoURL, NSString * _Nullable posterURL))success
+                            success:(nullable void (^)(RemoteVideoPressVideo * _Nonnull metadata))success
                             failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 /**
  * Sync all Media objects from the server to local database
  
@@ -142,32 +146,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
                         success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
-/**
- Gets a local thumbnail image file URL for the Media item, or generates one, if available.
-
- @discussion If the media asset is a video a frame of the video is returned.
-
- @param mediaInRandomContext the Media object from where to get the thumbnail.
- @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
-        exceed the maximum dimension of the UIScreen size.
- @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
- */
-- (void)thumbnailFileURLForMedia:(nonnull Media *)mediaInRandomContext
-                   preferredSize:(CGSize)preferredSize
-                      completion:(nonnull void (^)(NSURL * _Nullable url, NSError * _Nullable error))completion;
-/**
- Gets a thumbnail image for the Media item, or generates one, if available.
- 
- @discussion If the media asset is a video a frame of the video is returned.
-
- @param mediaInRandomContext the Media object from where to get the thumbnail.
- @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
-        exceed the maximum dimension of the UIScreen size.
- @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
- */
-- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
-                 preferredSize:(CGSize)preferredSize
-                    completion:(nonnull void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion;
 
 - (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
                             forMediaTypes:(nonnull NSSet *)mediaTypes

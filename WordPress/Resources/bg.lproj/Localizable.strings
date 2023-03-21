@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:52:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -130,7 +130,7 @@
    Title for the activity list */
 "Activity" = "Дейност";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "История на активността";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -599,7 +599,6 @@
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Връзка с отдела по поддръжка";
 
@@ -820,6 +819,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -957,9 +957,6 @@
 
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Експортиране на съдържанието...";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra Debug";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -2470,8 +2467,7 @@
 "Super Admin" = "Супер админ";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Помощ";
 
 /* Button used to switch site */
@@ -2559,9 +2555,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Това потребителско име не е позволено.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Модулът за режим за програмисти включва допълнителна информация в журналите и може да ни помогне да разрешаваме проблеми в приложението.";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2927,9 +2920,6 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Потвърждение на влизането";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Версия";
-
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Видео, %@";
 
@@ -2986,9 +2976,6 @@
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Преглед на %@ за повече";
 
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Посетете помощния център, за да получите отговори на често задавани въпроси, или се свържете с нас при нужда.";
-
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
@@ -3043,12 +3030,6 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Форуми за WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Помощен център за WordPress";
-
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress медия";
 
@@ -3067,8 +3048,7 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Профил в WordPress.com";
 
 /* Title for the Plans list header */

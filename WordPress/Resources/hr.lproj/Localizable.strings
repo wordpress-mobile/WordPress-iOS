@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.3 */
+/* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -268,6 +268,7 @@
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
+   Done. Action.
    Label for confirm feature image of a post
    Label for Done button
    Label on button to dismiss revisions view
@@ -335,9 +336,6 @@
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Greška";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra Debug";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -855,8 +853,7 @@
 "Status" = "Status";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Podrška";
 
 /* Menu item label for linking a specific tag.
@@ -1006,9 +1003,6 @@
    Username placeholder */
 "Username" = "Korisničko ime";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Verzija";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Inačica:";
 
@@ -1067,14 +1061,8 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPressov blog";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPressovi forumi";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPressova pomoć";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPressov centar za podršku";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress inačica prestara";

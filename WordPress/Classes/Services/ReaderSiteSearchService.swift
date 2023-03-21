@@ -6,14 +6,18 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 
 /// Allows searching for sites / feeds in the Reader.
 ///
-@objc class ReaderSiteSearchService: LocalCoreDataService {
+@objc class ReaderSiteSearchService: CoreDataService {
 
     // The size of a single page of results when performing a search.
     static let pageSize = 20
 
     private func apiRequest() -> WordPressComRestApi {
-        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
-        if let api = defaultAccount?.wordPressComRestApi, api.hasCredentials() {
+        let api = coreDataStack.performQuery {
+            let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: $0)
+            return defaultAccount?.wordPressComRestApi
+        }
+
+        if let api, api.hasCredentials() {
             return api
         }
 

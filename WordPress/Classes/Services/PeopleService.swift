@@ -2,6 +2,10 @@ import Foundation
 import CocoaLumberjack
 import WordPressKit
 
+enum PeopleServiceError: Error {
+    case userNotFoundLocally(User)
+}
+
 /// Service providing access to the People Management WordPress.com API.
 ///
 struct PeopleService {
@@ -128,48 +132,52 @@ struct PeopleService {
     ///
     /// - Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updateUser(_ user: User, role: String, failure: ((Error, User) -> Void)?) -> User {
-        var pristineRole: String?
-        var updated: User?
-        coreDataStack.performAndSave { context in
+    func updateUser(_ user: User, role: String, receiveUpdate: @escaping (User) -> Void, failure: ((Error, User) -> Void)?) {
+        coreDataStack.performAndSave({ context throws -> (String, User) in
             guard let managedPerson = managedPersonFromPerson(user, in: context) else {
-                return
+                throw PeopleServiceError.userNotFoundLocally(user)
             }
 
             // OP Reversal
-            pristineRole = managedPerson.role
+            let pristineRole = managedPerson.role
 
             // Pre-emptively update the role
             managedPerson.role = role
 
-            updated = User(managedPerson: managedPerson)
-        }
+            return (pristineRole, User(managedPerson: managedPerson))
+        }, completion: { result in
+            switch result {
+            case let .failure(error):
+                failure?(error, user)
+            case let .success((pristineRole, updated)):
+                receiveUpdate(updated)
+                self.updateRemoteUser(user, role: role, roleToRevertUponFailure: pristineRole, failure: failure)
+            }
+        }, on: .main)
+    }
 
-        // Early exit if failed to update the user
-        guard let updated else {
-            return user
-        }
-
-        // Hit the Backend
+    private func updateRemoteUser(_ user: User, role: String, roleToRevertUponFailure pristineRole: String, failure: ((Error, User) -> Void)?) {
         remote.updateUserRole(siteID, userID: user.ID, newRole: role, success: nil, failure: { error in
-
             DDLogError("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
 
-            var reloadedPerson: User!
-            self.coreDataStack.performAndSave { context in
+            self.coreDataStack.performAndSave({ context in
                 guard let managedPerson = self.managedPersonFromPerson(user, in: context) else {
                     DDLogError("### Person with ID \(user.ID) deleted before update")
-                    return
+                    throw PeopleServiceError.userNotFoundLocally(user)
                 }
 
-                managedPerson.role = pristineRole!
+                managedPerson.role = pristineRole
 
-                reloadedPerson = User(managedPerson: managedPerson)
-            }
-            failure?(error, reloadedPerson)
+                return User(managedPerson: managedPerson)
+            }, completion: { result in
+                switch result {
+                case let .failure(error):
+                    failure?(error, user)
+                case let .success(reloadedPerson):
+                    failure?(error, reloadedPerson)
+                }
+            }, on: .main)
         })
-
-        return updated
     }
 
     /// Deletes a given User.
@@ -267,13 +275,13 @@ struct PeopleService {
     /// Nukes all users from Core Data.
     ///
     func removeManagedPeople() {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
             request.predicate = NSPredicate(format: "siteID = %@", NSNumber(value: siteID))
             if let objects = (try? context.fetch(request)) as? [NSManagedObject] {
                 objects.forEach { context.delete($0) }
             }
-        }
+        }, completion: nil, on: .main)
     }
 
     /// Validates Invitation Recipients.

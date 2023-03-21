@@ -1,5 +1,7 @@
-Vi har gjort några förbättringar av bloggningsförslagen som gör att du kan svara på gamla förslag eller inaktivera nya förslag. (Även om vi inte kan föreställa oss varför du skulle vilja göra det.)
+Glada nyheter — Jetpack stöder nu Blaze, så att du kan nå nya läsare genom att marknadsföra ett inlägg eller en sida från appen.
 
-Meddelandet Skanna QR-kod för inloggning kommer inte att visas om ditt konto använder tvåfaktorsautentisering.
+Vi har lagt till lite extra stöd för webbplatser med enskilda tillägg. Dessa tillägg stöder inte alla appfunktioner ännu, men du kan alltid installera det fullständiga Jetpack-tillägget istället. Redo för lansering?
 
-Statistikvyn visar konsekvent dagens senaste data, även om datumet ändras medan appen körs i bakgrunden. Allt på en arbetsdag.
+Vi har också lagt till ett vanliga frågor-kort om vad som händer efter migrering på Hjälp-skärmen, vilket du kommer att se när du har bytt från WordPress-appen till Jetpack.
+
+Slutligen finns det en ny knapp i menyn Inlägg som gör det möjligt att blockera en författare vars inlägg du inte längre vill ska visas i ditt innehållsflöde.

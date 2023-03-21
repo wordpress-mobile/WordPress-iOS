@@ -1,5 +1,7 @@
-We hebben wat aanpassingen gedaan aan de blogmeldingen, zodat je oude meldingen kunt beantwoorden of nieuwe kunt uitschakelen. (Hoewel we niet zouden weten waarom je dat zou doen.)
+Groot nieuws: Jetpack ondersteunt nu Blaze, dat betekent dat je nieuwe lezers kunt bereiken door vanuit de app een bericht of pagina te promoten.
 
-Je ziet de QR-code voor inloggen niet als je account tweevoudige verificatie gebruikt.
+We hebben wat extra ondersteuning toegevoegd voor sites met individuele plugins. Deze plugins ondersteunen nog niet alle functies van de app, maar je kan altijd ook de volledige Jetpack-plugin installeren. Klaar voor lancering?
 
-De Statistiekweergave geeft consequent de nieuwste gegevens van de dag weer, zelfs als de datum verandert terwijl de app op de achtergrond draait. Lekker alledaags.
+We hebben op het Help-scherm ook een card toegevoegd met veelgestelde vragen over post-migratie, die je kunt zien nadat je van de WordPress-app bent overgeschakeld naar Jetpack.
+
+Eindelijk is er een nieuwe knop toegevoegd aan het Berichten-menu waarmee je auteurs kunt blokkeren zodat hun berichten niet meer op je contentfeed verschijnen.

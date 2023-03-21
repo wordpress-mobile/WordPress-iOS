@@ -1,5 +1,7 @@
-Wir haben ein paar raffinierte Änderungen an Blog-Schreibanregungen vorgenommen, damit du auf alte Themenvorschläge antworten oder neue deaktivieren kannst. (Auch wenn wir uns nicht vorstellen können, warum du das tun solltest.)
+Tolle Neuigkeiten: Jetpack unterstützt jetzt Blaze, sodass du neue Leser erreichen kannst, indem du einen Beitrag oder eine Seite in der App bewirbst.
 
-Wenn du für dein Konto die zweistufige Authentifizierung verwendest, wird dir der Anmelde-QR-Code zum Scannen nicht angezeigt.
+Wir stellen Websites zusätzlichen Support bereit – mit individuellen Plugins. Diese Plugins unterstützen noch nicht alle App-Funktionen, du kannst stattdessen jedoch jederzeit das vollständige Jetpack-Plugin installieren. Bist du bereit?
 
-In der Statistikansicht werden durchgehend die neuesten Daten des Tages angezeigt, auch wenn das Datum geändert wird, während die App im Hintergrund ausgeführt wird. Das ist doch selbstverständlich.
+Wir haben auch eine FAQ-Karte nach Migrationsabschluss zum Hilfe-Bildschirm hinzugefügt, der dir nach dem Wechsel von der WordPress-App zu Jetpack angezeigt wird.
+
+Zu guter Letzt gibt es einen neuen Button im Menü für Beiträge, mit dem du einen Autor blockieren kannst. Die entsprechenden Posts werden dann nicht mehr in deinem Inhalts-Feed angezeigt.

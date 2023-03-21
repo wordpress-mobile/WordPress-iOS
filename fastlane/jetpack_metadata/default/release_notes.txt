@@ -1,5 +1,7 @@
-We made some tweaks to blogging prompts so you can answer old prompts or disable new ones. (Although we can’t imagine why you would.)
+Hot news—Jetpack now supports Blaze, so you can reach new readers by promoting a post or page from within the app.
 
-You won’t see the Scan Login QR code if your account uses two-factor authentication.
+We’ve added a little extra support for sites with individual plugins. These plugins don’t support all app features yet, but you can always install the full Jetpack plugin instead. Ready to launch?
 
-The Stats view consistently shows the day’s latest data, even if the date changes while the app is in the device’s background. All in a day’s work.
+We also added a post-migration FAQ card to the Help screen, which you’ll see after switching from the WordPress app over to Jetpack.
+
+Finally, there’s a new button to the Post menu that lets you block an author so their posts no longer appear in your content feed.

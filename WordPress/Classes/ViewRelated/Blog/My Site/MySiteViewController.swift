@@ -126,12 +126,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            updateBlazeStatus(for: newBlog)
-            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
+            showSitePicker(for: newBlog)
             updateNavigationTitle(for: newBlog)
-            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
+            updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
         }
 
@@ -426,8 +425,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
+        showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
     }
@@ -459,6 +458,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
+
             blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
                 guard let self = self else {
                     return
@@ -467,6 +467,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
+
+
         case .dashboard:
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
@@ -482,6 +484,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+                self.blogDashboardViewController?.reloadCardsLocally()
             }
         }
 
@@ -817,14 +820,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.updateBlazeStatus(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
+        }
 
-            self.displayJetpackInstallOverlayIfNeeded()
+        sitePickerViewController.onBlogListDismiss = { [weak self] in
+            self?.displayJetpackInstallOverlayIfNeeded()
         }
 
         return sitePickerViewController
@@ -945,18 +949,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         self.blog = blog
-    }
-
-    // MARK: - Blaze
-
-    private func updateBlazeStatus(for blog: Blog?) {
-        guard FeatureFlag.blaze.enabled,
-              let blog = blog,
-              let blazeService = BlazeService() else {
-            return
-        }
-
-        blazeService.updateStatus(for: blog)
     }
 
     // MARK: - Blogging Prompts

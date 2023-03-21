@@ -1,7 +1,7 @@
 import Foundation
 import WordPressKit
 
-final class BlazeService {
+@objc final class BlazeService: NSObject {
 
     private let contextManager: CoreDataStack
     private let remote: BlazeServiceRemote
@@ -18,53 +18,48 @@ final class BlazeService {
         self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
     }
 
+    @objc class func createService() -> BlazeService? {
+        self.init()
+    }
+
     // MARK: - Methods
 
-    /// Fetches and updates blaze status from the server.
+    /// Fetches a site's blaze status from the server, and updates the blog's isBlazeApproved property.
     ///
     /// - Parameters:
     ///   - blog: A blog
-    ///   - success: Closure to be called on success
-    ///   - failure: Closure to be caleld on failure
-    func updateStatus(for blog: Blog,
-                      success: ((Bool) -> Void)? = nil,
-                      failure: ((Error) -> Void)? = nil) {
+    ///   - completion: Closure to be called on success
+    @objc func getStatus(for blog: Blog,
+                         completion: (() -> Void)? = nil) {
+
+        guard BlazeHelper.isBlazeFlagEnabled() else {
+            updateBlog(blog, isBlazeApproved: false, completion: completion)
+            return
+        }
+
         guard let siteId = blog.dotComID?.intValue else {
-            failure?(BlazeServiceError.invalidSiteId)
+            DDLogError("Invalid site ID for Blaze")
+            updateBlog(blog, isBlazeApproved: false, completion: completion)
             return
         }
 
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):
-
-                self.contextManager.performAndSave({ context in
-
-                    guard let blog = Blog.lookup(withObjectID: blog.objectID, in: context) else {
-                        DDLogError("Unable to update isBlazeApproved value for blog")
-                        failure?(BlazeServiceError.blogNotFound)
-                        return
-                    }
-
-                    blog.isBlazeApproved = approved
-                    DDLogInfo("Successfully updated isBlazeApproved value for blog: \(approved)")
-
-                }, completion: {
-                    success?(approved)
-                }, on: .main)
-
+                self.updateBlog(blog, isBlazeApproved: approved, completion: completion)
             case .failure(let error):
                 DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
-                failure?(error)
+                self.updateBlog(blog, isBlazeApproved: false, completion: completion)
             }
         }
     }
-}
 
-extension BlazeService {
-
-    enum BlazeServiceError: Error {
-        case invalidSiteId
-        case blogNotFound
+    private func updateBlog(_ blog: Blog, isBlazeApproved: Bool, completion: (() -> Void)? = nil) {
+        contextManager.performAndSave({ context in
+            blog.isBlazeApproved = isBlazeApproved
+            DDLogInfo("Successfully updated isBlazeApproved value for blog: \(isBlazeApproved)")
+        }, completion: {
+            completion?()
+        }, on: .main)
     }
 }

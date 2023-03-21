@@ -1,5 +1,7 @@
-Nous avons apporté quelques modifications aux invites pour bloguer afin que vous puissiez répondre aux anciennes invites ou désactiver les nouvelles. (Même si nous ne voyons pas pourquoi vous le feriez).
+Scoop — Jetpack prend désormais en charge Blaze. Vous allez pouvoir atteindre de nouveaux lecteurs lorsque vous ferez la promotion d’un article ou d’une page depuis l’application.
 
-Si votre compte utilise l’authentification à deux facteurs, l’option permettant de scanner le code QR pour se connecter ne s’affichera pas.
+Nous avons étendu la compatibilité pour les sites avec des extensions individuelles. Ces extensions ne sont pas encore compatibles avec toutes les fonctionnalités d’application, mais vous pouvez toujours installer l’extension Jetpack complète à la place. Prêt à vous lancer ?
 
-La vue des statistiques affiche systématiquement les dernières données du jour, même si la date change alors que l’application est en arrière-plan sur l’appareil. Tout ça en une journée de travail.
+Nous avons également ajouté une FAQ post-migration dans la section d’aide, à laquelle vous pourrez accéder après être passé de l’application WordPress à Jetpack.
+
+Enfin, nous avons ajouté un bouton dans le menu Articles pour vous permettre de bloquer un auteur afin que les articles associés n’apparaissent plus dans votre flux de contenu.

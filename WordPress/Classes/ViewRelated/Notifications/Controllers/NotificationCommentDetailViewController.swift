@@ -40,7 +40,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     }()
 
     private lazy var postService: ReaderPostService = {
-        return .init(managedObjectContext: managedObjectContext)
+        return .init(coreDataStack: ContextManager.shared)
     }()
 
     // MARK: - Notification Navigation Buttons
@@ -210,7 +210,7 @@ private extension NotificationCommentDetailViewController {
                   return
               }
 
-        if let post = postService.findPost(withID: postID, forSite: siteID) {
+        if let post = try? ReaderPost.lookup(withID: postID, forSiteWithID: siteID, in: managedObjectContext) {
             self.post = post
             completion()
             return
