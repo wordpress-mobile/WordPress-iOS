@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-06 12:46:51+0000 */
+/* Translation-Revision-Date: 2023-03-09 12:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -1150,6 +1150,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockierte Website";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blockierter Benutzer";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -9646,6 +9649,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Verwerfen";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Präsentiere deine Werke auf Millionen von Websites.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Ausblenden";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Bewirb deine Inhalte mit Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Beitrag jetzt mit Blaze bewerben";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Bewirb innerhalb von Minuten und für lediglich ein paar Dollar pro Tag jeden beliebigen Beitrag und jede Seite.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Verfolge die Performance deiner Kampagnen und kündige wann immer du magst.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Deine Inhalte werden auf Millionen von WordPress- und Tumblr-Websites angezeigt.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Leite mit Blaze mehr Traffic auf deine Website";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Diese Seite mit Blaze bewerben";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Diesen Beitrag mit Blaze bewerben";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Verwerfen";
 
@@ -10155,6 +10188,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Mit Blaze bewerben";
+
 /* No comment provided by engineer. */
 "password" = "Passwort";
 
@@ -10172,6 +10208,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Optionen für Beitragsbilder";
+
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Mit Blaze bewerben";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Wechsle zu den Website-Einstellungen, um sie wieder zu aktivieren";
@@ -10359,6 +10398,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Fertig";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tippe, um die FAQ zur Jetpack-App in einem externen Browser zu öffnen";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Besuche unsere FAQ";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Abmelden";
 
@@ -10394,6 +10439,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress Hilfe-Center";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "In unseren FAQ findest du Antworten auf häufige Fragen, die du dir vielleicht auch stellst.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Danke für deinen Wechsel zur Jetpack-App!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Protokolle";

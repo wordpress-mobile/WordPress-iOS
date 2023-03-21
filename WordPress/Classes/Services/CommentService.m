@@ -1048,6 +1048,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         ReaderPost *post = [context existingObjectWithID:postObjectID error:nil];
         Comment *comment = [self createHierarchicalCommentWithContent:content withParent:parentID postID:post.postID siteID:siteID inContext:context];
+        objectID = comment.objectID;
         // This fixes an issue where the comment may not appear for some posts after a successful posting
         // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
         comment.post = post;

@@ -1,0 +1,7 @@
+¡Noticias frescas! Ahora Jetpack es compatible con Blaze, así que podrás promocionar entradas o páginas en la aplicación para llegar a nuevos lectores.
+
+Hemos añadido soporte adicional para los sitios con plugins individuales. Estos plugins todavía no son compatibles con todas las funciones de la aplicación, pero tienes la opción de instalar el plugin completo de Jetpack en su lugar. ¿Lo tienes todo listo para empezar?
+
+Además, hemos añadido una tarjeta de preguntas frecuentes tras la migración a la pantalla Ayuda. Esta tarjeta se mostrará cuando pases de la aplicación de WordPress a Jetpack.
+
+Por último, hay un botón en el menú Publicar que permite bloquear a un autor; de esta manera, sus entradas dejarán de aparecer en tu feed de contenido.

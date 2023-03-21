@@ -61,6 +61,12 @@ extension Blog {
         return !hasBusinessPlan && isUserCapableOf("scan")
     }
 
+    /// Returns true if the current user is allowed to list and edit the blog's Pages
+    ///
+    @objc public func isListingPagesAllowed() -> Bool {
+        return isAdmin || isUserCapableOf(.EditPages)
+    }
+
     private func isUserCapableOf(_ capability: String) -> Bool {
         return capabilities?[capability] as? Bool ?? false
     }

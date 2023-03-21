@@ -16,7 +16,7 @@ enum JetpackBrandingVisibility {
             return AppConfiguration.isWordPress &&
             AccountHelper.isDotcomAvailable() &&
             FeatureFlag.jetpackPowered.enabled &&
-            JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+            JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures()
         case .wordPressApp:
             return AppConfiguration.isWordPress
         case .dotcomAccounts:

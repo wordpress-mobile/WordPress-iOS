@@ -49,7 +49,7 @@ class DashboardEmptyPostsCardCell: UICollectionViewCell, Reusable {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Create your first post"
-        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
+        titleLabel.font = AppStyleGuide.prominentFont(textStyle: .title3, weight: .semibold)
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.5

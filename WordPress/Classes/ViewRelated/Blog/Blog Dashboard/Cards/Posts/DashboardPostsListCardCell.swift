@@ -112,6 +112,7 @@ extension DashboardPostsListCardCell {
 
     private func configureDraftsList(blog: Blog) {
         frameView?.title = Strings.draftsTitle
+        frameView?.titleHint = Strings.draftsTitleHint
         frameView?.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .draft)
         }
@@ -179,7 +180,8 @@ extension BlogDashboardViewController: EditorAnalyticsProperties {
 private extension DashboardPostsListCardCell {
 
     private enum Strings {
-        static let draftsTitle = NSLocalizedString("Work on a draft post", comment: "Title for the card displaying draft posts.")
+        static let draftsTitle = NSLocalizedString("my-sites.drafts.card.title", value: "Work on a draft post", comment: "Title for the card displaying draft posts.")
+        static let draftsTitleHint = NSLocalizedString("my-sites.drafts.card.title.hint", value: "draft post", comment: "The part in the title that should be highlighted.")
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
     }
 

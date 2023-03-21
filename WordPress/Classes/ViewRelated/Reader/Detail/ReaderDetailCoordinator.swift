@@ -359,9 +359,7 @@ class ReaderDetailCoordinator {
     }
 
     private func markPostAsSeen() {
-        guard let post = post,
-              let context = post.managedObjectContext,
-              !post.isSeen else {
+        guard let post = post, !post.isSeen else {
             return
         }
 

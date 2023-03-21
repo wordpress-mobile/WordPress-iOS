@@ -30,6 +30,8 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;
 
+- (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens;
+
 - (NSString *)currentlySelectedScreen;
 
 - (void)showMySitesTab;
