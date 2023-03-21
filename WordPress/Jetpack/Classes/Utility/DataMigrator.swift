@@ -61,11 +61,15 @@ extension DataMigrator: ContentDataMigrating {
 
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
         guard let backupLocation, copyDatabase(to: backupLocation) else {
-            completion?(.failure(.databaseExportError))
+            let error = DataMigrationError.databaseExportError
+            self.crashLogger.logError(error)
+            completion?(.failure(error))
             return
         }
         guard populateSharedDefaults() else {
-            completion?(.failure(.sharedUserDefaultsNil))
+            let error = DataMigrationError.sharedUserDefaultsNil
+            self.crashLogger.logError(error)
+            completion?(.failure(error))
             return
         }
         BloggingRemindersScheduler.handleRemindersMigration()
