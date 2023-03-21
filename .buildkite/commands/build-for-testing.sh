@@ -3,7 +3,7 @@ APP=${1:-}
 
 # Run this at the start to fail early if value not available
 if [[ "$APP" != "wordpress" && "$APP" != "jetpack" ]]; then
-  echo "Error: Please provide either 'wordpress' or 'jetpack' as first parameter to this script
+  echo "Error: Please provide either 'wordpress' or 'jetpack' as first parameter to this script"
   exit 1
 fi
 
