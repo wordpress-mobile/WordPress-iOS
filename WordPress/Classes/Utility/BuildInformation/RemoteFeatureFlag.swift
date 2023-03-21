@@ -16,6 +16,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case directDomainsPurchaseDashboardCard
     case pagesDashboardCard
     case activityLogDashboardCard
+    case sdkLessGoogleSignIn
 
     var defaultValue: Bool {
         switch self {
@@ -46,6 +47,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .pagesDashboardCard:
             return false
         case .activityLogDashboardCard:
+            return false
+        case .sdkLessGoogleSignIn:
             return false
         }
     }
@@ -81,6 +84,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "dashboard_card_pages"
         case .activityLogDashboardCard:
             return "dashboard_card_activity_log"
+        case .sdkLessGoogleSignIn:
+            return "google_signin_without_sdk"
         }
     }
 
@@ -114,6 +119,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Pages Dashboard Card"
         case .activityLogDashboardCard:
             return "Activity Log Dashboard Card"
+        case .sdkLessGoogleSignIn:
+            return "Sign-In with Google without the Google SDK"
         }
     }
 

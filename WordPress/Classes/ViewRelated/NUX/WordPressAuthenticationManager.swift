@@ -19,14 +19,18 @@ class WordPressAuthenticationManager: NSObject {
 
     private let recentSiteService: RecentSitesService
 
+    private let remoteFeaturesStore: RemoteFeatureFlagStore
+
     init(windowManager: WindowManager,
          authenticationHandler: AuthenticationHandler? = nil,
          quickStartSettings: QuickStartSettings = QuickStartSettings(),
-         recentSiteService: RecentSitesService = RecentSitesService()) {
+         recentSiteService: RecentSitesService = RecentSitesService(),
+         remoteFeaturesStore: RemoteFeatureFlagStore) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
         self.quickStartSettings = quickStartSettings
         self.recentSiteService = recentSiteService
+        self.remoteFeaturesStore = remoteFeaturesStore
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -59,6 +63,16 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
+        let googleLogingWithoutSDK: Bool = {
+            switch BuildConfiguration.current {
+            case .appStore:
+                // Rely on the remote flag in production
+                return RemoteFeatureFlag.sdkLessGoogleSignIn.enabled(using: remoteFeaturesStore)
+            case _:
+                return true
+            }
+        }()
+
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
@@ -76,7 +90,7 @@ extension WordPressAuthenticationManager {
                                                    enableUnifiedAuth: true,
                                                    enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
                                                    enableSocialLogin: true,
-                                                   googleLoginWithoutSDK: FeatureFlag.sdkLessGoogleSignIn.enabled)
+                                                   googleLoginWithoutSDK: googleLogingWithoutSDK)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
