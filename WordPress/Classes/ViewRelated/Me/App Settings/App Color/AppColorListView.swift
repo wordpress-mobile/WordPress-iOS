@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AppColorListView: View {
+    @SwiftUI.Environment(\.colorScheme) var colorScheme
 
     @StateObject var vm = AppColorListViewModel()
 

@@ -40,6 +40,10 @@ enum AppColor {
 
     // MARK: Helpers
 
+    fileprivate static var isDarkMode: Bool {
+        UITraitCollection.current.userInterfaceStyle == .dark
+    }
+
     private static var defaultAccent: Accent {
         switch appConfig {
         case .wordpress:
@@ -93,6 +97,15 @@ enum AppColor {
 }
 
 extension AppColor.Accent: Identifiable, CustomStringConvertible {
+
+    static var allCasesSorted: [Self] {
+        var all = allCases
+        let firstAccent = AppColor.defaultAccent
+        all.removeAll(where: { $0 == firstAccent })
+        all.insert(firstAccent, at: 0)
+        return all
+    }
+
     var id: String {
         rawValue
     }
@@ -123,42 +136,42 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
         case .pink:
             return .dynamic(
                 light: .muriel(murielName, shade: .shade60),
-                dark: .muriel(murielName, shade: .shade60)
+                dark: .muriel(murielName, shade: .shade30)
             )
         case .red:
             return .dynamic(
                 light: .muriel(murielName, shade: .shade60),
-                dark: .muriel(murielName, shade: .shade60)
+                dark: .muriel(murielName, shade: .shade30)
             )
         case .orange:
             return .dynamic(
-                light: .muriel(murielName),
-                dark: .muriel(murielName)
+                light: .muriel(murielName, shade: .shade50),
+                dark: .muriel(murielName, shade: .shade30)
             )
         case .yellow:
             return .dynamic(
-                light: .muriel(murielName),
-                dark: .muriel(murielName)
+                light: .muriel(murielName, shade: .shade50),
+                dark: .muriel(murielName, shade: .shade20)
             )
         case .celadon:
             return .dynamic(
                 light: .muriel(murielName, shade: .shade60),
-                dark: .muriel(murielName, shade: .shade60)
+                dark: .muriel(murielName, shade: .shade20)
             )
         case .wooCommercePurple:
             return .dynamic(
                 light: .muriel(murielName, shade: .shade60),
-                dark: .muriel(murielName, shade: .shade60)
+                dark: .muriel(murielName, shade: .shade20)
             )
         case .jetpackGreen:
             return .dynamic(
-                light: .muriel(murielName),
-                dark: .muriel(murielName)
+                light: .muriel(murielName, shade: .shade50),
+                dark: .muriel(murielName, shade: .shade30)
             )
         case .wordPressBlue:
             return .dynamic(
-                light: .muriel(murielName),
-                dark: .muriel(murielName)
+                light: .muriel(murielName, shade: .shade50),
+                dark: .muriel(murielName, shade: .shade50)
             )
         }
     }
@@ -178,19 +191,12 @@ extension AppColor.Accent: Identifiable, CustomStringConvertible {
         case .wooCommercePurple:
             return .wooCommercePurple
         case .jetpackGreen:
-            return .jetpackGreen
+            return AppColor.isDarkMode ? .green : .jetpackGreen
         case .wordPressBlue:
-            return .wordPressBlue
+            return AppColor.isDarkMode ? .blue : .wordPressBlue
         }
     }
 
-    static var allCasesSorted: [Self] {
-        var all = allCases
-        let firstAccent = AppColor.defaultAccent
-        all.removeAll(where: { $0 == firstAccent })
-        all.insert(firstAccent, at: 0)
-        return all
-    }
 }
 
 extension Foundation.Notification.Name {
@@ -204,10 +210,7 @@ extension Foundation.Notification.Name {
 }
 
 private extension Color {
-    static func muriel(
-        _ name: MurielColorName,
-        shade: MurielColorShade = .shade50
-    ) -> Self {
+    static func muriel(_ name: MurielColorName, shade: MurielColorShade) -> Self {
         .init(
             UIColor.muriel(color: .init(name: name, shade: shade))
         )
