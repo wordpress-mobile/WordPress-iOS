@@ -10208,7 +10208,7 @@
 				3F526C512538CF2A0069706C /* WordPressStatsWidgets */,
 				F1F163BF25658B4D003DC13B /* WordPressIntents */,
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
-				FF2716901CAAC87B0006E2D4 /* WordPressUITests */,
+				FF2716901CAAC87B0006E2D4 /* UITests */,
 				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				FAF64BC82637DF0600E8A1DF /* JetpackScreenshotGeneration */,
 				3FA640582670CCD40064401E /* UITestsFoundation */,
@@ -17723,7 +17723,7 @@
 			path = "Blogging Prompts";
 			sourceTree = "<group>";
 		};
-		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
+		FF2716901CAAC87B0006E2D4 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
 				BEA101B61FF13F0500CE5C7D /* Tests */,
@@ -17737,7 +17737,7 @@
 				EA14534629AEF479001F3143 /* JetpackUITests.xctestplan */,
 				EA14534329AD874E001F3143 /* JetpackUITests-Info.plist */,
 			);
-			path = WordPressUITests;
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		FF2EC3BE2209A105006176E1 /* Processors */ = {
