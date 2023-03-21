@@ -1,4 +1,11 @@
 #!/bin/bash -eu
+APP=${1:-}
+
+# Run this at the start to fail early if value not available
+if [[ "$APP" != "wordpress" && "$APP" != "jetpack" ]]; then
+  echo "Error: Please provide either 'wordpress' or 'jetpack' as first parameter to this script
+  exit 1
+fi
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
@@ -14,8 +21,8 @@ echo "--- Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane "build_$1_for_testing"
+bundle exec fastlane "build_$APP_for_testing"
 
 echo "--- :arrow_up: Upload Build Products"
-tar -cf build-products-$1.tar DerivedData/Build/Products/
-upload_artifact build-products-$1.tar
+tar -cf build-products-$APP.tar DerivedData/Build/Products/
+upload_artifact build-products-$APP.tar
