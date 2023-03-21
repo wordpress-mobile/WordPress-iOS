@@ -213,8 +213,15 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
             guard let `self` = self else { return }
-            if !self.sitePromptView.isHidden {
-                self.updateTitleViewVisibility(true)
+
+            if FeatureFlag.siteCreationDomainPurchasing.enabled {
+                if !self.hostingController.view.isHidden {
+                    self.updateTitleViewVisibility(true)
+                }
+            } else {
+                if !self.sitePromptView.isHidden {
+                    self.updateTitleViewVisibility(true)
+                }
             }
         }
     }
