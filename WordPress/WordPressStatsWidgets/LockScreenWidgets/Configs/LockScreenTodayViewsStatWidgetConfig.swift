@@ -6,7 +6,10 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias ViewProvider = LockScreenSingleStatWidgetViewProvider
 
     var supportFamilies: [WidgetFamily] {
-        [.accessoryRectangular]
+        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
+            return []
+        }
+        return [.accessoryRectangular]
     }
 
     var displayName: String {

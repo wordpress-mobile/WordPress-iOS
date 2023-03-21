@@ -32,17 +32,6 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
         }
         .configurationDisplayName(config.displayName)
         .description(config.description)
-        .supportedFamilies(supportedFamilies())
-    }
-}
-
-@available(iOS 16.0, *)
-extension LockScreenStatsWidget {
-    // TODO: Move to widget config after PR #20317 merged
-    func supportedFamilies() -> [WidgetFamily] {
-        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
-            return []
-        }
-        return config.supportFamilies
+        .supportedFamilies(config.supportFamilies)
     }
 }
