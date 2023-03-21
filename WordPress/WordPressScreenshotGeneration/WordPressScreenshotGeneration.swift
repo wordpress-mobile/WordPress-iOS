@@ -9,13 +9,12 @@ class WordPressScreenshotGeneration: XCTestCase {
     override func setUpWithError() throws {
         super.setUp()
 
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let app = XCUIApplication(bundleIdentifier: "org.wordpress")
 
         // This does the shared setup including injecting mocks and launching the app
-        setUpTestSuite(for: "WordPress")
+        setUpTestSuite(for: app, removeBeforeLaunching: true)
 
         // The app is already launched so we can set it up for screenshots here
-        let app = XCUIApplication()
         setupSnapshot(app)
 
         if XCUIDevice.isPad {

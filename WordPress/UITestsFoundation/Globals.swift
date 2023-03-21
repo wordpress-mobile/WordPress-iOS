@@ -54,7 +54,7 @@ extension ScreenObject {
 
     public func openMagicLink() {
         XCTContext.runActivity(named: "Open magic link in Safari") { activity in
-            let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+            let safari = Apps.safari
             safari.launch()
 
             // Select the URL bar when Safari opens
@@ -76,7 +76,7 @@ extension ScreenObject {
     }
 
     public func findSafariAddressBar(hasBeenTapped: Bool) -> XCUIElement {
-        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+        let safari = Apps.safari
 
         // when the device is iPad and addressBar has not been tapped the element is a button
         if UIDevice.current.userInterfaceIdiom == .pad && !hasBeenTapped {
@@ -101,4 +101,10 @@ extension ScreenObject {
 
         return self
     }
+}
+
+public enum Apps {
+
+    public static let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+    public static let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 }

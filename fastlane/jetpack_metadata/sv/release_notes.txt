@@ -1,0 +1,7 @@
+Glada nyheter — Jetpack stöder nu Blaze, så att du kan nå nya läsare genom att marknadsföra ett inlägg eller en sida från appen.
+
+Vi har lagt till lite extra stöd för webbplatser med enskilda tillägg. Dessa tillägg stöder inte alla appfunktioner ännu, men du kan alltid installera det fullständiga Jetpack-tillägget istället. Redo för lansering?
+
+Vi har också lagt till ett vanliga frågor-kort om vad som händer efter migrering på Hjälp-skärmen, vilket du kommer att se när du har bytt från WordPress-appen till Jetpack.
+
+Slutligen finns det en ny knapp i menyn Inlägg som gör det möjligt att blockera en författare vars inlägg du inte längre vill ska visas i ditt innehållsflöde.

@@ -568,15 +568,15 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }];
 }
 
-- (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
+- (void)getMetadataFromVideoPressID:(NSString *)videoPressID
                              inBlog:(Blog *)blog
-                            success:(void (^)(NSString *videoURL, NSString *posterURL))success
+                            success:(void (^)(RemoteVideoPressVideo *metadata))success
                             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getVideoURLFromVideoPressID:videoPressID success:^(NSURL *videoURL, NSURL *posterURL) {
+    [remote getMetadataFromVideoPressID:videoPressID isSitePrivate:blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
         if (success) {
-            success(videoURL.absoluteString, posterURL.absoluteString);
+            success(metadata);
         }
     } failure:^(NSError * error) {
         if (failure) {
@@ -679,7 +679,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (MediaThumbnailService *)thumbnailService
 {
     if (!_thumbnailService) {
-        _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        _thumbnailService = [[MediaThumbnailService alloc] initWithContextManager:[ContextManager sharedInstance]];
         if (self.concurrentThumbnailGeneration) {
             _thumbnailService.exportQueue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
         }

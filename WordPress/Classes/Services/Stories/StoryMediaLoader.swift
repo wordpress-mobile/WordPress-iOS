@@ -69,9 +69,9 @@ class StoryMediaLoader {
                         self.downloadTasks.append(task)
                     }
                 case .video:
-                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] result in
+                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post, withToken: true) { [weak self] result in
                         switch result {
-                        case .success((let videoURL, _)):
+                        case .success((let videoURL)):
                             self?.queue.async {
                                 self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
                             }

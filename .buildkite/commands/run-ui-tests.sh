@@ -13,8 +13,8 @@ else
 fi
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products.tar
-tar -xf build-products.tar
+download_artifact build-products-jetpack.tar
+tar -xf build-products-jetpack.tar
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
@@ -26,7 +26,7 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:WordPressUITests device:"$DEVICE"
+bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
 set -e
 
@@ -37,7 +37,7 @@ if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
 fi
 
 echo "--- 📦 Zipping test results"
-cd build/results/ && zip -rq WordPress.xcresult.zip WordPress.xcresult && cd -
+cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then

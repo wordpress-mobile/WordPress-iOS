@@ -3,7 +3,7 @@ import XCTest
 
 extension XCTestCase {
 
-    public func setUpTestSuite(for appName: String? = nil, app: XCUIApplication = XCUIApplication()) {
+    public func setUpTestSuite(for app: XCUIApplication = XCUIApplication(), removeBeforeLaunching: Bool = false) {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
@@ -11,8 +11,8 @@ extension XCTestCase {
 
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
 
-        if let appName = appName {
-            removeApp(appName)
+        if removeBeforeLaunching {
+            removeApp(app)
         }
 
         app.activate()
@@ -74,21 +74,5 @@ extension XCTestCase {
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
-    }
-
-    public func removeApp(_ appName: String = XCUIApplication().label, app: XCUIApplication = XCUIApplication()) {
-        app.terminate()
-
-        let appToRemove = Constants.homeApp.icons[appName]
-        if appToRemove.exists {
-            appToRemove.firstMatch.press(forDuration: 1)
-            waitAndTap(Constants.homeApp.buttons["Remove App"])
-            waitAndTap(Constants.homeApp.alerts.buttons["Delete App"])
-            waitAndTap(Constants.homeApp.alerts.buttons["Delete"])
-        }
-    }
-
-    private enum Constants {
-        static let homeApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
     }
 }
