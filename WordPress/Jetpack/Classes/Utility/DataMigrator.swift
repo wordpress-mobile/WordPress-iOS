@@ -17,13 +17,15 @@ protocol ContentDataMigrating {
 }
 
 enum DataMigrationError: LocalizedError, CustomNSError {
-    case databaseCopyError
+    case databaseImportError
+    case databaseExportError
     case sharedUserDefaultsNil
     case dataNotReadyToImport
 
     var errorDescription: String? {
         switch self {
-        case .databaseCopyError: return "The database couldn't be copied to/from shared directory"
+        case .databaseImportError: return "The database couldn't be copied from shared directory"
+        case.databaseExportError: return "The database couldn't be copied to shared directory"
         case .sharedUserDefaultsNil: return "Shared user defaults not found"
         case .dataNotReadyToImport: return "The data wasn't ready to import"
         }
@@ -59,7 +61,7 @@ extension DataMigrator: ContentDataMigrating {
 
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
         guard let backupLocation, copyDatabase(to: backupLocation) else {
-            completion?(.failure(.databaseCopyError))
+            completion?(.failure(.databaseExportError))
             return
         }
         guard populateSharedDefaults() else {
@@ -80,7 +82,7 @@ extension DataMigrator: ContentDataMigrating {
         }
 
         guard let backupLocation, restoreDatabase(from: backupLocation) else {
-            let error = DataMigrationError.databaseCopyError
+            let error = DataMigrationError.databaseImportError
             self.crashLogger.logError(error)
             completion?(.failure(error))
             return
