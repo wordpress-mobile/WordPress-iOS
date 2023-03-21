@@ -31,6 +31,17 @@ struct LockScreenStatsWidget: Widget {
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)
-        .supportedFamilies(FeatureFlag.lockScreenWidget.enabled ? [.accessoryRectangular] : [])
+        .supportedFamilies(supportedFamilies())
+    }
+}
+
+@available(iOS 16.0, *)
+extension LockScreenStatsWidget {
+    // TODO: Move to widget config after PR #20317 merged
+    func supportedFamilies() -> [WidgetFamily] {
+        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
+            return []
+        }
+        return [.accessoryRectangular]
     }
 }
