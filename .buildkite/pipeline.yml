@@ -38,23 +38,34 @@ steps:
               context: "Jetpack Prototype Build"
 
   #################
-  # Build the app
+  # Create Builds for Testing
   #################
-  - label: "🛠 Build for Testing"
-    key: "build"
-    command: ".buildkite/commands/build-for-testing.sh"
-    env: *common_env
-    plugins: *common_plugins
-    notify:
-      - github_commit_status:
-          context: "Build for Testing"
+  - group: "🛠 Builds for Testing"
+    steps:
+      - label: "🛠 :wordpress: Build for Testing"
+        key: "build_wordpress"
+        command: ".buildkite/commands/build-for-testing.sh wordpress"
+        env: *common_env
+        plugins: *common_plugins
+        notify:
+          - github_commit_status:
+              context: "WordPress Build for Testing"
+
+      - label: "🛠 :jetpack: Build for Testing"
+        key: "build_jetpack"
+        command: ".buildkite/commands/build-for-testing.sh jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        notify:
+          - github_commit_status:
+              context: "Jetpack Build for Testing"
 
   #################
   # Run Unit Tests
   #################
-  - label: "🔬 Unit Tests"
+  - label: "🔬 :wordpress: Unit Tests"
     command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build"
+    depends_on: "build_wordpress"
     env: *common_env
     plugins: *common_plugins
     artifact_paths:
@@ -72,9 +83,9 @@ steps:
   #################
   - group: "🔬 UI Tests"
     steps:
-      - label: "🔬 UI Tests (iPhone)"
+      - label: "🔬 :jetpack: UI Tests (iPhone)"
         command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
-        depends_on: "build"
+        depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins
         artifact_paths:
@@ -87,9 +98,9 @@ steps:
                 - "#mobile-apps-tests-notif"
             if: build.state == "failed" && build.branch == "trunk"
 
-      - label: "🔬 UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh "iPad Air (5th generation)"
-        depends_on: "build"
+      - label: "🔬 :jetpack: UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        depends_on: "build_jetpack"
         env: *common_env
         plugins: *common_plugins
         artifact_paths:
