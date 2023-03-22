@@ -53,13 +53,20 @@ class JetpackInstallPluginHelper: NSObject {
         // create the overlay stack.
         let viewModel = JetpackPluginOverlayViewModel(siteName: siteURLString, plugin: plugin)
         let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
-        let coordinator = JetpackPluginOverlayCoordinator(blog: blog,
-                                                          viewController: overlayViewController,
-                                                          installDelegate: delegate)
-        viewModel.coordinator = coordinator
+        var coordinator: JetpackOverlayCoordinator?
 
         // present the overlay.
         let navigationViewController = UINavigationController(rootViewController: overlayViewController)
+        if AppConfiguration.isWordPress {
+            let defaultCoordinator = JetpackDefaultOverlayCoordinator()
+            defaultCoordinator.navigationController = navigationViewController
+            coordinator = defaultCoordinator
+        } else {
+            coordinator = JetpackPluginOverlayCoordinator(blog: blog,
+                                                          viewController: overlayViewController,
+                                                          installDelegate: delegate)
+        }
+        viewModel.coordinator = coordinator
         let shouldUseFormSheet = WPDeviceIdentification.isiPad()
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
         presentingViewController.present(navigationViewController, animated: true) {
