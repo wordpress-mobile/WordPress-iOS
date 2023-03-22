@@ -15,7 +15,9 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         // NOTE: Remove the logic when support for iOS 14 is dropped
         if #available (iOS 15.0, *) {
             // assign an empty closure so the button appears.
-            frameView.onEllipsisButtonTap = {}
+            frameView.onEllipsisButtonTap = {
+                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .prompts)
+            }
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
             frameView.ellipsisButton.menu = contextMenu
         } else {
@@ -23,6 +25,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             // iOS 13 doesn't support showing UIMenu programmatically.
             // iOS 14 doesn't support `UIDeferredMenuElement.uncached`.
             frameView.onEllipsisButtonTap = { [weak self] in
+                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .prompts)
                 self?.showMenuSheet()
             }
         }
@@ -500,6 +503,7 @@ private extension DashboardPromptsCardCell {
             return
         }
         WPAnalytics.track(.promptsDashboardCardMenuRemove)
+        BlogDashboardAnalytics.trackHideTapped(for: .prompts)
         let service = BlogDashboardPersonalizationService(siteID: siteID)
         service.setEnabled(false, for: .prompts)
         let notice = Notice(title: Strings.promptRemovedTitle, message: Strings.promptRemovedSubtitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { _ in

@@ -329,6 +329,8 @@ import Foundation
     // My Site Dashboard
     case dashboardCardShown
     case dashboardCardItemTapped
+    case dashboardCardContextualMenuAccessed
+    case dashboardCardHideTapped
     case mySiteTabTapped
     case mySiteSiteMenuShown
     case mySiteDashboardShown
@@ -1033,6 +1035,10 @@ import Foundation
             return "my_site_dashboard_card_shown"
         case .dashboardCardItemTapped:
             return "my_site_dashboard_card_item_tapped"
+        case .dashboardCardContextualMenuAccessed:
+            return "my_site_dashboard_contextual_menu_accessed"
+        case .dashboardCardHideTapped:
+            return "my_site_dashboard_card_hide_tapped"
         case .mySiteTabTapped:
             return "my_site_tab_tapped"
         case .mySiteSiteMenuShown:

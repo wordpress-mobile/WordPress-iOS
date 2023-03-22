@@ -16,7 +16,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Views
 
-    private var frameView: BlogDashboardCardFrameView?
+    private let frameView = BlogDashboardCardFrameView()
 
     lazy var tableView: UITableView = {
         let tableView = PostCardTableView()
@@ -68,12 +68,8 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
     }
 
     private func addSubviews() {
-        let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-
         frameView.add(subview: tableView)
-
-        self.frameView = frameView
 
         contentView.addSubview(frameView)
         contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
@@ -103,23 +99,35 @@ extension DashboardPostsListCardCell {
             assertionFailure("Cell used with wrong card type")
             return
         }
+        addContextMenu(card: cardType, blog: blog)
+
         viewModel = PostsCardViewModel(blog: blog, status: status, view: self)
         viewModel?.viewDidLoad()
         tableView.dataSource = viewModel?.diffableDataSource
         viewModel?.refresh()
     }
 
+    private func addContextMenu(card: DashboardCard, blog: Blog) {
+        frameView.onEllipsisButtonTap = {
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
+        }
+        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        frameView.ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: [
+            BlogDashboardHelpers.makeHideCardAction(for: card, siteID: blog.dotComID?.intValue ?? 0)
+        ])
+    }
+
     private func configureDraftsList(blog: Blog) {
-        frameView?.title = Strings.draftsTitle
-        frameView?.titleHint = Strings.draftsTitleHint
-        frameView?.onHeaderTap = { [weak self] in
+        frameView.title = Strings.draftsTitle
+        frameView.titleHint = Strings.draftsTitleHint
+        frameView.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .draft)
         }
     }
 
     private func configureScheduledList(blog: Blog) {
-        frameView?.title = Strings.scheduledTitle
-        frameView?.onHeaderTap = { [weak self] in
+        frameView.title = Strings.scheduledTitle
+        frameView.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .scheduled)
         }
     }
