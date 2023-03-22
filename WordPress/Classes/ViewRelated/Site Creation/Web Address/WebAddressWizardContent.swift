@@ -39,7 +39,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private let searchBar = UISearchBar()
     private var sitePromptView: SitePromptView!
     private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
-    private lazy var hostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
+    private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -215,7 +215,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             guard let `self` = self else { return }
 
             if FeatureFlag.siteCreationDomainPurchasing.enabled {
-                if !self.hostingController.view.isHidden {
+                if !self.siteTemplateHostingController.view.isHidden {
                     self.updateTitleViewVisibility(true)
                 }
             } else {
@@ -442,7 +442,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setAddressHintVisibility(isHidden: Bool) {
         if FeatureFlag.siteCreationDomainPurchasing.enabled {
-            hostingController.view?.isHidden = isHidden
+            siteTemplateHostingController.view?.isHidden = isHidden
         } else {
             sitePromptView.isHidden = isHidden
         }
@@ -450,7 +450,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func addAddressHintView() {
         if FeatureFlag.siteCreationDomainPurchasing.enabled {
-            guard let siteCreationView = hostingController.view else {
+            guard let siteCreationView = siteTemplateHostingController.view else {
                 return
             }
             siteCreationView.isUserInteractionEnabled = false
@@ -532,7 +532,7 @@ extension WebAddressWizardContent: UITextFieldDelegate {
 
 extension WebAddressWizardContent: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        hostingController.view.isHidden = true
+        siteTemplateHostingController.view.isHidden = true
         clearSelectionAndCreateSiteButton()
     }
 

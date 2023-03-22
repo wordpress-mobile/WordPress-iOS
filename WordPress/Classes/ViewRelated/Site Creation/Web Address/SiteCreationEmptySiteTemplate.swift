@@ -115,17 +115,20 @@ struct SiteCreationEmptySiteTemplate: View {
 private extension SiteCreationEmptySiteTemplate {
     enum Strings {
         static let tooltipSiteName = NSLocalizedString(
-            "YourSiteName.com",
+            "site.creation.domain.tooltip.site.name",
+            value: "YourSiteName.com",
             comment: "Site name that is placed in the tooltip view."
         )
 
         static let tooltipDescription = NSLocalizedString(
-            "Like the example above, a domain allows people to find and visit your site from their web browser.",
+            "site.creation.domain.tooltip.description",
+            value: "Like the example above, a domain allows people to find and visit your site from their web browser.",
             comment: "Site name description that sits in the template website view."
         )
 
         static let searchBarSiteAddress = NSLocalizedString(
-            "https://yoursitename.com",
+            "site.cration.domain.site.address",
+            value: "https://yoursitename.com",
             comment: "Template site address for the search bar."
         )
     }
