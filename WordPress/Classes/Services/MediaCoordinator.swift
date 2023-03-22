@@ -139,8 +139,7 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) {
-        let coordinator = mediaLibraryProgressCoordinator
-        addMedia(from: asset, blog: blog, post: nil, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
