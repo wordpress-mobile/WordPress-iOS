@@ -21,6 +21,7 @@ enum DashboardCard: String, CaseIterable {
     /// Card placeholder for when loading data
     case ghost
     case failure
+    /// A "Personalize Home Tab" button
     case personalize
 
     var cell: DashboardCollectionViewCell.Type {
@@ -115,6 +116,7 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
+    /// A list of cards that can be shown/hidden on a "Personalize Home Tab" screen.
     static let personalizableCards: [DashboardCard] = [
         .todaysStats,
         .draftPosts,

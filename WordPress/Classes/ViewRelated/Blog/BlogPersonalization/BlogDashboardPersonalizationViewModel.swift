@@ -14,7 +14,7 @@ final class BlogDashboardPersonalizationCardCellViewModel: ObservableObject, Ide
     private let card: DashboardCard
     private let service: BlogDashboardPersonalizationService
 
-    var id: String { card.rawValue }
+    var id: DashboardCard { card }
     var title: String { card.localizedTitle }
 
     var isOn: Bool {
@@ -45,6 +45,7 @@ private extension DashboardCard {
         case .scheduledPosts:
             return NSLocalizedString("personalizeHome.dashboardCard.scheduledPosts", value: "Scheduled posts", comment: "Card title for the pesonalization menu")
         case .quickStart, .nextPost, .createPost, .ghost, .failure, .personalize, .jetpackBadge, .jetpackInstall, .domainsDashboardCard:
+            assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus
         }
     }
