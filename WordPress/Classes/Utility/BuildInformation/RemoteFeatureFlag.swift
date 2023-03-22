@@ -116,3 +116,13 @@ extension RemoteFeatureFlag: OverridableFlag {
         true
     }
 }
+
+/// Objective-C bridge for RemoteFeatureFlag.
+///
+/// Since we can't expose properties on Swift enums we use a class instead
+class RemoteFeature: NSObject {
+    /// Returns a boolean indicating if the feature is enabled
+    @objc static func enabled(_ feature: RemoteFeatureFlag) -> Bool {
+        return feature.enabled()
+    }
+}
