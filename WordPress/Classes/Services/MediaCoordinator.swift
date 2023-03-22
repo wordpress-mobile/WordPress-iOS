@@ -198,8 +198,8 @@ class MediaCoordinator: NSObject {
             with: asset,
             blog: blog,
             post: post,
-            receiveUpdate: { media in
-                self.processing(media)
+            receiveUpdate: { [weak self] media in
+                self?.processing(media)
                 coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
             },
             thumbnailCallback: { [weak self] media, url in
