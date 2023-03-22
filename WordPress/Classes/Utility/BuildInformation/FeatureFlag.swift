@@ -1,7 +1,7 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable, OverridableFlag {
+enum FeatureFlag: Int, CaseIterable {
     case bloggingPrompts
     case bloggingPromptsEnhancements
     case bloggingPromptsSocial
@@ -222,6 +222,13 @@ extension FeatureFlag {
         case .readerUserBlocking:
             return "Reader User Blocking"
         }
+    }
+}
+
+extension FeatureFlag: OverridableFlag {
+
+    var originalValue: Bool {
+        return enabled
     }
 
     var canOverride: Bool {
