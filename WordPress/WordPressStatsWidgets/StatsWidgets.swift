@@ -8,7 +8,7 @@ struct WordPressStatsWidgets: WidgetBundle {
         WordPressHomeWidgetThisWeek()
         WordPressHomeWidgetAllTime()
         if #available(iOS 16.0, *) {
-            LockScreenStatsWidget()
+            LockScreenStatsWidget(config: LockScreenTodayViewsStatWidgetConfig())
         }
     }
 }

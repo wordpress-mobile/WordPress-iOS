@@ -2,46 +2,36 @@ import WidgetKit
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct LockScreenStatsWidget: Widget {
-    private let placeholderContent = HomeWidgetTodayData(
-        siteID: 0,
-        siteName: "My WordPress Site",
-        url: "",
-        timeZone: TimeZone.current,
-        date: Date(),
-        stats: TodayWidgetStats(views: 649,
-                                visitors: 572,
-                                likes: 16,
-                                comments: 8))
+struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
+    private let config: T
+
+    init(config: T) {
+        self.config = config
+    }
+
+    @available(*, deprecated, renamed: "init(config:)")
+    init() {
+        fatalError("Please use init(config: SingleStatWidgetConfig) to provide the config")
+    }
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind,
+            kind: config.kind,
             intent: SelectSiteIntent.self,
-            provider: SiteListProvider<HomeWidgetTodayData>(
+            provider: SiteListProvider<T.WidgetData>(
                 service: StatsWidgetsService(),
-                placeholderContent: placeholderContent,
+                placeholderContent: config.placeholderContent,
+                // TODO: remove widgetKind in creating lock screen widget provider and entry PR
                 widgetKind: .today
             )
         ) { (entry: StatsWidgetEntry) -> LockScreenStatsWidgetsView in
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,
-                viewProvider: LockScreenSingleStatWidgetViewProvider()
+                viewProvider: config.viewProvider
             )
         }
-        .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
-        .description(LocalizableStrings.todayPreviewDescription)
-        .supportedFamilies(supportedFamilies())
-    }
-}
-
-@available(iOS 16.0, *)
-extension LockScreenStatsWidget {
-    // TODO: Move to widget config after PR #20317 merged
-    func supportedFamilies() -> [WidgetFamily] {
-        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
-            return []
-        }
-        return [.accessoryRectangular]
+        .configurationDisplayName(config.displayName)
+        .description(config.description)
+        .supportedFamilies(config.supportFamilies)
     }
 }

@@ -16,7 +16,7 @@ enum LocalizableStrings {
                                                         value: "This Week",
                                                         comment: "Title of this week widget")
 
-    // Lock Screen Widgets content
+    // Lock Screen Widgets title
     static let viewsInTodayTitle = AppLocalizedString("widget.lockscreen.todayview.label",
                                                    value: "Views Today",
                                                    comment: "Title of the one-liner information consist of views field and today date range in lock screen today views widget")
