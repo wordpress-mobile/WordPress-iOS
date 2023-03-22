@@ -43,10 +43,6 @@ class RemoteFeatureFlagStore {
     }
 
     /// Looks up the value for a remote feature flag.
-    ///
-    /// If the flag exists in the local cache, the current value will be returned.  If the flag does not exist in the local cache, the compile-time default will be returned.
-    /// - Parameters:
-    ///     - flag: The `FeatureFlag` object associated with a remote feature flag
     public func value(for flagKey: String) -> Bool? {
         return cache[flagKey]
     }
