@@ -1,7 +1,7 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+enum FeatureFlag: Int, CaseIterable, OverridableFlag {
     case bloggingPrompts
     case bloggingPromptsEnhancements
     case bloggingPromptsSocial

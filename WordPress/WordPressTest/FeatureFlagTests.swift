@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-enum MockFeatureFlag: OverrideableFlag {
+enum MockFeatureFlag: OverridableFlag {
     case enabledFeature
     case disabledFeature
     case nonOverrideableFeature
