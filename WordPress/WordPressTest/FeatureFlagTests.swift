@@ -47,6 +47,10 @@ enum MockFeatureFlag: OverridableFlag {
         return self != .nonOverrideableFeature
     }
 
+    var originalValue: Bool {
+        return enabled
+    }
+
     var description: String {
         switch self {
         case .enabledFeature:
