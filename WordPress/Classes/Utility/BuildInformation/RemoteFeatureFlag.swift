@@ -1,7 +1,7 @@
 import Foundation
 
 @objc
-enum RemoteFeatureFlag: Int, CaseIterable, CustomStringConvertible {
+enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackFeaturesRemovalPhaseOne
     case jetpackFeaturesRemovalPhaseTwo
     case jetpackFeaturesRemovalPhaseThree
@@ -89,12 +89,25 @@ enum RemoteFeatureFlag: Int, CaseIterable, CustomStringConvertible {
         }
     }
 
-    func enabled(using store: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> Bool {
-        // TODO: Check if overridden
-        guard let remoteValue = store.value(for: remoteKey) else { // The value may not be in the cache if this is the first run
+    func enabled(using remoteStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+                 overrideStore: FeatureFlagOverrideStore = FeatureFlagOverrideStore()) -> Bool {
+        if let overriddenValue = overrideStore.overriddenValue(for: self) {
+            return overriddenValue
+        }
+        guard let remoteValue = remoteStore.value(for: remoteKey) else { // The value may not be in the cache if this is the first run
             DDLogInfo("🚩 Unable to resolve remote feature flag: \(description). Returning compile-time default.")
             return defaultValue
         }
         return remoteValue
+    }
+}
+
+extension RemoteFeatureFlag: OverridableFlag {
+    var originalValue: Bool {
+        return enabled()
+    }
+
+    var canOverride: Bool {
+        true
     }
 }
