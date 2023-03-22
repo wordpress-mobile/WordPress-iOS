@@ -360,7 +360,8 @@ class MediaCoordinator: NSObject {
         }
 
         // For some reason, this `MediaService` instance has to be created with the main context, otherwise
-        // the successfully uploaded media is shown as a "local" assets incorrectly.
+        // the successfully uploaded media is shown as a "local" assets incorrectly (see the issue comment linked below).
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/20298#issuecomment-1465319707
         let service = self.mediaServiceFactory.create(coreDataStack.mainContext)
         var progress: Progress? = nil
         service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
