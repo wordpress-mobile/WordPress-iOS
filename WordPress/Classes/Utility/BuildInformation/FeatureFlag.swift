@@ -36,17 +36,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
-    case jetpackMigrationPreventDuplicateNotifications
-    case jetpackFeaturesRemovalPhaseOne
-    case jetpackFeaturesRemovalPhaseTwo
-    case jetpackFeaturesRemovalPhaseThree
-    case jetpackFeaturesRemovalPhaseFour
-    case jetpackFeaturesRemovalPhaseNewUsers
-    case jetpackFeaturesRemovalPhaseSelfHosted
-    case jetpackFeaturesRemovalStaticPosters
-    case wordPressSupportForum
     case jetpackIndividualPluginSupport
-    case blaze
     case siteCreationDomainPurchasing
     case readerUserBlocking
 
@@ -129,28 +119,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .newCoreDataContext:
             return true
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return true
-        case .jetpackFeaturesRemovalPhaseOne:
-            return false
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return false
-        case .jetpackFeaturesRemovalPhaseThree:
-            return false
-        case .jetpackFeaturesRemovalPhaseFour:
-            return false
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return false
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return false
-        case .jetpackFeaturesRemovalStaticPosters:
-            return false
-        case .wordPressSupportForum:
-            return true
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
-        case .blaze:
-            return false
         case .siteCreationDomainPurchasing:
             return false
         case .readerUserBlocking:
@@ -160,34 +130,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
 
     var disabled: Bool {
         return enabled == false
-    }
-
-    /// This key must match the server-side one for remote feature flagging
-    var remoteKey: String? {
-        switch self {
-        case .jetpackFeaturesRemovalPhaseOne:
-            return "jp_removal_one"
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return "jp_removal_two"
-        case .jetpackFeaturesRemovalPhaseThree:
-            return "jp_removal_three"
-        case .jetpackFeaturesRemovalPhaseFour:
-            return "jp_removal_four"
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return "jp_removal_new_users"
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return "jp_removal_self_hosted"
-        case .jetpackFeaturesRemovalStaticPosters:
-            return "jp_removal_static_posters"
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return "prevent_duplicate_notifs_remote_field"
-        case .wordPressSupportForum:
-            return "wordpress_support_forum_remote_field"
-        case .blaze:
-            return "blaze"
-            default:
-                return nil
-        }
     }
 }
 
@@ -273,28 +215,8 @@ extension FeatureFlag {
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
-        case .jetpackFeaturesRemovalPhaseOne:
-            return "Jetpack Features Removal Phase One"
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return "Jetpack Features Removal Phase Two"
-        case .jetpackFeaturesRemovalPhaseThree:
-            return "Jetpack Features Removal Phase Three"
-        case .jetpackFeaturesRemovalPhaseFour:
-            return "Jetpack Features Removal Phase Four"
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return "Jetpack Features Removal Phase For New Users"
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return "Jetpack Features Removal Phase For Self-Hosted Sites"
-        case .jetpackFeaturesRemovalStaticPosters:
-            return "Jetpack Features Removal Static Screens Phase"
-        case .wordPressSupportForum:
-            return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
-        case .blaze:
-            return "Blaze"
         case .siteCreationDomainPurchasing:
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
