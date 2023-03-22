@@ -97,7 +97,7 @@ class MediaImportService: NSObject {
             case let .success(media):
                 completion(media, nil)
             case let .failure(error):
-                completion(nil, error)
+                completion(media, error)
             }
         }
 
@@ -151,7 +151,7 @@ class MediaImportService: NSObject {
                     case let .success(media):
                         completion(media, nil)
                     case let .failure(error):
-                        completion(nil, error)
+                        completion(media, error)
                     }
                 }
                 createProgress.addChild(progress, withPendingUnitCount: 1)
