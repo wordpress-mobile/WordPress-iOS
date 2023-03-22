@@ -1,5 +1,3 @@
-import Foundation
-
 @objc
 class JetpackInstallPluginHelper: NSObject {
 
@@ -18,12 +16,12 @@ class JetpackInstallPluginHelper: NSObject {
 
     /// Determines whether the plugin install overlay should be shown for this `blog`.
     var shouldShowOverlay: Bool {
-        // For Jetpack, the overlay will be shown once per site.
-        if AppConfiguration.isJetpack {
-            return shouldPromptInstall && !isOverlayAlreadyShown
+        guard AppConfiguration.isJetpack else {
+            return shouldShowOverlayInWordPress
         }
 
-        return shouldShowOverlayInWordPress
+        // For Jetpack, the overlay will be shown once per site.
+        return shouldPromptInstall && !isOverlayAlreadyShown
     }
 
     // MARK: Methods
