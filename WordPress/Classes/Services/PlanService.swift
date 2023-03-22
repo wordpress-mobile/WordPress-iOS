@@ -226,7 +226,7 @@ extension PlanService {
                 self.coreDataStack.performAndSave({ context in
                     PlanStorage.updateHasDomainCredit(
                         planIdInt,
-                        forSite: siteID,
+                        forBlog: blog,
                         hasDomainCredit: plans.activePlan.hasDomainCredit ?? false,
                         in: context
                     )
@@ -241,15 +241,15 @@ extension PlanService {
 }
 
 private struct PlanStorage {
-    static func updateHasDomainCredit(_ planID: Int, forSite siteID: Int, hasDomainCredit: Bool, in context: NSManagedObjectContext) {
-        guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
-            let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
+    static func updateHasDomainCredit(_ planID: Int, forBlog blog: Blog, hasDomainCredit: Bool, in context: NSManagedObjectContext) {
+        guard let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog else {
+            let error = "Tried to update a plan for a non-existing site)"
             assertionFailure(error)
             DDLogError(error)
             return
         }
-        if blog.hasDomainCredit != hasDomainCredit {
-            blog.hasDomainCredit = hasDomainCredit
+        if blogInContext.hasDomainCredit != hasDomainCredit {
+            blogInContext.hasDomainCredit = hasDomainCredit
         }
     }
 }
