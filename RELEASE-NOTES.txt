@@ -2,8 +2,9 @@
 -----
 * [**] [internal] Refactor updating account related Core Data operations, which ususally happens during log in and out of the app. [#20394]
 * [***] [internal] Refactor uploading photos (from the device photo, the Free Photo library, and other sources) to the WordPress Media Library. Affected areas are where you can choose a photo and upload, including the "Media" screen, adding images to a post, updating site icon, etc. [#20322]
-* [**] [WordPress-only] Warns user about sites with only individual plugins not supporting core app features and offers the option to switch to the Jetpack app. [#20408]
 * [**] Add a "Personalize Home Tab" button to the bottom of the Home tab that allows changing cards visibility. [#20369]
+* [**] Add context menus to "Drafts", "Scheduled Posts", and "Today's Stats" cards with an option to hide these cards. [#20384]
+* [**] [WordPress-only] Warns user about sites with only individual plugins not supporting core app features and offers the option to switch to the Jetpack app. [#20408]
 
 22.0
 -----
