@@ -352,13 +352,13 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
               blog.isAccessibleThroughWPCom(),
-              let promptsService = BloggingPromptsService(blog: blog),
-              let siteID = blog.dotComID?.stringValue else {
+              let promptsService = BloggingPromptsService(blog: blog) else {
             return false
         }
 
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
-            return false
+            // If there is no cached prompt, it can't have been skipped. So show the card.
+            return true
         }
 
         return !userSkippedPrompt(todaysPrompt, for: blog)
