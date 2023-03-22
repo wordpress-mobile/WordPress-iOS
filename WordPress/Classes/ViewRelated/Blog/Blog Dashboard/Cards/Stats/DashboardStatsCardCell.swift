@@ -42,7 +42,6 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
         let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.statsTitle
         frameView.titleHint = Strings.statsTitleHint
-        frameView.icon = UIImage.gridicon(.statsAlt, size: Constants.iconSize)
         self.frameView = frameView
 
         let statsStackview = DashboardStatsStackView()

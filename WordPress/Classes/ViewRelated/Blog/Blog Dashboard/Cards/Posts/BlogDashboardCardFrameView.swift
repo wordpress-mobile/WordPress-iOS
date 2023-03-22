@@ -25,16 +25,6 @@ class BlogDashboardCardFrameView: UIView {
         return topStackView
     }()
 
-    /// Card's icon image view
-    private lazy var iconImageView: UIImageView = {
-        let iconImageView = UIImageView(image: UIImage.gridicon(.posts, size: Constants.iconSize).withRenderingMode(.alwaysTemplate))
-        iconImageView.tintColor = .label
-        iconImageView.frame = CGRect(x: 0, y: 0, width: Constants.iconSize.width, height: Constants.iconSize.height)
-        iconImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        iconImageView.isAccessibilityElement = false
-        return iconImageView
-    }()
-
     /// Card's title
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -43,19 +33,6 @@ class BlogDashboardCardFrameView: UIView {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         titleLabel.accessibilityTraits = .button
         return titleLabel
-    }()
-
-    /// Chevron displayed in case there's any action associated
-    private lazy var chevronImageView: UIImageView = {
-        let chevronImage = UIImage.gridicon(.chevronRight, size: Constants.iconSize).withRenderingMode(.alwaysTemplate)
-        let chevronImageView = UIImageView(image: chevronImage.imageFlippedForRightToLeftLayoutDirection())
-        chevronImageView.frame = CGRect(x: 0, y: 0, width: Constants.iconSize.width, height: Constants.iconSize.height)
-        chevronImageView.tintColor = .listIcon
-        chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        chevronImageView.isAccessibilityElement = false
-        chevronImageView.isHidden = true
-        chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        return chevronImageView
     }()
 
     /// Ellipsis Button displayed on the top right corner of the view.
@@ -102,19 +79,10 @@ class BlogDashboardCardFrameView: UIView {
         }
     }
 
-    /// The icon to be displayed at the header
-    var icon: UIImage? {
-        didSet {
-            iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
-            iconImageView.isHidden = icon == nil
-        }
-    }
-
     /// Closure to be called when anywhere in the view is tapped.
     /// If set, the chevron image is displayed.
     var onViewTap: (() -> Void)? {
         didSet {
-            updateChevronImageState()
             addViewTapGestureIfNeeded()
         }
     }
@@ -124,10 +92,8 @@ class BlogDashboardCardFrameView: UIView {
     /// If set, the chevron image is displayed.
     var onHeaderTap: (() -> Void)? {
         didSet {
-            updateChevronImageState()
             addHeaderTapGestureIfNeeded()
         }
-
     }
 
     /// Closure to be called when the ellipsis button is tapped..
@@ -177,7 +143,7 @@ class BlogDashboardCardFrameView: UIView {
         headerStackView.isHidden = true
         buttonContainerStackView.isHidden = false
 
-        if !ellipsisButton.isHidden || !chevronImageView.isHidden {
+        if !ellipsisButton.isHidden {
             mainStackViewTrailingConstraint?.constant = -Constants.mainStackViewTrailingPadding
         }
     }
@@ -228,30 +194,17 @@ class BlogDashboardCardFrameView: UIView {
         ellipsisButton.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
     }
 
-    private func updateChevronImageState() {
-        chevronImageView.isHidden = onViewTap == nil && onHeaderTap == nil
-        assertOnTapRecognitionCorrectUsage()
-    }
-
     private func updateEllipsisButtonState() {
         ellipsisButton.isHidden = onEllipsisButtonTap == nil
         let headerPadding = ellipsisButton.isHidden ?
             Constants.headerPaddingWithEllipsisButtonHidden :
             Constants.headerPaddingWithEllipsisButtonShown
         headerStackView.layoutMargins = headerPadding
-        assertOnTapRecognitionCorrectUsage()
-    }
-
-    /// Only one of two types of action should be associated with the card.
-    /// Either ellipsis button tap, or view/header tap
-    private func assertOnTapRecognitionCorrectUsage() {
-        let bothTypesUsed = (onViewTap != nil || onHeaderTap != nil) && onEllipsisButtonTap != nil
-        assert(!bothTypesUsed, "Using onViewTap or onHeaderTap alongside onEllipsisButtonTap is not supported and will result in unexpected behavior.")
     }
 
     private func addHeaderTapGestureIfNeeded() {
         // Reset any previously added gesture recognizers
-        headerStackView.gestureRecognizers?.forEach {headerStackView.removeGestureRecognizer($0)}
+        headerStackView.gestureRecognizers?.forEach { headerStackView.removeGestureRecognizer($0) }
 
         // Add gesture recognizer if needed
         if onHeaderTap != nil {
@@ -262,7 +215,7 @@ class BlogDashboardCardFrameView: UIView {
 
     private func addViewTapGestureIfNeeded() {
         // Reset any previously added gesture recognizers
-        self.gestureRecognizers?.forEach {self.removeGestureRecognizer($0)}
+        self.gestureRecognizers?.forEach { self.removeGestureRecognizer($0) }
 
         // Add gesture recognizer if needed
         if onViewTap != nil {

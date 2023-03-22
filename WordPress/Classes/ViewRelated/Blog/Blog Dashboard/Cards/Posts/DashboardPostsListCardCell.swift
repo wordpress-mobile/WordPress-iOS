@@ -69,7 +69,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
     private func addSubviews() {
         let frameView = BlogDashboardCardFrameView()
-        frameView.icon = UIImage.gridicon(.posts, size: Constants.iconSize)
         frameView.translatesAutoresizingMaskIntoConstraints = false
 
         frameView.add(subview: tableView)

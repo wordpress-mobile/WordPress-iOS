@@ -11,7 +11,6 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.title = Strings.cardFrameTitle
-        frameView.icon = Style.frameIconImage
 
         // NOTE: Remove the logic when support for iOS 14 is dropped
         if #available (iOS 15.0, *) {
