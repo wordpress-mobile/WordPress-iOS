@@ -46,27 +46,27 @@ class MediaImportService: NSObject {
 
     // MARK: - Instance methods
 
-    /// Create a media object using the url provided as the source of media.
+    /// Create a media object using the `ExportableAsset` provided as the source of media.
     ///
     /// - Note: All blocks arguments are called from the main thread. The `Media` argument in the blocks is bound to
     ///     the main context.
     ///
     /// - Warning: This function must be called from the main thread.
     ///
-    /// This functions returns a `Media` instance. To ensure the returned `Media` instance continue to be a valid
+    /// This functions returns a `Media` instance. To ensure the returned `Media` instance continues to be a valid
     /// instance, it can't be bound to a background context which are all temporary context. The only long living
     /// context is the main context. And the safe way to create and return an object bound to the main context is
     /// doing it from the main thread, which is why this function must be called from the main thread.
     ///
     /// - Parameters:
-    ///   - exportable: an object that implements the exportable interface
+    ///   - exportable: an object that conforms to `ExportableAsset`
     ///   - blog: the blog object to associate to the media
-    ///   - post: the post object to associate to the media
-    ///   - thumbnailCallback: a block that will be invoked when the thumbail for the media object is ready
-    ///   - completion: a block that will be invoked when the media is created, on success it will return a valid Media
-    ///         object, on failure it will return a nil Media and an error object with the details.
+    ///   - post: the optional post object to associate to the media
+    ///   - thumbnailCallback: a closure that will be invoked when the thumbnail for the media object is ready
+    ///   - completion: a closure that will be invoked when the media is created, on success it will return a valid `Media`
+    ///         object, on failure it will return a `nil` `Media` and an error object with the details.
     ///
-    /// - Returns: A NSProgress that tracks the progress of the export process
+    /// - Returns: The new `Media` instance and a `Process` instance that tracks the progress of the export process
     ///
     /// - SeeAlso: `createMedia(with:blog:post:thumbnailCallback:completion:)`
     func createMedia(
@@ -104,7 +104,7 @@ class MediaImportService: NSObject {
         return (media, createProgress)
     }
 
-    /// Create a media object using the url provided as the source of media.
+    /// Create a media object using the `ExportableAsset` provided as the source of media.
     ///
     /// Unlike `createMedia(with:blog:post:thumbnailCallback:completion:)`, this function can be called from any thread.
     ///
@@ -112,13 +112,13 @@ class MediaImportService: NSObject {
     ///     the main context.
     ///
     /// - Parameters:
-    ///   - exportable: an object that implements the exportable interface
+    ///   - exportable: an object that conforms to `ExportableAsset`
     ///   - blog: the blog object to associate to the media
-    ///   - post: the post object to associate to the media
+    ///   - post: the optional post object to associate to the media
     ///   - progress: a NSProgress that tracks the progress of the export process.
-    ///   - receiveUpdate: a block that will be invoked with the created `Media` instance.
-    ///   - thumbnailCallback: a block that will be invoked when the thumbail for the media object is ready
-    ///   - completion: a block that will be invoked when the media is created, on success it will return a valid Media
+    ///   - receiveUpdate: a closure that will be invoked with the created `Media` instance.
+    ///   - thumbnailCallback: a closure that will be invoked when the thumbnail for the media object is ready
+    ///   - completion: a closure that will be invoked when the media is created, on success it will return a valid Media
     ///         object, on failure it will return a nil Media and an error object with the details.
     @objc
     @discardableResult
@@ -173,9 +173,13 @@ class MediaImportService: NSObject {
         return media
     }
 
-    private func `import`(_ exportable: ExportableAsset, to media: Media, blog: Blog,
-                          thumbnailCallback: ((Media, URL) -> Void)?,
-                          completion: @escaping (Result<Media, Error>) -> Void) -> Progress {
+    private func `import`(
+        _ exportable: ExportableAsset,
+        to media: Media,
+        blog: Blog,
+        thumbnailCallback: ((Media, URL) -> Void)?,
+        completion: @escaping (Result<Media, Error>) -> Void
+    ) -> Progress {
         assert(Thread.isMainThread)
         assert(media.managedObjectContext == coreDataStack.mainContext)
         assert(blog.managedObjectContext == coreDataStack.mainContext)
@@ -226,9 +230,9 @@ class MediaImportService: NSObject {
     ///     - exportable: the exportable resource where data will be read from.
     ///     - media: the media object to where media will be imported to.
     ///     - onCompletion: Called if the Media was successfully created and the asset's data imported to the
-    ///         absoluteLocalURL. This closure is called on the main thread. The closure's `media` argument is also
+    ///         `absoluteLocalURL`. This closure is called on the main thread. The closure's `media` argument is also
     ///         bound to the main context (`CoreDataStack.mainContext`).
-    ///     - onError: Called if an error was encountered during creation, error convertible to NSError with a
+    ///     - onError: Called if an error was encountered during creation, error convertible to `NSError` with a
     ///         localized description. This closure is called on the main thread.
     ///
     /// - Returns: a progress object that report the current state of the import process.
@@ -296,15 +300,15 @@ class MediaImportService: NSObject {
         }
     }
 
-    /// Generate a thumbnail image for the Media asset so that consumers of the absoluteThumbnailLocalURL property
-    /// will have an image ready to load, without using the async methods provided via MediaThumbnailService.
+    /// Generate a thumbnail image for the `Media` so that consumers of the `absoluteThumbnailLocalURL` property
+    /// will have an image ready to load, without using the async methods provided via `MediaThumbnailService`.
     ///
     /// This is primarily used as a placeholder image throughout the code-base, particulary within the editors.
     ///
-    /// Note: Ideally we wouldn't need this at all, but the synchronous usage of absoluteThumbnailLocalURL across the code-base
+    /// Note: Ideally we wouldn't need this at all, but the synchronous usage of `absoluteThumbnailLocalURL` across the code-base
     ///       to load a thumbnail image is relied on quite heavily. In the future, transitioning to asynchronous thumbnail loading
     ///       via the new thumbnail service methods is much preferred, but would indeed take a good bit of refactoring away from
-    ///       using absoluteThumbnailLocalURL.
+    ///       using `absoluteThumbnailLocalURL`.
     func exportPlaceholderThumbnail(for media: Media, completion: ((URL?) -> Void)?) {
         let thumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
         thumbnailService.thumbnailURL(forMedia: media, preferredSize: .zero) { url in
