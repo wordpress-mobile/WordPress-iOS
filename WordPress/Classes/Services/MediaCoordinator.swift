@@ -151,8 +151,7 @@ class MediaCoordinator: NSObject {
     ///
     @discardableResult
     func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
-        let coordinator = self.coordinator(for: post)
-        return addMedia(from: asset, post: post, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        addMedia(from: asset, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
     }
 
     /// Create a `Media` instance from the main context and upload the asset to the Meida Library.
