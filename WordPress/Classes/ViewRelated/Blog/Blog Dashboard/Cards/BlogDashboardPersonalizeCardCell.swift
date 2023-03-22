@@ -79,7 +79,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         WPAnalytics.track(.dashboardCardItemTapped, properties: ["type": DashboardCard.personalize.rawValue], blog: blog)
         let viewController = UIHostingController(rootView: NavigationView {
             BlogDashboardPersonalizationView(viewModel: .init(service: .init(siteID: siteID)))
-        })
+        }.navigationViewStyle(.stack)) // .stack is required for iPad
         presentingViewController?.present(viewController, animated: true)
     }
 }
