@@ -15,6 +15,7 @@ struct BlogDashboardPersonalizationView: View {
                 Text(Strings.sectionFooter)
             })
         }
+        .listStyle(.insetGrouped)
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
