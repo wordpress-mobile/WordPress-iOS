@@ -108,6 +108,8 @@ extension DashboardPostsListCardCell {
     }
 
     private func addContextMenu(card: DashboardCard, blog: Blog) {
+        guard FeatureFlag.personalizeHomeTab.enabled else { return }
+
         frameView.onEllipsisButtonTap = {
             BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
         }
