@@ -125,23 +125,25 @@ extension WidgetDataReaderTests {
         let siteSelectedExpectation = XCTestExpectation(description: "NoSiteSelected Expectation")
         siteSelectedExpectation.isInverted = !expectSiteSelected
 
-        sut.widgetData(
+        switch sut.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID,
-            isJetpack: isJetpack,
-            onDisabled: {
-                disabledExpectation.fulfill()
-            }, onNoData: {
+            isJetpack: isJetpack
+        ) {
+        case .success:
+            siteSelectedExpectation.fulfill()
+        case .failure(let error):
+            switch error {
+            case .noData:
                 noDataExpectation.fulfill()
-            }, onNoSite: {
+            case .noSite:
                 noSiteExpectation.fulfill()
-            }, onLoggedOut: {
+            case .loggedOut:
                 loggedOutExpectation.fulfill()
-            }, onSiteSelected: { _ in
-                siteSelectedExpectation.fulfill()
+            case .jetpackFeatureDisabled:
+                disabledExpectation.fulfill()
             }
-        )
-
+        }
         wait(for: [
             disabledExpectation,
             noDataExpectation,

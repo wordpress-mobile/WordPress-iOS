@@ -4,6 +4,13 @@ protocol WidgetDataCacheReader {
     func widgetData<T: HomeWidgetData>(for siteID: String) -> T?
 }
 
+enum WidgetDataReadError: Error {
+    case jetpackFeatureDisabled
+    case noData
+    case noSite
+    case loggedOut
+}
+
 final class WidgetDataReader<T: HomeWidgetData> {
     let userDefaults: UserDefaults?
     let cacheReader: WidgetDataCacheReader
@@ -39,37 +46,28 @@ final class WidgetDataReader<T: HomeWidgetData> {
     func widgetData(
         for configuration: SelectSiteIntent,
         defaultSiteID: Int?,
-        isJetpack: Bool,
-        onDisabled: (() -> Void)? = nil,
-        onNoData: @escaping () -> Void,
-        onNoSite: @escaping () -> Void,
-        onLoggedOut: @escaping () -> Void,
-        onSiteSelected: @escaping (_: T) -> Void
-    ) {
+        isJetpack: Bool
+    ) -> Result<T, WidgetDataReadError> {
         guard let defaults = userDefaults else {
-            onNoData()
-            return
+            return .failure(.noData)
         }
         // Jetpack won't have disable status, only WordPress need to check is Jetpack feature disabled
         guard isJetpack || !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
-            onDisabled?()
-            return
+            return .failure(.jetpackFeatureDisabled)
         }
         guard let defaultSiteID = defaultSiteID else {
             let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 
             if loggedIn {
-                onNoSite()
+                return .failure(.noSite)
             } else {
-                onLoggedOut()
+                return .failure(.loggedOut)
             }
-            return
         }
         guard let widgetData = widgetData(for: configuration, defaultSiteID: defaultSiteID) else {
-            onNoData()
-            return
+            return .failure(.noData)
         }
 
-        onSiteSelected(widgetData)
+        return .success(widgetData)
     }
 }

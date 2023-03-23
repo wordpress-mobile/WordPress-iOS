@@ -26,41 +26,47 @@ struct LockScreenSiteListProvider<T: HomeWidgetData & LockScreenStatsWidgetData>
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<LockScreenStatsWidgetEntry>) -> Void) {
-        widgetDataLoader.widgetData(
+        switch widgetDataLoader.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID,
-            isJetpack: AppConfiguration.isJetpack,
-            onNoData: {
-                completion(Timeline(entries: [.noData], policy: .never))
-            }, onNoSite: {
-                completion(Timeline(entries: [.noSite], policy: .never))
-            }, onLoggedOut: {
-                completion(Timeline(entries: [.loggedOut], policy: .never))
-            }, onSiteSelected: { widgetData in
-                let date = Date()
-                let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
-                let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
+            isJetpack: AppConfiguration.isJetpack
+        ) {
+        case .success(let widgetData):
+            let date = Date()
+            let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
+            let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
 
-                let privateCompletion = { (timelineEntry: LockScreenStatsWidgetEntry) in
-                    let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
-                    completion(timeline)
-                }
-                // if cached data are "too old", refresh them from the backend, otherwise keep them
-                guard elapsedTime > minElapsedTimeToRefresh else {
+            let privateCompletion = { (timelineEntry: LockScreenStatsWidgetEntry) in
+                let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
+                completion(timeline)
+            }
+            // if cached data are "too old", refresh them from the backend, otherwise keep them
+            guard elapsedTime > minElapsedTimeToRefresh else {
+                privateCompletion(.siteSelected(widgetData, context))
+                return
+            }
+
+            service.fetchStats(for: widgetData) { result in
+                switch result {
+                case .failure(let error):
+                    DDLogError("LockScreen StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
                     privateCompletion(.siteSelected(widgetData, context))
-                    return
-                }
-
-                service.fetchStats(for: widgetData) { result in
-                    switch result {
-                    case .failure(let error):
-                        DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-                        privateCompletion(.siteSelected(widgetData, context))
-                    case .success(let newWidgetData):
-                        privateCompletion(.siteSelected(newWidgetData, context))
-                    }
+                case .success(let newWidgetData):
+                    privateCompletion(.siteSelected(newWidgetData, context))
                 }
             }
-        )
+        case .failure(let error):
+            switch error {
+            case .noData:
+                completion(Timeline(entries: [.noData], policy: .never))
+            case .noSite:
+                completion(Timeline(entries: [.noSite], policy: .never))
+            case .loggedOut:
+                completion(Timeline(entries: [.loggedOut], policy: .never))
+            case .jetpackFeatureDisabled:
+                DDLogError("LockScreen StatsWidgets: lock screen widget should have Jetpack feature disable error")
+                completion(Timeline(entries: [.noData], policy: .never))
+            }
+        }
     }
 }

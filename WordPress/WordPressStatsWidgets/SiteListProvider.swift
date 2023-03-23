@@ -30,44 +30,47 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
-        widgetDataLoader.widgetData(
+        switch widgetDataLoader.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID,
-            isJetpack: AppConfiguration.isJetpack,
-            onDisabled: {
-                completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
-            }, onNoData: {
-                completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
-            }, onNoSite: {
-                completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
-            }, onLoggedOut: {
-                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
-            }, onSiteSelected: { widgetData in
-                let date = Date()
-                let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
-                let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
+            isJetpack: AppConfiguration.isJetpack
+        ) {
+        case .success(let widgetData):
+            let date = Date()
+            let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
+            let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
 
-                let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
-                    let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
-                    completion(timeline)
-                }
-                // if cached data are "too old", refresh them from the backend, otherwise keep them
-                guard elapsedTime > minElapsedTimeToRefresh else {
+            let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
+                let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
+                completion(timeline)
+            }
+            // if cached data are "too old", refresh them from the backend, otherwise keep them
+            guard elapsedTime > minElapsedTimeToRefresh else {
+                privateCompletion(.siteSelected(widgetData, context))
+                return
+            }
+
+            service.fetchStats(for: widgetData) { result in
+                switch result {
+                case .failure(let error):
+                    DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
                     privateCompletion(.siteSelected(widgetData, context))
-                    return
-                }
-
-                service.fetchStats(for: widgetData) { result in
-                    switch result {
-                    case .failure(let error):
-                        DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-                        privateCompletion(.siteSelected(widgetData, context))
-                    case .success(let newWidgetData):
-                        privateCompletion(.siteSelected(newWidgetData, context))
-                    }
+                case .success(let newWidgetData):
+                    privateCompletion(.siteSelected(newWidgetData, context))
                 }
             }
-        )
+        case .failure(let error):
+            switch error {
+            case .noData:
+                completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
+            case .noSite:
+                completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
+            case .loggedOut:
+                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
+            case .jetpackFeatureDisabled:
+                completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
+            }
+        }
     }
 }
 
