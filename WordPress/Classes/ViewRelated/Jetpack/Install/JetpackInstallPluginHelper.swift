@@ -4,6 +4,7 @@ class JetpackInstallPluginHelper: NSObject {
     // MARK: Dependencies
 
     private let repository: UserPersistentRepository
+    private let currentDateProvider: CurrentDateProvider
     private let receipt: RecentJetpackInstallReceipt
     private let blog: Blog
     private let siteIDString: String
@@ -15,7 +16,12 @@ class JetpackInstallPluginHelper: NSObject {
 
     /// Determines whether the plugin install overlay should be shown for this `blog`.
     var shouldShowOverlay: Bool {
-        shouldPromptInstall && !isOverlayAlreadyShown
+        guard AppConfiguration.isJetpack else {
+            return shouldShowOverlayInWordPress
+        }
+
+        // For Jetpack, the overlay will be shown once per site.
+        return shouldPromptInstall && !isOverlayAlreadyShown
     }
 
     // MARK: Methods
@@ -25,7 +31,13 @@ class JetpackInstallPluginHelper: NSObject {
     /// - Parameter blog: The `Blog` to show the install cards for,
     /// - Returns: True if the install cards should be shown for this blog.
     @objc static func shouldShowCard(for blog: Blog?) -> Bool {
-        return JetpackInstallPluginHelper(blog)?.shouldShowCard ?? false
+        // cards are only shown in Jetpack.
+        guard AppConfiguration.isJetpack,
+              let helper = JetpackInstallPluginHelper(blog) else {
+            return false
+        }
+
+        return helper.shouldShowCard
     }
 
     /// Convenience entry point to show the Jetpack Install Plugin overlay when needed.
@@ -69,6 +81,7 @@ class JetpackInstallPluginHelper: NSObject {
 
     init?(_ blog: Blog?,
           repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider(),
           receipt: RecentJetpackInstallReceipt = .shared) {
         guard let blog,
               let siteID = blog.dotComID?.stringValue,
@@ -80,6 +93,7 @@ class JetpackInstallPluginHelper: NSObject {
         self.blog = blog
         self.siteIDString = siteID
         self.repository = repository
+        self.currentDateProvider = currentDateProvider
         self.receipt = receipt
     }
 
@@ -91,6 +105,11 @@ class JetpackInstallPluginHelper: NSObject {
     }
 
     func markOverlayAsShown() {
+        guard AppConfiguration.isJetpack else {
+            markOverlayShownInWordPress()
+            return
+        }
+
         if isOverlayAlreadyShown {
             return
         }
@@ -102,6 +121,7 @@ class JetpackInstallPluginHelper: NSObject {
 
 private extension JetpackInstallPluginHelper {
 
+    /// Returns true if the card has been set to hidden for `blog`. For Jetpack only.
     var isCardHidden: Bool {
         cardHiddenSites.contains { $0 == siteIDString }
     }
@@ -115,6 +135,7 @@ private extension JetpackInstallPluginHelper {
         }
     }
 
+    /// Returns true if the overlay has been shown for `blog`. For Jetpack only.
     var isOverlayAlreadyShown: Bool {
         overlayShownSites.contains { $0 == siteIDString }
     }
@@ -132,9 +153,12 @@ private extension JetpackInstallPluginHelper {
         blog.jetpackIsConnectedWithoutFullPlugin && !receipt.installed(for: siteIDString)
     }
 
+    // MARK: Constants
+
     struct Constants {
         static let cardHiddenSitesKey = "jetpack-install-card-hidden-sites"
         static let overlayShownSitesKey = "jetpack-install-overlay-shown-sites"
+        static let maxOverlayShownPerSite = 3 // TODO: allow this value to be configurable via remote.
     }
 }
 
@@ -154,5 +178,108 @@ class RecentJetpackInstallReceipt {
 
     func store(_ siteID: String) {
         siteIDs.insert(siteID)
+    }
+}
+
+// MARK: - WordPress Helpers
+
+private extension JetpackInstallPluginHelper {
+
+    var shouldShowOverlayInWordPress: Bool {
+        let overlayInfo = WordPressOverlayInfo(siteID: siteIDString,
+                                               repository: repository,
+                                               currentDateProvider: currentDateProvider)
+
+        guard overlayInfo.amountShown < Constants.maxOverlayShownPerSite,
+              currentDateProvider.date() >= overlayInfo.nextOccurrence else {
+            return false
+        }
+
+        return shouldPromptInstall
+    }
+
+    func markOverlayShownInWordPress() {
+        let overlayInfo = WordPressOverlayInfo(siteID: siteIDString,
+                                               repository: repository,
+                                               currentDateProvider: currentDateProvider)
+
+        overlayInfo.updateNextOccurrence()
+    }
+}
+
+private class WordPressOverlayInfo {
+    private static let dateFormatter = ISO8601DateFormatter()
+    private let siteID: String
+    private let repository: UserPersistentRepository
+    private let currentDateProvider: CurrentDateProvider
+
+    /// Tracks the overlay occurrences for all sites in dictionary format.
+    ///
+    /// The occurrences are stored as an array of date strings, and the amount of strings tell how many times
+    /// the overlay has been shown for the site.
+    ///
+    /// For example, given `["2023-03-17 17:00", "2023-03-25 11:00"]`, this tells that:
+    ///     - The overlay has been shown 2 times, and
+    ///     - The third overlay may be shown after 2023-03-25 11:00.
+    ///
+    private var overlayOccurrenceSites: [String: [String]] {
+        get {
+            (repository.dictionary(forKey: Constants.overlayOccurrenceSitesKey) as? [String: [String]]) ?? .init()
+        }
+        set {
+            repository.set(newValue, forKey: Constants.overlayOccurrenceSitesKey)
+        }
+    }
+
+    /// How many times the overlay has been shown for the site.
+    var amountShown: Int {
+        overlayOccurrenceSites[siteID]?.count ?? 0
+    }
+
+    /// The minimum date before the overlay can be shown again for the site.
+    private(set) var nextOccurrence: Date {
+        get {
+            guard let dateString = overlayOccurrenceSites[siteID]?.last,
+                  let date = Self.dateFormatter.date(from: dateString) else {
+                return .distantPast
+            }
+            return date
+        }
+        set {
+            var mutableDictionary = overlayOccurrenceSites
+            var occurrencesForSite = mutableDictionary[siteID] ?? [String]()
+            occurrencesForSite.append(Self.dateFormatter.string(from: newValue))
+            mutableDictionary[siteID] = occurrencesForSite
+
+            overlayOccurrenceSites = mutableDictionary
+        }
+    }
+
+    init(siteID: String, repository: UserPersistentRepository, currentDateProvider: CurrentDateProvider) {
+        self.siteID = siteID
+        self.repository = repository
+        self.currentDateProvider = currentDateProvider
+    }
+
+    func updateNextOccurrence() {
+        nextOccurrence = currentDateProvider.date().addingTimeInterval(delay(after: amountShown + 1))
+    }
+
+    private func delay(after amountShown: Int) -> TimeInterval {
+        switch amountShown {
+        case 1:
+            return Constants.oneDayInterval
+        case 2:
+            return Constants.threeDaysInterval
+        default:
+            return Constants.oneWeekInterval
+        }
+    }
+
+    private struct Constants {
+        static let overlayOccurrenceSitesKey = "jetpack-install-overlay-occurrence-sites"
+        static let oneDayInterval: TimeInterval = 60 * 60 * 24
+        static let threeDaysInterval: TimeInterval = oneDayInterval * 3
+        static let oneWeekInterval: TimeInterval = oneDayInterval * 7
     }
 }
