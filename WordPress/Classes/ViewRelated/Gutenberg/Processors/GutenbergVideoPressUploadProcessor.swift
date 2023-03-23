@@ -8,40 +8,40 @@ class GutenbergVideoPressUploadProcessor: Processor {
     let videoPressGUID: String
     var videoPressURL: String = ""
 
-    private struct VideoPressBlockKeys {
-        static var name = "wp:videopress/video"
-        static var id = "id"
-        static var guid = "guid"
-        static var resizeToParent = "resizeToParent"
-        static var cover = "cover"
-        static var autoplay = "autoplay"
-        static var controls = "controls"
-        static var loop = "loop"
-        static var muted = "muted"
-        static var playsinline = "playsinline"
-        static var poster = "poster"
-        static var preload = "preload"
-        static var seekbarColor = "seekbarColor"
-        static var seekbarPlayedColor = "seekbarPlayedColor"
-        static var seekbarLoadingColor = "seekbarLoadingColor"
-        static var useAverageColor = "useAverageColor"
+    private enum VideoPressBlockKeys: String {
+        case name = "wp:videopress/video"
+        case id
+        case guid
+        case resizeToParent
+        case cover
+        case autoplay
+        case controls
+        case loop
+        case muted
+        case playsinline
+        case poster
+        case preload
+        case seekbarColor
+        case seekbarPlayedColor
+        case seekbarLoadingColor
+        case useAverageColor
     }
 
-    private struct VideoPressURLQueryParams {
-        static var resizeToParent = "resizeToParent"
-        static var cover = "cover"
-        static var autoPlay = "autoPlay"
-        static var controls = "controls"
-        static var loop = "loop"
-        static var muted = "muted"
-        static var persistVolume = "persistVolume"
-        static var playsinline = "playsinline"
-        static var posterUrl = "posterUrl"
-        static var preloadContent = "preloadContent"
-        static var sbc = "sbc"
-        static var sbpc = "sbpc"
-        static var sblc = "sblc"
-        static var useAverageColor = "useAverageColor"
+    private enum VideoPressURLQueryParams: String {
+        case resizeToParent
+        case cover
+        case autoPlay
+        case controls
+        case loop
+        case muted
+        case persistVolume
+        case playsinline
+        case posterUrl
+        case preloadContent
+        case sbc
+        case sbpc
+        case sblc
+        case useAverageColor
     }
 
     init(mediaUploadID: Int32, serverMediaID: Int, videoPressGUID: String) {
@@ -61,14 +61,14 @@ class GutenbergVideoPressUploadProcessor: Processor {
         return html
     })
 
-    lazy var videoPressBlockProcessor = GutenbergBlockProcessor(for: VideoPressBlockKeys.name, replacer: { videoPressBlock in
-        guard let mediaID = videoPressBlock.attributes[VideoPressBlockKeys.id] as? Int, mediaID == self.mediaUploadID else {
+    lazy var videoPressBlockProcessor = GutenbergBlockProcessor(for: VideoPressBlockKeys.name.rawValue, replacer: { videoPressBlock in
+        guard let mediaID = videoPressBlock.attributes[VideoPressBlockKeys.id.rawValue] as? Int, mediaID == self.mediaUploadID else {
             return nil
         }
         var block = "<!-- \(VideoPressBlockKeys.name) "
         var attributes = videoPressBlock.attributes
-        attributes[VideoPressBlockKeys.id] = self.serverMediaID
-        attributes[VideoPressBlockKeys.guid] = self.videoPressGUID
+        attributes[VideoPressBlockKeys.id.rawValue] = self.serverMediaID
+        attributes[VideoPressBlockKeys.guid.rawValue] = self.videoPressGUID
         if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
             let jsonString = String(data: jsonData, encoding: .utf8) {
             block += jsonString
@@ -100,52 +100,52 @@ class GutenbergVideoPressUploadProcessor: Processor {
     func getVideoPressURL(_ attributes: [String: Any]) -> String {
         // Setting default values
         var options: [URLQueryItem] = [
-            URLQueryItem(name: VideoPressURLQueryParams.resizeToParent, value: true.stringLiteral),
-            URLQueryItem(name: VideoPressURLQueryParams.cover, value: true.stringLiteral),
+            URLQueryItem(name: VideoPressURLQueryParams.resizeToParent.rawValue, value: true.stringLiteral),
+            URLQueryItem(name: VideoPressURLQueryParams.cover.rawValue, value: true.stringLiteral),
         ]
 
-        if let autoplay = attributes[VideoPressBlockKeys.autoplay] as? Bool, autoplay == true {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.autoPlay, value: autoplay.stringLiteral))
+        if let autoplay = attributes[VideoPressBlockKeys.autoplay.rawValue] as? Bool, autoplay == true {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.autoPlay.rawValue, value: autoplay.stringLiteral))
         }
-        if let controls = attributes[VideoPressBlockKeys.controls] as? Bool, controls == false {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.controls, value: controls.stringLiteral))
+        if let controls = attributes[VideoPressBlockKeys.controls.rawValue] as? Bool, controls == false {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.controls.rawValue, value: controls.stringLiteral))
         }
-        if let loop = attributes[VideoPressBlockKeys.loop] as? Bool, loop == true {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.loop, value: loop.stringLiteral))
+        if let loop = attributes[VideoPressBlockKeys.loop.rawValue] as? Bool, loop == true {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.loop.rawValue, value: loop.stringLiteral))
         }
-        if let muted = attributes[VideoPressBlockKeys.muted] as? Bool, muted == true {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.muted, value: muted.stringLiteral))
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.persistVolume, value: false.stringLiteral))
+        if let muted = attributes[VideoPressBlockKeys.muted.rawValue] as? Bool, muted == true {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.muted.rawValue, value: muted.stringLiteral))
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.persistVolume.rawValue, value: false.stringLiteral))
         }
-        if let playinline = attributes[VideoPressBlockKeys.playsinline] as? Bool, playinline == true {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.playsinline, value: playinline.stringLiteral))
+        if let playinline = attributes[VideoPressBlockKeys.playsinline.rawValue] as? Bool, playinline == true {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.playsinline.rawValue, value: playinline.stringLiteral))
         }
-        if let poster = attributes[VideoPressBlockKeys.poster] as? String, !poster.isEmpty {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.posterUrl, value: poster))
+        if let poster = attributes[VideoPressBlockKeys.poster.rawValue] as? String, !poster.isEmpty {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.posterUrl.rawValue, value: poster))
         }
-        if let preload = attributes[VideoPressBlockKeys.preload] as? String, !preload.isEmpty {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.preloadContent, value: preload))
+        if let preload = attributes[VideoPressBlockKeys.preload.rawValue] as? String, !preload.isEmpty {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.preloadContent.rawValue, value: preload))
         }
         else {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.preloadContent, value: "metadata"))
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.preloadContent.rawValue, value: "metadata"))
         }
-        if let seekbarColor = attributes[VideoPressBlockKeys.seekbarColor] as? String, !seekbarColor.isEmpty {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.sbc, value: seekbarColor))
+        if let seekbarColor = attributes[VideoPressBlockKeys.seekbarColor.rawValue] as? String, !seekbarColor.isEmpty {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.sbc.rawValue, value: seekbarColor))
         }
-        if let seekbarPlayedColor = attributes[VideoPressBlockKeys.seekbarPlayedColor] as? String, !seekbarPlayedColor.isEmpty {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.sbpc, value: seekbarPlayedColor))
+        if let seekbarPlayedColor = attributes[VideoPressBlockKeys.seekbarPlayedColor.rawValue] as? String, !seekbarPlayedColor.isEmpty {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.sbpc.rawValue, value: seekbarPlayedColor))
         }
-        if let seekbarLoadingColor = attributes[VideoPressBlockKeys.seekbarLoadingColor] as? String, !seekbarLoadingColor.isEmpty {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.sblc, value: seekbarLoadingColor))
+        if let seekbarLoadingColor = attributes[VideoPressBlockKeys.seekbarLoadingColor.rawValue] as? String, !seekbarLoadingColor.isEmpty {
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.sblc.rawValue, value: seekbarLoadingColor))
         }
-        if let useAverageColor = attributes[VideoPressBlockKeys.useAverageColor] as? Bool {
+        if let useAverageColor = attributes[VideoPressBlockKeys.useAverageColor.rawValue] as? Bool {
             if useAverageColor == true {
-                options.append(URLQueryItem(name: VideoPressURLQueryParams.useAverageColor, value: useAverageColor.stringLiteral))
+                options.append(URLQueryItem(name: VideoPressURLQueryParams.useAverageColor.rawValue, value: useAverageColor.stringLiteral))
             }
         }
         // Adding `useAverageColor` param as its default value is true
         else {
-            options.append(URLQueryItem(name: VideoPressURLQueryParams.useAverageColor, value: true.stringLiteral))
+            options.append(URLQueryItem(name: VideoPressURLQueryParams.useAverageColor.rawValue, value: true.stringLiteral))
         }
 
         guard let url = URL(string: "https://videopress.com/v/\(self.videoPressGUID)"), var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
