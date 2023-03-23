@@ -2866,6 +2866,8 @@
 		C9B4778A29C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */; };
 		C9B4778E29C85BC5008CBF49 /* LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */; };
 		C9B4779F29C88323008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */; };
+		C9B477A829CC13C6008CBF49 /* LockScreenSiteListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */; };
+		C9B477A929CC13CB008CBF49 /* LockScreenSiteListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */; };
 		C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7B29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */; };
@@ -8123,6 +8125,7 @@
 		C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetData.swift; sourceTree = "<group>"; };
 		C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetEntry.swift; sourceTree = "<group>"; };
 		C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HomeWidgetData+LockScreenStatsWidgetData.swift"; sourceTree = "<group>"; };
+		C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenSiteListProvider.swift; sourceTree = "<group>"; };
 		C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidget.swift; sourceTree = "<group>"; };
 		C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetsView.swift; sourceTree = "<group>"; };
 		C9D7DDBF2613B84500104E95 /* WordPress 119.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 119.xcdatamodel"; sourceTree = "<group>"; };
@@ -15679,6 +15682,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */,
+				C9B477A729CC13C6008CBF49 /* LockScreenSiteListProvider.swift */,
 				C9FE383B29C2A3A300D39841 /* Configs */,
 				C9FE382929C204D700D39841 /* Models */,
 				C9C21D8829BF4998009F68E5 /* Views */,
@@ -20519,6 +20523,7 @@
 				0107E0C028F97D5000DE87DB /* WordPressHomeWidgetToday.swift in Sources */,
 				0107E0C128F97D5000DE87DB /* FlexibleCard.swift in Sources */,
 				0107E0C228F97D5000DE87DB /* VerticalCard.swift in Sources */,
+				C9B477A929CC13CB008CBF49 /* LockScreenSiteListProvider.swift in Sources */,
 				0107E0C328F97D5000DE87DB /* ThisWeekWidgetStats.swift in Sources */,
 				0107E0C428F97D5000DE87DB /* HomeWidgetAllTimeData.swift in Sources */,
 				C9B4778529C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
@@ -22391,6 +22396,7 @@
 				3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */,
 				3F568A1F254213B60048A9E4 /* VerticalCard.swift in Sources */,
 				3F8B306825D1D4B8005A2903 /* ThisWeekWidgetStats.swift in Sources */,
+				C9B477A829CC13C6008CBF49 /* LockScreenSiteListProvider.swift in Sources */,
 				3F5C861A25C9EA2500BABE64 /* HomeWidgetAllTimeData.swift in Sources */,
 				3FE20C1525CF165700A15525 /* GroupedViewData.swift in Sources */,
 				C9B4778429C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
