@@ -59,7 +59,7 @@ private extension DashboardCard {
                 assertionFailure(".quickStart card should only appear in the personalization menu if there are remaining steps")
                 return ""
             case .existingSite:
-                return NSLocalizedString("personalizeHome.dashboardCard.nextSteps", value: "Get to know the app", comment: "Card title for the pesonalization menu")
+                return NSLocalizedString("personalizeHome.dashboardCard.getToKnowTheApp", value: "Get to know the app", comment: "Card title for the pesonalization menu")
             case .newSite:
                 return NSLocalizedString("personalizeHome.dashboardCard.nextSteps", value: "Next steps", comment: "Card title for the pesonalization menu")
             }

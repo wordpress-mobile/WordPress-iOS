@@ -37,7 +37,6 @@ final class BlogDashboardPersonalizationViewModelTests: XCTestCase {
         }
     }
 
-
     func testThatQuickStartCardsIsNotDisplayedWhenTourIsActive() {
         // Given
         viewModel = BlogDashboardPersonalizationViewModel(service: service, quickStartType: .newSite)
