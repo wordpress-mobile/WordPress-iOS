@@ -29,6 +29,7 @@ struct LockScreenSiteListProvider<T: HomeWidgetData & LockScreenStatsWidgetData>
         widgetDataLoader.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID,
+            isJetpack: AppConfiguration.isJetpack,
             onNoData: {
                 completion(Timeline(entries: [.noData], policy: .never))
             }, onNoSite: {

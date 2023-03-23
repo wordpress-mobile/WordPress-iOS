@@ -1,6 +1,20 @@
 import Foundation
 
+protocol WidgetDataCacheReader {
+    func widgetData<T: HomeWidgetData>(for siteID: String) -> T?
+}
+
 final class WidgetDataReader<T: HomeWidgetData> {
+    let userDefaults: UserDefaults?
+    let cacheReader: WidgetDataCacheReader
+
+    init(_ userDefaults: UserDefaults? = UserDefaults(suiteName: WPAppGroupName),
+         _ cacheReader: any WidgetDataCacheReader = HomeWidgetDataFileReader()
+    ) {
+        self.userDefaults = userDefaults
+        self.cacheReader = cacheReader
+    }
+
     /// Returns cached widget data based on the selected site when editing widget and the default site.
     /// Configuration.site is nil until IntentHandler is initialized.
     /// Configuration.site can have old value after logging in with a different account. No way to reset configuration when the user logs out.
@@ -12,10 +26,11 @@ final class WidgetDataReader<T: HomeWidgetData> {
     func widgetData(for configuration: SelectSiteIntent, defaultSiteID: Int?) -> T? {
 
         /// If configuration.site.identifier has value but there's no widgetData, it means that this identifier comes from previously logged in account
-        if let selectedSite = configuration.site?.identifier, let widgetData = widgetData(for: selectedSite) {
+        if let selectedSite = configuration.site?.identifier,
+           let widgetData: T = cacheReader.widgetData(for: selectedSite) {
             return widgetData
         } else if let defaultSiteID = defaultSiteID {
-            return widgetData(for: String(defaultSiteID))
+            return cacheReader.widgetData(for: String(defaultSiteID))
         } else {
             return nil
         }
@@ -24,18 +39,19 @@ final class WidgetDataReader<T: HomeWidgetData> {
     func widgetData(
         for configuration: SelectSiteIntent,
         defaultSiteID: Int?,
+        isJetpack: Bool,
         onDisabled: (() -> Void)? = nil,
         onNoData: @escaping () -> Void,
         onNoSite: @escaping () -> Void,
         onLoggedOut: @escaping () -> Void,
         onSiteSelected: @escaping (_: T) -> Void
     ) {
-        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
+        guard let defaults = userDefaults else {
             onNoData()
             return
         }
         // Jetpack won't have disable status, only WordPress need to check is Jetpack feature disabled
-        guard AppConfiguration.isJetpack || !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
+        guard isJetpack || !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
             onDisabled?()
             return
         }
@@ -55,14 +71,5 @@ final class WidgetDataReader<T: HomeWidgetData> {
         }
 
         onSiteSelected(widgetData)
-    }
-
-    private func widgetData(for siteID: String) -> T? {
-        /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
-        guard let siteID = Int(siteID) else {
-            return nil
-        }
-
-        return T.read()?[siteID]
     }
 }

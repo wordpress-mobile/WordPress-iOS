@@ -33,6 +33,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         widgetDataLoader.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID,
+            isJetpack: AppConfiguration.isJetpack,
             onDisabled: {
                 completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
             }, onNoData: {
