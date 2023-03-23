@@ -96,7 +96,7 @@ class AccountSettingsService {
                     DDLogError("Error refreshing settings (unrecoverable): \(error)")
                 }
 
-                if error.domain == NSURLErrorDomain && count < Defaults.maxRetries {
+                if error.domain == NSURLErrorDomain && error.code != URLError.cancelled.rawValue && count < Defaults.maxRetries {
                     self.getSettingsAttempt(count: count + 1, completion: completion)
                 } else {
                     self.status = .failed
