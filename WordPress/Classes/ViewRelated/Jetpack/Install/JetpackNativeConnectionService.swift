@@ -74,8 +74,8 @@ final class JetpackNativeConnectionService: NSObject {
             case .success(let json):
                 do {
                     let data = try JSONSerialization.data(withJSONObject: json)
-                    let jetpacUserData = try JSONDecoder().decode(JetpackUserData.self, from: data)
-                    completion(.success(jetpacUserData.currentUser))
+                    let jetpackUserData = try JSONDecoder().decode(JetpackUserData.self, from: data)
+                    completion(.success(jetpackUserData.currentUser))
                 } catch {
                     completion(.failure(.parsingError))
                 }
