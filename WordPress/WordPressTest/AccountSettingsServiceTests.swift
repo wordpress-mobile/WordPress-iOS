@@ -10,6 +10,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
     override func setUp() {
         let account = WPAccount(context: mainContext)
         account.username = "test"
+        account.authToken = "token"
         account.userID = 1
         account.uuid = UUID().uuidString
 
@@ -29,7 +30,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
         service = AccountSettingsService(
             userID: account.userID.intValue,
-            remote: AccountSettingsRemote(wordPressComRestApi: WordPressComRestApi()),
+            remote: AccountSettingsRemote(wordPressComRestApi: account.wordPressComRestApi),
             coreDataStack: contextManager
         )
     }
@@ -70,5 +71,30 @@ class AccountSettingsServiceTests: CoreDataTestCase {
             })
         }
         expect(self.managedAccountSettings()?.firstName).to(equal("Test"))
+    }
+
+    func testCancelRefreshingSettings() throws {
+        // This test performs steps described in the link below to reproduce a crash.
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/20379#issuecomment-1481995663
+
+        let apiFired = expectation(description: "Get settings API fired")
+        stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
+            apiFired.fulfill()
+            sleep(2)
+            return HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+        }
+        service.refreshSettings()
+
+        // A 5 senconds timeout is used here becuase there is a 4 seconds delay of making the HTTP API request
+        // in the `refreshSettings` call above.
+        wait(for: [apiFired], timeout: 5)
+
+        let account = try XCTUnwrap(WPAccount.lookup(withUserID: 1, in: contextManager.mainContext))
+        contextManager.mainContext.delete(account)
+        contextManager.saveContextAndWait(contextManager.mainContext)
+
+        let notCrash = expectation(description: "Not crash")
+        notCrash.isInverted = true
+        wait(for: [notCrash], timeout: 1)
     }
 }
