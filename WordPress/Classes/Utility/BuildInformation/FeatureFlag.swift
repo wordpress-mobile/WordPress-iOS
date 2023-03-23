@@ -46,6 +46,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalStaticPosters
     case wordPressSupportForum
     case jetpackIndividualPluginSupport
+    case wordPressIndividualPluginSupport
     case blaze
     case siteCreationDomainPurchasing
     case readerUserBlocking
@@ -149,6 +150,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
+        case .wordPressIndividualPluginSupport:
+            return false
         case .blaze:
             return false
         case .siteCreationDomainPurchasing:
@@ -185,6 +188,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
+        case .wordPressIndividualPluginSupport:
+            return "wp_individual_plugin_overlay"
             default:
                 return nil
         }
@@ -293,6 +298,8 @@ extension FeatureFlag {
             return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
+        case .wordPressIndividualPluginSupport:
+            return "Jetpack Individual Plugin Support for WordPress"
         case .blaze:
             return "Blaze"
         case .siteCreationDomainPurchasing:
