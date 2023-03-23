@@ -20,26 +20,39 @@ struct BlogDashboardPersonalizationService {
     }
 
     func setEnabled(_ isEnabled: Bool, for card: DashboardCard) {
+        guard let key = makeKey(for: card) else { return }
+
         var settings = getSettings(for: card)
         settings[siteID] = isEnabled
-        repository.set(settings, forKey: makeKey(for: card))
+        repository.set(settings, forKey: key)
 
         NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
     }
 
     private func getSettings(for card: DashboardCard) -> [String: Bool] {
-        repository.dictionary(forKey: makeKey(for: card)) as? [String: Bool] ?? [:]
+        guard let key = makeKey(for: card) else { return [:] }
+        return repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
     }
 }
 
-private func makeKey(for card: DashboardCard) -> String {
-    if card == .prompts {
-        // This key was defined statically in the previous versions, and the
-        // naming convention wasn't matching the other keys, so it had to be
-        // special-cased to avoid losing data.
+private func makeKey(for card: DashboardCard) -> String? {
+    switch card {
+    case .todaysStats:
+        return "todays-stats-card-enabled-site-settings"
+    case .draftPosts:
+        return "draft-posts-card-enabled-site-settings"
+    case .scheduledPosts:
+        return "scheduled-posts-card-enabled-site-settings"
+    case .blaze:
+        return "blaze-card-enabled-site-settings"
+    case .prompts:
+        // Warning: there is an irregularity with the prompts key that doesn't
+        // have a "-card" component in the key name. Keeping it like this to
+        // avoid having to migrate data.
         return "prompts-enabled-site-settings"
+    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost:
+        return nil
     }
-    return "\(card.rawValue)-card-enabled-site-settings"
 }
 
 extension NSNotification.Name {
