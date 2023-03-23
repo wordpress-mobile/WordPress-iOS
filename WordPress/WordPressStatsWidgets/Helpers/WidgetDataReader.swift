@@ -12,11 +12,16 @@ final class WidgetDataReader<T: HomeWidgetData> {
     func widgetData(for configuration: SelectSiteIntent, defaultSiteID: Int?) -> T? {
 
         /// If configuration.site.identifier has value but there's no widgetData, it means that this identifier comes from previously logged in account
-        return widgetData(for: configuration.site?.identifier ?? String(defaultSiteID))
-        ?? widgetData(for: String(defaultSiteID))
+        if let selectedSite = configuration.site?.identifier, let widgetData = widgetData(for: selectedSite) {
+            return widgetData
+        } else if let defaultSiteID = defaultSiteID {
+            return widgetData(for: String(defaultSiteID))
+        } else {
+            return nil
+        }
     }
 
-    func widgetData(for siteID: String) -> T? {
+    private func widgetData(for siteID: String) -> T? {
         /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
         guard let siteID = Int(siteID) else {
             return nil

@@ -24,19 +24,8 @@ struct LockScreenSiteListProvider<T: HomeWidgetData & LockScreenStatsWidgetData>
 
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (LockScreenStatsWidgetEntry) -> Void) {
 
-        guard let site = configuration.site,
-              let siteIdentifier = site.identifier,
-              let widgetData = widgetDataLoader.widgetData(for: siteIdentifier) else {
-
-            if let siteID = defaultSiteID, let content = T.read()?[siteID] {
-                completion(.siteSelected(content, context))
-            } else {
-                completion(.siteSelected(placeholderContent, context))
-            }
-            return
-        }
-
-        completion(.siteSelected(widgetData, context))
+        let content = widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) ?? placeholderContent
+        completion(.siteSelected(content, context))
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<LockScreenStatsWidgetEntry>) -> Void) {

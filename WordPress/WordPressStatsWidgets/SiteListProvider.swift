@@ -25,19 +25,8 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (StatsWidgetEntry) -> Void) {
 
-        guard let site = configuration.site,
-              let siteIdentifier = site.identifier,
-              let widgetData = widgetDataLoader.widgetData(for: siteIdentifier) else {
-
-            if let siteID = defaultSiteID, let content = T.read()?[siteID] {
-                completion(.siteSelected(content, context))
-            } else {
-                completion(.siteSelected(placeholderContent, context))
-            }
-            return
-        }
-
-        completion(.siteSelected(widgetData, context))
+        let content = widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) ?? placeholderContent
+        completion(.siteSelected(content, context))
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
