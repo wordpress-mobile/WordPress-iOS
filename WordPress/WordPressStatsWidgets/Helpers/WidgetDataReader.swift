@@ -21,6 +21,42 @@ final class WidgetDataReader<T: HomeWidgetData> {
         }
     }
 
+    func widgetData(
+        for configuration: SelectSiteIntent,
+        defaultSiteID: Int?,
+        onDisabled: (() -> Void)? = nil,
+        onNoData: @escaping () -> Void,
+        onNoSite: @escaping () -> Void,
+        onLoggedOut: @escaping () -> Void,
+        onSiteSelected: @escaping (_: T) -> Void
+    ) {
+        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
+            onNoData()
+            return
+        }
+        // Jetpack won't have disable status, only WordPress need to check is Jetpack feature disabled
+        guard AppConfiguration.isJetpack || !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
+            onDisabled?()
+            return
+        }
+        guard let defaultSiteID = defaultSiteID else {
+            let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+
+            if loggedIn {
+                onNoSite()
+            } else {
+                onLoggedOut()
+            }
+            return
+        }
+        guard let widgetData = widgetData(for: configuration, defaultSiteID: defaultSiteID) else {
+            onNoData()
+            return
+        }
+
+        onSiteSelected(widgetData)
+    }
+
     private func widgetData(for siteID: String) -> T? {
         /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
         guard let siteID = Int(siteID) else {

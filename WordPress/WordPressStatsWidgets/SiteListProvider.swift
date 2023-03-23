@@ -30,59 +30,43 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
-        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
-            completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
-            return
-        }
-        guard !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
-            completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
-            return
-        }
-        guard let defaultSiteID = defaultSiteID else {
-            let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-
-            if loggedIn {
+        widgetDataLoader.widgetData(
+            for: configuration,
+            defaultSiteID: defaultSiteID,
+            onDisabled: {
+                completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
+            }, onNoData: {
+                completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
+            }, onNoSite: {
                 completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
-            } else {
+            }, onLoggedOut: {
                 completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
+            }, onSiteSelected: { widgetData in
+                let date = Date()
+                let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
+                let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
+
+                let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
+                    let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
+                    completion(timeline)
+                }
+                // if cached data are "too old", refresh them from the backend, otherwise keep them
+                guard elapsedTime > minElapsedTimeToRefresh else {
+                    privateCompletion(.siteSelected(widgetData, context))
+                    return
+                }
+
+                service.fetchStats(for: widgetData) { result in
+                    switch result {
+                    case .failure(let error):
+                        DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
+                        privateCompletion(.siteSelected(widgetData, context))
+                    case .success(let newWidgetData):
+                        privateCompletion(.siteSelected(newWidgetData, context))
+                    }
+                }
             }
-            return
-        }
-
-        guard let widgetData = widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) else {
-            completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
-            return
-        }
-
-        let date = Date()
-        let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
-        let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
-
-        let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
-            let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
-            completion(timeline)
-        }
-
-        // if cached data are "too old", refresh them from the backend, otherwise keep them
-        guard elapsedTime > minElapsedTimeToRefresh else {
-
-            privateCompletion(.siteSelected(widgetData, context))
-            return
-        }
-
-        service.fetchStats(for: widgetData) { result in
-
-            switch result {
-            case .failure(let error):
-                DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-
-                privateCompletion(.siteSelected(widgetData, context))
-
-            case .success(let newWidgetData):
-
-                privateCompletion(.siteSelected(newWidgetData, context))
-            }
-        }
+        )
     }
 }
 
