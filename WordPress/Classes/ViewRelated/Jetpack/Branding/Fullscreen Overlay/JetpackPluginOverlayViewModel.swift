@@ -10,15 +10,15 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 
     // MARK: View Model Properties
 
-    let title: String = Strings.title
-    let subtitle: NSAttributedString
+    var title: String { strings.title }
+    var subtitle: NSAttributedString { subtitle(withSiteName: siteName, plugin: plugin) }
     let animationLtr: String = Constants.lottieLTRFileName
     let animationRtl: String = Constants.lottieRTLFileName
     let footnote: String? = nil
-    let actionInfoText: NSAttributedString? = JetpackPluginOverlayViewModel.actionInfoString()
+    var actionInfoText: NSAttributedString? { actionInfoString() }
     let learnMoreButtonURL: String? = nil
-    let switchButtonText = Strings.primaryButtonTitle
-    let continueButtonText: String? = Strings.secondaryButtonTitle
+    var switchButtonText: String { strings.primaryButtonTitle }
+    var continueButtonText: String? { strings.secondaryButtonTitle }
     let shouldShowCloseButton = true
     let shouldDismissOnSecondaryButtonTap = false
     let analyticsSource: String = ""
@@ -31,10 +31,18 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 
     var coordinator: JetpackOverlayCoordinator?
 
+    // MARK: Private Properties
+
+    private let siteName: String
+    private let plugin: JetpackPlugin
+    private let strings: JetpackPluginOverlayStrings
+
     // MARK: Methods
 
     init(siteName: String, plugin: JetpackPlugin) {
-        self.subtitle = Self.subtitle(withSiteName: siteName, plugin: plugin)
+        self.siteName = siteName
+        self.plugin = plugin
+        self.strings = AppConfiguration.isWordPress ? WordPressStrings() : JetpackStrings()
     }
 
     func didDisplayOverlay() {
@@ -72,7 +80,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 
 private extension JetpackPluginOverlayViewModel {
 
-    static func subtitle(withSiteName siteName: String, plugin: JetpackPlugin) -> NSAttributedString {
+    func subtitle(withSiteName siteName: String, plugin: JetpackPlugin) -> NSAttributedString {
         switch plugin {
         case .multiple:
             return subtitleForPluralPlugins(withSiteName: siteName)
@@ -81,46 +89,66 @@ private extension JetpackPluginOverlayViewModel {
         }
     }
 
-    static func subtitleForPluralPlugins(withSiteName siteName: String) -> NSAttributedString {
+    func subtitleForPluralPlugins(withSiteName siteName: String) -> NSAttributedString {
         let siteNameAttributedText = attributedSubtitle(
             with: siteName,
             fontWeight: .bold
         )
-        let jetpackPluginAttributedText = attributedSubtitle(
-            with: Strings.jetpackPluginText,
-            fontWeight: .bold
-        )
+
+        if let jetpackPluginText = strings.jetpackPluginText {
+            let jetpackPluginAttributedText = attributedSubtitle(
+                with: jetpackPluginText,
+                fontWeight: .bold
+            )
+            return NSAttributedString(
+                format: attributedSubtitle(with: strings.subtitlePlural, fontWeight: .regular),
+                args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackPluginAttributedText)
+            )
+        }
 
         return NSAttributedString(
-            format: attributedSubtitle(with: Strings.subtitlePlural, fontWeight: .regular),
-            args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackPluginAttributedText)
+            format: attributedSubtitle(with: strings.subtitlePlural, fontWeight: .regular),
+            args: ("%1$@", siteNameAttributedText)
         )
     }
 
-    static func subtitleForSinglePlugin(withSiteName siteName: String, pluginName: String) -> NSAttributedString {
+    func subtitleForSinglePlugin(withSiteName siteName: String, pluginName: String) -> NSAttributedString {
         let siteNameAttributedText = attributedSubtitle(with: siteName, fontWeight: .bold)
         let jetpackBackupAttributedText = attributedSubtitle(with: pluginName,
             fontWeight: .bold
         )
-        let jetpackPluginAttributedText = attributedSubtitle(
-            with: Strings.jetpackPluginText,
-            fontWeight: .bold
-        )
+
+        if let jetpackPluginText = strings.jetpackPluginText {
+            let jetpackPluginAttributedText = attributedSubtitle(
+                with: jetpackPluginText,
+                fontWeight: .bold
+            )
+            return NSAttributedString(
+                format: attributedSubtitle(
+                    with: strings.subtitleSingular,
+                    fontWeight: .regular),
+                args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackBackupAttributedText), ("%3$@", jetpackPluginAttributedText)
+            )
+        }
 
         return NSAttributedString(
             format: attributedSubtitle(
-                with: Strings.subtitleSingular,
+                with: strings.subtitleSingular,
                 fontWeight: .regular),
-            args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackBackupAttributedText), ("%3$@", jetpackPluginAttributedText)
+            args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackBackupAttributedText)
         )
     }
 
-    static func actionInfoString() -> NSAttributedString {
+    func actionInfoString() -> NSAttributedString? {
+        guard let footnote = strings.footnote,
+              let termsAndConditions = strings.termsAndConditions else {
+            return nil
+        }
         let actionInfoBaseFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        let actionInfoBaseText = NSAttributedString(string: Strings.footnote, attributes: [.font: actionInfoBaseFont])
+        let actionInfoBaseText = NSAttributedString(string: footnote, attributes: [.font: actionInfoBaseFont])
 
         let actionInfoTermsText = NSAttributedString(
-            string: Strings.termsAndConditions,
+            string: termsAndConditions,
             attributes: [
                 .font: actionInfoBaseFont,
                 .underlineStyle: NSUnderlineStyle.single.rawValue
@@ -133,76 +161,9 @@ private extension JetpackPluginOverlayViewModel {
         )
     }
 
-    static func attributedSubtitle(with string: String, fontWeight: UIFont.Weight) -> NSAttributedString {
+    func attributedSubtitle(with string: String, fontWeight: UIFont.Weight) -> NSAttributedString {
         let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: fontWeight)
         return NSAttributedString(string: string, attributes: [.font: font])
-    }
-
-    // MARK: Strings
-
-    enum Strings {
-        static let title = NSLocalizedString(
-            "jetpack.plugin.modal.title",
-            value: "Please install the full Jetpack plugin",
-            comment: "Jetpack Plugin Modal title"
-        )
-
-        static let subtitleSingular = NSLocalizedString(
-            "jetpack.plugin.modal.subtitle.singular",
-            value: """
-            %1$@ is using the %2$@ plugin, which doesn't support all features of the app yet.
-
-            Please install the %3$@ to use the app with this site.
-            """,
-            comment: """
-            Jetpack Plugin Modal (single plugin) subtitle with formatted texts.
-            %1$@ is for the site name, %2$@ for the specific plugin name,
-            and %3$@ is for 'full Jetpack plugin' in bold style.
-            """
-        )
-
-        static let subtitlePlural = NSLocalizedString(
-            "jetpack.plugin.modal.subtitle.plural",
-            value: """
-            %1$@ is using individual Jetpack plugins, which don't support all features of the app yet.
-
-            Please install the %2$@ to use the app with this site.
-            """,
-            comment: """
-            Jetpack Plugin Modal (multiple plugins) subtitle with formatted texts.
-            %1$@ is for the site name, and %2$@ for 'full Jetpack plugin' in bold style.
-            """
-        )
-
-        static let jetpackPluginText = NSLocalizedString(
-            "jetpack.plugin.modal.subtitle.jetpack.plugin",
-            value: "full Jetpack plugin",
-            comment: "The 'full Jetpack plugin' string in the subtitle"
-        )
-
-        static let footnote = NSLocalizedString(
-            "jetpack.plugin.modal.footnote",
-            value: "By setting up Jetpack you agree to our %@",
-            comment: "Jetpack Plugin Modal footnote"
-        )
-
-        static let termsAndConditions = NSLocalizedString(
-            "jetpack.plugin.modal.terms",
-            value: "Terms and Conditions",
-            comment: "Jetpack Plugin Modal footnote terms and conditions"
-        )
-
-        static let primaryButtonTitle = NSLocalizedString(
-            "jetpack.plugin.modal.primary.button.title",
-            value: "Install the full plugin",
-            comment: "Jetpack Plugin Modal primary button title"
-        )
-
-        static let secondaryButtonTitle = NSLocalizedString(
-            "jetpack.plugin.modal.secondary.button.title",
-            value: "Contact Support",
-            comment: "Jetpack Plugin Modal secondary button title"
-        )
     }
 }
 
@@ -216,4 +177,134 @@ private extension NSAttributedString {
         }
         self.init(attributedString: mutableNSAttributedString)
     }
+}
+
+// MARK: - Strings
+
+private protocol JetpackPluginOverlayStrings {
+    var title: String { get }
+    var subtitleSingular: String { get }
+    var subtitlePlural: String { get }
+    var jetpackPluginText: String? { get }
+    var footnote: String? { get }
+    var termsAndConditions: String? { get }
+    var primaryButtonTitle: String { get }
+    var secondaryButtonTitle: String { get }
+}
+
+extension JetpackPluginOverlayStrings {
+    var jetpackPluginText: String? { nil }
+    var footnote: String? { nil }
+    var termsAndConditions: String? { nil }
+}
+
+private struct JetpackStrings: JetpackPluginOverlayStrings {
+    let title = NSLocalizedString(
+        "jetpack.plugin.modal.title",
+        value: "Please install the full Jetpack plugin",
+        comment: "Jetpack Plugin Modal title"
+    )
+
+    let subtitleSingular = NSLocalizedString(
+        "jetpack.plugin.modal.subtitle.singular",
+        value: """
+            %1$@ is using the %2$@ plugin, which doesn't support all features of the app yet.
+
+            Please install the %3$@ to use the app with this site.
+            """,
+        comment: """
+            Jetpack Plugin Modal (single plugin) subtitle with formatted texts.
+            %1$@ is for the site name, %2$@ for the specific plugin name,
+            and %3$@ is for 'full Jetpack plugin' in bold style.
+            """
+    )
+
+    let subtitlePlural = NSLocalizedString(
+        "jetpack.plugin.modal.subtitle.plural",
+        value: """
+            %1$@ is using individual Jetpack plugins, which don't support all features of the app yet.
+
+            Please install the %2$@ to use the app with this site.
+            """,
+        comment: """
+            Jetpack Plugin Modal (multiple plugins) subtitle with formatted texts.
+            %1$@ is for the site name, and %2$@ for 'full Jetpack plugin' in bold style.
+            """
+    )
+
+    let jetpackPluginText: String? = NSLocalizedString(
+        "jetpack.plugin.modal.subtitle.jetpack.plugin",
+        value: "full Jetpack plugin",
+        comment: "The 'full Jetpack plugin' string in the subtitle"
+    )
+
+    let footnote: String? = NSLocalizedString(
+        "jetpack.plugin.modal.footnote",
+        value: "By setting up Jetpack you agree to our %@",
+        comment: "Jetpack Plugin Modal footnote"
+    )
+
+    let termsAndConditions: String? = NSLocalizedString(
+        "jetpack.plugin.modal.terms",
+        value: "Terms and Conditions",
+        comment: "Jetpack Plugin Modal footnote terms and conditions"
+    )
+
+    let primaryButtonTitle = NSLocalizedString(
+        "jetpack.plugin.modal.primary.button.title",
+        value: "Install the full plugin",
+        comment: "Jetpack Plugin Modal primary button title"
+    )
+
+    let secondaryButtonTitle = NSLocalizedString(
+        "jetpack.plugin.modal.secondary.button.title",
+        value: "Contact Support",
+        comment: "Jetpack Plugin Modal secondary button title"
+    )
+}
+
+private struct WordPressStrings: JetpackPluginOverlayStrings {
+    let title = NSLocalizedString(
+        "wordpress.jetpack.plugin.modal.title",
+        value: "Sorry, this site isn't supported by the WordPress app",
+        comment: "Jetpack Plugin Modal title in WordPress"
+    )
+
+    var subtitleSingular: String {
+        let singularFormat = NSLocalizedString(
+            "wordpress.jetpack.plugin.modal.subtitle.singular",
+            value: "%1$@ is using the %2$@ plugin, which isn't supported by the WordPress App.",
+            comment: "Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. " +
+            "%1$@ is for the site name and %2$@ is for the specific plugin name."
+        )
+        return singularFormat + "\n\n" + switchToJetpack
+    }
+
+    var subtitlePlural: String {
+        let pluralFormat = NSLocalizedString(
+            "wordpress.jetpack.plugin.modal.subtitle.plural",
+            value: "%1$@ is using individual Jetpack plugins, which isn't supported by the WordPress App.",
+            comment: "Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name."
+        )
+        return pluralFormat + "\n\n" + switchToJetpack
+    }
+
+    let switchToJetpack = NSLocalizedString(
+        "wordpress.jetpack.plugin.modal.subtitle.switch",
+        value: "Please switch to the Jetpack app where we'll guide you through connecting the full " +
+        "Jetpack plugin so that you can use all the apps features for this site.",
+        comment: "Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack."
+    )
+
+    let primaryButtonTitle = NSLocalizedString(
+        "wordpress.jetpack.plugin.modal.primary.button.title",
+        value: "Switch to the Jetpack app",
+        comment: "Jetpack Plugin Modal on WordPress primary button title"
+    )
+
+    let secondaryButtonTitle = NSLocalizedString(
+        "wordpress.jetpack.plugin.modal.secondary.button.title",
+        value: "Continue without Jetpack",
+        comment: "Jetpack Plugin Modal on WordPress secondary button title"
+    )
 }
