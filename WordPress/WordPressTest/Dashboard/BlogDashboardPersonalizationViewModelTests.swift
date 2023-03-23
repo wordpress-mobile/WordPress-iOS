@@ -12,7 +12,7 @@ final class BlogDashboardPersonalizationViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        viewModel = BlogDashboardPersonalizationViewModel(service: service)
+        viewModel = BlogDashboardPersonalizationViewModel(service: service, quickStartType: .undefined)
     }
 
     func testThatCardStateIsToggled() throws {
@@ -29,5 +29,24 @@ final class BlogDashboardPersonalizationViewModelTests: XCTestCase {
         // Then
         XCTAssertFalse(cardViewModel.isOn)
         XCTAssertFalse(service.isEnabled(card), "Service wasn't updated")
+    }
+
+    func testThatAllCardsHaveTitles() {
+        for card in viewModel.cards {
+            XCTAssertTrue(!card.title.isEmpty)
+        }
+    }
+
+
+    func testThatQuickStartCardsIsNotDisplayedWhenTourIsActive() {
+        // Given
+        viewModel = BlogDashboardPersonalizationViewModel(service: service, quickStartType: .newSite)
+
+        // Then
+        XCTAssertTrue(viewModel.cards.contains(where: { $0.id == .quickStart }))
+    }
+
+    func testThatQuickStartCardsIsNotDisplayedWhenNoTourIsActive() {
+        XCTAssertFalse(viewModel.cards.contains(where: { $0.id == .quickStart }))
     }
 }
