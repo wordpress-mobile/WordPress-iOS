@@ -47,4 +47,8 @@ struct RemoteConfig {
     var blazeFlowCompletedStep: RemoteConfigParameter<String> {
         RemoteConfigParameter<String>(key: "blaze_completed_step_hash", defaultValue: "step-5", store: store)
     }
+
+    var wordPressPluginOverlayMaxShown: RemoteConfigParameter<String> {
+        RemoteConfigParameter<String>(key: "wp_plugin_overlay_max_shown", defaultValue: "3", store: store)
+    }
 }
