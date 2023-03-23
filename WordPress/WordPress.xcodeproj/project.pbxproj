@@ -2858,6 +2858,14 @@
 		C957C20626DCC1770037628F /* LandInTheEditorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */; };
 		C957C20726DCC1770037628F /* LandInTheEditorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */; };
 		C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
+		C9B4778429C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */; };
+		C9B4778529C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */; };
+		C9B4778629C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */; };
+		C9B4778729C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */; };
+		C9B4778929C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */; };
+		C9B4778A29C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */; };
+		C9B4778E29C85BC5008CBF49 /* LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */; };
+		C9B4779F29C88323008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */; };
 		C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7B29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */; };
@@ -8112,6 +8120,9 @@
 		C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandInTheEditorHelper.swift; sourceTree = "<group>"; };
 		C99B039B2602F3CB00CA71EB /* WordPress 117.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 117.xcdatamodel"; sourceTree = "<group>"; };
 		C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewViewController.swift; sourceTree = "<group>"; };
+		C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetData.swift; sourceTree = "<group>"; };
+		C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetEntry.swift; sourceTree = "<group>"; };
+		C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HomeWidgetData+LockScreenStatsWidgetData.swift"; sourceTree = "<group>"; };
 		C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidget.swift; sourceTree = "<group>"; };
 		C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetsView.swift; sourceTree = "<group>"; };
 		C9D7DDBF2613B84500104E95 /* WordPress 119.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 119.xcdatamodel"; sourceTree = "<group>"; };
@@ -15689,6 +15700,7 @@
 			isa = PBXGroup;
 			children = (
 				C9FE382129C2040600D39841 /* HomeWidgetData+StatsURL.swift */,
+				C9B4778829C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -15704,6 +15716,8 @@
 		C9FE382929C204D700D39841 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */,
+				C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */,
 				C9FE382B29C204E700D39841 /* LockScreenSingleStatViewModel.swift */,
 				C9FE382A29C204E700D39841 /* LockScreenWidgetViewModelMapper.swift */,
 			);
@@ -20482,6 +20496,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9B4778729C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */,
 				0107E0B428F97D5000DE87DB /* Constants.m in Sources */,
 				01CE5012290A890B00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
@@ -20506,6 +20521,7 @@
 				0107E0C228F97D5000DE87DB /* VerticalCard.swift in Sources */,
 				0107E0C328F97D5000DE87DB /* ThisWeekWidgetStats.swift in Sources */,
 				0107E0C428F97D5000DE87DB /* HomeWidgetAllTimeData.swift in Sources */,
+				C9B4778529C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
 				0107E0C528F97D5000DE87DB /* GroupedViewData.swift in Sources */,
 				C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				0107E0C628F97D5000DE87DB /* FeatureFlag.swift in Sources */,
@@ -20529,6 +20545,7 @@
 				0107E0D328F97D5000DE87DB /* Tracks+StatsWidgets.swift in Sources */,
 				0107E0D428F97D5000DE87DB /* HomeWidgetData.swift in Sources */,
 				0107E0D528F97D5000DE87DB /* HomeWidgetTodayData.swift in Sources */,
+				C9B4778A29C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */,
 				0107E0D628F97D5000DE87DB /* AllTimeWidgetStats.swift in Sources */,
 				0107E0D728F97D5000DE87DB /* Sites.intentdefinition in Sources */,
 				0107E0D828F97D5000DE87DB /* LocalizableStrings.swift in Sources */,
@@ -21209,6 +21226,7 @@
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
 				9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */,
 				FAC1B81E29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */,
+				C9B4778E29C85BC5008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
 				C81CCD84243BF7A600A83E27 /* NoResultsTenorConfiguration.swift in Sources */,
 				9A8ECE0F2254A3260043C8DA /* JetpackRemoteInstallViewController.swift in Sources */,
 				1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */,
@@ -22267,6 +22285,7 @@
 				C39ABBAE294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift in Sources */,
 				1714F8D020E6DA8900226DCB /* RouteMatcher.swift in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
+				C9B4779F29C88323008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */,
 				3FD272E024CF8F270021F0C8 /* UIColor+Notice.swift in Sources */,
 				98830A922747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */,
 				FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */,
@@ -22349,6 +22368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9B4778629C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */,
 				3F1FD30D2548B0A80060C53A /* Constants.m in Sources */,
 				01CE500C290A88BF00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				C9C21D7B29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
@@ -22373,6 +22393,7 @@
 				3F8B306825D1D4B8005A2903 /* ThisWeekWidgetStats.swift in Sources */,
 				3F5C861A25C9EA2500BABE64 /* HomeWidgetAllTimeData.swift in Sources */,
 				3FE20C1525CF165700A15525 /* GroupedViewData.swift in Sources */,
+				C9B4778429C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
 				3F6BC04B25B2474C007369D3 /* FeatureFlag.swift in Sources */,
 				C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				3F8EEC4E25B4817000EC9DAE /* StatsWidgets.swift in Sources */,
@@ -22396,6 +22417,7 @@
 				98390AC3254C984700868F0A /* Tracks+StatsWidgets.swift in Sources */,
 				3FA53ED62565860900F4D9A2 /* HomeWidgetData.swift in Sources */,
 				3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */,
+				C9B4778929C85956008CBF49 /* HomeWidgetData+LockScreenStatsWidgetData.swift in Sources */,
 				3F5C863B25C9EA8200BABE64 /* AllTimeWidgetStats.swift in Sources */,
 				3FD675D925C87A15009AB3C1 /* Sites.intentdefinition in Sources */,
 				3FE77C8325B0CA89007DE9E5 /* LocalizableStrings.swift in Sources */,
