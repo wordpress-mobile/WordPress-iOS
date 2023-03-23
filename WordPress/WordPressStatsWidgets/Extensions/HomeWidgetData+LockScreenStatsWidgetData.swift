@@ -6,13 +6,11 @@ extension HomeWidgetTodayData: LockScreenStatsWidgetData {
     }
 }
 
-
 extension HomeWidgetAllTimeData: LockScreenStatsWidgetData {
     var views: Int? {
         stats.views
     }
 }
-
 
 extension HomeWidgetThisWeekData: LockScreenStatsWidgetData {
     var views: Int? {
