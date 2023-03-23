@@ -51,7 +51,7 @@ private func makeKey(for card: DashboardCard) -> String? {
         // avoid having to migrate data.
         return "prompts-enabled-site-settings"
     case .domainsDashboardCard:
-        return "domains-dashboard-enabled-site-settings"
+        return "domains-dashboard-card-enabled-site-settings"
     case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize:
         return nil
     }
