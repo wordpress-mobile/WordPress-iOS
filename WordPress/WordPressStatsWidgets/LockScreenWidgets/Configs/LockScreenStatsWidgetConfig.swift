@@ -1,7 +1,7 @@
 import WidgetKit
 
 protocol LockScreenStatsWidgetConfig {
-    associatedtype WidgetData: HomeWidgetData
+    associatedtype WidgetData: HomeWidgetData & LockScreenStatsWidgetData
     associatedtype ViewProvider: LockScreenStatsWidgetsViewProvider
 
     var supportFamilies: [WidgetFamily] { get }

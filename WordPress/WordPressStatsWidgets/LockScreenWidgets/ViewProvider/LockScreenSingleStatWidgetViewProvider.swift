@@ -9,17 +9,12 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
 
     let title: String
 
-    func buildSiteSelectedView(_ data: HomeWidgetData) -> LockScreenSingleStatView {
+    func buildSiteSelectedView(_ data: LockScreenStatsWidgetData) -> LockScreenSingleStatView {
         let mapper = LockScreenWidgetViewModelMapper(data: data)
         let viewModel = mapper.getLockScreenSingleStatViewModel(
             title: title
         )
         return LockScreenSingleStatView(viewModel: viewModel)
-    }
-
-    func statsURL(_ data: HomeWidgetData) -> URL? {
-        let mapper = LockScreenWidgetViewModelMapper(data: data)
-        return mapper.getStatsURL()
     }
 
     // TODO: Build view for loggedOut status
