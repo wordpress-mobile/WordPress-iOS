@@ -1,6 +1,6 @@
 22.1
 -----
-* [***] [internal] Refactor uploading photos (from the device photo, the Free Photo library, and other sources) to the Word Press Media Library. Affected areas are where you can choose a photo and upload, including the "Media" screen, adding images to a post, updating site icon, etc. [#20322]
+* [***] [internal] Refactor uploading photos (from the device photo, the Free Photo library, and other sources) to the WordPress Media Library. Affected areas are where you can choose a photo and upload, including the "Media" screen, adding images to a post, updating site icon, etc. [#20322]
 
 
 22.0
