@@ -8,13 +8,16 @@ struct LockScreenUnconfiguredView: View {
 
     var body: some View {
         if family == .accessoryRectangular {
-            Text(viewModel.message)
-                .font(.system(size: 11))
-                .minimumScaleFactor(0.8)
-                .multilineTextAlignment(.center)
-                .padding(
-                    EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-                )
+            ZStack {
+                AccessoryWidgetBackground().cornerRadius(8)
+                Text(viewModel.message)
+                    .font(.system(size: 11))
+                    .minimumScaleFactor(0.8)
+                    .multilineTextAlignment(.center)
+                    .padding(
+                        EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+                    )
+            }
         } else {
             Text("Not implemented for widget family \(family.debugDescription)")
         }
