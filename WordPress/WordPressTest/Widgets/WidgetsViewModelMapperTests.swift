@@ -9,8 +9,9 @@ final class WidgetsViewModelMapperTests: XCTestCase {
         let todayStats = makeTodayWidgetStats(views: views)
         let data = makeTodayData(stats: todayStats, date: date)
 
-        let sut = makeSUT(data)
+        let sut = makeSUT()
         let viewModel = sut.getLockScreenSingleStatViewModel(
+            data: data,
             title: title
         )
 
@@ -24,7 +25,7 @@ final class WidgetsViewModelMapperTests: XCTestCase {
         let todayStats = makeTodayWidgetStats(views: 649)
         let data = makeTodayData(stats: todayStats, date: Date())
 
-        let sut = makeSUT(data)
+        let sut = makeSUT()
         let statsURL = data.statsURL
 
         XCTAssertEqual(statsURL?.absoluteString, "https://wordpress.com/stats/day/0?source=widget")
@@ -32,8 +33,8 @@ final class WidgetsViewModelMapperTests: XCTestCase {
 }
 
 extension WidgetsViewModelMapperTests {
-    func makeSUT(_ data: LockScreenStatsWidgetData) -> LockScreenWidgetViewModelMapper {
-        LockScreenWidgetViewModelMapper(data: data)
+    func makeSUT() -> LockScreenWidgetViewModelMapper {
+        LockScreenWidgetViewModelMapper()
     }
 
     func makeTodayData(stats: TodayWidgetStats, date: Date) -> LockScreenStatsWidgetData {

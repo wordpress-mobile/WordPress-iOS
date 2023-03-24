@@ -1,24 +1,27 @@
 import Foundation
 
 struct LockScreenWidgetViewModelMapper {
-    let data: LockScreenStatsWidgetData
-
     func getLockScreenSingleStatViewModel(
+        data: LockScreenStatsWidgetData,
         title: String
     ) -> LockScreenSingleStatViewModel {
         LockScreenSingleStatViewModel(
-            siteName: getSiteName(),
+            siteName: getSiteName(data),
             title: title,
-            value: getViews(),
+            value: getViews(data),
             updatedTime: data.date
         )
     }
 
-    func getSiteName() -> String {
+    func getLockScreenUnconfiguredViewModel(_ message: String) -> LockScreenUnconfiguredViewModel {
+        LockScreenUnconfiguredViewModel(message: message)
+    }
+
+    private func getSiteName(_ data: LockScreenStatsWidgetData) -> String {
         data.siteName
     }
 
-    func getViews() -> String {
+    private func getViews(_ data: LockScreenStatsWidgetData) -> String {
         data.views?.abbreviatedString() ?? ""
     }
 }

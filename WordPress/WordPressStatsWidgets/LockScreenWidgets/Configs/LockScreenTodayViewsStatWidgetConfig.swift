@@ -42,7 +42,8 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
 
     var viewProvider: ViewProvider {
         LockScreenSingleStatWidgetViewProvider(
-            title: LocalizableStrings.viewsInTodayTitle
+            title: LocalizableStrings.viewsInTodayTitle,
+            widgetKind: .today
         )
     }
 }
