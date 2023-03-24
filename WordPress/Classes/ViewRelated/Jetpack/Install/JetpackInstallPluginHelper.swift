@@ -5,6 +5,7 @@ class JetpackInstallPluginHelper: NSObject {
 
     private let repository: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
+    private let remoteConfig: RemoteConfig
     private let receipt: RecentJetpackInstallReceipt
     private let blog: Blog
     private let siteIDString: String
@@ -16,12 +17,12 @@ class JetpackInstallPluginHelper: NSObject {
 
     /// Determines whether the plugin install overlay should be shown for this `blog`.
     var shouldShowOverlay: Bool {
-        guard AppConfiguration.isJetpack else {
-            return shouldShowOverlayInWordPress
+        if AppConfiguration.isJetpack {
+            // For Jetpack, the overlay will be shown once per site.
+            return shouldPromptInstall && !isOverlayAlreadyShown
         }
 
-        // For Jetpack, the overlay will be shown once per site.
-        return shouldPromptInstall && !isOverlayAlreadyShown
+        return shouldShowOverlayInWordPress
     }
 
     // MARK: Methods
@@ -89,11 +90,12 @@ class JetpackInstallPluginHelper: NSObject {
     init?(_ blog: Blog?,
           repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
           currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider(),
+          remoteConfigStore: RemoteConfigStore = .init(),
           receipt: RecentJetpackInstallReceipt = .shared) {
         guard let blog,
               let siteID = blog.dotComID?.stringValue,
               blog.account != nil,
-              FeatureFlag.jetpackIndividualPluginSupport.enabled else {
+              JetpackInstallPluginHelper.isFeatureEnabled else {
             return nil
         }
 
@@ -101,6 +103,7 @@ class JetpackInstallPluginHelper: NSObject {
         self.siteIDString = siteID
         self.repository = repository
         self.currentDateProvider = currentDateProvider
+        self.remoteConfig = RemoteConfig(store: remoteConfigStore)
         self.receipt = receipt
     }
 
@@ -127,6 +130,14 @@ class JetpackInstallPluginHelper: NSObject {
 // MARK: - Private Helpers
 
 private extension JetpackInstallPluginHelper {
+
+    static var isFeatureEnabled: Bool {
+        if AppConfiguration.isJetpack {
+            return FeatureFlag.jetpackIndividualPluginSupport.enabled
+        }
+
+        return FeatureFlag.wordPressIndividualPluginSupport.enabled
+    }
 
     /// Returns true if the card has been set to hidden for `blog`. For Jetpack only.
     var isCardHidden: Bool {
@@ -165,7 +176,6 @@ private extension JetpackInstallPluginHelper {
     struct Constants {
         static let cardHiddenSitesKey = "jetpack-install-card-hidden-sites"
         static let overlayShownSitesKey = "jetpack-install-overlay-shown-sites"
-        static let maxOverlayShownPerSite = 3 // TODO: allow this value to be configurable via remote.
     }
 }
 
@@ -192,12 +202,16 @@ class RecentJetpackInstallReceipt {
 
 private extension JetpackInstallPluginHelper {
 
+    var maxOverlayShownPerSite: Int {
+        remoteConfig.wordPressPluginOverlayMaxShown.value ?? 0
+    }
+
     var shouldShowOverlayInWordPress: Bool {
         let overlayInfo = WordPressOverlayInfo(siteID: siteIDString,
                                                repository: repository,
                                                currentDateProvider: currentDateProvider)
 
-        guard overlayInfo.amountShown < Constants.maxOverlayShownPerSite,
+        guard overlayInfo.amountShown < maxOverlayShownPerSite,
               currentDateProvider.date() >= overlayInfo.nextOccurrence else {
             return false
         }
