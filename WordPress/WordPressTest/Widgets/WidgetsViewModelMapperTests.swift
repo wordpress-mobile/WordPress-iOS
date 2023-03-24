@@ -25,18 +25,18 @@ final class WidgetsViewModelMapperTests: XCTestCase {
         let data = makeTodayData(stats: todayStats, date: Date())
 
         let sut = makeSUT(data)
-        let statsURL = sut.getStatsURL()
+        let statsURL = data.statsURL
 
         XCTAssertEqual(statsURL?.absoluteString, "https://wordpress.com/stats/day/0?source=widget")
     }
 }
 
 extension WidgetsViewModelMapperTests {
-    func makeSUT(_ data: HomeWidgetData) -> LockScreenWidgetViewModelMapper {
+    func makeSUT(_ data: LockScreenStatsWidgetData) -> LockScreenWidgetViewModelMapper {
         LockScreenWidgetViewModelMapper(data: data)
     }
 
-    func makeTodayData(stats: TodayWidgetStats, date: Date) -> HomeWidgetTodayData {
+    func makeTodayData(stats: TodayWidgetStats, date: Date) -> LockScreenStatsWidgetData {
         HomeWidgetTodayData(siteID: 0,
                             siteName: "My WordPress Site",
                             url: "",

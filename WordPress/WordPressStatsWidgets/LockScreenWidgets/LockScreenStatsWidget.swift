@@ -18,13 +18,11 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
         IntentConfiguration(
             kind: config.kind,
             intent: SelectSiteIntent.self,
-            provider: SiteListProvider<T.WidgetData>(
+            provider: LockScreenSiteListProvider<T.WidgetData>(
                 service: StatsWidgetsService(),
-                placeholderContent: config.placeholderContent,
-                // TODO: remove widgetKind in creating lock screen widget provider and entry PR
-                widgetKind: .today
+                placeholderContent: config.placeholderContent
             )
-        ) { (entry: StatsWidgetEntry) -> LockScreenStatsWidgetsView in
+        ) { (entry: LockScreenStatsWidgetEntry) -> LockScreenStatsWidgetsView in
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,
                 viewProvider: config.viewProvider

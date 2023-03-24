@@ -2,6 +2,7 @@ import WordPressKit
 
 /// Type that wraps the backend request for new stats
 class StatsWidgetsService {
+    typealias ResultType = HomeWidgetData & LockScreenStatsWidgetData
 
     private enum State {
         case loading
@@ -22,7 +23,7 @@ class StatsWidgetsService {
 
 
     func fetchStats(for widgetData: HomeWidgetData,
-                    completion: @escaping (Result<HomeWidgetData, Error>) -> Void) {
+                    completion: @escaping (Result<ResultType, Error>) -> Void) {
 
         guard !state.isLoading else {
             return
@@ -53,7 +54,7 @@ class StatsWidgetsService {
 
     private func fetchTodayStats(service: StatsServiceRemoteV2,
                                  widgetData: HomeWidgetTodayData,
-                                 completion: @escaping (Result<HomeWidgetData, Error>) -> Void) {
+                                 completion: @escaping (Result<ResultType, Error>) -> Void) {
 
         service.getInsight { [weak self] (insight: StatsTodayInsight?, error) in
             guard let self = self else {
@@ -92,7 +93,7 @@ class StatsWidgetsService {
 
     private func fetchAllTimeStats(service: StatsServiceRemoteV2,
                                    widgetData: HomeWidgetAllTimeData,
-                                   completion: @escaping (Result<HomeWidgetData, Error>) -> Void) {
+                                   completion: @escaping (Result<ResultType, Error>) -> Void) {
 
         service.getInsight { [weak self] (insight: StatsAllTimesInsight?, error) in
 
@@ -127,7 +128,7 @@ class StatsWidgetsService {
 
     private func fetchThisWeekStats(service: StatsServiceRemoteV2,
                                     widgetData: HomeWidgetThisWeekData,
-                                    completion: @escaping (Result<HomeWidgetData, Error>) -> Void) {
+                                    completion: @escaping (Result<ResultType, Error>) -> Void) {
 
         // Get the current date in the site's time zone.
         let siteTimeZone = widgetData.timeZone

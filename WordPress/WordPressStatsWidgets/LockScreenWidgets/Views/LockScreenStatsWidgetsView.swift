@@ -8,7 +8,7 @@ protocol LockScreenStatsWidgetsViewProvider {
     associatedtype NoDataView: View
 
     @ViewBuilder
-    func buildSiteSelectedView(_ data: HomeWidgetData) -> SiteSelectedView
+    func buildSiteSelectedView(_ data: LockScreenStatsWidgetData) -> SiteSelectedView
 
     @ViewBuilder
     func buildLoggedOutView() -> LoggedOutView
@@ -18,12 +18,10 @@ protocol LockScreenStatsWidgetsViewProvider {
 
     @ViewBuilder
     func buildNoDataView() -> NoDataView
-
-    func statsURL(_ data: HomeWidgetData) -> URL?
 }
 
 struct LockScreenStatsWidgetsView<T: LockScreenStatsWidgetsViewProvider>: View {
-    let timelineEntry: StatsWidgetEntry
+    let timelineEntry: LockScreenStatsWidgetEntry
     let viewProvider: T
 
     @ViewBuilder
@@ -32,7 +30,7 @@ struct LockScreenStatsWidgetsView<T: LockScreenStatsWidgetsViewProvider>: View {
         case let .siteSelected(data, _):
             viewProvider
                 .buildSiteSelectedView(data)
-                .widgetURL(viewProvider.statsURL(data))
+                .widgetURL(data.statsURL)
         case .loggedOut:
             viewProvider
                 .buildLoggedOutView()
@@ -45,10 +43,6 @@ struct LockScreenStatsWidgetsView<T: LockScreenStatsWidgetsViewProvider>: View {
             viewProvider
                 .buildNoDataView()
                 .widgetURL(nil)
-        case .disabled:
-            // TODO: Remove disabled case when adding lock screen TimeLineProvider and Entry
-            // Lock Screen widget should not have disable status
-            EmptyView()
         }
     }
 }

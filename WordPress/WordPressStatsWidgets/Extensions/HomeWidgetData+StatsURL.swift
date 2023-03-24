@@ -8,7 +8,6 @@ extension HomeWidgetTodayData {
     }
 }
 
-
 extension HomeWidgetAllTimeData {
     static let statsUrl = "https://wordpress.com/stats/insights/"
 
@@ -16,7 +15,6 @@ extension HomeWidgetAllTimeData {
         URL(string: Self.statsUrl + "\(siteID)?source=widget")
     }
 }
-
 
 extension HomeWidgetThisWeekData {
     static let statsUrl = "https://wordpress.com/stats/week/"

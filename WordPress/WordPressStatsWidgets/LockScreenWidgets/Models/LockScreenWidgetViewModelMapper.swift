@@ -1,7 +1,7 @@
 import Foundation
 
 struct LockScreenWidgetViewModelMapper {
-    let data: HomeWidgetData
+    let data: LockScreenStatsWidgetData
 
     func getLockScreenSingleStatViewModel(
         title: String
@@ -14,33 +14,11 @@ struct LockScreenWidgetViewModelMapper {
         )
     }
 
-    // TODO: Add `LockScreenStatsWidgetData` in creating lock screen widget provider and entry PR
-    // define statsURL, views, date, siteName
-    // HomeWidgetTodayData, HomeWidgetAllTimeData, HomeWidgetThisWeekData conform to it
-    // to reduce the type converting
-    func getStatsURL() -> URL? {
-        if let todayData = data as? HomeWidgetTodayData {
-            return todayData.statsURL
-        } else if let allTimeData = data as? HomeWidgetAllTimeData {
-            return allTimeData.statsURL
-        } else if let thisWeekData = data as? HomeWidgetThisWeekData {
-            return thisWeekData.statsURL
-        } else {
-            return nil
-        }
-    }
-
     func getSiteName() -> String {
         data.siteName
     }
 
     func getViews() -> String {
-        if let todayData = data as? HomeWidgetTodayData {
-            return todayData.stats.views.abbreviatedString()
-        } else if let allTimeData = data as? HomeWidgetAllTimeData {
-            return allTimeData.stats.views.abbreviatedString()
-        } else {
-            return ""
-        }
+        data.views?.abbreviatedString() ?? ""
     }
 }
