@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 11:54:30+0000 */
+/* Translation-Revision-Date: 2023-03-23 17:54:24+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "複製此應用程式的版本";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "可以再好一點";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "無法追蹤主題";
 
@@ -3676,9 +3673,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "如何修復？";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "我喜歡";
-
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "攝影師 Cameron Karsten 的作品讓我深受啟發。 我下次會嘗試這些技巧";
 
@@ -4844,9 +4838,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "沒有可用的預覽網址";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "不用了，謝謝";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "無標題";
@@ -6696,9 +6687,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "選取此主題作為你的網站用途。";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "傳送回饋意見";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "傳送連結";
 
@@ -7982,8 +7970,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "本日提示 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "本日統計";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "我們更新了自訂應用程式圖示，現在自訂應用程式有全新樣貌。 有 10 種新樣式可供選擇；你也可以繼續使用現有圖示。";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "你覺得 WordPress 如何？";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "你想要對這個檔案執行什麼動作：上傳檔案，並將該檔案的連結加入你的文章之中；或是將檔案內容直接新增至你的文章之中？";
 
@@ -9230,9 +9214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "與我們合作";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "編輯草稿文章";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "依國家顯示世界地圖的檢視次數。";
@@ -9640,6 +9621,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "一小時";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "你覺得 Jetpack 如何？";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "你覺得 WordPress 如何？";
+
 /* Label displayed on audio media items. */
 "audio" = "音訊";
 
@@ -9666,9 +9653,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionOne" = "只要幾分鐘就能宣傳任何文章或頁面；每天只需支付幾美元。";
-
-/* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "追蹤行銷活動成效，並可隨時取消。";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "你的內容會出現在數百萬個 WordPress 和 Tumblr 網站上。";
@@ -9872,6 +9856,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "「%1$@」將在 %2$@後搬遷";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "幾天後將搬遷至 Jetpack 應用程式。";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "「%@」即將搬遷了";
@@ -10182,11 +10169,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "歡迎使用 Jetpack！";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "WordPress 應用程式已移除「統計」、「閱讀器」、「通知」和其他 Jetpack 提供的功能，你現在只能在 Jetpack 應用程式中找到這些功能。";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "切換完全免費，只要 1 分鐘就能完成。";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "切換至 Jetpack 應用程式";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "前往 jetpack.com 深入瞭解";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "「通知」已搬遷至 Jetpack 應用程式。";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "「閱讀器」已搬遷至 Jetpack 應用程式。";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "「統計」已搬遷至 Jetpack 應用程式。";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "編輯草稿文章";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "草稿文章";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "本日統計";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "統計";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "關閉";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "有待改善";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "我很喜歡";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "不用了，謝謝";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "傳送意見回饋";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "的";
