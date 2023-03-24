@@ -192,11 +192,7 @@ class RecentJetpackInstallReceipt {
 private extension JetpackInstallPluginHelper {
 
     var maxOverlayShownPerSite: Int {
-        guard let stringValue = remoteConfig.wordPressPluginOverlayMaxShown.value,
-              let intValue = Int(stringValue) else {
-            return 0
-        }
-        return intValue
+        remoteConfig.wordPressPluginOverlayMaxShown.value ?? 0
     }
 
     var shouldShowOverlayInWordPress: Bool {
