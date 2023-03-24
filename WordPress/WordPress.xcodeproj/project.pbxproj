@@ -2875,6 +2875,11 @@
 		C9B477B229CC4949008CBF49 /* HomeWidgetDataFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */; };
 		C9B477B329CC4949008CBF49 /* HomeWidgetDataFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */; };
 		C9B477B429CC4949008CBF49 /* HomeWidgetDataFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */; };
+		C9B477B629CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */; };
+		C9B477B729CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */; };
+		C9B477B929CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */; };
+		C9B477BA29CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */; };
+		C9B477BB29CD576F008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */; };
 		C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7B29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */; };
@@ -8136,6 +8141,8 @@
 		C9B477AB29CC15D9008CBF49 /* WidgetDataReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetDataReader.swift; sourceTree = "<group>"; };
 		C9B477AF29CC35C5008CBF49 /* WidgetDataReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataReaderTests.swift; sourceTree = "<group>"; };
 		C9B477B129CC4949008CBF49 /* HomeWidgetDataFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetDataFileReader.swift; sourceTree = "<group>"; };
+		C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenUnconfiguredView.swift; sourceTree = "<group>"; };
+		C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenUnconfiguredViewModel.swift; sourceTree = "<group>"; };
 		C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidget.swift; sourceTree = "<group>"; };
 		C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetsView.swift; sourceTree = "<group>"; };
 		C9D7DDBF2613B84500104E95 /* WordPress 119.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 119.xcdatamodel"; sourceTree = "<group>"; };
@@ -15716,6 +15723,7 @@
 			children = (
 				C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */,
 				C9FE383029C2053300D39841 /* LockScreenSingleStatView.swift */,
+				C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -15743,6 +15751,7 @@
 				C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */,
 				C9B4778329C85949008CBF49 /* LockScreenStatsWidgetEntry.swift */,
 				C9FE382B29C204E700D39841 /* LockScreenSingleStatViewModel.swift */,
+				C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */,
 				C9FE382A29C204E700D39841 /* LockScreenWidgetViewModelMapper.swift */,
 			);
 			path = Models;
@@ -20537,6 +20546,7 @@
 				C9FE384129C2A3D200D39841 /* LockScreenTodayViewsStatWidgetConfig.swift in Sources */,
 				0107E16128FFE99300DE87DB /* WidgetConfiguration.swift in Sources */,
 				0107E0BB28F97D5000DE87DB /* StatsWidgetsService.swift in Sources */,
+				C9B477B729CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */,
 				0107E0BC28F97D5000DE87DB /* StatsWidgetsView.swift in Sources */,
 				0107E0BD28F97D5000DE87DB /* AppLocalizedString.swift in Sources */,
 				0107E0BE28F97D5000DE87DB /* MultiStatsView.swift in Sources */,
@@ -20567,6 +20577,7 @@
 				0107E0D028F97D5000DE87DB /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				C9FE382D29C204E700D39841 /* LockScreenWidgetViewModelMapper.swift in Sources */,
 				C9FE384729C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift in Sources */,
+				C9B477BA29CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				0107E0D128F97D5000DE87DB /* SingleStatView.swift in Sources */,
 				0107E0D228F97D5000DE87DB /* UnconfiguredView.swift in Sources */,
 				0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */,
@@ -21610,6 +21621,7 @@
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
 				176BA53B268266E70025E4A3 /* BlogService+Reminders.swift in Sources */,
+				C9B477BB29CD576F008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
 				08A7343F298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */,
 				E11C4B72201096EF00A6619C /* JetpackState.swift in Sources */,
@@ -22414,6 +22426,7 @@
 				C9FE384029C2A3D200D39841 /* LockScreenTodayViewsStatWidgetConfig.swift in Sources */,
 				0107E16A28FFED1800DE87DB /* WidgetConfiguration.swift in Sources */,
 				3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */,
+				C9B477B629CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */,
 				3F526D572539FAC60069706C /* StatsWidgetsView.swift in Sources */,
 				3F2656A125AF4DFA0073A832 /* AppLocalizedString.swift in Sources */,
 				3F568A0025420DE80048A9E4 /* MultiStatsView.swift in Sources */,
@@ -22444,6 +22457,7 @@
 				3F8B138F25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				C9FE382C29C204E700D39841 /* LockScreenWidgetViewModelMapper.swift in Sources */,
 				C9FE384629C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift in Sources */,
+				C9B477B929CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				3F5689F0254209790048A9E4 /* SingleStatView.swift in Sources */,
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,
 				0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */,
