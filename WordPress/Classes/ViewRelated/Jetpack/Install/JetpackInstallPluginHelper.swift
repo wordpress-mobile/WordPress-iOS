@@ -17,12 +17,12 @@ class JetpackInstallPluginHelper: NSObject {
 
     /// Determines whether the plugin install overlay should be shown for this `blog`.
     var shouldShowOverlay: Bool {
-        guard AppConfiguration.isJetpack else {
-            return shouldShowOverlayInWordPress
+        if AppConfiguration.isJetpack {
+            // For Jetpack, the overlay will be shown once per site.
+            return shouldPromptInstall && !isOverlayAlreadyShown
         }
 
-        // For Jetpack, the overlay will be shown once per site.
-        return shouldPromptInstall && !isOverlayAlreadyShown
+        return shouldShowOverlayInWordPress
     }
 
     // MARK: Methods
@@ -125,7 +125,11 @@ class JetpackInstallPluginHelper: NSObject {
 private extension JetpackInstallPluginHelper {
 
     static var isFeatureEnabled: Bool {
-        FeatureFlag.jetpackIndividualPluginSupport.enabled || FeatureFlag.wordPressIndividualPluginSupport.enabled
+        if AppConfiguration.isJetpack {
+            return FeatureFlag.jetpackIndividualPluginSupport.enabled
+        }
+
+        return FeatureFlag.wordPressIndividualPluginSupport.enabled
     }
 
     /// Returns true if the card has been set to hidden for `blog`. For Jetpack only.
