@@ -19,7 +19,6 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
         return LockScreenSingleStatView(viewModel: viewModel)
     }
 
-    // TODO: Build view for loggedOut status
     func buildLoggedOutView() -> LockScreenUnconfiguredView {
         var message: String {
             switch widgetKind {
@@ -35,7 +34,6 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
-    // TODO: Build view for noSite status
     func buildNoSiteView() -> LockScreenUnconfiguredView {
         var message: String {
             switch widgetKind {
@@ -51,7 +49,6 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
-    // TODO: Build view for noData status
     func buildNoDataView() -> LockScreenUnconfiguredView {
         var message: String {
             switch widgetKind {
