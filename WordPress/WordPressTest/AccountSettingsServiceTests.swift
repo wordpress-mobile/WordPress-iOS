@@ -73,7 +73,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
         expect(self.managedAccountSettings()?.firstName).to(equal("Test"))
     }
 
-    func testCancelRefreshingSettings() throws {
+    func testCancelGettingSettings() throws {
         // This test performs steps described in the link below to reproduce a crash.
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/20379#issuecomment-1481995663
 
@@ -83,11 +83,9 @@ class AccountSettingsServiceTests: CoreDataTestCase {
             sleep(2)
             return HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
         }
-        service.refreshSettings()
+        service.getSettingsAttempt()
 
-        // A 5 senconds timeout is used here becuase there is a 4 seconds delay of making the HTTP API request
-        // in the `refreshSettings` call above.
-        wait(for: [apiFired], timeout: 5)
+        wait(for: [apiFired], timeout: 0.5)
 
         let account = try XCTUnwrap(WPAccount.lookup(withUserID: 1, in: contextManager.mainContext))
         contextManager.mainContext.delete(account)
@@ -95,6 +93,6 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
         let notCrash = expectation(description: "Not crash")
         notCrash.isInverted = true
-        wait(for: [notCrash], timeout: 1)
+        wait(for: [notCrash], timeout: 0.5)
     }
 }
