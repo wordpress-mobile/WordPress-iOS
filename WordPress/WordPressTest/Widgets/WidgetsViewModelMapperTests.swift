@@ -24,11 +24,17 @@ final class WidgetsViewModelMapperTests: XCTestCase {
     func testTodayViewsStatsURL() {
         let todayStats = makeTodayWidgetStats(views: 649)
         let data = makeTodayData(stats: todayStats, date: Date())
-
-        let sut = makeSUT()
         let statsURL = data.statsURL
 
         XCTAssertEqual(statsURL?.absoluteString, "https://wordpress.com/stats/day/0?source=widget")
+    }
+
+    func testUnconfiguredViewModel() {
+        let sut = makeSUT()
+        let message = "Test"
+        let viewModel = sut.getLockScreenUnconfiguredViewModel(message)
+
+        XCTAssertEqual(viewModel.message, message)
     }
 }
 
