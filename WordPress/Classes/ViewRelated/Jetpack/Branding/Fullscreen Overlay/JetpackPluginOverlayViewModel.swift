@@ -46,7 +46,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     }
 
     func didDisplayOverlay() {
-        WPAnalytics.track(.jetpackInstallPluginModalViewed)
+        track(.viewed)
     }
 
     func didTapLink() {
@@ -55,16 +55,19 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 
     func didTapPrimary() {
         coordinator?.navigateToPrimaryRoute()
-        WPAnalytics.track(.jetpackInstallPluginModalInstallTapped)
+        track(.primaryButtonTapped)
     }
 
     func didTapClose() {
-        // TODO: Dismiss the overlay.
-        WPAnalytics.track(.jetpackInstallPluginModalDismissed)
+        track(.dismissed)
     }
 
     func didTapSecondary() {
         coordinator?.navigateToSecondaryRoute()
+
+        if AppConfiguration.isWordPress {
+            track(.dismissed)
+        }
     }
 
     func didTapActionInfo() {
@@ -79,6 +82,42 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 // MARK: - Private Helpers
 
 private extension JetpackPluginOverlayViewModel {
+
+    enum JetpackPluginOverlayAnalytics {
+        case viewed
+        case dismissed
+        case primaryButtonTapped
+
+        var key: WPAnalyticsEvent {
+            AppConfiguration.isWordPress ? wordPressKey : jetpackKey
+        }
+
+        private var wordPressKey: WPAnalyticsEvent {
+            switch self {
+            case .viewed:
+                return .wordPressInstallPluginModalViewed
+            case .dismissed:
+                return .wordPressInstallPluginModalDismissed
+            case .primaryButtonTapped:
+                return .wordPressInstallPluginModalSwitchTapped
+            }
+        }
+
+        private var jetpackKey: WPAnalyticsEvent {
+            switch self {
+            case .viewed:
+                return .jetpackInstallPluginModalViewed
+            case .dismissed:
+                return .jetpackInstallPluginModalDismissed
+            case .primaryButtonTapped:
+                return .jetpackInstallPluginModalInstallTapped
+            }
+        }
+    }
+
+    func track(_ event: JetpackPluginOverlayAnalytics) {
+        WPAnalytics.track(event.key)
+    }
 
     func subtitle(withSiteName siteName: String, plugin: JetpackPlugin) -> NSAttributedString {
         switch plugin {
