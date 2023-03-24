@@ -1,3 +1,7 @@
+22.1
+-----
+
+
 22.0
 -----
 * [*] Remove large title in Reader and Notifications tabs. [#20271]
@@ -10,6 +14,8 @@
 * [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
 * [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
 * [*] [internal] Refactor uploading media assets. [#20294]
+* [*] Block editor: Allow new block transforms for most blocks. [https://github.com/WordPress/gutenberg/pull/48792]
+* [*] Visual improvements were made to the in-app survey along with updated text to differentiate between the WordPress and Jetpack apps. [#20276]
 
 21.9
 -----

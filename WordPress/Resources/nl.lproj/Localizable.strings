@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-01 11:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-13 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -9646,6 +9646,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Negeren";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "Stel je werk tentoon op miljoenen sites.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "Dit verbergen";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Promoot je content met Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Blaze nu een bericht";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promoot in een paar minuten elke post of pagina voor slechts enkele euro’s per dag.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Volg de prestaties van je campagne en annuleer op elk gewenst moment.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Je content zal op miljoenen WordPress en Tumblr sites verschijnen.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Zorg er met Blaze voor dat meer mensen je site bezoeken";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Negeren";
 
@@ -10359,6 +10383,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Gereed";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tik om de veelgestelde vragen van de Jetpack-app in een externe browser te bezoeken";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Bezoek onze veelgestelde vragen pagina";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "Uitloggen";
 
@@ -10394,6 +10424,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress Help Center";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Bij de veelgestelde vragen kun je antwoorden vinden op vragen die je zelf misschien ook wilde stellen.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Bedankt voor het overschakelen naar de Jetpack-app!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Logbestanden";

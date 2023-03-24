@@ -47,9 +47,16 @@
     if (!url && self.videopressGUID.length > 0 ){
         NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-        [mediaService getMediaURLFromVideoPressID:self.videopressGUID inBlog:self.blog success:^(NSString *videoURL, NSString *posterURL) {
+        [mediaService getMetadataFromVideoPressID: self.videopressGUID inBlog:self.blog success:^(RemoteVideoPressVideo *metadata) {
             // Let see if can create an asset with this url
-            AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL URLWithString:videoURL]];
+            NSURL *originalURL = metadata.originalURL;
+            if (!originalURL) {
+                NSString *errorMessage = NSLocalizedString(@"Selected media is unavailable.", @"Error message when user tries a no longer existent video media object.");
+                completionHandler(nil, [self errorWithMessage:errorMessage]);
+                return;
+            }
+            NSURL *videoURL = [metadata getURLWithToken:originalURL] ?: originalURL;
+            AVURLAsset *asset = [AVURLAsset assetWithURL:videoURL];
             if (!asset) {
                 NSString *errorMessage = NSLocalizedString(@"Selected media is unavailable.", @"Error message when user tries a no longer existent video media object.");
                 completionHandler(nil, [self errorWithMessage:errorMessage]);

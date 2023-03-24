@@ -302,8 +302,8 @@ class PostCoordinator: NSObject {
                         switch result {
                         case .failure:
                             handleSingleMediaFailure()
-                        case .success(let value):
-                            media.remoteURL = value.videoURL.absoluteString
+                        case .success(let videoURL):
+                            media.remoteURL = videoURL.absoluteString
                             successHandler()
                         }
                     }

@@ -455,10 +455,20 @@ import Foundation
     case blazeFlowCompleted
     case blazeFlowError
 
+    // Moved to Jetpack static screen
+    case removeStaticPosterDisplayed
+    case removeStaticPosterButtonTapped
+    case removeStaticPosterLinkTapped
+
     // Help & Support
     case supportOpenMobileForumTapped
     case supportMigrationFAQButtonTapped
     case supportMigrationFAQCardViewed
+
+    // Jetpack plugin connection to user's WP.com account
+    case jetpackPluginConnectUserAccountStarted
+    case jetpackPluginConnectUserAccountFailed
+    case jetpackPluginConnectUserAccountCompleted
 
     /// A String that represents the event
     var value: String {
@@ -1245,6 +1255,13 @@ import Foundation
         case .blazeFlowError:
             return "blaze_flow_error"
 
+        // Moved to Jetpack static screen
+        case .removeStaticPosterDisplayed:
+            return "remove_static_poster_displayed"
+        case .removeStaticPosterButtonTapped:
+            return "remove_static_poster_get_jetpack_tapped"
+        case .removeStaticPosterLinkTapped:
+            return "remove_static_poster_link_tapped"
 
         // Help & Support
         case .supportOpenMobileForumTapped:
@@ -1253,6 +1270,15 @@ import Foundation
             return "support_migration_faq_tapped"
         case .supportMigrationFAQCardViewed:
             return "support_migration_faq_viewed"
+
+        // Jetpack plugin connection to user's WP.com account
+        case .jetpackPluginConnectUserAccountStarted:
+            return "jetpack_plugin_connect_user_account_started"
+        case .jetpackPluginConnectUserAccountFailed:
+            return "jetpack_plugin_connect_user_account_failed"
+        case .jetpackPluginConnectUserAccountCompleted:
+            return "jetpack_plugin_connect_user_account_completed"
+
         } // END OF SWITCH
     }
 

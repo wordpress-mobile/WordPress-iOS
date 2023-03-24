@@ -5,6 +5,7 @@
 
 
 @class Media;
+@class RemoteVideoPressVideo;
 @class Blog;
 @class AbstractPost;
 @protocol ExportableAsset;
@@ -98,17 +99,20 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(void))failure;
 
 /**
- *  Obtains the  video url and poster image url for the video with the videoPressID
+ *  Retrieves the metadata of a VideoPress video.
  *
- *  @param videoPressID ID of video in VideoPress
- *  @param blog         blog to use to access video references
- *  @param success      return block if videopress info is found
- *  @param failure      return block if not information found.
+ *  The metadata parameters can be found in the API reference:
+ *  https://developer.wordpress.com/docs/api/1.1/get/videos/%24guid/
+ *
+ *  @param videoPressID ID of the video in VideoPress.
+ *  @param success a block to be executed when the metadata is fetched successfully.
+ *  @param failure a block to be executed when the metadata can't be fetched.
  */
-- (void)getMediaURLFromVideoPressID:(nonnull NSString *)videoPressID
+- (void)getMetadataFromVideoPressID:(nonnull NSString *)videoPressID
                              inBlog:(nonnull Blog *)blog
-                            success:(nullable void (^)(NSString * _Nonnull videoURL, NSString * _Nullable posterURL))success
+                            success:(nullable void (^)(RemoteVideoPressVideo * _Nonnull metadata))success
                             failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 /**
  * Sync all Media objects from the server to local database
  

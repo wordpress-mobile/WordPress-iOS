@@ -12,6 +12,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case four
         case newUsers = "new_users"
         case selfHosted = "self_hosted"
+        case staticScreens = "static_screens"
 
         var frequencyConfig: OverlayFrequencyTracker.FrequencyConfig {
             switch self {
@@ -81,6 +82,8 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         }
     }
 
+    static var currentAppUIType: RootViewCoordinator.AppUIType?
+
     static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> GeneralPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
@@ -96,6 +99,9 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
             return .four
+        }
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalStaticPosters) {
+            return .staticScreens
         }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree) {
             return .three
@@ -116,7 +122,8 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         }
 
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour)
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalStaticPosters) {
             return .two
         }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree)
@@ -138,37 +145,66 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
-    /// This way we ensure features are not removed before reloading the UI.
-    /// But if this function is called from a background thread, we determine if the Jetpack Features
+    /// But if the current app UI type is not set, we determine if the Jetpack Features
     /// are enabled based on the removal phase regardless of the app UI state.
-    /// Default root view coordinator is used.
+    /// It is possible for JP features to be disabled, but still be displayed (`shouldShowJetpackFeatures`)
+    /// This will happen in the "Static Screens" phase.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
-        guard Thread.isMainThread else {
-            return shouldEnableJetpackFeatures()
-        }
-        return jetpackFeaturesEnabled(rootViewCoordinator: .shared)
+        return jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore())
     }
 
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
-    /// This way we ensure features are not removed before reloading the UI.
-    /// But if this function is called from a background thread, we determine if the Jetpack Features
+    /// But if the current app UI type is not set, we determine if the Jetpack Features
     /// are enabled based on the removal phase regardless of the app UI state.
+    /// It is possible for JP features to be disabled, but still be displayed (`shouldShowJetpackFeatures`)
+    /// This will happen in the "Static Screens" phase.
     /// Using two separate methods (rather than one method with a default argument) because Obj-C.
-    /// - Returns: `true` if UI type is normal, and `false` if UI type is simplified.
-    static func jetpackFeaturesEnabled(rootViewCoordinator: RootViewCoordinator) -> Bool {
-        guard Thread.isMainThread else {
-            return shouldEnableJetpackFeatures()
+    static func jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        guard let currentAppUIType else {
+            return shouldEnableJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: featureFlagStore)
         }
-        return rootViewCoordinator.currentAppUIType == .normal
+        return currentAppUIType == .normal
+    }
+
+    /// Used to determine if the Jetpack features are to be displayed based on the current app UI type.
+    /// This way we ensure features are not removed before reloading the UI.
+    /// But if the current app UI type is not set, we determine if the Jetpack Features
+    /// are to be displayed based on the removal phase regardless of the app UI state.
+    @objc
+    static func shouldShowJetpackFeatures() -> Bool {
+        return shouldShowJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore())
+    }
+
+    /// Used to determine if the Jetpack features are to be displayed based on the current app UI type.
+    /// This way we ensure features are not removed before reloading the UI.
+    /// But if the current app UI type is not set, we determine if the Jetpack Features
+    /// are to be displayed based on the removal phase regardless of the app UI state.
+    /// Using two separate methods (rather than one method with a default argument) because Obj-C.
+    static func shouldShowJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        guard let currentAppUIType else {
+            return shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: featureFlagStore)
+        }
+        return currentAppUIType != .simplified
     }
 
 
-    /// Used to determine if the Jetpack features are enabled based on the removal phase regardless of the app UI state.
-    private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> Bool {
-        let phase = generalPhase()
+    /// Used to determine if the Jetpack features are to be displayed or not based on the removal phase regardless of the app UI state.
+    private static func shouldShowJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        let phase = generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .four, .newUsers, .selfHosted:
+            return false
+        default:
+            return true
+        }
+    }
+
+    /// Used to determine if the Jetpack features are enabled or not based on the removal phase regardless of the app UI state.
+    private static func shouldEnableJetpackFeaturesBasedOnCurrentPhase(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        let phase = generalPhase(featureFlagStore: featureFlagStore)
+        switch phase {
+        case .four, .newUsers, .selfHosted, .staticScreens:
             return false
         default:
             return true
