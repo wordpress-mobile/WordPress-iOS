@@ -100,15 +100,17 @@ class SiteIconPickerPresenter: NSObject {
                     self.onCompletion?(media, nil)
                 } else {
                     let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+                    let importService = MediaImportService(coreDataStack: ContextManager.sharedInstance())
 
                     WPAnalytics.track(.siteSettingsSiteIconCropped)
 
-                    mediaService.createMedia(with: image,
-                                             blog: self.blog,
-                                             post: nil,
-                                             progress: nil,
-                                             thumbnailCallback: nil,
-                                             completion: { (media, error) in
+                    importService.createMedia(
+                        with: image,
+                        blog: self.blog,
+                        post: nil,
+                        receiveUpdate: nil,
+                        thumbnailCallback: nil
+                    ) { (media, error) in
                         guard let media = media, error == nil else {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
@@ -125,7 +127,7 @@ class SiteIconPickerPresenter: NSObject {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
                         })
-                    })
+                    }
                 }
             }
             self.mediaPickerViewController.show(after: imageCropViewController)
