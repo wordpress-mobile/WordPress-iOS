@@ -66,7 +66,7 @@ class GutenbergVideoPressUploadProcessor: Processor {
         guard let mediaID = videoPressBlock.attributes[VideoPressBlockKeys.id.rawValue] as? Int, mediaID == self.mediaUploadID else {
             return nil
         }
-        var block = "<!-- \(VideoPressBlockKeys.name) "
+        var block = "<!-- \(VideoPressBlockKeys.name.rawValue) "
         var attributes = videoPressBlock.attributes
         attributes[VideoPressBlockKeys.id.rawValue] = self.serverMediaID
         attributes[VideoPressBlockKeys.guid.rawValue] = self.videoPressGUID
@@ -79,7 +79,7 @@ class GutenbergVideoPressUploadProcessor: Processor {
         self.videoPressURL = VideoPressURL(attributes: attributes, guid: self.videoPressGUID)
         block += self.videoPressHtmlProcessor.process(videoPressBlock.content)
 
-        block += "<!-- /\(VideoPressBlockKeys.name) -->"
+        block += "<!-- /\(VideoPressBlockKeys.name.rawValue) -->"
         return block
     })
 
