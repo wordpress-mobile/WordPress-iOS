@@ -447,7 +447,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
     // Ensure that the account has a default blog defined (if there is one).
     AccountService *service = [[AccountService alloc] initWithCoreDataStack:self.coreDataStack];
-    [service updateDefaultBlogIfNeeded:account];
+    [service updateDefaultBlogIfNeeded:account inContext:context];
 }
 
 - (void)updateBlogWithRemoteBlog:(RemoteBlog *)remoteBlog account:(WPAccount *)account inContext:(NSManagedObjectContext *)context

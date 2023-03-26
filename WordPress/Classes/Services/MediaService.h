@@ -22,28 +22,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
 @interface MediaService : LocalCoreDataService
 
 /**
- This property determines if multiple thumbnail generation will be done in parallel.
- By default this value is NO.
- */
-@property (nonatomic, assign) BOOL concurrentThumbnailGeneration;
-/**
- Create a media object using the url provided as the source of media.
-
- @param exportable an object that implements the exportable interface
- @param blog the blog object to associate to the media
- @param post the post object to associate to the media
- @param progress a NSProgress that tracks the progress of the export process.
- @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
- @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
- */
-- (nullable Media *)createMediaWith:(nonnull id<ExportableAsset>)exportable
-                               blog:(nonnull Blog *)blog
-                               post:(nullable AbstractPost *)post
-                          progress:(NSProgress * __nullable __autoreleasing * __nullable)progress
-                 thumbnailCallback:(nullable void (^)(Media * __nonnull media, NSURL * __nonnull thumbnailURL))thumbnailCallback
-                        completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
-
-/**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource
  
  @param mediaID

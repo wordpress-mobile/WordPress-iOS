@@ -142,12 +142,12 @@ extension SitePickerViewController {
     }
 
     func uploadDroppedSiteIcon(_ image: UIImage, completion: @escaping (() -> Void)) {
-        var creationProgress: Progress?
-        mediaService.createMedia(
+        let service = MediaImportService(coreDataStack: ContextManager.shared)
+        _ = service.createMedia(
             with: image,
             blog: blog,
             post: nil,
-            progress: &creationProgress,
+            receiveUpdate: nil,
             thumbnailCallback: nil,
             completion: {  [weak self] media, error in
                 guard let media = media, error == nil else {

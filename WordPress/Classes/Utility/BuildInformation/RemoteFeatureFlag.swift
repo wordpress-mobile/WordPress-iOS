@@ -12,6 +12,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackMigrationPreventDuplicateNotifications
     case wordPressSupportForum
     case blaze
+    case wordPressIndividualPluginSupport
 
     var defaultValue: Bool {
         switch self {
@@ -34,6 +35,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .wordPressSupportForum:
             return true
         case .blaze:
+            return false
+        case .wordPressIndividualPluginSupport:
             return false
         }
     }
@@ -61,6 +64,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
+        case .wordPressIndividualPluginSupport:
+            return "wp_individual_plugin_overlay"
         }
     }
 
@@ -86,6 +91,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Provide support through a forum"
         case .blaze:
             return "Blaze"
+        case .wordPressIndividualPluginSupport:
+            return "Jetpack Individual Plugin Support for WordPress"
         }
     }
 
