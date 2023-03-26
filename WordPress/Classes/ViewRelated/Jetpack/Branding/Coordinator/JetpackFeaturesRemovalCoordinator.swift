@@ -91,25 +91,25 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
 
 
         if AccountHelper.noWordPressDotComAccount {
-            let selfHostedRemoval = featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted)
+            let selfHostedRemoval = RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.enabled(using: featureFlagStore)
             return selfHostedRemoval ? .selfHosted : .normal
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore) {
             return .newUsers
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore) {
             return .four
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalStaticPosters) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
             return .staticScreens
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore) {
             return .three
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseTwo) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore) {
             return .two
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseOne) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled(using: featureFlagStore) {
             return .one
         }
 
@@ -121,14 +121,14 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal // Always return normal for Jetpack
         }
 
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalStaticPosters) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
+            || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
+            || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
             return .two
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseTwo)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseOne) {
+        if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
+            || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
+            || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled(using: featureFlagStore) {
             return .one
         }
 

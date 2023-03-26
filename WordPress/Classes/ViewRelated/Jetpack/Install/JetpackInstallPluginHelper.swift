@@ -136,7 +136,7 @@ private extension JetpackInstallPluginHelper {
             return FeatureFlag.jetpackIndividualPluginSupport.enabled
         }
 
-        return FeatureFlag.wordPressIndividualPluginSupport.enabled
+        return RemoteFeatureFlag.wordPressIndividualPluginSupport.enabled()
     }
 
     /// Returns true if the card has been set to hidden for `blog`. For Jetpack only.

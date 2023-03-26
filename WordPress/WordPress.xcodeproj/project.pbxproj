@@ -1827,6 +1827,8 @@
 		8096219428E561A800940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABB286B2603086900C8785C /* AppImages.xcassets */; };
 		80A2153D29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */; };
 		80A2153E29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */; };
+		80A2154029CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */; };
+		80A2154129CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */; };
 		80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */; };
 		80B016D12803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
 		80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
@@ -7144,6 +7146,7 @@
 		8096218928E55D2400940A5D /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		8096218A28E55D2400940A5D /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticScreensTabBarWrapper.swift; sourceTree = "<group>"; };
+		80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlag.swift; sourceTree = "<group>"; };
 		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
 		80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsListCardCell.swift; sourceTree = "<group>"; };
 		80C523A329959DE000B1C14B /* BlazeWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewController.swift; sourceTree = "<group>"; };
@@ -16671,6 +16674,7 @@
 				17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */,
 				803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */,
 				803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */,
+				80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */,
 			);
 			path = BuildInformation;
 			sourceTree = "<group>";
@@ -21136,6 +21140,7 @@
 				9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */,
 				F10D634F26F0B78E00E46CC7 /* Blog+Organization.swift in Sources */,
 				DCCDF75B283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift in Sources */,
+				80A2154029CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */,
 				74729CA62056FE6000D1394D /* SearchableItemConvertable.swift in Sources */,
 				FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
@@ -24178,6 +24183,7 @@
 				FABB23702602FC2C00C8785C /* PostStatsViewModel.swift in Sources */,
 				FABB23712602FC2C00C8785C /* StatsStore+Cache.swift in Sources */,
 				FABB23722602FC2C00C8785C /* WP3DTouchShortcutHandler.swift in Sources */,
+				80A2154129CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */,
 				FABB23732602FC2C00C8785C /* BadgeContentStyles.swift in Sources */,
 				FABB23742602FC2C00C8785C /* WPStyleGuide+Pages.m in Sources */,
 				FABB23752602FC2C00C8785C /* ReaderInterestsDataSource.swift in Sources */,

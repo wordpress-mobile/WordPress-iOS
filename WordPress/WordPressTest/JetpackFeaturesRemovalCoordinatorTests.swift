@@ -330,12 +330,12 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
                                phaseNewUsers: Bool,
                                phaseSelfHosted: Bool) -> [WordPressKit.FeatureFlag] {
         return [
-            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseOne.remoteKey ?? "", value: phaseOne),
-            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseTwo.remoteKey ?? "", value: phaseTwo),
-            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseThree.remoteKey ?? "", value: phaseThree),
-            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey ?? "", value: phaseFour),
-            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey ?? "", value: phaseNewUsers),
-            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.remoteKey ?? "", value: phaseSelfHosted),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.remoteKey, value: phaseOne),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.remoteKey, value: phaseTwo),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.remoteKey, value: phaseThree),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey, value: phaseFour),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey, value: phaseNewUsers),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.remoteKey, value: phaseSelfHosted),
         ]
     }
 }
