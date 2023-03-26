@@ -22,6 +22,7 @@ class StatsWidgetsStore {
         if let newTodayData = refreshStats(type: HomeWidgetTodayData.self) {
             HomeWidgetTodayData.write(items: newTodayData)
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
         }
 
         if let newAllTimeData = refreshStats(type: HomeWidgetAllTimeData.self) {
@@ -43,6 +44,7 @@ class StatsWidgetsStore {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
         }
 
         if !HomeWidgetThisWeekData.cacheDataExists() {
@@ -115,6 +117,9 @@ class StatsWidgetsStore {
 
         T.write(items: homeWidgetCache)
         WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
+        if widgetKind == AppConfiguration.Widget.Stats.todayKind {
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
+        }
     }
 }
 
@@ -273,6 +278,7 @@ private extension StatsWidgetsStore {
                 WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
                 WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
                 WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
             }
         }
     }
