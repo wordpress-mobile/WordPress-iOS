@@ -185,6 +185,12 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
+    
+    BlazeService *blazeService = [BlazeService createService];
+    dispatch_group_enter(syncGroup);
+    [blazeService getStatusFor:blog completion:^{
+        dispatch_group_leave(syncGroup);
+    }];
 
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
@@ -441,7 +447,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
     // Ensure that the account has a default blog defined (if there is one).
     AccountService *service = [[AccountService alloc] initWithCoreDataStack:self.coreDataStack];
-    [service updateDefaultBlogIfNeeded:account];
+    [service updateDefaultBlogIfNeeded:account inContext:context];
 }
 
 - (void)updateBlogWithRemoteBlog:(RemoteBlog *)remoteBlog account:(WPAccount *)account inContext:(NSManagedObjectContext *)context

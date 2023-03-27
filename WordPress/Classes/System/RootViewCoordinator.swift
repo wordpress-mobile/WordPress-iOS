@@ -11,6 +11,7 @@ class RootViewCoordinator {
     enum AppUIType {
         case normal
         case simplified
+        case staticScreens
     }
 
     // MARK: Static shared variables
@@ -34,7 +35,11 @@ class RootViewCoordinator {
     // MARK: Private instance variables
 
     private(set) var rootViewPresenter: RootViewPresenter
-    private(set) var currentAppUIType: AppUIType
+    private var currentAppUIType: AppUIType {
+        didSet {
+            updateJetpackFeaturesRemovalCoordinatorState()
+        }
+    }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
 
@@ -44,29 +49,37 @@ class RootViewCoordinator {
          windowManager: WindowManager?) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
-        if Self.shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore) {
-            self.currentAppUIType = .normal
-            self.rootViewPresenter = WPTabBarController()
-        }
-        else {
-            self.currentAppUIType = .simplified
+        self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
+        switch self.currentAppUIType {
+        case .normal:
+            self.rootViewPresenter = WPTabBarController(staticScreens: false)
+        case .simplified:
             let meScenePresenter = MeScenePresenter()
             self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+        case .staticScreens:
+            self.rootViewPresenter = StaticScreensTabBarWrapper()
         }
+        updateJetpackFeaturesRemovalCoordinatorState()
         updatePromptsIfNeeded()
     }
 
     // MARK: JP Features State
 
-    /// Used to determine if the Jetpack features are enabled based on the removal phase.
-    private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+    /// Used to determine the expected app UI type based on the removal phase.
+    private static func appUIType(featureFlagStore: RemoteFeatureFlagStore) -> AppUIType {
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .four, .newUsers, .selfHosted:
-            return false
+            return .simplified
+        case .staticScreens:
+            return .staticScreens
         default:
-            return true
+            return .normal
         }
+    }
+
+    private func updateJetpackFeaturesRemovalCoordinatorState() {
+        JetpackFeaturesRemovalCoordinator.currentAppUIType = currentAppUIType
     }
 
     // MARK: UI Reload
@@ -75,7 +88,7 @@ class RootViewCoordinator {
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
     @discardableResult
     func reloadUIIfNeeded(blog: Blog?) -> Bool {
-        let newUIType: AppUIType = Self.shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore) ? .normal : .simplified
+        let newUIType: AppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
         let oldUIType = currentAppUIType
         guard newUIType != oldUIType, let windowManager else {
             return false
@@ -111,10 +124,12 @@ class RootViewCoordinator {
     private func reloadUI(using windowManager: WindowManager) {
         switch currentAppUIType {
         case .normal:
-            self.rootViewPresenter = WPTabBarController()
+            self.rootViewPresenter = WPTabBarController(staticScreens: false)
         case .simplified:
             let meScenePresenter = MeScenePresenter()
             self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+        case .staticScreens:
+            self.rootViewPresenter = StaticScreensTabBarWrapper()
         }
         windowManager.showUI(animated: false)
     }

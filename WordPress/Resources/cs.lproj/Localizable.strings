@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-19 19:42:17+0000 */
+/* Translation-Revision-Date: 2023-03-15 15:59:42+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -10274,6 +10274,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Uživatelé webu";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "Navštivte naše FAQ";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Naše FAQ poskytuje odpovědi na běžné otázky, které můžete mít.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Děkujeme, že jste přešli na aplikaci Jetpack!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "tyto položky budou smazány:";

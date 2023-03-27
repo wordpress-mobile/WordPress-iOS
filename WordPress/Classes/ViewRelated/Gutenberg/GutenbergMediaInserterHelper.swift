@@ -29,7 +29,11 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let formattedMedia = media.map { item in
-            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt)
+            var metadata: [String: String] = [:]
+            if let videopressGUID = item.videopressGUID {
+                metadata["videopressGUID"] = videopressGUID
+            }
+            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: metadata)
         }
         callback(formattedMedia)
     }
@@ -259,20 +263,25 @@ class GutenbergMediaInserterHelper: NSObject {
             }
             switch media.mediaType {
             case .video:
-                EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
-                    guard let strongSelf = self else {
+                // Fetch metadata when is a VideoPress video
+                if media.videopressGUID != nil {
+                    EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] (result) in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        switch result {
+                        case .failure:
+                            strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
+                        case .success(let metadata):
+                            strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: metadata.originalURL, serverID: mediaServerID, metadata: metadata.asDictionary())
+                        }
+                    }
+                } else {
+                    guard let remoteURLString = media.remoteURL, let remoteURL = URL(string: remoteURLString) else {
+                        gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
                         return
                     }
-                    switch result {
-                    case .failure:
-                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
-                    case .success(let value):
-                        var metadata: [String: Any] = [:]
-                        if let videopressGUID = media.videopressGUID {
-                            metadata["videopressGUID"] = videopressGUID
-                        }
-                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID, metadata: metadata)
-                    }
+                    gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: remoteURL, serverID: mediaServerID)
                 }
             default:
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)

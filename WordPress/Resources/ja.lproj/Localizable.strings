@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-03 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-03-09 11:54:29+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "空白ページが作成されました";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "ブロッククオート";
@@ -1150,6 +1153,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "サイトがブロックされました";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "ブロック済みのユーザー";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -9646,6 +9652,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "削除";
 
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "何百万ものサイトに作品を表示しましょう。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"blaze.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Blaze を使ってコンテンツを宣伝";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "今すぐ投稿を目立たせる";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "1日わずか数百円、たった数分で投稿やページを宣伝できます。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "キャンペーンのパフォーマンスを追跡したりいつでもキャンセルしたりできます。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "コンテンツは数百万もの WordPress と Tumblr のサイトに表示されます。";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Blaze でサイトのトラフィックを増やす";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "このページを目立たせる";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "この投稿を目立たせる";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "削除";
 
@@ -10158,6 +10194,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "その他";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Blaze を使って宣伝";
+
 /* No comment provided by engineer. */
 "password" = "パスワード";
 
@@ -10176,6 +10215,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Blaze を使って宣伝";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "「サイトの設定」に移動して表示をオンに戻す";
 
@@ -10190,6 +10232,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "ログインしました !";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "このユーザーをブロックする";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "このユーザーを報告";
@@ -10359,6 +10407,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "完了";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "タップして外部ブラウザーで Jetpack アプリの FAQ にアクセスする";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "FAQ にアクセス";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "ログアウト";
 
@@ -10394,6 +10448,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress ヘルプセンター";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "FAQ ではよくある質問に対する回答を提供しています。";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Jetpack アプリにお切り替えいただきありがとうございます !";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "ログ";

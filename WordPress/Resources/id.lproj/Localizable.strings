@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-03-09 11:54:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -9665,7 +9665,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promosikan pos atau halaman apa saja dalam hitungan menit dengan biaya harian sangat terjangkau.";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "Pantau performa kampanye iklan dan batalkan kapan saja.";
+"blaze.overlay.descriptionThree" = "Pantau performa kampanye Anda dan batalkan kapan saja.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Konten Anda akan muncul di jutaan situs WordPress dan Tumblr.";
@@ -10231,7 +10231,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Anda sudah login!";
 
 /* Notice title when blocking a user fails. */
-"reader.notice.user.blocked" = "reader.peringatan.pengguna.blokir.gagal";
+"reader.notice.user.blocked" = "pembaca.pemberitahuan.pengguna.blokir.gagal";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blokir pengguna ini";
@@ -10405,7 +10405,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "support.button.close.title" = "Selesai";
 
 /* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
-"support.button.jetpackMigation.accessibilityHint" = "Ketuk untuk membuka halaman Tanya Jawab Umum aplikasi Jetpack di browser";
+"support.button.jetpackMigation.accessibilityHint" = "Ketuk untuk membuka halaman Tanya Jawab Umum aplikasi Jetpack di browser eksternal";
 
 /* Option in Support view to visit the Jetpack migration FAQ website. */
 "support.button.jetpackMigration.title" = "Buka halaman Tanya Jawab Umum";
@@ -10447,7 +10447,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "support.row.helpCenter.title" = "Pusat Bantuan WordPress";
 
 /* An informational card description in Support view explaining what tapping the link on card does */
-"support.row.jetpackMigration.description" = "Tanja Jawab Umum dari kami akan menjawab berbagai pertanyaan yang umum diajukan.";
+"support.row.jetpackMigration.description" = "Tanya Jawab Umum akan menjawab berbagai pertanyaan yang umum diajukan.";
 
 /* An informational card title in Support view */
 "support.row.jetpackMigration.title" = "Terima kasih sudah berpindah ke aplikasi Jetpack!";

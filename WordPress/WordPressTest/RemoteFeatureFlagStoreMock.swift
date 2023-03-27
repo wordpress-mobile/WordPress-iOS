@@ -9,26 +9,26 @@ class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
     var removalPhaseFour = false
     var removalPhaseNewUsers = false
     var removalPhaseSelfHosted = false
+    var removalPhaseStaticScreens = false
 
-    override func value(for flag: OverrideableFlag) -> Bool {
-        guard let flag = flag as? WordPress.FeatureFlag else {
-            return false
-        }
-        switch flag {
-        case .jetpackFeaturesRemovalPhaseOne:
+    override func value(for flagKey: String) -> Bool? {
+        switch flagKey {
+        case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseOne.remoteKey:
             return removalPhaseOne
-        case .jetpackFeaturesRemovalPhaseTwo:
+        case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.remoteKey:
             return removalPhaseTwo
-        case .jetpackFeaturesRemovalPhaseThree:
+        case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.remoteKey:
             return removalPhaseThree
-        case .jetpackFeaturesRemovalPhaseFour:
+        case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey:
             return removalPhaseFour
-        case .jetpackFeaturesRemovalPhaseNewUsers:
+        case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey:
             return removalPhaseNewUsers
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
+        case RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.remoteKey:
             return removalPhaseSelfHosted
+        case RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.remoteKey:
+            return removalPhaseStaticScreens
         default:
-            return super.value(for: flag)
+            return super.value(for: flagKey)
         }
     }
 }

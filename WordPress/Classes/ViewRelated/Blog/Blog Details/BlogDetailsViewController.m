@@ -464,7 +464,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     // Required to add / remove "Home" section when switching between regular and compact width
     [self configureTableViewData];
 
@@ -873,6 +873,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                          [weakSelf showActivity];
                                                      }]];
     }
+    
+    if ([self shouldShowBlaze]) {
+        [rows addObject:[self blazeRow]];
+    }
 
 // Temporarily disabled
 //    if ([self.blog supports:BlogFeaturePlans] && ![self.blog isWPForTeams]) {
@@ -946,18 +950,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     if ([self shouldShowBlaze]) {
-        CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
-        UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
-        BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
-                                                 accessibilityIdentifier:@"Blaze Row"
-                                                                   image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
-                                                              imageColor:nil
-                                                           renderingMode:UIImageRenderingModeAlwaysOriginal
-                                                                callback:^{
-                                                                    [weakSelf showBlaze];
-                                                                }];
-        blazeRow.showsSelectionState = NO;
-        [rows addObject:blazeRow];
+        [rows addObject:[self blazeRow]];
     }
     NSString *title = @"";
 
@@ -968,6 +961,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
 }
 
+- (BlogDetailsRow *)blazeRow
+{
+    __weak __typeof(self) weakSelf = self;
+    CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
+    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
+    BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                             accessibilityIdentifier:@"Blaze Row"
+                                                               image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
+                                                          imageColor:nil
+                                                       renderingMode:UIImageRenderingModeAlwaysOriginal
+                                                            callback:^{
+                                                                [weakSelf showBlaze];
+                                                            }];
+    blazeRow.showsSelectionState = NO;
+    return blazeRow;
+}
 
 - (BlogDetailsSection *)publishTypeSectionViewModel
 {
@@ -1631,11 +1640,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{    
+{
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
-    StatsViewController *statsView = [StatsViewController new];
-    statsView.blog = self.blog;
-    statsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *statsView = [self viewControllerForStats];
 
     // Calling `showDetailViewController:sender:` should do this automatically for us,
     // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
