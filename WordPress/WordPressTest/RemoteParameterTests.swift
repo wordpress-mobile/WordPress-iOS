@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class RemoteConfigParameterTests: XCTestCase {
+final class RemoteParameterTests: XCTestCase {
 
     private var remoteConfigStore: RemoteConfigStore!
     private var overrideStore: RemoteConfigOverrideStore!
