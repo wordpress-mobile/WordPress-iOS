@@ -402,10 +402,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
     NSString *blogUrl   = defaultBlog.displayURL;
-    
+    NSString *oauth2Token = defaultAccount.authToken;
+    TodayExtensionService *service = [TodayExtensionService new];
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            TodayExtensionService *service = [TodayExtensionService new];
             [service removeTodayWidgetConfiguration];
 
             [ShareExtensionService removeShareExtensionConfiguration];
@@ -415,9 +415,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         });
     } else {
         // Required Attributes
-
-        NSString *oauth2Token       = defaultAccount.authToken;
-
         // For the Today Extensions, if the user has set a non-primary site, use that.
         NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
         NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
@@ -441,8 +438,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [service configureTodayWidgetWithSiteID:todayExtensionSiteID
                                            blogName:todayExtensionBlogName
                                             blogUrl:todayExtensionBlogUrl
-                                       siteTimeZone:timeZone
-                                     andOAuth2Token:oauth2Token];
+                                       siteTimeZone:timeZone];
 
             [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
             [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
@@ -456,7 +452,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [NotificationSupportService insertServiceExtensionUserID:defaultAccount.userID.stringValue];
         });
     }
-    
+    if (oauth2Token.length > 0) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [service configureTodayWidgetOAuth2Token:oauth2Token];
+        });
+    }
 }
 
 - (void)purgeAccountIfUnused:(WPAccount *)account
