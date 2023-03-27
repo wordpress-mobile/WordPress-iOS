@@ -9,6 +9,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
     private var persistenceMock: BlogDashboardPersistenceMock!
+    private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
 
     private let wpComID = 123456
@@ -18,8 +19,9 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
+        repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
-        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
+        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
     }
 
     override func tearDown() {
@@ -97,6 +99,44 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.likes, 0)
             XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.comments, 0)
 
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testHidingCards() {
+        // When the stats card is hidden for the current site
+        BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
+            .setEnabled(false, for: .todaysStats)
+
+        let expect = expectation(description: "Parse todays stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            // Then it's not displayed
+            XCTAssertFalse(cards.contains(where: { $0.cardType == .todaysStats }))
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testThatPreferencesAreSavedPerSite() {
+        // When the stats card is hidden for a different site
+        BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID + 1)
+            .setEnabled(false, for: .todaysStats)
+
+        let expect = expectation(description: "Parse todays stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            // Then it's still disabled for other sites
+            XCTAssertTrue(cards.contains(where: { $0.cardType == .todaysStats }))
             expect.fulfill()
         }
 

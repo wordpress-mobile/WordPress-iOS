@@ -301,9 +301,8 @@ private extension CreateButtonCoordinator {
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
               let prompt = prompt,
-              let siteID = blog.dotComID?.stringValue,
-              let isPromptsEnabled = UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID],
-              isPromptsEnabled,
+              let siteID = blog.dotComID,
+              BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts),
               !userSkippedPrompt(prompt, for: blog) else {
             return nil
         }

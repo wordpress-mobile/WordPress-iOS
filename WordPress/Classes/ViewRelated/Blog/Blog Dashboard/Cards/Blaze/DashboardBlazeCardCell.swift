@@ -25,7 +25,6 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
             BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
             BlazeHelper.hideBlazeCard(for: self?.blog)
-            self?.presentingViewController?.reloadCardsLocally()
         }
 
         return BlazeCardViewModel(onViewTap: onViewTap,
