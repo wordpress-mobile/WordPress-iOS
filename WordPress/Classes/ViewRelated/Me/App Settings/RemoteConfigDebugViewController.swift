@@ -36,7 +36,7 @@ class RemoteConfigDebugViewController: UITableViewController {
         let rows = RemoteConfigParameter.allCases.map({ makeRemoteConfigParamRow(for: $0) })
 
         handler.viewModel = ImmuTable(sections: [
-            ImmuTableSection(rows: rows)
+            ImmuTableSection(rows: rows, footerText: Strings.footer)
         ])
     }
 
@@ -92,6 +92,9 @@ private extension RemoteConfigDebugViewController {
         static let hint = NSLocalizedString("debugMenu.remoteConfig.hint",
                                                           value: "Override the chosen param by defining a new value here.",
                                                           comment: "Hint for overriding remote config params")
+        static let footer = NSLocalizedString("debugMenu.remoteConfig.footer",
+                                                          value: "Overridden parameters are denoted by a checkmark.",
+                                                          comment: "Remote config params debug menu footer explaining the meaning of a cell with a checkmark.")
     }
 }
 
