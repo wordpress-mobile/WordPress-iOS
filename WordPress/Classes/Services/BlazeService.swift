@@ -33,31 +33,41 @@ import WordPressKit
                          completion: (() -> Void)? = nil) {
 
         guard BlazeHelper.isBlazeFlagEnabled() else {
-            updateBlog(blog, isBlazeApproved: false, completion: completion)
+            updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
             return
         }
 
         guard let siteId = blog.dotComID?.intValue else {
             DDLogError("Invalid site ID for Blaze")
-            updateBlog(blog, isBlazeApproved: false, completion: completion)
+            updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
             return
         }
 
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):
-                self.updateBlog(blog, isBlazeApproved: approved, completion: completion)
+                self.updateBlogWithID(blog.objectID, isBlazeApproved: approved, completion: completion)
             case .failure(let error):
                 DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
-                self.updateBlog(blog, isBlazeApproved: false, completion: completion)
+                self.updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
             }
         }
     }
 
-    private func updateBlog(_ blog: Blog, isBlazeApproved: Bool, completion: (() -> Void)? = nil) {
+    private func updateBlogWithID(_ objectID: NSManagedObjectID,
+                                  isBlazeApproved: Bool,
+                                  completion: (() -> Void)? = nil) {
         contextManager.performAndSave({ context in
+
+            guard let blog = context.object(with: objectID) as? Blog else {
+                DDLogError("Unable to update isBlazeApproved value for blog")
+                completion?()
+                return
+            }
+
             blog.isBlazeApproved = isBlazeApproved
             DDLogInfo("Successfully updated isBlazeApproved value for blog: \(isBlazeApproved)")
+
         }, completion: {
             completion?()
         }, on: .main)
