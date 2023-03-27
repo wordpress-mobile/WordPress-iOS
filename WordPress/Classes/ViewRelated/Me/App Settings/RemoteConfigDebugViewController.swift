@@ -22,7 +22,7 @@ class RemoteConfigDebugViewController: UITableViewController {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
-            EditableTextRow.self
+            CheckmarkRow.self
         ], tableView: tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -46,6 +46,7 @@ class RemoteConfigDebugViewController: UITableViewController {
         var overriddenValueText: String?
         var currentValueText: String
         var placeholderText: String
+        var isOverridden = false
 
         if let originalValue = param.originalValue(using: remoteConfigStore) {
             placeholderText = String(describing: originalValue)
@@ -59,9 +60,10 @@ class RemoteConfigDebugViewController: UITableViewController {
         if let overriddenValue = overrideStore.overriddenValue(for: param) {
             overriddenValueText = String(describing: overriddenValue)
             currentValueText = String(describing: overriddenValue)
+            isOverridden = true
         }
 
-        return EditableTextRow(title: param.description, value: currentValueText) { row in
+        return CheckmarkRow(title: param.description, subtitle: currentValueText, checked: isOverridden) { row in
             let textViewController = SettingsTextViewController(text: overriddenValueText, placeholder: placeholderText, hint: Strings.hint)
             textViewController.title = param.description
             textViewController.onAttributedValueChanged = { [weak self] newValue in
