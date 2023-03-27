@@ -1829,6 +1829,8 @@
 		80A2154129CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */; };
 		80A2154329D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */; };
 		80A2154429D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */; };
+		80A2154629D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */; };
+		80A2154729D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */; };
 		80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */; };
 		80B016D12803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
 		80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
@@ -7147,6 +7149,7 @@
 		80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticScreensTabBarWrapper.swift; sourceTree = "<group>"; };
 		80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlag.swift; sourceTree = "<group>"; };
 		80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugViewController.swift; sourceTree = "<group>"; };
+		80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigOverrideStore.swift; sourceTree = "<group>"; };
 		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
 		80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsListCardCell.swift; sourceTree = "<group>"; };
 		80C523A329959DE000B1C14B /* BlazeWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewController.swift; sourceTree = "<group>"; };
@@ -16675,6 +16678,7 @@
 				17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */,
 				803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */,
 				80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */,
+				80A2154529D15B88002FE8EB /* RemoteConfigOverrideStore.swift */,
 			);
 			path = BuildInformation;
 			sourceTree = "<group>";
@@ -20860,6 +20864,7 @@
 				987535632282682D001661B4 /* DetailDataCell.swift in Sources */,
 				E17E67031FA22C93009BDC9A /* PluginViewModel.swift in Sources */,
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
+				80A2154629D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */,
 				4629E4212440C5B20002E15C /* GutenbergCoverUploadProcessor.swift in Sources */,
 				FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */,
 				982DDF94263238A6002B3904 /* LikeUserPreferredBlog+CoreDataClass.swift in Sources */,
@@ -24574,6 +24579,7 @@
 				FABB249C2602FC2C00C8785C /* EditorSettingsService.swift in Sources */,
 				FABB249D2602FC2C00C8785C /* JetpackScanHistoryCoordinator.swift in Sources */,
 				FABB249E2602FC2C00C8785C /* NoticeStore.swift in Sources */,
+				80A2154729D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */,
 				FABB249F2602FC2C00C8785C /* RevisionBrowserState.swift in Sources */,
 				982DDF93263238A6002B3904 /* LikeUser+CoreDataProperties.swift in Sources */,
 				FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */,

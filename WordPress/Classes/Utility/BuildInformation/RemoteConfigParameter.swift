@@ -82,10 +82,12 @@ enum RemoteConfigParameter: CaseIterable {
         }
     }
 
-    func value<T: LosslessStringConvertible>(using remoteStore: RemoteConfigStore = .init()) -> T? {
-//        if let overriddenValue = overrideStore.overriddenValue(for: self) {
-//            return overriddenValue
-//        }
+    func value<T: LosslessStringConvertible>(using remoteStore: RemoteConfigStore = .init(),
+                                             overrideStore: RemoteConfigOverrideStore = .init()) -> T? {
+        if let overriddenStringValue = overrideStore.overriddenValue(for: self) {
+            DDLogInfo("🚩 Returning overridden value for remote config param: \(description).")
+            return T.init(overriddenStringValue)
+        }
         if let remoteValue = remoteStore.value(for: key) {
             return remoteValue as? T
         }
