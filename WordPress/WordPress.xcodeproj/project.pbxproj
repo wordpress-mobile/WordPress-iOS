@@ -1642,8 +1642,6 @@
 		803DE81628FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
 		803DE81728FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
 		803DE81928FFB7B5007D4E9C /* RemoteConfigParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */; };
-		803DE81B28FFC0B7007D4E9C /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */; };
-		803DE81C28FFC0B7007D4E9C /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */; };
 		803DE81F290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */; };
 		803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */; };
 		803DE822290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */; };
@@ -7114,7 +7112,6 @@
 		803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStore.swift; sourceTree = "<group>"; };
 		803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameter.swift; sourceTree = "<group>"; };
 		803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameterTests.swift; sourceTree = "<group>"; };
-		803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
 		803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFeaturesRemovalCoordinatorTests.swift; sourceTree = "<group>"; };
 		803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFeaturesRemovalCoordinator.swift; sourceTree = "<group>"; };
 		80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardCell.swift; sourceTree = "<group>"; };
@@ -16677,7 +16674,6 @@
 				F1D690151F828FF000200E30 /* FeatureFlag.swift */,
 				17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */,
 				803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */,
-				803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */,
 				80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */,
 			);
 			path = BuildInformation;
@@ -22146,7 +22142,6 @@
 				C957C20626DCC1770037628F /* LandInTheEditorHelper.swift in Sources */,
 				8BB185D524B66FE600A4CCE8 /* ReaderCard+CoreDataProperties.swift in Sources */,
 				F10E655021B0613A007AB2EE /* GutenbergViewController+MoreActions.swift in Sources */,
-				803DE81B28FFC0B7007D4E9C /* RemoteConfig.swift in Sources */,
 				E148362F1C6DF7D8005ACF53 /* Product.swift in Sources */,
 				082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */,
 				0107E16428FFED1800DE87DB /* WidgetConfiguration.swift in Sources */,
@@ -24683,7 +24678,6 @@
 				FABB24EC2602FC2C00C8785C /* ActionDispatcherFacade.swift in Sources */,
 				FABB24ED2602FC2C00C8785C /* ReaderSavedPostUndoCell.swift in Sources */,
 				FABB24EE2602FC2C00C8785C /* Suggestion.swift in Sources */,
-				803DE81C28FFC0B7007D4E9C /* RemoteConfig.swift in Sources */,
 				FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */,
 				FABB24F02602FC2C00C8785C /* FeatureFlagOverrideStore.swift in Sources */,
 				FABB24F12602FC2C00C8785C /* RelatedPostsPreviewTableViewCell.m in Sources */,
