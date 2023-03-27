@@ -66,6 +66,8 @@ class RemoteConfigDebugViewController: UITableViewController {
         return CheckmarkRow(title: param.description, subtitle: currentValueText, checked: isOverridden) { row in
             let textViewController = SettingsTextViewController(text: overriddenValueText, placeholder: placeholderText, hint: Strings.hint)
             textViewController.title = param.description
+            textViewController.mode = .lowerCaseText
+            textViewController.autocorrectionType = .no
             textViewController.onAttributedValueChanged = { [weak self] newValue in
                 if newValue.string.isEmpty {
                     overrideStore.reset(param)
