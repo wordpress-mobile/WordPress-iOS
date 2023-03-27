@@ -661,6 +661,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
