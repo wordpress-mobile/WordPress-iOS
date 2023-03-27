@@ -80,6 +80,9 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         let viewController = UIHostingController(rootView: NavigationView {
             BlogDashboardPersonalizationView(viewModel: .init(service: .init(siteID: siteID)))
         }.navigationViewStyle(.stack)) // .stack is required for iPad
+        if UIDevice.isPad() {
+            viewController.modalPresentationStyle = .formSheet
+        }
         presentingViewController?.present(viewController, animated: true)
     }
 }
