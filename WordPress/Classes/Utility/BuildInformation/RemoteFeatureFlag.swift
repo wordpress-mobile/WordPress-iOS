@@ -37,7 +37,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .blaze:
             return false
         case .wordPressIndividualPluginSupport:
-            return false
+            return AppConfiguration.isWordPress
         }
     }
 
