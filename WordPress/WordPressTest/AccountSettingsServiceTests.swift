@@ -80,6 +80,8 @@ class AccountSettingsServiceTests: CoreDataTestCase {
         let apiFired = expectation(description: "Get settings API fired")
         stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
             apiFired.fulfill()
+            // Simulate a slow HTTP response, so that the test code below has a chance to
+            // cancel this API request
             sleep(2)
             return HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
         }
@@ -87,6 +89,8 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
         wait(for: [apiFired], timeout: 0.5)
 
+        // Delete the logged in account, which would cause the URLSession used in the `service` to
+        // cancell all ongoing tasks, including the "get settings" one above.
         let account = try XCTUnwrap(WPAccount.lookup(withUserID: 1, in: contextManager.mainContext))
         contextManager.mainContext.delete(account)
         contextManager.saveContextAndWait(contextManager.mainContext)
