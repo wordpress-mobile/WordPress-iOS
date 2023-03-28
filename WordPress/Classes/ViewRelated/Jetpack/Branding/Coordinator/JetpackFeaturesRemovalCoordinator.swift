@@ -136,7 +136,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     static func removalDeadline(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) -> Date? {
-        guard let dateString = RemoteConfig(store: remoteConfigStore).jetpackDeadline.value else {
+        guard let dateString: String = RemoteConfigParameter.jetpackDeadline.value(using: remoteConfigStore) else {
             return nil
         }
         let formatter = DateFormatter()
