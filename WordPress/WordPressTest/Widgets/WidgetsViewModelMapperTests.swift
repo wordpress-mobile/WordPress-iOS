@@ -24,9 +24,9 @@ final class WidgetsViewModelMapperTests: XCTestCase {
     func testTodayViewsStatsURL() {
         let todayStats = makeTodayWidgetStats(views: 649)
         let data = makeTodayData(stats: todayStats, date: Date())
-        let statsURL = data.widgetURL
+        let statsURL = data.statsURL
 
-        XCTAssertEqual(statsURL?.absoluteString, "https://wordpress.com/stats/day/0?source=lockscreen_widget")
+        XCTAssertEqual(statsURL?.absoluteString, "https://wordpress.com/stats/day/0")
     }
 
     func testUnconfiguredViewModel() {

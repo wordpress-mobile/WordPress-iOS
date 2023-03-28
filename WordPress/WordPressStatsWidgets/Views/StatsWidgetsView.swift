@@ -13,7 +13,7 @@ struct StatsWidgetsView: View {
 
         case .disabled(let kind):
             UnconfiguredView(timelineEntry: timelineEntry)
-                .widgetURL(kind.statsURL)
+                .widgetURL(kind.statsURL?.appendingSource(.homeScreenWidget))
         case .loggedOut, .noSite, .noData:
             UnconfiguredView(timelineEntry: timelineEntry)
                 .widgetURL(nil)
@@ -25,12 +25,12 @@ struct StatsWidgetsView: View {
 
                 case .systemSmall:
                     SingleStatView(viewData: viewData)
-                        .widgetURL(viewData.statsURL)
+                        .widgetURL(viewData.statsURL?.appendingSource(.homeScreenWidget))
                         .padding()
 
                 case .systemMedium:
                     MultiStatsView(viewData: viewData)
-                        .widgetURL(viewData.statsURL)
+                        .widgetURL(viewData.statsURL?.appendingSource(.homeScreenWidget))
                         .padding()
 
                 default:

@@ -30,7 +30,7 @@ struct LockScreenStatsWidgetsView<T: LockScreenStatsWidgetsViewProvider>: View {
         case let .siteSelected(data, _):
             viewProvider
                 .buildSiteSelectedView(data)
-                .widgetURL(data.widgetURL)
+                .widgetURL(data.statsURL?.appendingSource(.lockScreenWidget))
         case .loggedOut:
             viewProvider
                 .buildLoggedOutView()
