@@ -51,6 +51,8 @@ final class DomainsServiceAdapter: SiteAddressService {
 
     // MARK: Properties
 
+    private let domainPurchasingEnabled = FeatureFlag.siteCreationDomainPurchasing.enabled
+
     /**
      Corresponds to:
 
@@ -112,11 +114,21 @@ final class DomainsServiceAdapter: SiteAddressService {
     }
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
+        let domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = domainPurchasingEnabled
+        ? .freeAndPaid
+        : .wordPressDotComAndDotBlogSubdomains
         domainsService.getDomainSuggestions(query: query,
                                             quantity: domainRequestQuantity,
-                                            domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
+                                            domainSuggestionType: domainSuggestionType,
                                             success: { domainSuggestions in
-            completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
+            if self.domainPurchasingEnabled {
+                let hasExactMatch = domainSuggestions.contains { domain -> Bool in
+                    return domain.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame
+                }
+                completion(Result.success(.init(hasExactMatch: hasExactMatch, domainSuggestions: domainSuggestions)))
+            } else {
+                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
+            }
         },
                                             failure: { error in
             if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 11:54:29+0000 */
+/* Translation-Revision-Date: 2023-03-23 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "このアプリからバージョンをコピー";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "不満がある";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "トピックをフォローできませんでした";
 
@@ -3676,9 +3673,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "修正方法";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "満足している";
-
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "写真家の Cameron Karsten 氏の作品にはとても感銘を受けました。 この技術を今度試すつもりです";
 
@@ -4844,9 +4838,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "利用可能なプレビューの URL がありません";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "いいえ";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "無題";
@@ -6696,9 +6687,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "サイトの目的としてこのテーマを選択します。";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "意見を送る";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "リンクを送信";
 
@@ -7982,8 +7970,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "今日の通知💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "今日の統計情報";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "カスタムアプリのアイコンを新しく更新しました。新しいスタイル10個から選択できますが、もしこれまでのアイコンのほうがお好みでしたらそのまま使用することもできます。";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "WordPress アプリについてどう思いますか ?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "このファイルで行う操作:アップロードし、そのファイルへのリンクを投稿に追加するか、ファイルのコンテンツを直接投稿を追加しますか ?";
 
@@ -9230,9 +9214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "求人情報";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "下書き投稿を作成";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "国別表示数の世界地図。";
@@ -9640,6 +9621,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "1時間";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Jetpack についてどう思いますか ?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "WordPress アプリについてどう思いますか ?";
+
 /* Label displayed on audio media items. */
 "audio" = "音声ファイル";
 
@@ -9666,9 +9653,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionOne" = "1日わずか数百円、たった数分で投稿やページを宣伝できます。";
-
-/* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "キャンペーンのパフォーマンスを追跡したりいつでもキャンセルしたりできます。";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "コンテンツは数百万もの WordPress と Tumblr のサイトに表示されます。";
@@ -9872,6 +9856,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@が%2$@で移動します";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "数日後に Jetpack アプリに移動予定です。";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@がまもなく移動します";
@@ -10182,11 +10169,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack へようこそ !";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "統計、Reader、通知などの Jetpack 機能は WordPress アプリから削除され、Jetpack アプリでのみ使用できるようになりました。";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "切り替えは無料で、数分で終わります。";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Jetpack アプリに切り替える";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "詳細は jetpack.com をご覧ください";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "通知は Jetpack アプリに移動しました。";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Reader は Jetpack アプリに移動しました。";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "統計は Jetpack アプリに移動しました。";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "下書き投稿を作成";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "下書き投稿";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "今日の統計情報";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "統計情報";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "削除";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "改善してほしい";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "気に入っている";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "いいえ";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "フィードバックを送る";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";

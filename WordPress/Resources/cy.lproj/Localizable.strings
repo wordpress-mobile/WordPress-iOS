@@ -565,9 +565,6 @@
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Parhau i ddarllen";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Gallai Fod yn Well";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Methu Cadw'r Newidiadau";
 
@@ -990,9 +987,6 @@
    Settings: Comments Moderation */
 "Hold for Moderation" = "Dal ar gyfer Cymedroli";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Rydw i'n ei Hoffi";
-
 /* Title of a button style */
 "Icon & Text" = "Eicon a Thestun";
 
@@ -1365,9 +1359,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Dim Dewislen wedi ei Dewis";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Dim Diolch";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Dim sylwadau";
@@ -2006,9 +1997,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn gwaredu'r newidiadau rydych wedi eu gwneud i'r ddewislen ar hyn o bryd. A ydych yn siŵr eich bod am barhau?";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Anfon Adborth";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Anfon Dolen";
 
@@ -2450,8 +2438,7 @@
    Notifications Today Section Header */
 "Today" = "Heddiw";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Ystadegau Heddiw";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -2740,9 +2727,6 @@
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Byddwn bob amser yn anfon e-byst ynghylch eich cyfrif, ond mae modd i chi gael rhai ychwanegion defnyddiol, hefyd.";
-
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Beth ydych chi'n ei feddwl o WordPress?";
 
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pan fydd sylw yn cynnwys unrhyw un o'r geiriau hyn yn ei gynnwys, enw, URL, e-bost neu IP, bydd yn cael ei gadw yn y rhes cymedroli. Gallwch gynnig geiriau rhannol, felly bydd \"press\" yn canfod \"WordPress\".";

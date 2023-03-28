@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-08 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-23 23:54:26+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "نسخ الإصدار من هذا التطبيق";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "قد يكون أفضل";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "يتعذر متابعة الموضوع";
 
@@ -3676,9 +3673,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "كيف سنقوم بإصلاحه؟";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "يعجبني هذا";
-
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "لقد ألهمتني أعمال المصور كاميرون كارستن للغاية. سأجرِّب هذه التقنيات في المحاولة التالية";
 
@@ -4844,9 +4838,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "لا يتوفر عنوان URL للمعاينة";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "لا شكرًا";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "بلا عنوان";
@@ -6696,9 +6687,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "يُحدِّد هذا الموضوع بوصفه هدف موقعك.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "إرسال الملاحظات";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "إرسال رابط";
 
@@ -7982,8 +7970,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "مطالبة اليوم 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "إحصاءات اليوم";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "لقد حدَّثنا أيقونات التطبيقات المخصصة بمظهر جديد وعصري. هناك 10 أنماط جديدة للاختيار من بينها، أو يمكنك ببساطة الاحتفاظ بالأيقونة الحالية إذا كنت تُفضل ذلك.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "ما هو رأيك في ووردبريس؟";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "ما الذي ترغب في فعله بهذا الملف: هل ترغب في رفعه وإضافة رابط للملف إلى مقالتك، أو إضافة محتويات الملف مباشرة إلى المقالة؟";
 
@@ -9230,9 +9214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "العمل معنا";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "العمل على مسودة تدوينة";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "تُظهر خريطة العالم المشاهدات حسب البلد.";
@@ -9640,6 +9621,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "ساعة";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "ما رأيك في Jetpack؟";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "ما هو رأيك في ووردبريس؟";
+
 /* Label displayed on audio media items. */
 "audio" = "صوت";
 
@@ -9668,7 +9655,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "روّج لأي تدوينة أو صفحة في غضون دقائق قليلة فقط مقابل بضعة دولارات فقط في اليوم.";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "تعقّب الأداء في حملاتك وألغِ ذلك في أي وقت.";
+"blaze.overlay.descriptionThree" = "تعقّب الأداء في حملتك وألغِ ذلك في أي وقت.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "سيظهر محتواك على ملايين من مواقع ووردبريس وTumblr.";
@@ -9872,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "سينتقل %1$@ في غضون %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "الانتقال إلى تطبيق Jetpack في بضعة أيام.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "ستنتقل %@ قريبًا";
@@ -10182,11 +10172,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "مرحبًا بك في Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "تمت إزالة ميزات الإحصاءات والقارئ والتنبيهات وغيرها من الميزات التي يدعمها Jetpack من تطبيق ووردبريس، ويمكن العثور عليها الآن في تطبيق Jetpack.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "التبديل مجاني، ولا يستغرق سوى بضع دقائق.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "التبديل إلى تطبيق Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "معرفة المزيد على jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "انتقلت ميزة التنبيهات إلى تطبيق Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "انتقلت ميزة القارئ إلى تطبيق Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "انتقلت ميزة الإحصاءات إلى تطبيق Jetpack.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "العمل على إعداد مسودة للتدوينة";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "إعداد مسودة للتدوينة";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "إحصاءات اليوم";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "الإحصاءات";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "تجاهل";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "تجاهُل";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "يمكن التحسين";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "أعجبت به";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "لا شكرًا";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "إرسال الملاحظات";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "من";

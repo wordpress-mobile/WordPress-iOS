@@ -1,7 +1,0 @@
-Scoop — Jetpack prend désormais en charge Blaze. Vous allez pouvoir atteindre de nouveaux lecteurs lorsque vous ferez la promotion d’un article ou d’une page depuis l’application.
-
-Nous avons étendu la compatibilité pour les sites avec des extensions individuelles. Ces extensions ne sont pas encore compatibles avec toutes les fonctionnalités d’application, mais vous pouvez toujours installer l’extension Jetpack complète à la place. Prêt à vous lancer ?
-
-Nous avons également ajouté une FAQ post-migration dans la section d’aide, à laquelle vous pourrez accéder après être passé de l’application WordPress à Jetpack.
-
-Enfin, nous avons ajouté un bouton dans le menu Articles pour vous permettre de bloquer un auteur afin que les articles associés n’apparaissent plus dans votre flux de contenu.

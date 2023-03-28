@@ -102,7 +102,7 @@ class BlogDashboardViewModel {
         })
     }
 
-    func loadCardsFromCache() {
+    @objc func loadCardsFromCache() {
         let cards = service.fetchLocal(blog: blog)
         updateCurrentCards(cards: cards)
     }
@@ -127,6 +127,7 @@ private extension BlogDashboardViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
     }
 
     func updateCurrentCards(cards: [DashboardCardModel]) {

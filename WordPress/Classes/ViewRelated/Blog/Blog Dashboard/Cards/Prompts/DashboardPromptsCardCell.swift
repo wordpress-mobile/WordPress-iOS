@@ -352,18 +352,16 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
               blog.isAccessibleThroughWPCom(),
-              let promptsService = BloggingPromptsService(blog: blog),
-              let siteID = blog.dotComID?.stringValue else {
+              let promptsService = BloggingPromptsService(blog: blog) else {
             return false
         }
 
-        let shouldDisplayCard = UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID] ?? false
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
-            return shouldDisplayCard
+            return true
         }
 
-        return !userSkippedPrompt(todaysPrompt, for: blog) && shouldDisplayCard
+        return !userSkippedPrompt(todaysPrompt, for: blog)
     }
 
 }
@@ -499,23 +497,16 @@ private extension DashboardPromptsCardCell {
     }
 
     func removeMenuTapped() {
-        guard let siteID = blog?.dotComID?.stringValue else {
+        guard let siteID = blog?.dotComID?.intValue else {
             return
         }
         WPAnalytics.track(.promptsDashboardCardMenuRemove)
-        updatePromptSettings(for: siteID, removed: true)
-        let notice = Notice(title: Strings.promptRemovedTitle, message: Strings.promptRemovedSubtitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
-            self?.updatePromptSettings(for: siteID, removed: false)
+        let service = BlogDashboardPersonalizationService(siteID: siteID)
+        service.setEnabled(false, for: .prompts)
+        let notice = Notice(title: Strings.promptRemovedTitle, message: Strings.promptRemovedSubtitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { _ in
+            service.setEnabled(true, for: .prompts)
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
-    func updatePromptSettings(for siteID: String, removed: Bool) {
-        let repository = UserPersistentStoreFactory.instance()
-        var promptsEnabledSettings = repository.promptsEnabledSettings
-        promptsEnabledSettings[siteID] = !removed
-        repository.promptsEnabledSettings = promptsEnabledSettings
-        presenterViewController?.reloadCardsLocally()
     }
 
     func learnMoreTapped() {

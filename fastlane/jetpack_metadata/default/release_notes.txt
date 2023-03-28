@@ -1,7 +1,5 @@
-Hot news—Jetpack now supports Blaze, so you can reach new readers by promoting a post or page from within the app.
+We don’t know about you, but we’re feeling 22. In honor of the occasion (and because you’ve been asking for it), you can now transform most types of blocks into other block types, like quotes, columns, and groups. Nice.
 
-We’ve added a little extra support for sites with individual plugins. These plugins don’t support all app features yet, but you can always install the full Jetpack plugin instead. Ready to launch?
+We made some design adjustments to the Reader, updating the “followed topics/sites” icon, recoloring the navigation bar background to match other screens in the app, and resizing the too-large title in the Reader tab. (We did that last one in the Notifications tab, too.)
 
-We also added a post-migration FAQ card to the Help screen, which you’ll see after switching from the WordPress app over to Jetpack.
-
-Finally, there’s a new button to the Post menu that lets you block an author so their posts no longer appear in your content feed.
+You’ll also see a few small visual changes to the My Site tab bar icon and the in-app survey. And if you have an extra-sharp eye, you might notice the dark background color of toolbars and top tabs is now consistent across the app.

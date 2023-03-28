@@ -16,7 +16,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
 
     var model: DomainSuggestion? {
         didSet {
-            title.attributedText = AddressCell.processName(model?.domainName)
+            title.attributedText = AddressCell.processName(model)
         }
     }
 
@@ -72,6 +72,19 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         }
     }
 
+    public static func processName(_ suggestion: DomainSuggestion?) -> NSAttributedString? {
+        guard let cost = suggestion?.costString,
+              let attributedString = AddressCell.processName(suggestion?.domainName) else {
+            return nil
+        }
+        guard FeatureFlag.siteCreationDomainPurchasing.enabled else {
+            return attributedString
+        }
+        let mutable = NSMutableAttributedString(attributedString: attributedString)
+        mutable.append(.init(string: " (\(cost))", attributes: TextStyleAttributes.defaults))
+        return mutable
+    }
+
     public static func processName(_ domainName: String?) -> NSAttributedString? {
         guard let name = domainName,
               let customName = name.components(separatedBy: ".").first else {
@@ -95,6 +108,6 @@ extension AddressCell {
     }
 
     func preferredContentSizeDidChange() {
-        title.attributedText = AddressCell.processName(model?.domainName)
+        title.attributedText = AddressCell.processName(model)
     }
 }
