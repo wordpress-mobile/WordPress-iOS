@@ -3,12 +3,12 @@ import WordPressKit
 
 @objc final class BlazeService: NSObject {
 
-    private let contextManager: CoreDataStack
+    private let contextManager: CoreDataStackSwift
     private let remote: BlazeServiceRemote
 
     // MARK: - Init
 
-    required init?(contextManager: CoreDataStack = ContextManager.shared,
+    required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BlazeServiceRemote? = nil) {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
             return nil
@@ -28,7 +28,7 @@ import WordPressKit
     ///
     /// - Parameters:
     ///   - blog: A blog
-    ///   - completion: Closure to be called on success
+    ///   - completion: Closure to be called on completion
     @objc func getStatus(for blog: Blog,
                          completion: (() -> Void)? = nil) {
 
@@ -58,16 +58,12 @@ import WordPressKit
                                   isBlazeApproved: Bool,
                                   completion: (() -> Void)? = nil) {
         contextManager.performAndSave({ context in
-
-            guard let blog = context.object(with: objectID) as? Blog else {
-                DDLogError("Unable to update isBlazeApproved value for blog")
-                completion?()
+            guard let blog = try? context.existingObject(with: objectID) as? Blog else {
+                DDLogError("Unable to fetch blog and update isBlazedApproved value")
                 return
             }
-
             blog.isBlazeApproved = isBlazeApproved
             DDLogInfo("Successfully updated isBlazeApproved value for blog: \(isBlazeApproved)")
-
         }, completion: {
             completion?()
         }, on: .main)
