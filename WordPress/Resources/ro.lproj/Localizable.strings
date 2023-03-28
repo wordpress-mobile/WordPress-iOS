@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-06 16:40:40+0000 */
+/* Translation-Revision-Date: 2023-03-21 14:52:25+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copiază versiunea din această aplicație";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Poate fi mai bine";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Nu am putut urmări subiectul";
 
@@ -2418,7 +2415,7 @@ translators: Block name. %s: The localized block name */
 /* Title for button that disconnects Jetpack from the site
    Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
    Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
-"Disconnect" = "Deconectare";
+"Disconnect" = "Deconectează";
 
 /* Message to show when Publicize disconnect failed */
 "Disconnect failed" = "Deconectare eșuată";
@@ -3676,9 +3673,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Cum vom corecta asta?";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Îmi place";
-
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "M-au inspirat foarte mult lucrările fotografului Cameron Karsten. Voi încerca aceste tehnici pe viitor";
 
@@ -4844,9 +4838,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Nu este disponibil un URL de previzualizare";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nu, mulțumesc";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Fără titlu";
@@ -6696,9 +6687,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Selectează acest subiect ca un scop pentru site-ul tău.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Trimite impresii";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Trimite legătura";
 
@@ -7982,8 +7970,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Îndemnul de azi 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Statistici pentru azi";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Am actualizat iconurile personalizate pentru aplicație, au un alt aspect. Poți alege din 10 stiluri noi sau, dacă nu vrei, poți păstra iconul existent.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Ce vrezi despre WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ce vrei să faci cu acest fișier: îl încarci și adaugi o legătură la fișier în articolul tău sau adaugi conținutul fișierului direct în articol?";
 
@@ -9230,9 +9214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Lucrează cu noi";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Lucrează într-un articol ciornă";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Harta lumii care arată vizualizările pe țară.";
@@ -9587,7 +9568,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Site-ul tău nu va mai trimite date la WordPress.com, iar funcționalitățile Jetpack vor înceta să funcționeze. Vei pierde accesul la site prin aplicație și va trebui să-l adaugi din nou cu datele lui de conectare.";
 
 /* The default Jetpack view message */
-"Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Datele de conectare ale site-ului tău web nu vor fi stocate și sunt folosite numai în scopul de a instala Jetpack.";
+"Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Datele de conectare ale site-ului tău web nu vor fi stocate și sunt folosite numai cu scopul de a instala Jetpack.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
 "Your weekly roundup is ready, tap here to see the details!" = "Rezumat tău săptămânal este pregătit, atinge aici pentru a-l vedea!";
@@ -9640,6 +9621,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "o oră";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Ce părere ai despre Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "Ce părere ai despre WordPress?";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9668,7 +9655,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promovezi orice articol sau pagină în numai câteva minute pentru câțiva dolari pe zi.";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "Urmărești performanța campaniilor tale și poți să le anulezi oricând.";
+"blaze.overlay.descriptionThree" = "Urmărești performanța campaniei tale și poți să o anulezi oricând.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Conținutul tău va apărea pe milioane de site-uri WordPress și Tumblr.";
@@ -9872,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ se mută în %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Mutăm funcționalitatea în aplicația Jetpack peste câteva zile.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ se mută în curând";
@@ -10182,11 +10172,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Bine ai venit la Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Statistici, Cititor, Notificări și alte funcționalități propulsate de Jetpack au fost înlăturate din aplicația WordPress. Pot fi găsite acum doar în aplicația Jetpack.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Comutarea este gratuită și durează numai un minut.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Comută la aplicația Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Află mai multe la jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Notificările s-au mutat în aplicația Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Cititorul s-a mutat în aplicația Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Statisticile s-au mutat în aplicația Jetpack.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Lucrează la un articol ciornă";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "redactează un articol";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Statistici pentru azi";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Statistici";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Închide";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Refuză";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Poate fi îmbunătățită";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Îmi place";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Nu, mulțumesc";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Trimite impresii";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "din";

@@ -202,11 +202,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         ReaderTracker.shared.start(.readerPost)
-
-        // Reapply the appearance, this reset the navbar after presenting a view
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -558,10 +554,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func setupFeaturedImage() {
         configureFeaturedImage()
 
-        featuredImage.configure(scrollView: scrollView,
-                                navigationBar: navigationController?.navigationBar)
-
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+        featuredImage.configure(
+            scrollView: scrollView,
+            navigationBar: navigationController?.navigationBar,
+            navigationItem: navigationItem
+        )
 
         guard !featuredImage.isLoaded else {
             return
@@ -1052,11 +1049,7 @@ private extension ReaderDetailViewController {
 
     func barButtonItem(with image: UIImage, action: Selector) -> UIBarButtonItem {
         let image = image.withRenderingMode(.alwaysTemplate)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44.0, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: action, for: .touchUpInside)
-
-        return UIBarButtonItem(customView: button)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
     }
 
     /// Checks if the view is visible in the viewport.

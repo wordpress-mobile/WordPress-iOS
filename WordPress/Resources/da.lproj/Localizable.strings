@@ -269,9 +269,6 @@
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Kopier link";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Kunne være bedre";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
 
@@ -573,9 +570,6 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skjul tastatur";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Jeg synes godt om den";
-
 /* Ignore action. Verb */
 "Ignore" = "Ignorer";
 
@@ -822,9 +816,6 @@
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Ingen forbindelse";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nej tak";
 
 /* No comment provided by engineer. */
 "No blocks found" = "Ingen blokke fundet.";
