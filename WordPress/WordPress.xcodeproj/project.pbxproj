@@ -139,6 +139,8 @@
 		0118968F29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */; };
 		0118969129D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118969029D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift */; };
 		0118969229D2CA6F00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */; };
+		0118969F29D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118969E29D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift */; };
+		011896A029D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118969E29D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift */; };
 		0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		014192A02983F5E800CAEDB0 /* SupportConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */; };
@@ -5707,6 +5709,7 @@
 		0107E1862900065400DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardCardHelper.swift; sourceTree = "<group>"; };
 		0118969029D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardCardHelperTests.swift; sourceTree = "<group>"; };
+		0118969E29D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsDashboardCardTracker.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfiguration.swift; sourceTree = "<group>"; };
 		0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfigurationTests.swift; sourceTree = "<group>"; };
@@ -9549,7 +9552,9 @@
 		0118968D29D1EAC900D34BA9 /* Domains */ = {
 			isa = PBXGroup;
 			children = (
+				DCFC097229D3549C00277ECB /* DashboardDomainsCardCell.swift */,
 				0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */,
+				0118969E29D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift */,
 			);
 			path = Domains;
 			sourceTree = "<group>";
@@ -13414,7 +13419,6 @@
 			children = (
 				0118968D29D1EAC900D34BA9 /* Domains */,
 				FA98B61429A3B71E0071AAE8 /* Blaze */,
-				DCFC097129D3544600277ECB /* Domains */,
 				FE18495627F5ACA400D26879 /* Prompts */,
 				8B92D69427CD51CE001F5371 /* Ghost */,
 				FAA4012F27B405DF009E1137 /* Quick Actions */,
@@ -16088,14 +16092,6 @@
 				DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		DCFC097129D3544600277ECB /* Domains */ = {
-			isa = PBXGroup;
-			children = (
-				DCFC097229D3549C00277ECB /* DashboardDomainsCardCell.swift */,
-			);
-			path = Domains;
 			sourceTree = "<group>";
 		};
 		E10520591F2B1CD400A948F6 /* 61-62 */ = {
@@ -21296,6 +21292,7 @@
 				F1ADCAF7241FEF0C00F150D2 /* AtomicAuthenticationService.swift in Sources */,
 				5703A4C622C003DC0028A343 /* WPStyleGuide+Posts.swift in Sources */,
 				DC8F61F727032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */,
+				0118969F29D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift in Sources */,
 				91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */,
 				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
@@ -24732,6 +24729,7 @@
 				FABB24C62602FC2C00C8785C /* UntouchableWindow.swift in Sources */,
 				FABB24C72602FC2C00C8785C /* WPProgressTableViewCell.m in Sources */,
 				FEA7949126DF7F3700CEC520 /* WPStyleGuide+CommentDetail.swift in Sources */,
+				011896A029D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift in Sources */,
 				FABB24C82602FC2C00C8785C /* StockPhotosPicker.swift in Sources */,
 				FABB24CA2602FC2C00C8785C /* UnifiedPrologueViewController.swift in Sources */,
 				FABB24CC2602FC2C00C8785C /* CollapsableHeaderViewController.swift in Sources */,
