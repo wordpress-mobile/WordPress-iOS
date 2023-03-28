@@ -39,7 +39,7 @@ class RemoteFeatureFlagStore {
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
     public func hasValue(for flagKey: String) -> Bool {
-        return cache[flagKey] != nil
+        return value(for: flagKey) != nil
     }
 
     /// Looks up the value for a remote feature flag.
