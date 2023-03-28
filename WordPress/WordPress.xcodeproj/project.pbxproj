@@ -2859,6 +2859,8 @@
 		C957C20726DCC1770037628F /* LandInTheEditorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */; };
 		C995C22229D306DD00ACEF43 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
 		C995C22329D306E100ACEF43 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
+		C995C22429D30A9900ACEF43 /* URL+WidgetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */; };
+		C995C22629D30AB000ACEF43 /* WidgetUrlSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */; };
 		C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
 		C9B4778429C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */; };
 		C9B4778529C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */; };
@@ -8135,6 +8137,7 @@
 		C94C0B1A25DCFA0100F2F69B /* FilterableCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableCategoriesViewController.swift; sourceTree = "<group>"; };
 		C957C20526DCC1770037628F /* LandInTheEditorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandInTheEditorHelper.swift; sourceTree = "<group>"; };
 		C995C22129D306DD00ACEF43 /* URL+WidgetSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+WidgetSource.swift"; sourceTree = "<group>"; };
+		C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUrlSourceTests.swift; sourceTree = "<group>"; };
 		C99B039B2602F3CB00CA71EB /* WordPress 117.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 117.xcdatamodel"; sourceTree = "<group>"; };
 		C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewViewController.swift; sourceTree = "<group>"; };
 		C9B4778229C85948008CBF49 /* LockScreenStatsWidgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetData.swift; sourceTree = "<group>"; };
@@ -15766,6 +15769,7 @@
 			children = (
 				C9FE383629C2067E00D39841 /* WidgetsViewModelMapperTests.swift */,
 				C9B477AF29CC35C5008CBF49 /* WidgetDataReaderTests.swift */,
+				C995C22529D30AB000ACEF43 /* WidgetUrlSourceTests.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -22015,6 +22019,7 @@
 				010459E629153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FAC1B82729B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
+				C995C22429D30A9900ACEF43 /* URL+WidgetSource.swift in Sources */,
 				F110239B2318479000C4E84A /* Media.swift in Sources */,
 				176CE91627FB44C100F1E32B /* StatsBaseCell.swift in Sources */,
 				E1C2260723901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift in Sources */,
@@ -23221,6 +23226,7 @@
 				DC13DB7E293FD09F00E33561 /* StatsInsightsStoreTests.swift in Sources */,
 				ACACE3AE28D729FA000992F9 /* NoResultsViewControllerTests.swift in Sources */,
 				8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */,
+				C995C22629D30AB000ACEF43 /* WidgetUrlSourceTests.swift in Sources */,
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				F543AF5723A84E4D0022F595 /* PublishSettingsControllerTests.swift in Sources */,
 				027AC5212278983F0033E56E /* DomainCreditEligibilityTests.swift in Sources */,
