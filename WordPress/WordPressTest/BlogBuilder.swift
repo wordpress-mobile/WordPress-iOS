@@ -120,6 +120,21 @@ final class BlogBuilder {
         return self
     }
 
+    func with(domainsCount: Int) -> Self {
+        var domains: [ManagedDomain] = []
+        for _ in 0..<domainsCount {
+            domains.append(NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain)
+        }
+
+        blog.domains = Set(domains)
+        return self
+    }
+
+    func with(hasDomainCredit: Bool) -> Self {
+        blog.hasDomainCredit = hasDomainCredit
+        return self
+    }
+
     @discardableResult
     func build() -> Blog {
         return blog
