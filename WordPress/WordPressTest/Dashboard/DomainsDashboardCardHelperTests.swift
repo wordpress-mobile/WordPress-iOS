@@ -7,7 +7,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: true)
-            .with(domainsCount: 0)
+            .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
 
@@ -21,7 +21,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
             .isNotHostedAtWPcom()
             .with(atomic: true)
             .with(isAdmin: true)
-            .with(domainsCount: 0)
+            .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
 
@@ -35,7 +35,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: false)
-            .with(domainsCount: 0)
+            .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
 
@@ -49,7 +49,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: true)
-            .with(domainsCount: 2)
+            .with(registeredDomainCount: 2)
             .with(hasDomainCredit: false)
             .build()
 
@@ -63,7 +63,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: true)
-            .with(domainsCount: 0)
+            .with(registeredDomainCount: 0)
             .with(hasDomainCredit: true)
             .build()
 
@@ -77,7 +77,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: true)
-            .with(domainsCount: 0)
+            .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
 

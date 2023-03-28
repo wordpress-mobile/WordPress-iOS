@@ -15,7 +15,7 @@ final class DomainsDashboardCardHelper {
         let isHostedAtWPcom = blog.isHostedAtWPcom
         let isAtomic = blog.isAtomic()
         let isAdmin = blog.isAdmin
-        let hasOtherDomains = blog.domains?.count ?? 0 > 1
+        let hasOtherDomains = blog.domainsList.count > 0
         let hasDomainCredit = blog.hasDomainCredit
 
         return (isHostedAtWPcom || isAtomic) && isAdmin && !hasOtherDomains && !hasDomainCredit
