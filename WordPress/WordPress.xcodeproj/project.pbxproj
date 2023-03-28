@@ -136,6 +136,7 @@
 		0107E18D29000E3300DE87DB /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
+		0118968F29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */; };
 		0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		014192A02983F5E800CAEDB0 /* SupportConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */; };
@@ -5688,6 +5689,7 @@
 		0107E1832900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0107E1842900059300DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		0107E1862900065400DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
+		0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardCardHelper.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfiguration.swift; sourceTree = "<group>"; };
 		0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfigurationTests.swift; sourceTree = "<group>"; };
@@ -9517,6 +9519,14 @@
 				0107E1842900059300DE87DB /* LocalizationConfiguration.swift */,
 			);
 			path = JetpackStatsWidgets;
+			sourceTree = "<group>";
+		};
+		0118968D29D1EAC900D34BA9 /* Domains */ = {
+			isa = PBXGroup;
+			children = (
+				0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */,
+			);
+			path = Domains;
 			sourceTree = "<group>";
 		};
 		0141929E2983F5D900CAEDB0 /* Support */ = {
@@ -13358,6 +13368,7 @@
 		8B4DDF23278F3AED0022494D /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				0118968D29D1EAC900D34BA9 /* Domains */,
 				FA98B61429A3B71E0071AAE8 /* Blaze */,
 				FE18495627F5ACA400D26879 /* Prompts */,
 				8B92D69427CD51CE001F5371 /* Ghost */,
@@ -21323,6 +21334,7 @@
 				08E39B4528A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */,
 				C81CCD67243AECA200A83E27 /* TenorGIFCollection.swift in Sources */,
 				4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */,
+				0118968F29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */,
 				E137B1661F8B77D4006AC7FC /* WebNavigationDelegate.swift in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
 				803DE81328FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */,
