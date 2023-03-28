@@ -33,16 +33,20 @@ class RemoteConfigDebugViewController: UITableViewController {
     }
 
     private func reloadViewModel() {
-        let rows = RemoteConfigParameter.allCases.map({ makeRemoteConfigParamRow(for: $0) })
+        let remoteConfigStore = RemoteConfigStore()
+        let overrideStore = RemoteConfigOverrideStore()
+        let rows = RemoteConfigParameter.allCases.map({
+            makeRemoteConfigParamRow(for: $0, remoteConfigStore: remoteConfigStore, overrideStore: overrideStore)
+        })
 
         handler.viewModel = ImmuTable(sections: [
             ImmuTableSection(rows: rows, footerText: Strings.footer)
         ])
     }
 
-    private func makeRemoteConfigParamRow(for param: RemoteConfigParameter) -> ImmuTableRow {
-        let remoteConfigStore = RemoteConfigStore()
-        let overrideStore = RemoteConfigOverrideStore()
+    private func makeRemoteConfigParamRow(for param: RemoteConfigParameter,
+                                          remoteConfigStore: RemoteConfigStore,
+                                          overrideStore: RemoteConfigOverrideStore) -> ImmuTableRow {
         var overriddenValueText: String?
         var currentValueText: String
         var placeholderText: String
@@ -63,22 +67,32 @@ class RemoteConfigDebugViewController: UITableViewController {
             isOverridden = true
         }
 
-        return CheckmarkRow(title: param.description, subtitle: currentValueText, checked: isOverridden) { row in
-            let textViewController = SettingsTextViewController(text: overriddenValueText, placeholder: placeholderText, hint: Strings.hint)
-            textViewController.title = param.description
-            textViewController.mode = .lowerCaseText
-            textViewController.autocorrectionType = .no
-            textViewController.onAttributedValueChanged = { [weak self] newValue in
-                if newValue.string.isEmpty {
-                    overrideStore.reset(param)
-                } else {
-                    overrideStore.override(param, withValue: newValue.string)
-                }
-                self?.reloadViewModel()
-            }
-
-            self.navigationController?.pushViewController(textViewController, animated: true)
+        return CheckmarkRow(title: param.description, subtitle: currentValueText, checked: isOverridden) { [weak self] row in
+            self?.displaySettingsTextViewController(for: param,
+                                                    text: overriddenValueText,
+                                                    placeholder: placeholderText,
+                                                    overrideStore: overrideStore)
         }
+    }
+
+    private func displaySettingsTextViewController(for param: RemoteConfigParameter,
+                                                   text: String?,
+                                                   placeholder: String,
+                                                   overrideStore: RemoteConfigOverrideStore) {
+        let textViewController = SettingsTextViewController(text: text, placeholder: placeholder, hint: Strings.hint)
+        textViewController.title = param.description
+        textViewController.mode = .lowerCaseText
+        textViewController.autocorrectionType = .no
+        textViewController.onAttributedValueChanged = { [weak self] newValue in
+            if newValue.string.isEmpty {
+                overrideStore.reset(param)
+            } else {
+                overrideStore.override(param, withValue: newValue.string)
+            }
+            self?.reloadViewModel()
+        }
+
+        self.navigationController?.pushViewController(textViewController, animated: true)
     }
 
 }
