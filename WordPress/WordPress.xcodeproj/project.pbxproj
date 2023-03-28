@@ -138,6 +138,7 @@
 		0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		0118968F29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */; };
 		0118969129D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118969029D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift */; };
+		0118969229D2CA6F00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118968E29D1EB5E00D34BA9 /* DomainsDashboardCardHelper.swift */; };
 		0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		014192A02983F5E800CAEDB0 /* SupportConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */; };
@@ -25080,6 +25081,7 @@
 				F1C740C026B1D4D2005D0809 /* StoreSandboxSecretScreen.swift in Sources */,
 				801D94F02919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift in Sources */,
 				FABB25FF2602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
+				0118969229D2CA6F00D34BA9 /* DomainsDashboardCardHelper.swift in Sources */,
 				98E082A02637545C00537BF1 /* PostService+Likes.swift in Sources */,
 				FABB26002602FC2C00C8785C /* GravatarProfile.swift in Sources */,
 				FABB26012602FC2C00C8785C /* ReaderShareAction.swift in Sources */,

@@ -20,4 +20,15 @@ final class DomainsDashboardCardHelper {
 
         return (isHostedAtWPcom || isAtomic) && isAdmin && !hasOtherDomains && !hasDomainCredit
     }
+
+    static func hideCard(for blog: Blog?) {
+        guard let blog,
+              let siteID = blog.dotComID?.intValue else {
+            DDLogError("Domains Dashboard Card: error hiding the card.")
+            return
+        }
+
+        BlogDashboardPersonalizationService(siteID: siteID)
+            .setEnabled(false, for: .domainsDashboardCard)
+    }
 }
