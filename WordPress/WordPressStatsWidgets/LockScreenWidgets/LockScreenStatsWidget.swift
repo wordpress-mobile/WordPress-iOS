@@ -3,6 +3,7 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let config: T
 
     init(config: T) {
@@ -23,6 +24,11 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
                 placeholderContent: config.placeholderContent
             )
         ) { (entry: LockScreenStatsWidgetEntry) -> LockScreenStatsWidgetsView in
+            defer {
+                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
+                                                  widgetKind: config.kind,
+                                                  widgetCountKey: config.countKey)
+            }
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,
                 viewProvider: config.viewProvider

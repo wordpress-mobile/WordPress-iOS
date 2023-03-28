@@ -20,6 +20,7 @@ import Foundation
             @objc static let todayKind = "JetpackHomeWidgetToday"
             @objc static let allTimeKind = "JetpackHomeWidgetAllTime"
             @objc static let thisWeekKind = "JetpackHomeWidgetThisWeek"
+            @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
             @objc static let todayProperties = "JetpackHomeWidgetTodayProperties"
             @objc static let allTimeProperties = "JetpackHomeWidgetAllTimeProperties"
             @objc static let thisWeekProperties = "JetpackHomeWidgetThisWeekProperties"
