@@ -42,6 +42,7 @@ class BlogDashboardCardFrameView: UIView {
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         titleLabel.accessibilityTraits = .button
+        titleLabel.numberOfLines = 0
         return titleLabel
     }()
 
