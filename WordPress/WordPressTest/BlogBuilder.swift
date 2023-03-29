@@ -126,7 +126,6 @@ final class BlogBuilder {
             let domain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
             domain.domainType = .registered
             domains.append(domain)
-
         }
 
         blog.domains = Set(domains)
