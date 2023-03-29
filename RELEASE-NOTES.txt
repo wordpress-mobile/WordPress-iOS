@@ -18,6 +18,7 @@
 * [*] [internal] Refactor uploading media assets. [#20294]
 * [*] Block editor: Allow new block transforms for most blocks. [https://github.com/WordPress/gutenberg/pull/48792]
 * [*] Visual improvements were made to the in-app survey along with updated text to differentiate between the WordPress and Jetpack apps. [#20276]
+* [*] Reader: Resolve an issue that could cause the app to crash when blocking a post author. [#20421]
 
 21.9
 -----

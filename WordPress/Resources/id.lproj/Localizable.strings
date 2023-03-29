@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 11:54:28+0000 */
+/* Translation-Revision-Date: 2023-03-24 11:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -9618,6 +9618,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "satu jam";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Apa pendapat Anda tentang Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "Apa pendapat Anda tentang WordPress?";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9847,6 +9853,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ akan berpindah dalam %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Berpindah ke aplikasi Jetpack dalam beberapa hari.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ segera berpindah";
@@ -10157,11 +10166,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Selamat datang di Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Statistik, Pembaca, Pemberitahuan, dan beragam fitur lain berbasis Jetpack telah dihapus dari aplikasi WordPress dan hanya dapat ditemukan di aplikasi Jetpack.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Ganti ke aplikasi Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Baca selengkapnya di jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Pemberitahuan berpindah ke aplikasi Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Pembaca berpindah ke aplikasi Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Statistik berpindah ke aplikasi Jetpack.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Sempurnakan konsep pos";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "buat konsep pos";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Statistik Hari Ini";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Statistik";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Tutup";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Dapat disempurnakan";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Saya menyukainya";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Tidak, terima kasih";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Beri masukan";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "dari";
