@@ -612,7 +612,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 5.6-beta)
-  - WordPressKit (~> 7.0.0-beta)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `add/wporg-api-post-requests`)
   - WordPressShared (~> 2.0-beta)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.7)
@@ -661,7 +661,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -778,6 +777,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.92.0-alpha1
+  WordPressKit:
+    :branch: add/wporg-api-post-requests
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.0-alpha1/third-party-podspecs/Yoga.podspec.json
 
@@ -793,6 +795,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.92.0-alpha1
+  WordPressKit:
+    :commit: 205110941cfb74a8523f99b0dc80487d4a71f6f5
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -896,6 +901,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 48c28f5cf835d8db90a688018500190c97fbf876
+PODFILE CHECKSUM: 3eec323fd3d1253490730f938d40f1dc832894f3
 
 COCOAPODS: 1.11.3
