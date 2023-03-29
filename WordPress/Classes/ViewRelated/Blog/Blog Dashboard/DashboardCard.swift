@@ -11,6 +11,7 @@ enum DashboardCard: String, CaseIterable {
     case quickStart
     case prompts
     case blaze
+    case domainsDashboardCard
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
@@ -48,6 +49,9 @@ enum DashboardCard: String, CaseIterable {
             return DashboardBadgeCell.self
         case .blaze:
             return DashboardBlazeCardCell.self
+        case .domainsDashboardCard:
+            /// TODO
+            return DashboardFailureCardCell.self
         }
     }
 
@@ -82,6 +86,8 @@ enum DashboardCard: String, CaseIterable {
             return JetpackBrandingVisibility.all.enabled
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)
+        case .domainsDashboardCard:
+            return DomainsDashboardCardHelper.shouldShowCard(for: blog)
         }
     }
 
