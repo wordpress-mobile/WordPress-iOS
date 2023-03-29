@@ -30,6 +30,13 @@ public class ReaderScreen: ScreenObject {
         app.buttons["Visit"].tap()
     }
 
+    public func openLastPostComments() throws -> CommentsScreen {
+        let commentButton = getLastPost().buttons["0 comment"]
+        guard commentButton.waitForIsHittable() else { fatalError("ReaderScreen.Post: Comments button not loaded") }
+        commentButton.tap()
+        return try CommentsScreen()
+    }
+
     public func getLastPost() -> XCUIElement {
         guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
         scrollDownUntilElementIsHittable(element: post)
