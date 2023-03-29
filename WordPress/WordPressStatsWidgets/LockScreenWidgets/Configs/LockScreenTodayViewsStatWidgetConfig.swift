@@ -24,6 +24,10 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
         AppConfiguration.Widget.Stats.lockScreenTodayViewsKind
     }
 
+    var countKey: String {
+        AppConfiguration.Widget.Stats.lockScreenTodayViewsProperties
+    }
+
     var placeholderContent: HomeWidgetTodayData {
         HomeWidgetTodayData(
             siteID: 0,

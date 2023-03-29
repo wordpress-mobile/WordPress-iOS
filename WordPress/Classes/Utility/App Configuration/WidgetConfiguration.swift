@@ -20,6 +20,7 @@ import Foundation
             @objc static let todayKind = "WordPressHomeWidgetToday"
             @objc static let allTimeKind = "WordPressHomeWidgetAllTime"
             @objc static let thisWeekKind = "WordPressHomeWidgetThisWeek"
+            @objc static let lockScreenTodayViewsProperties = "WordPressLockScreenWidgetTodayViewsProperties"
             @objc static let todayProperties = "WordPressHomeWidgetTodayProperties"
             @objc static let allTimeProperties = "WordPressHomeWidgetAllTimeProperties"
             @objc static let thisWeekProperties = "WordPressHomeWidgetThisWeekProperties"
