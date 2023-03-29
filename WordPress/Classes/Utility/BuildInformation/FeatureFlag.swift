@@ -76,7 +76,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .todayWidget:
             return true
         case .lockScreenWidget:
-            return true
+            return false
         case .milestoneNotifications:
             return true
         case .bloggingReminders:
