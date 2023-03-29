@@ -787,6 +787,7 @@
 		3F8513DF260D091500A4B938 /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
 		3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
 		3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851427260D1EA300A4B938 /* CircledIcon.swift */; };
+		3F86A83729D19C15005D20C0 /* SignupEpilogueTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F86A83629D19C15005D20C0 /* SignupEpilogueTableViewControllerTests.swift */; };
 		3F88065B26C30F2A0074DD21 /* TimeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */; };
 		3F8A087D253E4337000F35ED /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		3F8B136D25D08F34004FAC0A /* HomeWidgetThisWeekData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */; };
@@ -6369,6 +6370,7 @@
 		3F8513DE260D091500A4B938 /* RoundRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRectangleView.swift; sourceTree = "<group>"; };
 		3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueEditorContentView.swift; sourceTree = "<group>"; };
 		3F851427260D1EA300A4B938 /* CircledIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircledIcon.swift; sourceTree = "<group>"; };
+		3F86A83629D19C15005D20C0 /* SignupEpilogueTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueTableViewControllerTests.swift; sourceTree = "<group>"; };
 		3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionViewController.swift; sourceTree = "<group>"; };
 		3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetThisWeekData.swift; sourceTree = "<group>"; };
 		3F8B138E25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetThisWeek.swift; sourceTree = "<group>"; };
@@ -11219,6 +11221,14 @@
 			path = Editor;
 			sourceTree = "<group>";
 		};
+		3F86A83829D19C1C005D20C0 /* NUX */ = {
+			isa = PBXGroup;
+			children = (
+				3F86A83629D19C15005D20C0 /* SignupEpilogueTableViewControllerTests.swift */,
+			);
+			path = NUX;
+			sourceTree = "<group>";
+		};
 		3F8B459E29283D3800730FA4 /* Success card */ = {
 			isa = PBXGroup;
 			children = (
@@ -15270,6 +15280,7 @@
 				BEC8A3FD1B4BAA08001CB8C3 /* Blog */,
 				E1B921BA1C0ED481003EA3CB /* Cells */,
 				C3E42AAD27F4D2CF00546706 /* Menus */,
+				3F86A83829D19C1C005D20C0 /* NUX */,
 				8B7623352384372200AB3EE7 /* Pages */,
 				937E3AB41E3EBDC900CDA01A /* Post */,
 				FE3D057C26C3D5A1002A51B0 /* Sharing */,
@@ -23141,6 +23152,7 @@
 				805CC0BF29668A97002941DC /* MockCurrentDateProvider.swift in Sources */,
 				570BFD902282418A007859A8 /* PostBuilder.swift in Sources */,
 				C738CB0F28626466001BE107 /* QRLoginScanningCoordinatorTests.swift in Sources */,
+				3F86A83729D19C15005D20C0 /* SignupEpilogueTableViewControllerTests.swift in Sources */,
 				010459ED2915519C000C7778 /* JetpackNotificationMigrationServiceTests.swift in Sources */,
 				8B6214E627B1B446001DF7B6 /* BlogDashboardServiceTests.swift in Sources */,
 				C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */,
