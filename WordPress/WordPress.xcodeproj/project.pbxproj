@@ -3065,6 +3065,8 @@
 		DCF892CD282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892CB282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift */; };
 		DCF892D0282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */; };
 		DCF892D2282FA45500BB71E1 /* StatsMockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF892D1282FA45500BB71E1 /* StatsMockDataLoader.swift */; };
+		DCFC097329D3549C00277ECB /* DashboardDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC097229D3549C00277ECB /* DashboardDomainsCardCell.swift */; };
+		DCFC097429D3549C00277ECB /* DashboardDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC097229D3549C00277ECB /* DashboardDomainsCardCell.swift */; };
 		DCFC6A29292523D20062D65B /* SiteStatsPinnedItemStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC6A28292523D20062D65B /* SiteStatsPinnedItemStoreTests.swift */; };
 		DF6D9E10C4CEE05331B4DAE5 /* Pods_WordPressNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B8D9C4DCD93C57C2B98CDC /* Pods_WordPressNotificationServiceExtension.framework */; };
 		E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */; };
@@ -8335,6 +8337,7 @@
 		DCF892CB282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsImmuTableRows.swift; sourceTree = "<group>"; };
 		DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsImmuTableRowsTests.swift; sourceTree = "<group>"; };
 		DCF892D1282FA45500BB71E1 /* StatsMockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsMockDataLoader.swift; sourceTree = "<group>"; };
+		DCFC097229D3549C00277ECB /* DashboardDomainsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDomainsCardCell.swift; sourceTree = "<group>"; };
 		DCFC6A28292523D20062D65B /* SiteStatsPinnedItemStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsPinnedItemStoreTests.swift; sourceTree = "<group>"; };
 		E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-11-12.xcmappingmodel"; sourceTree = "<group>"; };
 		E10290731F30615A00DAC588 /* Role.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
@@ -13391,6 +13394,7 @@
 			children = (
 				0118968D29D1EAC900D34BA9 /* Domains */,
 				FA98B61429A3B71E0071AAE8 /* Blaze */,
+				DCFC097129D3544600277ECB /* Domains */,
 				FE18495627F5ACA400D26879 /* Prompts */,
 				8B92D69427CD51CE001F5371 /* Ghost */,
 				FAA4012F27B405DF009E1137 /* Quick Actions */,
@@ -16061,6 +16065,14 @@
 				DCF892CF282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		DCFC097129D3544600277ECB /* Domains */ = {
+			isa = PBXGroup;
+			children = (
+				DCFC097229D3549C00277ECB /* DashboardDomainsCardCell.swift */,
+			);
+			path = Domains;
 			sourceTree = "<group>";
 		};
 		E10520591F2B1CD400A948F6 /* 61-62 */ = {
@@ -21715,6 +21727,7 @@
 				8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */,
+				DCFC097329D3549C00277ECB /* DashboardDomainsCardCell.swift in Sources */,
 				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
@@ -23703,6 +23716,7 @@
 				FABB21DD2602FC2C00C8785C /* NSAttributedString+StyledHTML.swift in Sources */,
 				FABB21DE2602FC2C00C8785C /* Accessible.swift in Sources */,
 				FABB21DF2602FC2C00C8785C /* PostingActivityCell.swift in Sources */,
+				DCFC097429D3549C00277ECB /* DashboardDomainsCardCell.swift in Sources */,
 				F44293DD28E45DBA00D340AF /* AppIconListViewModel.swift in Sources */,
 				8B45C12727B2B08900EA3257 /* DashboardStatsCardCell.swift in Sources */,
 				FABB21E02602FC2C00C8785C /* SupportTableViewController.swift in Sources */,
