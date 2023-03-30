@@ -10,18 +10,23 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
     private lazy var cardViewModel: DashboardCardViewModel = {
 
         let onViewTap: () -> Void = { [weak self] in
-            guard let presentingViewController = self?.presentingViewController,
-                  let blog = self?.blog else {
+            guard let self,
+                  let presentingViewController = self.presentingViewController,
+                  let blog = self.blog else {
                 return
             }
-            // TODO: implement viewTap actions
+
+            DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardTapped(in: self.row)
         }
 
         let onEllipsisTap: () -> Void = { [weak self] in
         }
 
         let onHideThisTap: UIActionHandler = { [weak self] _ in
-            self?.presentingViewController?.reloadCardsLocally()
+            guard let self else { return }
+
+            DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardHidden(in: self.row)
+            self.presentingViewController?.reloadCardsLocally()
         }
 
         return DashboardCardViewModel(onViewTap: onViewTap,
@@ -127,6 +132,8 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
+
+        DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardShown(in: row)
     }
 }
 
