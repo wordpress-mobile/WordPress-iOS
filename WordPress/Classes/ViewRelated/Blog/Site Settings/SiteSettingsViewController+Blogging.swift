@@ -38,7 +38,7 @@ private extension SiteSettingsViewController {
         if blog.areBloggingRemindersAllowed() {
             rows.append(.reminders)
         }
-        if blog.isAccessibleThroughWPCom() && FeatureFlag.bloggingPromptsEnhancements.enabled {
+        if blog.isAccessibleThroughWPCom() && FeatureFlag.bloggingPromptsEnhancements.enabled && !FeatureFlag.personalizeHomeTab.enabled {
             rows.append(.prompts)
         }
         return rows
@@ -56,7 +56,6 @@ private extension SiteSettingsViewController {
         cell?.textValue = schedule(for: blog)
         return cell ?? SettingTableViewCell()
     }
-
 
     func schedule(for blog: Blog) -> String {
         guard let scheduler = try? ReminderScheduleCoordinator() else {
