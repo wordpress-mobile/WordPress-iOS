@@ -51,8 +51,7 @@ enum DashboardCard: String, CaseIterable {
         case .blaze:
             return DashboardBlazeCardCell.self
         case .domainsDashboardCard:
-            /// TODO
-            return DashboardFailureCardCell.self
+            return DashboardDomainsCardCell.self
         case .personalize:
             return BlogDashboardPersonalizeCardCell.self
         }
