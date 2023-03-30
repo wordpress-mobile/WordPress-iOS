@@ -11,11 +11,14 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
 
         let onViewTap: () -> Void = { [weak self] in
             guard let self,
-                  let presentingViewController = self.presentingViewController,
+                  let presentingViewController = self.presentingViewController?.mySiteViewController,
                   let blog = self.blog else {
                 return
             }
 
+            DomainsDashboardCoordinator.presentDomainsDashboard(with: presentingViewController,
+                                                                source: Strings.source,
+                                                                blog: blog)
             DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardTapped(in: self.row)
         }
 
@@ -169,6 +172,7 @@ extension DashboardDomainsCardCell {
         static let hideThis = NSLocalizedString("domain.dashboard.card.menu.hide",
                                                 value: "Hide this",
                                                 comment: "Title for a menu action in the context menu on the Jetpack install card.")
+        static let source = "domains_dashboard_card"
     }
 }
 
