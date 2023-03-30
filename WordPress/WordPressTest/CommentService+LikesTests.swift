@@ -7,13 +7,6 @@ import XCTest
 
 final class CommentService_LikesTests: CoreDataTestCase {
 
-    private var commentService: CommentService!
-
-    override func setUp() {
-        super.setUp()
-        commentService = CommentService(coreDataStack: contextManager)
-    }
-
     override func tearDown() {
         HTTPStubs.removeAllStubs()
         super.tearDown()
@@ -30,6 +23,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         comment.post = post
         contextManager.saveContextAndWait(mainContext)
 
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isPath("/rest/v1.1/sites/1/comments/3/likes/new")) { _ in
             HTTPStubsResponse(
@@ -41,7 +36,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
 
         // Call the toggle like function and wait for it to complete
         waitUntil { done in
-            self.commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            commentService.toggleLikeStatus(for: comment, siteID: 1) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -50,8 +45,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // The comment's like status should be changed
-        expect(comment.isLiked).toEventually(beTrue())
-        expect(comment.likeCount).toEventually(equal(1))
+        XCTAssertTrue(comment.isLiked)
+        XCTAssertEqual(comment.likeCount, 1)
     }
 
     func test_likeComment_givenFailureAPICall_callsFailureBlock() {
@@ -62,6 +57,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         comment.commentID = 3
         comment.post = post
         contextManager.saveContextAndWait(mainContext)
+
+        let commentService = CommentService(coreDataStack: contextManager)
 
         // Add an HTTP API call stub that returns 400 response
         stub(condition: isPath("/rest/v1.1/sites/1/comments/3/likes/new")) { _ in
@@ -74,7 +71,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
 
         // Call the toggle like function and wait for it to complete
         waitUntil { done in
-            self.commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            commentService.toggleLikeStatus(for: comment, siteID: 1) {
                 XCTFail("The failure block should be called instaled")
                 done()
             } failure: { error in
@@ -83,8 +80,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // The comment's like status should remain unchanged
-        expect(comment.isLiked).toEventually(beFalse())
-        expect(comment.likeCount).toEventually(equal(0))
+        XCTAssertFalse(comment.isLiked)
+        XCTAssertEqual(comment.likeCount, 0)
     }
 
     func test_unlikeComment_givenSuccessfulAPICall_updateLikesCount() {
@@ -98,6 +95,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         comment.likeCount = 2
         contextManager.saveContextAndWait(mainContext)
 
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isPath("/rest/v1.1/sites/1/comments/3/likes/mine/delete")) { _ in
             HTTPStubsResponse(
@@ -109,7 +108,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
 
         // Call the toggle like function and wait for it to complete
         waitUntil { done in
-            self.commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            commentService.toggleLikeStatus(for: comment, siteID: 1) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -118,8 +117,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // The comment's like status should be changed
-        expect(comment.isLiked).toEventually(beFalse())
-        expect(comment.likeCount).toEventually(equal(1))
+        XCTAssertFalse(comment.isLiked)
+        XCTAssertEqual(comment.likeCount, 1)
     }
 
     func test_unlikeComment_givenFailureAPICall_callsFailureBlock() {
@@ -133,6 +132,8 @@ final class CommentService_LikesTests: CoreDataTestCase {
         comment.likeCount = 2
         contextManager.saveContextAndWait(mainContext)
 
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add an HTTP API call stub that returns 400 response
         stub(condition: isPath("/rest/v1.1/sites/1/comments/3/likes/mine/delete")) { _ in
             HTTPStubsResponse(
@@ -144,7 +145,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
 
         // Call the toggle like function and wait for it to complete
         waitUntil { done in
-            self.commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            commentService.toggleLikeStatus(for: comment, siteID: 1) {
                 XCTFail("The failure block should be called instaled")
                 done()
             } failure: { error in
@@ -153,7 +154,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // The comment's like status should remain unchanged
-        expect(comment.isLiked).toEventually(beTrue())
-        expect(comment.likeCount).toEventually(equal(2))
+        XCTAssertTrue(comment.isLiked)
+        XCTAssertEqual(comment.likeCount, 2)
     }
 }

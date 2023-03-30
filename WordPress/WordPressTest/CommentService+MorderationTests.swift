@@ -8,7 +8,6 @@ import XCTest
 final class CommentService_MorderationTests: CoreDataTestCase {
 
     private var comment: Comment!
-    private var commentService: CommentService!
 
     override func setUp() {
         super.setUp()
@@ -23,8 +22,6 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         comment.blog = blog
         comment.status = CommentStatusType.pending.description
         contextManager.saveContextAndWait(mainContext)
-
-        commentService = CommentService(coreDataStack: contextManager)
     }
 
     override func tearDown() {
@@ -35,6 +32,8 @@ final class CommentService_MorderationTests: CoreDataTestCase {
     // MARK: - Tests
 
     func test_approveComment_givenSuccessfulAPICall_updatesStatus() {
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
@@ -52,7 +51,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
 
         // Call the moderation function and wait for it to complete
         waitUntil { done in
-            self.commentService.approve(self.comment) {
+            commentService.approve(self.comment) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -61,10 +60,12 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // The comment's status should be changed
-        expect(self.comment.status).toEventually(equal(CommentStatusType.approved.description))
+        XCTAssertEqual(self.comment.status, CommentStatusType.approved.description)
     }
 
     func test_unapproveComment_givenSuccessfulAPICall_updatesStatus() {
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
@@ -82,7 +83,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
 
         // Call the moderation function and wait for it to complete
         waitUntil { done in
-            self.commentService.unapproveComment(self.comment) {
+            commentService.unapproveComment(self.comment) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -91,10 +92,12 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // The comment's status should be changed
-        expect(self.comment.status).toEventually(equal(CommentStatusType.pending.description))
+        XCTAssertEqual(self.comment.status, CommentStatusType.pending.description)
     }
 
     func test_spamComment_givenSuccessfulAPICall_updatesStatus() {
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
@@ -112,7 +115,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
 
         // Call the moderation function and wait for it to complete
         waitUntil { done in
-            self.commentService.spamComment(self.comment) {
+            commentService.spamComment(self.comment) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -121,10 +124,12 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // The comment's status should be changed
-        expect(self.comment.status).toEventually(equal(CommentStatusType.spam.description))
+        XCTAssertEqual(self.comment.status, CommentStatusType.spam.description)
     }
 
     func test_trashComment_givenSuccessfulAPICall_updatesStatus() {
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
@@ -142,7 +147,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
 
         // Call the moderation function and wait for it to complete
         waitUntil { done in
-            self.commentService.trashComment(self.comment) {
+            commentService.trashComment(self.comment) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -151,10 +156,12 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // The comment's status should be changed
-        expect(self.comment.status).toEventually(equal(CommentStatusType.unapproved.description))
+        XCTAssertEqual(self.comment.status, CommentStatusType.unapproved.description)
     }
 
     func test_deleteComment_givenSuccessfulAPICall_updatesStatus() {
+        let commentService = CommentService(coreDataStack: contextManager)
+
         // Add a successful HTTP API call stub
         stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3/delete")) { _ in
             HTTPStubsResponse(
@@ -166,7 +173,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
 
         // Call the moderation function and wait for it to complete
         waitUntil { done in
-            self.commentService.delete(self.comment) {
+            commentService.delete(self.comment) {
                 done()
             } failure: { error in
                 XCTFail("Unexpected error: \(String(describing: error))")
@@ -175,7 +182,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // The local comment should not be changed
-        expect(self.comment.status).toEventually(equal(CommentStatusType.pending.description))
+        XCTAssertEqual(self.comment.status, CommentStatusType.pending.description)
     }
 
 }
