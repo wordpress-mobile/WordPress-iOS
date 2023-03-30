@@ -39,13 +39,13 @@ public class ReaderScreen: ScreenObject {
 
     public func getLastPost() -> XCUIElement {
         guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
-        scrollDownUntilElementIsHittable(element: post)
+        scrollDownUntilElementIsFullyVisible(element: post)
         return post
     }
 
-    private func scrollDownUntilElementIsHittable(element: XCUIElement) {
+    private func scrollDownUntilElementIsFullyVisible(element: XCUIElement) {
         var loopCount = 0
-        while !element.waitForIsHittable(timeout: 3) && loopCount < 10 {
+        while !element.isFullyVisibleOnScreen() && loopCount < 10 {
             loopCount += 1
             app.swipeUp(velocity: .fast)
         }
