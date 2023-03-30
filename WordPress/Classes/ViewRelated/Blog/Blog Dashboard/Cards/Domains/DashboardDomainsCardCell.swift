@@ -31,7 +31,6 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
-        frameView.configureButtonContainerStackView()
         frameView.onEllipsisButtonTap = cardViewModel.onEllipsisTap
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu
