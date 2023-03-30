@@ -25,8 +25,8 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
         }
 
         return DashboardCardViewModel(onViewTap: onViewTap,
-                                  onEllipsisTap: onEllipsisTap,
-                                  onHideThisTap: onHideThisTap)
+                                      onEllipsisTap: onEllipsisTap,
+                                      onHideThisTap: onHideThisTap)
     }()
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
@@ -159,15 +159,14 @@ extension DashboardDomainsCardCell {
                                                    value: "Stake your claim on your corner of the web with a site address that’s easy to find, share and follow.",
                                                    comment: "Description for the Domains dashboard card.")
         static let hideThis = NSLocalizedString("domain.dashboard.card.menu.hide",
-                                                 value: "Hide this",
-                                                 comment: "Title for a menu action in the context menu on the Jetpack install card.")
+                                                value: "Hide this",
+                                                comment: "Title for a menu action in the context menu on the Jetpack install card.")
     }
 }
 
 // MARK: - DashboardCardViewModel
 
 struct DashboardCardViewModel {
-
     let onViewTap: () -> Void
     let onEllipsisTap: () -> Void
     let onHideThisTap: UIActionHandler
