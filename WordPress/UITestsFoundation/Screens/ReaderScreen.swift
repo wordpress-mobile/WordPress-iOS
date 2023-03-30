@@ -30,15 +30,24 @@ public class ReaderScreen: ScreenObject {
         app.buttons["Visit"].tap()
     }
 
+    public func openLastPostComments() throws -> CommentsScreen {
+        let commentButton = getLastPost().buttons["0 comment"]
+        guard commentButton.waitForIsHittable() else { fatalError("ReaderScreen.Post: Comments button not loaded") }
+        commentButton.tap()
+        return try CommentsScreen()
+    }
+
     public func getLastPost() -> XCUIElement {
         guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
-        scrollDownUntilElementIsHittable(element: post)
+        scrollDownUntilElementIsFullyVisible(element: post)
         return post
     }
 
-    private func scrollDownUntilElementIsHittable(element: XCUIElement) {
+    private func scrollDownUntilElementIsFullyVisible(element: XCUIElement) {
         var loopCount = 0
-        while !element.waitForIsHittable(timeout: 3) && loopCount < 10 {
+        // Using isFullyVisibleOnScreen instead of waitForIsHittable to solve a problem on iPad where the desired post
+        // was already hittable but the comments button was still not visible.
+        while !element.isFullyVisibleOnScreen() && loopCount < 10 {
             loopCount += 1
             app.swipeUp(velocity: .fast)
         }

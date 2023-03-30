@@ -39,6 +39,7 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackIndividualPluginSupport
     case siteCreationDomainPurchasing
     case readerUserBlocking
+    case personalizeHomeTab
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -125,6 +126,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .readerUserBlocking:
             return true
+        case .personalizeHomeTab:
+            return false
         }
     }
 
@@ -221,6 +224,8 @@ extension FeatureFlag {
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
             return "Reader User Blocking"
+        case .personalizeHomeTab:
+            return "Personalize Home Tab"
         }
     }
 }

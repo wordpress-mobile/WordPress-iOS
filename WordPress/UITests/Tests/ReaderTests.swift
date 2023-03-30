@@ -20,6 +20,8 @@ class ReaderTests: XCTestCase {
 
     let expectedPostContent = "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Proin dictum non ligula aliquam varius. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
 
+    let commentContent = "Test comment."
+
     func testViewPost() {
         readerScreen.openLastPost()
         XCTAssert(readerScreen.postContentEquals(expectedPostContent))
@@ -28,5 +30,13 @@ class ReaderTests: XCTestCase {
     func testViewPostInSafari() {
         readerScreen.openLastPostInSafari()
         XCTAssert(readerScreen.postContentEquals(expectedPostContent))
+    }
+
+    func testAddCommentToPost() throws {
+        try readerScreen
+            .openLastPostComments()
+            .verifyCommentsListEmpty()
+            .replyToPost(commentContent)
+            .verifyCommentSent(commentContent)
     }
 }
