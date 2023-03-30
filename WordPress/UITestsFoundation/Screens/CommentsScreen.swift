@@ -41,7 +41,7 @@ public class CommentsScreen: ScreenObject {
     }
 
     @discardableResult
-    public func replyPost(_ comment: String) -> CommentsScreen {
+    public func replyToPost(_ comment: String) -> CommentsScreen {
         app.otherElements.containing(.staticText, identifier: "Reply to post").lastMatch?.tap()
         replyTextView.typeText(comment)
         replyButton.tap()

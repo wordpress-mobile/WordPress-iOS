@@ -45,6 +45,8 @@ public class ReaderScreen: ScreenObject {
 
     private func scrollDownUntilElementIsFullyVisible(element: XCUIElement) {
         var loopCount = 0
+        // Using isFullyVisibleOnScreen instead of waitForIsHittable to solve a problem on iPad where the desired post
+        // was already hittable but the comments button was still not visible.
         while !element.isFullyVisibleOnScreen() && loopCount < 10 {
             loopCount += 1
             app.swipeUp(velocity: .fast)

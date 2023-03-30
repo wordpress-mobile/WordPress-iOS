@@ -36,7 +36,7 @@ class ReaderTests: XCTestCase {
         try readerScreen
             .openLastPostComments()
             .verifyCommentsListEmpty()
-            .replyPost(commentContent)
+            .replyToPost(commentContent)
             .verifyCommentSent(commentContent)
     }
 }
