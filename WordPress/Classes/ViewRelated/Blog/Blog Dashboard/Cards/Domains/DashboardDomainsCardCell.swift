@@ -25,6 +25,7 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
             guard let self else { return }
 
+            DomainsDashboardCardHelper.hideCard(for: self.blog)
             DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardHidden(in: self.row)
             self.presentingViewController?.reloadCardsLocally()
         }
