@@ -3,6 +3,10 @@ import XCTest
 
 public class CommentsScreen: ScreenObject {
 
+    private let navigationBarTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Comments"]
+    }
+
     private let replyTextViewGetter: (XCUIApplication) -> XCUIElement = {
         $0.textViews["ReplyText"]
     }
@@ -22,8 +26,7 @@ public class CommentsScreen: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                // swiftlint:skip:next opening_brace
-                { $0.navigationBars["Comments"] },
+                navigationBarTitleGetter,
                 replyTextViewGetter
             ],
             app: app,
