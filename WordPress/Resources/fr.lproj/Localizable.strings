@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-30 15:00:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: fr */
@@ -9655,6 +9655,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promouvez n’importe quel article ou n’importe quelle page en quelques minutes et pour quelques dollars par jour seulement.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Suivez les performances de vos campagnes et annulez à tout moment.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Votre contenu s’affichera sur des millions de sites WordPress et Tumblr.";
 
 /* Title for the Blaze overlay. */
@@ -9715,6 +9718,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "exemple.com";
+
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "suivre";
@@ -10489,6 +10495,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to access previous help tickets. */
 "support.row.tickets.title" = "Billets";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Version";
 
 /* Support screen footer text explaining the benefits of enabling the Debug feature. */
 "support.sectionFooter.advanced.title" = "Activez le débogage pour inclure dans vos journaux des informations supplémentaires qui peuvent être utiles à la résolution de problèmes liés à l’application.";
