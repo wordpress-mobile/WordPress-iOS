@@ -101,6 +101,148 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         expect { parameters = mockApi.parametersPassedIn! as! [String: Any] }.toNot(throwError())
         expect(parameters[parentKey] as? Int).to(equal(commentID))
     }
+
+    func test_replyToPost_givenSuccessfulAPICall_insertsNewComment() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 1
+        post.postID = 2
+        contextManager.saveContextAndWait(mainContext)
+
+        stub(condition: isPath("/rest/v1.1/sites/1/posts/2/replies/new")) { _ in
+            HTTPStubsResponse(
+                jsonObject: [
+                    "id": 19,
+                    "post": 2,
+                    "status": "approved",
+                    "type": "comment",
+                    "content": "<p>test comment</p>\n",
+                ] as [String: Any],
+                statusCode: 200,
+                headers: nil
+            )
+        }
+
+        // No comment before calling the reply function
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 0)
+
+        // Call the reply function and wait for the HTTP API to complete
+        waitUntil { done in
+            self.commentService.reply(to: post, content: "test comment") {
+                done()
+            } failure: { error in
+                XCTFail("Unexpected error: \(String(describing: error))")
+                done()
+            }
+        }
+
+        // The new comment should be inserted into the database
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
+    }
+
+    func test_replyToPost_givenFailureAPICall_callsFailureBlock() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 1
+        post.postID = 2
+        contextManager.saveContextAndWait(mainContext)
+
+        stub(condition: isPath("/rest/v1.1/sites/1/posts/2/replies/new")) { _ in
+            HTTPStubsResponse(
+                jsonObject: [String: Any](),
+                statusCode: 400,
+                headers: nil
+            )
+        }
+
+        // No comment before calling the reply function
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 0)
+
+        // Call the reply function and wait for the HTTP API to complete
+        waitUntil { done in
+            self.commentService.reply(to: post, content: "test comment") {
+                XCTFail("The failure should be called instead")
+                done()
+            } failure: { error in
+                done()
+            }
+        }
+
+        // The HTTP API call failed and no comment was inserted into the database
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 0)
+    }
+
+    func test_replyToPostComment_givenSuccessfulAPICall_insertsNewComment() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 1
+        post.postID = 2
+        let comment = Comment(context: mainContext)
+        comment.commentID = 3
+        comment.post = post
+        contextManager.saveContextAndWait(mainContext)
+
+        stub(condition: isPath("/rest/v1.1/sites/1/comments/3/replies/new")) { _ in
+            HTTPStubsResponse(
+                jsonObject: [
+                    "id": 19,
+                    "post": 2,
+                    "status": "approved",
+                    "type": "comment",
+                    "content": "<p>test comment</p>\n",
+                ] as [String: Any],
+                statusCode: 200,
+                headers: nil
+            )
+        }
+
+        // Only one comment before calling the reply function
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
+
+        // Call the reply function and wait for the HTTP API to complete
+        waitUntil { done in
+            self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
+                done()
+            } failure: { error in
+                XCTFail("Unexpected error: \(String(describing: error))")
+                done()
+            }
+        }
+
+        // The new comment should be inserted into the database
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 2)
+    }
+
+    func test_replyToPostComment_givenFailureAPICall_callsFailureBlock() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 1
+        post.postID = 2
+        let comment = Comment(context: mainContext)
+        comment.commentID = 3
+        comment.post = post
+        contextManager.saveContextAndWait(mainContext)
+
+        stub(condition: isPath("/rest/v1.1/sites/1/comments/3/replies/new")) { _ in
+            HTTPStubsResponse(
+                jsonObject: [String: Any](),
+                statusCode: 400,
+                headers: nil
+            )
+        }
+
+        // Only one comment before calling the reply function
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
+
+        // Call the reply function and wait for the HTTP API to complete
+        waitUntil { done in
+            self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
+                XCTFail("The failure should be called instead")
+                done()
+            } failure: { error in
+                done()
+            }
+        }
+
+        // The HTTP API call failed and no comment was inserted into the database
+        try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
+    }
 }
 
 // MARK: - Test Helpers

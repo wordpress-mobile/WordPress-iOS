@@ -130,6 +130,10 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     }
 
     private var answerInfoText: String {
+        if FeatureFlag.bloggingPromptsSocial.enabled {
+            return Strings.viewAllResponses
+        }
+
         let stringFormat = (answerCount == 1 ? Strings.answerInfoSingularFormat : Strings.answerInfoPluralFormat)
         return String(format: stringFormat, answerCount)
     }
@@ -553,6 +557,9 @@ private extension DashboardPromptsCardCell {
                                                                 + "that answered the blogging prompt.")
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
+        static let viewAllResponses = NSLocalizedString("prompts.card.viewprompts.title",
+                                                        value: "View all responses",
+                                                        comment: "Title for a tappable string that opens the reader with a prompts tag")
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
         static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
         static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")

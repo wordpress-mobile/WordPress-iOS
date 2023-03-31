@@ -21,6 +21,8 @@ enum DashboardCard: String, CaseIterable {
     /// Card placeholder for when loading data
     case ghost
     case failure
+    /// Empty state when no cards are present
+    case empty
     /// A "Personalize Home Tab" button
     case personalize
 
@@ -51,8 +53,9 @@ enum DashboardCard: String, CaseIterable {
         case .blaze:
             return DashboardBlazeCardCell.self
         case .domainsDashboardCard:
-            /// TODO
-            return DashboardFailureCardCell.self
+            return DashboardDomainsCardCell.self
+        case .empty:
+            return BlogDashboardEmptyStateCell.self
         case .personalize:
             return BlogDashboardPersonalizeCardCell.self
         }
@@ -91,8 +94,10 @@ enum DashboardCard: String, CaseIterable {
             return BlazeHelper.shouldShowCard(for: blog)
         case .domainsDashboardCard:
             return DomainsDashboardCardHelper.shouldShowCard(for: blog)
+        case .empty:
+            return false // Controlled manually based on other cards visibility
         case .personalize:
-            return AppConfiguration.isJetpack && FeatureFlag.personalizeHomeTab.enabled
+            return FeatureFlag.personalizeHomeTab.enabled
         }
     }
 
