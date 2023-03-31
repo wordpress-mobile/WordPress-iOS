@@ -103,7 +103,12 @@ final class WPComJetpackRemoteInstallViewModelTests: CoreDataTestCase {
         api.failureBlockPassedIn?(mockError, nil) // call the failure block to trigger Result.failure
 
         // assert
-        XCTAssertTrue(viewModel.state == .failure(.unknown))
+        guard case .failure(let error) = viewModel.state else {
+            XCTFail("Expected a failure state")
+            return
+        }
+
+        XCTAssertTrue(error.type == .unknown)
     }
 }
 
