@@ -40,7 +40,8 @@ class BlogDashboardCardFrameView: UIView {
     /// Displayed only when an associated action is set
     private(set) lazy var ellipsisButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
+        button.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
+        button.tintColor = UIColor.listIcon
         button.contentEdgeInsets = Constants.ellipsisButtonPadding
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
@@ -129,11 +130,6 @@ class BlogDashboardCardFrameView: UIView {
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateColors()
-    }
-
     /// Add a subview inside the card frame
     func add(subview: UIView) {
         mainStackView.addArrangedSubview(subview)
@@ -192,10 +188,6 @@ class BlogDashboardCardFrameView: UIView {
 
     func removeButtonContainerStackView() {
         buttonContainerStackView.removeFromSuperview()
-    }
-
-    private func updateColors() {
-        ellipsisButton.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
     }
 
     private func updateEllipsisButtonState() {
