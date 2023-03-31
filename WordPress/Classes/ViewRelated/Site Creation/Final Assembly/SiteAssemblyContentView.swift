@@ -1,4 +1,4 @@
-
+import Foundation
 import UIKit
 import Gridicons
 import WordPressShared
@@ -27,6 +27,42 @@ final class SiteAssemblyContentView: UIView {
 
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
+
+    private let completionDescription: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.font = WPStyleGuide.fontForTextStyle(.body)
+        $0.textColor = .text
+        let createdText = NSLocalizedString(
+            "domain.purchase.preview.description",
+            value: "We’ve emailed a receipt to your address on file.",
+            comment: "Domain Purchase Completion description."
+        )
+        $0.text = createdText
+        return $0
+    }(UILabel())
+
+    private lazy var completionLabelsStack: UIStackView = {
+        $0.addArrangedSubviews([completionLabel, completionDescription])
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .vertical
+        $0.spacing = 24
+        return $0
+    }(UIStackView())
+
+    private let footnoteLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.font = WPStyleGuide.fontForTextStyle(.footnote)
+        $0.textColor = .text
+        let createdText = NSLocalizedString(
+            "domain.purchase.preview.footer",
+            value: "It may take up to a day for your blog and your new domain to be fully connected.",
+            comment: "Domain Purchase Completion footer"
+        )
+        $0.text = createdText
+        return $0
+    }(UILabel())
 
     /// This provides the user with some playful words while their site is being assembled
     private let statusTitleLabel: UILabel
@@ -104,12 +140,15 @@ final class SiteAssemblyContentView: UIView {
     }
 
     let siteCreator: SiteCreator
+    private let shouldShowDomainPurchase: Bool
 
     // MARK: SiteAssemblyContentView
 
     /// The designated initializer.
     init(siteCreator: SiteCreator) {
         self.siteCreator = siteCreator
+        shouldShowDomainPurchase = FeatureFlag.siteCreationDomainPurchasing.enabled // && with isPaidDomain
+
         self.completionLabel = {
             let label = UILabel()
 
@@ -118,10 +157,26 @@ final class SiteAssemblyContentView: UIView {
 
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
             label.textColor = .text
-            label.textAlignment = .center
 
-            let createdText = NSLocalizedString("Your site has been created!",
-                                              comment: "User-facing string, presented to reflect that site assembly completed successfully.")
+            if FeatureFlag.siteCreationDomainPurchasing.enabled {
+                label.textAlignment = .natural
+            } else {
+                label.textAlignment = .center
+            }
+
+            var createdText = NSLocalizedString(
+                "Your site has been created!",
+                comment: "User-facing string, presented to reflect that site assembly completed successfully."
+            )
+
+            if FeatureFlag.siteCreationDomainPurchasing.enabled { // && with isPaidDomain
+                createdText = NSLocalizedString(
+                    "domain.purchase.preview.title",
+                    value: "Domain Purchase Complete",
+                    comment: "User-facing string, presented to reflect that site assembly completed successfully."
+                )
+            }
+
             label.text = createdText
             label.accessibilityLabel = createdText
 
@@ -273,25 +328,27 @@ final class SiteAssemblyContentView: UIView {
         backgroundColor = .listBackground
 
         statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusMessageRotatingView, activityIndicator ])
-        addSubviews([ completionLabel, statusStackView ])
+        addSubviews([completionLabelsStack, statusStackView, footnoteLabel])
 
         // Increase the spacing around the illustration
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusImageView)
 
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
-        let completionLabelInitialTopConstraint = completionLabel.topAnchor.constraint(equalTo: prevailingLayoutGuide.topAnchor, constant: completionLabelTopInsetInitial)
+        let completionLabelInitialTopConstraint = completionLabelsStack.topAnchor.constraint(equalTo: prevailingLayoutGuide.topAnchor, constant: completionLabelTopInsetInitial)
         self.completionLabelTopConstraint = completionLabelInitialTopConstraint
 
         NSLayoutConstraint.activate([
             completionLabelInitialTopConstraint,
-            completionLabel.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor, constant: Parameters.horizontalMargin),
-            completionLabel.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor, constant: -Parameters.horizontalMargin),
-            completionLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            completionLabelsStack.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor, constant: Parameters.horizontalMargin),
+            prevailingLayoutGuide.trailingAnchor.constraint(equalTo: completionLabelsStack.trailingAnchor, constant: Parameters.horizontalMargin),
+            completionLabelsStack.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor, constant: Parameters.horizontalMargin),
-            statusStackView.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor, constant: -Parameters.horizontalMargin),
+            prevailingLayoutGuide.trailingAnchor.constraint(equalTo: statusStackView.trailingAnchor, constant: Parameters.horizontalMargin),
             statusStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            footnoteLabel.leadingAnchor.constraint(equalTo: completionLabelsStack.leadingAnchor),
+            completionLabelsStack.trailingAnchor.constraint(equalTo: footnoteLabel.trailingAnchor)
         ])
     }
 
@@ -317,12 +374,27 @@ final class SiteAssemblyContentView: UIView {
         let assembledSiteWidthConstraint = assembledSiteView.widthAnchor.constraint(equalToConstant: preferredAssembledSiteSize.width)
         self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
 
+        let assembledSiteViewBottomConstraint: NSLayoutConstraint
+        if shouldShowDomainPurchase {
+            assembledSiteView.layer.cornerRadius = 12
+            assembledSiteView.layer.masksToBounds = true
+            assembledSiteViewBottomConstraint = footnoteLabel.topAnchor.constraint(
+                equalTo: assembledSiteView.bottomAnchor,
+                constant: 24
+            )
+        } else {
+            assembledSiteViewBottomConstraint = assembledSiteView.bottomAnchor.constraint(
+                equalTo: buttonContainerView?.topAnchor ?? bottomAnchor
+            )
+        }
+
         NSLayoutConstraint.activate([
             initialSiteTopConstraint,
-            assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabel.bottomAnchor, constant: assembledSiteTopInset),
-            assembledSiteView.bottomAnchor.constraint(equalTo: buttonContainerView?.topAnchor ?? bottomAnchor),
+            assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabelsStack.bottomAnchor, constant: assembledSiteTopInset),
+            assembledSiteViewBottomConstraint,
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
             assembledSiteWidthConstraint,
+            (buttonContainerView?.topAnchor ?? bottomAnchor).constraint(equalTo: footnoteLabel.bottomAnchor, constant: 15)
         ])
 
         self.assembledSiteView = assembledSiteView
@@ -376,7 +448,9 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutIdle() {
-        completionLabel.alpha = 0
+        completionLabel.isHidden = true
+        completionDescription.isHidden = true
+        footnoteLabel.isHidden = true
         statusStackView.alpha = 0
         errorStateView?.alpha = 0
     }
@@ -421,7 +495,10 @@ final class SiteAssemblyContentView: UIView {
                 self.completionLabelTopConstraint?.constant = completionLabelTopInsetFinal
 
                 self.assembledSiteTopConstraint?.isActive = false
-                let transitionConstraint = self.assembledSiteView?.topAnchor.constraint(equalTo: self.completionLabel.bottomAnchor, constant: Parameters.verticalSpacing)
+                let transitionConstraint = self.assembledSiteView?.topAnchor.constraint(
+                    equalTo: self.completionLabelsStack.bottomAnchor,
+                    constant: Parameters.verticalSpacing
+                )
                 transitionConstraint?.isActive = true
                 self.assembledSiteTopConstraint = transitionConstraint
 
@@ -431,20 +508,23 @@ final class SiteAssemblyContentView: UIView {
                                delay: 0,
                                options: .curveEaseOut,
                                animations: { [weak self] in
-                                guard let self = self else {
-                                    return
-                                }
+                    guard let self = self else {
+                        return
+                    }
 
-                                self.completionLabel.alpha = 1
+                    self.completionLabel.isHidden = false
+                    self.completionDescription.isHidden = false
+                    self.footnoteLabel.isHidden = false
 
-                                if let buttonView = self.buttonContainerView {
-                                    self.accessibilityElements = [ self.completionLabel, buttonView ]
-                                } else {
-                                    self.accessibilityElements = [ self.completionLabel ]
-                                }
 
-                                self.layoutIfNeeded()
+                    if let buttonView = self.buttonContainerView {
+                        self.accessibilityElements = [ self.completionLabel, buttonView ]
+                    } else {
+                        self.accessibilityElements = [ self.completionLabel ]
+                    }
+
+                    self.layoutIfNeeded()
                 })
-        })
+            })
     }
 }
