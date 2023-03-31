@@ -11,6 +11,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var persistenceMock: BlogDashboardPersistenceMock!
     private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     private let wpComID = 123456
 
@@ -22,11 +23,15 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
         service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
+
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
+
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -121,6 +126,26 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             expect.fulfill()
         }
 
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testThatWhenAllCardsAreHiddenEmptyStateIsShown() {
+        // Given
+        let personalizationService = BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
+        for card in DashboardCard.personalizableCards {
+            personalizationService.setEnabled(false, for: card)
+        }
+
+        // When
+        let expect = expectation(description: "Cards parsed")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+        service.fetch(blog: blog) { cards in
+            // Then empty state is shown
+            XCTAssertEqual(cards.map(\.cardType), [.empty, .personalize])
+            expect.fulfill()
+        }
         waitForExpectations(timeout: 3, handler: nil)
     }
 
