@@ -177,7 +177,7 @@ class BlogDashboardCardFrameView: UIView {
         addSubview(buttonContainerStackView)
 
         NSLayoutConstraint.activate([
-            buttonContainerStackView.topAnchor.constraint(equalTo: topAnchor),
+            buttonContainerStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.buttonContainerStackViewPadding),
             buttonContainerStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.buttonContainerStackViewPadding)
         ])
 
@@ -251,11 +251,11 @@ class BlogDashboardCardFrameView: UIView {
     private enum Constants {
         static let bottomPadding: CGFloat = 8
         static let headerPaddingWithEllipsisButtonHidden = UIEdgeInsets(top: 12, left: 16, bottom: 8, right: 16)
-        static let headerPaddingWithEllipsisButtonShown = UIEdgeInsets(top: 4, left: 16, bottom: 0, right: 8)
+        static let headerPaddingWithEllipsisButtonShown = UIEdgeInsets(top: 12, left: 16, bottom: 8, right: 8)
         static let headerHorizontalSpacing: CGFloat = 5
         static let iconSize = CGSize(width: 18, height: 18)
         static let cornerRadius: CGFloat = 10
-        static let ellipsisButtonPadding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         static let buttonContainerStackViewPadding: CGFloat = 8
         static let mainStackViewTrailingPadding: CGFloat = 32
     }
