@@ -42,6 +42,7 @@ class BlogDashboardCardFrameView: UIView {
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         titleLabel.accessibilityTraits = .button
+        titleLabel.numberOfLines = 0
         return titleLabel
     }()
 
@@ -69,6 +70,7 @@ class BlogDashboardCardFrameView: UIView {
         button.accessibilityTraits = .button
         button.isHidden = true
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
             self?.onEllipsisButtonTap?()
         }
@@ -207,6 +209,8 @@ class BlogDashboardCardFrameView: UIView {
         headerStackView.addArrangedSubviews([titleLabel, ellipsisButton])
     }
 
+    /// Configures button container stack view
+    /// Only call when the header view is hidden
     func configureButtonContainerStackView() {
         addSubview(buttonContainerStackView)
 

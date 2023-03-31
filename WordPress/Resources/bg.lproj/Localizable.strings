@@ -623,9 +623,6 @@
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Продължете да четете";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Може и по-добре";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Промените не бяха запазени";
 
@@ -1133,9 +1130,6 @@
    Settings: Comments Moderation */
 "Hold for Moderation" = "Задържане за модерация";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Харесва ми";
-
 /* Title of a button style */
 "Icon & Text" = "Икона и текст";
 
@@ -1573,9 +1567,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Няма избрано меню";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Не, благодаря";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Няма коментари";
@@ -2242,9 +2233,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Избирането на друго меню ще отхвърли промените, които сте направили към текущото. Сигурни ли сте, че искате да продължите?";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Обратна връзка";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Изпращане на връзка";
 
@@ -2717,8 +2705,7 @@
    Notifications Today Section Header */
 "Today" = "Днес";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Днешна статистика";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -3008,9 +2995,6 @@
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Ще ви изпращаме важни имейли относно профила ви, също можете да получите и някои полезни екстри.";
-
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Какво мислите за WordPress?";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Какъв е адресът на моя сайт?";

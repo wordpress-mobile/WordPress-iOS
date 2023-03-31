@@ -746,9 +746,6 @@
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Skopiuj adres URL ze schowka, %s";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Mogłaby być lepsza";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Nie można śledzić tematu";
 
@@ -1444,9 +1441,6 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hurra!\nPrawie gotowe";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Podoba mi się";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adres IP";
 
@@ -1902,9 +1896,6 @@
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Brak menu";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nie, dziękuję";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Bez tytułu";
@@ -2599,9 +2590,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Selected: Default" = "Wybrano: domyślne";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Wyślij opinię";
 
 /* The button title text for sending a magic link. */
 "Send Link by Email" = "Wyślij odnośnik w wiadomości e-mail";

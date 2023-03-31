@@ -191,7 +191,15 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [blazeService getStatusFor:blog completion:^{
         dispatch_group_leave(syncGroup);
     }];
-
+    
+    dispatch_group_enter(syncGroup);
+    [self refreshDomainsFor:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"Failed refreshing domains: %@", error);
+        dispatch_group_leave(syncGroup);
+    }];
+    
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{

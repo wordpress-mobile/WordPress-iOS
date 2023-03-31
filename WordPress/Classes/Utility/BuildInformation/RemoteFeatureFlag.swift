@@ -13,6 +13,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case wordPressSupportForum
     case blaze
     case wordPressIndividualPluginSupport
+    case directDomainsPurchaseDashboardCard
 
     var defaultValue: Bool {
         switch self {
@@ -38,6 +39,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .wordPressIndividualPluginSupport:
             return AppConfiguration.isWordPress
+        case .directDomainsPurchaseDashboardCard:
+            return false
         }
     }
 
@@ -66,6 +69,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "blaze"
         case .wordPressIndividualPluginSupport:
             return "wp_individual_plugin_overlay"
+        case .directDomainsPurchaseDashboardCard:
+            return "direct_domain_purchase_dashboard_card"
         }
     }
 
@@ -93,6 +98,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Blaze"
         case .wordPressIndividualPluginSupport:
             return "Jetpack Individual Plugin Support for WordPress"
+        case .directDomainsPurchaseDashboardCard:
+            return "Direct Domains Purchase Dashboard Card"
         }
     }
 

@@ -85,6 +85,9 @@ class DebugMenuViewController: UITableViewController {
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
             }),
+            ButtonRow(title: Strings.remoteConfigTitle, action: { [weak self] _ in
+                self?.displayRemoteConfigDebugMenu()
+            }),
         ]
 
         if Feature.enabled(.weeklyRoundup) {
@@ -169,6 +172,11 @@ class DebugMenuViewController: UITableViewController {
         QuickStartTourGuide.shared.setup(for: blog, type: type)
     }
 
+    private func displayRemoteConfigDebugMenu() {
+        let viewController = RemoteConfigDebugViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
     // MARK: Reader
 
     private var readerRows: [ImmuTableRow] {
@@ -204,5 +212,8 @@ class DebugMenuViewController: UITableViewController {
         static let readerCssTitle = NSLocalizedString("Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
         static let readerURLPlaceholder = NSLocalizedString("Default URL", comment: "Placeholder for the reader CSS URL")
         static let readerURLHint = NSLocalizedString("Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
+        static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title",
+                                                         value: "Remote Config",
+                                                         comment: "Remote Config debug menu title")
     }
 }

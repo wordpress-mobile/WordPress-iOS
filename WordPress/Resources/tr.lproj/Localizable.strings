@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-06 09:53:14+0000 */
+/* Translation-Revision-Date: 2023-03-22 18:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Sürümü bu uygulamadan kopyala";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Daha iyi olabilir";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Konu Takip Edilemedi";
 
@@ -3676,9 +3673,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Nasıl düzelteceğiz?";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Beğendim";
-
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Fotoğrafçı Cameron Karsten'in çalışmalarından çok ilham alıyorum. Bu teknikleri bir sonraki adımda deneyeceğim";
 
@@ -4844,9 +4838,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Ön izleme mevcut değil";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Hayır, teşekkürler";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Başlık yok";
@@ -6696,9 +6687,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Bu konuyu sitenizin amacı olarak seçer.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Geri bildirim gönder";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Bağlantı gönder";
 
@@ -7982,8 +7970,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Bugünün İpucu 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Bugünün istatistikleri";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9059,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Özel uygulama simgelerimizi yepyeni bir görünümde olacak şekilde güncelledik. 10 yeni stil arasından seçim yapabilir veya isterseniz mevcut simgenizi kullanmaya devam edebilirsiniz.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "WordPress hakkında ne düşünüyorsunuz?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Bu dosya ile ne yapmak istersiniz: yükleyip, yazınızın içine bir bağlantı olarak mı eklemek istersiniz yoksa içeriğini direkt yazınıza mı eklemek istersiniz?";
 
@@ -9230,9 +9214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Bizimle Çalışın";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Bir taslak yazı üzerinde çalışın";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Ülkelere göre görünümlerini gösteren dünya haritası.";
@@ -9640,6 +9621,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "bir saat";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Jetpack hakkında ne düşünüyorsunuz?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "WordPress hakkında ne düşünüyorsunuz?";
+
 /* Label displayed on audio media items. */
 "audio" = "ses";
 
@@ -9668,7 +9655,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Günde sadece birkaç dolar karşılığında herhangi bir yazıyı veya sayfayı sadece birkaç dakika içinde tanıtın.";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "Kampanyalarınızın performansını takip edin ve istediğiniz zaman iptal edin.";
+"blaze.overlay.descriptionThree" = "Kampanyanızın performansını izleyin ve istediğiniz zaman iptal edin.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "İçeriğiniz milyonlarca WordPress ve Tumblr sitesinde görünecektir.";
@@ -9872,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ %2$@ içinde taşınıyor";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Birkaç gün içinde Jetpack uygulamasına geçiş.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ yakında taşınıyor";
@@ -10182,11 +10172,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack'e hoş geldiniz.";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "İstatistikler, Okuyucu, Bildirimler ve Jetpack destekli diğer özellikler WordPress uygulamasından kaldırıldı ve artık yalnızca Jetpack uygulamasında bulunuyor.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Jetpack uygulamasına geçiş yapın";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Jetpack.com'da daha fazla bilgi edinin";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Bildirimler, Jetpack uygulamasına geçti.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Okuyucu, Jetpack uygulamasına geçti.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "İstatistikler, Jetpack uygulamasına geçti.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Bir taslak yazı üzerinde çalışın";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "yazı yaz";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Bugünün İstatistikleri";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "İstatistikler";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Kapat";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "İyileştirilebilir";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Beğendim";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Hayır teşekkürler";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Geri Bildirim gönderin";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = ",";

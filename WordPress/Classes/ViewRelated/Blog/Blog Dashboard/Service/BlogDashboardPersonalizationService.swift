@@ -50,7 +50,9 @@ private func makeKey(for card: DashboardCard) -> String? {
         // have a "-card" component in the key name. Keeping it like this to
         // avoid having to migrate data.
         return "prompts-enabled-site-settings"
-    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost:
+    case .domainsDashboardCard:
+        return "domains-dashboard-card-enabled-site-settings"
+    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize:
         return nil
     }
 }

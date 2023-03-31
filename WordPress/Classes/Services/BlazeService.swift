@@ -3,12 +3,12 @@ import WordPressKit
 
 @objc final class BlazeService: NSObject {
 
-    private let contextManager: CoreDataStack
+    private let contextManager: CoreDataStackSwift
     private let remote: BlazeServiceRemote
 
     // MARK: - Init
 
-    required init?(contextManager: CoreDataStack = ContextManager.shared,
+    required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BlazeServiceRemote? = nil) {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
             return nil
@@ -28,34 +28,40 @@ import WordPressKit
     ///
     /// - Parameters:
     ///   - blog: A blog
-    ///   - completion: Closure to be called on success
+    ///   - completion: Closure to be called on completion
     @objc func getStatus(for blog: Blog,
                          completion: (() -> Void)? = nil) {
 
         guard BlazeHelper.isBlazeFlagEnabled() else {
-            updateBlog(blog, isBlazeApproved: false, completion: completion)
+            updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
             return
         }
 
         guard let siteId = blog.dotComID?.intValue else {
             DDLogError("Invalid site ID for Blaze")
-            updateBlog(blog, isBlazeApproved: false, completion: completion)
+            updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
             return
         }
 
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):
-                self.updateBlog(blog, isBlazeApproved: approved, completion: completion)
+                self.updateBlogWithID(blog.objectID, isBlazeApproved: approved, completion: completion)
             case .failure(let error):
                 DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
-                self.updateBlog(blog, isBlazeApproved: false, completion: completion)
+                self.updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
             }
         }
     }
 
-    private func updateBlog(_ blog: Blog, isBlazeApproved: Bool, completion: (() -> Void)? = nil) {
+    private func updateBlogWithID(_ objectID: NSManagedObjectID,
+                                  isBlazeApproved: Bool,
+                                  completion: (() -> Void)? = nil) {
         contextManager.performAndSave({ context in
+            guard let blog = try? context.existingObject(with: objectID) as? Blog else {
+                DDLogError("Unable to fetch blog and update isBlazedApproved value")
+                return
+            }
             blog.isBlazeApproved = isBlazeApproved
             DDLogInfo("Successfully updated isBlazeApproved value for blog: \(isBlazeApproved)")
         }, completion: {

@@ -11,16 +11,18 @@ enum DashboardCard: String, CaseIterable {
     case quickStart
     case prompts
     case blaze
+    case domainsDashboardCard
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
     case nextPost = "create_next"
     case createPost = "create_first"
     case jetpackBadge
-
-    // Card placeholder for when loading data
+    /// Card placeholder for when loading data
     case ghost
     case failure
+    /// A "Personalize Home Tab" button
+    case personalize
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
@@ -48,6 +50,10 @@ enum DashboardCard: String, CaseIterable {
             return DashboardBadgeCell.self
         case .blaze:
             return DashboardBlazeCardCell.self
+        case .domainsDashboardCard:
+            return DashboardDomainsCardCell.self
+        case .personalize:
+            return BlogDashboardPersonalizeCardCell.self
         }
     }
 
@@ -82,6 +88,10 @@ enum DashboardCard: String, CaseIterable {
             return JetpackBrandingVisibility.all.enabled
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)
+        case .domainsDashboardCard:
+            return DomainsDashboardCardHelper.shouldShowCard(for: blog)
+        case .personalize:
+            return AppConfiguration.isJetpack && FeatureFlag.personalizeHomeTab.enabled
         }
     }
 
@@ -104,6 +114,15 @@ enum DashboardCard: String, CaseIterable {
             return false
         }
     }
+
+    /// A list of cards that can be shown/hidden on a "Personalize Home Tab" screen.
+    static let personalizableCards: [DashboardCard] = [
+        .todaysStats,
+        .draftPosts,
+        .scheduledPosts,
+        .blaze,
+        .prompts
+    ]
 
     /// Includes all cards that should be fetched from the backend
     /// The `String` should match its identifier on the backend.

@@ -693,9 +693,6 @@
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Copiar link";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Poderia ser melhor";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Não foi possível guardar alterações";
 
@@ -1248,9 +1245,6 @@
    Settings: Comments Moderation */
 "Hold for Moderation" = "Reter para moderação";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Eu gosto";
-
 /* Title of a button style */
 "Icon & Text" = "Ícone e texto";
 
@@ -1732,9 +1726,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Nenhum menu seleccionado";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Não, obrigado";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Sem comentários";
@@ -2466,9 +2457,6 @@
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "Selecione quais os sítios que serão exibidos no selecionador de sítio.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Enviar feedback";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Enviar ligação";
 
@@ -2938,8 +2926,7 @@
    Notifications Today Section Header */
 "Today" = "Hoje";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Estatísticas de hoje";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -3308,9 +3295,6 @@
 
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo ao Leitor";
-
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "O que pensa do WordPress?";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Qual é o endereço do meu site?";

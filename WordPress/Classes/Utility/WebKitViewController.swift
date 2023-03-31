@@ -548,6 +548,24 @@ extension WebKitViewController: WKNavigationDelegate {
             }
         }
 
+        /// Force cross-site navigations to be opened in the web view when the counterpart app is installed.
+        ///
+        /// The default system behavior (through `decisionHandler`) for cross-site navigation is to open the
+        /// destination URL in Safari. When both WordPress & Jetpack are installed, this caused the counterpart
+        /// app to catch the navigation intent and process the URL in the app instead.
+        ///
+        /// We can remove this workaround when the universal link routes are removed from WordPress.com.
+        if MigrationAppDetection.isCounterpartAppInstalled,
+           let originHost = webView.url?.host?.lowercased(),
+           let destinationHost = navigationAction.request.url?.host?.lowercased(),
+           navigationAction.navigationType == .linkActivated,
+           destinationHost.hasSuffix("wordpress.com"),
+           originHost != destinationHost {
+            load(request: navigationAction.request)
+            decisionHandler(.cancel)
+            return
+        }
+
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
 
         decisionHandler(policy)
