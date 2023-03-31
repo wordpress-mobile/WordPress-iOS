@@ -111,7 +111,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .directDomainsPurchaseDashboardCard:
             return "Direct Domains Purchase Dashboard Card"
         case .pagesDashboardCard:
-            return "Pages Dashboard Cards"
+            return "Pages Dashboard Card"
         case .activityLogDashboardCard:
             return "Activity Log Dashboard Card"
         }
