@@ -7,8 +7,8 @@ public class CommentsScreen: ScreenObject {
         $0.navigationBars["Comments"]
     }
 
-    private let replyTextViewGetter: (XCUIApplication) -> XCUIElement = {
-        $0.textViews["ReplyText"]
+    private let replyFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["reply-to-post-text-field"]
     }
 
     private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -19,7 +19,7 @@ public class CommentsScreen: ScreenObject {
         $0.buttons["Reply"]
     }
 
-    var replyTextView: XCUIElement { replyTextViewGetter(app) }
+    var replyField: XCUIElement { replyFieldGetter(app) }
     var backButton: XCUIElement { backButtonGetter(app) }
     var replyButton: XCUIElement { replyButtonGetter(app) }
 
@@ -27,7 +27,7 @@ public class CommentsScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [
                 navigationBarTitleGetter,
-                replyTextViewGetter
+                replyFieldGetter
             ],
             app: app,
             waitTimeout: 7
@@ -45,8 +45,8 @@ public class CommentsScreen: ScreenObject {
 
     @discardableResult
     public func replyToPost(_ comment: String) -> CommentsScreen {
-        app.otherElements.containing(.staticText, identifier: "Reply to post").lastMatch?.tap()
-        replyTextView.typeText(comment)
+        replyField.tap()
+        replyField.typeText(comment)
         replyButton.tap()
         return self
     }
