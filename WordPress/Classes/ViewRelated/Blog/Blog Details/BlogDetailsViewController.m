@@ -817,7 +817,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self generalSectionViewModel]];
     }
 
-    [marr addObject:[self publishTypeSectionViewModel]];
+    [marr addObject:[self contentSectionViewModel]];
     
     if ([self shouldAddPersonalizeSection]) {
         [marr addObject:[self personalizeSectionViewModel]];
@@ -978,7 +978,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return blazeRow;
 }
 
-- (BlogDetailsSection *)publishTypeSectionViewModel
+- (BlogDetailsSection *)contentSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
@@ -990,15 +990,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                     [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
                                                              }];
     [rows addObject:postsRow];
-    
-    BlogDetailsRow *mediaRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                             accessibilityIdentifier:@"Media Row"
-                                                               image:[UIImage gridiconOfType:GridiconTypeImage]
-                                                            callback:^{
-                   [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
-                                                            }];
-    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
-    [rows addObject:mediaRow];
 
     if ([self.blog supports:BlogFeaturePages]) {
         BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
@@ -1010,6 +1001,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         pagesRow.quickStartIdentifier = QuickStartTourElementPages;
         [rows addObject:pagesRow];
     }
+    
+    BlogDetailsRow *mediaRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                             accessibilityIdentifier:@"Media Row"
+                                                               image:[UIImage gridiconOfType:GridiconTypeImage]
+                                                            callback:^{
+                   [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
+                                                            }];
+    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
+    [rows addObject:mediaRow];
 
     BlogDetailsRow *commentsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
@@ -1018,8 +1018,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                        }];
     [rows addObject:commentsRow];
 
-    NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPublish];
+    NSString *title = [BlogDetailsViewControllerStrings contentSectionTitle];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
 }
 
 - (BlogDetailsSection *)personalizeSectionViewModel
