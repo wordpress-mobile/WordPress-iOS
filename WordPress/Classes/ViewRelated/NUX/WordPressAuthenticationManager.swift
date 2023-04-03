@@ -68,7 +68,7 @@ extension WordPressAuthenticationManager {
             case .appStore:
                 // Rely on the remote flag in production
                 return RemoteFeatureFlag.sdkLessGoogleSignIn.enabled(using: remoteFeaturesStore)
-            case _:
+            default:
                 return true
             }
         }()
