@@ -327,7 +327,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     __weak __typeof__(self) weakSelf = self;
     [sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf syncConnections];
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         if (!ReachabilityUtils.isInternetReachable) {
             [weakSelf showConnectionError];
         } else {
@@ -343,7 +343,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     __weak __typeof__(self) weakSelf = self;
     [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         if (!ReachabilityUtils.isInternetReachable) {
             [weakSelf showConnectionError];
         } else {

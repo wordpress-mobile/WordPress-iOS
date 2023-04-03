@@ -38,12 +38,12 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction * __unused action) {
         __currentReachabilityAlert = nil;
     }];
     
     if (self.retryBlock) {
-        [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
+        [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction * __unused action) {
             self.retryBlock();
             __currentReachabilityAlert = nil;
         }];

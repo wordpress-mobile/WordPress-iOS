@@ -62,7 +62,7 @@
                      forBlog:[self blog]
                      success:^(NSArray *posts) {
                          [self didFinishSyncingPosts:posts options:options];
-                     } failure:^(NSError *error) {
+                     } failure:^(NSError * __unused error) {
                          [self didFinishSyncingPosts:nil options:options];
                          [self showLoadingErrorMessageForResults];
                      }];
@@ -153,7 +153,7 @@
                      success:^(NSArray *posts) {
                          [self didFinishSyncingPosts:posts options:options];
                          self.isSyncingAdditionalPosts = NO;
-                     } failure:^(NSError *error) {
+                     } failure:^(NSError * __unused error) {
                          [self didFinishSyncingPosts:nil options:options];
                          self.isSyncingAdditionalPosts = NO;
                          [self showLoadingErrorMessageForResults];
@@ -209,9 +209,9 @@
     [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
                      forBlog:[self blog]
-                     success:^(NSArray *posts) {
+                     success:^(NSArray * __unused posts) {
                          stopLoading();
-                     } failure:^(NSError *error) {
+                     } failure:^(NSError * __unused error) {
                          stopLoading();
                          [self showLoadingErrorMessageForResults];
                      }];

@@ -15,7 +15,7 @@
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 
-    void (^handler)(UIAlertAction *) = ^(UIAlertAction *action) {
+    void (^handler)(UIAlertAction *) = ^(UIAlertAction * __unused action) {
         if (!tapBlock) {
             return;
         }

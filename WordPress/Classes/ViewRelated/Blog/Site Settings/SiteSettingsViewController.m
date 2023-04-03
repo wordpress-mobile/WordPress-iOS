@@ -1044,7 +1044,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [weakSelf.refreshControl endRefreshing];
         self.tableSections = nil; // force the tableSections to be repopulated.
         [weakSelf.tableView reloadData];
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         [weakSelf.refreshControl endRefreshing];
     }];
     
@@ -1081,7 +1081,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRpcURL userAgent:[WPUserAgent wordPressUserAgent]];
     __weak __typeof__(self) weakSelf = self;
-    [api checkCredentials:self.username password:self.password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+    [api checkCredentials:self.username password:self.password success:^(id __unused responseObject, NSHTTPURLResponse *__unused httpResponse) {
         [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
             __typeof__(self) strongSelf = weakSelf;
             if (!strongSelf) {
@@ -1093,7 +1093,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         } completion:^{
             [SVProgressHUD dismiss];
         } onQueue:dispatch_get_main_queue()];
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+    } failure:^(NSError *error, NSHTTPURLResponse * __unused httpResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD dismiss];
             [weakSelf loginValidationFailedWithError:error];
