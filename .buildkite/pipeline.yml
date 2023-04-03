@@ -81,7 +81,167 @@ steps:
   #################
   # UI Tests
   #################
-  - group: "🔬 UI Tests"
+  - group: "🔬 UI Tests #1"
+    steps:
+      - label: "🔬 :jetpack: UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+      - label: "🔬 :jetpack: UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+  - group: "🔬 UI Tests #2"
+    steps:
+      - label: "🔬 :jetpack: UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+      - label: "🔬 :jetpack: UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+  - group: "🔬 UI Tests #3"
+    steps:
+      - label: "🔬 :jetpack: UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+      - label: "🔬 :jetpack: UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+  - group: "🔬 UI Tests #4"
+    steps:
+      - label: "🔬 :jetpack: UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+      - label: "🔬 :jetpack: UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+  - group: "🔬 UI Tests #5"
+    steps:
+      - label: "🔬 :jetpack: UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+      - label: "🔬 :jetpack: UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh 'iPad Air (5th generation)'
+        depends_on: "build_jetpack"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed" && build.branch == "trunk"
+
+  - group: "🔬 UI Tests #6"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
         command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
