@@ -7701,7 +7701,7 @@
 		98F537A822496D0D00B334F9 /* SiteStatsTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteStatsTableHeaderView.xib; sourceTree = "<group>"; };
 		98F93181239AF64800E4E96E /* ThisWeekWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThisWeekWidgetStats.swift; sourceTree = "<group>"; };
 		98F9FB2D270282C100ADF552 /* CommentModerationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentModerationBar.xib; sourceTree = "<group>"; };
-		98FB6E9F23074CE5002DDC8D /* SDKVersions.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = SDKVersions.xcconfig; sourceTree = "<group>"; };
+		98FB6E9F23074CE5002DDC8D /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		98FBA05426B228CB004E610A /* WordPress 129.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 129.xcdatamodel"; sourceTree = "<group>"; };
 		98FCFC212231DF43006ECDD4 /* PostStatsTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatsTitleCell.swift; sourceTree = "<group>"; };
 		98FCFC222231DF43006ECDD4 /* PostStatsTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostStatsTitleCell.xib; sourceTree = "<group>"; };
@@ -16674,7 +16674,7 @@
 		F14B5F6F208E648200439554 /* config */ = {
 			isa = PBXGroup;
 			children = (
-				98FB6E9F23074CE5002DDC8D /* SDKVersions.xcconfig */,
+				98FB6E9F23074CE5002DDC8D /* Common.xcconfig */,
 				F14B5F75208E64F900439554 /* Version.internal.xcconfig */,
 				F14B5F74208E64F900439554 /* Version.public.xcconfig */,
 				F14B5F70208E648200439554 /* WordPress.debug.xcconfig */,
