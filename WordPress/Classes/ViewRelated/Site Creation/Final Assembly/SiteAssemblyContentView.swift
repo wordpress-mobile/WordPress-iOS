@@ -33,12 +33,12 @@ final class SiteAssemblyContentView: UIView {
         $0.numberOfLines = 0
         $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .text
-        let createdText = NSLocalizedString(
+        let createdDescription = NSLocalizedString(
             "domain.purchase.preview.description",
             value: "We’ve emailed a receipt to your address on file.",
             comment: "Domain Purchase Completion description."
         )
-        $0.text = createdText
+        $0.text = createdDescription
         return $0
     }(UILabel())
 
@@ -55,12 +55,12 @@ final class SiteAssemblyContentView: UIView {
         $0.numberOfLines = 0
         $0.font = WPStyleGuide.fontForTextStyle(.footnote)
         $0.textColor = .text
-        let createdText = NSLocalizedString(
+        let footerText = NSLocalizedString(
             "domain.purchase.preview.footer",
             value: "It may take up to a day for your blog and your new domain to be fully connected.",
             comment: "Domain Purchase Completion footer"
         )
-        $0.text = createdText
+        $0.text = footerText
         return $0
     }(UILabel())
 
@@ -140,14 +140,15 @@ final class SiteAssemblyContentView: UIView {
     }
 
     let siteCreator: SiteCreator
-    private let shouldShowDomainPurchase: Bool
+    private lazy var shouldShowDomainPurchase: Bool = {
+        FeatureFlag.siteCreationDomainPurchasing.enabled && !(siteCreator.address?.isFree ?? false)
+    }()
 
     // MARK: SiteAssemblyContentView
 
     /// The designated initializer.
     init(siteCreator: SiteCreator) {
         self.siteCreator = siteCreator
-        shouldShowDomainPurchase = FeatureFlag.siteCreationDomainPurchasing.enabled // && with isPaidDomain
 
         self.completionLabel = {
             let label = UILabel()
@@ -164,18 +165,10 @@ final class SiteAssemblyContentView: UIView {
                 label.textAlignment = .center
             }
 
-            var createdText = NSLocalizedString(
+            let createdText = NSLocalizedString(
                 "Your site has been created!",
                 comment: "User-facing string, presented to reflect that site assembly completed successfully."
             )
-
-            if FeatureFlag.siteCreationDomainPurchasing.enabled { // && with isPaidDomain
-                createdText = NSLocalizedString(
-                    "domain.purchase.preview.title",
-                    value: "Domain Purchase Complete",
-                    comment: "User-facing string, presented to reflect that site assembly completed successfully."
-                )
-            }
 
             label.text = createdText
             label.accessibilityLabel = createdText
@@ -382,6 +375,15 @@ final class SiteAssemblyContentView: UIView {
                 equalTo: assembledSiteView.bottomAnchor,
                 constant: 24
             )
+
+            let createdText = NSLocalizedString(
+                "domain.purchase.preview.title",
+                value: "Domain Purchase Complete",
+                comment: "User-facing string, presented to reflect that site assembly completed successfully."
+            )
+            completionLabel.text = createdText
+            completionLabel.accessibilityLabel = createdText
+
         } else {
             assembledSiteViewBottomConstraint = assembledSiteView.bottomAnchor.constraint(
                 equalTo: buttonContainerView?.topAnchor ?? bottomAnchor
@@ -513,8 +515,8 @@ final class SiteAssemblyContentView: UIView {
                     }
 
                     self.completionLabel.isHidden = false
-                    self.completionDescription.isHidden = false
-                    self.footnoteLabel.isHidden = false
+                    self.completionDescription.isHidden = !self.shouldShowDomainPurchase
+                    self.footnoteLabel.isHidden = !self.shouldShowDomainPurchase
 
 
                     if let buttonView = self.buttonContainerView {
