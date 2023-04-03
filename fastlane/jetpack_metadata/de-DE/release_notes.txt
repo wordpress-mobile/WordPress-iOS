@@ -1,0 +1,5 @@
+Wir wissen nicht, wie es dir geht, aber wir fühlen uns heute, als wären wir 22 Jahre alt. Zur Feier dieses Release (und weil du danach gefragt hast) ist es jetzt möglich, die meisten Blocktypen in andere Blocktypen wie Zitate, Spalten und Gruppen umzuwandeln. Sehr gut.
+
+Wir haben einige Design-Anpassungen am Reader vorgenommen: Wir haben das Icon für "Themen/Websites, denen du folgst" aktualisiert, die Hintergrundfarbe der Navigationsleiste an andere Ansichten in der App angepasst und den zu großen Titel auf dem Reader-Tab verkleinert. (Die letztgenannte Änderung haben wir auch auf dem Tab „Benachrichtigungen“ durchgeführt.)
+
+Außerdem haben wir ein paar kleine visuelle Änderungen am Icon der Tableiste „Meine Website“ und der In-App-Umfrage vorgenommen. Und wenn du ganz genau hinschaust, fällt dir vielleicht auf, dass die dunkle Hintergrundfarbe der Toolbars und oberen Tabs in der gesamten App einheitlich ist.

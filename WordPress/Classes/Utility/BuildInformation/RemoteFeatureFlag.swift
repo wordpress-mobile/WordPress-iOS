@@ -14,6 +14,9 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case blaze
     case wordPressIndividualPluginSupport
     case directDomainsPurchaseDashboardCard
+    case pagesDashboardCard
+    case activityLogDashboardCard
+    case sdkLessGoogleSignIn
 
     var defaultValue: Bool {
         switch self {
@@ -40,6 +43,12 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .wordPressIndividualPluginSupport:
             return AppConfiguration.isWordPress
         case .directDomainsPurchaseDashboardCard:
+            return false
+        case .pagesDashboardCard:
+            return false
+        case .activityLogDashboardCard:
+            return false
+        case .sdkLessGoogleSignIn:
             return false
         }
     }
@@ -71,6 +80,12 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wp_individual_plugin_overlay"
         case .directDomainsPurchaseDashboardCard:
             return "direct_domain_purchase_dashboard_card"
+        case .pagesDashboardCard:
+            return "dashboard_card_pages"
+        case .activityLogDashboardCard:
+            return "dashboard_card_activity_log"
+        case .sdkLessGoogleSignIn:
+            return "google_signin_without_sdk"
         }
     }
 
@@ -100,6 +115,12 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Jetpack Individual Plugin Support for WordPress"
         case .directDomainsPurchaseDashboardCard:
             return "Direct Domains Purchase Dashboard Card"
+        case .pagesDashboardCard:
+            return "Pages Dashboard Card"
+        case .activityLogDashboardCard:
+            return "Activity Log Dashboard Card"
+        case .sdkLessGoogleSignIn:
+            return "Sign-In with Google without the Google SDK"
         }
     }
 

@@ -86,13 +86,17 @@ private extension BlogDashboardService {
 
     func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardCardModel] {
         let personalizationService = BlogDashboardPersonalizationService(repository: repository, siteID: dotComID)
-        return DashboardCard.allCases.compactMap { card in
+        var cards: [DashboardCardModel] = DashboardCard.allCases.compactMap { card in
             guard personalizationService.isEnabled(card),
                   card.shouldShow(for: blog, apiResponse: entity) else {
                 return nil
             }
             return DashboardCardModel(cardType: card, dotComID: dotComID, entity: entity)
         }
+        if cards.isEmpty || cards.map(\.cardType) == [.personalize] {
+            cards.insert(DashboardCardModel(cardType: .empty, dotComID: dotComID), at: 0)
+        }
+        return cards
     }
 
     func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {
