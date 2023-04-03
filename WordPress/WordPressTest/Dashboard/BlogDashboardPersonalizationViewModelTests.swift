@@ -19,7 +19,6 @@ final class BlogDashboardPersonalizationViewModelTests: XCTestCase {
         // Given
         let cardViewModel = try XCTUnwrap(viewModel.cards.first)
         let card = cardViewModel.id
-        XCTAssertEqual(card, .todaysStats)
         XCTAssertTrue(cardViewModel.isOn, "By default, the cards are enabled")
         XCTAssertTrue(service.isEnabled(card))
 

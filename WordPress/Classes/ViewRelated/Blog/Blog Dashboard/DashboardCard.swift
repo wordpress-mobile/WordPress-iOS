@@ -121,15 +121,6 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    /// A list of cards that can be shown/hidden on a "Personalize Home Tab" screen.
-    static let personalizableCards: [DashboardCard] = [
-        .todaysStats,
-        .draftPosts,
-        .scheduledPosts,
-        .blaze,
-        .prompts
-    ]
-
     /// Includes all cards that should be fetched from the backend
     /// The `String` should match its identifier on the backend.
     enum RemoteDashboardCard: String, CaseIterable {

@@ -132,7 +132,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testThatWhenAllCardsAreHiddenEmptyStateIsShown() {
         // Given
         let personalizationService = BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
-        for card in DashboardCard.personalizableCards {
+        for card in BlogDashboardPersonalizationService.personalizableCards {
             personalizationService.setEnabled(false, for: card)
         }
 

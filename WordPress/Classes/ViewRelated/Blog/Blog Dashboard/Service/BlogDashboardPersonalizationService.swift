@@ -20,7 +20,7 @@ struct BlogDashboardPersonalizationService {
     }
 
     func setEnabled(_ isEnabled: Bool, for card: DashboardCard) {
-        guard let key = makeKey(for: card) else { return }
+        guard let key = card.isEnabledKey else { return }
 
         var settings = getSettings(for: card)
         settings[siteID] = isEnabled
@@ -30,30 +30,36 @@ struct BlogDashboardPersonalizationService {
     }
 
     private func getSettings(for card: DashboardCard) -> [String: Bool] {
-        guard let key = makeKey(for: card) else { return [:] }
+        guard let key = card.isEnabledKey else { return [:] }
         return repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
+    }
+
+    /// Returns all cards that can by hidden/shown by `BlogDashboardPersonalizationService`.
+    static var personalizableCards: [DashboardCard] {
+        DashboardCard.allCases.filter { $0.isEnabledKey != nil }
     }
 }
 
-private func makeKey(for card: DashboardCard) -> String? {
-    switch card {
-    case .todaysStats:
-        return "todays-stats-card-enabled-site-settings"
-    case .draftPosts:
-        return "draft-posts-card-enabled-site-settings"
-    case .scheduledPosts:
-        return "scheduled-posts-card-enabled-site-settings"
-    case .blaze:
-        return "blaze-card-enabled-site-settings"
-    case .prompts:
-        // Warning: there is an irregularity with the prompts key that doesn't
-        // have a "-card" component in the key name. Keeping it like this to
-        // avoid having to migrate data.
-        return "prompts-enabled-site-settings"
-    case .domainsDashboardCard:
-        return "domains-dashboard-card-enabled-site-settings"
-    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize, .empty:
-        return nil
+private extension DashboardCard {
+    var isEnabledKey: String? {
+        switch card {
+        case .todaysStats:
+            return "todays-stats-card-enabled-site-settings"
+        case .draftPosts:
+            return "draft-posts-card-enabled-site-settings"
+        case .scheduledPosts:
+            return "scheduled-posts-card-enabled-site-settings"
+        case .blaze:
+            return "blaze-card-enabled-site-settings"
+        case .prompts:
+            // Warning: there is an irregularity with the prompts key that doesn't
+            // have a "-card" component in the key name. Keeping it like this to
+            // avoid having to migrate data.
+            return "prompts-enabled-site-settings"
+        case .domainsDashboardCard:
+            return "domains-dashboard-card-enabled-site-settings"
+        case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize, .empty:
+            return nil
     }
 }
 

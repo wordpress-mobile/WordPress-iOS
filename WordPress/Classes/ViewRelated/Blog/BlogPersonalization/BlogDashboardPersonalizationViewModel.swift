@@ -4,7 +4,9 @@ final class BlogDashboardPersonalizationViewModel: ObservableObject {
     let cards: [BlogDashboardPersonalizationCardCellViewModel]
 
     init(service: BlogDashboardPersonalizationService) {
-        self.cards = DashboardCard.personalizableCards.map {
+        self.cards = BlogDashboardPersonalizationService.personalizableCards.filter {
+            $0 != .domainsDashboardCard
+        }.map {
             BlogDashboardPersonalizationCardCellViewModel(card: $0, service: service)
         }
     }
