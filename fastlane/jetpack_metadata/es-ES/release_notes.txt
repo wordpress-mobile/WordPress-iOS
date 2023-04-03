@@ -1,0 +1,5 @@
+No sabemos cómo lo llevas tú, pero nosotros nos sentimos como si tuvieramos 22 años. Para celebrarlo (y porque nos lo has pedido), ahora puedes convertir la mayoría de los tipos de bloques en otros, por ejemplo, citas, columnas y grupos. Perfecto.
+
+Hemos hecho algunos ajustes de diseño en el Lector, como actualizar el icono "temas o sitios seguidos", cambiar el color del fondo de la barra de navegación para que coincida con otras pantallas de la aplicación y redimensionar el título (que era demasiado grande) de la pestaña Lector. (esta última acción también la hicimos en la pestaña Notificaciones).
+
+También podrás ver algunos cambios visuales pequeños en el icono de la barra de la pestaña Mi sitio y en la encuesta de la aplicación. Además, si eres de fijarte en los detalles, te habrás dado cuenta de que el color de fondo oscuro de las barras de herramientas y las pestañas superiores ahora es uniforme en toda la aplicación.

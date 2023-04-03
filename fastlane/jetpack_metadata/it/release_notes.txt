@@ -1,0 +1,5 @@
+Non sappiamo voi, ma noi ce ne sentiamo 22. In onore di questa occasione (e perché lo hai chiesto), ora puoi trasformare la maggior parte dei tipi di blocchi in altri tipi di blocchi, come virgolette, colonne e gruppi. Ottimo.
+
+Abbiamo apportato alcune modifiche al design del Reader, aggiornando l'icona "temi/siti seguiti", ricolorando lo sfondo della barra di navigazione in modo che corrisponda ad altre schermate nell'app e ridimensionando il titolo troppo grande nella scheda Reader (abbiamo fatto quest'ultima cosa anche nella scheda Notifiche).
+
+Vedrai anche alcune piccole modifiche visive all'icona della barra della scheda Il mio sito e all'indagine in-app. E se hai un occhio estremamente attento, potresti notare che il colore di sfondo scuro delle barre degli strumenti e delle schede superiori è ora coerente in tutta l'app.
