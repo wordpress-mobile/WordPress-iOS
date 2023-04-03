@@ -1,0 +1,5 @@
+Não sabemos sobre você, mas estamos nos sentindo com 22. Para honrar a ocasião e atender aos seus pedidos, agora é possível transformar boa parte dos tipos de blocos em outros formatos, como citações, colunas e grupos. Muito bem.
+
+Nós fizemos alguns ajustes no design do Leitor, atualizando o ícone de ''temas/sites seguidos'', colorindo novamente o plano de fundo da barra de navegação para combinar com as outras telas no app e redimensionando o título grande demais na guia do Leitor. (Nós aplicamos a última atualização à guia de Notificações também).
+
+Você também verá algumas pequenas mudanças visuais no ícone da barra de Meu Site e na pesquisa do app. E se você observar bem, talvez perceba que a cor de fundo escura das barras de ferramentas e das guias superiores agora encontra-se em todo o app.

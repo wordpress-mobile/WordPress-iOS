@@ -1,0 +1,5 @@
+Seni bilemiyoruz, ancak biz 22 hissediyoruz. Bu özel günün şerefine (ve bunu siz de hep istediğiniz için), artık blok türlerinin çoğunu alıntılar, sütunlar ve gruplar gibi farklı blok türlerine çevirebilirsiniz. Güzel.
+
+Reader'da "takip edilen konular/siteler" ikonunu güncelleyerek, navigasyon çubuğu arka planını uygulamadaki diğer ekranlara uyması için yeniden renklendirerek ve Reader sekmesindeki çok yer kaplayan başlığı yeniden boyutlandırarak bazı tasarım ayarlamaları yaptık. (Sonuncuyu Bildirimler sekmesine de yaptık.)
+
+Sitem sekme çubuğu ikonunda ve uygulama içi ankette de bazı küçük görsel değişiklikler göreceksiniz. Daha da keskin bir gözünüz varsa, araç çubuklarının koyu arka plan rengini ve üst sekmelerin artık uygulamanın her yerinde tutarlı olduğunu fark edeceksiniz.
