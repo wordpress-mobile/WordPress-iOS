@@ -2366,6 +2366,15 @@
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Dark";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Add cards that fit your needs to see information about your site.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "No cards to display";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personalize your home tab";
+
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Dashboard";
 
@@ -2397,6 +2406,24 @@
 
 /* Debug settings title */
 "Debug Settings" = "Debug Settings";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Overridden parameters are denoted by a checkmark.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Override the chosen param by defining a new value here.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "No remote or default value";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Remote Config";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Local Feature Flags";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Remote Feature Flags";
 
 /* Only December needs to be translated */
 "December 17, 2017" = "December 17, 2017";
@@ -2593,6 +2620,15 @@
 
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you.";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Stake your claim on your corner of the web with a site address that’s easy to find, share and follow.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Hide this";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Own your online identity with a custom domain";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domains";
@@ -3272,9 +3308,6 @@
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Feature flags";
-
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
@@ -3623,9 +3656,6 @@
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Grabbing site URL";
-
-/* No comment provided by engineer. */
-"Gradient" = "Gradient";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Gradient Type";
@@ -4391,6 +4421,15 @@
 
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Done";
+
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Connect your user account";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "To get helpful notifications on your phone from your WordPress site, you'll need to connect to your user account.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "To use stats on your site, you'll need to connect the Jetpack plugin to your user account.";
 
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.";
@@ -6076,6 +6115,30 @@ Please install the %3$@ to use the app with this site.";
 /* Section title for the personalize table section in the blog details screen. */
 "Personalize" = "Personalize";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Add or hide cards";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Draft posts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Blogging prompts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Scheduled posts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Today's stats";
+
+/* Page title */
+"personalizeHome.title" = "Personalize Home Tab";
+
 /* Register Domain - Phone number section header title */
 "PHONE" = "PHONE";
 
@@ -6518,6 +6581,9 @@ Please install the %3$@ to use the app with this site.";
    Title label for the Prompts card in My Sites tab.
    View title for Blogging Prompts list. */
 "Prompts" = "Prompts";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "View all responses";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Visit Site Settings to turn back on";
@@ -7169,6 +7235,9 @@ Please install the %3$@ to use the app with this site.";
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Search for a domain";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Search for a short and memorable keyword to help people find and visit your website.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Search input field.";
 
@@ -7698,6 +7767,15 @@ Please install the %3$@ to use the app with this site.";
 /* The accessibility label for the followed sites search field
    The item to select during a guided tour. */
 "Site URL" = "Site URL";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https://yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Like the example above, a domain allows people to find and visit your site from their web browser.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -8361,6 +8439,9 @@ Please install the %3$@ to use the app with this site.";
 "Testimonials" = "Testimonials";
 
 /* No comment provided by engineer. */
+"Text color" = "Text color";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
 /* Button title
@@ -8709,9 +8790,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "This is your reminder to blog today ✍️";
@@ -10224,6 +10302,24 @@ Please install the %3$@ to use the app with this site.";
 
 /* WordPress.com Notification Settings Title */
 "WordPress.com Updates" = "WordPress.com Updates";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Switch to the Jetpack app";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Continue without Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ is using individual Jetpack plugins, which isn't supported by the WordPress App.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ is using the %2$@ plugin, which isn't supported by the WordPress App.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Please switch to the Jetpack app where we'll guide you through connecting the full Jetpack plugin so that you can use all the apps features for this site.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Sorry, this site isn't supported by the WordPress app";
 
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "WordPress.org Plugin Page";
