@@ -808,10 +808,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return blazeRow;
 }
 
-- (BlogDetailsRow *)sharingRow
+- (BlogDetailsRow *)socialRow
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+
+    NSString *title = [AppConfiguration isWordPress]
+    ? NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+    : [BlogDetailsViewControllerStrings socialRowTitle];
+
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:title
                                                           image:[UIImage gridiconOfType:GridiconTypeShare]
                                                        callback:^{
         [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
@@ -1090,7 +1095,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Social row
     if ([self shouldAddSharingRow]) {
-        [rows addObject:[self sharingRow]];
+        [rows addObject:[self socialRow]];
     }
 
     // Blaze row
@@ -1312,7 +1317,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:[self pagesRow]];
     }
     [rows addObject:[self commentsRow]];
-    
+
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
 }
