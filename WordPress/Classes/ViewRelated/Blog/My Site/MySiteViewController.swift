@@ -486,6 +486,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
                 self.blogDashboardViewController?.reloadCardsLocally()
             }
+
+            /// Update today's prompt if the blog has blogging prompts enabled.
+            fetchPrompt(for: blog)
         }
 
         WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])
@@ -961,7 +964,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
-              let promptsService = BloggingPromptsService(blog: blog) else {
+              let promptsService = BloggingPromptsService(blog: blog),
+              let siteID = blog.dotComID?.intValue else {
+            return
+        }
+
+        let dashboardPersonalization = BlogDashboardPersonalizationService(siteID: siteID)
+        guard dashboardPersonalization.isEnabled(.prompts) else {
             return
         }
 
