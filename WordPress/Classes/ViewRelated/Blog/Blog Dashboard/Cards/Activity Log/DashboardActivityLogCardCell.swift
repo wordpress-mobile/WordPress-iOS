@@ -5,6 +5,18 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
 
+    // MARK: - Views
+
+    private lazy var cardFrameView: BlogDashboardCardFrameView = {
+        let frameView = BlogDashboardCardFrameView()
+        frameView.translatesAutoresizingMaskIntoConstraints = false
+        frameView.title = Strings.title
+        frameView.onEllipsisButtonTap = {
+            // FIXME: Track event
+        }
+        return frameView
+    }()
+
     // MARK: - Initializers
 
     override init(frame: CGRect) {
@@ -19,7 +31,8 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     // MARK: - View setup
 
     private func setupView() {
-        // FIXME: setup view
+        contentView.addSubview(cardFrameView)
+        contentView.pinSubviewToAllEdges(cardFrameView, priority: .defaultHigh)
     }
 
     // MARK: - BlogDashboardCardConfigurable
@@ -43,5 +56,14 @@ extension DashboardActivityLogCardCell {
         }
 
         return true
+    }
+}
+
+extension DashboardActivityLogCardCell {
+
+    private enum Strings {
+        static let title = NSLocalizedString("activityLog.dashboard.card.title",
+                                             value: "Recent activity",
+                                             comment: "Title for the Activity Log dashboard card.")
     }
 }
