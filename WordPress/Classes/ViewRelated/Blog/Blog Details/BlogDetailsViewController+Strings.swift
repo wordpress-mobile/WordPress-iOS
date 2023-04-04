@@ -8,7 +8,13 @@ extension BlogDetailsViewController {
         static let contentSectionTitle = NSLocalizedString(
             "my-site.menu.content.section.title",
             value: "Content",
-            comment: "Section title for the publish table section in the blog details screen"
+            comment: "Section title for the content table section in the blog details screen"
+        )
+        static let trafficSectionTitle = NSLocalizedString(
+            "my-site.menu.traffic.section.title",
+            value: "Traffic",
+            comment: "Section title for the traffic table section in the blog details screen"
+        )
         )
     }
 }
@@ -19,4 +25,5 @@ extension BlogDetailsViewController {
 class objc_BlogDetailsViewController_Strings: NSObject {
 
     @objc class func contentSectionTitle() -> String { BlogDetailsViewController.Strings.contentSectionTitle }
+    @objc class func trafficSectionTitle() -> String { BlogDetailsViewController.Strings.trafficSectionTitle }
 }

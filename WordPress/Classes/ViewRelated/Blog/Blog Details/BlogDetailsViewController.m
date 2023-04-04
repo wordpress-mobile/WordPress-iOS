@@ -727,6 +727,50 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return nil;
 }
 
+#pragma mark - Rows
+
+- (BlogDetailsRow *)statsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                             accessibilityIdentifier:@"Stats Row"
+                                                               image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
+                                                            callback:^{
+        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    statsRow.quickStartIdentifier = QuickStartTourElementStats;
+    return statsRow;
+}
+
+- (BlogDetailsRow *)blazeRow
+{
+    __weak __typeof(self) weakSelf = self;
+    CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
+    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
+    BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                             accessibilityIdentifier:@"Blaze Row"
+                                                               image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
+                                                          imageColor:nil
+                                                       renderingMode:UIImageRenderingModeAlwaysOriginal
+                                                            callback:^{
+        [weakSelf showBlaze];
+    }];
+    blazeRow.showsSelectionState = NO;
+    return blazeRow;
+}
+
+- (BlogDetailsRow *)sharingRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+                                                          image:[UIImage gridiconOfType:GridiconTypeShare]
+                                                       callback:^{
+        [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementSharing;
+    return row;
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
@@ -809,22 +853,30 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
-    if ([self shouldAddJetpackSection]) {
-        [marr addObject:[self jetpackSectionViewModel]];
-    }
-    
-    if ([self shouldAddGeneralSection]) {
-        [marr addObject:[self generalSectionViewModel]];
+
+    if ([AppConfiguration isWordPress]) {
+        if ([self shouldAddJetpackSection]) {
+            [marr addObject:[self jetpackSectionViewModel]];
+        }
+
+        if ([self shouldAddGeneralSection]) {
+            [marr addObject:[self generalSectionViewModel]];
+        }
+
+        [marr addObject:[self contentSectionViewModel]];
+
+        if ([self shouldAddPersonalizeSection]) {
+            [marr addObject:[self personalizeSectionViewModel]];
+        }
+
+        [marr addObject:[self configurationSectionViewModel]];
+        [marr addObject:[self externalSectionViewModel]];
+    } else {
+        [marr addObject:[self contentSectionViewModel]];
+        [marr addObject:[self trafficSectionViewModel]];
+        [marr addObjectsFromArray:[self maintenanceSectionViewModel]];
     }
 
-    [marr addObject:[self contentSectionViewModel]];
-    
-    if ([self shouldAddPersonalizeSection]) {
-        [marr addObject:[self personalizeSectionViewModel]];
-    }
-    
-    [marr addObject:[self configurationSectionViewModel]];
-    [marr addObject:[self externalSectionViewModel]];
     if ([self.blog supports:BlogFeatureRemovable]) {
         [marr addObject:[self removeSiteSectionViewModel]];
     }
@@ -835,6 +887,30 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
+}
+
+/// This section is available on Jetpack only.
+- (BlogDetailsSection *)trafficSectionViewModel
+{
+    // Init rows
+    NSMutableArray *rows = [NSMutableArray array];
+
+    // Stats row
+    [rows addObject:[self statsRow]];
+
+    // Social row
+    if ([self shouldAddSharingRow]) {
+        [rows addObject:[self sharingRow]];
+    }
+
+    // Blaze row
+    if ([self shouldShowBlaze]) {
+        [rows addObject:[self blazeRow]];
+    }
+
+    // Return
+    NSString *title = [BlogDetailsViewControllerStrings trafficSectionTitle];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryTraffic];
 }
 
 - (BlogDetailsSection *)homeSectionViewModel
@@ -959,23 +1035,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
-}
-
-- (BlogDetailsRow *)blazeRow
-{
-    __weak __typeof(self) weakSelf = self;
-    CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
-    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
-    BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
-                                             accessibilityIdentifier:@"Blaze Row"
-                                                               image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
-                                                          imageColor:nil
-                                                       renderingMode:UIImageRenderingModeAlwaysOriginal
-                                                            callback:^{
-                                                                [weakSelf showBlaze];
-                                                            }];
-    blazeRow.showsSelectionState = NO;
-    return blazeRow;
 }
 
 - (BlogDetailsSection *)contentSectionViewModel
