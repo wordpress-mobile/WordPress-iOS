@@ -32,3 +32,16 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         // Expecting a list of type [Activity]
     }
 }
+
+extension DashboardActivityLogCardCell {
+
+    static func shouldShowCard(for blog: Blog) -> Bool {
+        guard RemoteFeatureFlag.activityLogDashboardCard.enabled(),
+              blog.supports(.activity),
+              !blog.isWPForTeams() else {
+            return false
+        }
+
+        return true
+    }
+}
