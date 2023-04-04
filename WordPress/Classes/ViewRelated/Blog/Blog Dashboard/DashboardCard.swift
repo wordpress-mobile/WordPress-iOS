@@ -134,7 +134,8 @@ enum DashboardCard: String, CaseIterable {
         .draftPosts,
         .scheduledPosts,
         .blaze,
-        .prompts
+        .prompts,
+        .activityLog
     ]
 
     /// Includes all cards that should be fetched from the backend
