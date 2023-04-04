@@ -143,6 +143,8 @@ enum DashboardCard: String, CaseIterable {
     enum RemoteDashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
+        case pages
+        case activity
     }
 }
 
