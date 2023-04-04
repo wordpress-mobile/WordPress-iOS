@@ -23,5 +23,4 @@ import Foundation
     @objc static let showsWhatIsNew: Bool = true
     @objc static let showsStatsRevampV2: Bool = true
     @objc static let qrLoginEnabled: Bool = true
-    @objc static let authKeychainServiceName: String = "jetpack.public-api.wordpress.com"
 }

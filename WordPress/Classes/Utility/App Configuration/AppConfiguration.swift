@@ -23,5 +23,4 @@ import Foundation
     @objc static let showsWhatIsNew: Bool = true
     @objc static let showsStatsRevampV2: Bool = false
     @objc static let qrLoginEnabled: Bool = false
-    @objc static let authKeychainServiceName: String = "public-api.wordpress.com"
 }

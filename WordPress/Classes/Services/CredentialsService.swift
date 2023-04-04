@@ -16,6 +16,6 @@ class CredentialsService {
     }
 
     func getOAuthToken(site: JetpackSiteRef) -> String? {
-        return provider.getPassword(username: site.username, service: AppConfiguration.authKeychainServiceName)
+        return provider.getPassword(username: site.username, service: AppConstants.authKeychainServiceName)
     }
 }

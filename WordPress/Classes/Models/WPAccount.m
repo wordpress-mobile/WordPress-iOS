@@ -159,7 +159,7 @@ static NSString * const JetpackComOAuthKeychainServiceName = @"jetpack.public-ap
 
 + (NSString *)authKeychainServiceName
 {
-    return [AppConfiguration authKeychainServiceName];
+    return [AppConstants authKeychainServiceName];
 }
 
 #pragma mark - API Helpers
