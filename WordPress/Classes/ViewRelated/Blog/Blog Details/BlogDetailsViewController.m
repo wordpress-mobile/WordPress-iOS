@@ -729,6 +729,55 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Rows
 
+- (BlogDetailsRow *)postsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
+                                        accessibilityIdentifier:@"Blog Post Row"
+                                                          image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
+                                                       callback:^{
+        [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)pagesRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                        accessibilityIdentifier:@"Site Pages Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypePages]
+                                                       callback:^{
+        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementPages;
+    return row;
+}
+
+- (BlogDetailsRow *)mediaRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                        accessibilityIdentifier:@"Media Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeImage]
+                                                       callback:^{
+        [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementMediaScreen;
+    return row;
+}
+
+- (BlogDetailsRow *)commentsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
+                                                          image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
+                                                       callback:^{
+        [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    return row;
+}
+
 - (BlogDetailsRow *)statsRow
 {
     __weak __typeof(self) weakSelf = self;
@@ -1239,43 +1288,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (BlogDetailsSection *)contentSectionViewModel
 {
-    __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-
-    BlogDetailsRow *postsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
-                                              accessibilityIdentifier:@"Blog Post Row"
-                                                                image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
-                                                             callback:^{
-                    [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
-                                                             }];
-    [rows addObject:postsRow];
-
-    if ([self.blog supports:BlogFeaturePages]) {
-        BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                                 accessibilityIdentifier:@"Site Pages Row"
-                                                        image:[UIImage gridiconOfType:GridiconTypePages]
-                                                     callback:^{
-            [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
-                                                     }];
-        pagesRow.quickStartIdentifier = QuickStartTourElementPages;
-        [rows addObject:pagesRow];
-    }
     
-    BlogDetailsRow *mediaRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                             accessibilityIdentifier:@"Media Row"
-                                                               image:[UIImage gridiconOfType:GridiconTypeImage]
-                                                            callback:^{
-                   [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
-                                                            }];
-    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
-    [rows addObject:mediaRow];
-
-    BlogDetailsRow *commentsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
-                                                          image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
-                                                       callback:^{
-        [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
-                                                       }];
-    [rows addObject:commentsRow];
+    [rows addObject:[self postsRow]];
+    if ([self.blog supports:BlogFeaturePages]) {
+        [rows addObject:[self pagesRow]];
+    }
+    [rows addObject:[self mediaRow]];
+    [rows addObject:[self commentsRow]];
 
     NSString *title = [BlogDetailsViewControllerStrings contentSectionTitle];
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
