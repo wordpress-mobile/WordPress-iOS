@@ -10,13 +10,12 @@ struct KeychainCredentialsProvider: CredentialsProvider {
 
 class CredentialsService {
     private let provider: CredentialsProvider
-    private let dotComOAuthKeychainService = "public-api.wordpress.com"
 
     init(provider: CredentialsProvider = KeychainCredentialsProvider()) {
         self.provider = provider
     }
 
     func getOAuthToken(site: JetpackSiteRef) -> String? {
-        return provider.getPassword(username: site.username, service: dotComOAuthKeychainService)
+        return provider.getPassword(username: site.username, service: AppConfiguration.authKeychainServiceName)
     }
 }

@@ -159,7 +159,7 @@ static NSString * const JetpackComOAuthKeychainServiceName = @"jetpack.public-ap
 
 + (NSString *)authKeychainServiceName
 {
-    return [AppConfiguration isWordPress] ? WordPressComOAuthKeychainServiceName : JetpackComOAuthKeychainServiceName;
+    return [AppConfiguration authKeychainServiceName];
 }
 
 #pragma mark - API Helpers
