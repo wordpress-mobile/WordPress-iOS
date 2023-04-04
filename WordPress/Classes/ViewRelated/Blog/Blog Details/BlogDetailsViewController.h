@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryHome,
     BlogDetailsSectionCategoryGeneral,
     BlogDetailsSectionCategoryJetpack,
-    BlogDetailsSectionCategoryContent,
+    BlogDetailsSectionCategoryPublish,
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryMigrationSuccess,
     BlogDetailsSectionCategoryJetpackBrandingCard,
     BlogDetailsSectionCategoryJetpackInstallCard,
+    BlogDetailsSectionCategoryContent,
     BlogDetailsSectionCategoryTraffic,
     BlogDetailsSectionCategoryMaintenance
 };
