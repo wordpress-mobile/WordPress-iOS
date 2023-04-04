@@ -94,7 +94,7 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  Updates the default blog for the specified account.  The default blog will be the one whose siteID matches
  the accounts primaryBlogID.
  */
-- (void)updateDefaultBlogIfNeeded:(WPAccount *)account;
+- (void)updateDefaultBlogIfNeeded:(WPAccount *)account inContext:(NSManagedObjectContext *)context;
 
 /**
  Syncs the details for the account associated with the provided auth token, then

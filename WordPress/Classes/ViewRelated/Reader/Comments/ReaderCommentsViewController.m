@@ -745,6 +745,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         NSString *placeholderFormat = NSLocalizedString(@"Reply to %1$@", @"Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.");
         self.replyTextView.placeholder = [NSString stringWithFormat:placeholderFormat, [comment authorForDisplay]];
     } else {
+        self.replyTextView.accessibilityIdentifier = @"reply-to-post-text-field";
         self.replyTextView.placeholder = NSLocalizedString(@"Reply to post", @"Placeholder text for replying to a post");
     }
 }

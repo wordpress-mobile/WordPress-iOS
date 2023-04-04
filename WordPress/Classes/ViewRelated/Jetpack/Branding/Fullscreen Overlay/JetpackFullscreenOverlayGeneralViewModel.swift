@@ -219,11 +219,11 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
         case .one:
             return nil
         case .two:
-            return RemoteConfig().phaseTwoBlogPostUrl.value
+            return RemoteConfigParameter.phaseTwoBlogPostUrl.value()
         case .three:
-            return RemoteConfig().phaseThreeBlogPostUrl.value
+            return RemoteConfigParameter.phaseThreeBlogPostUrl.value()
         case .four:
-            return RemoteConfig().phaseFourBlogPostUrl.value
+            return RemoteConfigParameter.phaseFourBlogPostUrl.value()
         default:
             return nil
         }

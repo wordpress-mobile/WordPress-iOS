@@ -107,7 +107,7 @@ private extension JetpackNotificationMigrationServiceTests {
     func setup(preventDuplicateNotificationsFlag: Bool,
                isWordPress: Bool) {
 
-        remoteFeatureFlagStore.value = preventDuplicateNotificationsFlag
+        remoteFeatureFlagStore.isPreventDuplicateNotifications = preventDuplicateNotificationsFlag
 
         sut = JetpackNotificationMigrationService(
             remoteNotificationRegister: remoteNotificationsRegister,
@@ -139,14 +139,14 @@ private class RemoteNotificationRegisterMock: RemoteNotificationRegister {
 
 private extension JetpackNotificationMigrationServiceTests {
     class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
-        var value = false {
-            didSet {
-                try? FeatureFlagOverrideStore().override(FeatureFlag.jetpackMigrationPreventDuplicateNotifications, withValue: value)
-            }
-        }
+        var isPreventDuplicateNotifications = false
 
-        override func value(for flag: OverrideableFlag) -> Bool {
-            return value
+        override func value(for flagKey: String) -> Bool? {
+            if flagKey == RemoteFeatureFlag.jetpackMigrationPreventDuplicateNotifications.remoteKey {
+                return isPreventDuplicateNotifications
+            }
+
+            return false
         }
     }
 }

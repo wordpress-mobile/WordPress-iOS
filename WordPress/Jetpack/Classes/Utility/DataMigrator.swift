@@ -1,3 +1,6 @@
+import Foundation
+import AutomatticTracks
+
 protocol ContentDataMigrating {
     /// Exports user content data to a shared location that's accessible by the Jetpack app.
     ///
@@ -13,17 +16,31 @@ protocol ContentDataMigrating {
     func deleteExportedData()
 }
 
-enum DataMigrationError: LocalizedError {
-    case databaseCopyError
+enum DataMigrationError: LocalizedError, CustomNSError {
+    case databaseImportError
+    case databaseExportError
     case sharedUserDefaultsNil
     case dataNotReadyToImport
 
     var errorDescription: String? {
         switch self {
-        case .databaseCopyError: return "The database couldn't be copied to/from shared directory"
+        case .databaseImportError: return "The database couldn't be copied from shared directory"
+        case .databaseExportError: return "The database couldn't be copied to shared directory"
         case .sharedUserDefaultsNil: return "Shared user defaults not found"
         case .dataNotReadyToImport: return "The data wasn't ready to import"
         }
+    }
+
+    static var errorDomain: String {
+        return String(describing: DataMigrationError.self)
+    }
+
+    var errorUserInfo: [String: Any] {
+        var userInfo = [String: Any]()
+        if let errorDescription {
+            userInfo[NSDebugDescriptionErrorKey] = errorDescription
+        }
+        return userInfo
     }
 }
 
@@ -33,17 +50,20 @@ final class DataMigrator {
     private let keychainUtils: KeychainUtils
     private let localDefaults: UserPersistentRepository
     private let sharedDefaults: UserPersistentRepository?
+    private let crashLogger: CrashLogging
 
     init(coreDataStack: CoreDataStack = ContextManager.sharedInstance(),
          backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName)?.appendingPathComponent("WordPress.sqlite"),
          keychainUtils: KeychainUtils = KeychainUtils(),
          localDefaults: UserPersistentRepository = UserDefaults.standard,
-         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName)) {
+         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName),
+         crashLogger: CrashLogging = .main) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation
         self.keychainUtils = keychainUtils
         self.localDefaults = localDefaults
         self.sharedDefaults = sharedDefaults
+        self.crashLogger = crashLogger
     }
 }
 
@@ -53,11 +73,15 @@ extension DataMigrator: ContentDataMigrating {
 
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
         guard let backupLocation, copyDatabase(to: backupLocation) else {
-            completion?(.failure(.databaseCopyError))
+            let error = DataMigrationError.databaseExportError
+            self.crashLogger.logError(error)
+            completion?(.failure(error))
             return
         }
         guard populateSharedDefaults() else {
-            completion?(.failure(.sharedUserDefaultsNil))
+            let error = DataMigrationError.sharedUserDefaultsNil
+            self.crashLogger.logError(error)
+            completion?(.failure(error))
             return
         }
         BloggingRemindersScheduler.handleRemindersMigration()
@@ -74,7 +98,9 @@ extension DataMigrator: ContentDataMigrating {
         }
 
         guard let backupLocation, restoreDatabase(from: backupLocation) else {
-            completion?(.failure(.databaseCopyError))
+            let error = DataMigrationError.databaseImportError
+            self.crashLogger.logError(error)
+            completion?(.failure(error))
             return
         }
 
@@ -83,7 +109,9 @@ extension DataMigrator: ContentDataMigrating {
         isDataReadyToMigrate = false
 
         guard populateFromSharedDefaults() else {
-            completion?(.failure(.sharedUserDefaultsNil))
+            let error = DataMigrationError.sharedUserDefaultsNil
+            self.crashLogger.logError(error)
+            completion?(.failure(error))
             return
         }
 

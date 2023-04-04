@@ -1,15 +1,21 @@
 import Foundation
 import WordPressKit
 
-class BlogDashboardService {
+final class BlogDashboardService {
 
     private let remoteService: DashboardServiceRemote
     private let persistence: BlogDashboardPersistence
     private let postsParser: BlogDashboardPostsParser
+    private let repository: UserPersistentRepository
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: DashboardServiceRemote? = nil, persistence: BlogDashboardPersistence = BlogDashboardPersistence(), postsParser: BlogDashboardPostsParser? = nil) {
+    init(managedObjectContext: NSManagedObjectContext,
+         remoteService: DashboardServiceRemote? = nil,
+         persistence: BlogDashboardPersistence = BlogDashboardPersistence(),
+         repository: UserPersistentRepository = UserDefaults.standard,
+         postsParser: BlogDashboardPostsParser? = nil) {
         self.remoteService = remoteService ?? DashboardServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
         self.persistence = persistence
+        self.repository = repository
         self.postsParser = postsParser ?? BlogDashboardPostsParser(managedObjectContext: managedObjectContext)
     }
 
@@ -79,16 +85,18 @@ class BlogDashboardService {
 private extension BlogDashboardService {
 
     func parse(_ entity: BlogDashboardRemoteEntity?, blog: Blog, dotComID: Int) -> [DashboardCardModel] {
-        var items: [DashboardCardModel] = []
-        DashboardCard.allCases.forEach { card in
-            guard card.shouldShow(for: blog, apiResponse: entity) else {
-                return
+        let personalizationService = BlogDashboardPersonalizationService(repository: repository, siteID: dotComID)
+        var cards: [DashboardCardModel] = DashboardCard.allCases.compactMap { card in
+            guard personalizationService.isEnabled(card),
+                  card.shouldShow(for: blog, apiResponse: entity) else {
+                return nil
             }
-
-            let cardModel = DashboardCardModel(cardType: card, dotComID: dotComID, entity: entity)
-            items.append(cardModel)
+            return DashboardCardModel(cardType: card, dotComID: dotComID, entity: entity)
         }
-        return items
+        if cards.isEmpty || cards.map(\.cardType) == [.personalize] {
+            cards.insert(DashboardCardModel(cardType: .empty, dotComID: dotComID), at: 0)
+        }
+        return cards
     }
 
     func decode(_ cardsDictionary: NSDictionary, blog: Blog) -> BlogDashboardRemoteEntity? {

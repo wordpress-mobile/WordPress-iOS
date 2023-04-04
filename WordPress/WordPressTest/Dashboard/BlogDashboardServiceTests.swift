@@ -9,7 +9,9 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var service: BlogDashboardService!
     private var remoteServiceMock: DashboardServiceRemoteMock!
     private var persistenceMock: BlogDashboardPersistenceMock!
+    private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     private let wpComID = 123456
 
@@ -18,13 +20,18 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
+        repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
-        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
+        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
+
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
+
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -97,6 +104,64 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.likes, 0)
             XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.comments, 0)
 
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testHidingCards() {
+        // When the stats card is hidden for the current site
+        BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
+            .setEnabled(false, for: .todaysStats)
+
+        let expect = expectation(description: "Parse todays stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            // Then it's not displayed
+            XCTAssertFalse(cards.contains(where: { $0.cardType == .todaysStats }))
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testThatWhenAllCardsAreHiddenEmptyStateIsShown() {
+        // Given
+        let personalizationService = BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
+        for card in DashboardCard.personalizableCards {
+            personalizationService.setEnabled(false, for: card)
+        }
+
+        // When
+        let expect = expectation(description: "Cards parsed")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+        service.fetch(blog: blog) { cards in
+            // Then empty state is shown
+            XCTAssertEqual(cards.map(\.cardType), [.empty, .personalize])
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testThatPreferencesAreSavedPerSite() {
+        // When the stats card is hidden for a different site
+        BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID + 1)
+            .setEnabled(false, for: .todaysStats)
+
+        let expect = expectation(description: "Parse todays stats")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            // Then it's still disabled for other sites
+            XCTAssertTrue(cards.contains(where: { $0.cardType == .todaysStats }))
             expect.fulfill()
         }
 

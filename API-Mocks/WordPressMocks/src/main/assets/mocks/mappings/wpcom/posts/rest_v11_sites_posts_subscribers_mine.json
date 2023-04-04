@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.1/sites/106707880/posts/439/subscribers/mine"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "i_subscribe": false,
+      "receives_notifications": false,
+      "meta": {
+        "links": {
+          "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880",
+          "posts": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/439",
+          "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/posts/439/subscribers/help"
+        }
+      }
+    }
+  }
+}

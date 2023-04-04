@@ -20,7 +20,7 @@ class BlazeWebViewModel {
     private let blog: Blog
     private let postID: NSNumber?
     private let view: BlazeWebView
-    private let remoteConfig: RemoteConfig
+    private let remoteConfigStore: RemoteConfigStore
     private let externalURLHandler: ExternalURLHandler
     private var linkBehavior: LinkBehavior = .all
 
@@ -36,7 +36,7 @@ class BlazeWebViewModel {
         self.blog = blog
         self.postID = postID
         self.view = view
-        self.remoteConfig = RemoteConfig(store: remoteConfigStore)
+        self.remoteConfigStore = remoteConfigStore
         self.externalURLHandler = externalURLHandler
         setLinkBehavior()
     }
@@ -98,7 +98,7 @@ class BlazeWebViewModel {
     }
 
     func isCurrentStepDismissible() -> Bool {
-        return currentStep != remoteConfig.blazeNonDismissibleStep.value
+        return currentStep != RemoteConfigParameter.blazeNonDismissibleStep.value(using: remoteConfigStore)
     }
 
     func webViewDidFail(with error: Error) {
@@ -139,7 +139,7 @@ class BlazeWebViewModel {
     }
 
     private func updateIsFlowCompleted() {
-        if currentStep == remoteConfig.blazeFlowCompletedStep.value {
+        if currentStep == RemoteConfigParameter.blazeFlowCompletedStep.value(using: remoteConfigStore) {
             isFlowCompleted = true // mark flow as completed if completion step is reached
         }
         if currentStep == BlazeFlowSteps.blazeWidgetDefaultStep {

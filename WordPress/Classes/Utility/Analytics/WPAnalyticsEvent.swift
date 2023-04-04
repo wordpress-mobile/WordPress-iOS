@@ -427,9 +427,14 @@ import Foundation
     case jetpackBrandingMenuCardRemindLater
     case jetpackBrandingMenuCardContextualMenuAccessed
     case jetpackFeatureIncorrectlyAccessed
+
+    // Jetpack plugin overlay modal
     case jetpackInstallPluginModalViewed
     case jetpackInstallPluginModalDismissed
     case jetpackInstallPluginModalInstallTapped
+    case wordPressInstallPluginModalViewed
+    case wordPressInstallPluginModalDismissed
+    case wordPressInstallPluginModalSwitchTapped
 
     // Jetpack full plugin installation for individual sites
     case jetpackInstallFullPluginViewed
@@ -464,6 +469,11 @@ import Foundation
     case supportOpenMobileForumTapped
     case supportMigrationFAQButtonTapped
     case supportMigrationFAQCardViewed
+
+    // Jetpack plugin connection to user's WP.com account
+    case jetpackPluginConnectUserAccountStarted
+    case jetpackPluginConnectUserAccountFailed
+    case jetpackPluginConnectUserAccountCompleted
 
     /// A String that represents the event
     var value: String {
@@ -1199,12 +1209,20 @@ import Foundation
             return "remove_feature_card_menu_accessed"
         case .jetpackFeatureIncorrectlyAccessed:
             return "jetpack_feature_incorrectly_accessed"
+
+        // Jetpack plugin overlay modal
         case .jetpackInstallPluginModalViewed:
             return "jp_install_full_plugin_onboarding_modal_viewed"
         case .jetpackInstallPluginModalDismissed:
             return "jp_install_full_plugin_onboarding_modal_dismissed"
         case .jetpackInstallPluginModalInstallTapped:
             return "jp_install_full_plugin_onboarding_modal_install_tapped"
+        case .wordPressInstallPluginModalViewed:
+            return "wp_individual_site_overlay_viewed"
+        case .wordPressInstallPluginModalDismissed:
+            return "wp_individual_site_overlay_dismissed"
+        case .wordPressInstallPluginModalSwitchTapped:
+            return "wp_individual_site_overlay_primary_tapped"
 
         // Jetpack full plugin installation for individual sites
         case .jetpackInstallFullPluginViewed:
@@ -1265,6 +1283,15 @@ import Foundation
             return "support_migration_faq_tapped"
         case .supportMigrationFAQCardViewed:
             return "support_migration_faq_viewed"
+
+        // Jetpack plugin connection to user's WP.com account
+        case .jetpackPluginConnectUserAccountStarted:
+            return "jetpack_plugin_connect_user_account_started"
+        case .jetpackPluginConnectUserAccountFailed:
+            return "jetpack_plugin_connect_user_account_failed"
+        case .jetpackPluginConnectUserAccountCompleted:
+            return "jetpack_plugin_connect_user_account_completed"
+
         } // END OF SWITCH
     }
 

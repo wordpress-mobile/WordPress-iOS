@@ -7,4 +7,4 @@
 ### Steps to reproduce the behavior
 
 
-##### Tested on [device], iOS [version], WPiOS [version]
+##### Tested on [device], iOS [version], Jetpack iOS / WordPress iOS [version]
