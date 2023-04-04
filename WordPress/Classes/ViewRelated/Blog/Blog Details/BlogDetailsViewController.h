@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryJetpackBrandingCard,
     BlogDetailsSectionCategoryJetpackInstallCard,
     BlogDetailsSectionCategoryTraffic,
+    BlogDetailsSectionCategoryMaintenance
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
