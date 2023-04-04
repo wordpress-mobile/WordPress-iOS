@@ -6,7 +6,7 @@ final class DomainsDashboardCardHelper {
     static func shouldShowCard(
         for blog: Blog,
         isJetpack: Bool = AppConfiguration.isJetpack,
-        featureFlagEnabled: Bool = RemoteFeatureFlag.directDomainsPurchaseDashboardCard.enabled()
+        featureFlagEnabled: Bool = RemoteFeatureFlag.domainsDashboardCard.enabled()
     ) -> Bool {
         guard isJetpack, featureFlagEnabled else {
             return false

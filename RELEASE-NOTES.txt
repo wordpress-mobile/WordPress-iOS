@@ -1,6 +1,7 @@
 22.2
 -----
 
+* [**] [Jetpack-only] Added a dashboard card for purchasing domains. [#20424]
 
 22.1
 -----

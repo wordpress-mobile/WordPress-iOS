@@ -10,18 +10,27 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
     private lazy var cardViewModel: DashboardCardViewModel = {
 
         let onViewTap: () -> Void = { [weak self] in
-            guard let presentingViewController = self?.presentingViewController,
-                  let blog = self?.blog else {
+            guard let self,
+                  let presentingViewController = self.presentingViewController?.mySiteViewController,
+                  let blog = self.blog else {
                 return
             }
-            // TODO: implement viewTap actions
+
+            DomainsDashboardCoordinator.presentDomainsDashboard(with: presentingViewController,
+                                                                source: Strings.source,
+                                                                blog: blog)
+            DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardTapped(in: self.row)
         }
 
         let onEllipsisTap: () -> Void = { [weak self] in
         }
 
         let onHideThisTap: UIActionHandler = { [weak self] _ in
-            self?.presentingViewController?.reloadCardsLocally()
+            guard let self else { return }
+
+            DomainsDashboardCardHelper.hideCard(for: self.blog)
+            DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardHidden(in: self.row)
+            self.presentingViewController?.reloadCardsLocally()
         }
 
         return DashboardCardViewModel(onViewTap: onViewTap,
@@ -127,6 +136,8 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
+
+        DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardShown(in: row)
     }
 }
 
@@ -161,6 +172,7 @@ extension DashboardDomainsCardCell {
         static let hideThis = NSLocalizedString("domain.dashboard.card.menu.hide",
                                                 value: "Hide this",
                                                 comment: "Title for a menu action in the context menu on the Jetpack install card.")
+        static let source = "domains_dashboard_card"
     }
 }
 

@@ -1605,13 +1605,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAnalytics trackEvent:WPAnalyticsEventDomainsDashboardViewed
-                 properties:@{WPAppAnalyticsKeyTapSource: [self propertiesStringForSource:source]}
-                       blog:self.blog];
-
-    UIViewController *controller = [self makeDomainsDashboardViewController];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    [DomainsDashboardCoordinator presentDomainsDashboardWithPresenter:self.presentationDelegate
+                                                               source:[self propertiesStringForSource:source]
+                                                                 blog:self.blog];
 }
 
 -(void)showJetpackSettings
