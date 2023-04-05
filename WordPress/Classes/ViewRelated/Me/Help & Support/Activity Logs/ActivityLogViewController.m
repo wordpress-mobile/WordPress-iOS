@@ -154,7 +154,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         UIAlertAction *yesButton = [UIAlertAction
                                     actionWithTitle:trashButtonTitle
                                     style:UIAlertActionStyleDestructive
-                                    handler:^(UIAlertAction *action) {
+                                    handler:^(UIAlertAction * __unused action) {
                                       [WPLogger.shared deleteArchivedLogs];
                                       [self loadLogFiles];
                                       [self.tableView reloadData];
@@ -163,7 +163,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         UIAlertAction *noButton = [UIAlertAction
             actionWithTitle:cancelButtonTitle
             style:UIAlertActionStyleDefault
-            handler:^(UIAlertAction *action) {
+            handler:^(UIAlertAction * __unused action) {
             }];
         [alert addAction:noButton];
         [alert addAction:yesButton];

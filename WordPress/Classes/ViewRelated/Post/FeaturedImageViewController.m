@@ -117,7 +117,7 @@
                                 handler:nil];
     [alertController addActionWithTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc")
                                   style:UIAlertActionStyleDestructive
-                                handler:^(UIAlertAction *alertAction) {
+                                handler:^(UIAlertAction * __unused alertAction) {
                                     if (self.delegate) {
                                         [self.delegate FeaturedImageViewControllerOnRemoveImageButtonPressed:self];
                                     }

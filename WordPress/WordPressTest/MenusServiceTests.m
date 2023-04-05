@@ -80,7 +80,7 @@
     XCTAssertNoThrow(service = [[MenusService alloc] initWithManagedObjectContext:context]);
     XCTAssertNoThrow([service syncMenusForBlog:blog
                                        success:^(){}
-                                       failure:^(NSError *error) {}]);
+                                       failure:^(NSError * __unused error) {}]);
 }
 
 - (void)testThatCreateMenuWithNameWorks
@@ -113,7 +113,7 @@
     XCTAssertNoThrow([service createOrUpdateMenu:menu
                                             forBlog:blog
                                          success:^(void) {}
-                                         failure:^(NSError *error) {}]);
+                                         failure:^(NSError * __unused error) {}]);
 }
 
 - (void)testThatUpdateMenuWorks
@@ -162,7 +162,7 @@
     XCTAssertNoThrow([service createOrUpdateMenu:menu
                                  forBlog:blog
                                  success:^(){}
-                                 failure:^(NSError *error) {}]);
+                                 failure:^(NSError * __unused error) {}]);
 }
 
 - (void)testThatDeleteMenuWithIdWorks
@@ -189,7 +189,7 @@
     XCTAssertNoThrow([service deleteMenu:menu
                                  forBlog:blog
                                  success:^(){}
-                                 failure:^(NSError *error) {}]);
+                                 failure:^(NSError * __unused error) {}]);
 }
 
 - (void)testThatDeleteMenuWithoutIdWorks
@@ -216,7 +216,7 @@
     XCTAssertNoThrow([service deleteMenu:menu
                                  forBlog:blog
                                  success:^(){}
-                                 failure:^(NSError *error) {}]);
+                                 failure:^(NSError * __unused error) {}]);
 }
 
 @end

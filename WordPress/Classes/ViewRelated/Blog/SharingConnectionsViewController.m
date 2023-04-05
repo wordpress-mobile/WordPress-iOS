@@ -280,7 +280,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     __weak SharingConnectionsViewController *sharingConnectionsVC = self;
     UIAlertAction* continueAction = [UIAlertAction actionWithTitle:validationError.continueTitle
                                                               style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
+                                                          handler:^(UIAlertAction * __unused action) {
                                                               if (validationError.continueURL) {
                                                                   [sharingConnectionsVC handleContinueURLTapped: validationError.continueURL];
                                                               }
