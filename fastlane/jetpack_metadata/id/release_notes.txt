@@ -1,5 +1,0 @@
-Kami masih merasa muda belia, bagaimana dengan Anda? Dalam kesempatan ini (dan karena Anda telah memintanya), kini Anda dapat mengubah sebagian besar jenis blok menjadi jenis blok lainnya, seperti kutipan, kolom, dan grup. Bagus.
-
-Kami menyesuaikan desain pada, memperbarui ikon "topik/situs yang diikuti", menghiasi latar belakang bar navigasi dengan warna baru agar cocok dengan layar lainnya di dalam aplikasi, dan mengecilkan ukuran tulisan judul di tab Pembaca yang terlalu besar. (Tindakan terakhir di atas juga kami terapkan pada tab Pemberitahuan.)
-
-Anda juga akan melihat sedikit perubahan kecil pada ikon bar tab Situs Saya dan survei di dalam aplikasi. Jika penglihatan Anda tajam, Anda akan melihat warna latar belakang gelap pada bilah peralatan, sehingga kini tab atas tampil selaras dengan seluruh aplikasi.

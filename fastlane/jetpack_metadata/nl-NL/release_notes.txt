@@ -1,5 +1,0 @@
-We weten niet hoe het met jou zit, maar wij voelen ons 22. Om dit te vieren (en omdat jullie er om hebben gevraagd), kun je de meeste typen blokken nu omzetten naar andere bloktypen, zoals citaten, kolommen en groepen. Wel zo handig.
-
-We hebben wat aanpassingen gedaan aan de Reader, waarbij we het pictogram voor 'gevolgde onderwerpen/sites' hebben bijgewerkt, de achtergrondkleur van de navigatiebalk hebben aangepast om te passen bij andere schermen in de app, en de te grote titel in het tabblad Reader hebben verkleind. (Dat laatste hebben we ook in het tabblad Meldingen gedaan.)
-
-Je ziet ook wat kleine visuele aanpassingen aan het taakbalkpictogram in het tabblad Mijn site en in de app-poll. En als je haviksogen hebt, zie je ook dat de donkere achtergrondkleur van taakbalken en tabbladen nu consistent is in de app.

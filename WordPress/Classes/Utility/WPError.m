@@ -122,7 +122,7 @@ NSInteger const SupportButtonIndex = 0;
                                                                           preferredStyle:UIAlertControllerStyleAlert];
 
         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                         style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                                         style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull __unused action) {
                                                              if (okBlock) {
                                                                  okBlock(alertController);
                                                              }
@@ -135,7 +135,7 @@ NSInteger const SupportButtonIndex = 0;
             NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                              style:UIAlertActionStyleCancel
-                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                           handler:^(UIAlertAction * _Nonnull __unused action) {
                                                                SupportTableViewController *supportVC = [SupportTableViewController new];
                                                                [supportVC showFromTabBar];
                                                                [WPError internalInstance].alertShowing = NO;

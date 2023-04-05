@@ -73,8 +73,8 @@
                                failure:[OCMArg isNotNil]]);
 
     [self.service syncTagsForBlog:self.blog
-                          success:^(NSArray<PostTag *> * _Nonnull tags) {}
-                          failure:^(NSError * _Nonnull error) {}];
+                          success:^(NSArray<PostTag *> * _Nonnull __unused tags) {}
+                          failure:^(NSError * _Nonnull __unused error) {}];
 }
 
 - (void)testThatSyncTagsWithPagingWorks
@@ -100,8 +100,8 @@
     [self.service syncTagsForBlog:self.blog
                            number:number
                            offset:offset
-                          success:^(NSArray<PostTag *> * _Nonnull tags) {}
-                          failure:^(NSError * _Nonnull error) {}];
+                          success:^(NSArray<PostTag *> * _Nonnull __unused tags) {}
+                          failure:^(NSError * _Nonnull __unused error) {}];
 }
 
 - (void)testThatSearchTagsWithNameWorks
@@ -115,8 +115,8 @@
     
     [self.service searchTagsWithName:name
                                 blog:self.blog
-                             success:^(NSArray<PostTag *> * _Nonnull tags) {}
-                             failure:^(NSError * _Nonnull error) {}];
+                             success:^(NSArray<PostTag *> * _Nonnull __unused tags) {}
+                             failure:^(NSError * _Nonnull __unused error) {}];
 }
 
 @end

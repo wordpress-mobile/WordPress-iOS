@@ -25,7 +25,7 @@ class BlogDashboardPostsParser {
             // If drafts are not synced and the cards API returns zero posts
             // depend on local data
             if blog.dashboardState.draftsSynced || (!posts.hasDrafts && localDraftsCount > 0) {
-                posts["draft"] = Array(repeatElement([:], count: localDraftsCount))
+                posts["draft"] = Array(repeatElement([String: Any](), count: localDraftsCount))
             }
         }
 
@@ -34,18 +34,18 @@ class BlogDashboardPostsParser {
             // If scheduled posts are not synced and the cards API returns zero posts
             // depend on local data
             if blog.dashboardState.scheduledSynced || (!posts.hasScheduled && localScheduledCount > 0) {
-                posts["scheduled"] = Array(repeatElement([:], count: localScheduledCount))
+                posts["scheduled"] = Array(repeatElement([String: Any](), count: localScheduledCount))
             }
         }
 
         // Make sure only one draft is present
         if posts.hasDrafts {
-            posts["draft"] = [[:]] // Only one post is needed
+            posts["draft"] = [[String: Any]()] // Only one post is needed
         }
 
         // Make sure only one scheduled post is present
         if posts.hasScheduled {
-            posts["scheduled"] = [[:]] // Only one post is needed
+            posts["scheduled"] = [[String: Any]()] // Only one post is needed
         }
 
         return posts

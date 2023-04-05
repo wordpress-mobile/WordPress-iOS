@@ -194,7 +194,7 @@
                                 handler:nil];
     [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"")
                                   style:UIAlertActionStyleDestructive
-                                handler:^(UIAlertAction *alertAction) {
+                                handler:^(UIAlertAction * __unused alertAction) {
                                     [self finishWithoutUpdates];
                                 }];
     alertController.popoverPresentationController.barButtonItem = self.navigationItem.leftBarButtonItem;

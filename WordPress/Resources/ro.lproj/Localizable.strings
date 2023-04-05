@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-21 14:52:25+0000 */
+/* Translation-Revision-Date: 2023-04-03 12:23:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -3142,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Comutări funcționalități";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Reprezentative";
 
@@ -3487,9 +3484,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Preiau URL-ul site-ului";
-
-/* No comment provided by engineer. */
-"Gradient" = "Gradient";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Tip de gradient";
@@ -6496,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Caută un domeniu";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Caută și găsește un cuvânt cheie scurt și ușor de ținut minte ca să-i ajuți pe oameni să-ți găsească și să-ți viziteze site-ul.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Câmp de intrare pentru căutare.";
 
@@ -7471,6 +7468,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Numai text";
 
 /* No comment provided by engineer. */
+"Text color" = "Culoare text";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
 
 /* Button title
@@ -7816,9 +7816,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Aceste informații ne ajută să ne îmbunătățim produsele, să facem un marketing mai relevant pentru tine, să-ți personalizăm experiența WordPress.com și altele, așa cum am detaliat în politica noastră de confidențialitate.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Aici te va găsi lumea pe internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Este o reamintire pentru a publica ceva azi ✍️";
@@ -9702,6 +9699,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Încearcă acum";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Adaugă cartușe care se potrivesc cu nevoile tale ca să vezi informații despre site-ul tău.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Niciun cartuș de afișat";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personalizează fila Prima pagină";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Parametrii contramandați sunt marcați cu o bifă.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Contramandează parametrul ales prin definirea unei valori noi aici.";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Rezervă-ți partea ta pe web cu o adresă de site ușor de găsit, partajat și urmărit.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Ascunde asta";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Cu un domeniu personalizat, ai o identitate proprie online";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "atinge de două ori pentru a schimba unitatea";
 
@@ -9998,6 +10019,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Gata";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Conectează-ți contul de utilizator";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Pentru a primi notificări utile pe telefon de la site-ul tău WordPress, trebuie să-ți conectezi contul de utilizator.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Ca să folosești statisticile pe site-ul tău, trebuie să conectezi modulul Jetpack la contul tău de utilizator.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "În curând, Statistici, Cititor, Notificări și alte funcționalități se vor muta în aplicația Jetpack pentru mobil.";
 
@@ -10235,6 +10265,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "parolă";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Cartușele pot să afișeze conținut diferit în funcție de ceea ce se întâmplă pe site-ul tău. Lucrăm la mai multe cartușe și comenzi.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Adaugă cartușe sau ascunde-le";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Promovează";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Redactează articole";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Îndemnuri de a scrie";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Articole programate";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Statistici pentru azi";
+
+/* Page title */
+"personalizeHome.title" = "Personalizează fila Prima pagină";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";
 
@@ -10252,6 +10306,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovează cu Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Vezi toate răspunsurile";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Accesează Setări site pentru a le reactiva";
@@ -10330,6 +10387,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Eroare de partajare";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/numelesiteuluitau.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "La fel ca în exemplul de mai sus, un domeniu le permite oamenilor să-ți găsească și să-ți viziteze site-ul din navigatoarele lor web.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "numelesiteuluitau.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Arată îndemnurile";
@@ -10645,6 +10711,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, site-uri, site, bloguri, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Comută la aplicația Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Continuă fără Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ folosește module Jetpack individuale care nu sunt acceptate de aplicația WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ folosește modulul %2$@ care nu este acceptat de aplicația WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Te rog să comuți la aplicația Jetpack, te vom ghida la conectarea integrală a modulului Jetpack ca să poți să folosești toate funcționalitățile aplicației pentru acest site.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Regret, acest site nu este acceptat de aplicația WordPress";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Te rog șterge aplicația WordPress";

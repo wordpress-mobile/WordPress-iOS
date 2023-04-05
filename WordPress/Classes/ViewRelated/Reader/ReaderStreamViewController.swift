@@ -1293,7 +1293,7 @@ import Combine
         // has to exist within an empty set.
         let predicateForNilTopic = contentType == .saved ?
             NSPredicate(format: "isSavedForLater == YES") :
-            NSPredicate(format: "topic = NULL AND SELF in %@", [])
+            NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
         guard let topic = readerTopic else {
             return predicateForNilTopic

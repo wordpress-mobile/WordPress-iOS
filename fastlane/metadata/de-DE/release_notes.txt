@@ -1,3 +1,0 @@
-Wir wissen nicht, wie es dir geht, aber wir fühlen uns heute, als wären wir 22 Jahre alt. Zur Feier dieses Release (und weil du danach gefragt hast) ist es jetzt möglich, die meisten Blocktypen in andere Blocktypen wie Zitate, Spalten und Gruppen umzuwandeln. Sehr gut.
-
-Außerdem haben wir ein paar kleine visuelle Änderungen am Dashboard „Meine Website“ und an der In-App-Umfrage vorgenommen.

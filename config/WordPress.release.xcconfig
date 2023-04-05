@@ -1,4 +1,4 @@
 #include "Version.public.xcconfig"
-#include "SDKVersions.xcconfig"
+#include "Common.xcconfig"
 
 BUILD_SCHEME=WordPress
