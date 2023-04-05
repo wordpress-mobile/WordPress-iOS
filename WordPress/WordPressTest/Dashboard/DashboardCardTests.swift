@@ -256,6 +256,8 @@ class DashboardCardTests: CoreDataTestCase {
         let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: nil)
         let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
         let shouldShowStats = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowActivityLog = DashboardCard.activityLog.shouldShow(for: blog, apiResponse: nil)
 
         // Then
         XCTAssertFalse(shouldShowDrafts)
@@ -263,6 +265,8 @@ class DashboardCardTests: CoreDataTestCase {
         XCTAssertFalse(shouldShowNextPost)
         XCTAssertFalse(shouldShowCreatePost)
         XCTAssertFalse(shouldShowStats)
+        XCTAssertFalse(shouldShowPages)
+        XCTAssertFalse(shouldShowActivityLog)
     }
 
     func testRemoteCardsIdentifiers() {
@@ -270,7 +274,7 @@ class DashboardCardTests: CoreDataTestCase {
         let identifiers = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
 
         // Then
-        XCTAssertEqual(identifiers, ["todays_stats", "posts"])
+        XCTAssertEqual(identifiers, ["todays_stats", "posts", "pages", "activity"])
     }
 
     // MARK: Helpers
