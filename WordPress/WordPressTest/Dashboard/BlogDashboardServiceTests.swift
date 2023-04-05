@@ -357,6 +357,10 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    // MARK: - Local Pages
+
+    // TODO: Add test to check that local pages are considered if no pages are returned from the endpoint
+
     func dictionary(from file: String) -> NSDictionary? {
         let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
