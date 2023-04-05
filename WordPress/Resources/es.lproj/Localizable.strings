@@ -3142,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Indicadores de características";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Destacados";
 
@@ -3487,9 +3484,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Obteniendo la URL del sitio";
-
-/* No comment provided by engineer. */
-"Gradient" = "Gradiente";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Tipo de degradado";
@@ -7471,6 +7465,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Solo texto";
 
 /* No comment provided by engineer. */
+"Text color" = "Color del texto";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Los controles de formato de texto están dentro de la barra de herramientas situada encima del teclado mientras editas un bloque de texto";
 
 /* Button title
@@ -7816,9 +7813,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Esta información nos ayuda a mejorar nuestros productos, hacer que el marketing sea más relevante, personalizar tu experiencia en WordPress.com y más, tal como se detalla en nuestra política de privacidad.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Aquí es donde las personas te encontrarán en Internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Este es tu recordatorio para que bloguees hoy ✍️";
