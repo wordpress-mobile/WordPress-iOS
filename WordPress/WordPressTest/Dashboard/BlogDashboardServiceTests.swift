@@ -121,7 +121,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             // Activity section exists
             XCTAssertNotNil(activityCardItem)
 
-            // 2 page items
+            // 2 activity items
             XCTAssertEqual(activityCardItem!.apiResponse!.pages!.count, 2)
 
             expect.fulfill()
