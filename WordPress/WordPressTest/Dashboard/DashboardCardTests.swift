@@ -12,17 +12,23 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
 class DashboardCardTests: CoreDataTestCase {
 
     private var blog: Blog!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     override func setUp() {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(mainContext).build()
+        blog.isAdmin = true
+        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
+        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
     }
 
     override func tearDown() {
         QuickStartTourGuide.shared.remove(from: blog)
         blog = nil
+        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
+        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
         super.tearDown()
     }
 
@@ -69,7 +75,7 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShouldAlwaysShowStatsCard() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false, hasPages: false, hasActivity: false)
+        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
 
         // When
         let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: apiResponse)
@@ -164,7 +170,7 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShowingDraftsCardOnly() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: true, hasScheduled: false, hasPublished: false, hasPages: false, hasActivity: false)
+        let apiResponse = buildEntity(hasDrafts: true, hasScheduled: false, hasPublished: false)
 
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
@@ -181,7 +187,7 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShowingScheduledCardOnly() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: true, hasPublished: false, hasPages: false, hasActivity: false)
+        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: true, hasPublished: false)
 
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
@@ -198,7 +204,7 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShowingDraftsAndScheduled() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: true, hasScheduled: true, hasPublished: false, hasPages: false, hasActivity: false)
+        let apiResponse = buildEntity(hasDrafts: true, hasScheduled: true, hasPublished: false)
 
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
@@ -215,7 +221,7 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShowingNextPostCardOnly() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: true, hasPages: false, hasActivity: false)
+        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: true)
 
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
@@ -232,7 +238,7 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShowingCreatePostCardOnly() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false, hasPages: false, hasActivity: false)
+        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
 
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
@@ -246,6 +252,35 @@ class DashboardCardTests: CoreDataTestCase {
         XCTAssertFalse(shouldShowNextPost)
         XCTAssertTrue(shouldShowCreatePost)
     }
+
+    // MARK: Pages
+
+    func testShowingPagesCardWhenThereArePages() {
+        // Given
+        let apiResponse = buildEntity(hasPages: true)
+
+        // When
+        let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertTrue(shouldShowPages)
+    }
+
+    func testShowingPagesCardWithZeroPages() {
+        // Given
+        let apiResponse = buildEntity(hasPages: false)
+
+        // When
+        let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertTrue(shouldShowPages)
+    }
+
+    // MARK: Activity Log
+
+    // TODO: Add test for showing the card if there's activity
+    // TODO: Add test for not showing the card if there's no activity
 
     // MARK: Remote Cards
 
@@ -279,11 +314,11 @@ class DashboardCardTests: CoreDataTestCase {
 
     // MARK: Helpers
 
-    private func buildEntity(hasDrafts: Bool,
-                             hasScheduled: Bool,
-                             hasPublished: Bool,
-                             hasPages: Bool,
-                             hasActivity: Bool) -> BlogDashboardRemoteEntity {
+    private func buildEntity(hasDrafts: Bool = false,
+                             hasScheduled: Bool = false,
+                             hasPublished: Bool = false,
+                             hasPages: Bool = false,
+                             hasActivity: Bool = false) -> BlogDashboardRemoteEntity {
         let drafts = hasDrafts ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let scheduled = hasScheduled ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let posts = BlogDashboardRemoteEntity.BlogDashboardPosts(hasPublished: hasPublished, draft: drafts, scheduled: scheduled)
