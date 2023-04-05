@@ -3139,9 +3139,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Bendera fitur";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Unggulan";
 
@@ -3484,9 +3481,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Mendapatkan URL situs";
-
-/* No comment provided by engineer. */
-"Gradient" = "Gradien";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Jenis Gradasi";
@@ -7468,6 +7462,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Hanya Teks";
 
 /* No comment provided by engineer. */
+"Text color" = "Warna teks";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrol pemformatan teks terletak di dalam bilah peralatan yang ada di atas keyboard saat menyunting blok teks";
 
 /* Button title
@@ -7813,9 +7810,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Informasi ini membantu kami menyempurnakan produk, membuat pemasaran kepada Anda jadi lebih relevan, menyesuaikan pengalaman WordPress.com Anda, dan lainnya seperti yang dijelaskan dalam kebijakan privasi kami.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Di sinilah orang akan menemukan Anda di internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Ini pengingat blogging hari ini ✍️";

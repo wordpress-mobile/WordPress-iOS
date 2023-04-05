@@ -1,5 +1,0 @@
-Plein de surprises se profilent à l’horizon ! Nous avons donc le plaisir de vous annoncer (parce que vous nous l’avez demandé) que vous pouvez désormais transformer la plupart des types de blocs en autres types de blocs, comme des citations, des colonnes et des groupes. Intéressant, non ?
-
-Nous avons légèrement modifié le design du Lecteur, en mettant à jour l’icône des sites et sujets suivis, en uniformisant la couleur de l’arrière-plan de la barre de navigation avec celle des autres écrans de l’application et en redimensionnant le titre trop grand dans l’onglet Lecteur. (Nous avons aussi redimensionné le titre de l’onglet Notifications.)
-
-Nous avons également quelque peu modifié la présentation de l’icône de la barre d’onglets Mon site et de l’enquête intégrée à l’application. Et si vous avez un œil de lynx, vous remarquerez que la couleur foncée de l’arrière-plan des barres d’outils et des onglets supérieurs est désormais la même pour toute l’application.

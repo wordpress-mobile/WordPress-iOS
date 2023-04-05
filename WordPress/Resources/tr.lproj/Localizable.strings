@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 18:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-04 19:42:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -3142,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Özellik bayrakları";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Öne çıkan";
 
@@ -3487,9 +3484,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Site URL'sini alma";
-
-/* No comment provided by engineer. */
-"Gradient" = "Degrade";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Gradyan Türü";
@@ -7471,6 +7465,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Sadece metin";
 
 /* No comment provided by engineer. */
+"Text color" = "Metin rengi";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Bir metin bloku düzenlenirken, metin biçimlendirme kontrolleri klavyenin üzerindeki araç çubuğunda bulunur";
 
 /* Button title
@@ -7816,9 +7813,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Bu bilgiler, ürünlerimizi geliştirmemize, pazarlamayı sizin için daha alakalı hale getirmemize, WordPress.com deneyiminizi kişiselleştirmemize ve ayrıntılı olarak gizlilik politikamızda belirttiğimiz şekilde daha fazlasına yardımcı olur.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Bu, insanların sizi internette bulacakları yerdir.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Bu, bugüne ait blog yazma hatırlatıcınızdır ✍️";
@@ -9702,6 +9696,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Şimdi deneyin";
 
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Bunu gizle";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Özel alan adıyla çevrimiçi kimliğinizin sahibi olun";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
 
@@ -9998,6 +9998,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Bitti";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Kullanıcı hesabınızı bağlayın";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "İstatistikler, Okuyucu, Bildirimler ve diğer özellikler, yakında Jetpack mobil uygulamasına taşınacaktır.";
 
@@ -10235,6 +10238,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "parola";
 
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Zamanlanan yazılar";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Bugünün istatistikleri";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";
 
@@ -10252,6 +10264,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Tüm yanıtları görüntüle";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Tekrar açmak için Site Ayarlarını ziyaret edin";
@@ -10330,6 +10345,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Paylaşım hatası";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/siteadi.com";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "SiteAdi.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Talepleri göster";
@@ -10645,6 +10666,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, siteler, site, bloglar, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack uygulamasına geçiş yapın";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Jetpack olmadan devam et";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Lütfen WordPress uygulamasını silin";
