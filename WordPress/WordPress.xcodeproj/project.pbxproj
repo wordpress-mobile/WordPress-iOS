@@ -1178,6 +1178,7 @@
 		4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A76A4BB29D4381100AABF4B /* CommentService+LikesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */; };
 		4A76A4BD29D43BFD00AABF4B /* CommentService+MorderationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */; };
+		4A76A4BF29D4F0A500AABF4B /* reader-post-comments-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */; };
 		4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
 		4A82C43228D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
 		4A878550290F2C7D0083AB78 /* Media+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A87854F290F2C7D0083AB78 /* Media+Sync.swift */; };
@@ -6705,6 +6706,7 @@
 		4A526BDE296BE9A50007B5BA /* CoreDataService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataService.h; sourceTree = "<group>"; };
 		4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentService+LikesTests.swift"; sourceTree = "<group>"; };
 		4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentService+MorderationTests.swift"; sourceTree = "<group>"; };
+		4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "reader-post-comments-success.json"; sourceTree = "<group>"; };
 		4A82C43028D321A300486CFF /* Blog+Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Post.swift"; sourceTree = "<group>"; };
 		4A87854F290F2C7D0083AB78 /* Media+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Media+Sync.swift"; sourceTree = "<group>"; };
 		4A9314DB297790C300360232 /* PeopleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleServiceTests.swift; sourceTree = "<group>"; };
@@ -16353,6 +16355,7 @@
 				93CD939219099BE70049096E /* authtoken.json */,
 				FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */,
 				FEFC0F8D27313DCF001F7F1D /* comments-v2-success.json */,
+				4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */,
 				FEFC0F8F27315634001F7F1D /* empty-array.json */,
 				74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */,
 				74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */,
@@ -19079,6 +19082,7 @@
 				7E4A772120F7BBBD001C706D /* activity-log-post-content.json in Resources */,
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
+				4A76A4BF29D4F0A500AABF4B /* reader-post-comments-success.json in Resources */,
 				7E53AB0820FE6C9C005796FE /* activity-log-post.json in Resources */,
 				32110560250C027D0048446F /* invalid-gif.gif in Resources */,
 				D848CC0B20FF2D5D00A9038F /* notifications-user-range.json in Resources */,
