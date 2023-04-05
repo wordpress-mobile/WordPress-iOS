@@ -114,7 +114,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
                                           withSuccess:^(UIImage *image) {
                                               [self setCachedImage:image forHash:hash type:type size:maxSize];
                                               [self processImage:image forHash:hash type:type size:size success:success];
-                                          } failure:^(NSError *error) {
+                                          } failure:^(NSError * __unused error) {
                                               if (success) {
                                                   success(nil);
                                               }

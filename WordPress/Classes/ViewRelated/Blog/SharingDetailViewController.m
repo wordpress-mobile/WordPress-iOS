@@ -265,7 +265,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     [alert addDestructiveActionWithTitle:NSLocalizedString(@"Disconnect", @"Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog.")
-                                 handler:^(UIAlertAction *action) {
+                                 handler:^(UIAlertAction * __unused action) {
                                      [self disconnectPublicizeConnection];
                                  }];
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 12:54:11+0000 */
+/* Translation-Revision-Date: 2023-04-03 11:39:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -3142,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Feature Flags";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Vorgestellt";
 
@@ -3487,9 +3484,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Die Website-URL wird abgerufen";
-
-/* No comment provided by engineer. */
-"Gradient" = "Verlauf";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Verlaufstyp";
@@ -7471,6 +7465,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Nur-Text";
 
 /* No comment provided by engineer. */
+"Text color" = "Textfarbe";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Die Textformatierungskontrollen findest du beim Bearbeiten eines Textblocks in der Toolbar über der Tastatur.";
 
 /* Button title
@@ -7816,9 +7813,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Diese Informationen helfen uns dabei, unsere Produkte zu verbessern, Marketing besser auf dich zuzuschneiden, deine Erfahrung mit WordPress.com zu personalisieren und mehr. All das kannst du auch in unserer Datenschutzerklärung nachlesen.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Hier wirst du im Internet gefunden.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Dies ist deine Blog-Erinnerung für heute ✍️";
@@ -10268,6 +10262,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du bist angemeldet!";
 
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Diesen Benutzer blockieren";
 
@@ -10642,6 +10639,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, websites, website, blogs, blog";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Leider wird diese Website von der WordPress-APP nicht unterstützt";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Bitte lösche die WordPress-App";

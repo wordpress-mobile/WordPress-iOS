@@ -126,7 +126,7 @@ extension BlazeCardView {
                                                    comment: "Description for the Blaze dashboard card.")
         static let hideThis = NSLocalizedString("blaze.dashboard.card.menu.hide",
                                                  value: "Hide this",
-                                                 comment: "Title for a menu action in the context menu on the Jetpack install card.")
+                                                 comment: "Title for a menu action in the context menu on the Blaze card.")
     }
 }
 

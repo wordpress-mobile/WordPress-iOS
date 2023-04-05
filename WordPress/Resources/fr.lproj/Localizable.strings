@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-03-30 15:00:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: fr */
@@ -3142,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Étiquettes de fonctionnalités";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Mis en avant";
 
@@ -3487,9 +3484,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Saisie de l’URL du site";
-
-/* No comment provided by engineer. */
-"Gradient" = "Dégradé";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Type de dégradé";
@@ -7471,6 +7465,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Texte seul";
 
 /* No comment provided by engineer. */
+"Text color" = "Couleur du texte";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Les contrôles de mise en forme du texte se trouvent dans la barre d’outils placée au-dessus du clavier lors de l’édition d’un bloc paragraphe";
 
 /* Button title
@@ -7816,9 +7813,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Cette information nous aide à améliorer nos produits, faire du marketing plus pertinent pour vous, personnaliser votre expérience avec WordPress.com et plus encore comme détaillé dans notre politique de confidentialité.";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "C'est ici que les internautes vous trouveront sur Internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Ceci est votre rappel pour bloguer aujourd’hui ✍️";
@@ -9655,6 +9649,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promouvez n’importe quel article ou n’importe quelle page en quelques minutes et pour quelques dollars par jour seulement.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Suivez les performances de vos campagnes et annulez à tout moment.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Votre contenu s’affichera sur des millions de sites WordPress et Tumblr.";
 
 /* Title for the Blaze overlay. */
@@ -9715,6 +9712,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "exemple.com";
+
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "suivre";
@@ -10489,6 +10489,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to access previous help tickets. */
 "support.row.tickets.title" = "Billets";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Version";
 
 /* Support screen footer text explaining the benefits of enabling the Debug feature. */
 "support.sectionFooter.advanced.title" = "Activez le débogage pour inclure dans vos journaux des informations supplémentaires qui peuvent être utiles à la résolution de problèmes liés à l’application.";
