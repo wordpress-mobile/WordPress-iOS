@@ -1,5 +1,0 @@
-Vi vet inte hur du känner, men vi känner oss som 22. Tillfället till ära (och för att du har bett om det), kan du nu omvandla de flesta typer av block till andra blocktyper, som citat, kolumner och grupper. Skönt.
-
-Vi gjorde några designjusteringar av Tittaren, uppdaterade ikonen för ”följda ämnen/webbplatser”, färgade om bakgrunden i navigeringsfältet för att matcha andra skärmar i appen och ändrade storleken på den för stora titeln på fliken Tittaren. (Vi gjorde det sista på fliken Aviseringar också.)
-
-Du kommer också att se några små visuella förändringar av ikonen för fliken Min webbplats och undersökningen i appen. Och om du har ett extra skarpt öga kanske du märker att den mörka bakgrundsfärgen på verktygsfält och toppflikar nu är konsekvent över hela appen.
