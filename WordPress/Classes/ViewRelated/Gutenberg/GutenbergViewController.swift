@@ -576,14 +576,14 @@ extension GutenbergViewController {
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        workaroundCoreDataConcurrencyIssue(accessing: post) {
-            GutenbergNetworkRequest(path: path, blog: post.blog, method: .get).request(completion: completion)
+        post.managedObjectContext!.perform {
+            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
         }
     }
 
     func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
-        workaroundCoreDataConcurrencyIssue(accessing: post) {
-            GutenbergNetworkRequest(path: path, blog: post.blog, method: .post, data: data).request(completion: completion)
+        post.managedObjectContext!.perform {
+            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
         }
     }
 
@@ -1075,7 +1075,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
-        workaroundCoreDataConcurrencyIssue(accessing: post) {
+        post.managedObjectContext!.perform {
             WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
         }
     }
