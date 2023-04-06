@@ -45,11 +45,9 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v22.0-whats-new"
+msgctxt "v22.1-whats-new"
 msgid ""
-"We don’t know about you, but we’re feeling 22. In honor of the occasion (and because you’ve been asking for it), you can now transform most types of blocks into other block types, like quotes, columns, and groups. Nice.\n"
-"\n"
-"You’ll also see a few small visual changes to the My Site dashboard and the in-app survey.\n"
+"When you log in to a self-hosted site that connects to Jetpack through individual plugins, you’ll see a pop-up stating that this type of connection doesn’t support the app’s core features yet. You can get around that problem by switching over to the Jetpack app. Up, up, and away.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
