@@ -122,7 +122,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertNotNil(activityCardItem)
 
             // 2 activity items
-            XCTAssertEqual(activityCardItem!.apiResponse!.pages!.count, 2)
+            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.count, 2)
 
             expect.fulfill()
         }
