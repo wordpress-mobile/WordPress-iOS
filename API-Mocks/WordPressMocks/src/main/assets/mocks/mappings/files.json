@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "GET",
-        "urlPattern": "/.*([a-z0-9]*\\.[a-z]{2,6})"
+        "urlPattern": "/.*([A-z0-9]*\\.[A-z]{1,6})"
     },
     "response": {
         "status": 200,
