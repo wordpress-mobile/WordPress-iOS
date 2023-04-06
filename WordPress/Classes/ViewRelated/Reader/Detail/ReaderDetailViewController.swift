@@ -708,7 +708,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.share(fromView: sender)
     }
 
-    @objc func didTapMenuButton(_ sender: UIButton) {
+    @objc func didTapMenuButton(_ sender: UIBarButtonItem) {
         coordinator?.didTapMenuButton(sender)
     }
 

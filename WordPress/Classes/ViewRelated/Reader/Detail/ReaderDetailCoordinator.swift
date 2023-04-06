@@ -400,7 +400,7 @@ class ReaderDetailCoordinator {
 
     /// Show a menu with options for the current post's site
     ///
-    private func showMenu(_ anchorView: UIView) {
+    private func showMenu(_ anchor: UIPopoverPresentationController.PopoverAnchor) {
         guard let post = post,
               let context = post.managedObjectContext,
               let viewController = viewController,
@@ -415,6 +415,7 @@ class ReaderDetailCoordinator {
             context: context,
             readerTopic: readerTopic,
             anchor: anchorView,
+            anchor: anchor,
             vc: viewController,
             source: ReaderPostMenuSource.details,
             followCommentsService: followCommentsService
@@ -680,8 +681,12 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
+    func didTapMenuButton(_ sender: UIBarButtonItem) {
+        showMenu(.barButtonItem(sender))
+    }
+
     func didTapMenuButton(_ sender: UIView) {
-        showMenu(sender)
+        showMenu(.view(sender))
     }
 
     func didTapTagButton() {
