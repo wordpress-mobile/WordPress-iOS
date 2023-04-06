@@ -1463,7 +1463,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         NSError *error = nil;
         [self.blog.managedObjectContext save:&error];
 
-        [postService syncPostsOfType:postType withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
+        [postService syncPostsOfType:postType withOptions:options forBlog:self.blog success:nil failure:^(NSError * __unused error) {
             NSDate *invalidatedDate = [NSDate dateWithTimeIntervalSince1970:0.0];
             if ([postType isEqual:PostServiceTypePage]) {
                 self.blog.lastPagesSync = invalidatedDate;
@@ -1605,13 +1605,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAnalytics trackEvent:WPAnalyticsEventDomainsDashboardViewed
-                 properties:@{WPAppAnalyticsKeyTapSource: [self propertiesStringForSource:source]}
-                       blog:self.blog];
-
-    UIViewController *controller = [self makeDomainsDashboardViewController];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    [DomainsDashboardCoordinator presentDomainsDashboardWithPresenter:self.presentationDelegate
+                                                               source:[self propertiesStringForSource:source]
+                                                                 blog:self.blog];
 }
 
 -(void)showJetpackSettings
@@ -1804,7 +1800,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                       preferredStyle:alertStyle];
 
     [alertController addCancelActionWithTitle:cancelTitle handler:nil];
-    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction * __unused action) {
         [self confirmRemoveSite];
     }];
 

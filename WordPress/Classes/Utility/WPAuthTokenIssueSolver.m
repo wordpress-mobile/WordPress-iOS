@@ -88,11 +88,11 @@
 
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle
                                                            style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action){}];
+                                                         handler:^(UIAlertAction *__unused action){}];
 
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteButtonTitle
                                                            style:UIAlertActionStyleDestructive
-                                                         handler:^(UIAlertAction *action){
+                                                         handler:^(UIAlertAction *__unused action){
                                                              okBlock();
                                                          }];
     [alertController addAction:cancelAction];
@@ -124,7 +124,7 @@
 
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:okButtonTitle
                                                        style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action){}];
+                                                     handler:^(UIAlertAction *__unused action){}];
     [alertController addAction:okAction];
     alertController.modalPresentationStyle = UIModalPresentationPopover;
 

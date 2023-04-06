@@ -195,14 +195,14 @@ static NSInteger HideSearchMinSites = 3;
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull __unused context) {
         if (self.tableView.tableHeaderView == self.headerView) {
             [self updateHeaderSize];
             
             // this forces the tableHeaderView to resize
             self.tableView.tableHeaderView = self.headerView;
         }
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull __unused context) {
         [self updateCurrentBlogSelection];
     }];
 }
@@ -386,7 +386,7 @@ static NSInteger HideSearchMinSites = 3;
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService syncBlogsForAccount:defaultAccount success:^{
         completionBlock();
-    } failure:^(NSError * _Nonnull error) {
+    } failure:^(NSError * _Nonnull __unused error) {
         completionBlock();
     }];
 }
@@ -641,7 +641,7 @@ static NSInteger HideSearchMinSites = 3;
     if ([blog supports:BlogFeatureRemovable]) {
         UIContextualAction *removeAction = [UIContextualAction
                                             contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Remove", @"Removes a self hosted site from the app")
-                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+                                            handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull __unused completionHandler)(BOOL)) {
             [ReachabilityUtils onAvailableInternetConnectionDo:^{
                 [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
             }];
@@ -653,7 +653,7 @@ static NSInteger HideSearchMinSites = 3;
         if (blog.visible) {
             UIContextualAction *hideAction = [UIContextualAction
                                                 contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Hide", @"Hides a site from the site picker list")
-                                                handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+                                                handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull __unused completionHandler)(BOOL)) {
                 [ReachabilityUtils onAvailableInternetConnectionDo:^{
                     [weakSelf hideBlogAtIndexPath:indexPath];
                 }];
@@ -664,7 +664,7 @@ static NSInteger HideSearchMinSites = 3;
         } else {
             UIContextualAction *unhideAction = [UIContextualAction
                                                 contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unhide", @"Unhides a site from the site picker list")
-                                                handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+                                                handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull __unused completionHandler)(BOOL)) {
                 [ReachabilityUtils onAvailableInternetConnectionDo:^{
                     [weakSelf unhideBlogAtIndexPath:indexPath];
                 }];
@@ -693,7 +693,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                       preferredStyle:alertStyle];
 
     [alertController addCancelActionWithTitle:cancelTitle handler:nil];
-    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction * __unused action) {
         [self confirmRemoveSiteForIndexPath:indexPath];
     }];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -946,11 +946,11 @@ static NSInteger HideSearchMinSites = 3;
             
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                                    style:UIAlertActionStyleCancel
-                                                                 handler:^(UIAlertAction *action){}];
+                                                                 handler:^(UIAlertAction * __unused action){}];
             
             UIAlertAction *hideAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hide All", @"Hide All")
                                                                    style:UIAlertActionStyleDestructive
-                                                                 handler:^(UIAlertAction *action){
+                                                                 handler:^(UIAlertAction * __unused action){
                 AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
                 WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:[[ContextManager sharedInstance] mainContext]];
                 [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];

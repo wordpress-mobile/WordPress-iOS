@@ -305,7 +305,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 - (AutosaveSuccessBlock)wrappedAutosaveSuccessBlock:(NSManagedObjectID *)postObjectID
                                             success:(void (^)(AbstractPost *post, NSString *previewURL))success
 {
-    return ^(RemotePost *post, NSString *previewURL) {
+    return ^(RemotePost *__unused post, NSString *previewURL) {
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {

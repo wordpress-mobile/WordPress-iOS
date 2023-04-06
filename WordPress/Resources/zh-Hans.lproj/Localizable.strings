@@ -3139,9 +3139,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "功能标志";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "精选插件";
 
@@ -3484,9 +3481,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "抓取站点 URL";
-
-/* No comment provided by engineer. */
-"Gradient" = "渐变色";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "渐变类型";
@@ -7468,6 +7462,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "仅显示文字";
 
 /* No comment provided by engineer. */
+"Text color" = "文字颜色";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "编辑文本区块时，文本格式控件位于键盘上方的工具栏内";
 
 /* Button title
@@ -7813,9 +7810,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "该信息有助于我们改善产品、开展与您更加相关的营销活动、个性化您的 WordPress.com 体验等，请参阅隐私政策以了解详情。";
-
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "人们可以通过此域名在互联网上找到您。";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "这是您今天的博客发布提醒 ✍️";

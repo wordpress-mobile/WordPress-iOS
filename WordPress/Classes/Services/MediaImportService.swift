@@ -188,16 +188,15 @@ class MediaImportService: NSObject {
         // HEIC isn't supported when uploading an image, so we filter it out (http://git.io/JJAae)
         allowedFileTypes.remove("heic")
 
-        let completion: (Result<Media, Error>) -> Void = { result in
+        let completion: (Error?) -> Void = { error in
             self.coreDataStack.performAndSave({ context in
-                let media = try context.existingObject(with: media.objectID) as! Media
-                switch result {
-                case let .success(media):
-                    media.remoteStatus = .local
-                    media.error = nil
-                case let .failure(error):
-                    media.remoteStatus = .failed
-                    media.error = error
+                let mediaInContext = try context.existingObject(with: media.objectID) as! Media
+                if let error {
+                    mediaInContext.remoteStatus = .failed
+                    mediaInContext.error = error
+                } else {
+                    mediaInContext.remoteStatus = .local
+                    mediaInContext.error = nil
                 }
             }, completion: { result in
                 let transformed = result.flatMap {
@@ -237,7 +236,7 @@ class MediaImportService: NSObject {
     ///
     /// - Returns: a progress object that report the current state of the import process.
     ///
-    private func `import`(_ exportable: ExportableAsset, to media: Media, allowableFileExtensions: Set<String>, completion: @escaping (Result<Media, Error>) -> Void) -> Progress {
+    private func `import`(_ exportable: ExportableAsset, to media: Media, allowableFileExtensions: Set<String>, completion: @escaping (Error?) -> Void) -> Progress {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
             guard let exporter = self.makeExporter(for: exportable, allowableFileExtensions: allowableFileExtensions) else {
@@ -249,20 +248,18 @@ class MediaImportService: NSObject {
                         let mediaInContext = try context.existingObject(with: media.objectID) as! Media
                         self.configureMedia(mediaInContext, withExport: export)
                     }, completion: { result in
-                        completion(
-                            result.flatMap {
-                                Result {
-                                    try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
-                                }
-                            }
-                        )
+                        if case let .failure(error) = result {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
                     }, on: .main)
                 },
                 onError: { error in
                     MediaImportService.logExportError(error)
                     // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
                     DispatchQueue.main.async {
-                        completion(.failure(error))
+                        completion(error)
                     }
                 }
             )

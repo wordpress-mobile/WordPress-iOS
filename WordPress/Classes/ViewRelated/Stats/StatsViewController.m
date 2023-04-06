@@ -199,7 +199,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                 handler:nil];
     [alertController addActionWithTitle:NSLocalizedString(@"Use this site", @"")
                                   style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction *alertAction) {
+                                handler:^(UIAlertAction * __unused alertAction) {
                                    [self saveSiteDetailsForTodayWidget];
                                   }];
     alertController.popoverPresentationController.barButtonItem = sender;
