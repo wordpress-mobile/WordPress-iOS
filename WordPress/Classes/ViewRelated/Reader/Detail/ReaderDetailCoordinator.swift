@@ -213,11 +213,17 @@ class ReaderDetailCoordinator {
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
+        self.share(fromAnchor: .view(anchorView))
+    }
+
+    /// Share the current post
+    ///
+    func share(fromAnchor anchor: UIPopoverPresentationController.PopoverAnchor) {
         guard let post = post, let view = viewController else {
             return
         }
 
-        sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
+        sharingController.shareReaderPost(post, fromAnchor: anchor, inViewController: view)
 
         WPAnalytics.trackReader(.readerSharedItem)
     }
@@ -414,7 +420,6 @@ class ReaderDetailCoordinator {
             post: post,
             context: context,
             readerTopic: readerTopic,
-            anchor: anchorView,
             anchor: anchor,
             vc: viewController,
             source: ReaderPostMenuSource.details,
