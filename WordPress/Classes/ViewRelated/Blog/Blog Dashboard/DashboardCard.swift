@@ -15,6 +15,7 @@ enum DashboardCard: String, CaseIterable {
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
+    case pages
     case activityLog
     case nextPost = "create_next"
     case createPost = "create_first"
@@ -59,6 +60,8 @@ enum DashboardCard: String, CaseIterable {
             return BlogDashboardEmptyStateCell.self
         case .personalize:
             return BlogDashboardPersonalizeCardCell.self
+        case .pages:
+            return DashboardPagesCardCell.self
         case .activityLog:
             return DashboardActivityLogCardCell.self
         }
@@ -101,6 +104,8 @@ enum DashboardCard: String, CaseIterable {
             return false // Controlled manually based on other cards visibility
         case .personalize:
             return FeatureFlag.personalizeHomeTab.enabled
+        case .pages:
+            return DashboardPagesCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .activityLog:
             return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         }
@@ -121,6 +126,8 @@ enum DashboardCard: String, CaseIterable {
             return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
         case .todaysStats:
             return true
+        case .pages:
+            return true
         case .activityLog:
             return true // FIXME: hide card if there's no activities
         default:
@@ -135,6 +142,7 @@ enum DashboardCard: String, CaseIterable {
         .scheduledPosts,
         .blaze,
         .prompts,
+        .pages,
         .activityLog
     ]
 
@@ -143,6 +151,8 @@ enum DashboardCard: String, CaseIterable {
     enum RemoteDashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
+        case pages
+        case activity
     }
 }
 

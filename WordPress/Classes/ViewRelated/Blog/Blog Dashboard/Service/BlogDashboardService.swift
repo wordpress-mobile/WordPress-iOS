@@ -115,6 +115,7 @@ private extension BlogDashboardService {
             return cardsDictionary
         }
 
+        // TODO: Add similar logic here for parsing pages
         cardsDictionary["posts"] = postsParser.parse(posts, for: blog)
         return cardsDictionary
     }
