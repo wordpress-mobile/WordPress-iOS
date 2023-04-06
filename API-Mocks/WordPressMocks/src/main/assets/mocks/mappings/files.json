@@ -5,7 +5,7 @@
     },
     "response": {
         "status": 200,
-        "body": "../__files{{request.url}}",
+        "bodyFileName": "../__files{{request.url}}",
         "headers": {
             "Content-Type": "text/html"
         }
