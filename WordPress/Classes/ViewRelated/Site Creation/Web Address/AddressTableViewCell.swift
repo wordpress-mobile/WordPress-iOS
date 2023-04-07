@@ -36,6 +36,17 @@ final class AddressTableViewCell: UITableViewCell {
         return view
     }()
 
+    private let checkmarkImageView: UIView = {
+        let configuration = UIImage.SymbolConfiguration(weight: .semibold)
+        let image = UIImage(systemName: "checkmark", withConfiguration: configuration)
+        let view = UIImageView()
+        view.isHidden = true
+        view.image = image
+        view.translatesAutoresizingMaskIntoConstraints = true
+        view.sizeToFit()
+        return view
+    }()
+
     private let costLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
@@ -78,13 +89,19 @@ final class AddressTableViewCell: UITableViewCell {
         self.contentView.pinSubviewToAllEdges(main)
         self.updatePriceLabelTextAlignment()
         self.contentView.addSubview(dotView)
+        self.contentView.addSubview(checkmarkImageView)
+        self.selectedBackgroundView = {
+            let view = UIView()
+            view.backgroundColor = UIColor(light: .secondarySystemBackground, dark: .tertiarySystemBackground)
+            return view
+        }()
     }
 
     // MARK: - Layout
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        [dotView].forEach { view in
+        [dotView, checkmarkImageView].forEach { view in
             view.center = CGPoint(x: Appearance.contentMargins.leading / 2, y: bounds.midY)
         }
     }
@@ -234,6 +251,8 @@ extension AddressTableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         if domainPurchasingEnabled {
             super.setSelected(selected, animated: animated)
+            self.checkmarkImageView.isHidden = !selected
+            self.dotView.isHidden = !checkmarkImageView.isHidden
         } else {
             accessoryType = selected ? .checkmark : .none
         }
