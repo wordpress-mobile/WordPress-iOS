@@ -5,8 +5,13 @@ extension AddressTableViewCell {
     struct ViewModel {
         let domain: String
         let tags: [Tag]
-        let cost: String
-        let saleCost: String?
+        let cost: Cost
+
+        enum Cost {
+            case free
+            case regular(cost: String)
+            case onSale(cost: String, sale: String)
+        }
 
         enum Tag {
             case recommended
@@ -27,6 +32,21 @@ extension AddressTableViewCell {
 extension AddressTableViewCell.ViewModel {
 
     enum Strings {
+        static let free = NSLocalizedString(
+            "domain.suggestions.row.free",
+            value: "Free",
+            comment: ""
+        )
+        static let yearly = NSLocalizedString(
+            "domain.suggestions.row.yearly",
+            value: "per year",
+            comment: ""
+        )
+        static let firstYear = NSLocalizedString(
+            "domain.suggestions.row.first-year",
+            value: "for the first year",
+            comment: ""
+        )
         static let recommended = NSLocalizedString(
             "domain.suggestions.row.recommended",
             value: "Recommended",
@@ -50,29 +70,33 @@ extension AddressTableViewCell.ViewModel {
     init(model: DomainSuggestion, tags: [Tag] = []) {
         // Declare variables
         var tags = tags
-        var costString: String = model.costString
-        var saleCostString: String?
+        let cost: Cost
 
         // Format cost and sale cost
-        if !model.isFree, let currencyCode = model.currencyCode {
-            let formatter = Self.currencyFormatter(code: currencyCode)
-            if let cost = model.cost, let formattedCost = formatter.string(from: .init(floatLiteral: cost)) {
-                costString = formattedCost
+        if model.isFree {
+            cost = .free
+        } else if let formatter = Self.currencyFormatter(code: model.currencyCode),
+                  let costValue = model.cost,
+                  let formattedCost = formatter.string(from: .init(value: costValue)) {
+            if let saleCost = model.saleCost, let formattedSaleCost = formatter.string(from: .init(value: saleCost)) {
+                cost = .onSale(cost: formattedCost, sale: formattedSaleCost)
+            } else {
+                cost = .regular(cost: formattedCost)
             }
-            if let saleCost = model.saleCost {
-                tags.append(.sale)
-                saleCostString = formatter.string(from: .init(floatLiteral: saleCost))
-            }
-            costString = "\(costString)/year"
-            saleCostString = saleCostString.map { "\($0) for the first year" }
+        } else {
+            cost = .regular(cost: model.costString)
+        }
+
+        // Configure tags
+        if case .onSale = cost {
+            tags.append(.sale)
         }
 
         // Initialize instance
         self.init(
             domain: model.domainName,
             tags: tags,
-            cost: costString,
-            saleCost: saleCostString
+            cost: cost
         )
     }
 
@@ -87,7 +111,10 @@ extension AddressTableViewCell.ViewModel {
         }
     }
 
-    private static func currencyFormatter(code: String) -> NumberFormatter {
+    private static func currencyFormatter(code: String?) -> NumberFormatter? {
+        guard let code else {
+            return nil
+        }
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.maximumFractionDigits = 2

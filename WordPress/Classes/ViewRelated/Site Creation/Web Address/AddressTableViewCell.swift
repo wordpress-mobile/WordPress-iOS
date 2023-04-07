@@ -98,7 +98,7 @@ final class AddressTableViewCell: UITableViewCell {
         self.domainLabel.text = viewModel.domain
         self.tagsLabel.attributedText = Self.tagsAttributedString(tags: viewModel.tags)
         self.tagsLabel.isHidden = viewModel.tags.isEmpty
-        self.costLabel.attributedText = Self.priceAttributedString(price: viewModel.cost, discount: viewModel.saleCost)
+        self.costLabel.attributedText = Self.costAttributedString(cost: viewModel.cost)
         self.dotView.backgroundColor = Appearance.dotColor(viewModel.tags.first)
     }
 
@@ -138,26 +138,41 @@ final class AddressTableViewCell: UITableViewCell {
         return attributedString
     }
 
-    private static func priceAttributedString(price: String, discount: String?) -> NSAttributedString {
-        if let discount {
-            let discountAttributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.systemGreen,
-                .font: Appearance.regularPriceFont
+    private static func costAttributedString(cost: ViewModel.Cost) -> NSAttributedString {
+        switch cost {
+        case .free:
+            var attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.label,
+                .font: Appearance.regularCostFont
             ]
-            let priceAttributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.systemGray,
-                .font: Appearance.smallPriceFont,
+            return NSAttributedString(string: ViewModel.Strings.free, attributes: attributes)
+        case .regular(let cost):
+            var attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.label,
+                .font: Appearance.regularCostFont
+            ]
+            let attributedString = NSMutableAttributedString(string: cost, attributes: attributes)
+            attributes[.font] = Appearance.smallCostFont
+            attributedString.append(.init(string: "\n\(ViewModel.Strings.yearly)", attributes: attributes))
+            return attributedString
+        case .onSale(let cost, let sale):
+            let saleAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: Appearance.saleCostTextColor,
+                .font: Appearance.semiboldCostFont
+            ]
+            let costAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.secondaryLabel,
+                .font: Appearance.smallCostFont,
                 .strikethroughStyle: NSUnderlineStyle.single.rawValue
             ]
-            let attributedString = NSMutableAttributedString(string: discount, attributes: discountAttributes)
-            attributedString.append(NSAttributedString(string: "\n\(price)", attributes: priceAttributes))
-            return attributedString
-        } else {
-            let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.systemGray,
-                .font: Appearance.regularPriceFont
+            let firstYearAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: Appearance.saleCostTextColor,
+                .font: Appearance.smallCostFont
             ]
-            return NSAttributedString(string: price, attributes: attributes)
+            let attributedString = NSMutableAttributedString(string: cost, attributes: costAttributes)
+            attributedString.append(NSAttributedString(string: " \(sale)", attributes: saleAttributes))
+            attributedString.append(.init(string: "\n\(ViewModel.Strings.firstYear)", attributes: firstYearAttributes))
+            return attributedString
         }
     }
 
@@ -184,9 +199,10 @@ final class AddressTableViewCell: UITableViewCell {
         static let domainFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let domainTextColor = UIColor.text
 
-        static let semiboldPriceFont = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
-        static let regularPriceFont = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
-        static let smallPriceFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        static let regularCostFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let semiboldCostFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        static let smallCostFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        static let saleCostTextColor = UIColor(light: .muriel(name: .jetpackGreen, .shade50), dark: .muriel(name: .jetpackGreen, .shade30))
 
         static let tagFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         static let tagTextColor: (ViewModel.Tag?) -> UIColor = { tag in
