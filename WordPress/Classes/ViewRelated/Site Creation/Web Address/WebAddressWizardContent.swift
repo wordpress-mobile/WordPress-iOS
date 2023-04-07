@@ -392,6 +392,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setupTableSeparator() {
         table.separatorColor = .divider
+        table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
     }
 
     private func query(from textField: UITextField?) -> String? {

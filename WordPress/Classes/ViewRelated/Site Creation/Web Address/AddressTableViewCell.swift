@@ -31,10 +31,8 @@ final class AddressTableViewCell: UITableViewCell {
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = Appearance.dotViewRadius
-        NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: size),
-            view.heightAnchor.constraint(equalTo: view.widthAnchor)
-        ])
+        view.translatesAutoresizingMaskIntoConstraints = true
+        view.frame.size = .init(width: size, height: size)
         return view
     }()
 
@@ -72,14 +70,23 @@ final class AddressTableViewCell: UITableViewCell {
 
     private func setupSubviews() {
         let domainAndTag = Self.stackedViews([domainLabel, tagsLabel], axis: .vertical, alignment: .fill, distribution: .fill, spacing: 2)
-        let dotAndLabels = Self.stackedViews([dotView, domainAndTag], axis: .horizontal, alignment: .center, distribution: .fill, spacing: 8)
-        let main = Self.stackedViews([dotAndLabels, costLabel], axis: .horizontal, alignment: .center, distribution: .equalCentering, spacing: 0)
+        let main = Self.stackedViews([domainAndTag, costLabel], axis: .horizontal, alignment: .center, distribution: .equalCentering, spacing: 0)
         main.translatesAutoresizingMaskIntoConstraints = false
         main.isLayoutMarginsRelativeArrangement = true
         main.directionalLayoutMargins = Appearance.contentMargins
         self.contentView.addSubview(main)
         self.contentView.pinSubviewToAllEdges(main)
         self.updatePriceLabelTextAlignment()
+        self.contentView.addSubview(dotView)
+    }
+
+    // MARK: - Layout
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        [dotView].forEach { view in
+            view.center = CGPoint(x: Appearance.contentMargins.leading / 2, y: bounds.midY)
+        }
     }
 
     // MARK: - React to Trait Collection Changes
@@ -121,19 +128,13 @@ final class AddressTableViewCell: UITableViewCell {
             return nil
         }
         let attributedString = NSMutableAttributedString()
-        let separatorAttributes: [NSAttributedString.Key: Any] = [
-            .font: Appearance.tagFont,
-            .foregroundColor: UIColor.tertiaryLabel
-        ]
         for (index, tag) in tags.enumerated() {
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: Appearance.tagFont,
                 .foregroundColor: Appearance.tagTextColor(tag)
             ]
-            attributedString.append(.init(string: tag.localizedString, attributes: attributes))
-            if index + 1 < tags.count {
-                attributedString.append(.init(string: " • ", attributes: separatorAttributes))
-            }
+            let string = index == 0 ? tag.localizedString : "\n\(tag.localizedString)"
+            attributedString.append(.init(string: string, attributes: attributes))
         }
         return attributedString
     }
@@ -141,7 +142,7 @@ final class AddressTableViewCell: UITableViewCell {
     private static func costAttributedString(cost: ViewModel.Cost) -> NSAttributedString {
         switch cost {
         case .free:
-            var attributes: [NSAttributedString.Key: Any] = [
+            let attributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.label,
                 .font: Appearance.regularCostFont
             ]
@@ -192,9 +193,9 @@ final class AddressTableViewCell: UITableViewCell {
 
     // MARK: - Constants
 
-    private enum Appearance {
+    enum Appearance {
 
-        static let contentMargins = NSDirectionalEdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 16)
+        static let contentMargins = NSDirectionalEdgeInsets(top: 16, leading: 40, bottom: 16, trailing: 16)
 
         static let domainFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let domainTextColor = UIColor.text
@@ -210,9 +211,9 @@ final class AddressTableViewCell: UITableViewCell {
                 return .clear
             }
             switch tag {
-            case .recommended: return .systemGreen
-            case .bestAlternative: return .systemPurple
-            case .sale: return .systemOrange
+            case .recommended: return UIColor(light: .muriel(name: .jetpackGreen, .shade50), dark: .muriel(name: .jetpackGreen, .shade30))
+            case .bestAlternative: return UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade30))
+            case .sale: return UIColor(light: .muriel(name: .yellow, .shade50), dark: .muriel(name: .yellow, .shade30))
             }
         }
 
