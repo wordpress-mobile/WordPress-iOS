@@ -72,11 +72,16 @@ final class AddressTableViewCell: UITableViewCell {
     }
 
     private func commonInit() {
-        selectedBackgroundView?.backgroundColor = .clear
-
-        accessibilityTraits = .button
-        accessibilityHint = NSLocalizedString("Selects this domain to use for your site.",
-                                              comment: "Accessibility hint for a domain in the Site Creation domains list.")
+        self.accessibilityTraits = .button
+        self.accessibilityHint = NSLocalizedString(
+            "Selects this domain to use for your site.",
+            comment: "Accessibility hint for a domain in the Site Creation domains list."
+        )
+        if domainPurchasingEnabled {
+            self.accessibilityElements = [domainLabel, tagsLabel, costLabel]
+        } else {
+            self.selectedBackgroundView?.backgroundColor = .clear
+        }
     }
 
     private func setupSubviews() {
@@ -147,7 +152,6 @@ final class AddressTableViewCell: UITableViewCell {
         let attributedString = NSMutableAttributedString()
         for (index, tag) in tags.enumerated() {
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: Appearance.tagFont,
                 .foregroundColor: Appearance.tagTextColor(tag)
             ]
             let string = index == 0 ? tag.localizedString : "\n\(tag.localizedString)"

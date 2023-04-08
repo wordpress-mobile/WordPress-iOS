@@ -384,6 +384,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
+        table.isAccessibilityElement = false
     }
 
     private func setupTableBackground() {
