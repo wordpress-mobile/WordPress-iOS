@@ -91,7 +91,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (void)setupViewModel
 {
     __weak __typeof(self) weakSelf = self;
-    self.viewModel.searchResultUpdated = ^(id<SuggestionsListViewModelType> viewModel) {
+    self.viewModel.searchResultUpdated = ^(id<SuggestionsListViewModelType> __unused viewModel) {
         if (!weakSelf) return;
         [weakSelf.tableView reloadData];
         [weakSelf setNeedsUpdateConstraints];

@@ -42,7 +42,7 @@ startup time. This will block the thread. Do not use unless you're sure.
                 "Code": error.code,
                 "Description": error.localizedDescription,
                 "User Info": error.userInfo.description
-            ]
+            ] as [String: Any]
         })
 
         let error = NSError(domain: title, code: -1, userInfo: [NSLocalizedDescriptionKey: title])

@@ -243,6 +243,40 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         // The HTTP API call failed and no comment was inserted into the database
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
     }
+
+    func test_updateRepliesVisibility() throws {
+        let post = ReaderPost(context: mainContext)
+        post.siteID = 3584907
+        post.postID = 51399
+        contextManager.saveContextAndWait(mainContext)
+
+        HTTPStubs.stubRequest(forEndpoint: "rest/v1.1/sites/3584907/posts/51399/replies", withFileAtPath: stubFilePath("reader-post-comments-success.json"))
+        waitUntil { done in
+            self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
+                done()
+            } failure: { error in
+                XCTFail("Unexpected error: \(String(describing: error))")
+                done()
+            }
+        }
+
+        // All comments are visible
+        XCTAssertEqual(post.comments.count, 24)
+        XCTAssertEqual(post.comments.filter({ ($0 as! Comment).visibleOnReader }).count, 24)
+
+        // Mark a comment as spam
+        let spamComment = try XCTUnwrap(post.comments.first { ($0 as! Comment).commentID == 428668 }) as! Comment
+        spamComment.status = CommentStatusType.spam.description
+        contextManager.saveContextAndWait(mainContext)
+
+        waitUntil { done in
+            self.commentService.updateRepliesVisibility(for: spamComment, completion: done)
+        }
+
+        // The spam comment and its two replies are no longer visible
+        XCTAssertEqual(post.comments.count, 24)
+        XCTAssertEqual(post.comments.filter({ ($0 as! Comment).visibleOnReader }).count, 21)
+    }
 }
 
 // MARK: - Test Helpers

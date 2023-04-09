@@ -325,7 +325,7 @@ const NSInteger ThemeOrderTrailing = 9999;
         NSString *themeIdWithWPComSuffix = [ThemeIdHelper themeIdWithWPComSuffix:theme.themeId];
         return [remote installThemeId:themeIdWithWPComSuffix
                             forBlogId:[blog dotComID]
-                              success:^(RemoteTheme *remoteTheme) {
+                              success:^(RemoteTheme * __unused remoteTheme) {
                                   [self activateThemeId:themeIdWithWPComSuffix
                                                 forBlog:blog
                                                 success:^(){
@@ -334,7 +334,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                                              success:success];
                                                 }
                                                 failure:failure];
-                              } failure:^(NSError *error) {
+                              } failure:^(NSError * __unused error) {
                                   // There's no way to know from the WP.com theme list if the theme was already
                                   // installed, BUT trying to install an already installed theme returns an error,
                                   // so regardless we are trying to activate. Calypso does this same thing.
@@ -366,7 +366,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     return [remote activateThemeId:themeId
                          forBlogId:[blog dotComID]
-                           success:^(RemoteTheme *remoteTheme) {
+                           success:^(RemoteTheme * __unused remoteTheme) {
                                if (success) {
                                    success();
                                }
@@ -432,11 +432,11 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSString *themeIdWithWPComSuffix = [ThemeIdHelper themeIdWithWPComSuffix:theme.themeId];
     return [remote installThemeId:themeIdWithWPComSuffix
                         forBlogId:[blog dotComID]
-                          success:^(RemoteTheme *remoteTheme) {
+                          success:^(RemoteTheme * __unused remoteTheme) {
                               if (success) {
                                   success();
                               }
-                          } failure:^(NSError *error) {
+                          } failure:^(NSError * __unused error) {
                               // Since installing a previously installed theme will fail, but there is no
                               // way of knowing if it failed because of that or if the theme was previously installed,
                               // I'm going to go ahead and call success. Calypso does this same thing. I'm sorry.
@@ -544,7 +544,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
 
-    [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger idx, BOOL *stop) {
+    [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger __unused idx, BOOL * __unused stop) {
         NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
                  @"Expected a remote theme.");
 

@@ -5,7 +5,11 @@ import Foundation
 /// Make sure to keep them in sync to avoid build errors when building the WordPress target.
 @objc class AppDependency: NSObject {
     static func authenticationManager(windowManager: WindowManager) -> WordPressAuthenticationManager {
-        return WordPressAuthenticationManager(windowManager: windowManager, authenticationHandler: JetpackAuthenticationManager())
+        return WordPressAuthenticationManager(
+            windowManager: windowManager,
+            authenticationHandler: JetpackAuthenticationManager(),
+            remoteFeaturesStore: RemoteFeatureFlagStore()
+        )
     }
 
     static func windowManager(window: UIWindow) -> WindowManager {

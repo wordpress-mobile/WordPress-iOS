@@ -74,9 +74,9 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     [tagService syncTagsForBlog:[self blog]
                          number:@(MenuItemSourceTagSyncLimit)
                          offset:@(0)
-                        success:^(NSArray<PostTag *> *tags) {
+                        success:^(NSArray<PostTag *> * __unused tags) {
                             stopLoading();
-                        } failure:^(NSError *error) {
+                        } failure:^(NSError * __unused error) {
                             stopLoading();
                             [self showLoadingErrorMessageForResults];
                         }];
@@ -162,7 +162,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
                             stopLoading();
 
                         }
-                        failure:^(NSError *error) {
+                        failure:^(NSError * __unused error) {
                             stopLoading();
                             [self showLoadingErrorMessageForResults];
                         }];
@@ -216,10 +216,10 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     DDLogDebug(@"MenuItemSourceTagView: Searching tags PostTagService");
     [self.searchTagService searchTagsWithName:searchText
                                          blog:[self blog]
-                                      success:^(NSArray<PostTag *> *tags) {
+                                      success:^(NSArray<PostTag *> * __unused tags) {
                                           stopLoading();
                                       }
-                                      failure:^(NSError *error) {
+                                      failure:^(NSError * __unused error) {
                                           stopLoading();
                                           [self showLoadingErrorMessageForResults];
                                       }];

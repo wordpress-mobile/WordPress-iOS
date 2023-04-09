@@ -243,7 +243,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                 success:^{
                                     [self didSyncBlog];
                                 }
-                                failure:^(NSError *error) {
+                                failure:^(NSError * __unused error) {
                                     DDLogDebug(@"MenusViewController could not sync menus for blog");
                                     [self showNoResultsWithTitle:[self noResultsErrorTitle]];
                                 }];
@@ -268,7 +268,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     } else {
         [UIView animateWithDuration:0.20 animations:^{
             self.scrollView.alpha = 1.0;
-        } completion:^(BOOL finished) {
+        } completion:^(BOOL __unused finished) {
         }];
     }
 }
@@ -353,7 +353,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                 }
             }
         };
-        void(^failureBlock)(NSError *) = ^(NSError *error) {
+        void(^failureBlock)(NSError *) = ^(NSError * __unused error) {
             weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, please check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
         };
         [self.menusService generateDefaultMenuItemsForBlog:self.blog
@@ -711,7 +711,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Menus cancel button for deleting a menu.");
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:confirmTitle
                                                             style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                          handler:^(UIAlertAction * _Nonnull __unused action) {
                                                               [weakSelf deleteMenu:menuToDelete];
                                                           }];
     [alertController addAction:confirmAction];
@@ -811,7 +811,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *confirmationTitle = NSLocalizedString(@"Discard and Select Location", @"Menus alert button title to continue selecting a menu location and discarding current changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
-                                 handler:^(UIAlertAction * _Nonnull action) {
+                                 handler:^(UIAlertAction * _Nonnull __unused action) {
                                      if (confirmationBlock) {
                                          confirmationBlock();
                                      }
@@ -819,7 +819,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu location");
     [alert addCancelActionWithTitle:cancelTitle
-                            handler:^(UIAlertAction * _Nonnull action) {
+                            handler:^(UIAlertAction * _Nonnull __unused action) {
                                 if (cancellationBlock) {
                                     cancellationBlock();
                                 }
@@ -837,7 +837,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *confirmationTitle = NSLocalizedString(@"Discard and Select Menu", @"Menus alert button title to continue selecting a menu and discarding current changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
-                                 handler:^(UIAlertAction * _Nonnull action) {
+                                 handler:^(UIAlertAction * _Nonnull __unused action) {
                                      if (confirmationBlock) {
                                          confirmationBlock();
                                      }
@@ -845,7 +845,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not select a new menu");
     [alert addCancelActionWithTitle:cancelTitle
-                            handler:^(UIAlertAction * _Nonnull action) {
+                            handler:^(UIAlertAction * _Nonnull __unused action) {
                                 if (cancellationBlock) {
                                     cancellationBlock();
                                 }
@@ -863,7 +863,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *confirmationTitle = NSLocalizedString(@"Discard and Create New Menu", @"Menus alert button title to continue creating a menu and discarding current changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
-                                 handler:^(UIAlertAction * _Nonnull action) {
+                                 handler:^(UIAlertAction * _Nonnull __unused action) {
                                      if (confirmationBlock) {
                                          confirmationBlock();
                                      }
@@ -871,7 +871,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *cancelTitle = NSLocalizedString(@"Cancel and Keep Changes", @"Menus alert button title to cancel discarding changes and not createa a new menu.");
     [alert addCancelActionWithTitle:cancelTitle
-                            handler:^(UIAlertAction * _Nonnull action) {
+                            handler:^(UIAlertAction * _Nonnull __unused action) {
                                 if (cancellationBlock) {
                                     cancellationBlock();
                                 }
@@ -889,7 +889,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *confirmationTitle = NSLocalizedString(@"Discard Changes", @"Menus alert button title to discard changes.");
     [alert addDestructiveActionWithTitle:confirmationTitle
-                                 handler:^(UIAlertAction * _Nonnull action) {
+                                 handler:^(UIAlertAction * _Nonnull __unused action) {
                                      if (confirmationBlock) {
                                          confirmationBlock();
                                      }
@@ -897,7 +897,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
     NSString *cancelTitle = NSLocalizedString(@"Continue Working", @"Menus alert button title to continue making changes.");
     [alert addCancelActionWithTitle:cancelTitle
-                            handler:^(UIAlertAction * _Nonnull action) {
+                            handler:^(UIAlertAction * _Nonnull __unused action) {
                                 if (cancellationBlock) {
                                     cancellationBlock();
                                 }

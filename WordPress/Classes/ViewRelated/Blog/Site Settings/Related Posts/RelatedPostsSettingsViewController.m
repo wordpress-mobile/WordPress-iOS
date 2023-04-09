@@ -254,7 +254,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     BlogService *blogService = nil;
     [blogService updateSettingsForBlog:self.blog success:^{
         [self.tableView reloadData];
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         [self.tableView reloadData];
     }];
