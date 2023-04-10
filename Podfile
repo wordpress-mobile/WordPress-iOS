@@ -142,7 +142,6 @@ def gutenberg_dependencies(options)
     Yoga
     RCT-Folly
     glog
-    react-native-keyboard-aware-scroll-view
     react-native-safe-area
     react-native-safe-area-context
     react-native-video
