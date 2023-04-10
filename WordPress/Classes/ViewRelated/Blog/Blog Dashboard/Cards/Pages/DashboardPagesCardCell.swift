@@ -104,7 +104,7 @@ extension DashboardPagesCardCell {
                                              value: "Pages",
                                              comment: "Title for the Pages dashboard card.")
         static let allPages = NSLocalizedString("dashboardCard.Pages.contextMenu.allPages",
-                                                   value: "All Pages",
+                                                   value: "All pages",
                                                    comment: "Title for an action that opens the full pages list.")
     }
 
