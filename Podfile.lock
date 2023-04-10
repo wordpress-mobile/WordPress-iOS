@@ -555,7 +555,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/glog.podspec.json`)
   - Gridicons (~> 1.1.0)
-  - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, commit `v1.92.1`)
+  - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.92.1`)
   - JTAppleCalendar (~> 8.0.2)
   - Kanvas (~> 1.4.4)
   - MediaEditor (~> 1.2.1)
@@ -606,7 +606,7 @@ DEPENDENCIES:
   - RNReanimated (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/RNReanimated.podspec.json`)
   - RNScreens (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/RNScreens.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/RNSVG.podspec.json`)
-  - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, commit `v1.92.1`)
+  - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.92.1`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
@@ -689,9 +689,9 @@ EXTERNAL SOURCES:
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/glog.podspec.json
   Gutenberg:
-    :commit: v1.92.1
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+    :tag: v1.92.1
   RCT-Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/RCT-Folly.podspec.json
   RCTRequired:
@@ -775,9 +775,9 @@ EXTERNAL SOURCES:
   RNSVG:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/RNSVG.podspec.json
   RNTAztecView:
-    :commit: v1.92.1
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+    :tag: v1.92.1
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.92.1/third-party-podspecs/Yoga.podspec.json
 
@@ -786,13 +786,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :commit: v1.92.1
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+    :tag: v1.92.1
   RNTAztecView:
-    :commit: v1.92.1
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+    :tag: v1.92.1
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -896,6 +896,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 5f0cbd2249cea9aef873805d079ffc1d1bcd7be3
+PODFILE CHECKSUM: 286ced829068077fb9ab51d0fca0c2a452e71e28
 
 COCOAPODS: 1.11.3
