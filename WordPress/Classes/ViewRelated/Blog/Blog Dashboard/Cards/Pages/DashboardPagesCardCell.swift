@@ -62,7 +62,7 @@ final class DashboardPagesCardCell: DashboardCollectionViewCell {
                                       image: Style.allPagesImage,
                                       handler: { _ in self.showPagesList(for: blog) })
 
-        // Wrap the activity action in a menu to display a divider between the activity action and hide this action.
+        // Wrap the pages action in a menu to display a divider between the pages action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
         let allPagesSubmenu = UIMenu(title: String(), options: .displayInline, children: [allPagesAction])
         return allPagesSubmenu
