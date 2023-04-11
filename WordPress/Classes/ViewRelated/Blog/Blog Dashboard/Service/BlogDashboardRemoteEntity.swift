@@ -5,7 +5,7 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     var posts: BlogDashboardPosts?
     var todaysStats: BlogDashboardStats?
     var pages: [BlogDashboardPage]?
-    var activity: [Activity]? // FIXME: Replace this after `WordPressKit.Activity` is made Codable
+    var activity: [Activity]?
 
     struct BlogDashboardPosts: Decodable, Hashable {
         var hasPublished: Bool?
