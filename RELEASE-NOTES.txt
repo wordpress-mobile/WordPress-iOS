@@ -9,6 +9,7 @@
 * [**] [WordPress-only] Warns user about sites with only individual plugins not supporting core app features and offers the option to switch to the Jetpack app. [#20408]
 * [**] Add a "Personalize Home Tab" button to the bottom of the Home tab that allows changing cards visibility. [#20369]
 * [*] [Reader] Fix an issue that was causing the app to crash when tapping the More or Share buttons in Reader Detail screen. [#20490]
+* [*] Block editor: Avoid empty Gallery block error [https://github.com/WordPress/gutenberg/pull/49557]
 
 22.0
 -----
