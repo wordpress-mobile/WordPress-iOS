@@ -44,7 +44,11 @@ private extension DashboardCard {
             return NSLocalizedString("personalizeHome.dashboardCard.draftPosts", value: "Draft posts", comment: "Card title for the pesonalization menu")
         case .scheduledPosts:
             return NSLocalizedString("personalizeHome.dashboardCard.scheduledPosts", value: "Scheduled posts", comment: "Card title for the pesonalization menu")
-        case .quickStart, .nextPost, .createPost, .ghost, .failure, .personalize, .jetpackBadge, .jetpackInstall, .domainsDashboardCard:
+        case .activityLog:
+            return NSLocalizedString("personalizeHome.dashboardCard.activityLog", value: "Recent activity", comment: "Card title for the pesonalization menu")
+        case .pages:
+            return NSLocalizedString("personalizeHome.dashboardCard.pages", value: "Pages", comment: "Card title for the pesonalization menu")
+        case .quickStart, .nextPost, .createPost, .ghost, .failure, .personalize, .jetpackBadge, .jetpackInstall, .domainsDashboardCard, .empty:
             assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus
         }

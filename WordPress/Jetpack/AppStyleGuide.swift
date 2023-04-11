@@ -4,7 +4,7 @@ import Gridicons
 
 /// - Warning:
 /// This configuration struct has a **WordPress** counterpart in the WordPress bundle.
-/// Make sure to keep them in sync to avoid build errors when builing the WordPress target.
+/// Make sure to keep them in sync to avoid build errors when building the WordPress target.
 struct AppStyleGuide {
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
     static let navigationBarLargeFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
@@ -30,7 +30,7 @@ extension AppStyleGuide {
 
 // MARK: - Images
 extension AppStyleGuide {
-    static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
+    static let mySiteTabIcon = UIImage(named: "jetpack-icon-tab-mysites")
     static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
     static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site-jetpack")
 }

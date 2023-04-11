@@ -51,7 +51,6 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
             fallthrough
 
         case .newSite:
-            cardFrameView.icon = UIImage.gridicon(.listOrdered, size: Metrics.iconSize)
             configureOnEllipsisButtonTap(sourceRect: cardFrameView.ellipsisButton.frame)
             cardFrameView.showHeader()
 

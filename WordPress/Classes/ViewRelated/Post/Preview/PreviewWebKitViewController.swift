@@ -69,7 +69,15 @@ class PreviewWebKitViewController: WebKitViewController {
         let isPage = post is Page
 
         let configuration = WebViewControllerConfiguration(url: url)
-        configuration.linkBehavior = isPage ? .hostOnly(url) : .urlOnly(url)
+
+        /// When the counterpart app is installed, revert to the default link behavior from `WebKitViewController`
+        /// to prevent links from being opened through the `externalLinkHandler`.
+        ///
+        /// This can be removed once the universal link routes for the WP app is removed.
+        if !MigrationAppDetection.isCounterpartAppInstalled {
+            configuration.linkBehavior = isPage ? .hostOnly(url) : .urlOnly(url)
+        }
+
         configuration.opensNewInSafari = true
         configuration.authenticate(blog: post.blog)
         configuration.analyticsSource = source

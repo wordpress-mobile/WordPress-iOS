@@ -5556,9 +5556,6 @@ translators: Block name. %s: The localized block name */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Denne informasjonen hjelper oss med å forbedre produktere våre, gjøre markedsføring mer relevant, personliggjøre din WordPress.com-opplevelse og mer, som detaljert i våre retningslinjer for personvern.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Dette er hvor folk finner deg på nettet.";
-
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dette medieobjektet har blitt slettet.";
 

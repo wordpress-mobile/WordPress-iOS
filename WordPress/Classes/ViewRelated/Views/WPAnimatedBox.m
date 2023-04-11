@@ -109,10 +109,10 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
     } completion:nil];
     [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         weakSelf.page3.transform = CGAffineTransformIdentity;
-    } completion:^void(BOOL finished) {
+    } completion:^void(BOOL __unused finished) {
         [UIView animateWithDuration:0.8 delay:2.0 usingSpringWithDamping:0.8 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [weakSelf moveAnimationToFirstFrame];
-        } completion:^(BOOL finished) {
+        } completion:^(BOOL __unused finished) {
             if (weakSelf.isAnimating && weakSelf.window != nil) {
                 [weakSelf playAnimation];
             }

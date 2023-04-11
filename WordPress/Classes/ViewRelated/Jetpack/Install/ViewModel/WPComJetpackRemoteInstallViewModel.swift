@@ -66,15 +66,19 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
                 self?.state = .success
             case .failure(let error):
                 DDLogError("Error: Jetpack plugin installation via proxy failed. \(error.localizedDescription)")
-                self?.state = .failure(.unknown)
+                let installError = JetpackInstallError(title: error.localizedDescription, type: .unknown)
+                self?.state = .failure(installError)
             }
         }
     }
 
     func track(_ event: JetpackRemoteInstallEvent) {
         switch event {
-        case .initial, .loading, .failed:
+        case .initial, .loading:
             tracker.track(.jetpackInstallFullPluginViewed, properties: ["status": state.statusForTracks])
+        case .failed(let description, _):
+            tracker.track(.jetpackInstallPluginModalViewed,
+                          properties: ["status": state.statusForTracks, "description": description])
         case .cancel:
             tracker.track(.jetpackInstallFullPluginCancelTapped, properties: ["status": state.statusForTracks])
         case .start:

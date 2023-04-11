@@ -212,7 +212,7 @@
                 successBlock();
             }
             [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
-        } failure:^(NSError *error) {
+        } failure:^(NSError * __unused error) {
             [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
         }];
     } else {

@@ -186,7 +186,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
     [service siteTopicForSiteWithID:@(siteID)
                              isFeed:false
-                            success:^(NSManagedObjectID *objectID, BOOL isFollowing) {
+                            success:^(NSManagedObjectID * __unused objectID, BOOL __unused isFollowing) {
                                 if (success) {
                                     success();
                                 }
@@ -224,7 +224,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         } else {
             [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
         }
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         DDLogInfo(@"Could not find site at URL: %@", siteURL);
         [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
     }];

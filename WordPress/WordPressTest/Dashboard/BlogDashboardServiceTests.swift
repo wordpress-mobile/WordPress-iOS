@@ -11,6 +11,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     private var persistenceMock: BlogDashboardPersistenceMock!
     private var repositoryMock: InMemoryUserDefaults!
     private var postsParserMock: BlogDashboardPostsParserMock!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     private let wpComID = 123456
 
@@ -22,11 +23,19 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         repositoryMock = InMemoryUserDefaults()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
         service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
+
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
+        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
+        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
+
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
+        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
+        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -36,7 +45,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages"])
             expect.fulfill()
         }
 
@@ -74,6 +83,46 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
             // 1 scheduled item
             XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.scheduled!.count, 1)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testPages() {
+        let expect = expectation(description: "Parse pages")
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            let pagesCardItem = cards.first(where: {$0.cardType == .pages})
+
+            // Pages section exists
+            XCTAssertNotNil(pagesCardItem)
+
+            // 2 page items
+            XCTAssertEqual(pagesCardItem!.apiResponse!.pages!.count, 2)
+
+            expect.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testActivityLog() {
+        let expect = expectation(description: "Parse activities")
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+
+        service.fetch(blog: blog) { cards in
+            let activityCardItem = cards.first(where: {$0.cardType == .activityLog})
+
+            // Activity section exists
+            XCTAssertNotNil(activityCardItem)
+
+            // 2 activity items
+            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.count, 2)
 
             expect.fulfill()
         }
@@ -121,6 +170,26 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             expect.fulfill()
         }
 
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testThatWhenAllCardsAreHiddenEmptyStateIsShown() {
+        // Given
+        let personalizationService = BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
+        for card in DashboardCard.personalizableCards {
+            personalizationService.setEnabled(false, for: card)
+        }
+
+        // When
+        let expect = expectation(description: "Cards parsed")
+        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
+
+        let blog = newTestBlog(id: wpComID, context: mainContext)
+        service.fetch(blog: blog) { cards in
+            // Then empty state is shown
+            XCTAssertEqual(cards.map(\.cardType), [.empty, .personalize])
+            expect.fulfill()
+        }
         waitForExpectations(timeout: 3, handler: nil)
     }
 
@@ -288,15 +357,20 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    // MARK: - Local Pages
+
+    // TODO: Add test to check that local pages are considered if no pages are returned from the endpoint
+
     func dictionary(from file: String) -> NSDictionary? {
         let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
     }
 
-    private func newTestBlog(id: Int, context: NSManagedObjectContext) -> Blog {
+    private func newTestBlog(id: Int, context: NSManagedObjectContext, isAdmin: Bool = true) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = id as NSNumber
+        blog.isAdmin = isAdmin
         return blog
     }
 }

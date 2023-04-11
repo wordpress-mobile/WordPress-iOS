@@ -289,7 +289,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
         // a delegate will likely scroll the content with the size change
         [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
 
-    } completion:^(BOOL finished) {
+    } completion:^(BOOL __unused finished) {
 
         [self removeItemInsertionViews];
     }];

@@ -15,12 +15,16 @@ enum DashboardCard: String, CaseIterable {
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
+    case pages
+    case activityLog
     case nextPost = "create_next"
     case createPost = "create_first"
     case jetpackBadge
     /// Card placeholder for when loading data
     case ghost
     case failure
+    /// Empty state when no cards are present
+    case empty
     /// A "Personalize Home Tab" button
     case personalize
 
@@ -51,10 +55,15 @@ enum DashboardCard: String, CaseIterable {
         case .blaze:
             return DashboardBlazeCardCell.self
         case .domainsDashboardCard:
-            /// TODO
-            return DashboardFailureCardCell.self
+            return DashboardDomainsCardCell.self
+        case .empty:
+            return BlogDashboardEmptyStateCell.self
         case .personalize:
             return BlogDashboardPersonalizeCardCell.self
+        case .pages:
+            return DashboardPagesCardCell.self
+        case .activityLog:
+            return DashboardActivityLogCardCell.self
         }
     }
 
@@ -91,8 +100,14 @@ enum DashboardCard: String, CaseIterable {
             return BlazeHelper.shouldShowCard(for: blog)
         case .domainsDashboardCard:
             return DomainsDashboardCardHelper.shouldShowCard(for: blog)
+        case .empty:
+            return false // Controlled manually based on other cards visibility
         case .personalize:
-            return AppConfiguration.isJetpack && FeatureFlag.personalizeHomeTab.enabled
+            return FeatureFlag.personalizeHomeTab.enabled
+        case .pages:
+            return DashboardPagesCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+        case .activityLog:
+            return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         }
     }
 
@@ -111,6 +126,10 @@ enum DashboardCard: String, CaseIterable {
             return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
         case .todaysStats:
             return true
+        case .pages:
+            return true
+        case .activityLog:
+            return true // FIXME: hide card if there's no activities
         default:
             return false
         }
@@ -122,7 +141,9 @@ enum DashboardCard: String, CaseIterable {
         .draftPosts,
         .scheduledPosts,
         .blaze,
-        .prompts
+        .prompts,
+        .pages,
+        .activityLog
     ]
 
     /// Includes all cards that should be fetched from the backend
@@ -130,6 +151,8 @@ enum DashboardCard: String, CaseIterable {
     enum RemoteDashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
+        case pages
+//        case activity // TODO: Uncomment this when activity log support is added to the endpoint
     }
 }
 

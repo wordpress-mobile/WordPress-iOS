@@ -12,7 +12,10 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
 
         /// We need that in order to initialize the Authenticator, otherwise this test crashes
         /// This is because we're using the NUXButton. Ideally, that component should be extracted
-        WordPressAuthenticationManager(windowManager: windowManager).initializeWordPressAuthenticator()
+        WordPressAuthenticationManager(
+            windowManager: windowManager,
+            remoteFeaturesStore: RemoteFeatureFlagStore()
+        ).initializeWordPressAuthenticator()
     }
 
     /// Call the completion block when the "Publish" button is pressed

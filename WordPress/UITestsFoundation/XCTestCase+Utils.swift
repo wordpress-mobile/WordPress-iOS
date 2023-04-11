@@ -12,7 +12,7 @@ public extension XCTestCase {
         switch app.state {
         case .unknown, .notRunning:
             app.launch()
-        case _:
+        default:
             break
         }
 
