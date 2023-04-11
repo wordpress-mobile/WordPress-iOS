@@ -139,10 +139,10 @@ private extension BlogDashboardViewModel {
 
     func syncPosts(for cards: [DashboardCardModel]) {
         if cards.hasDrafts {
-            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: draftStatusesToSync)
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: draftStatusesToSync)
         }
         if cards.hasScheduled {
-            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: scheduledStatusesToSync)
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: scheduledStatusesToSync)
         }
     }
 

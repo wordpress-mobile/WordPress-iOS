@@ -13,7 +13,8 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         super.setUp()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(contextManager.mainContext).build()
-        blog.dashboardState.syncingStatuses = []
+        blog.dashboardState.postsSyncingStatuses = []
+        blog.dashboardState.pagesSyncingStatuses = []
         postService = PostServiceMock()
         blogService = BlogServiceMock(coreDataStack: contextManager)
     }
@@ -34,14 +35,15 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         manager.addListener(listener)
 
         // When
-        manager.syncPosts(blog: blog, statuses: draftStatuses.strings)
+        manager.syncPosts(blog: blog, postType: .post, statuses: draftStatuses.strings)
 
         // Then
         XCTAssertTrue(listener.postsSyncedCalled)
         XCTAssertTrue(listener.postsSyncSuccess ?? false)
         XCTAssertEqual(listener.postsSyncBlog, blog)
+        XCTAssertEqual(listener.postsSyncType, .post)
         XCTAssertEqual(listener.postsSynced, postsToReturn)
-        XCTAssertEqual(blog.dashboardState.syncingStatuses, [])
+        XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, [])
         XCTAssertTrue(postService.syncPostsCalled)
         XCTAssertFalse(blogService.syncAuthorsCalled)
     }
@@ -55,13 +57,14 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         manager.addListener(listener)
 
         // When
-        manager.syncPosts(blog: blog, statuses: draftStatuses.strings)
+        manager.syncPosts(blog: blog, postType: .post, statuses: draftStatuses.strings)
 
         // Then
         XCTAssertTrue(listener.postsSyncedCalled)
         XCTAssertFalse(listener.postsSyncSuccess ?? false)
         XCTAssertEqual(listener.postsSyncBlog, blog)
-        XCTAssertEqual(blog.dashboardState.syncingStatuses, [])
+        XCTAssertEqual(listener.postsSyncType, .post)
+        XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, [])
         XCTAssertTrue(postService.syncPostsCalled)
         XCTAssertFalse(blogService.syncAuthorsCalled)
     }
@@ -69,14 +72,14 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
     func testNotSyncingIfAnotherSyncinProgress() {
         // Given
         postService.syncShouldSucceed = false
-        blog.dashboardState.syncingStatuses = draftStatuses.strings
+        blog.dashboardState.postsSyncingStatuses = draftStatuses.strings
 
         let manager = DashboardPostsSyncManager(postService: postService, blogService: blogService)
         let listener = SyncManagerListenerMock()
         manager.addListener(listener)
 
         // When
-        manager.syncPosts(blog: blog, statuses: draftStatuses.strings)
+        manager.syncPosts(blog: blog, postType: .post, statuses: draftStatuses.strings)
 
         // Then
         XCTAssertFalse(listener.postsSyncedCalled)
@@ -87,7 +90,7 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
     func testSyncingPostsIfSomeStatusesAreNotBeingSynced() {
         // Given
         postService.syncShouldSucceed = false
-        blog.dashboardState.syncingStatuses = draftStatuses.strings
+        blog.dashboardState.postsSyncingStatuses = draftStatuses.strings
 
         let manager = DashboardPostsSyncManager(postService: postService, blogService: blogService)
         let listener = SyncManagerListenerMock()
@@ -95,14 +98,15 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
 
         // When
         let toBeSynced = draftStatuses.strings + scheduledStatuses.strings
-        manager.syncPosts(blog: blog, statuses: toBeSynced)
+        manager.syncPosts(blog: blog, postType: .post, statuses: toBeSynced)
 
         // Then
         XCTAssertTrue(listener.postsSyncedCalled)
         XCTAssertFalse(listener.postsSyncSuccess ?? false)
         XCTAssertEqual(listener.postsSyncBlog, blog)
+        XCTAssertEqual(listener.postsSyncType, .post)
         XCTAssertEqual(listener.statusesSynced, scheduledStatuses.strings)
-        XCTAssertEqual(blog.dashboardState.syncingStatuses, draftStatuses.strings)
+        XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, draftStatuses.strings)
         XCTAssertTrue(postService.syncPostsCalled)
         XCTAssertFalse(blogService.syncAuthorsCalled)
     }
@@ -120,13 +124,14 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
 
 
         // When
-        manager.syncPosts(blog: blog, statuses: draftStatuses.strings)
+        manager.syncPosts(blog: blog, postType: .post, statuses: draftStatuses.strings)
 
         // Then
         XCTAssertTrue(listener.postsSyncedCalled)
         XCTAssertTrue(listener.postsSyncSuccess ?? false)
         XCTAssertEqual(listener.postsSyncBlog, blog)
-        XCTAssertEqual(blog.dashboardState.syncingStatuses, [])
+        XCTAssertEqual(listener.postsSyncType, .post)
+        XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, [])
         XCTAssertTrue(blogService.syncAuthorsCalled)
         XCTAssertTrue(postService.syncPostsCalled)
     }
@@ -143,13 +148,14 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         manager.addListener(listener)
 
         // When
-        manager.syncPosts(blog: blog, statuses: draftStatuses.strings)
+        manager.syncPosts(blog: blog, postType: .post, statuses: draftStatuses.strings)
 
         // Then
         XCTAssertTrue(listener.postsSyncedCalled)
         XCTAssertFalse(listener.postsSyncSuccess ?? false)
         XCTAssertEqual(listener.postsSyncBlog, blog)
-        XCTAssertEqual(blog.dashboardState.syncingStatuses, [])
+        XCTAssertEqual(listener.postsSyncType, .post)
+        XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, [])
         XCTAssertTrue(blogService.syncAuthorsCalled)
         XCTAssertFalse(postService.syncPostsCalled)
     }
@@ -161,13 +167,19 @@ class SyncManagerListenerMock: DashboardPostsSyncManagerListener {
     var postsSyncedCalled = false
     var postsSyncSuccess: Bool?
     var postsSyncBlog: Blog?
+    var postsSyncType: DashboardPostsSyncManager.PostType?
     var postsSynced: [AbstractPost]?
     var statusesSynced: [String]?
 
-    func postsSynced(success: Bool, blog: Blog, posts: [AbstractPost]?, for statuses: [String]) {
+    func postsSynced(success: Bool,
+                     blog: Blog,
+                     postType: DashboardPostsSyncManager.PostType,
+                     posts: [AbstractPost]?,
+                     for statuses: [String]) {
         self.postsSyncedCalled = true
         self.postsSyncSuccess = success
         self.postsSyncBlog = blog
+        self.postsSyncType = postType
         self.postsSynced = posts
         self.statusesSynced = statuses
     }
