@@ -1875,6 +1875,8 @@
 		80C740FC2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */; };
 		80D9CFF429DCA53E00FE3400 /* DashboardPagesCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFF329DCA53E00FE3400 /* DashboardPagesCardCell.swift */; };
 		80D9CFF529DD314600FE3400 /* DashboardPagesCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFF329DCA53E00FE3400 /* DashboardPagesCardCell.swift */; };
+		80D9CFF729E5010300FE3400 /* PagesCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFF629E5010300FE3400 /* PagesCardViewModel.swift */; };
+		80D9CFF829E5010300FE3400 /* PagesCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFF629E5010300FE3400 /* PagesCardViewModel.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -7219,6 +7221,7 @@
 		80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostStatsTableViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		80D65C1129CC0813008E69D5 /* JetpackUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JetpackUITests-Info.plist"; sourceTree = "<group>"; };
 		80D9CFF329DCA53E00FE3400 /* DashboardPagesCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPagesCardCell.swift; sourceTree = "<group>"; };
+		80D9CFF629E5010300FE3400 /* PagesCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesCardViewModel.swift; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
@@ -13033,6 +13036,7 @@
 			isa = PBXGroup;
 			children = (
 				80D9CFF329DCA53E00FE3400 /* DashboardPagesCardCell.swift */,
+				80D9CFF629E5010300FE3400 /* PagesCardViewModel.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -13460,7 +13464,6 @@
 				FA70024E29DC3B6100E874FD /* Activity Log */,
 				0118968D29D1EAC900D34BA9 /* Domains */,
 				FA98B61429A3B71E0071AAE8 /* Blaze */,
-				DCFC097129D3544600277ECB /* Domains */,
 				80D9CFF229DCA51C00FE3400 /* Pages */,
 				FE18495627F5ACA400D26879 /* Prompts */,
 				8B92D69427CD51CE001F5371 /* Ghost */,
@@ -21846,6 +21849,7 @@
 				08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */,
 				F44293D628E3BA1700D340AF /* AppIconListViewModel.swift in Sources */,
 				02AC3092226FFFAA0018D23B /* BlogDetailsViewController+DomainCredit.swift in Sources */,
+				80D9CFF729E5010300FE3400 /* PagesCardViewModel.swift in Sources */,
 				E60BD231230A3DD400727E82 /* KeyringAccountHelper.swift in Sources */,
 				FEDA1AD8269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */,
 				E142007A1C117A3B00B3B115 /* ManagedAccountSettings+CoreDataProperties.swift in Sources */,
@@ -25040,6 +25044,7 @@
 				FABB25792602FC2C00C8785C /* Blog+Files.swift in Sources */,
 				FABB257A2602FC2C00C8785C /* RevisionDiffsBrowserViewController.swift in Sources */,
 				46F583AE2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */,
+				80D9CFF829E5010300FE3400 /* PagesCardViewModel.swift in Sources */,
 				FADFBD3C265F5B2E00039C41 /* WPStyleGuide+Jetpack.swift in Sources */,
 				FABB257B2602FC2C00C8785C /* WPAccount.m in Sources */,
 				80C523A529959DE000B1C14B /* BlazeWebViewController.swift in Sources */,
