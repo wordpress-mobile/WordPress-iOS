@@ -1,16 +1,39 @@
 import UIKit
 
-class DashboardPageCell: UITableViewCell {
+class DashboardPageCell: UITableViewCell, Reusable {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    // MARK: Variables
+
+    // MARK: Views
+
+    // MARK: Initializers
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commonInit()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
 
-        // Configure the view for the selected state
+    // MARK: View Lifecycle
+
+    override func prepareForReuse() {
+
+    }
+    
+    // MARK: Public Functions
+    
+    func configure(using page: Page) {
+        
+    }
+
+    // MARK: Helpers
+
+    private func commonInit() {
+
     }
 
 }

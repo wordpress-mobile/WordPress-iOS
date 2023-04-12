@@ -24,8 +24,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
-        let postCompactCellNib = PageListTableViewCell.defaultNib // TODO: Replace with new page cell
-        tableView.register(postCompactCellNib, forCellReuseIdentifier: PageListTableViewCell.defaultReuseID) // TODO: Replace with new page cell
+        tableView.register(DashboardPageCell.self, forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
         let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
         tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
         tableView.separatorStyle = .none
