@@ -121,25 +121,28 @@ fileprivate class PageStatusView: UIView {
             }
         }
 
-        var icon: UIImage {
-            return UIImage()
+        var icon: UIImage? {
+            switch self {
+            case .published:
+                return UIImage(named: "icon.globe")
+            case .scheduled:
+                return UIImage(named: "icon.calendar")
+            case .draft:
+                return UIImage(named: "icon.verse")
+            }
         }
     }
 
-    // MARK: Variables
-
     // MARK: Views
 
-    lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.backgroundColor = .secondarySystemBackground
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = Metrics.mainStackViewSpacing
-        stackView.directionalLayoutMargins = Metrics.mainStackViewLayoutMargins
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews([titleLabel]) // TODO: Add views
-        return stackView
+    private lazy var iconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .secondaryLabel
+        imageView.heightAnchor.constraint(equalToConstant: Metrics.iconImageViewSize).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: Metrics.iconImageViewSize).isActive = true
+        addSubview(imageView)
+        return imageView
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -173,22 +176,38 @@ fileprivate class PageStatusView: UIView {
             return
         }
         titleLabel.text = pageStatus.title
+        iconImageView.image = pageStatus.icon
     }
 
     // MARK: Helpers
 
     private func commonInit() {
+        applyStyles()
         setupViews()
     }
 
+    private func applyStyles() {
+        backgroundColor = .secondarySystemBackground
+    }
+
     private func setupViews() {
-        addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView)
+        addSubviews([iconImageView, titleLabel])
+
+        // Icon Image View Constraints
+        iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4).isActive = true
+        iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+
+        // Title label Constraints
+        titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 4).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 2).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
     }
 
     private enum Metrics {
         static let mainStackViewSpacing: CGFloat = 6
         static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 8)
+        static let iconImageViewSize: CGFloat = 16
     }
 
     private enum Strings {
