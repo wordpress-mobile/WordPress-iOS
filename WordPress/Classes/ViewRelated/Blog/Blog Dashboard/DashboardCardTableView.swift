@@ -1,7 +1,7 @@
 import UIKit
 
 extension NSNotification.Name {
-    /// Fired when a PostCardTableView changes its size
+    /// Fired when a DashboardCardTableView changes its size
     static let dashboardCardTableViewSizeChanged = NSNotification.Name("DashboardCard.IntrinsicContentSizeUpdated")
 }
 
