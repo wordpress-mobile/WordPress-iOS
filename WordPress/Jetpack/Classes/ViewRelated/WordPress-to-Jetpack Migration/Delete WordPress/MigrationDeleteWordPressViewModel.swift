@@ -31,12 +31,12 @@ final class MigrationDeleteWordPressViewModel {
     enum Strings {
         static let title = NSLocalizedString(
             "migration.deleteWordpress.title",
-            value: "You no longer need the WordPress app",
+            value: "You no longer need the WordPress app on your device",
             comment: "The title in the Delete WordPress screen"
         )
         static let description = NSLocalizedString(
             "migration.deleteWordpress.description",
-            value: "It looks like you still have the WordPress app installed. We recommend you delete the WordPress app to avoid data conflicts.",
+            value: "It looks like you still have the WordPress app installed.",
             comment: "The description in the Delete WordPress screen"
         )
         static let primaryAction = NSLocalizedString(
