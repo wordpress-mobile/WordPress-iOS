@@ -13,6 +13,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
         stackView.spacing = Metrics.mainStackViewSpacing
         stackView.directionalLayoutMargins = Metrics.mainStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.addBottomBorder(withColor: Colors.separatorColor, leadingMargin: Metrics.separatorLeadingMargin)
         stackView.addArrangedSubviews([titleLabel]) // TODO: Add views
         return stackView
     }()
@@ -69,6 +70,11 @@ class DashboardPageCell: UITableViewCell, Reusable {
 private extension DashboardPageCell {
     enum Metrics {
         static let mainStackViewSpacing: CGFloat = 6
-        static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 14, leading: 16, bottom: 14, trailing: 16)
+        static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 10, leading: 16, bottom: 10, trailing: 16)
+        static let separatorLeadingMargin: CGFloat = 16
+    }
+    
+    enum Colors {
+        static let separatorColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.36)
     }
 }
