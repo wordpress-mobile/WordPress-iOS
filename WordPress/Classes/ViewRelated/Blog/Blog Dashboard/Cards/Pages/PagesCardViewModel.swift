@@ -112,7 +112,7 @@ private extension PagesCardViewModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCell.defaultReuseID, for: indexPath) as? DashboardPageCell
 
         cell?.accessoryType = .none
-        cell?.configure(using: page)
+        cell?.configure(using: page, rowIndex: indexPath.row)
 
         return cell ?? UITableViewCell()
     }

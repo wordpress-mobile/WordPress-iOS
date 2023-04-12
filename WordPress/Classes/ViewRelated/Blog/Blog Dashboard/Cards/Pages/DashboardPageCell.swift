@@ -11,9 +11,9 @@ class DashboardPageCell: UITableViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = Metrics.mainStackViewSpacing
-        stackView.directionalLayoutMargins = Metrics.mainStackViewLayoutMargins
+        stackView.directionalLayoutMargins = Metrics.defaultMainStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addBottomBorder(withColor: Colors.separatorColor, leadingMargin: Metrics.separatorLeadingMargin)
+        stackView.addBottomBorder(withColor: Colors.separatorColor, leadingMargin: Metrics.defaultMainStackViewLayoutMargins.leading)
         stackView.addArrangedSubviews([titleLabel, detailsStackView])
         return stackView
     }()
@@ -66,16 +66,13 @@ class DashboardPageCell: UITableViewCell, Reusable {
 
     // MARK: View Lifecycle
 
-    override func prepareForReuse() {
-        // TODO: Implement this if needed
-    }
-
     // MARK: Public Functions
 
-    func configure(using page: Page) {
+    func configure(using page: Page, rowIndex: Int) {
         titleLabel.text = page.titleForDisplay()
         configureDateLabel(for: page)
         statusView.configure(for: page.status)
+        configureStackViewLayoutMargins(rowIndex: rowIndex)
     }
 
     // MARK: Helpers
@@ -95,14 +92,19 @@ class DashboardPageCell: UITableViewCell, Reusable {
         dateLabel.text = date?.toMediumString()
     }
 
+    private func configureStackViewLayoutMargins(rowIndex: Int) {
+        let margins = rowIndex == 0 ? Metrics.firstCellMainStackViewLayoutMargins : Metrics.defaultMainStackViewLayoutMargins
+        mainStackView.directionalLayoutMargins = margins
+    }
+
 }
 
 private extension DashboardPageCell {
     enum Metrics {
         static let mainStackViewSpacing: CGFloat = 6
         static let detailsStackViewSpacing: CGFloat = 6
-        static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 10, leading: 16, bottom: 10, trailing: 16)
-        static let separatorLeadingMargin: CGFloat = 16
+        static let defaultMainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 14, leading: 16, bottom: 14, trailing: 16)
+        static let firstCellMainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 8, leading: 16, bottom: 14, trailing: 16)
     }
 
     enum Colors {
