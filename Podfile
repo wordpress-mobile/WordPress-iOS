@@ -182,11 +182,6 @@ abstract_target 'Apps' do
   shared_with_networking_pods
   shared_with_extension_pods
 
-  ## Gutenberg (React Native)
-  ## =====================
-  ##
-  gutenberg_pods
-
   ## Third party libraries
   ## =====================
   ##
