@@ -188,26 +188,28 @@ fileprivate class PageStatusView: UIView {
 
     private func applyStyles() {
         backgroundColor = .secondarySystemBackground
+        layer.cornerRadius = Metrics.cornerRadius
     }
 
     private func setupViews() {
         addSubviews([iconImageView, titleLabel])
 
         // Icon Image View Constraints
-        iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4).isActive = true
+        iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.iconLeadingSpace).isActive = true
         iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
 
         // Title label Constraints
-        titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 4).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 2).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: Metrics.titleLabelMargins.leading).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.titleLabelMargins.top).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.titleLabelMargins.bottom).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.titleLabelMargins.trailing).isActive = true
     }
 
     private enum Metrics {
-        static let mainStackViewSpacing: CGFloat = 6
-        static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 8)
+        static let iconLeadingSpace: CGFloat = 4
+        static let titleLabelMargins: NSDirectionalEdgeInsets = .init(top: 2, leading: 4, bottom: 2, trailing: 8)
         static let iconImageViewSize: CGFloat = 16
+        static let cornerRadius: CGFloat = 2
     }
 
     private enum Strings {
