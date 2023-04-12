@@ -85,6 +85,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
     }
 
     private func setupViews() {
+        backgroundColor = .clear
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
     }
