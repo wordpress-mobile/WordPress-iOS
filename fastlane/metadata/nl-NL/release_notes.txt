@@ -1,0 +1,1 @@
+Wanneer je inlogt op een zelfstandig gehoste website die individuele plugins gebruikt om verbinding te maken met Jetpack, zul je een pop-up scherm zien waarop staat dat deze verbindingssoort nog niet de kernfuncties van de app ondersteunt. Je kunt dit oplossen door over te schakelen naar de Jetpack-app. Daar gaan we.
