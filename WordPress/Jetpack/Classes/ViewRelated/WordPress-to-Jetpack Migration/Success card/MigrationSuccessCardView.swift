@@ -8,16 +8,7 @@ class MigrationSuccessCardView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Appearance.iconImageName))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 8
-        imageView.layer.cornerCurve = .continuous
-        imageView.clipsToBounds = true
         return imageView
-    }()
-
-    private lazy var iconView: UIView = {
-        let view = UIView()
-        view.addSubview(iconImageView)
-        return view
     }()
 
     private lazy var descriptionLabel: UILabel = {
@@ -29,10 +20,30 @@ class MigrationSuccessCardView: UIView {
         return label
     }()
 
+    private lazy var learnMoreLabel: UILabel = {
+        let label = UILabel()
+        label.text = Appearance.learnMoreText
+        label.font = Appearance.learnMoreFont
+        label.textColor = Appearance.learnMoreTextColor
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+
+    private lazy var labelStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [descriptionLabel, learnMoreLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.spacing = 8
+        return stackView
+    }()
+
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [iconView, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [iconImageView, labelStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
+        stackView.alignment = .top
         stackView.spacing = 16
         return stackView
     }()
@@ -49,10 +60,7 @@ class MigrationSuccessCardView: UIView {
         pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(allEdges: 16))
         NSLayoutConstraint.activate([
             iconImageView.heightAnchor.constraint(equalToConstant: 32),
-            iconImageView.widthAnchor.constraint(equalToConstant: 32),
-            iconImageView.centerXAnchor.constraint(equalTo: iconView.centerXAnchor),
-            iconImageView.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
-            iconView.widthAnchor.constraint(equalTo: iconImageView.widthAnchor)
+            iconImageView.widthAnchor.constraint(equalToConstant: 56)
         ])
         backgroundColor = .listForeground
         layer.cornerRadius = 10
@@ -66,10 +74,15 @@ class MigrationSuccessCardView: UIView {
 
     private enum Appearance {
         static let iconImageName = "wp-migration-success-card-icon"
-        static let descriptionText = NSLocalizedString("wp.migration.successcard.description",
-                                                       value: "Please delete the WordPress app",
+        static let descriptionText = NSLocalizedString("wp.migration.successCard.description",
+                                                       value: "Welcome to the Jetpack app. You can uninstall the WordPress app.",
                                                        comment: "Description of the jetpack migration success card, used in My site.")
         static let descriptionFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        static let learnMoreText = NSLocalizedString("wp.migration.successCard.learnMore",
+                                                     value: "Learn more",
+                                                     comment: "Title of a button that displays a blog post in a web view.")
+        static let learnMoreFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        static let learnMoreTextColor = UIColor.muriel(color: .jetpackGreen, .shade40)
     }
 }
 
