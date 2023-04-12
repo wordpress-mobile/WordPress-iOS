@@ -74,6 +74,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
 
     func configure(using page: Page) {
         titleLabel.text = page.titleForDisplay()
+        configureDateLabel(for: page)
         statusView.configure(for: page.status)
     }
 
@@ -86,6 +87,11 @@ class DashboardPageCell: UITableViewCell, Reusable {
     private func setupViews() {
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
+    }
+
+    private func configureDateLabel(for page: Page) {
+        let date = page.status == .scheduled ? page.dateCreated : page.dateModified
+        dateLabel.text = date?.toMediumString()
     }
 
 }
