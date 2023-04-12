@@ -1,9 +1,14 @@
 import UIKit
 
-final class DashboardPagesCardCell: DashboardCollectionViewCell {
+extension PageListTableViewCell: NibReusable { // TODO: Remove
+
+}
+
+final class DashboardPagesCardCell: DashboardCollectionViewCell, PagesCardView {
 
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
+    private var viewModel: PagesCardViewModel?
 
     // MARK: - Views
 
@@ -14,34 +19,67 @@ final class DashboardPagesCardCell: DashboardCollectionViewCell {
         return frameView
     }()
 
+    lazy var tableView: UITableView = {
+        let tableView = DashboardCardTableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = false
+        tableView.backgroundColor = nil
+        let postCompactCellNib = PageListTableViewCell.defaultNib // TODO: Replace with new page cell
+        tableView.register(postCompactCellNib, forCellReuseIdentifier: PageListTableViewCell.defaultReuseID) // TODO: Replace with new page cell
+        let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
+        tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        commonInit()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        commonInit()
     }
 
-    // MARK: - View setup
+    // MARK: View Lifecycle
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        tableView.dataSource = nil
+        viewModel?.tearDown()
+    }
+
+    // MARK: - Helpers
+
+    private func commonInit() {
+        setupView()
+        tableView.delegate = self
+    }
 
     private func setupView() {
+        cardFrameView.add(subview: tableView)
+
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: .defaultHigh)
     }
+}
 
-    // MARK: - BlogDashboardCardConfigurable
+// MARK: - BlogDashboardCardConfigurable
 
+extension DashboardPagesCardCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
 
         configureContextMenu(blog: blog)
 
-        // FIXME: configure card using api response
-        // Expecting a list of pages
+        viewModel = PagesCardViewModel(blog: blog, view: self)
+        viewModel?.viewDidLoad()
+        tableView.dataSource = viewModel?.diffableDataSource
+        viewModel?.refresh()
     }
 
     // MARK: Context Menu
@@ -85,6 +123,13 @@ final class DashboardPagesCardCell: DashboardCollectionViewCell {
     }
 }
 
+// MARK: - UITableViewDelegate
+extension DashboardPagesCardCell: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: Open editor for selected page
+    }
+}
+
 extension DashboardPagesCardCell {
 
     static func shouldShowCard(for blog: Blog) -> Bool {
@@ -97,9 +142,9 @@ extension DashboardPagesCardCell {
     }
 }
 
-extension DashboardPagesCardCell {
+private extension DashboardPagesCardCell {
 
-    private enum Strings {
+    enum Strings {
         static let title = NSLocalizedString("dashboardCard.Pages.title",
                                              value: "Pages",
                                              comment: "Title for the Pages dashboard card.")
@@ -108,7 +153,7 @@ extension DashboardPagesCardCell {
                                                    comment: "Title for an action that opens the full pages list.")
     }
 
-    private enum Style {
+    enum Style {
         static let allPagesImage = UIImage(systemName: "doc.text")
     }
 }
