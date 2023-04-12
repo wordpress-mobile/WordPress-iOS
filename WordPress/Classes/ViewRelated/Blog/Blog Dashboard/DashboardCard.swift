@@ -61,7 +61,7 @@ enum DashboardCard: String, CaseIterable {
         case .personalize:
             return BlogDashboardPersonalizeCardCell.self
         case .pages:
-            return DashboardPagesCardCell.self
+            return DashboardPagesListCardCell.self
         case .activityLog:
             return DashboardActivityLogCardCell.self
         }
@@ -105,7 +105,7 @@ enum DashboardCard: String, CaseIterable {
         case .personalize:
             return FeatureFlag.personalizeHomeTab.enabled
         case .pages:
-            return DashboardPagesCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+            return DashboardPagesListCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .activityLog:
             return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         }

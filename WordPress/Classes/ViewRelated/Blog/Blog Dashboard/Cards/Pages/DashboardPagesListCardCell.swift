@@ -4,7 +4,7 @@ extension PageListTableViewCell: NibReusable { // TODO: Remove
 
 }
 
-final class DashboardPagesCardCell: DashboardCollectionViewCell, PagesCardView {
+final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardView {
 
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
@@ -69,7 +69,7 @@ final class DashboardPagesCardCell: DashboardCollectionViewCell, PagesCardView {
 
 // MARK: - BlogDashboardCardConfigurable
 
-extension DashboardPagesCardCell {
+extension DashboardPagesListCardCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
@@ -124,13 +124,13 @@ extension DashboardPagesCardCell {
 }
 
 // MARK: - UITableViewDelegate
-extension DashboardPagesCardCell: UITableViewDelegate {
+extension DashboardPagesListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Open editor for selected page
     }
 }
 
-extension DashboardPagesCardCell {
+extension DashboardPagesListCardCell {
 
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard RemoteFeatureFlag.pagesDashboardCard.enabled(),
@@ -142,7 +142,7 @@ extension DashboardPagesCardCell {
     }
 }
 
-private extension DashboardPagesCardCell {
+private extension DashboardPagesListCardCell {
 
     enum Strings {
         static let title = NSLocalizedString("dashboardCard.Pages.title",
