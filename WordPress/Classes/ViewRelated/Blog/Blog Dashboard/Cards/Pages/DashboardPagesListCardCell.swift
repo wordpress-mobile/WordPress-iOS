@@ -1,9 +1,5 @@
 import UIKit
 
-extension PageListTableViewCell: NibReusable { // TODO: Remove
-
-}
-
 final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardView {
 
     private var blog: Blog?

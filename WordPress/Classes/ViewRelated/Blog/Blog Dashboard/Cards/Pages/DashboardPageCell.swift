@@ -2,8 +2,6 @@ import UIKit
 
 class DashboardPageCell: UITableViewCell, Reusable {
 
-    // MARK: Variables
-
     // MARK: Views
 
     lazy var mainStackView: UIStackView = {
@@ -63,8 +61,6 @@ class DashboardPageCell: UITableViewCell, Reusable {
         super.init(coder: coder)
         commonInit()
     }
-
-    // MARK: View Lifecycle
 
     // MARK: Public Functions
 
