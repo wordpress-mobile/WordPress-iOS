@@ -1293,6 +1293,11 @@ extension GutenbergViewController: PostEditorStateContextDelegate {
         navigationBarManager.reloadPublishButton()
     }
 
+    // TODO: Call function when save event is detected.
+    func emitPostSaveEvent() {
+        gutenberg.postHasBeenJustSaved()
+    }
+
     internal func addObservers(toPost: AbstractPost) {
         toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
