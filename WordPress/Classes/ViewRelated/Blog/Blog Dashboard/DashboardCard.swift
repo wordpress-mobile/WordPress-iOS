@@ -129,7 +129,7 @@ enum DashboardCard: String, CaseIterable {
         case .pages:
             return true
         case .activityLog:
-            return true // FIXME: hide card if there's no activities
+            return apiResponse.hasActivities
         default:
             return false
         }
@@ -172,4 +172,8 @@ private extension BlogDashboardRemoteEntity {
      var hasPublished: Bool {
          return self.posts?.hasPublished ?? true
      }
+
+    var hasActivities: Bool {
+        return (self.activity?.count ?? 0) > 0
+    }
  }
