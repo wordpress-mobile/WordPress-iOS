@@ -24,7 +24,7 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         super.tearDown()
     }
 
-    func testSuccessfulSync() {
+    func testSuccessfulPostsSync() {
         // Given
         let postsToReturn = [PostBuilder(contextManager.mainContext).build()]
         postService.syncShouldSucceed = true
@@ -44,6 +44,30 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         XCTAssertEqual(listener.postsSyncType, .post)
         XCTAssertEqual(listener.postsSynced, postsToReturn)
         XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, [])
+        XCTAssertTrue(postService.syncPostsCalled)
+        XCTAssertFalse(blogService.syncAuthorsCalled)
+    }
+
+    func testSuccessfulPagesSync() {
+        // Given
+        let postsToReturn = [PostBuilder(contextManager.mainContext).build()]
+        postService.syncShouldSucceed = true
+        postService.returnSyncedPosts = postsToReturn
+
+        let manager = DashboardPostsSyncManager(postService: postService, blogService: blogService)
+        let listener = SyncManagerListenerMock()
+        manager.addListener(listener)
+
+        // When
+        manager.syncPosts(blog: blog, postType: .page, statuses: draftStatuses.strings)
+
+        // Then
+        XCTAssertTrue(listener.postsSyncedCalled)
+        XCTAssertTrue(listener.postsSyncSuccess ?? false)
+        XCTAssertEqual(listener.postsSyncBlog, blog)
+        XCTAssertEqual(listener.postsSyncType, .page)
+        XCTAssertEqual(listener.postsSynced, postsToReturn)
+        XCTAssertEqual(blog.dashboardState.pagesSyncingStatuses, [])
         XCTAssertTrue(postService.syncPostsCalled)
         XCTAssertFalse(blogService.syncAuthorsCalled)
     }
