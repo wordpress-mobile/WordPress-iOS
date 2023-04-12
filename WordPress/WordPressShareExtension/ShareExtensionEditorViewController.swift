@@ -644,6 +644,8 @@ extension ShareExtensionEditorViewController {
                                                         self?.toggleUnorderedList()
                                                     case .ordered:
                                                         self?.toggleOrderedList()
+                                                    @unknown default:
+                                                        fatalError()
                                                     }
         })
     }
