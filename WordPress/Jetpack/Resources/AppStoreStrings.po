@@ -81,13 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v22.0-whats-new"
+msgctxt "v22.1-whats-new"
 msgid ""
-"We don’t know about you, but we’re feeling 22. In honor of the occasion (and because you’ve been asking for it), you can now transform most types of blocks into other block types, like quotes, columns, and groups. Nice.\n"
-"\n"
-"We made some design adjustments to the Reader, updating the “followed topics/sites” icon, recoloring the navigation bar background to match other screens in the app, and resizing the too-large title in the Reader tab. (We did that last one in the Notifications tab, too.)\n"
-"\n"
-"You’ll also see a few small visual changes to the My Site tab bar icon and the in-app survey. And if you have an extra-sharp eye, you might notice the dark background color of toolbars and top tabs is now consistent across the app.\n"
+"No updates this week. In the meantime, we're just over here cooling our jets.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

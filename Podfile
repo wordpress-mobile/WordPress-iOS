@@ -91,7 +91,7 @@ def shared_style_pods
 end
 
 def gutenberg_pods
-  gutenberg tag: 'v1.93.0-alpha1'
+  gutenberg tag: 'v1.93.0-alpha2'
 end
 
 def gutenberg(options)
@@ -142,7 +142,6 @@ def gutenberg_dependencies(options)
     Yoga
     RCT-Folly
     glog
-    react-native-keyboard-aware-scroll-view
     react-native-safe-area
     react-native-safe-area-context
     react-native-video
