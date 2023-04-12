@@ -1,3 +1,13 @@
 GCC_WARN_UNUSED_PARAMETER = YES
 WARNING_CFLAGS = -Wno-nullability-completeness
 IPHONEOS_DEPLOYMENT_TARGET = 14.0
+
+// Disabled for the purpose of building React, otherwise we'd get:
+//
+// > A function declaration without a prototype is deprecated in all versions
+// > of C
+//
+// in RCTApparence.h, line 15, which then result in:
+//
+// > Could not build module 'React'
+CLANG_WARN_STRICT_PROTOTYPES = NO
