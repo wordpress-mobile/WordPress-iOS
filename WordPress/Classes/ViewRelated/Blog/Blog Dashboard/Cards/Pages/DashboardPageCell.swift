@@ -14,7 +14,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
         stackView.directionalLayoutMargins = Metrics.mainStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.addBottomBorder(withColor: Colors.separatorColor, leadingMargin: Metrics.separatorLeadingMargin)
-        stackView.addArrangedSubviews([titleLabel]) // TODO: Add views
+        stackView.addArrangedSubviews([titleLabel, detailsStackView])
         return stackView
     }()
 
@@ -29,6 +29,28 @@ class DashboardPageCell: UITableViewCell, Reusable {
         label.textColor = .text
         return label
     }()
+
+    lazy var detailsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = Metrics.detailsStackViewSpacing
+        stackView.addArrangedSubviews([statusView, dateLabel])
+        return stackView
+    }()
+
+    private lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.font = WPStyleGuide.regularTextFont()
+        label.numberOfLines = 1
+        label.textColor = .secondaryLabel
+        return label
+    }()
+
+    private lazy var statusView = PageStatusView()
 
     // MARK: Initializers
 
@@ -52,6 +74,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
 
     func configure(using page: Page) {
         titleLabel.text = page.titleForDisplay()
+        statusView.configure(for: page.status)
     }
 
     // MARK: Helpers
@@ -70,10 +93,11 @@ class DashboardPageCell: UITableViewCell, Reusable {
 private extension DashboardPageCell {
     enum Metrics {
         static let mainStackViewSpacing: CGFloat = 6
+        static let detailsStackViewSpacing: CGFloat = 6
         static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 10, leading: 16, bottom: 10, trailing: 16)
         static let separatorLeadingMargin: CGFloat = 16
     }
-    
+
     enum Colors {
         static let separatorColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.36)
     }
