@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-31 12:31:15+0000 */
+/* Translation-Revision-Date: 2023-04-07 20:35:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: en_CA */
@@ -10246,6 +10246,51 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Site members";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "Email";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Contact support";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Debug";
+
+/* Support email label. */
+"support.row.email.title" = "Email";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress Forums";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress Help Center";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Logs";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Tickets";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Version";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Enable Debugging to include additional information in your logs that can help troubleshoot issues with the app.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com Account";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Advanced";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Community Forums";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Priority Support";
+
+/* View title for Help & Support page. */
+"support.title" = "Help";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "these items will be deleted:";

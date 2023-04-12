@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-04 19:42:23+0000 */
+/* Translation-Revision-Date: 2023-04-05 18:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Bir alan adı arayın";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Kişilerin web sitenizi bulmasına ve ziyaret etmesine yardımcı olacak kısa ve akılda kalıcı bir anahtar sözcük arayın.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Arama giriş alanı.";
 
@@ -9696,6 +9699,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Şimdi deneyin";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Web siteniz hakkındaki bilgileri görmek için ihtiyaçlarınıza uygun kartlar ekleyin.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Gösterilecek kart yok";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Ana sayfa sekmenizi kişiselleştirin";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "İptal edilen parametreler bir onay işareti ile gösterilir.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Buradan yeni bir değer girerek seçili parametreyi iptal edin.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Uzaktan ya da varsayılan değer yok";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Uzaktan Yapılandırma";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Yerel Özellik Bayrakları";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Uzaktan Özellik Bayrakları";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Bulması, paylaşması ve takip etmesi kolay bir site adresiyle internet dünyasındaki yerinizi alın.";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
 
@@ -10001,6 +10034,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Kullanıcı hesabınızı bağlayın";
 
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Telefonunuza WordPress sitesinden faydalı bildirimler almak için kullanıcı hesabınızı bağlamalısınız.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Sitenizde istatistikleri kullanmak için Jetpack eklentisini kullanıcı hesabınıza bağlamalısınız.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "İstatistikler, Okuyucu, Bildirimler ve diğer özellikler, yakında Jetpack mobil uygulamasına taşınacaktır.";
 
@@ -10238,14 +10277,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "parola";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Web sitenizde olanlara göre kartlar farklı içerik gösterebilir. Daha fazla kart ve kontrol üzerinde çalışıyoruz.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Kart ekle veya gizle";
+
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Taslak yazılar";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Blog talepleri";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.scheduledPosts" = "Zamanlanan yazılar";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Bugünün istatistikleri";
+
+/* Page title */
+"personalizeHome.title" = "Ana Sayfa Sekmesini Kişiselleştir";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";
@@ -10348,6 +10402,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/siteadi.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Yukarıdaki örnekte olduğu gibi, bir alan adı, kişilerin web sitenizi bir web tarayıcısı üzerinden bulmasını ve ziyaret etmesini sağlar.";
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "SiteAdi.com";
@@ -10672,6 +10729,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal on WordPress secondary button title */
 "wordpress.jetpack.plugin.modal.secondary.button.title" = "Jetpack olmadan devam et";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@, WordPress Uygulaması tarafından desteklenmeyen özel Jetpack eklentilerini kullanıyor.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@, WordPress Uygulaması tarafından desteklenmeyen %2$@ eklentisini kullanıyor.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Uygulamanın bu web sitesi için sunduğu tüm özellikleri kullanabilmek için lütfen tam Jetpack eklentisini bağlamada size yardımcı olacağımız Jetpack uygulamasına geçin.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Üzgünüz, bu web sitesi WordPress uygulaması tarafından desteklenmiyor";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Lütfen WordPress uygulamasını silin";

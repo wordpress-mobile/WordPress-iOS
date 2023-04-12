@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-07 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
@@ -6487,6 +6487,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "搜索域";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "搜索简短易记的关键字，以帮助人们找到并访问您的网站。";
+
 /* No comment provided by engineer. */
 "Search input field." = "搜索输入字段。";
 
@@ -9693,6 +9696,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "立即试用";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "添加符合您需要的卡片，以查看有关您站点的信息。";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "没有可显示的卡片";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "对您的“首页”选项卡进行个性化";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "覆盖的参数由复选标记表示。";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "通过在此处定义新值来覆盖所选参数。";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "没有远程或默认值";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "远程配置";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "本地功能标志";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "远程功能标志";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "通过易于查找、共享和关注的站点地址，在网络上创建自己的一席之地。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "隐藏此内容";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "使用自定义域名拥有您的在线身份";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
 
@@ -9986,6 +10025,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完成";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "连接您的用户账户";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "为了在您的手机上获取来自您的 WordPress 站点的通知，您需要连接到您的用户账户。";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "要在您的站点上使用统计信息功能，您需要将 Jetpack 插件连接到您的用户账户。";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "统计信息、阅读器、通知和其他功能即将移至 Jetpack 应用程序。";
 
@@ -10223,6 +10271,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "密码";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "卡片可能会显示不同的内容，具体取决于您站点上的情况。 我们正在开发更多卡片和控件。";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "添加或隐藏卡片";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "草稿文章";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "博客提示";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "定时发布的文章";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "今日统计信息";
+
+/* Page title */
+"personalizeHome.title" = "对“首页”选项卡进行个性化";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "电话号码";
 
@@ -10240,6 +10312,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "大力宣传并推广";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "查看所有回复";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "访问“站点设置”以重新打开";
@@ -10318,6 +10393,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "共享错误";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "和上面的示例一样，域名可让人们从他们的 Web 浏览器中查找和访问您的站点。";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "显示提示";
@@ -10633,6 +10717,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog wordpress, 站点, 博客";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "切换到 Jetpack 应用";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "继续，不使用 Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ 正在使用独立的 Jetpack 插件，而 WordPress 应用不支持该插件。";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ 正在使用 %2$@ 插件，而 WordPress 应用不支持该插件。";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "请切换到 Jetpack 应用，我们将在其中指导您连接完整的 Jetpack 插件，以便您可以使用适用于此站点的所有应用功能。";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "抱歉，WordPress 应用不支持此站点。";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "请删除 WordPress 应用";

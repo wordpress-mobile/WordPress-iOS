@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-05 11:38:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: es */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Buscar un dominio";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Busca una palabra clave corta y memorable para ayudar a la gente a encontrar y visitar tu web.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Campo de introducción de búsqueda.";
 
@@ -9696,6 +9699,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Probar ahora";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Añade tarjetas que se adapten a tus necesidades para ver información sobre tu sitio.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "No hay tarjetas que mostrar";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personaliza tu pestaña de inicio";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Los parámetros sobreescritos están marcados con un check.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Sobreescribe el parámetro seleccionado definiendo aquí un nuevo valor.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "No hay valor remoto o predeterminado";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Configuración remota";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Banderas de característica locales";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Banderas de característica remotas";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Hazte con tu rincón en Internet con una dirección web fácil de encontrar, de compartir y de seguir.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Ocultar esto";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Sé el dueño de tu identidad online con un dominio propio";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "doble toque para cambiar de unidad";
 
@@ -9992,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Hecho";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Conectar tu cuenta de usuario";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Para recibir notificaciones útiles en tu teléfono desde tu sitio de WordPress, tendrás que conectarte a tu cuenta de usuario.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Para utilizar las estadísticas en tu sitio, tendrás que conectar el plugin Jetpack a tu cuenta de usuario.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Algunas funciones, como Estadísticas, Lector o Notificaciones, se trasladarán a la aplicación móvil de Jetpack pronto.";
 
@@ -10229,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "contraseña";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Las tarjetas pueden mostrar contenidos diferentes en función de lo que ocurra en tu sitio. Estamos trabajando en más tarjetas y controles.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Añadir u ocultar tarjetas";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Entradas borrador";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Sugerencias de publicación";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Entradas programadas";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Estadísticas de hoy";
+
+/* Page title */
+"personalizeHome.title" = "Personalizar perstaña de inicio";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "número de teléfono";
 
@@ -10246,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Ver todas las respuestas";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Visitar los ajustes del sitio para volver a activar";
@@ -10324,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Error al compartir";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Como en el ejemplo superior, un dominio le permite a la gente encontrar y visitar tu sitio desde su navegador.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Mostrar estímulos";
@@ -10639,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sitios, sitio, blogs, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Cambiar a la aplicación de Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Continuar sin Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ está usando plugins individuales de Jetpack que no son compatibles con la aplicación de WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ está usando el plugin %2$@ que no es compatible con la aplicación de WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Por favor, pásate a la aplicación Jetpack donde te guiaremos para que conectes el plugin Jetpack completo para que puedas usar todas las características de la aplicación para este sitio.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Lo siento, esto no es compatible con la aplicación WordPress";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Elimina la aplicación de WordPress";

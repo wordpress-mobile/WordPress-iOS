@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-28 11:16:56+0000 */
+/* Translation-Revision-Date: 2023-04-07 10:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Поиск домена";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Подберите короткое запоминающееся слово, которое поможет находить ваш сайт.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Поле ввода для поиска.";
 
@@ -9696,6 +9699,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Попробовать";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Добавьте нужные карточки, чтобы просматривать информацию о сайте.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Нет карточек";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Настроить вкладку «Главная»";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Переопределенные параметры обозначаются галочкой.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Выберите новое значение здесь, чтобы переопределить выбранный параметр.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Нет удаленного значения или значения по умолчанию";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Удаленная настройка";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Отметки локальных возможностей";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Отметки удаленных возможностей";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Займите себе место в Интернете: зарегистрируйте адрес сайта, который будет легко запомнить и порекомендовать друзьям.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Свернуть";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Пользовательский домен ― ваше лицо в Интернете";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "нажмите дважды для смены единиц";
 
@@ -9992,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Готово";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Подключите вашу учётную запись";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Для получения уведомлений от WordPress на устройство нужно подключить учетную запись.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Для сбора и просмотра статистики на сайте требуется подключить плагин Jetpack к учетной записи пользователя.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Статистика, Чтиво, Уведомления и другие функции скоро переедут в мобильное приложение Jetpack.";
 
@@ -10229,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "пароль";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Содержимое карточек может быть разным и зависит от активности на сайте. Скоро станет доступно больше карточек и элементов управления.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Добавление и скрытие карточек";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Черновики записей";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Подсказки по ведению блога";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Запланированные записи";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Статистика за сегодня";
+
+/* Page title */
+"personalizeHome.title" = "Настройте вкладку «Главная»";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
 
@@ -10246,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Продвигайте содержимое с помощью Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Посмотреть все ответы";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Посетите настройки сайта, чтобы снова включить";
@@ -10324,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Ошибка поделиться";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Как в примере выше, домен позволяет находить ваш сайт и заходить на него через браузер.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Показать подсказки";
@@ -10639,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, сайты, сайт, блоги, блог";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Перейти в приложение Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Продолжить без Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "На %1$@ используются отдельные плагины Jetpack, которые не поддерживаются приложением WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "На %1$@используется плагин %2$@, который не поддерживается приложением WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Перейдите в приложение Jetpack и следуйте пошаговым инструкциям по подключению полнофункционального плагина Jetpack, который позволит использовать все функции приложения при работе с этим сайтом.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Приложение WordPress не поддерживает этот сайт";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Удалите приложение WordPress";
