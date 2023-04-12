@@ -24,7 +24,7 @@ class PagesCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private var postListFilter: PostListFilter = PostListFilter.publishedFilter() // TODO: Remove this and show all except trashed
+    private var filter: PostListFilter = PostListFilter.allNonTrashedFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Page>?
 
@@ -162,16 +162,16 @@ private extension PagesCardViewModel {
     }
 
     func predicateForFetchRequest() -> NSPredicate {
-        postListFilter.predicate(for: blog)
+        filter.predicate(for: blog)
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        return postListFilter.sortDescriptors
+        return filter.sortDescriptors
     }
 
     func sync() {
         isSyncing = true
-        let filter = postListFilter
+        let filter = filter
         DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .page, statuses: filter.statuses.strings)
     }
 
@@ -201,7 +201,7 @@ private extension PagesCardViewModel {
     }
 
     enum Constants {
-        static let numberOfPages = 3
+        static let numberOfPages = 10
     }
 }
 
@@ -213,10 +213,8 @@ extension PagesCardViewModel: DashboardPostsSyncManagerListener {
                      postType: DashboardPostsSyncManager.PostType,
                      posts: [AbstractPost]?,
                      for statuses: [String]) {
-        let currentStatuses = postListFilter.statuses.strings
         guard postType == .page,
-              self.blog == blog,
-              currentStatuses.allSatisfy(statuses.contains) else {
+              self.blog == blog else {
             return
         }
 
