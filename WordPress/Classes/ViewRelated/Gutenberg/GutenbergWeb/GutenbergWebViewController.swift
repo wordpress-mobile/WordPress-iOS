@@ -1,6 +1,6 @@
 import UIKit
 import WebKit
-import Gutenberg
+import Johannes
 
 class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitAuthenticatable, NoResultsViewHost {
     enum GutenbergWebError: Error {

@@ -1,4 +1,4 @@
-import Gutenberg
+import Johannes
 
 class GutenbergStockPhotos {
     private var stockPhotos: StockPhotosPicker?

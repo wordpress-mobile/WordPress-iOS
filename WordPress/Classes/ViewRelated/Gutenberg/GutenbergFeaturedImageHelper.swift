@@ -1,5 +1,5 @@
 import Foundation
-import Gutenberg
+import Johannes
 
 class GutenbergFeaturedImageHelper: NSObject {
     fileprivate let post: AbstractPost

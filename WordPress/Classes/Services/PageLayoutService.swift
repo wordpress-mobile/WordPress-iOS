@@ -1,6 +1,6 @@
 import UIKit
 import CoreData
-import Gutenberg
+import Johannes
 import WordPressKit
 
 class PageLayoutService {

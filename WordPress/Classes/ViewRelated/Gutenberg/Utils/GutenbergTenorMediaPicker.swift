@@ -1,4 +1,4 @@
-import Gutenberg
+import Johannes
 
 class GutenbergTenorMediaPicker {
     private var tenor: TenorPicker?

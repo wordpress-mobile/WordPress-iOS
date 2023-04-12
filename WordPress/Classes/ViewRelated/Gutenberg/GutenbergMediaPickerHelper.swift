@@ -4,7 +4,7 @@ import UIKit
 import Photos
 import WordPressShared
 import WPMediaPicker
-import Gutenberg
+import Johannes
 
 public typealias GutenbergMediaPickerHelperCallback = ([WPMediaAsset]?) -> Void
 

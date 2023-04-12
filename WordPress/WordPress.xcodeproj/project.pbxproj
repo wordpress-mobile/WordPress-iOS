@@ -669,6 +669,16 @@
 		3F09CCA82428FF3300D00A8C /* ReaderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */; };
 		3F09CCAA2428FF8300D00A8C /* ReaderTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */; };
 		3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
+		3F0DAB7B29E6C14B00EBDCC6 /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7629E6C14A00EBDCC6 /* yoga.xcframework */; };
+		3F0DAB7C29E6C14B00EBDCC6 /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7629E6C14A00EBDCC6 /* yoga.xcframework */; };
+		3F0DAB7D29E6C14B00EBDCC6 /* Johannes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7729E6C14A00EBDCC6 /* Johannes.xcframework */; };
+		3F0DAB7E29E6C14B00EBDCC6 /* Johannes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7729E6C14A00EBDCC6 /* Johannes.xcframework */; };
+		3F0DAB7F29E6C14B00EBDCC6 /* React.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7829E6C14A00EBDCC6 /* React.xcframework */; };
+		3F0DAB8029E6C14B00EBDCC6 /* React.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7829E6C14A00EBDCC6 /* React.xcframework */; };
+		3F0DAB8129E6C14B00EBDCC6 /* RNTAztecView.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7929E6C14B00EBDCC6 /* RNTAztecView.xcframework */; };
+		3F0DAB8229E6C14B00EBDCC6 /* RNTAztecView.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7929E6C14B00EBDCC6 /* RNTAztecView.xcframework */; };
+		3F0DAB8329E6C14B00EBDCC6 /* Aztec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7A29E6C14B00EBDCC6 /* Aztec.xcframework */; };
+		3F0DAB8429E6C14B00EBDCC6 /* Aztec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0DAB7A29E6C14B00EBDCC6 /* Aztec.xcframework */; };
 		3F107B1929B6F7E0009B3658 /* XCTestCase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F107B1829B6F7E0009B3658 /* XCTestCase+Utils.swift */; };
 		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
@@ -6333,6 +6343,11 @@
 		3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewController.swift; sourceTree = "<group>"; };
 		3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabView.swift; sourceTree = "<group>"; };
 		3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItem.swift; sourceTree = "<group>"; };
+		3F0DAB7629E6C14A00EBDCC6 /* yoga.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = yoga.xcframework; path = "../../gutenberg-mobile/Johannes/xcframeworks/yoga.xcframework"; sourceTree = "<group>"; };
+		3F0DAB7729E6C14A00EBDCC6 /* Johannes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Johannes.xcframework; path = "../../gutenberg-mobile/Johannes/xcframeworks/Johannes.xcframework"; sourceTree = "<group>"; };
+		3F0DAB7829E6C14A00EBDCC6 /* React.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = React.xcframework; path = "../../gutenberg-mobile/Johannes/xcframeworks/React.xcframework"; sourceTree = "<group>"; };
+		3F0DAB7929E6C14B00EBDCC6 /* RNTAztecView.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RNTAztecView.xcframework; path = "../../gutenberg-mobile/Johannes/xcframeworks/RNTAztecView.xcframework"; sourceTree = "<group>"; };
+		3F0DAB7A29E6C14B00EBDCC6 /* Aztec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Aztec.xcframework; path = "../../gutenberg-mobile/Johannes/xcframeworks/Aztec.xcframework"; sourceTree = "<group>"; };
 		3F107B1829B6F7E0009B3658 /* XCTestCase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Utils.swift"; sourceTree = "<group>"; };
 		3F170E232655917400F6F670 /* UIView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SwiftUI.swift"; sourceTree = "<group>"; };
 		3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+MeButtonTests.swift"; sourceTree = "<group>"; };
@@ -9333,9 +9348,12 @@
 				93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */,
 				93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */,
 				93F2E53E1E9E5A010050D489 /* CoreText.framework in Frameworks */,
+				3F0DAB7F29E6C14B00EBDCC6 /* React.xcframework in Frameworks */,
 				E185474E1DED8D8800D875D7 /* UserNotifications.framework in Frameworks */,
 				FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */,
 				93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */,
+				3F0DAB7D29E6C14B00EBDCC6 /* Johannes.xcframework in Frameworks */,
+				3F0DAB7B29E6C14B00EBDCC6 /* yoga.xcframework in Frameworks */,
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				3F411B6F28987E3F002513AE /* Lottie in Frameworks */,
@@ -9353,12 +9371,14 @@
 				24CE2EB1258D687A0000C297 /* WordPressFlux in Frameworks */,
 				8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */,
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
+				3F0DAB8129E6C14B00EBDCC6 /* RNTAztecView.xcframework in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
 				3F2B62DC284F4E0B0008CD59 /* Charts in Frameworks */,
+				3F0DAB8329E6C14B00EBDCC6 /* Aztec.xcframework in Frameworks */,
 				E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
@@ -9488,6 +9508,7 @@
 				FABB26212602FC2C00C8785C /* StoreKit.framework in Frameworks */,
 				FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */,
 				FABB26232602FC2C00C8785C /* QuickLook.framework in Frameworks */,
+				3F0DAB7E29E6C14B00EBDCC6 /* Johannes.xcframework in Frameworks */,
 				FABB26242602FC2C00C8785C /* CoreText.framework in Frameworks */,
 				FABB26252602FC2C00C8785C /* UserNotifications.framework in Frameworks */,
 				FABB26262602FC2C00C8785C /* Photos.framework in Frameworks */,
@@ -9498,8 +9519,10 @@
 				FABB262B2602FC2C00C8785C /* CoreGraphics.framework in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
+				3F0DAB8429E6C14B00EBDCC6 /* Aztec.xcframework in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
 				3F44DD58289C379C006334CD /* Lottie in Frameworks */,
+				3F0DAB8029E6C14B00EBDCC6 /* React.xcframework in Frameworks */,
 				FABB262F2602FC2C00C8785C /* CoreMedia.framework in Frameworks */,
 				FABB26302602FC2C00C8785C /* AVFoundation.framework in Frameworks */,
 				FABB26312602FC2C00C8785C /* Foundation.framework in Frameworks */,
@@ -9507,6 +9530,7 @@
 				FABB26332602FC2C00C8785C /* MapKit.framework in Frameworks */,
 				FABB26342602FC2C00C8785C /* CoreLocation.framework in Frameworks */,
 				FABB26352602FC2C00C8785C /* WordPressFlux in Frameworks */,
+				3F0DAB7C29E6C14B00EBDCC6 /* yoga.xcframework in Frameworks */,
 				FABB26362602FC2C00C8785C /* CoreData.framework in Frameworks */,
 				FABB26372602FC2C00C8785C /* CFNetwork.framework in Frameworks */,
 				FABB26382602FC2C00C8785C /* MessageUI.framework in Frameworks */,
@@ -9515,6 +9539,7 @@
 				FABB263A2602FC2C00C8785C /* WebKit.framework in Frameworks */,
 				FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */,
 				FABB263C2602FC2C00C8785C /* libiconv.dylib in Frameworks */,
+				3F0DAB8229E6C14B00EBDCC6 /* RNTAztecView.xcframework in Frameworks */,
 				FABB263D2602FC2C00C8785C /* libz.dylib in Frameworks */,
 				3F2B62DE284F4E310008CD59 /* Charts in Frameworks */,
 				FABB263F2602FC2C00C8785C /* CoreServices.framework in Frameworks */,
@@ -10296,7 +10321,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -10379,13 +10404,11 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3FA640652670CEFE0064401E /* XCTest.framework */,
-				F111B88B2658102700057942 /* Combine.framework */,
-				F13E7FDD2566B0AB007D420A /* Intents.framework */,
-				FF4DEAD7244B56E200ACA032 /* CoreServices.framework */,
-				9884B145236225230021D8E9 /* WordPressUI.framework */,
-				9884B143236224F80021D8E9 /* WordPressUI.framework */,
-				7E21C760202BBC8D00837CF5 /* iAd.framework */,
+				3F0DAB7A29E6C14B00EBDCC6 /* Aztec.xcframework */,
+				3F0DAB7729E6C14A00EBDCC6 /* Johannes.xcframework */,
+				3F0DAB7829E6C14A00EBDCC6 /* React.xcframework */,
+				3F0DAB7929E6C14B00EBDCC6 /* RNTAztecView.xcframework */,
+				3F0DAB7629E6C14A00EBDCC6 /* yoga.xcframework */,
 				8527B15717CE98C5001CBA2E /* Accelerate.framework */,
 				CC24E5F41577E16B00A6D5B5 /* Accounts.framework */,
 				CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */,
@@ -10393,67 +10416,74 @@
 				374CB16115B93C0800DD0EBC /* AudioToolbox.framework */,
 				E1A386C714DB05C300954CF8 /* AVFoundation.framework */,
 				834CE7331256D0DE0046A4A3 /* CFNetwork.framework */,
+				F111B88B2658102700057942 /* Combine.framework */,
 				8355D7D811D260AA00A61362 /* CoreData.framework */,
 				834CE7371256D0F60046A4A3 /* CoreGraphics.framework */,
 				93F2E54E1E9E5CB70050D489 /* CoreImage.framework */,
 				83F3E2D211276371004CD686 /* CoreLocation.framework */,
 				E1A386C914DB05F700954CF8 /* CoreMedia.framework */,
+				FF4DEAD7244B56E200ACA032 /* CoreServices.framework */,
 				93F2E5431E9E5A570050D489 /* CoreSpotlight.framework */,
 				93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */,
 				E131CB5116CACA6B004B0314 /* CoreText.framework */,
 				93F2E5501E9E5CCD0050D489 /* CoreVideo.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				7E21C760202BBC8D00837CF5 /* iAd.framework */,
 				FD3D6D2B1349F5D30061136A /* ImageIO.framework */,
+				F13E7FDD2566B0AB007D420A /* Intents.framework */,
+				F1F163C825658B4D003DC13B /* IntentsUI.framework */,
+				FD21397E13128C5300099582 /* libiconv.dylib */,
+				93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */,
+				E131CB5316CACB05004B0314 /* libxml2.dylib */,
+				E19DF740141F7BDD000002F3 /* libz.dylib */,
 				83F3E25F11275E07004CD686 /* MapKit.framework */,
 				83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */,
 				83043E54126FA31400EC9953 /* MessageUI.framework */,
 				8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */,
 				93E5283B19A7741A003A1A9C /* NotificationCenter.framework */,
 				FF75933A1BE2423800814D3B /* Photos.framework */,
-				8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */,
+				57E15BC2269B6B7419464B6F /* Pods_Apps_Jetpack.framework */,
+				1E826CD5B4B116AF78FF391C /* Pods_Apps_WordPress.framework */,
+				430F7B409FE22699ADB1A724 /* Pods_JetpackDraftActionExtension.framework */,
+				D42A30853435E728881904E8 /* Pods_JetpackIntents.framework */,
+				23F18781EEBE5551D6B4992C /* Pods_JetpackNotificationServiceExtension.framework */,
+				23052F0F1F9B2503E33D0A26 /* Pods_JetpackShareExtension.framework */,
+				26AC7B7EB4454FA8E268624D /* Pods_JetpackStatsWidgets.framework */,
+				92B40A77F0765C1E93B11727 /* Pods_WordPressDraftActionExtension.framework */,
+				A1DD7BB9C25967442493CC19 /* Pods_WordPressIntents.framework */,
+				D3B8D9C4DCD93C57C2B98CDC /* Pods_WordPressNotificationServiceExtension.framework */,
+				AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */,
+				213A62FF811EBDB969FA7669 /* Pods_WordPressShareExtension.framework */,
+				4D670B9448DF9991366CF42D /* Pods_WordPressStatsWidgets.framework */,
+				B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */,
+				8DCE7542239FBC709B90EA85 /* Pods_WordPressUITests.framework */,
+				B7556D1D8CFA5CEAEAC481B9 /* Pods.framework */,
 				E10B3651158F2D3F00419A93 /* QuartzCore.framework */,
 				93F2E5411E9E5A350050D489 /* QuickLook.framework */,
 				296890770FE971DC00770264 /* Security.framework */,
 				E14D65C717E09663007E3EA4 /* Social.framework */,
+				8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */,
+				3F526C4F2538CF2A0069706C /* SwiftUI.framework */,
 				A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */,
 				CC24E5F21577DFF400A6D5B5 /* Twitter.framework */,
 				E10B3653158F2D4500419A93 /* UIKit.framework */,
 				E185474D1DED8D8800D875D7 /* UserNotifications.framework */,
+				733F36052126197800988727 /* UserNotificationsUI.framework */,
 				93F2E5521E9E5CF00050D489 /* VideoToolbox.framework */,
 				B5AA54D41A8E7510003BDD12 /* WebKit.framework */,
+				3F526C4D2538CF2A0069706C /* WidgetKit.framework */,
 				B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */,
 				E19FED0B1FBD85F300D77FAB /* WordPressFlux.framework */,
-				B56D96B4202C9B9300485233 /* WordPressUI.framework */,
-				B56D96B6202C9C9200485233 /* WordPressUI.framework */,
-				74BED42F2036038C00C47E40 /* WordPressUI.framework */,
 				747BA5F0202E1B3300FB15D0 /* WordPressKit.framework */,
 				9368C7981EC5F0C70092CE8E /* WordPressKit.framework */,
 				743368F01F914DCE0055224D /* WordPressKit.framework */,
+				9884B145236225230021D8E9 /* WordPressUI.framework */,
+				9884B143236224F80021D8E9 /* WordPressUI.framework */,
+				B56D96B4202C9B9300485233 /* WordPressUI.framework */,
+				B56D96B6202C9C9200485233 /* WordPressUI.framework */,
+				74BED42F2036038C00C47E40 /* WordPressUI.framework */,
+				3FA640652670CEFE0064401E /* XCTest.framework */,
 				E10675C9183FA78E00E5CE5C /* XCTest.framework */,
-				FD21397E13128C5300099582 /* libiconv.dylib */,
-				93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */,
-				E131CB5316CACB05004B0314 /* libxml2.dylib */,
-				E19DF740141F7BDD000002F3 /* libz.dylib */,
-				B7556D1D8CFA5CEAEAC481B9 /* Pods.framework */,
-				B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */,
-				733F36052126197800988727 /* UserNotificationsUI.framework */,
-				AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */,
-				8DCE7542239FBC709B90EA85 /* Pods_WordPressUITests.framework */,
-				3F526C4D2538CF2A0069706C /* WidgetKit.framework */,
-				3F526C4F2538CF2A0069706C /* SwiftUI.framework */,
-				F1F163C825658B4D003DC13B /* IntentsUI.framework */,
-				57E15BC2269B6B7419464B6F /* Pods_Apps_Jetpack.framework */,
-				1E826CD5B4B116AF78FF391C /* Pods_Apps_WordPress.framework */,
-				23052F0F1F9B2503E33D0A26 /* Pods_JetpackShareExtension.framework */,
-				213A62FF811EBDB969FA7669 /* Pods_WordPressShareExtension.framework */,
-				430F7B409FE22699ADB1A724 /* Pods_JetpackDraftActionExtension.framework */,
-				92B40A77F0765C1E93B11727 /* Pods_WordPressDraftActionExtension.framework */,
-				23F18781EEBE5551D6B4992C /* Pods_JetpackNotificationServiceExtension.framework */,
-				D3B8D9C4DCD93C57C2B98CDC /* Pods_WordPressNotificationServiceExtension.framework */,
-				26AC7B7EB4454FA8E268624D /* Pods_JetpackStatsWidgets.framework */,
-				4D670B9448DF9991366CF42D /* Pods_WordPressStatsWidgets.framework */,
-				D42A30853435E728881904E8 /* Pods_JetpackIntents.framework */,
-				A1DD7BB9C25967442493CC19 /* Pods_WordPressIntents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -18556,14 +18586,14 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -30183,7 +30213,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30264,12 +30294,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {

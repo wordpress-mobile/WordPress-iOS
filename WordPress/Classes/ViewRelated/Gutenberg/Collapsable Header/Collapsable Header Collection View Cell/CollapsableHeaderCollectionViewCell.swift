@@ -1,5 +1,5 @@
 import UIKit
-import Gutenberg
+import Johannes
 import Gridicons
 
 class CollapsableHeaderCollectionViewCell: UICollectionViewCell {

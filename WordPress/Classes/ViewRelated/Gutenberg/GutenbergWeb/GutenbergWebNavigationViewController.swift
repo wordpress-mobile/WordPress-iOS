@@ -1,4 +1,4 @@
-import Gutenberg
+import Johannes
 
 class GutenbergWebNavigationController: UINavigationController {
     private let gutenbergWebController: GutenbergWebViewController

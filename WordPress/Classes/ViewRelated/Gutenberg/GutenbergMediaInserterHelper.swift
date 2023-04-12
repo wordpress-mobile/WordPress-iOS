@@ -1,7 +1,7 @@
 import Foundation
 import CoreServices
 import WPMediaPicker
-import Gutenberg
+import Johannes
 import MediaEditor
 
 class GutenbergMediaInserterHelper: NSObject {

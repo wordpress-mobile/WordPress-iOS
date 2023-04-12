@@ -1,5 +1,5 @@
 import UIKit
-import Gutenberg
+import Johannes
 
 protocol CategorySectionTableViewCellDelegate: AnyObject {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)

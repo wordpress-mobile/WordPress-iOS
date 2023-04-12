@@ -1,6 +1,6 @@
 import UIKit
 import Gridicons
-import Gutenberg
+import Johannes
 
 class FilterableCategoriesViewController: CollapsableHeaderViewController {
     private enum CategoryFilterAnalyticsKeys {

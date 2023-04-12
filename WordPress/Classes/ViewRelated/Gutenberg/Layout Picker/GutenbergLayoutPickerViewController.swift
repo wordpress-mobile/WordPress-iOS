@@ -1,6 +1,6 @@
 import UIKit
 import Gridicons
-import Gutenberg
+import Johannes
 
 extension PageTemplateLayout: Thumbnail {
     var urlDesktop: String? { preview }

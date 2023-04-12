@@ -1,6 +1,6 @@
 import Foundation
 import WordPressKit
-import Gutenberg
+import Johannes
 
 extension BlockEditorSettings: GutenbergEditorSettings {
     public var colors: [[String: String]]? {

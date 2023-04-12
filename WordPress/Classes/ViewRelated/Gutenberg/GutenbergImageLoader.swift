@@ -1,5 +1,6 @@
 import Foundation
-import Gutenberg
+import React
+import Johannes
 
 class GutenbergImageLoader: NSObject, RCTImageURLLoader {
 
