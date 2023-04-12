@@ -200,7 +200,7 @@ private extension PagesCardViewModel {
     }
 
     enum Constants {
-        static let numberOfPages = 10
+        static let numberOfPages = 3
     }
 }
 
