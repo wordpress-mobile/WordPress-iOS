@@ -22,8 +22,8 @@ class SiteAssemblyViewTests: XCTestCase {
         let isCompletionLabelHidden = contentView.completionLabel.isHidden
         XCTAssert(isCompletionLabelHidden)
 
-        let isStatusStackHidden = contentView.statusStackView.isHidden
-        XCTAssert(isStatusStackHidden)
+        let statusStackAlpha = contentView.statusStackView.alpha
+        XCTAssertEqual(statusStackAlpha, 0, accuracy: 0.01)
     }
 
     func testContentView_ViewIsCorrect_WhenStatusIsInProgress() {
