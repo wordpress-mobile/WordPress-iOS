@@ -419,21 +419,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         let page = pageAtIndexPath(indexPath)
-        if page.isSitePostsPage {
-            showSitePostPageUneditableNotice()
-            return
-        }
-
-        guard page.status != .trash else {
-            return
-        }
         editPage(page)
-    }
-
-    private func showSitePostPageUneditableNotice() {
-        let sitePostPageUneditableNotice =  NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
-        let notice = Notice(title: sitePostPageUneditableNotice, feedbackType: .warning)
-        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -514,14 +500,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func editPage(_ page: Page) {
-        guard !PostCoordinator.shared.isUploading(post: page) else {
-            presentAlertForPageBeingUploaded()
-            return
-        }
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
+        let didOpenEditor = PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
 
-        let editorViewController = EditPageViewController(page: page)
-        present(editorViewController, animated: false)
+        if didOpenEditor {
+            WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
+        }
     }
 
     fileprivate func copyPage(_ page: Page) {
@@ -548,18 +531,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate func retryPage(_ apost: AbstractPost) {
         PostCoordinator.shared.save(apost)
-    }
-
-    // MARK: - Alert
-
-    func presentAlertForPageBeingUploaded() {
-        let message = NSLocalizedString("This page is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
-
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        alertController.presentFromRootViewController()
     }
 
     fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
