@@ -43,7 +43,7 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
         frameView.onEllipsisButtonTap = cardViewModel.onEllipsisTap
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu
-        frameView.title = Strings.title
+        frameView.setTitle(Strings.title)
         frameView.clipsToBounds = true
         frameView.translatesAutoresizingMaskIntoConstraints = false
         return frameView

@@ -10,7 +10,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     private(set) lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.title = Strings.cardFrameTitle
+        frameView.setTitle(Strings.cardFrameTitle)
 
         // NOTE: Remove the logic when support for iOS 14 is dropped
         if #available (iOS 15.0, *) {

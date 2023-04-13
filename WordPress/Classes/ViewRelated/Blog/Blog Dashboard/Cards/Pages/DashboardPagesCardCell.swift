@@ -10,7 +10,7 @@ final class DashboardPagesCardCell: DashboardCollectionViewCell {
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.title = Strings.title
+        frameView.setTitle(Strings.title)
         return frameView
     }()
 
