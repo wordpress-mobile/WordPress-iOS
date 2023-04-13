@@ -5,8 +5,14 @@ class MigrationSuccessCardView: UIView {
 
     private var onTap: (() -> Void)?
 
+    private var iconImage: UIImage? {
+        traitCollection.layoutDirection == .leftToRight
+            ? UIImage(named: Appearance.iconImageNameLtr)
+            : UIImage(named: Appearance.iconImageNameRtl)
+    }
+
     private lazy var iconImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: Appearance.iconImageName))
+        let imageView = UIImageView(image: iconImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -73,7 +79,8 @@ class MigrationSuccessCardView: UIView {
     }
 
     private enum Appearance {
-        static let iconImageName = "wp-migration-success-card-icon"
+        static var iconImageNameLtr = "wp-migration-success-card-icon-ltr"
+        static var iconImageNameRtl = "wp-migration-success-card-icon-rtl"
         static let descriptionText = NSLocalizedString("wp.migration.successCard.description",
                                                        value: "Welcome to the Jetpack app. You can uninstall the WordPress app.",
                                                        comment: "Description of the jetpack migration success card, used in My site.")
