@@ -204,15 +204,17 @@ fileprivate class PageStatusView: UIView {
     private func setupViews() {
         addSubviews([iconImageView, titleLabel])
 
-        // Icon Image View Constraints
-        iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.iconLeadingSpace).isActive = true
-        iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            // Icon Image View Constraints
+            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.iconLeadingSpace),
+            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-        // Title label Constraints
-        titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: Metrics.titleLabelMargins.leading).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.titleLabelMargins.top).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.titleLabelMargins.bottom).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.titleLabelMargins.trailing).isActive = true
+            // Title label Constraints
+            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: Metrics.titleLabelMargins.leading),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.titleLabelMargins.top),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.titleLabelMargins.bottom),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.titleLabelMargins.trailing)
+        ])
     }
 
     private enum Metrics {
