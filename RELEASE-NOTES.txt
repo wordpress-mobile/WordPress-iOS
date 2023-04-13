@@ -2,6 +2,7 @@
 -----
 
 * [**] [Jetpack-only] Added a dashboard card for purchasing domains. [#20424]
+* [*] [internal] [Jetpack-only] Redesigned the migration success card. [#20515]
 
 22.1
 -----
