@@ -138,7 +138,11 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         coordinator.share(fromView: button)
 
         expect(postSharingControllerMock.didCallShareReaderPostWith).to(equal(post))
-        expect(postSharingControllerMock.didCallShareReaderPostWithView).to(equal(button))
+        if case let .view(view) = postSharingControllerMock.didCallShareReaderPostWithView {
+            expect(view).to(equal(button))
+        } else {
+            fail("`postSharingControllerMock.didCallShareReaderPostWithView` should equal .view(button)")
+        }
         expect(postSharingControllerMock.didCallShareReaderPostWithViewController).to(equal(viewMock))
     }
 
@@ -350,12 +354,12 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
 private class PostSharingControllerMock: PostSharingController {
     var didCallShareReaderPostWith: ReaderPost?
-    var didCallShareReaderPostWithView: UIView?
+    var didCallShareReaderPostWithView: PostSharingController.PopoverAnchor?
     var didCallShareReaderPostWithViewController: UIViewController?
 
-    override func shareReaderPost(_ post: ReaderPost, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: PostSharingController.PopoverAnchor, inViewController viewController: UIViewController) {
         didCallShareReaderPostWith = post
-        didCallShareReaderPostWithView = anchorView
+        didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController
     }
 }
