@@ -24,7 +24,7 @@
     _source = [WPAvatarSource new];
     [HTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL host] isEqualToString:@"gravatar.com"];
-    } withStubResponse:^HTTPStubsResponse *(NSURLRequest *request) {
+    } withStubResponse:^HTTPStubsResponse *(NSURLRequest * __unused request) {
         NSString* fixture = OHPathForFile(@"misteryman.jpg", self.class);
         return [HTTPStubsResponse responseWithFileAtPath:fixture
                                                 statusCode:200 headers:@{@"Content-Type":@"image/jpeg"}];

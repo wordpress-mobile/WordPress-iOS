@@ -59,9 +59,9 @@ static NSString * const CategorySortKey = @"categoryName";
     [categoryService syncCategoriesForBlog:[self blog]
                                     number:@(CategorySyncLimit)
                                     offset:@(0)
-                                   success:^(NSArray<PostCategory *> *categories) {
+                                   success:^(NSArray<PostCategory *> * __unused categories) {
                                        stopLoading();
-                                   } failure:^(NSError *error) {
+                                   } failure:^(NSError * __unused error) {
                                        stopLoading();
                                        [self showLoadingErrorMessageForResults];
                                    }];

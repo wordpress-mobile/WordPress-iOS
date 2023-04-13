@@ -49,13 +49,7 @@ extension LoginEpilogueUserInfo {
     /// Updates the Epilogue properties, given a SocialService instance.
     ///
     mutating func update(with service: SocialService) {
-        switch service {
-        case .google(let user):
-            fullName = user.profile?.name ?? String()
-            email = user.profile?.email ?? String()
-        case .apple(let user):
-            fullName = user.fullName
-            email = user.email
-        }
+        fullName = service.user.fullName
+        email = service.user.email
     }
 }

@@ -5,7 +5,7 @@ class EditorGutenbergTests: XCTestCase {
     private var editorScreen: BlockEditorScreen!
 
     override func setUpWithError() throws {
-        setUpTestSuite(crashOnCoreDataConcurrencyIssues: false)
+        setUpTestSuite()
 
         _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = try EditorFlow

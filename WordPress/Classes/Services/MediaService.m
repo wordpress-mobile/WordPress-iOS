@@ -256,7 +256,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         // This effectively ignores any errors presented
         [self updateMedia:media success:^{
             individualOperationCompletion(true);
-        } failure:^(NSError *error) {
+        } failure:^(NSError * __unused error) {
             individualOperationCompletion(false);
         }];
     }
@@ -367,7 +367,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
     dispatch_group_t group = dispatch_group_create();
 
-    [mediaObjects enumerateObjectsUsingBlock:^(Media *media, NSUInteger idx, BOOL *stop) {
+    [mediaObjects enumerateObjectsUsingBlock:^(Media *media, NSUInteger __unused idx, BOOL * __unused stop) {
         dispatch_group_enter(group);
         [self deleteMedia:media success:^{
             currentProgress.completedUnitCount++;
@@ -375,7 +375,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 progress(currentProgress);
             }
             dispatch_group_leave(group);
-        } failure:^(NSError *error) {
+        } failure:^(NSError * __unused error) {
             dispatch_group_leave(group);
         }];
     }];

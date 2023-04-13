@@ -575,8 +575,16 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
-    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
+        post.managedObjectContext!.perform {
+            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
+        }
+    }
+
+    func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
+        post.managedObjectContext!.perform {
+            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
+        }
     }
 
     func editorDidAutosave() {
@@ -1067,7 +1075,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
-        WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: post.blog)
+        post.managedObjectContext!.perform {
+            WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
+        }
     }
 }
 
@@ -1177,12 +1187,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        return [
-            post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            post.blog.supports(.tenor) ? .tenor : nil,
-            .otherApps,
-            .allFiles,
-        ].compactMap { $0 }
+        workaroundCoreDataConcurrencyIssue(accessing: post) {
+            [
+                post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
+                post.blog.supports(.tenor) ? .tenor : nil,
+                .otherApps,
+                .allFiles,
+            ].compactMap { $0 }
+        }
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {

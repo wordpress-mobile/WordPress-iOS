@@ -6,7 +6,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     // MARK: Private Variables
 
     private var viewModel: DashboardStatsViewModel?
-    private var frameView: BlogDashboardCardFrameView?
+    private let frameView = BlogDashboardCardFrameView()
     private var nudgeView: DashboardStatsNudgeView?
     private var statsStackView: DashboardStatsStackView?
 
@@ -39,11 +39,8 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     }
 
     private func addSubviews() {
-        let frameView = BlogDashboardCardFrameView()
         frameView.title = Strings.statsTitle
         frameView.titleHint = Strings.statsTitleHint
-        frameView.icon = UIImage.gridicon(.statsAlt, size: Constants.iconSize)
-        self.frameView = frameView
 
         let statsStackview = DashboardStatsStackView()
         frameView.add(subview: statsStackview)
@@ -74,9 +71,18 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func configureCard(for blog: Blog, in viewController: UIViewController) {
-
-        frameView?.onViewTap = { [weak self] in
+        frameView.onViewTap = { [weak self] in
             self?.showStats(for: blog, from: viewController)
+        }
+
+        if FeatureFlag.personalizeHomeTab.enabled {
+            frameView.onEllipsisButtonTap = {
+                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .todaysStats)
+            }
+            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+            frameView.ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, siteID: blog.dotComID?.intValue ?? 0)
+            ])
         }
 
         statsStackView?.views = viewModel?.todaysViews
