@@ -139,34 +139,34 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
+    # testflight(
+    #   skip_waiting_for_build_processing: true,
+    #   team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
+    #   api_key_path: APP_STORE_CONNECT_KEY_PATH
+    # )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
 
-    next unless options[:create_release]
+    # next unless options[:create_release]
 
-    archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
-    zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
+    # archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
+    # zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
-    create_release(
-      repository: GITHUB_REPO,
-      version: version,
-      release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-      release_assets: archive_zip_path.to_s,
-      prerelease: options[:beta_release]
-    )
+    # version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
+    # create_release(
+    #   repository: GITHUB_REPO,
+    #   version: version,
+    #   release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+    #   release_assets: archive_zip_path.to_s,
+    #   prerelease: options[:beta_release]
+    # )
 
-    FileUtils.rm_rf(archive_zip_path)
+    # FileUtils.rm_rf(archive_zip_path)
   end
 
   # Builds the Jetpack app and uploads it to TestFlight, for beta-testing or final release
@@ -189,18 +189,18 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: '299112',
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
+    # testflight(
+    #   skip_waiting_for_build_processing: true,
+    #   team_id: '299112',
+    #   api_key_path: APP_STORE_CONNECT_KEY_PATH
+    # )
 
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
+    # sentry_upload_dsym(
+    #   auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+    #   org_slug: SENTRY_ORG_SLUG,
+    #   project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+    #   dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    # )
   end
 
   # Builds the "WordPress Internal" app and uploads it to App Center
