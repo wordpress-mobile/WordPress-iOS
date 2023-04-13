@@ -23,7 +23,6 @@ class DashboardPageCell: UITableViewCell, Reusable {
         label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .bold)
         label.numberOfLines = 1
-        label.textAlignment = .natural
         label.textColor = .text
         return label
     }()
@@ -75,10 +74,14 @@ class DashboardPageCell: UITableViewCell, Reusable {
 
     private func commonInit() {
         setupViews()
+        applyStyle()
+    }
+    
+    private func applyStyle() {
+        backgroundColor = .clear
     }
 
     private func setupViews() {
-        backgroundColor = .clear
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
     }
@@ -88,6 +91,8 @@ class DashboardPageCell: UITableViewCell, Reusable {
         dateLabel.text = date?.toMediumString()
     }
 
+
+    /// Reduces the top spacing for the first cell to reduce the vertical spacing between the tableview and the card header
     private func configureStackViewLayoutMargins(rowIndex: Int) {
         let margins = rowIndex == 0 ? Metrics.firstCellMainStackViewLayoutMargins : Metrics.defaultMainStackViewLayoutMargins
         mainStackView.directionalLayoutMargins = margins

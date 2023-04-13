@@ -258,21 +258,20 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
         switch currentState {
         case .pages:
             var adjustedPagesSnapshot = pagesSnapshot
-            adjustedPagesSnapshot.deleteItems(adjustedPagesSnapshot.itemIdentifiers.enumerated().filter { $0.offset > Constants.numberOfPages - 1 }.map { $0.element })
+
+            // Delete extra pages
+            let sequenceToDelete = adjustedPagesSnapshot.itemIdentifiers.enumerated().filter { $0.offset > Constants.numberOfPages - 1 }
+            let managedObjectIDsToDelete = sequenceToDelete.map { $0.element }
+            adjustedPagesSnapshot.deleteItems(managedObjectIDsToDelete)
+
+            // Add pages to new snapshot
             let pageItems: [PagesListItem] = adjustedPagesSnapshot.itemIdentifiers.map { .page($0) }
             snapshot.appendItems(pageItems, toSection: .pages)
 
-            let reloadIdentifiers: [PagesListItem] = snapshot.itemIdentifiers.compactMap { item in
-                guard case PagesListItem.page(let objectID) = item,
-                        let currentIndex = currentSnapshot.indexOfItem(item), let index = pagesSnapshot.indexOfItem(objectID), index == currentIndex else {
-                    return nil
-                }
-                guard let existingObject = try? fetchedResultsController?.managedObjectContext.existingObject(with: objectID),
-                        existingObject.isUpdated else {
-                            return nil
-                }
-                return item
-            }
+            // Reload items if needed
+            let reloadIdentifiers = identifiersToBeReloaded(newSnapshot: snapshot,
+                                                            currentSnapshot: currentSnapshot,
+                                                            pagesSnapshot: pagesSnapshot)
             snapshot.reloadItems(reloadIdentifiers)
 
         case .loading:
@@ -280,6 +279,29 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
             snapshot.appendItems(items, toSection: .loading)
         }
         return snapshot
+    }
+
+
+    /// Returns items that need to be reloaded. These are items that haven't changed position, but their date was updated.
+    /// - Parameters:
+    ///   - newSnapshot: The snapshot that should be reloaded
+    ///   - currentSnapshot: The old snapshot. Used to check if the item changed position
+    ///   - pagesSnapshot: Snapshot retrieved from CoreDate
+    /// - Returns: Array of items that should be reloaded
+    private func identifiersToBeReloaded(newSnapshot: Snapshot, currentSnapshot: Snapshot, pagesSnapshot: PagesSnapshot) -> [PagesListItem] {
+        return newSnapshot.itemIdentifiers.compactMap { item in
+            guard case PagesListItem.page(let objectID) = item,
+                  let currentIndex = currentSnapshot.indexOfItem(item),
+                  let index = pagesSnapshot.indexOfItem(objectID),
+                  index == currentIndex else {
+                return nil // No need to reload if the index changed
+            }
+            guard let existingObject = try? fetchedResultsController?.managedObjectContext.existingObject(with: objectID),
+                  existingObject.isUpdated else {
+                return nil // No need to reload if the object wasn't updated
+            }
+            return item
+        }
     }
 
     private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
