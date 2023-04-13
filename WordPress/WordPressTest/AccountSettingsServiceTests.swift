@@ -49,7 +49,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
     func testUpdateSuccess() throws {
         stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
         waitUntil { done in
             self.service.saveChange(.firstName("Updated"), finished: { success in
@@ -62,7 +62,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
     func testUpdateFailure() throws {
         stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
         waitUntil { done in
             self.service.saveChange(.firstName("Updated"), finished: { success in
@@ -83,7 +83,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
             // Simulate a slow HTTP response, so that the test code below has a chance to
             // cancel this API request
             sleep(2)
-            return HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+            return HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
         service.getSettingsAttempt()
 

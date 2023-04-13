@@ -411,8 +411,8 @@ private extension PromptRemindersSchedulerTests {
                 "date": Self.dateFormatter.string(from: date),
                 "answered": false,
                 "answered_users_count": 0,
-                "answered_users_sample": []
-            ])
+                "answered_users_sample": [String: Any]()
+            ] as [String: Any])
         }
 
         return ["prompts": objects]
