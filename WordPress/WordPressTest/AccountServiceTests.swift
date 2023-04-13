@@ -274,7 +274,7 @@ class AccountServiceTests: CoreDataTestCase {
                     "email": "jim@wptestaccounts.com",
                     "primary_blog": 55555551,
                     "primary_blog_url": "https://test1.wordpress.com",
-                ],
+                ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
@@ -291,7 +291,7 @@ class AccountServiceTests: CoreDataTestCase {
 
     func testChangingBlogVisiblity() throws {
         stub(condition: isPath("/rest/v1.1/me/sites") && isMethodPOST()) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
 
         let account = try createAccount(withUsername: "username", authToken: "token")
