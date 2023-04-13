@@ -128,7 +128,17 @@ extension DashboardPagesListCardCell {
 // MARK: - UITableViewDelegate
 extension DashboardPagesListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Open editor for selected page
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let page = viewModel?.pageAt(indexPath),
+              let presentingViewController else {
+            return
+        }
+        let didOpenEditor = PageEditorPresenter.handle(page: page,
+                                                       in: presentingViewController,
+                                                       entryPoint: .dashboard)
+        if didOpenEditor {
+            // TODO: Track editor opened
+        }
     }
 }
 
