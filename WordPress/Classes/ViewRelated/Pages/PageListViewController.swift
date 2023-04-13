@@ -419,20 +419,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         let page = pageAtIndexPath(indexPath)
-        if page.isSiteHomepage {
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        } else if page.isSitePostsPage {
+        if page.isSitePostsPage {
             showSitePostPageUneditableNotice()
             return
-        } else {
-            QuickStartTourGuide.shared.endCurrentTour()
-            tableView.reloadData()
         }
 
         guard page.status != .trash else {
             return
         }
-
         editPage(page)
     }
 
