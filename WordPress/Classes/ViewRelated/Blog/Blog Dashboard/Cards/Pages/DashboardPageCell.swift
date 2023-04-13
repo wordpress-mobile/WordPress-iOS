@@ -76,7 +76,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
         setupViews()
         applyStyle()
     }
-    
+
     private func applyStyle() {
         backgroundColor = .clear
     }
@@ -103,7 +103,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
 private extension DashboardPageCell {
     enum Metrics {
         static let mainStackViewSpacing: CGFloat = 6
-        static let detailsStackViewSpacing: CGFloat = 6
+        static let detailsStackViewSpacing: CGFloat = 8
         static let defaultMainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 14, leading: 16, bottom: 14, trailing: 16)
         static let firstCellMainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 8, leading: 16, bottom: 14, trailing: 16)
     }
