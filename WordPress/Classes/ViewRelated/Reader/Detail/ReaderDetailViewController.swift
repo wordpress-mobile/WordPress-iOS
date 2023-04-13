@@ -704,15 +704,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Ask the coordinator to present the share sheet
     ///
-    @objc func didTapShareButton(_ sender: UIButton) {
-        coordinator?.share(fromView: sender)
+    @objc func didTapShareButton(_ sender: UIBarButtonItem) {
+        coordinator?.share(fromAnchor: .barButtonItem(sender))
     }
 
-    @objc func didTapMenuButton(_ sender: UIButton) {
+    @objc func didTapMenuButton(_ sender: UIBarButtonItem) {
         coordinator?.didTapMenuButton(sender)
     }
 
-    @objc func didTapBrowserButton(_ sender: UIButton) {
+    @objc func didTapBrowserButton(_ sender: UIBarButtonItem) {
         coordinator?.openInBrowser()
     }
 
