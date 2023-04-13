@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-24 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-10 13:03:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -1116,6 +1116,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Halaman kosong dibuat";
+
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -6487,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Cari domain";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Cari kata sandi yang singkat dan mudah diingat untuk membantu orang menemukan dan mengunjungi situs Anda.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Kolom input pencarian.";
 
@@ -9646,6 +9652,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promosikan pos atau halaman apa saja dalam hitungan menit dengan biaya harian sangat terjangkau.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Pantau performa kampanye Anda dan batalkan kapan saja.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Konten Anda akan muncul di jutaan situs WordPress dan Tumblr.";
 
 /* Title for the Blaze overlay. */
@@ -9689,6 +9698,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Coba sekarang";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Tambahkan kartu yang cocok dengan kebutuhan Anda untuk mengetahui informasi tentang situs Anda.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Tidak ada kartu untuk ditampilkan";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personalisasikan tab beranda Anda";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Parameter yang ditolak ditandai dengan tanda centang.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Tolak parameter terpilih dengan menentukan nilai baru di sini.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Tidak ada nilai jarak jauh atau default";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Konfigurasi Jarak Jauh";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Bendera Fitur Setempat";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Bendera Fitur Jarak Jauh";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Ajukan klaim domain Anda dengan alamat situs yang mudah ditemukan, dibagikan, dan diikuti.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Tutup";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Miliki identitas online Anda dengan domain kustom";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ketuk dua kali untuk mengubah unit";
@@ -9986,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Selesai";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Hubungkan akun pengguna Anda";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Untuk mendapatkan pemberitahuan yang informatif dari situs WordPress di ponsel, Anda perlu menghubungkannya ke akun pengguna Anda.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Untuk menggunakan statistik di situs, Anda perlu menghubungkan plugin Jetpack ke akun pengguna Anda.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistik, Reader, Pemberitahuan, dan berbagai fitur lain akan segera berpindah ke aplikasi Jetpack seluler.";
 
@@ -10223,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "Kata sandi";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Kartu bisa saja menampilkan konten yang berbeda, tergantung pada apa yang terjadi di situs Anda. Kami terus mengembangkan fitur kartu dan kontrol.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Tambahkan atau sembunyikan kartu";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Pos draf";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Prompt blogging";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Pos terjadwal";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Statistik hari ini";
+
+/* Page title */
+"personalizeHome.title" = "Personalisasikan Tab Beranda";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";
 
@@ -10240,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Lihat semua tanggapan";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Buka Pengaturan Situs untuk menyalakan kembali";
@@ -10318,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Error saat Berbagi";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/namasitusanda.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Seperti contoh di atas, domain membantu orang untuk menemukan dan mengunjungi situs Anda dari peramban  web mereka.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "NamaSitusAnda.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Tampilkan prompt";
@@ -10633,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, situs, situs, blog, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Ganti ke aplikasi Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Lanjutkan tanpa Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ menggunakan plugin individual Jetpack yang tidak didukung oleh aplikasi WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ menggunakan plugin %2$@ yang tidak didukung oleh aplikasi WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Silakan beralih ke aplikasi Jetpack, di mana kami akan memandu Anda dengan menghubungkan plugin lengkap Jetpack, agar Anda dapat menggunakan semua fitur aplikasi situs ini.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Maaf, situs ini tidak didukung oleh aplikasi WordPress";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Harap hapus aplikasi WordPress";

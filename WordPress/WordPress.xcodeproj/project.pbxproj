@@ -3594,6 +3594,8 @@
 		F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */; };
 		F49B9A09293A3243000CEFCE /* MigrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */; };
 		F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */; };
+		F49D7BEB29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */; };
+		F49D7BEC29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */; };
 		F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4BECD1C288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
@@ -8924,6 +8926,7 @@
 		F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAnalyticsTracker.swift; sourceTree = "<group>"; };
 		F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEvent.swift; sourceTree = "<group>"; };
+		F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+PopoverAnchor.swift"; sourceTree = "<group>"; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
 		F4CBE3D329258AD6004FFBB6 /* MeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeaderView.h; sourceTree = "<group>"; };
 		F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewControllerConfiguration.swift; sourceTree = "<group>"; };
@@ -15023,6 +15026,7 @@
 				FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */,
 				C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */,
 				C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */,
+				F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -21788,6 +21792,7 @@
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				742B7F3A209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift in Sources */,
 				8B6214E327B1B2F3001DF7B6 /* BlogDashboardService.swift in Sources */,
+				F49D7BEB29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */,
 				F1D8C6E926BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift in Sources */,
 				D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */,
 				FAD954B825B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift in Sources */,
@@ -23967,6 +23972,7 @@
 				FABB22512602FC2C00C8785C /* TabbedTotalsCell.swift in Sources */,
 				B084E61F27E3B79F007BF7A8 /* SiteIntentStep.swift in Sources */,
 				FABB22522602FC2C00C8785C /* ActivityTableViewCell.swift in Sources */,
+				F49D7BEC29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */,
 				FABB22532602FC2C00C8785C /* BlogDetailsViewController+FancyAlerts.swift in Sources */,
 				FABB22542602FC2C00C8785C /* StoriesIntroDataSource.swift in Sources */,
 				FABB22552602FC2C00C8785C /* StoreContainer.swift in Sources */,
