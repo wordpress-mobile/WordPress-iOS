@@ -77,7 +77,7 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
         case .initial, .loading:
             tracker.track(.jetpackInstallFullPluginViewed, properties: ["status": state.statusForTracks])
         case .failed(let description, _):
-            tracker.track(.jetpackInstallPluginModalViewed,
+            tracker.track(.jetpackInstallFullPluginViewed,
                           properties: ["status": state.statusForTracks, "description": description])
         case .cancel:
             tracker.track(.jetpackInstallFullPluginCancelTapped, properties: ["status": state.statusForTracks])
