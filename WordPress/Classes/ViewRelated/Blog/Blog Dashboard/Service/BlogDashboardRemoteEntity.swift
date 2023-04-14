@@ -26,6 +26,12 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     // We don't rely on the data from the API to show pages
     struct BlogDashboardPage: Decodable, Hashable { }
 
+    enum CodingKeys: String, CodingKey {
+        case posts
+        case todaysStats = "todays_stats"
+        case pages
+        case activity
+    }
 }
 
 extension Activity: Hashable {

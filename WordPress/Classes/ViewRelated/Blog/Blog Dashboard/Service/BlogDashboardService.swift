@@ -105,7 +105,6 @@ private extension BlogDashboardService {
         }
 
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
