@@ -22,7 +22,7 @@ class LikeUserHelperTests: CoreDataTestCase {
                 "icon": [
                     "img": "someimage.jpg",
                 ]
-            ]
+            ] as [String: Any]
         }
 
         return remoteUserDictionary
