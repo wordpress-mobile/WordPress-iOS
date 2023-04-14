@@ -4,26 +4,42 @@ import Gridicons
 
 final class AuthenticatedImageDownload: AsyncOperation {
     let url: URL
-    let blog: Blog
+    let blogObjectID: NSManagedObjectID
     private let callbackQueue: DispatchQueue
     private let onSuccess: (UIImage) -> ()
     private let onFailure: (Error) -> ()
 
-    init(url: URL, blog: Blog, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
+    init(url: URL, blogObjectID: NSManagedObjectID, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
         self.url = url
-        self.blog = blog
+        self.blogObjectID = blogObjectID
         self.callbackQueue = callbackQueue
         self.onSuccess = onSuccess
         self.onFailure = onFailure
     }
 
     override func main() {
-        let mediaRequestAuthenticator = MediaRequestAuthenticator()
-        let host = MediaHost(with: blog) { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            WordPressAppDelegate.crashLogging?.logError(error)
+        let result = ContextManager.shared.performQuery { context in
+            Result {
+                let blog = try context.existingObject(with: self.blogObjectID) as! Blog
+                return MediaHost(with: blog) { error in
+                    // We'll log the error, so we know it's there, but we won't halt execution.
+                    WordPressAppDelegate.crashLogging?.logError(error)
+                }
+            }
         }
 
+        let host: MediaHost
+        do {
+            host = try result.get()
+        } catch {
+            self.state = .isFinished
+            self.callbackQueue.async {
+                self.onFailure(error)
+            }
+            return
+        }
+
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
         mediaRequestAuthenticator.authenticatedRequest(
             for: url,
             from: host,
@@ -119,33 +135,37 @@ class EditorMediaUtility {
     func downloadImage(
         from url: URL,
         size requestSize: CGSize,
-        scale: CGFloat, post: AbstractPost,
+        scale: CGFloat,
+        post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> ImageDownloaderTask {
+        onFailure failure: @escaping (Error) -> Void
+    ) -> ImageDownloaderTask {
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
         var size = CGSize(width: imageMaxDimension, height: 0)
-        let requestURL: URL
-
-        if url.isFileURL {
-            requestURL = url
-        } else if post.isPrivateAtWPCom() && url.isHostedAtWPCom {
-            // private wpcom image needs special handling.
-            // the size that WPImageHelper expects is pixel size
-            size.width = size.width * scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
-        } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
-            size.width = size.width * scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
-        } else {
-            // the size that PhotonImageURLHelper expects is points size
-            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+        let (requestURL, blogObjectID) = workaroundCoreDataConcurrencyIssue(accessing: post) {
+            let requestURL: URL
+            if url.isFileURL {
+                requestURL = url
+            } else if post.isPrivateAtWPCom() && url.isHostedAtWPCom {
+                // private wpcom image needs special handling.
+                // the size that WPImageHelper expects is pixel size
+                size.width = size.width * scale
+                requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
+            } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
+                size.width = size.width * scale
+                requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
+            } else {
+                // the size that PhotonImageURLHelper expects is points size
+                requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+            }
+            return (requestURL, post.blog.objectID)
         }
 
         let imageDownload = AuthenticatedImageDownload(
             url: requestURL,
-            blog: post.blog,
+            blogObjectID: blogObjectID,
             callbackQueue: .main,
             onSuccess: success,
             onFailure: failure)

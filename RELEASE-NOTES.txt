@@ -1,14 +1,17 @@
 22.2
 -----
-
 * [**] [Jetpack-only] Added a dashboard card for purchasing domains. [#20424]
+* [*] [internal] [Jetpack-only] Redesigned the migration success card. [#20515]
+* [**] [internal] Refactored Google SignIn implementation to not use the Google SDK [#20128]
+* [***] Block Editor: Resolved scroll-jump issues and enhanced caret focus management [https://github.com/WordPress/gutenberg/pull/48791]
 
 22.1
 -----
 * [**] [internal] Refactor updating account related Core Data operations, which ususally happens during log in and out of the app. [#20394]
 * [***] [internal] Refactor uploading photos (from the device photo, the Free Photo library, and other sources) to the WordPress Media Library. Affected areas are where you can choose a photo and upload, including the "Media" screen, adding images to a post, updating site icon, etc. [#20322]
 * [**] [WordPress-only] Warns user about sites with only individual plugins not supporting core app features and offers the option to switch to the Jetpack app. [#20408]
-* [**] [internal] Refactored Google SignIn implementation to not use the Google SDK [#20128]
+* [*] [Reader] Fix an issue that was causing the app to crash when tapping the More or Share buttons in Reader Detail screen. [#20490]
+* [*] Block editor: Avoid empty Gallery block error [https://github.com/WordPress/gutenberg/pull/49557]
 
 22.0
 -----
