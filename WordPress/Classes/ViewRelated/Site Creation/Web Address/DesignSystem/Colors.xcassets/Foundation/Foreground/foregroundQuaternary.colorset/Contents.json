@@ -3,7 +3,7 @@
     {
       "color" : {
         "platform" : "universal",
-        "reference" : "labelColor"
+        "reference" : "quaternaryLabelColor"
       },
       "idiom" : "universal"
     },
@@ -16,7 +16,7 @@
       ],
       "color" : {
         "platform" : "universal",
-        "reference" : "labelColor"
+        "reference" : "quaternaryLabelColor"
       },
       "idiom" : "universal"
     }
