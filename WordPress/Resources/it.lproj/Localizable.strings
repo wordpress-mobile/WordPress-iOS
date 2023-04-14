@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-06 08:54:09+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:12:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: it */
@@ -1116,6 +1116,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Pagina bianca creata";
+
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -10333,6 +10336,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Sei connesso!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blocca questo utente";

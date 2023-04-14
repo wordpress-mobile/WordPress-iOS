@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-05 16:54:10+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:13:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: fr */
@@ -10284,6 +10284,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "Ajouter ou masquer des cartes";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Brouillons d’articles";
 
 /* Card title for the pesonalization menu */
@@ -10396,6 +10399,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Erreur de partage";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Comme le montre l’exemple ci-dessus, un domaine permet aux internautes de trouver et de visiter votre site depuis leur navigateur Web.";

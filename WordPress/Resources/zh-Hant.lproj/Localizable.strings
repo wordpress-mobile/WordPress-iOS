@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-07 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:11:35+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -9650,6 +9650,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionOne" = "只要幾分鐘就能宣傳任何文章或頁面；每天只需支付幾美元。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "追蹤行銷活動成效，並可隨時取消。";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "你的內容會出現在數百萬個 WordPress 和 Tumblr 網站上。";
