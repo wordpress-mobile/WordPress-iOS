@@ -4,7 +4,7 @@ import Foundation
 
 /// - Warning:
 /// This configuration extension has a **Jetpack** counterpart in the Jetpack bundle.
-/// Make sure to keep them in sync to avoid build errors when builing the Jetpack target.
+/// Make sure to keep them in sync to avoid build errors when building the Jetpack target.
 @objc extension AppConfiguration {
 
     @objc(AppConfigurationExtension)

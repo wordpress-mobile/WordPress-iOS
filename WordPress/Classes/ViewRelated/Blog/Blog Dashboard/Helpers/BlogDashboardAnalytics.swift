@@ -30,4 +30,12 @@ class BlogDashboardAnalytics {
             }
         }
     }
+
+    static func trackContextualMenuAccessed(for card: DashboardCard) {
+        WPAnalytics.track(.dashboardCardContextualMenuAccessed, properties: ["card": card.rawValue])
+    }
+
+    static func trackHideTapped(for card: DashboardCard) {
+        WPAnalytics.track(.dashboardCardHideTapped, properties: ["card": card.rawValue])
+    }
 }

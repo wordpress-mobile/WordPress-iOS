@@ -11,16 +11,22 @@ enum DashboardCard: String, CaseIterable {
     case quickStart
     case prompts
     case blaze
+    case domainsDashboardCard
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
+    case pages
+    case activityLog
     case nextPost = "create_next"
     case createPost = "create_first"
     case jetpackBadge
-
-    // Card placeholder for when loading data
+    /// Card placeholder for when loading data
     case ghost
     case failure
+    /// Empty state when no cards are present
+    case empty
+    /// A "Personalize Home Tab" button
+    case personalize
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
@@ -48,6 +54,16 @@ enum DashboardCard: String, CaseIterable {
             return DashboardBadgeCell.self
         case .blaze:
             return DashboardBlazeCardCell.self
+        case .domainsDashboardCard:
+            return DashboardDomainsCardCell.self
+        case .empty:
+            return BlogDashboardEmptyStateCell.self
+        case .personalize:
+            return BlogDashboardPersonalizeCardCell.self
+        case .pages:
+            return DashboardPagesCardCell.self
+        case .activityLog:
+            return DashboardActivityLogCardCell.self
         }
     }
 
@@ -82,6 +98,16 @@ enum DashboardCard: String, CaseIterable {
             return JetpackBrandingVisibility.all.enabled
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)
+        case .domainsDashboardCard:
+            return DomainsDashboardCardHelper.shouldShowCard(for: blog)
+        case .empty:
+            return false // Controlled manually based on other cards visibility
+        case .personalize:
+            return FeatureFlag.personalizeHomeTab.enabled
+        case .pages:
+            return DashboardPagesCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+        case .activityLog:
+            return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         }
     }
 
@@ -100,16 +126,33 @@ enum DashboardCard: String, CaseIterable {
             return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
         case .todaysStats:
             return true
+        case .pages:
+            return true
+        case .activityLog:
+            return true // FIXME: hide card if there's no activities
         default:
             return false
         }
     }
+
+    /// A list of cards that can be shown/hidden on a "Personalize Home Tab" screen.
+    static let personalizableCards: [DashboardCard] = [
+        .todaysStats,
+        .draftPosts,
+        .scheduledPosts,
+        .blaze,
+        .prompts,
+        .pages,
+        .activityLog
+    ]
 
     /// Includes all cards that should be fetched from the backend
     /// The `String` should match its identifier on the backend.
     enum RemoteDashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
+        case pages
+//        case activity // TODO: Uncomment this when activity log support is added to the endpoint
     }
 }
 

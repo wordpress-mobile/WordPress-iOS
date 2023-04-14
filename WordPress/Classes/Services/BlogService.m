@@ -181,7 +181,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     dispatch_group_enter(syncGroup);
     [editorService syncEditorSettingsForBlog:blog success:^{
         dispatch_group_leave(syncGroup);
-    } failure:^(NSError * _Nonnull error) {
+    } failure:^(NSError * _Nonnull __unused error) {
         DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
@@ -191,7 +191,15 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     [blazeService getStatusFor:blog completion:^{
         dispatch_group_leave(syncGroup);
     }];
-
+    
+    dispatch_group_enter(syncGroup);
+    [self refreshDomainsFor:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"Failed refreshing domains: %@", error);
+        dispatch_group_leave(syncGroup);
+    }];
+    
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
@@ -393,7 +401,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
             request.predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
             NSArray *blogs = [context executeFetchRequest:request error:nil];
-            blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary * __unused bindings) {
                 Blog *blog = (Blog *)evaluatedObject;
                 NSNumber *jetpackBlogID = blog.jetpack.siteID;
                 return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];

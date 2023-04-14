@@ -58,8 +58,8 @@ private extension SupportConfigurationTests {
             super.init()
         }
 
-        override func value(for flag: OverrideableFlag) -> Bool {
-            if flag.remoteKey == FeatureFlag.wordPressSupportForum.remoteKey {
+        override func value(for flagKey: String) -> Bool? {
+            if flagKey == RemoteFeatureFlag.wordPressSupportForum.remoteKey {
                 return isSupportForumEnabled
             }
 

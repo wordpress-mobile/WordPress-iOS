@@ -17,8 +17,6 @@ private enum UPRUConstants {
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
     static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
     static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
-    static let promptsEnabledSettingsKey = "prompts-enabled-site-settings"
-    static let blazeCardEnabledSettingsKey = "blaze-card-enabled-site-settings"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -185,31 +183,6 @@ extension UserPersistentRepositoryUtility {
             }
         } set {
             UserPersistentStoreFactory.instance().set(newValue.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
-        }
-    }
-
-    var promptsEnabledSettings: [String: Bool] {
-        get {
-            guard let sites = UserPersistentStoreFactory.instance().dictionary(forKey: UPRUConstants.promptsEnabledSettingsKey) as? [String: Bool] else {
-                return [String: Bool]()
-            }
-            return sites
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.promptsEnabledSettingsKey)
-        }
-    }
-
-    var blazeCardEnabledSettings: [String: Bool] {
-        get {
-            guard let sites = UserPersistentStoreFactory.instance().dictionary(forKey: UPRUConstants.blazeCardEnabledSettingsKey) as? [String: Bool] else {
-                return [String: Bool]()
-            }
-            return sites
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.blazeCardEnabledSettingsKey)
-
         }
     }
 }

@@ -1,4 +1,1 @@
-WordPress es tu plataforma,
-publicar es todo un arte.
-No hay actualizaciones,
-sentimos decepcionarte.
+Cuando inicias sesión en un sitio autoalojado que se conecta a Jetpack a través de plugins individuales, verás una ventana emergente que indica que este tipo de conexión aún no es compatible con las funciones principales de la aplicación. Puedes evitar este problema cambiando a la aplicación Jetpack. Arriba, arriba y lejos.

@@ -38,32 +38,13 @@ class RemoteFeatureFlagStore {
     }
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
-    public func hasValue(for flag: OverrideableFlag) -> Bool {
-        guard let remoteKey = flag.remoteKey else {
-            return false
-        }
-
-        return cache[remoteKey] != nil
+    public func hasValue(for flagKey: String) -> Bool {
+        return value(for: flagKey) != nil
     }
 
     /// Looks up the value for a remote feature flag.
-    ///
-    /// If the flag exists in the local cache, the current value will be returned.  If the flag does not exist in the local cache, the compile-time default will be returned.
-    /// - Parameters:
-    ///     - flag: The `FeatureFlag` object associated with a remote feature flag
-    public func value(for flag: OverrideableFlag) -> Bool {
-        if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: flag) {
-            return overriddenValue
-        }
-        guard
-            let remoteKey = flag.remoteKey, // Not all flags contain a remote key, since they may not use remote feature flagging
-            let value = cache[remoteKey]    // The value may not be in the cache if this is the first run
-            else {
-                DDLogInfo("🚩 Unable to resolve remote feature flag: \(flag.description). Returning compile-time default.")
-                return flag.enabled
-        }
-
-        return value
+    public func value(for flagKey: String) -> Bool? {
+        return cache[flagKey]
     }
 }
 

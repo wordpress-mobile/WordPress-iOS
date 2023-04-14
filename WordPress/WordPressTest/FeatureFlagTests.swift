@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-enum MockFeatureFlag: OverrideableFlag {
+enum MockFeatureFlag: OverridableFlag {
     case enabledFeature
     case disabledFeature
     case nonOverrideableFeature
@@ -47,6 +47,10 @@ enum MockFeatureFlag: OverrideableFlag {
         return self != .nonOverrideableFeature
     }
 
+    var originalValue: Bool {
+        return enabled
+    }
+
     var description: String {
         switch self {
         case .enabledFeature:
@@ -70,7 +74,7 @@ enum MockFeatureFlag: OverrideableFlag {
         }
     }
 
-    var remoteKey: String? {
+    var remoteKey: String {
         switch self {
         case .remotelyEnabledLocallyEnabledFeature,
              .remotelyEnabledLocallyDisabledFeature,
@@ -79,9 +83,9 @@ enum MockFeatureFlag: OverrideableFlag {
             return self.description
         case .remotelyUndefinedLocallyEnabledFeature,
              .remotelyUndefinedLocallyDisabledFeature:
-            return nil
+            return "undefined"
         default:
-            return nil
+            return "undefined"
         }
     }
 
@@ -102,10 +106,7 @@ enum MockFeatureFlag: OverrideableFlag {
     }
 
     var toFeatureFlag: WordPressKit.FeatureFlag? {
-        guard
-            let remoteKey = remoteKey,
-            let remoteValue = remoteValue
-        else {
+        guard let remoteValue = remoteValue else {
             return nil
         }
 

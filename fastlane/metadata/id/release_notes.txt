@@ -1,4 +1,1 @@
-Menyebarkan motivasi
-Logo WordPress berwarna biru
-Tidak ada pembaruan
-Maaf telah mengecewakan Anda
+Saat Anda login ke situs yang dihosting sendiri yang terhubung dengan Jetpack dari plugin tunggal, Anda akan melihat pop-up yang menunjukkan bahwa tipe koneksi belum didukung oleh fitur utama aplikasi. Anda dapat menghindari kendala tersebut dengan beralih ke aplikasi Jetpack. Semudah itu.

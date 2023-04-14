@@ -45,12 +45,9 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v21.9-whats-new"
+msgctxt "v22.1-whats-new"
 msgid ""
-"Good words are read\n"
-"The WordPress logo is blue\n"
-"There are no new updates\n"
-"Sorry to disappoint you\n"
+"When you log in to a self-hosted site that connects to Jetpack through individual plugins, you’ll see a pop-up stating that this type of connection doesn’t support the app’s core features yet. You can get around that problem by switching over to the Jetpack app. Up, up, and away.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

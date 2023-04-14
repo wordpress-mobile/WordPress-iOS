@@ -1,9 +1,6 @@
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 
-static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
-static NSString * const JetpackComOAuthKeychainServiceName = @"jetpack.public-api.wordpress.com";
-
 @interface WPAccount ()
 
 @property (nonatomic, strong, readwrite) WordPressComRestApi *wordPressComRestApi;
@@ -159,7 +156,7 @@ static NSString * const JetpackComOAuthKeychainServiceName = @"jetpack.public-ap
 
 + (NSString *)authKeychainServiceName
 {
-    return [AppConfiguration isWordPress] ? WordPressComOAuthKeychainServiceName : JetpackComOAuthKeychainServiceName;
+    return [AppConstants authKeychainServiceName];
 }
 
 #pragma mark - API Helpers

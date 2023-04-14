@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 11:54:28+0000 */
+/* Translation-Revision-Date: 2023-04-10 13:03:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "Halaman kosong dibuat";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blokir Kutipan";
@@ -1959,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Salin versi dari aplikasi ini";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Bisa Lebih Baik";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Tidak Dapat Mengikuti Topik";
@@ -3142,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Bendera fitur";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Unggulan";
 
@@ -3489,9 +3486,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Mendapatkan URL situs";
 
 /* No comment provided by engineer. */
-"Gradient" = "Gradien";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "Jenis Gradasi";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3672,9 +3666,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Bagaimana cara memperbaikinya?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Saya Menyukainya";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Saya sangat terinspirasi oleh karya fotografer Cameron Karsten. Saya akan mencoba teknik ini selanjutnya";
@@ -4841,9 +4832,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Tidak tersedia URL Pratinjau";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Tidak, Terima Kasih";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Tanpa Judul";
@@ -6502,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Cari domain";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Cari kata sandi yang singkat dan mudah diingat untuk membantu orang menemukan dan mengunjungi situs Anda.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Kolom input pencarian.";
 
@@ -6692,9 +6683,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Pilih topik ini sebagai tema situs Anda.";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Kirim Masukan";
 
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Kirim Tautan";
@@ -7480,6 +7468,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Hanya Teks";
 
 /* No comment provided by engineer. */
+"Text color" = "Warna teks";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrol pemformatan teks terletak di dalam bilah peralatan yang ada di atas keyboard saat menyunting blok teks";
 
 /* Button title
@@ -7826,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Informasi ini membantu kami menyempurnakan produk, membuat pemasaran kepada Anda jadi lebih relevan, menyesuaikan pengalaman WordPress.com Anda, dan lainnya seperti yang dijelaskan dalam kebijakan privasi kami.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Di sinilah orang akan menemukan Anda di internet.";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Ini pengingat blogging hari ini ✍️";
 
@@ -7979,8 +7967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Petunjuk Hari Ini 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Statistik Hari Ini";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9069,9 +9056,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Kami telah memperbarui ikon aplikasi kustom dengan tampilan baru yang lebih segar.  Ada 10 gaya baru yang dapat dipilih, tapi Anda tetap bisa menggunakan ikon yang ada jika lebih menyukainya.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Apa pendapat Anda tentang WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Apa yang ingin Anda lakukan dengan file ini: mengunggahnya dan menambahkan tautan ke file dalam pos Anda, atau menambahkan konten file langsung ke pos?";
 
@@ -9227,9 +9211,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Berkarya Bersama Kami";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Buat artikel konsep";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Peta dunia menampilkan kunjungan berdasarkan negara.";
@@ -9637,6 +9618,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "satu jam";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Apa pendapat Anda tentang Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "Apa pendapat Anda tentang WordPress?";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9711,6 +9698,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Coba sekarang";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Tambahkan kartu yang cocok dengan kebutuhan Anda untuk mengetahui informasi tentang situs Anda.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Tidak ada kartu untuk ditampilkan";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personalisasikan tab beranda Anda";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Parameter yang ditolak ditandai dengan tanda centang.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Tolak parameter terpilih dengan menentukan nilai baru di sini.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Tidak ada nilai jarak jauh atau default";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Konfigurasi Jarak Jauh";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Bendera Fitur Setempat";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Bendera Fitur Jarak Jauh";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Ajukan klaim domain Anda dengan alamat situs yang mudah ditemukan, dibagikan, dan diikuti.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Tutup";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Miliki identitas online Anda dengan domain kustom";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ketuk dua kali untuk mengubah unit";
@@ -9870,6 +9893,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ akan berpindah dalam %2$@";
 
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Berpindah ke aplikasi Jetpack dalam beberapa hari.";
+
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ segera berpindah";
 
@@ -10004,6 +10030,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Selesai";
+
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Hubungkan akun pengguna Anda";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Untuk mendapatkan pemberitahuan yang informatif dari situs WordPress di ponsel, Anda perlu menghubungkannya ke akun pengguna Anda.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Untuk menggunakan statistik di situs, Anda perlu menghubungkan plugin Jetpack ke akun pengguna Anda.";
 
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistik, Reader, Pemberitahuan, dan berbagai fitur lain akan segera berpindah ke aplikasi Jetpack seluler.";
@@ -10179,11 +10214,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Selamat datang di Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Statistik, Pembaca, Pemberitahuan, dan beragam fitur lain berbasis Jetpack telah dihapus dari aplikasi WordPress dan hanya dapat ditemukan di aplikasi Jetpack.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Ganti ke aplikasi Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Baca selengkapnya di jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Pemberitahuan berpindah ke aplikasi Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Pembaca berpindah ke aplikasi Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Statistik berpindah ke aplikasi Jetpack.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Sempurnakan konsep pos";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "buat konsep pos";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Statistik Hari Ini";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Statistik";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Tutup";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Dapat disempurnakan";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Saya menyukainya";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Tidak, terima kasih";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Beri masukan";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "dari";
@@ -10196,6 +10276,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "password" = "Kata sandi";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Kartu bisa saja menampilkan konten yang berbeda, tergantung pada apa yang terjadi di situs Anda. Kami terus mengembangkan fitur kartu dan kontrol.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Tambahkan atau sembunyikan kartu";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Pos draf";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Prompt blogging";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Pos terjadwal";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Statistik hari ini";
+
+/* Page title */
+"personalizeHome.title" = "Personalisasikan Tab Beranda";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";
@@ -10214,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Lihat semua tanggapan";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Buka Pengaturan Situs untuk menyalakan kembali";
@@ -10292,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Error saat Berbagi";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/namasitusanda.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Seperti contoh di atas, domain membantu orang untuk menemukan dan mengunjungi situs Anda dari peramban  web mereka.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "NamaSitusAnda.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Tampilkan prompt";
@@ -10607,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, situs, situs, blog, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Ganti ke aplikasi Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Lanjutkan tanpa Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ menggunakan plugin individual Jetpack yang tidak didukung oleh aplikasi WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ menggunakan plugin %2$@ yang tidak didukung oleh aplikasi WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Silakan beralih ke aplikasi Jetpack, di mana kami akan memandu Anda dengan menghubungkan plugin lengkap Jetpack, agar Anda dapat menggunakan semua fitur aplikasi situs ini.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Maaf, situs ini tidak didukung oleh aplikasi WordPress";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Harap hapus aplikasi WordPress";

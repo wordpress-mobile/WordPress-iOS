@@ -19,13 +19,14 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
         }
 
         let onEllipsisTap: () -> Void = { [weak self] in
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: .blaze)
             BlazeEventsTracker.trackContextualMenuAccessed(for: .dashboardCard)
         }
 
         let onHideThisTap: UIActionHandler = { [weak self] _ in
+            BlogDashboardAnalytics.trackHideTapped(for: .blaze)
             BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
             BlazeHelper.hideBlazeCard(for: self?.blog)
-            self?.presentingViewController?.reloadCardsLocally()
         }
 
         return BlazeCardViewModel(onViewTap: onViewTap,

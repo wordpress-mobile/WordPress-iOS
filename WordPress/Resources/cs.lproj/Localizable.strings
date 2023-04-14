@@ -1951,9 +1951,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Zkopírujte verzi z této aplikace";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Mohlo by být lépe";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Téma se nepodařilo přidat mezi sledované";
 
@@ -3133,9 +3130,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Vlajky funkcí";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Doporučené";
 
@@ -3480,9 +3474,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Získání adresy URL webových stránek";
 
 /* No comment provided by engineer. */
-"Gradient" = "Přechod";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "Typ přechodu";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3663,9 +3654,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Jak to napravíme?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "To se mi líbí";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Práce fotografa Camerona Karstena mě tak inspirovala. Tyto techniky budu zkoušet při příštím";
@@ -4826,9 +4814,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Není k dispozici žádná adresa URL náhledu";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Ne, děkuji";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Žádný název";
@@ -6678,9 +6663,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Vybere toto téma jako záměr vašeho webu.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Odeslat zpětnou vazbu";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Poslat odkaz";
 
@@ -7465,6 +7447,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Pouze text";
 
 /* No comment provided by engineer. */
+"Text color" = "Barva textu";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Ovládací prvky formátování textu se při úpravě textového bloku nacházejí na panelu nástrojů nad klávesnicí";
 
 /* Button title
@@ -7811,9 +7796,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Tato informace nám pomáhá zlepšit naše produkty, učinit pro vás marketing relevantnější, přizpůsobit si váš dojem z WordPress.com, a více zmíněné v našich zásadách ochrany osobních údajů.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Toto je místo, kde vás lidé najdou na internetu";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Toto je vaše dnešní připomínka blogu ✍️";
 
@@ -7964,8 +7946,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Dnešní výzva 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Dnešní statistika";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9051,9 +9032,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Aktualizovali jsme naše vlastní ikony aplikací o nový vzhled. K dispozici je 10 nových stylů, ze kterých si můžete vybrat, nebo si můžete jednoduše ponechat stávající ikonu, pokud chcete.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Co si myslíte o WordPressu?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Co chcete s tímto souborem udělat: nahrát jej a přidat odkaz na soubor do vašeho příspěvku, nebo přidat obsah souboru přímo do příspěvku?";
 
@@ -9209,9 +9187,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Pracuj s námi";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Práce na konceptu příspěvku";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mapa světa zobrazující zobrazení podle země.";

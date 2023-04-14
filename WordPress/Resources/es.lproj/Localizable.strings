@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-13 12:35:35+0000 */
+/* Translation-Revision-Date: 2023-04-05 11:38:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: es */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copiar la versión desde esta aplicación";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Podría ser mejor";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "No se ha podido seguir el debate";
 
@@ -3145,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Indicadores de características";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Destacados";
 
@@ -3492,9 +3486,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Obteniendo la URL del sitio";
 
 /* No comment provided by engineer. */
-"Gradient" = "Gradiente";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "Tipo de degradado";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3675,9 +3666,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "¿Cómo vamos a corregirlo?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Me gusta";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "El trabajo de Cameron Karsten me sirve de inspiración. Probaré estas técnicas en mi siguiente trabajo";
@@ -4844,9 +4832,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "No hay disponible una vista previa de la URL";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "No, gracias";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Sin título";
@@ -6505,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Buscar un dominio";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Busca una palabra clave corta y memorable para ayudar a la gente a encontrar y visitar tu web.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Campo de introducción de búsqueda.";
 
@@ -6695,9 +6683,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Selecciona esta temática como la de tu sitio.";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Enviar comentario";
 
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Enviar enlace";
@@ -7483,6 +7468,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Solo texto";
 
 /* No comment provided by engineer. */
+"Text color" = "Color del texto";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Los controles de formato de texto están dentro de la barra de herramientas situada encima del teclado mientras editas un bloque de texto";
 
 /* Button title
@@ -7829,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Esta información nos ayuda a mejorar nuestros productos, hacer que el marketing sea más relevante, personalizar tu experiencia en WordPress.com y más, tal como se detalla en nuestra política de privacidad.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Aquí es donde las personas te encontrarán en Internet.";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Este es tu recordatorio para que bloguees hoy ✍️";
 
@@ -7982,8 +7967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Estímulo de hoy 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Estadísticas de hoy";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9056,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Hemos actualizado los iconos personalizados de nuestra aplicación con un nuevo y fresco aspecto. Hay 10 nuevos estilos entre los que elegir, o puedes simplemente dejar tu icono existente si lo prefieres.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "¿Qué opinas de WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "¿Qué quieres hacer con este archivo: subirlo y añadir un enlace al archivo en tu entrada, o añadir los contenidos del archivo directamente en la entrada?";
 
@@ -9230,9 +9211,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Trabaja con nosotros";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Trabajar en el borrador de una entrada ";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mapa del mundo que muestra las visualizaciones por país.";
@@ -9640,6 +9618,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "una hora";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "¿Qué opinas de Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "¿Qué opinas de WordPress?";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9714,6 +9698,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Probar ahora";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Añade tarjetas que se adapten a tus necesidades para ver información sobre tu sitio.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "No hay tarjetas que mostrar";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personaliza tu pestaña de inicio";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Los parámetros sobreescritos están marcados con un check.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Sobreescribe el parámetro seleccionado definiendo aquí un nuevo valor.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "No hay valor remoto o predeterminado";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Configuración remota";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Banderas de característica locales";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Banderas de característica remotas";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Hazte con tu rincón en Internet con una dirección web fácil de encontrar, de compartir y de seguir.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Ocultar esto";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Sé el dueño de tu identidad online con un dominio propio";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "doble toque para cambiar de unidad";
@@ -9873,6 +9893,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ se trasladará en %2$@";
 
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Pásate a la aplicación de Jetpack en pocos días.";
+
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ se trasladarán pronto";
 
@@ -10007,6 +10030,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Hecho";
+
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Conectar tu cuenta de usuario";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Para recibir notificaciones útiles en tu teléfono desde tu sitio de WordPress, tendrás que conectarte a tu cuenta de usuario.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Para utilizar las estadísticas en tu sitio, tendrás que conectar el plugin Jetpack a tu cuenta de usuario.";
 
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Algunas funciones, como Estadísticas, Lector o Notificaciones, se trasladarán a la aplicación móvil de Jetpack pronto.";
@@ -10182,11 +10214,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "¡Te damos la bienvenida a Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Hemos eliminado algunas funciones (como Estadísticas, Lector o Notificaciones, entre otras) de la aplicación de WordPress y, ahora, solo están disponibles en la de Jetpack.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "El cambio es gratuito y solo lleva un minuto.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Cambiar a la aplicación de Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Más información en jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Las notificaciones se han trasladado a la aplicación Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "El lector se ha trasladando a la aplicación de Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "La estadísticas ha trasladado a la aplicación de Jetpack.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Trabajar en el borrador de una entrada";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "borrador de entrada";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Estadísticas de hoy";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Estadísticas";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Descartar";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Descartar";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Podría mejorar";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Me gusta";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "No, gracias";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Enviar comentarios";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "de";
@@ -10199,6 +10276,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "password" = "contraseña";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Las tarjetas pueden mostrar contenidos diferentes en función de lo que ocurra en tu sitio. Estamos trabajando en más tarjetas y controles.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Añadir u ocultar tarjetas";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Entradas borrador";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Sugerencias de publicación";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Entradas programadas";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Estadísticas de hoy";
+
+/* Page title */
+"personalizeHome.title" = "Personalizar perstaña de inicio";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "número de teléfono";
@@ -10217,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Ver todas las respuestas";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Visitar los ajustes del sitio para volver a activar";
@@ -10295,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Error al compartir";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Como en el ejemplo superior, un dominio le permite a la gente encontrar y visitar tu sitio desde su navegador.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Mostrar estímulos";
@@ -10610,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sitios, sitio, blogs, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Cambiar a la aplicación de Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Continuar sin Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ está usando plugins individuales de Jetpack que no son compatibles con la aplicación de WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ está usando el plugin %2$@ que no es compatible con la aplicación de WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Por favor, pásate a la aplicación Jetpack donde te guiaremos para que conectes el plugin Jetpack completo para que puedas usar todas las características de la aplicación para este sitio.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Lo siento, esto no es compatible con la aplicación WordPress";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Elimina la aplicación de WordPress";

@@ -1,10 +1,10 @@
-/* Translation-Revision-Date: 2023-03-11 13:42:22+0000 */
+/* Translation-Revision-Date: 2023-03-22 13:03:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
-"\nPlease send us an email to have your content cleared out." = "\nJu lutemi, dërgonani një email që të spastrojmë lëndën tuaj.";
+"\nPlease send us an email to have your content cleared out." = "\nJu lutemi, dërgonani një email që të spastrohet lënda juaj.";
 
 /* Notice shown on the Edit Comment view when the author is a registered user. */
 "\nThis user is registered. Their name, web address, and email address cannot be edited." = "\nKy përdorues është i regjistruar. Emri, adresa web dhe adresa email të tija s’mund të përpunohen.";
@@ -1960,9 +1960,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Kopjo versionin prej këtij aplikacioni";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Mund të Bëhet Më i Mirë";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "S’u Ndoq Dot Tema";
 
@@ -3139,9 +3136,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Shenja gjendjeje veçorie";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Të zgjedhura";
 
@@ -3483,9 +3477,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Marrje URL-je sajti";
 
 /* No comment provided by engineer. */
-"Gradient" = "Gradient";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "Lloj Gradienti";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3666,9 +3657,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Si do ta ndreqim?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Më Pëlqen";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jam kaq i frymëzuar nga vepra e gdhendësit Çome Çomanga. Do t’i provoj këto teknika në veprën time të ardhshme";
@@ -4835,9 +4823,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "S’ka URL Paraparje";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Jo, Faleminderit";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Pa Titull";
@@ -6684,9 +6669,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Përzgjedh këtë temë si e synuara për sajtin tuaj.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Dërgoji Përshtypjet";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Dërgoje Lidhjen";
 
@@ -7468,6 +7450,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Vetëm Tekst";
 
 /* No comment provided by engineer. */
+"Text color" = "Ngjyrë teksti";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrollet për formatim teksti gjenden brenda panelit të vendosur mbi tastierën, kur përpunohet një bllok teksti";
 
 /* Button title
@@ -7814,9 +7799,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Këto të dhëna na ndihmojnë të përmirësojmë produktet tona, ta bëjmë marketingun më specifik për ju, më personal punimin tuaj në WordPress.com, etj, siç përshkruhet hollësisht te rregullat tona mbi privatësinë.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Ky është vendi ku do t’ju gjejnë njerëzit në internet.";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Ky është kujtuesi juaj për të bloguar sot ✍️";
 
@@ -7967,8 +7949,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Cytja e Sotme 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Statistikat e Sotme";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9057,9 +9038,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Kemi përditësuar ikonat tona të aplikacioneve, për një pamje të re. Ka 10 stile të rinj nga të zgjidhet, ose mundeni të mbani ikonën tuaj ekzistuese, nëse parapëlqeni.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Si ju duket WordPress-i?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
 
@@ -9215,9 +9193,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Punoni Me Ne";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Merruni me një skicë postimi";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Hartë e botës që tregon parje sipas vendesh.";
@@ -9625,6 +9600,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "një orë";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Si ju duket Jetpack-u?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "Si ju duket WordPress-i?";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9645,6 +9626,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promovoni lëndën tuaj përmes Blaze-it";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Promovoni një Postim në Blaze që tani";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Promovoni çfarëdo postimi ose faqeje, brenda pak minutash, për vetëm pak dollarë në ditë.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Ndiqni funksionimin e fushatës tuaj dhe anulojeni në çfarëdo kohe.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Lënda juaj do të shfaqet në miliona sajte WordPress dhe Tumblr.";
 
 /* Title for the Blaze overlay. */
 "blaze.overlay.title" = "Shpini më tepër trafik te sajti juaj, përmes Blaze-it";
@@ -9842,6 +9835,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ po kalohet në %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Kalim në aplikacionin Jetpack pas pak ditësh.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "Së shpejti %@ do të lëvizen";
@@ -10152,11 +10148,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Mirë se vini te Jetpack-u!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Statistikat, Lexuesi, Njoftimet dhe veçori të tjera të bazuara në Jetpack tani janë hequr prej aplikacionit WordPress dhe tani mund të gjenden vetëm në aplikacionin Jetpack.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Kalimi është falas dhe do vetëm një minutë.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Kaloni te aplikacioni Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Mësoni më tepër, te jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Njoftimet kanë kaluar te aplikacioni Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Lexuesi ka kaluar te aplikacioni Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Statistikat kanë kaluar te aplikacioni Jetpack.";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Merruni me një skicë postimi";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "skicë postimi";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Statistikat e Sotme";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Statistika";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Hidhe tej";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Mund të përmirësohet";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Më pëlqen";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Jo, faleminderit";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Dërgoni përshtypje";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "nga";

@@ -1556,9 +1556,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copy the version from this app";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Could Be Better";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Could Not Follow Topic";
 
@@ -2530,9 +2527,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Feature flags";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Featured";
 
@@ -2961,9 +2955,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "How will we fix it?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "I Like It";
 
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP address";
@@ -3944,9 +3935,6 @@ translators: Block name. %s: The localized block name */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "No Preview URL available";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "No Thanks";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "No Title";
@@ -5575,9 +5563,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Selects this topic as the intent for your site.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Send Feedback";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Send Link";
 
@@ -6578,9 +6563,6 @@ translators: Block name. %s: The localized block name */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "This information helps us improve our products, make marketing to you more relevant, personalise your WordPress.com experience, and more as detailed in our privacy policy.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
-
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "This media item has been deleted.";
 
@@ -6695,8 +6677,7 @@ translators: Block name. %s: The localized block name */
    Notifications Today Section Header */
 "Today" = "Today";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Today's Stats";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -7580,9 +7561,6 @@ translators: Block name. %s: The localized block name */
 /* Description of Blogging Prompts displayed in the Feature Introduction view. */
 "We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "What do you think about WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?";
 
@@ -7714,9 +7692,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "WordPress.org Plugin Page";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Work on a draft post";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";

@@ -157,17 +157,24 @@ extension ReaderPostService {
 
     /// Takes a list of remote posts and returns a new list without the blocked posts.
     private func remotePostsByFilteringOutBlockedPosts(_ posts: [RemoteReaderPost], in context: NSManagedObjectContext) -> [RemoteReaderPost] {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+              let accountID = account.userID
+        else {
             return posts
         }
 
-        let blockedAuthors = Set(BlockedAuthor.find(.accountID(account.userID), context: context).map { $0.authorID })
+        let blockedAuthors = Set(BlockedAuthor.find(.accountID(accountID), context: context).map { $0.authorID })
 
         guard !blockedAuthors.isEmpty else {
             return posts
         }
 
-        return posts.filter { !blockedAuthors.contains($0.authorID) }
+        return posts.filter { post -> Bool in
+            guard let authorID = post.authorID else {
+                return true
+            }
+            return !blockedAuthors.contains(authorID)
+        }
     }
 
     // MARK: - Types

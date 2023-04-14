@@ -337,3 +337,36 @@ private enum SaveContextOption {
     case asynchronouslyWithCallback(completion: () -> Void, queue: DispatchQueue)
     case alreadyInContextQueue
 }
+
+/// Use this temporary workaround to mitigate Core Data concurrency issues when accessing the given `object`.
+///
+/// When the app is launched from Xcode, some code may crash due to the effect of the "com.apple.CoreData.ConcurrencyDebug"
+/// launch argument. The crash indicates the crash site violates [the following rule](https://developer.apple.com/documentation/coredata/using_core_data_in_the_background#overview)
+///
+/// > To use Core Data in a multithreaded environment, ensure that:
+/// > - Managed objects retrieved from a context are bound to the same queue that the context is bound to.
+///
+/// This function can be used as a temporary workaround to mitigate aforementioned crashes during development.
+///
+/// - Warning: The workaround does not apply to release builds. In a release build, calling this function is exactly
+///     the same as calling the given `closure` directly.
+///
+/// - Warning: This function is _not_ a solution for Core Data concurrency issues, and should only be used as a
+///     temporary solution, to avoid the Core Data concurrency issue becoming a blocker to feature developlement.
+@available(*, deprecated, message: "This workaround is meant as a temporary solution to mitigate Core Data concurrency issues when accessing the `object`. Please see this function's API doc for details.")
+@inlinable
+public func workaroundCoreDataConcurrencyIssue<Value>(accessing object: NSManagedObject, _ closure: () -> Value) -> Value {
+#if DEBUG
+    guard let context = object.managedObjectContext else {
+        fatalError("The object must be bound to a context: \(object)")
+    }
+
+    var value: Value!
+    context.performAndWait {
+        value = closure()
+    }
+    return value
+#else
+    return closure()
+#endif /* DEBUG */
+}

@@ -10,6 +10,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
     override func setUp() {
         let account = WPAccount(context: mainContext)
         account.username = "test"
+        account.authToken = "token"
         account.userID = 1
         account.uuid = UUID().uuidString
 
@@ -29,7 +30,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
         service = AccountSettingsService(
             userID: account.userID.intValue,
-            remote: AccountSettingsRemote(wordPressComRestApi: WordPressComRestApi()),
+            remote: AccountSettingsRemote(wordPressComRestApi: account.wordPressComRestApi),
             coreDataStack: contextManager
         )
     }
@@ -48,7 +49,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
     func testUpdateSuccess() throws {
         stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
         waitUntil { done in
             self.service.saveChange(.firstName("Updated"), finished: { success in
@@ -61,7 +62,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
 
     func testUpdateFailure() throws {
         stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
         waitUntil { done in
             self.service.saveChange(.firstName("Updated"), finished: { success in
@@ -70,5 +71,32 @@ class AccountSettingsServiceTests: CoreDataTestCase {
             })
         }
         expect(self.managedAccountSettings()?.firstName).to(equal("Test"))
+    }
+
+    func testCancelGettingSettings() throws {
+        // This test performs steps described in the link below to reproduce a crash.
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/20379#issuecomment-1481995663
+
+        let apiFired = expectation(description: "Get settings API fired")
+        stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
+            apiFired.fulfill()
+            // Simulate a slow HTTP response, so that the test code below has a chance to
+            // cancel this API request
+            sleep(2)
+            return HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
+        }
+        service.getSettingsAttempt()
+
+        wait(for: [apiFired], timeout: 0.5)
+
+        // Delete the logged in account, which would cause the URLSession used in the `service` to
+        // cancell all ongoing tasks, including the "get settings" one above.
+        let account = try XCTUnwrap(WPAccount.lookup(withUserID: 1, in: contextManager.mainContext))
+        contextManager.mainContext.delete(account)
+        contextManager.saveContextAndWait(contextManager.mainContext)
+
+        let notCrash = expectation(description: "Not crash")
+        notCrash.isInverted = true
+        wait(for: [notCrash], timeout: 0.5)
     }
 }

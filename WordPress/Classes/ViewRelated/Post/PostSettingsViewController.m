@@ -239,7 +239,7 @@ FeaturedImageViewControllerDelegate>
     
     __weak __typeof(self) weakSelf = self;
     
-    self.internetReachability.reachableBlock = ^void(Reachability * reachability) {
+    self.internetReachability.reachableBlock = ^void(Reachability * __unused reachability) {
         [weakSelf internetIsReachableAgain];
     };
     
@@ -284,7 +284,7 @@ FeaturedImageViewControllerDelegate>
     [self.blogService syncPostFormatsForBlog:self.apost.blog success:^{
         [weakSelf setupFormatsList];
         completionBlock();
-    } failure:^(NSError * _Nonnull error) {
+    } failure:^(NSError * _Nonnull __unused error) {
         completionBlock();
     }];
 }
@@ -967,7 +967,7 @@ FeaturedImageViewControllerDelegate>
 {
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
-    vc.completion = ^(NSString *visibility) {
+    vc.completion = ^(NSString *__unused visibility) {
         [WPAnalytics trackEvent:WPAnalyticsEventEditorPostVisibilityChanged properties:@{@"via": @"settings"}];
         [weakVc dismiss];
         [self.tableView reloadData];
@@ -1233,7 +1233,7 @@ FeaturedImageViewControllerDelegate>
 {
     NSAssert(self.mediaLibraryChangeObserverKey == nil, nil);
     __weak PostSettingsViewController * weakSelf = self;
-    self.mediaLibraryChangeObserverKey = [self.mediaDataSource registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet * _Nonnull removed, NSIndexSet * _Nonnull inserted, NSIndexSet * _Nonnull changed, NSArray<id<WPMediaMove>> * _Nonnull moves) {
+    self.mediaLibraryChangeObserverKey = [self.mediaDataSource registerChangeObserverBlock:^(BOOL __unused incrementalChanges, NSIndexSet * _Nonnull __unused removed, NSIndexSet * _Nonnull __unused inserted, NSIndexSet * _Nonnull __unused changed, NSArray<id<WPMediaMove>> * _Nonnull __unused moves) {
 
         [weakSelf updateSearchBarForPicker:picker];
         BOOL isNotSearching = [weakSelf.mediaDataSource.searchQuery isEmpty];

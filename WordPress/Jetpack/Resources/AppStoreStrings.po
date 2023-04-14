@@ -81,15 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v21.9-whats-new"
+msgctxt "v22.1-whats-new"
 msgid ""
-"Hot news—Jetpack now supports Blaze, so you can reach new readers by promoting a post or page from within the app.\n"
-"\n"
-"We’ve added a little extra support for sites with individual plugins. These plugins don’t support all app features yet, but you can always install the full Jetpack plugin instead. Ready to launch?\n"
-"\n"
-"We also added a post-migration FAQ card to the Help screen, which you’ll see after switching from the WordPress app over to Jetpack.\n"
-"\n"
-"Finally, there’s a new button to the Post menu that lets you block an author so their posts no longer appear in your content feed.\n"
+"No updates this week. In the meantime, we're just over here cooling our jets.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

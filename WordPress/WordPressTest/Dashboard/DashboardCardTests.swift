@@ -12,17 +12,23 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
 class DashboardCardTests: CoreDataTestCase {
 
     private var blog: Blog!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     override func setUp() {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(mainContext).build()
+        blog.isAdmin = true
+        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
+        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
     }
 
     override func tearDown() {
         QuickStartTourGuide.shared.remove(from: blog)
         blog = nil
+        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
+        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
         super.tearDown()
     }
 
@@ -247,6 +253,35 @@ class DashboardCardTests: CoreDataTestCase {
         XCTAssertTrue(shouldShowCreatePost)
     }
 
+    // MARK: Pages
+
+    func testShowingPagesCardWhenThereArePages() {
+        // Given
+        let apiResponse = buildEntity(hasPages: true)
+
+        // When
+        let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertTrue(shouldShowPages)
+    }
+
+    func testShowingPagesCardWithZeroPages() {
+        // Given
+        let apiResponse = buildEntity(hasPages: false)
+
+        // When
+        let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertTrue(shouldShowPages)
+    }
+
+    // MARK: Activity Log
+
+    // TODO: Add test for showing the card if there's activity
+    // TODO: Add test for not showing the card if there's no activity
+
     // MARK: Remote Cards
 
     func testNotShowingRemoteCardsIfResponseNotPresent() {
@@ -256,6 +291,8 @@ class DashboardCardTests: CoreDataTestCase {
         let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: nil)
         let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
         let shouldShowStats = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowActivityLog = DashboardCard.activityLog.shouldShow(for: blog, apiResponse: nil)
 
         // Then
         XCTAssertFalse(shouldShowDrafts)
@@ -263,6 +300,8 @@ class DashboardCardTests: CoreDataTestCase {
         XCTAssertFalse(shouldShowNextPost)
         XCTAssertFalse(shouldShowCreatePost)
         XCTAssertFalse(shouldShowStats)
+        XCTAssertFalse(shouldShowPages)
+        XCTAssertFalse(shouldShowActivityLog)
     }
 
     func testRemoteCardsIdentifiers() {
@@ -270,16 +309,22 @@ class DashboardCardTests: CoreDataTestCase {
         let identifiers = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
 
         // Then
-        XCTAssertEqual(identifiers, ["todays_stats", "posts"])
+        XCTAssertEqual(identifiers, ["todays_stats", "posts", "pages"])
     }
 
     // MARK: Helpers
 
-    private func buildEntity(hasDrafts: Bool, hasScheduled: Bool, hasPublished: Bool) -> BlogDashboardRemoteEntity {
+    private func buildEntity(hasDrafts: Bool = false,
+                             hasScheduled: Bool = false,
+                             hasPublished: Bool = false,
+                             hasPages: Bool = false,
+                             hasActivity: Bool = false) -> BlogDashboardRemoteEntity {
         let drafts = hasDrafts ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let scheduled = hasScheduled ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let posts = BlogDashboardRemoteEntity.BlogDashboardPosts(hasPublished: hasPublished, draft: drafts, scheduled: scheduled)
-        return BlogDashboardRemoteEntity(posts: posts, todaysStats: nil)
+        let pages = hasPages ? [BlogDashboardRemoteEntity.BlogDashboardPage()] : []
+        let activity = hasActivity ? [BlogDashboardRemoteEntity.BlogDashboardActivity()] : []
+        return BlogDashboardRemoteEntity(posts: posts, todaysStats: nil, pages: pages, activity: activity)
     }
 
 }

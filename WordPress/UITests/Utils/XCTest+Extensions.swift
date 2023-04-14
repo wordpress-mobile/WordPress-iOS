@@ -3,13 +3,21 @@ import XCTest
 
 extension XCTestCase {
 
-    public func setUpTestSuite(for app: XCUIApplication = XCUIApplication(), removeBeforeLaunching: Bool = false) {
+    public func setUpTestSuite(
+        for app: XCUIApplication = XCUIApplication(),
+        removeBeforeLaunching: Bool = false,
+        crashOnCoreDataConcurrencyIssues: Bool = true
+    ) {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
+
+        if crashOnCoreDataConcurrencyIssues {
+            app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
+        }
 
         if removeBeforeLaunching {
             removeApp(app)

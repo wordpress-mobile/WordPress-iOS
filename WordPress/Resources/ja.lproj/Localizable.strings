@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-09 11:54:29+0000 */
+/* Translation-Revision-Date: 2023-04-07 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -1963,9 +1963,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "このアプリからバージョンをコピー";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "不満がある";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "トピックをフォローできませんでした";
 
@@ -3145,9 +3142,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "機能フラグ";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "おすすめ";
 
@@ -3492,9 +3486,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "サイト URL を取得";
 
 /* No comment provided by engineer. */
-"Gradient" = "グラデーション";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "グラデーションタイプ";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3675,9 +3666,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "修正方法";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "満足している";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "写真家の Cameron Karsten 氏の作品にはとても感銘を受けました。 この技術を今度試すつもりです";
@@ -4844,9 +4832,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "利用可能なプレビューの URL がありません";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "いいえ";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "無題";
@@ -6505,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "ドメインを検索";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "ユーザーがあなたのサイトを探し、アクセスしやすくなる短く覚えやすいキーワードを検索します。";
+
 /* No comment provided by engineer. */
 "Search input field." = "検索用の入力フィールド。";
 
@@ -6695,9 +6683,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "サイトの目的としてこのテーマを選択します。";
-
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "意見を送る";
 
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "リンクを送信";
@@ -7483,6 +7468,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "テキストのみ";
 
 /* No comment provided by engineer. */
+"Text color" = "テキスト色";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "書式設定コントロールは、テキストブロックの編集中に表示されるキーボードの上に位置するツールバー内にあります";
 
 /* Button title
@@ -7829,9 +7817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "この情報は、製品を改善し、マーケティングをより関連性の高いものとし、WordPress.com の利用をパーソナライズするのに役立ちます。さらに詳しくは、個人情報保護方針をご覧ください。";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "ドメインとは、インターネット上の住所です。";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "本日はブログ投稿日です✍️";
 
@@ -7982,8 +7967,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "今日の通知💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "今日の統計情報";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -9072,9 +9056,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "カスタムアプリのアイコンを新しく更新しました。新しいスタイル10個から選択できますが、もしこれまでのアイコンのほうがお好みでしたらそのまま使用することもできます。";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "WordPress アプリについてどう思いますか ?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "このファイルで行う操作:アップロードし、そのファイルへのリンクを投稿に追加するか、ファイルのコンテンツを直接投稿を追加しますか ?";
 
@@ -9230,9 +9211,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "求人情報";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "下書き投稿を作成";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "国別表示数の世界地図。";
@@ -9640,6 +9618,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "1時間";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Jetpack についてどう思いますか ?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "WordPress アプリについてどう思いますか ?";
+
 /* Label displayed on audio media items. */
 "audio" = "音声ファイル";
 
@@ -9666,9 +9650,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionOne" = "1日わずか数百円、たった数分で投稿やページを宣伝できます。";
-
-/* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "キャンペーンのパフォーマンスを追跡したりいつでもキャンセルしたりできます。";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "コンテンツは数百万もの WordPress と Tumblr のサイトに表示されます。";
@@ -9714,6 +9695,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "今すぐ試す";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "ニーズに合ったカードを追加してサイトに関する情報を表示します。";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "表示するカードがありません";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "ホームタブをパーソナライズ";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "上書きした変数はチェックマークで表示されます。";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "ここで新しい値を定義して選択した変数を上書きします。";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "リモート値またはデフォルト値なし";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "リモート設定";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "ローカル機能フラグ";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "リモート機能フラグ";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "見つけやすく、共有やフォローがしやすいサイトアドレスを使って自分のサイトであることを示しましょう。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "カスタムドメインで自分のデジタルアイデンティティを手に入れましょう";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
@@ -9873,6 +9890,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@が%2$@で移動します";
 
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "数日後に Jetpack アプリに移動予定です。";
+
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@がまもなく移動します";
 
@@ -10007,6 +10027,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完了";
+
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "ユーザーアカウントを連携する";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、ユーザーアカウントに連携する必要があります。";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "サイトで統計情報を使用するには、Jetpack プラグインをユーザーアカウントに連携する必要があります。";
 
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "統計、Reader、通知などの機能は、まもなく Jetpack モバイルアプリに移動します。";
@@ -10182,11 +10211,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack へようこそ !";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "統計、Reader、通知などの Jetpack 機能は WordPress アプリから削除され、Jetpack アプリでのみ使用できるようになりました。";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "切り替えは無料で、数分で終わります。";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Jetpack アプリに切り替える";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "詳細は jetpack.com をご覧ください";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "通知は Jetpack アプリに移動しました。";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Reader は Jetpack アプリに移動しました。";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "統計は Jetpack アプリに移動しました。";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "下書き投稿を作成";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "下書き投稿";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "今日の統計情報";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "統計情報";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "削除";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "改善してほしい";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "気に入っている";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "いいえ";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "フィードバックを送る";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -10199,6 +10273,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "password" = "パスワード";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "サイトで発生した内容に基づいてカードにはさまざまなコンテンツが表示されることがあります。 さらに多くのカードやコントロールに取り組んでいます。";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "カードを追加または非表示";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "下書きの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "ブログのプロンプト";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "予約済みの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "今日の統計情報";
+
+/* Page title */
+"personalizeHome.title" = "ホームタブのパーソナライズ";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話番号";
@@ -10217,6 +10315,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "すべての回答を表示";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "「サイトの設定」に移動して表示をオンに戻す";
@@ -10295,6 +10396,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "共有エラー";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "上記の例のように、ドメインを使用するとユーザーは、Web ブラウザーからサイトを見つけてアクセスできます。";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "プロンプトを表示";
@@ -10610,6 +10720,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, サイト, サイト, ブログ, ブログ";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack アプリに切り替える";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Jetpack なしで連携";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ は WordPress アプリでサポートされていない個々の Jetpack プラグインを使用しています。";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ は WordPress アプリでサポートされていない %2$@ プラグインを使用しています。";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Jetpack アプリに切り替えてください。このサイトでアプリの全機能を使用できるよう完全な Jetpack プラグインを接続する方法についてご案内します。";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "申し訳ございませんが、このサイトは WordPress アプリでサポートされていません";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "WordPress アプリを削除してください";

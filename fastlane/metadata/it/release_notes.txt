@@ -1,4 +1,1 @@
-Le belle parole vengono lette
-Il logo di WordPress è blu
-Non sono disponibili nuovi aggiornamenti
-Siamo spiacenti di deluderti
+Quando accedi a un sito ospitato personalmente che si connette a Jetpack tramite singoli plugin, vedrai un pop-up che indica che questo tipo di connessione non supporta ancora le funzionalità principali dell'app. Puoi aggirare il problema passando all'app Jetpack. Un lampo e via.

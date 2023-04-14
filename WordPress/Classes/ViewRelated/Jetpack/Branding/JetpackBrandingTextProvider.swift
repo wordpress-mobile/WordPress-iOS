@@ -64,7 +64,7 @@ struct JetpackBrandingTextProvider {
     }
 
     private func staticScreensPhaseText() -> String {
-        guard let screen = screen, let featureName = screen.featureName else {
+        guard let screen = screen, let _ = screen.featureName else {
             return Strings.defaultText // Screen not provided, or was opted out by defining a nil featureName
         }
 
