@@ -20,7 +20,6 @@ class DashboardPageCell: UITableViewCell, Reusable {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .bold)
         label.numberOfLines = 1
         label.textColor = .text
