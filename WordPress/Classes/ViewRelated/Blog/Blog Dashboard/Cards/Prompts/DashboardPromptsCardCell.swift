@@ -130,7 +130,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     }
 
     private var answerInfoText: String {
-        if FeatureFlag.bloggingPromptsSocial.enabled {
+        if RemoteFeatureFlag.bloggingPromptsSocial.enabled() {
             return Strings.viewAllResponses
         }
 
@@ -174,7 +174,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.setTitle(answerInfoText, for: .normal)
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
         button.setTitleColor(
-            FeatureFlag.bloggingPromptsSocial.enabled
+            RemoteFeatureFlag.bloggingPromptsSocial.enabled()
             ? WPStyleGuide.BloggingPrompts.buttonTitleColor
             : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
             for: .normal
@@ -187,8 +187,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     @objc
     private func didTapAnswerInfoButton() {
-        guard FeatureFlag.bloggingPromptsSocial.enabled,
-        let promptID = prompt?.promptID else {
+        guard RemoteFeatureFlag.bloggingPromptsSocial.enabled(),
+              let promptID = prompt?.promptID else {
             return
         }
         RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")

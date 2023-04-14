@@ -47,9 +47,9 @@ class PeopleServiceTests: CoreDataTestCase {
                             "ID": 1,
                             "nice_name": "Name",
                             "name": "username"
-                        ]
+                        ] as [String: Any]
                     ]
-                ],
+                ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
@@ -71,7 +71,7 @@ class PeopleServiceTests: CoreDataTestCase {
 
     func testLoadUsersFailure() {
         stub(condition: isPath("/rest/v1.1/sites/\(siteID)/users")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
         waitUntil { done in
@@ -98,9 +98,9 @@ class PeopleServiceTests: CoreDataTestCase {
                             "ID": 1,
                             "nice_name": "Nice Name",
                             "name": "name"
-                        ]
+                        ] as [String: Any]
                     ]
-                ],
+                ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
@@ -126,9 +126,9 @@ class PeopleServiceTests: CoreDataTestCase {
                             "ID": 1,
                             "nice_name": "Name",
                             "name": "username"
-                        ]
+                        ] as [String: Any]
                     ]
-                ],
+                ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
@@ -161,9 +161,9 @@ class PeopleServiceTests: CoreDataTestCase {
                             "ID": 1,
                             "nice_name": "Nice Name",
                             "name": "name"
-                        ]
+                        ] as [String: Any]
                     ]
-                ],
+                ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
@@ -182,7 +182,7 @@ class PeopleServiceTests: CoreDataTestCase {
 
         // Make API call to delete the loaded follower
         stub(condition: isPath("/rest/v1.1/sites/\(siteID)/followers/\(follower.userID)/delete")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
         waitUntil { done in
@@ -204,7 +204,7 @@ class PeopleServiceTests: CoreDataTestCase {
 
     func testLoadFollowersFailure() {
         stub(condition: isPath("/rest/v1.1/sites/123/follows")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 500, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
         waitUntil { done in
