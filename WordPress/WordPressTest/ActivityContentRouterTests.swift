@@ -50,12 +50,12 @@ extension ActivityContentRouterTests {
     }
 
     func getCommentActivity() -> FormattableActivity {
-        let activity = try! Activity(dictionary: testData.getCommentEventDictionary())
+        let activity = try! Activity.create(from: testData.getCommentEventDictionary())
         return FormattableActivity(with: activity)
     }
 
     func getPostActivity() -> FormattableActivity {
-        let activity = try! Activity(dictionary: testData.getPostEventDictionary())
+        let activity = try! Activity.create(from: testData.getPostEventDictionary())
         return FormattableActivity(with: activity)
     }
 }

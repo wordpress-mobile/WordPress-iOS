@@ -135,6 +135,29 @@ class ActivityStoreMock: ActivityStore {
 extension Activity {
     static func mock(isRewindable: Bool = false) -> Activity {
         let dictionary = ["activity_id": "1", "summary": "", "is_rewindable": isRewindable, "rewind_id": "1", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String: AnyObject]
-        return try! Activity(dictionary: dictionary)
+        return Activity.create(from: dictionary)
+    }
+
+    static func create(from dictionary: [String: AnyObject]) -> Activity {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601WithMilliseconds
+        let data = try! JSONSerialization.data(withJSONObject: dictionary, options: [])
+        return try! decoder.decode(Activity.self, from: data)
+    }
+}
+
+extension JSONDecoder.DateDecodingStrategy {
+    static let iso8601WithMilliseconds = custom {
+        let container = try $0.singleValueContainer()
+        let string = try container.decode(String.self)
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+
+        if let date = formatter.date(from: string) {
+            return date
+        }
+
+        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date: \(string)")
     }
 }
