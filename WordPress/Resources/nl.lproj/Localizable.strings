@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-06 15:54:11+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:25:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -1117,6 +1117,9 @@ translators: Block name. %s: The localized block name */
 /* Notice that a page without content has been created */
 "Blank page created" = "Lege pagina gemaakt";
 
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
+
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citaat";
@@ -1150,6 +1153,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Geblokkeerde site";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Geblokkeerde gebruiker";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -9646,10 +9652,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promoot in een paar minuten elke post of pagina voor slechts enkele euro’s per dag.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Volg de prestaties van je campagne en annuleer op elk gewenst moment.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Je content zal op miljoenen WordPress en Tumblr sites verschijnen.";
 
 /* Title for the Blaze overlay. */
 "blaze.overlay.title" = "Zorg er met Blaze voor dat meer mensen je site bezoeken";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Blaze deze pagina";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Blaze dit bericht";
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Negeren";
@@ -9698,6 +9713,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Hint for overriding remote config params */
 "debugMenu.remoteConfig.hint" = "Overschrijf de gekozen parameters door hier een nieuwe waarde te definiëren.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Geen externe of standaardwaarde";
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Externe configuratie";
@@ -10013,6 +10031,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Gereed";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Verbind met je gebruikers account";
+
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Je moet je gebruikersaccount koppelen om nuttige meldingen van je WordPress-site op je telefoon te kunnen krijgen.";
 
@@ -10214,6 +10235,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "Statistieken zijn verplaatst naar de Jetpack-app.";
 
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Werk aan een conceptbericht";
+
 /* The part in the title that should be highlighted. */
 "my-sites.drafts.card.title.hint" = "bericht opstellen";
 
@@ -10232,6 +10256,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Kan beter";
 
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Ik vind het leuk";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.no.buttonTitle" = "Nee, dank je";
 
@@ -10244,11 +10271,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Promoten met Blaze";
+
 /* No comment provided by engineer. */
 "password" = "wachtwoord";
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kaarten kunnen verschillende inhoud weergeven, afhankelijk van wat er op je site gebeurt. We zijn bezig meer kaarten en beheermogelijkheden te creëren.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Kaarten toevoegen of verbergen";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Conceptberichten";
@@ -10258,6 +10294,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.scheduledPosts" = "Ingeplande berichten";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Statistieken van vandaag";
 
 /* Page title */
 "personalizeHome.title" = "Startpagina personaliseren";
@@ -10277,6 +10316,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opties uitgelichte afbeelding";
 
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Promoten met Blaze";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
 
@@ -10294,6 +10336,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "Deze gebruiker blokkeren";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Deze gebruiker rapporteren";
@@ -10351,6 +10399,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Fout tijdens delen";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Een domein helpt mensen, zoals in het voorbeeld hierboven, je site te vinden en bezoeken vanuit hun webbrowser.";
@@ -10681,6 +10732,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
 "wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ gebruikt individuele Jetpack-plugins, deze worden niet ondersteund door de WordPress-app.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ gebruikt de %2$@ plugin, die niet wordt ondersteund door de WordPress app.";
 
 /* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
 "wordpress.jetpack.plugin.modal.subtitle.switch" = "Schakel over naar de Jetpack-app waarin we je helpen de volledige Jetpack-plugin te koppelen, zodat je alle functies van de app kunt gebruiken voor deze site.";

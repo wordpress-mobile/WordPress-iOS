@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-05 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:13:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -10399,6 +10399,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Fehler beim Teilen";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Eine Domain, wie sie oben im Beispiel zu sehen ist, ermöglicht es anderen Personen, deine Website über ihren Internetbrowser zu finden und zu besuchen.";
