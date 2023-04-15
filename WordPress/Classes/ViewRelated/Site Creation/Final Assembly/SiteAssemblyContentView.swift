@@ -350,6 +350,10 @@ final class SiteAssemblyContentView: UIView {
             return
         }
 
+        if let assembledSiteView {
+            assembledSiteView.removeFromSuperview()
+        }
+
         let assembledSiteView = AssembledSiteView(domainName: siteName, siteURLString: siteURLString, siteCreator: siteCreator)
         addSubview(assembledSiteView)
 
