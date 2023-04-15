@@ -49,23 +49,26 @@ final class DomainPurchasingWebFlowController {
     }
 
     func purchase(domain: DomainSuggestion, site: Blog, completion: CompletionHandler? = nil) {
-        guard let presentingViewController = self.presentingViewController else {
-            completion?(.failure(.internal("The presentingViewController is deallocated")))
-            return
-        }
-        guard let domain = Domain(domain: domain, site: site) else {
-            completion?(.failure(.invalidInput))
-            return
-        }
-        var completionOnMainThread: CompletionHandler?
-        if let completion {
-            completionOnMainThread = { result in
+        let middleware: CompletionHandler = { [weak self] result in
+            if let self = self, case let .failure(error) = result, !error.trusted {
+                let userInfo = self.userInfo(domain: domain, site: site)
+                self.crashLogger.logError(error, userInfo: userInfo, level: .error)
+            }
+            if let completion {
                 DispatchQueue.main.async {
                     completion(result)
                 }
             }
         }
-        self.createCartAndPresentWebView(domain: domain, in: presentingViewController, completion: completionOnMainThread)
+        guard let presentingViewController = self.presentingViewController else {
+            middleware(.failure(.internal("The presentingViewController is deallocated")))
+            return
+        }
+        guard let domain = Domain(domain: domain, site: site) else {
+            middleware(.failure(.invalidInput))
+            return
+        }
+        self.createCartAndPresentWebView(domain: domain, in: presentingViewController, completion: middleware)
     }
 
     // MARK: - Private
@@ -190,6 +193,19 @@ final class DomainPurchasingWebFlowController {
         self.webViewURLChangeObservation = nil
     }
 
+    /// Metadata to include in the error or track events.
+    private func userInfo(domain: DomainSuggestion, site: Blog) -> [String: Any] {
+        let homeURL = site.homeURL as String?
+        var userInfo = [String: Any]()
+        userInfo["siteID"] = site.dotComID?.intValue
+        userInfo["siteHomeURL"] = homeURL
+        userInfo["siteHostURL"] = URL(string: homeURL ?? "")?.host
+        userInfo["domainName"] = domain.domainName
+        userInfo["domainSupportsPrivacy"] = domain.supportsPrivacy
+        userInfo["checkoutWebAddress"] = Self.Constants.checkoutWebAddress
+        return userInfo
+    }
+
     // MARK: - Types
 
     typealias CompletionHandler = (Result<String, DomainPurchasingError>) -> Void
@@ -222,9 +238,8 @@ final class DomainPurchasingWebFlowController {
 
 extension DomainPurchasingWebFlowController.Domain {
 
-    init?(domain: DomainSuggestion, site: Blog?) {
-        guard let site,
-              let siteID = site.dotComID?.intValue,
+    init?(domain: DomainSuggestion, site: Blog) {
+        guard let siteID = site.dotComID?.intValue,
               let homeURLString = site.homeURL,
               let homeURL = URL(string: homeURLString as String),
               let hostURLString = homeURL.host,
@@ -237,6 +252,47 @@ extension DomainPurchasingWebFlowController.Domain {
         self.siteID = siteID
         self.homeURL = homeURL
         self.hostURL = hostURL
+    }
+}
+
+extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError {
+
+    /// Untrusted errors should be monitored and requires our attention.
+    var trusted: Bool {
+        switch self {
+        case .invalidInput, .internal: return false
+        default: return true
+        }
+    }
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidInput: return "Input provided is not valid to perform domain purchasing"
+        case .canceled: return "Domain purchasing flow is canceled"
+        case .internal(let reason): return reason
+        case .other(let error): return (error as NSError).localizedDescription
+        }
+    }
+
+    var errorCode: Int {
+        switch self {
+        case .canceled: return 400
+        case .invalidInput: return 500
+        case .internal: return 501
+        case .other(let error): return (error as NSError).code
+        }
+    }
+
+    static var errorDomain: String {
+        return "DomainPurchasingWebFlowError"
+    }
+
+    var errorUserInfo: [String: Any] {
+        var userInfo = [String: Any]()
+        if let errorDescription {
+            userInfo[NSDebugDescriptionErrorKey] = errorDescription
+        }
+        return userInfo
     }
 }
 
