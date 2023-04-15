@@ -46,7 +46,7 @@ final class SiteCreator {
             siteURLString: siteURLString,
             isPublic: true,
             siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
-            findAvailableURL: address == nil
+            findAvailableURL: !(address?.isFree ?? false)
         )
         return request
     }
