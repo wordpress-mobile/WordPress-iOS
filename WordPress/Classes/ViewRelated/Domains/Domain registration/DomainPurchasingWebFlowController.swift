@@ -1,5 +1,6 @@
 import UIKit
 import AutomatticTracks
+import Sentry
 
 final class DomainPurchasingWebFlowController {
 
@@ -51,8 +52,8 @@ final class DomainPurchasingWebFlowController {
     func purchase(domain: DomainSuggestion, site: Blog, completion: CompletionHandler? = nil) {
         let middleware: CompletionHandler = { [weak self] result in
             if let self = self, case let .failure(error) = result, !error.trusted {
-                let userInfo = self.userInfo(domain: domain, site: site)
-                self.crashLogger.logError(error, userInfo: userInfo, level: .error)
+                let userInfo = self.userInfoForError(error, domain: domain, site: site)
+                self.crashLogger.logError(error, userInfo: userInfo, level: error.level)
             }
             if let completion {
                 DispatchQueue.main.async {
@@ -97,15 +98,13 @@ final class DomainPurchasingWebFlowController {
         //
         var result: Result<String, DomainPurchasingError>?
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: domain.hostURL, source: "domains_register")
-        self.webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
+        self.webViewURLChangeObservation = webViewController.webView.observe(\.url, options: [.new, .old]) { [weak self] _, change in
             guard let self = self, let newURL = change.newValue as? URL else {
                 return
             }
-            self.handleWebViewURLChange(newURL, siteID: domain.siteID, domain: domain.domainName) { domain in
-                result = .success(domain)
-                self.presentedViewController?.dismiss(animated: true)
-            } onCancel: {
-                result = .failure(.canceled)
+            let oldURL = change.oldValue as? URL
+            self.handleWebViewURLChange(newURL, oldURL: oldURL, domain: domain) { innerResult in
+                result = innerResult
                 self.presentedViewController?.dismiss(animated: true)
             }
         }
@@ -163,27 +162,25 @@ final class DomainPurchasingWebFlowController {
     ///     - newURL: the newly set URL for the web view.
     ///     - siteID: the ID of the site we're trying to register the domain against.
     ///     - domain: the domain the user is purchasing.
-    ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
-    ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
+    ///     - completion: the closure that will be executed when the domain registration succeeds or fails.
     ///
     private func handleWebViewURLChange(
         _ newURL: URL,
-        siteID: Int,
-        domain: String,
-        onSuccess: (String) -> Void,
-        onCancel: () -> Void) {
-
+        oldURL: URL?,
+        domain: Domain,
+        completion: (Result<String, DomainPurchasingError>) -> Void
+    ) {
         let canOpenNewURL = newURL.absoluteString.starts(with: Constants.checkoutURLPrefix)
-
         guard canOpenNewURL else {
-            onCancel()
+            let error = DomainPurchasingError.unsupportedRedirect(fromURL: oldURL, toURL: newURL)
+            completion(.failure(error))
             return
         }
 
         let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Constants.checkoutSuccessURLPrefix)
 
         if domainRegistrationSucceeded {
-            onSuccess(domain)
+            completion(.success(domain.domainName))
         }
     }
 
@@ -193,7 +190,7 @@ final class DomainPurchasingWebFlowController {
         self.webViewURLChangeObservation = nil
     }
 
-    /// Metadata to include in the error or track events.
+    /// Metadata to attach to error or track events.
     private func userInfo(domain: DomainSuggestion, site: Blog) -> [String: Any] {
         let homeURL = site.homeURL as String?
         var userInfo = [String: Any]()
@@ -203,6 +200,16 @@ final class DomainPurchasingWebFlowController {
         userInfo["domainName"] = domain.domainName
         userInfo["domainSupportsPrivacy"] = domain.supportsPrivacy
         userInfo["checkoutWebAddress"] = Self.Constants.checkoutWebAddress
+        if let presentingViewController {
+            userInfo["presentingViewController"] = String(describing: type(of: presentingViewController))
+        }
+        return userInfo
+    }
+
+    /// Metadata to attach when capturing errors.
+    private func userInfoForError(_ error: DomainPurchasingError, domain: DomainSuggestion, site: Blog) -> [String: Any] {
+        var userInfo = userInfo(domain: domain, site: site)
+        userInfo = userInfo.merging(error.errorUserInfo) { $1 }
         return userInfo
     }
 
@@ -213,6 +220,7 @@ final class DomainPurchasingWebFlowController {
     enum DomainPurchasingError: LocalizedError {
         case invalidInput
         case canceled
+        case unsupportedRedirect(fromURL: URL?, toURL: URL)
         case `internal`(String)
         case other(Error)
     }
@@ -265,10 +273,18 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
         }
     }
 
+    var level: SeverityLevel {
+        switch self {
+        case .unsupportedRedirect: return .warning
+        default: return .error
+        }
+    }
+
     var errorDescription: String? {
         switch self {
         case .invalidInput: return "Input provided is not valid to perform domain purchasing"
         case .canceled: return "Domain purchasing flow is canceled"
+        case .unsupportedRedirect: return "Unsupported domain purchasing URL"
         case .internal(let reason): return reason
         case .other(let error): return (error as NSError).localizedDescription
         }
@@ -279,6 +295,7 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
         case .canceled: return 400
         case .invalidInput: return 500
         case .internal: return 501
+        case .unsupportedRedirect: return 502
         case .other(let error): return (error as NSError).code
         }
     }
@@ -292,8 +309,17 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
         if let errorDescription {
             userInfo[NSDebugDescriptionErrorKey] = errorDescription
         }
+        switch self {
+        case .unsupportedRedirect(let fromURL, let toURL):
+            userInfo["fromURL"] = fromURL?.absoluteString
+            userInfo["toURL"] = toURL.absoluteString
+        default:
+            break
+        }
         return userInfo
     }
+
+    typealias SeverityLevel = SentryLevel
 }
 
 // MARK: - Custom Navigation Controller
