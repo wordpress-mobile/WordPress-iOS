@@ -51,6 +51,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 
     private func commonInit() {
         setupView()
+        configureHeaderAction()
         tableView.delegate = self
     }
 
@@ -59,6 +60,12 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: .defaultHigh)
+    }
+
+    private func configureHeaderAction() {
+        cardFrameView.onHeaderTap = { [weak self] in
+            self?.showPagesList()
+        }
     }
 }
 
@@ -85,15 +92,15 @@ extension DashboardPagesListCardCell {
         }
         cardFrameView.ellipsisButton.showsMenuAsPrimaryAction = true
 
-        let children = [makeAllPagesAction(blog: blog), makeHideCardAction(blog: blog)].compactMap { $0 }
+        let children = [makeAllPagesAction(), makeHideCardAction(blog: blog)].compactMap { $0 }
 
         cardFrameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: children)
     }
 
-    private func makeAllPagesAction(blog: Blog) -> UIMenuElement {
+    private func makeAllPagesAction() -> UIMenuElement {
         let allPagesAction = UIAction(title: Strings.allPages,
                                       image: Style.allPagesImage,
-                                      handler: { _ in self.showPagesList(for: blog) })
+                                      handler: { _ in self.showPagesList() })
 
         // Wrap the pages action in a menu to display a divider between the pages action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
@@ -110,8 +117,8 @@ extension DashboardPagesListCardCell {
 
     // MARK: Actions
 
-    private func showPagesList(for blog: Blog) {
-        guard let presentingViewController else {
+    private func showPagesList() {
+        guard let blog, let presentingViewController else {
             return
         }
         PageListViewController.showForBlog(blog, from: presentingViewController)
@@ -121,7 +128,17 @@ extension DashboardPagesListCardCell {
 // MARK: - UITableViewDelegate
 extension DashboardPagesListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Open editor for selected page
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let page = viewModel?.pageAt(indexPath),
+              let presentingViewController else {
+            return
+        }
+        let didOpenEditor = PageEditorPresenter.handle(page: page,
+                                                       in: presentingViewController,
+                                                       entryPoint: .dashboard)
+        if didOpenEditor {
+            // TODO: Track editor opened
+        }
     }
 }
 

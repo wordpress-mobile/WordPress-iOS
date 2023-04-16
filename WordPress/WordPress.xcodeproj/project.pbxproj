@@ -1881,6 +1881,8 @@
 		80D9CFFB29E5E6FE00FE3400 /* DashboardCardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFF929E5E6FE00FE3400 /* DashboardCardTableView.swift */; };
 		80D9CFFD29E711E200FE3400 /* DashboardPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFFC29E711E200FE3400 /* DashboardPageCell.swift */; };
 		80D9CFFE29E711E200FE3400 /* DashboardPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFFC29E711E200FE3400 /* DashboardPageCell.swift */; };
+		80D9D00029E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFFF29E85EBF00FE3400 /* PageEditorPresenter.swift */; };
+		80D9D00129E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFFF29E85EBF00FE3400 /* PageEditorPresenter.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -7232,6 +7234,7 @@
 		80D9CFF629E5010300FE3400 /* PagesCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesCardViewModel.swift; sourceTree = "<group>"; };
 		80D9CFF929E5E6FE00FE3400 /* DashboardCardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTableView.swift; sourceTree = "<group>"; };
 		80D9CFFC29E711E200FE3400 /* DashboardPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPageCell.swift; sourceTree = "<group>"; };
+		80D9CFFF29E85EBF00FE3400 /* PageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageEditorPresenter.swift; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
@@ -16693,6 +16696,7 @@
 				5DFA7EBE1AF7CB3A0072023B /* Views */,
 				5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */,
 				5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */,
+				80D9CFFF29E85EBF00FE3400 /* PageEditorPresenter.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -21284,6 +21288,7 @@
 				C81CCD80243BF7A600A83E27 /* TenorPicker.swift in Sources */,
 				74EFB5C8208674250070BD4E /* BlogListViewController+Activity.swift in Sources */,
 				738B9A5721B85CF20005062B /* TableDataCoordinator.swift in Sources */,
+				80D9D00029E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */,
 				FA73D7E52798765B00DF24B3 /* SitePickerViewController.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
 				3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
@@ -24332,6 +24337,7 @@
 				FABB23492602FC2C00C8785C /* MenuItemSourceCell.m in Sources */,
 				FABB234A2602FC2C00C8785C /* BlogDetailsViewController.m in Sources */,
 				FABB234B2602FC2C00C8785C /* UIBarButtonItem+MeBarButton.swift in Sources */,
+				80D9D00129E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */,
 				FABB234C2602FC2C00C8785C /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				F158542E267D3B8A00A2E966 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
 				8332DD2529259AE300802F7D /* DataMigrator.swift in Sources */,
