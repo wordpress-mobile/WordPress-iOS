@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-03 12:23:52+0000 */
+/* Translation-Revision-Date: 2023-04-12 13:04:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -9713,6 +9713,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Hint for overriding remote config params */
 "debugMenu.remoteConfig.hint" = "Contramandează parametrul ales prin definirea unei valori noi aici.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Nicio valoare implicită sau la distanță";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Configurare la distanță";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Steaguri pentru funcționalități locale";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Steaguri pentru funcționalitate la distanță";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Rezervă-ți partea ta pe web cu o adresă de site ușor de găsit, partajat și urmărit.";

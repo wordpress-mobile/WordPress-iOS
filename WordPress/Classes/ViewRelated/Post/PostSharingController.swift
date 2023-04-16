@@ -44,6 +44,10 @@ import SVProgressHUD
     }
 
     @objc func sharePost(_ title: String, summary: String, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+        sharePost(title, summary: summary, link: link, fromAnchor: .view(anchorView), inViewController: viewController)
+    }
+
+    private func sharePost(_ title: String, summary: String, link: String?, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
@@ -59,8 +63,13 @@ import SVProgressHUD
         viewController.present(controller, animated: true)
         if let presentationController = controller.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
-            presentationController.sourceView = anchorView
-            presentationController.sourceRect = anchorView.bounds
+            switch anchor {
+            case .barButtonItem(let item):
+                presentationController.barButtonItem = item
+            case .view(let anchorView):
+                presentationController.sourceView = anchorView
+                presentationController.sourceRect = anchorView.bounds
+            }
         }
     }
 
@@ -81,6 +90,16 @@ import SVProgressHUD
             summary: post.contentPreviewForDisplay(),
             link: post.permaLink,
             fromView: anchorView,
+            inViewController: viewController)
+    }
+
+    func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
+
+        sharePost(
+            post.titleForDisplay(),
+            summary: post.contentPreviewForDisplay(),
+            link: post.permaLink,
+            fromAnchor: anchor,
             inViewController: viewController)
     }
 
@@ -114,4 +133,6 @@ import SVProgressHUD
         }
 
     }
+
+    typealias PopoverAnchor = UIPopoverPresentationController.PopoverAnchor
 }

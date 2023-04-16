@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-03 10:35:26+0000 */
+/* Translation-Revision-Date: 2023-04-05 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -9700,7 +9700,31 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "customizeInsightsCell.tryItButton.title" = "Prova nu";
 
 /* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Lägg till kort som passar dina behov för att få information om din webbplats.";
+
+/* Title for an empty state view when no cards are displayed */
 "dasboard.emptyView.title" = "Inga kort att visa";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Anpassa din hem-flik";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Åsidosatta parametrar markeras med en bock.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Åsidosätt den valda parametern genom att definiera ett nytt värde här.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Inget fjärr- eller standardvärde";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Fjärrkonfiguration";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Lokala funktionsflaggor";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Fjärrfunktionsflaggor";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Gör ditt anspråk på ditt hörn av webben med en webbplatsadress som är lätt att hitta, dela och följa.";
@@ -10253,6 +10277,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "lösenord";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Kort kan visa olika innehåll beroende på vad som händer på din webbplats. Vi arbetar på fler kort och kontroller.";
+
 /* Section header */
 "personalizeHome.cardsSectionHeader" = "Dölj eller visa kort";
 
@@ -10260,10 +10287,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Utkastinlägg";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Bloggningsprompter";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.scheduledPosts" = "Schemalagda inlägg";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Dagens statistik";
+
+/* Page title */
+"personalizeHome.title" = "Anpassa Hem-fliken";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
@@ -10694,8 +10730,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Jetpack Plugin Modal on WordPress secondary button title */
 "wordpress.jetpack.plugin.modal.secondary.button.title" = "Fortsätt utan Jetpack";
 
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ använder sig av enskilda Jetpack-tillägg vilket inte stöds av WordPress-appen.";
+
 /* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
 "wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ använder tillägget %2$@ som inte stöds av WordPress-appen.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Gå till Jetpack-appen där vi guidar dig igenom hur du ansluter det fullständiga Jetpack-tillägget så att du kan använda alla appens funktioner för den här webbplatsen.";
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Denna webbplats stöds inte av WordPress-appen";

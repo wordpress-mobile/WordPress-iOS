@@ -213,11 +213,17 @@ class ReaderDetailCoordinator {
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
+        self.share(fromAnchor: .view(anchorView))
+    }
+
+    /// Share the current post
+    ///
+    func share(fromAnchor anchor: UIPopoverPresentationController.PopoverAnchor) {
         guard let post = post, let view = viewController else {
             return
         }
 
-        sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
+        sharingController.shareReaderPost(post, fromAnchor: anchor, inViewController: view)
 
         WPAnalytics.trackReader(.readerSharedItem)
     }
@@ -400,7 +406,7 @@ class ReaderDetailCoordinator {
 
     /// Show a menu with options for the current post's site
     ///
-    private func showMenu(_ anchorView: UIView) {
+    private func showMenu(_ anchor: UIPopoverPresentationController.PopoverAnchor) {
         guard let post = post,
               let context = post.managedObjectContext,
               let viewController = viewController,
@@ -414,7 +420,7 @@ class ReaderDetailCoordinator {
             post: post,
             context: context,
             readerTopic: readerTopic,
-            anchor: anchorView,
+            anchor: anchor,
             vc: viewController,
             source: ReaderPostMenuSource.details,
             followCommentsService: followCommentsService
@@ -680,8 +686,12 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
+    func didTapMenuButton(_ sender: UIBarButtonItem) {
+        showMenu(.barButtonItem(sender))
+    }
+
     func didTapMenuButton(_ sender: UIView) {
-        showMenu(sender)
+        showMenu(.view(sender))
     }
 
     func didTapTagButton() {

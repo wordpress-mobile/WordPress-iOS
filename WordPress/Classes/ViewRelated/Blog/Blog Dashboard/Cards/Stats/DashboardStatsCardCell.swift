@@ -39,8 +39,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     }
 
     private func addSubviews() {
-        frameView.title = Strings.statsTitle
-        frameView.titleHint = Strings.statsTitleHint
+        frameView.setTitle(Strings.statsTitle, titleHint: Strings.statsTitleHint)
 
         let statsStackview = DashboardStatsStackView()
         frameView.add(subview: statsStackview)

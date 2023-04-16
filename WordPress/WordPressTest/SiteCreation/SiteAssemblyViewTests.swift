@@ -19,11 +19,11 @@ class SiteAssemblyViewTests: XCTestCase {
         wait(for: 0.5)
 
         // Then
-        let actualCompletionLabelAlpha = contentView.completionLabel.alpha
-        XCTAssertEqual(actualCompletionLabelAlpha, 0, accuracy: 0.01)
+        let isCompletionLabelHidden = contentView.completionLabel.isHidden
+        XCTAssert(isCompletionLabelHidden)
 
-        let actualStatusStackViewAlpha = contentView.statusStackView.alpha
-        XCTAssertEqual(actualStatusStackViewAlpha, 0, accuracy: 0.01)
+        let statusStackAlpha = contentView.statusStackView.alpha
+        XCTAssertEqual(statusStackAlpha, 0, accuracy: 0.01)
     }
 
     func testContentView_ViewIsCorrect_WhenStatusIsInProgress() {
