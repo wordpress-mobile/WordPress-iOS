@@ -1,41 +1,9 @@
-extension UIColor {
-    /// Get a UIColor from the Muriel color palette
-    ///
-    /// - Parameters:
-    ///   - color: an instance of a MurielColor
-    /// - Returns: UIColor. Red in cases of error
-    class func muriel(color murielColor: MurielColor) -> UIColor {
-        let assetName = murielColor.assetName()
-        let color = UIColor(named: assetName)
+import CoreUI
 
-        guard let unwrappedColor = color else {
-            return .red
-        }
-
-        return unwrappedColor
-    }
-    /// Get a UIColor from the Muriel color palette, adjusted to a given shade
-    /// - Parameter color: an instance of a MurielColor
-    /// - Parameter shade: a MurielColor.Shade
-    class func muriel(color: MurielColor, _ shade: MurielColor.Shade) -> UIColor {
-        let newColor = MurielColor(from: color, shade: shade)
-        return muriel(color: newColor)
-    }
-
-    /// Get a UIColor from the Muriel color palette by name, adjusted to a given shade
-    /// - Parameters:
-    ///   - name: a MurielColor.Name
-    ///   - shade: a MurielColor.Shade
-    /// - Returns: the desired color/shade
-    class func muriel(name: MurielColor.Name, _ shade: MurielColor.Shade) -> UIColor {
-        let newColor = MurielColor(name: name, shade: shade)
-        return muriel(color: newColor)
-    }
-}
 // MARK: - Basic Colors
 extension UIColor {
     /// Muriel accent color
-    static var accent = muriel(color: .accent)
+    static var accent = UIColor.muriel(color: MurielColor.accent)
     static var accentDark = muriel(color: .accent, .shade70)
     class func accent(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .accent, shade)

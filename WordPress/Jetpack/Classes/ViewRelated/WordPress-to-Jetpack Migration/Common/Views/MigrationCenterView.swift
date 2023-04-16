@@ -1,3 +1,4 @@
+import CoreUI
 import UIKit
 
 /// A view with an injected content and a description withl highlighted words

@@ -1,3 +1,4 @@
+import CoreUI
 import UIKit
 
 class JetpackScanStatusCell: UITableViewCell, NibReusable {

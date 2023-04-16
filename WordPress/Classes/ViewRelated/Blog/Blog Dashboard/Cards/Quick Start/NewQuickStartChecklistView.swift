@@ -1,3 +1,4 @@
+import CoreUI
 import UIKit
 
 // A view representing the progress on a Quick Start checklist. Built according to new design specs.

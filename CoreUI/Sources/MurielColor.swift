@@ -1,10 +1,8 @@
-
-
 /// A specific color and shade from the muriel palette's asset file
-struct MurielColor {
+public struct MurielColor {
 
     /// Generates the names of the named colors in the ColorPalette.xcasset
-    enum Name: String, CustomStringConvertible {
+    public enum Name: String, CustomStringConvertible {
         case wordPressBlue
         case blue
         case celadon
@@ -17,7 +15,7 @@ struct MurielColor {
         case yellow
         case jetpackGreen
 
-        var description: String {
+        public var description: String {
             // can't use .capitalized because it lowercases the P and B in "wordPressBlue"
             return rawValue.prefix(1).uppercased() + rawValue.dropFirst()
         }
@@ -27,7 +25,7 @@ struct MurielColor {
     ///
     /// Note: There are a finite number of acceptable values. Not just any `Int` works.
     ///       Also, `enum` cases cannot begin with a number, thus the `shade` prefix.
-    enum Shade: Int, CustomStringConvertible {
+    public enum Shade: Int, CustomStringConvertible {
         case shade0 = 0
         case shade5 = 5
         case shade10 = 10
@@ -41,26 +39,26 @@ struct MurielColor {
         case shade90 = 90
         case shade100 = 100
 
-        var description: String {
+        public var description: String {
             return "\(rawValue)"
         }
     }
 
-    let name: Name
-    let shade: Shade
+    public let name: Name
+    public let shade: Shade
 
-    init(name: Name, shade: Shade = .shade50) {
+    public init(name: Name, shade: Shade = .shade50) {
         self.name = name
         self.shade = shade
     }
 
-    init(from identifier: MurielColor, shade: Shade) {
+    public init(from identifier: MurielColor, shade: Shade) {
         self.name = identifier.name
         self.shade = shade
     }
 
     /// The full name of the color, with required shade value
-    func assetName() -> String {
+    public func assetName() -> String {
         return "\(name)\(shade)"
     }
 }

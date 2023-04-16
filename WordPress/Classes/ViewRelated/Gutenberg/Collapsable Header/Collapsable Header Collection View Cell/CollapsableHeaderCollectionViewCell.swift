@@ -1,6 +1,7 @@
-import UIKit
+import CoreUI
 import Gutenberg
 import Gridicons
+import UIKit
 
 class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
 

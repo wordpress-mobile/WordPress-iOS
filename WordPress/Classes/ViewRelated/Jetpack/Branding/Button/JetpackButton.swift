@@ -1,5 +1,6 @@
-import UIKit
+import CoreUI
 import SwiftUI
+import UIKit
 
 /// A "Jetpack powered" button with two different styles (`badge` or    `banner`)
 class JetpackButton: CircularImageButton {

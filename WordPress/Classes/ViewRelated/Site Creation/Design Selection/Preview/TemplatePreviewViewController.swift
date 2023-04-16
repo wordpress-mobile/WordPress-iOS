@@ -1,5 +1,4 @@
-
-import Foundation
+import CoreUI
 
 protocol TemplatePreviewViewDelegate {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice

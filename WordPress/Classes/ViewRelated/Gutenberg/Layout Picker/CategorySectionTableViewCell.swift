@@ -1,5 +1,6 @@
-import UIKit
+import CoreUI
 import Gutenberg
+import UIKit
 
 protocol CategorySectionTableViewCellDelegate: AnyObject {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)

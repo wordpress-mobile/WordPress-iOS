@@ -1,3 +1,4 @@
+import CoreUI
 import SwiftUI
 
 /// A rounded rectangle shape with a white title and a primary background color

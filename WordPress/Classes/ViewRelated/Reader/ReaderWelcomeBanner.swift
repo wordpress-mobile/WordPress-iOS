@@ -1,4 +1,4 @@
-import Foundation
+import CoreUI
 
 class ReaderWelcomeBanner: UIView, NibLoadable {
     @IBOutlet weak var welcomeLabel: UILabel!

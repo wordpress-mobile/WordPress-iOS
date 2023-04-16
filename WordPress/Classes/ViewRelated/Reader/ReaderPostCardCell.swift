@@ -1,4 +1,5 @@
 import AutomatticTracks
+import CoreUI
 import Foundation
 import WordPressShared
 import Gridicons

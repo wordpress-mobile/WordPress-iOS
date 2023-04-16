@@ -1,3 +1,4 @@
+import CoreUI
 import SwiftUI
 
 /// Prologue intro view

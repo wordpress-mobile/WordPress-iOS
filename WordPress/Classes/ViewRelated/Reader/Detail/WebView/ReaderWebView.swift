@@ -1,3 +1,4 @@
+import CoreUI
 import UIKit
 
 /// A WKWebView that renders post content with styles applied

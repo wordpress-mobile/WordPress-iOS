@@ -1,3 +1,5 @@
+import CoreUI
+
 protocol StatsRowGhostable: ImmuTableRow { }
 extension StatsRowGhostable {
     var action: ImmuTableAction? {

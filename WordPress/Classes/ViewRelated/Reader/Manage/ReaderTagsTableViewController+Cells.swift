@@ -1,3 +1,5 @@
+import CoreUI
+
 extension ReaderTagsTableViewModel {
     func configure(cell: UITableViewCell, for topic: ReaderTagTopic?) {
         guard let topic = topic else {

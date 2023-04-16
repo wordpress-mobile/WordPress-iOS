@@ -1,3 +1,5 @@
+import CoreUI
+
 // `MurielColor` depends on `AppStyleGuide` as described in the code below.
 //
 // That might have been convenient when all the code was in a single app target, but it became a

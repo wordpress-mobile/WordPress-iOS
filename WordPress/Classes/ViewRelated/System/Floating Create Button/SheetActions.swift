@@ -1,3 +1,5 @@
+import CoreUI
+
 /// Common Actions used by CreateButtonActionSheet
 
 struct PostAction: ActionSheetItem {

@@ -1,3 +1,4 @@
+import CoreUI
 import Foundation
 
 struct JetpackScanThreatViewModel {

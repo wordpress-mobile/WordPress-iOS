@@ -1,3 +1,5 @@
+import CoreUI
+
 class StatsGhostBaseCell: UITableViewCell {
     private typealias Style = WPStyleGuide.Stats
     private(set) var topBorder: UIView?

@@ -1,5 +1,6 @@
-import Foundation
 import Charts
+import CoreUI
+import Foundation
 import UIKit
 
 final class ViewsVisitorsChartMarker: MarkerView {

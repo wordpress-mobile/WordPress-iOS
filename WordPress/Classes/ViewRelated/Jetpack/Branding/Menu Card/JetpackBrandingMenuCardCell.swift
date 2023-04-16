@@ -1,5 +1,6 @@
-import UIKit
+import CoreUI
 import Lottie
+import UIKit
 
 class JetpackBrandingMenuCardCell: UITableViewCell {
 

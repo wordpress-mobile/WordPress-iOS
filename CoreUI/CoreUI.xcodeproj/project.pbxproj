@@ -8,23 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		3FFFDB6B29EC15B20022018D /* CoreUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FFFDB6A29EC15B20022018D /* CoreUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FFFDB8429EC1D260022018D /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8329EC1D260022018D /* MurielColor.swift */; };
 		3FFFDB8929EC21AC0022018D /* Project-Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8629EC21AC0022018D /* Project-Shared.xcconfig */; };
 		3FFFDB8A29EC21AC0022018D /* Project-Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8729EC21AC0022018D /* Project-Debug.xcconfig */; };
 		3FFFDB8B29EC21AC0022018D /* Project-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8829EC21AC0022018D /* Project-Release.xcconfig */; };
 		3FFFDB8F29EC23570022018D /* CoreUI-Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8C29EC23570022018D /* CoreUI-Debug.xcconfig */; };
 		3FFFDB9029EC23570022018D /* CoreUI-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8D29EC23570022018D /* CoreUI-Release.xcconfig */; };
 		3FFFDB9129EC23570022018D /* CoreUI-Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3FFFDB8E29EC23570022018D /* CoreUI-Shared.xcconfig */; };
+		3FFFDBA529EC78F90022018D /* UIColor+MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDBA429EC78F90022018D /* UIColor+MurielColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3FFFDB6729EC15B20022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FFFDB6A29EC15B20022018D /* CoreUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreUI.h; sourceTree = "<group>"; };
+		3FFFDB8329EC1D260022018D /* MurielColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MurielColor.swift; sourceTree = "<group>"; };
 		3FFFDB8629EC21AC0022018D /* Project-Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Project-Shared.xcconfig"; sourceTree = "<group>"; };
 		3FFFDB8729EC21AC0022018D /* Project-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Project-Debug.xcconfig"; sourceTree = "<group>"; };
 		3FFFDB8829EC21AC0022018D /* Project-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Project-Release.xcconfig"; sourceTree = "<group>"; };
 		3FFFDB8C29EC23570022018D /* CoreUI-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "CoreUI-Debug.xcconfig"; sourceTree = "<group>"; };
 		3FFFDB8D29EC23570022018D /* CoreUI-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "CoreUI-Release.xcconfig"; sourceTree = "<group>"; };
 		3FFFDB8E29EC23570022018D /* CoreUI-Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "CoreUI-Shared.xcconfig"; sourceTree = "<group>"; };
+		3FFFDBA429EC78F90022018D /* UIColor+MurielColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+MurielColor.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,8 @@
 			isa = PBXGroup;
 			children = (
 				3FFFDB6A29EC15B20022018D /* CoreUI.h */,
+				3FFFDB8329EC1D260022018D /* MurielColor.swift */,
+				3FFFDBA429EC78F90022018D /* UIColor+MurielColor.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -161,6 +167,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB8429EC1D260022018D /* MurielColor.swift in Sources */,
+				3FFFDBA529EC78F90022018D /* UIColor+MurielColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

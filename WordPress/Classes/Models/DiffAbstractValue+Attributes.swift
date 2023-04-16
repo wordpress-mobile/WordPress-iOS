@@ -1,3 +1,5 @@
+import CoreUI
+
 extension DiffAbstractValue {
     var attributes: [NSAttributedString.Key: Any]? {
         switch operation {

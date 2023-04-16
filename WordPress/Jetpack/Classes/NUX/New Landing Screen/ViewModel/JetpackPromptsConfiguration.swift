@@ -1,3 +1,4 @@
+import CoreUI
 import SwiftUI
 
 /// Text and constants for animated prompts in the Jetpack prologue screen

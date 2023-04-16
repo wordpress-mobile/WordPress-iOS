@@ -1,3 +1,5 @@
+import CoreUI
+
 import WordPressAuthenticator
 
 protocol JetpackRemoteInstallStateViewDelegate: AnyObject {

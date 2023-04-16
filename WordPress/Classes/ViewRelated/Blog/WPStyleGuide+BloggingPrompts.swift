@@ -1,3 +1,5 @@
+import CoreUI
+
 /// This class groups styles used by blogging prompts
 ///
 extension WPStyleGuide {

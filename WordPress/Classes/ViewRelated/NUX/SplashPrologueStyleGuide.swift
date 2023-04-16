@@ -1,3 +1,4 @@
+import CoreUI
 import Foundation
 import SwiftUI
 import WordPressAuthenticator
