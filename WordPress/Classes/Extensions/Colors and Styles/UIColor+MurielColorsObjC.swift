@@ -27,11 +27,6 @@
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral0() -> UIColor {
-        return .neutral(.shade0)
-    }
-
-    @available(swift, obsoleted: 1.0)
     static func murielNeutral5() -> UIColor {
         return .neutral(.shade5)
     }
@@ -67,11 +62,6 @@
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral80() -> UIColor {
-        return .neutral(.shade80)
-    }
-
-    @available(swift, obsoleted: 1.0)
     static func murielSuccess() -> UIColor {
         return .success
     }
@@ -89,16 +79,6 @@
     @available(swift, obsoleted: 1.0)
     static func murielTextTertiary() -> UIColor {
         return .textTertiary
-    }
-
-    @available(swift, obsoleted: 1.0)
-    static func murielAccent() -> UIColor {
-        return .accent
-    }
-
-    @available(swift, obsoleted: 1.0)
-    static func murielWarningDark() -> UIColor {
-        return .warning(.shade70)
     }
 
     @available(swift, obsoleted: 1.0)
