@@ -18,7 +18,7 @@ extension BlogDetailsSubsection {
         case .stats where !blog.shouldShowJetpackSection:
             return .general
         case .pages, .posts, .media, .comments:
-            return .publish
+            return .content
         case .themes, .customize:
             return .personalize
         case .sharing, .people, .plugins:

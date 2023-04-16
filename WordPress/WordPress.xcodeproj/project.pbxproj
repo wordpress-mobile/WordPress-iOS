@@ -3613,6 +3613,8 @@
 		F4D8296C2931087100038726 /* MigrationSuccessCell+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D8296B2931087100038726 /* MigrationSuccessCell+Jetpack.swift */; };
 		F4D829702931097900038726 /* DashboardMigrationSuccessCell+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D8296F2931097900038726 /* DashboardMigrationSuccessCell+WordPress.swift */; };
 		F4D82972293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D82971293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift */; };
+		F4D9188629D78C9100974A71 /* BlogDetailsViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9188529D78C9100974A71 /* BlogDetailsViewController+Strings.swift */; };
+		F4D9188729D78C9100974A71 /* BlogDetailsViewController+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9188529D78C9100974A71 /* BlogDetailsViewController+Strings.swift */; };
 		F4D9AF4F288AD2E300803D40 /* SuggestionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */; };
 		F4D9AF51288AE23500803D40 /* SuggestionTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF50288AE23500803D40 /* SuggestionTableViewTests.swift */; };
 		F4D9AF53288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF52288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift */; };
@@ -8940,6 +8942,7 @@
 		F4D8296B2931087100038726 /* MigrationSuccessCell+Jetpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationSuccessCell+Jetpack.swift"; sourceTree = "<group>"; };
 		F4D8296F2931097900038726 /* DashboardMigrationSuccessCell+WordPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DashboardMigrationSuccessCell+WordPress.swift"; sourceTree = "<group>"; };
 		F4D82971293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DashboardMigrationSuccessCell+Jetpack.swift"; sourceTree = "<group>"; };
+		F4D9188529D78C9100974A71 /* BlogDetailsViewController+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Strings.swift"; sourceTree = "<group>"; };
 		F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionViewModelTests.swift; sourceTree = "<group>"; };
 		F4D9AF50288AE23500803D40 /* SuggestionTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewTests.swift; sourceTree = "<group>"; };
 		F4D9AF52288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsTableViewDelegateMock.swift; sourceTree = "<group>"; };
@@ -11026,6 +11029,7 @@
 				02D75D9822793EA2003FF09A /* BlogDetailsSectionFooterView.swift */,
 				4349BFF4221205540084F200 /* BlogDetailsSectionHeaderView.xib */,
 				F53FF3A623EA722F001AD596 /* Detail Header */,
+				F4D9188529D78C9100974A71 /* BlogDetailsViewController+Strings.swift */,
 			);
 			path = "Blog Details";
 			sourceTree = "<group>";
@@ -20766,6 +20770,7 @@
 				803BB98F29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				C81CCD63243AECA100A83E27 /* TenorClient.swift in Sources */,
+				F4D9188629D78C9100974A71 /* BlogDetailsViewController+Strings.swift in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
 				9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */,
 				5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */,
@@ -24786,6 +24791,7 @@
 				FABB24B52602FC2C00C8785C /* RestoreStatusView.swift in Sources */,
 				FABB24B62602FC2C00C8785C /* CustomizeInsightsCell.swift in Sources */,
 				FABB24B72602FC2C00C8785C /* SVProgressHUD+Dismiss.m in Sources */,
+				F4D9188729D78C9100974A71 /* BlogDetailsViewController+Strings.swift in Sources */,
 				FABB24B82602FC2C00C8785C /* DynamicHeightCollectionView.swift in Sources */,
 				FABB24B92602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				FABB24BA2602FC2C00C8785C /* TenorGIF.swift in Sources */,
