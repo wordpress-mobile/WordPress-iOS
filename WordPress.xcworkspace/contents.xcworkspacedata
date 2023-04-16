@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:WordPress/../CoreUI/CoreUI.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef

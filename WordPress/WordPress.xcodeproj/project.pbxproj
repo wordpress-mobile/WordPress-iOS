@@ -925,6 +925,15 @@
 		3FFFDB8029EC1B150022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
 		3FFFDB8129EC1B150022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
 		3FFFDB8229EC1B1A0022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB9329EC27F10022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9229EC27F10022018D /* CoreUI.framework */; };
+		3FFFDB9529EC28030022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9429EC28030022018D /* CoreUI.framework */; };
+		3FFFDB9729EC280E0022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9629EC280E0022018D /* CoreUI.framework */; };
+		3FFFDB9929EC28140022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9829EC28140022018D /* CoreUI.framework */; };
+		3FFFDB9B29EC281B0022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9A29EC281B0022018D /* CoreUI.framework */; };
+		3FFFDB9D29EC28250022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9C29EC28250022018D /* CoreUI.framework */; };
+		3FFFDB9F29EC28340022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDB9E29EC28340022018D /* CoreUI.framework */; };
+		3FFFDBA129EC283B0022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDBA029EC283B0022018D /* CoreUI.framework */; };
+		3FFFDBA329EC28430022018D /* CoreUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFDBA229EC28430022018D /* CoreUI.framework */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
 		400A2C772217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */; };
@@ -6492,6 +6501,15 @@
 		3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsConfiguration.swift; sourceTree = "<group>"; };
 		3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSegmentedControlDataTests.swift; sourceTree = "<group>"; };
 		3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStyleGuide+Muriel.swift"; sourceTree = "<group>"; };
+		3FFFDB9229EC27F10022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDB9429EC28030022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDB9629EC280E0022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDB9829EC28140022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDB9A29EC281B0022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDB9C29EC28250022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDB9E29EC28340022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDBA029EC283B0022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFFDBA229EC28430022018D /* CoreUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAndMostPopularTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitsSummaryStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -9337,6 +9355,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9B29EC281B0022018D /* CoreUI.framework in Frameworks */,
 				0107E0DE28F97D5000DE87DB /* SwiftUI.framework in Frameworks */,
 				0107E0DF28F97D5000DE87DB /* WidgetKit.framework in Frameworks */,
 				35BBACD2917117A95B6F3046 /* Pods_JetpackStatsWidgets.framework in Frameworks */,
@@ -9355,6 +9374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9329EC27F10022018D /* CoreUI.framework in Frameworks */,
 				F111B88D2658103C00057942 /* Combine.framework in Frameworks */,
 				7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */,
 				8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */,
@@ -9398,6 +9418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDBA129EC283B0022018D /* CoreUI.framework in Frameworks */,
 				3F526C502538CF2A0069706C /* SwiftUI.framework in Frameworks */,
 				3F526C4E2538CF2A0069706C /* WidgetKit.framework in Frameworks */,
 				EB6DF027AF96D801F280E805 /* Pods_WordPressStatsWidgets.framework in Frameworks */,
@@ -9419,6 +9440,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9F29EC28340022018D /* CoreUI.framework in Frameworks */,
 				733F36062126197800988727 /* UserNotificationsUI.framework in Frameworks */,
 				733F36042126197800988727 /* UserNotifications.framework in Frameworks */,
 			);
@@ -9436,6 +9458,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9D29EC28250022018D /* CoreUI.framework in Frameworks */,
 				A2C95CCF203760D9372C5857 /* Pods_WordPressDraftActionExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9444,6 +9467,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9929EC28140022018D /* CoreUI.framework in Frameworks */,
 				4BB2296498BE66D515E3D610 /* Pods_JetpackShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9452,6 +9476,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9729EC280E0022018D /* CoreUI.framework in Frameworks */,
 				223EA61E212A7C26A456C32C /* Pods_JetpackDraftActionExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9477,6 +9502,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDBA329EC28430022018D /* CoreUI.framework in Frameworks */,
 				D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9512,6 +9538,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFDB9529EC28030022018D /* CoreUI.framework in Frameworks */,
 				FABB26202602FC2C00C8785C /* iAd.framework in Frameworks */,
 				FABB26212602FC2C00C8785C /* StoreKit.framework in Frameworks */,
 				FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */,
@@ -10407,6 +10434,15 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3FFFDBA229EC28430022018D /* CoreUI.framework */,
+				3FFFDBA029EC283B0022018D /* CoreUI.framework */,
+				3FFFDB9E29EC28340022018D /* CoreUI.framework */,
+				3FFFDB9C29EC28250022018D /* CoreUI.framework */,
+				3FFFDB9A29EC281B0022018D /* CoreUI.framework */,
+				3FFFDB9829EC28140022018D /* CoreUI.framework */,
+				3FFFDB9629EC280E0022018D /* CoreUI.framework */,
+				3FFFDB9429EC28030022018D /* CoreUI.framework */,
+				3FFFDB9229EC27F10022018D /* CoreUI.framework */,
 				3FA640652670CEFE0064401E /* XCTest.framework */,
 				F111B88B2658102700057942 /* Combine.framework */,
 				F13E7FDD2566B0AB007D420A /* Intents.framework */,
