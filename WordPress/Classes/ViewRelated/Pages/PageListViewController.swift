@@ -1106,6 +1106,8 @@ private extension PageListViewController {
             return NoResultsText.noTrashedTitle
         case .published:
             return NoResultsText.noPublishedTitle
+        case .allNonTrashed:
+            return ""
         }
     }
 

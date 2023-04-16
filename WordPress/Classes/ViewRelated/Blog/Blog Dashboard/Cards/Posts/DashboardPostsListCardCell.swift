@@ -19,7 +19,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
     private let frameView = BlogDashboardCardFrameView()
 
     lazy var tableView: UITableView = {
-        let tableView = PostCardTableView()
+        let tableView = DashboardCardTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
@@ -197,33 +197,5 @@ private extension DashboardPostsListCardCell {
         static let iconSize = CGSize(width: 18, height: 18)
         static let constraintPriority = UILayoutPriority(999)
         static let numberOfPosts = 3
-    }
-}
-
-// MARK: - PostCardTableView
-
-extension NSNotification.Name {
-    /// Fired when a PostCardTableView changes its size
-    static let postCardTableViewSizeChanged = NSNotification.Name("IntrinsicContentSizeUpdated")
-}
-
-private class PostCardTableView: UITableView {
-    private var previousHeight: CGFloat = 0
-
-    override var contentSize: CGSize {
-        didSet {
-            self.invalidateIntrinsicContentSize()
-        }
-    }
-
-    /// Emits a notification when the intrinsicContentSize changes
-    /// This allows subscribers to update their layouts (ie.: UICollectionViews)
-    override var intrinsicContentSize: CGSize {
-        layoutIfNeeded()
-        if contentSize.height != previousHeight, contentSize.height != 0 {
-            previousHeight = contentSize.height
-            NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
-        }
-        return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
 }
