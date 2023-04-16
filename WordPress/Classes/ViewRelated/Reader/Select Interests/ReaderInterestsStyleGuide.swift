@@ -120,12 +120,12 @@ class ReaderSuggestedTopicsStyleGuide {
                 case text, background, border
             }
 
-            let colorName: MurielColorName
+            let colorName: MurielColor.Name
             let section: StyleSection
 
             func color() -> UIColor {
-                let lightShade: MurielColorShade
-                let darkShade: MurielColorShade
+                let lightShade: MurielColor.Shade
+                let darkShade: MurielColor.Shade
 
                 switch section {
                     case .text:

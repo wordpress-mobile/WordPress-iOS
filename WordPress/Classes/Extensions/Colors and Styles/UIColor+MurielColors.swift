@@ -16,18 +16,18 @@ extension UIColor {
     }
     /// Get a UIColor from the Muriel color palette, adjusted to a given shade
     /// - Parameter color: an instance of a MurielColor
-    /// - Parameter shade: a MurielColorShade
-    class func muriel(color: MurielColor, _ shade: MurielColorShade) -> UIColor {
+    /// - Parameter shade: a MurielColor.Shade
+    class func muriel(color: MurielColor, _ shade: MurielColor.Shade) -> UIColor {
         let newColor = MurielColor(from: color, shade: shade)
         return muriel(color: newColor)
     }
 
     /// Get a UIColor from the Muriel color palette by name, adjusted to a given shade
     /// - Parameters:
-    ///   - name: a MurielColorName
-    ///   - shade: a MurielColorShade
+    ///   - name: a MurielColor.Name
+    ///   - shade: a MurielColor.Shade
     /// - Returns: the desired color/shade
-    class func muriel(name: MurielColorName, _ shade: MurielColorShade) -> UIColor {
+    class func muriel(name: MurielColor.Name, _ shade: MurielColor.Shade) -> UIColor {
         let newColor = MurielColor(name: name, shade: shade)
         return muriel(color: newColor)
     }
@@ -37,20 +37,20 @@ extension UIColor {
     /// Muriel accent color
     static var accent = muriel(color: .accent)
     static var accentDark = muriel(color: .accent, .shade70)
-    class func accent(_ shade: MurielColorShade) -> UIColor {
+    class func accent(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .accent, shade)
     }
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
-    class func brand(_ shade: MurielColorShade) -> UIColor {
+    class func brand(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .brand, shade)
     }
 
     /// Muriel error color
     static var error = muriel(color: .error)
     static var errorDark = muriel(color: .error, .shade70)
-    class func error(_ shade: MurielColorShade) -> UIColor {
+    class func error(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .error, shade)
     }
 
@@ -58,25 +58,25 @@ extension UIColor {
     static var primary = muriel(color: .primary)
     static var primaryLight = muriel(color: .primary, .shade30)
     static var primaryDark = muriel(color: .primary, .shade70)
-    class func primary(_ shade: MurielColorShade) -> UIColor {
+    class func primary(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .primary, shade)
     }
 
     /// Muriel editor primary color
     static var editorPrimary = muriel(color: .editorPrimary)
-    class func editorPrimary(_ shade: MurielColorShade) -> UIColor {
+    class func editorPrimary(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .editorPrimary, shade)
     }
 
     /// Muriel success color
     static var success = muriel(color: .success)
-    class func success(_ shade: MurielColorShade) -> UIColor {
+    class func success(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .success, shade)
     }
 
     /// Muriel warning color
     static var warning = muriel(color: .warning)
-    class func warning(_ shade: MurielColorShade) -> UIColor {
+    class func warning(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .warning, shade)
     }
 
@@ -87,17 +87,17 @@ extension UIColor {
 // MARK: - Grays
 extension UIColor {
     /// Muriel gray palette
-    /// - Parameter shade: a MurielColorShade of the desired shade of gray
-    class func gray(_ shade: MurielColorShade) -> UIColor {
+    /// - Parameter shade: a MurielColor.Shade of the desired shade of gray
+    class func gray(_ shade: MurielColor.Shade) -> UIColor {
         return muriel(color: .gray, shade)
     }
 
     /// Muriel neutral colors, which invert in dark mode
-    /// - Parameter shade: a MurielColorShade of the desired neutral shade
+    /// - Parameter shade: a MurielColor.Shade of the desired neutral shade
     static var neutral: UIColor {
         return neutral(.shade50)
     }
-    class func neutral(_ shade: MurielColorShade) -> UIColor {
+    class func neutral(_ shade: MurielColor.Shade) -> UIColor {
         switch shade {
         case .shade0:
             return UIColor(light: muriel(color: .gray, .shade0), dark: muriel(color: .gray, .shade100))
