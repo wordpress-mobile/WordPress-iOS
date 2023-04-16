@@ -68,20 +68,6 @@ class BlogDashboardCardFrameView: UIView {
 
     weak var currentView: UIView?
 
-    /// The title at the header
-    var title: String? {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-
-    /// The part in the title that needs to be highlighted
-    var titleHint: String? {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-
     /// Closure to be called when anywhere in the view is tapped.
     /// If set, the chevron image is displayed.
     var onViewTap: (() -> Void)? {
@@ -123,11 +109,6 @@ class BlogDashboardCardFrameView: UIView {
         // Update view background
         self.layer.masksToBounds = true
         self.layer.cornerRadius = Constants.cornerRadius
-
-        // Update title label
-        if let title {
-            self.titleLabel.attributedText = Self.titleAttributedText(title: title, hint: titleHint, font: titleLabel.font)
-        }
     }
 
     /// Add a subview inside the card frame
@@ -152,6 +133,18 @@ class BlogDashboardCardFrameView: UIView {
         buttonContainerStackView.isHidden = true
 
         mainStackViewTrailingConstraint?.constant = 0
+    }
+
+
+    /// Set's the title displayed in the card's header
+    /// - Parameters:
+    ///   - title: Title to be displayed
+    ///   - titleHint: The part in the title that needs to be highlighted
+    func setTitle(_ title: String?, titleHint: String? = nil) {
+        guard let title else {
+            return
+        }
+        self.titleLabel.attributedText = Self.titleAttributedText(title: title, hint: titleHint, font: titleLabel.font)
     }
 
     private func configureMainStackView() {

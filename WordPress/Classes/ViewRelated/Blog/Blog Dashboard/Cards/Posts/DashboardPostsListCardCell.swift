@@ -120,15 +120,14 @@ extension DashboardPostsListCardCell {
     }
 
     private func configureDraftsList(blog: Blog) {
-        frameView.title = Strings.draftsTitle
-        frameView.titleHint = Strings.draftsTitleHint
+        frameView.setTitle(Strings.draftsTitle, titleHint: Strings.draftsTitleHint)
         frameView.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .draft)
         }
     }
 
     private func configureScheduledList(blog: Blog) {
-        frameView.title = Strings.scheduledTitle
+        frameView.setTitle(Strings.scheduledTitle)
         frameView.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .scheduled)
         }
