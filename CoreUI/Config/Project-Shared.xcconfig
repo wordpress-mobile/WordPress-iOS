@@ -1,3 +1,8 @@
+// This include would not be appropriate if we were to vendor the project outside of the context
+// of Jetpack and WordPress, but it is convenient to keep things such as the
+// `IPHONEOS_DEPLOYMENT_TARGET` setting in sync across apps and frameworks.
+#include "../config/Common.xcconfig"
+
 ALWAYS_SEARCH_USER_PATHS = NO
 CLANG_ANALYZER_NONNULL = YES
 CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE
@@ -38,12 +43,6 @@ GCC_WARN_UNDECLARED_SELECTOR = YES
 GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE
 GCC_WARN_UNUSED_FUNCTION = YES
 GCC_WARN_UNUSED_VARIABLE = YES
-// iOS Deployment Target
-//
-// Code will load on this and later versions of iOS. Framework APIs that are unavailable
-// in earlier versions will be weak-linked; your code should check for null function
-// pointers or specific system versions before calling newer APIs.
-IPHONEOS_DEPLOYMENT_TARGET = 16.4
 MTL_FAST_MATH = YES
 SDKROOT = iphoneos
 VERSION_INFO_PREFIX =
