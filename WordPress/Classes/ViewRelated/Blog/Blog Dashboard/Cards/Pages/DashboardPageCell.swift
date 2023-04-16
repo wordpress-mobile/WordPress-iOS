@@ -108,7 +108,7 @@ private extension DashboardPageCell {
     }
 
     enum Colors {
-        static let separatorColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.36)
+        static let separatorColor: UIColor = .separator
     }
 }
 
@@ -196,7 +196,7 @@ fileprivate class PageStatusView: UIView {
     }
 
     private func applyStyles() {
-        backgroundColor = .secondarySystemBackground
+        backgroundColor = Metrics.backgroundColor
         layer.cornerRadius = Metrics.cornerRadius
     }
 
@@ -221,6 +221,8 @@ fileprivate class PageStatusView: UIView {
         static let titleLabelMargins: NSDirectionalEdgeInsets = .init(top: 2, leading: 4, bottom: 2, trailing: 8)
         static let iconImageViewSize: CGFloat = 16
         static let cornerRadius: CGFloat = 2
+        private static let darkModeBackgroundColor = UIColor(red: 0.173, green: 0.173, blue: 0.18, alpha: 1)
+        static let backgroundColor: UIColor = .init(light: .secondarySystemBackground, dark: darkModeBackgroundColor)
     }
 
     private enum Strings {
