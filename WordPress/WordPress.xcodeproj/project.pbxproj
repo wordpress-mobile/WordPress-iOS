@@ -916,6 +916,15 @@
 		3FFDEF8F29187F1200B625CE /* MigrationHeaderConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF8E29187F1200B625CE /* MigrationHeaderConfiguration.swift */; };
 		3FFDEF9129187F2100B625CE /* MigrationActionsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */; };
 		3FFE3C0828FE00D10021BB96 /* StatsSegmentedControlDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */; };
+		3FFFDB7A29EC1A660022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB7B29EC1AA00022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB7C29EC1B060022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB7D29EC1B070022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB7E29EC1B080022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB7F29EC1B110022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB8029EC1B150022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB8129EC1B150022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
+		3FFFDB8229EC1B1A0022018D /* AppStyleGuide+Muriel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
 		400A2C772217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */; };
@@ -6482,6 +6491,7 @@
 		3FFDEF8E29187F1200B625CE /* MigrationHeaderConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHeaderConfiguration.swift; sourceTree = "<group>"; };
 		3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsConfiguration.swift; sourceTree = "<group>"; };
 		3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSegmentedControlDataTests.swift; sourceTree = "<group>"; };
+		3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStyleGuide+Muriel.swift"; sourceTree = "<group>"; };
 		400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAndMostPopularTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitsSummaryStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -17503,6 +17513,7 @@
 				C7F7BE0626262B9900CE547F /* AuthenticationHandler.swift */,
 				FA25F9FD2609AA830005E08F /* AppConfiguration.swift */,
 				FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */,
+				3FFFDB7929EC1A660022018D /* AppStyleGuide+Muriel.swift */,
 				FAADE42726159B1300BF29FE /* AppConstants.swift */,
 				C7F7BDCF26262A4C00CE547F /* AppDependency.swift */,
 				0107E16328FFED1800DE87DB /* WidgetConfiguration.swift */,
@@ -20599,6 +20610,7 @@
 				0107E0BB28F97D5000DE87DB /* StatsWidgetsService.swift in Sources */,
 				0107E0BC28F97D5000DE87DB /* StatsWidgetsView.swift in Sources */,
 				0107E0BD28F97D5000DE87DB /* AppLocalizedString.swift in Sources */,
+				3FFFDB8229EC1B1A0022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				0107E0BE28F97D5000DE87DB /* MultiStatsView.swift in Sources */,
 				0107E0BF28F97D5000DE87DB /* FeatureFlagOverrideStore.swift in Sources */,
 				0107E11528FD7FE500DE87DB /* AppConfiguration.swift in Sources */,
@@ -21225,6 +21237,7 @@
 				4089C51122371B120031CE78 /* TodayStatsRecordValue+CoreDataProperties.swift in Sources */,
 				F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */,
 				D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */,
+				3FFFDB7A29EC1A660022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
 				8071390727D039E70012DB21 /* DashboardSingleStatView.swift in Sources */,
@@ -22485,6 +22498,7 @@
 				3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */,
 				3F526D572539FAC60069706C /* StatsWidgetsView.swift in Sources */,
 				3F2656A125AF4DFA0073A832 /* AppLocalizedString.swift in Sources */,
+				3FFFDB7E29EC1B080022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				3F568A0025420DE80048A9E4 /* MultiStatsView.swift in Sources */,
 				3F6BC05C25B24773007369D3 /* FeatureFlagOverrideStore.swift in Sources */,
 				3FD675EA25C87A25009AB3C1 /* WordPressHomeWidgetToday.swift in Sources */,
@@ -22602,6 +22616,7 @@
 				4326191622FCB9F8003C7642 /* MurielColor.swift in Sources */,
 				73B05D2921374F1E0073ECAA /* Constants.m in Sources */,
 				736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */,
+				3FFFDB7F29EC1B110022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */,
 				436110DE22C41B02000773AD /* BuildConfiguration.swift in Sources */,
 				01CE500F290A88C100A9C2E0 /* TracksConfiguration.swift in Sources */,
@@ -22704,6 +22719,7 @@
 				FAD2539126116A1600EDAF88 /* AppStyleGuide.swift in Sources */,
 				74021A09202E1323006CC39F /* ShareSegueHandler.swift in Sources */,
 				74021A01202E12F4006CC39F /* SharedCoreDataStack.swift in Sources */,
+				3FFFDB7D29EC1B070022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				170BEC88239153110017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				74021A14202E1393006CC39F /* ShareExtensionEditorViewController.swift in Sources */,
 				CBF6201426E8FB8A0061A1F8 /* RemotePost+ShareData.swift in Sources */,
@@ -22780,6 +22796,7 @@
 				809620F228E540D700940A5D /* CocoaLumberjack.swift in Sources */,
 				809620F328E540D700940A5D /* SharedCoreDataStack.swift in Sources */,
 				809620F428E540D700940A5D /* ShareExtensionAbstractViewController.swift in Sources */,
+				3FFFDB8029EC1B150022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				809620F528E540D700940A5D /* FeatureFlagOverrideStore.swift in Sources */,
 				809620F628E540D700940A5D /* RemotePost+ShareData.swift in Sources */,
 				809620F728E540D700940A5D /* KeychainUtils.swift in Sources */,
@@ -22856,6 +22873,7 @@
 				8096215328E55C9400940A5D /* ShareSegueHandler.swift in Sources */,
 				8096215428E55C9400940A5D /* SharedCoreDataStack.swift in Sources */,
 				8096215528E55C9400940A5D /* FeatureFlagOverrideStore.swift in Sources */,
+				3FFFDB8129EC1B150022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				8096215628E55C9400940A5D /* ShareExtensionEditorViewController.swift in Sources */,
 				8096215728E55C9400940A5D /* RemotePost+ShareData.swift in Sources */,
 				8096215828E55C9400940A5D /* KeychainUtils.swift in Sources */,
@@ -22996,6 +23014,7 @@
 				FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */,
 				938CF3DD1EF1BE7F00AF838E /* CocoaLumberjack.swift in Sources */,
 				746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */,
+				3FFFDB7C29EC1B060022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */,
 				170BEC872391530D0017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				CBF6201326E8FB520061A1F8 /* RemotePost+ShareData.swift in Sources */,
@@ -24378,6 +24397,7 @@
 				FABB23692602FC2C00C8785C /* ExportableAsset.swift in Sources */,
 				FABB236A2602FC2C00C8785C /* PlanListViewModel.swift in Sources */,
 				FABB236B2602FC2C00C8785C /* InsightsManagementViewController.swift in Sources */,
+				3FFFDB7B29EC1AA00022018D /* AppStyleGuide+Muriel.swift in Sources */,
 				FABB236C2602FC2C00C8785C /* StatSection.swift in Sources */,
 				FABB236D2602FC2C00C8785C /* ReaderDetailCoordinator.swift in Sources */,
 				9887560D2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,

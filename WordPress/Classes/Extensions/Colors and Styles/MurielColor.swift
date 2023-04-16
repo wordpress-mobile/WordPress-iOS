@@ -59,20 +59,6 @@ struct MurielColor {
         self.shade = shade
     }
 
-    // MARK: - Muriel's semantic colors
-    static let accent = AppStyleGuide.accent
-    static let brand = AppStyleGuide.brand
-    static let divider = AppStyleGuide.divider
-    static let error = AppStyleGuide.error
-    static let gray = AppStyleGuide.gray
-    static let primary = AppStyleGuide.primary
-    static let success = AppStyleGuide.success
-    static let text = AppStyleGuide.text
-    static let textSubtle = AppStyleGuide.textSubtle
-    static let warning = AppStyleGuide.warning
-    static let jetpackGreen = AppStyleGuide.jetpackGreen
-    static let editorPrimary = AppStyleGuide.editorPrimary
-
     /// The full name of the color, with required shade value
     func assetName() -> String {
         return "\(name)\(shade)"
