@@ -11,6 +11,12 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
         var hasPublished: Bool?
         var draft: [BlogDashboardPost]?
         var scheduled: [BlogDashboardPost]?
+        
+        enum CodingKeys: String, CodingKey {
+            case hasPublished = "has_published"
+            case draft
+            case scheduled
+        }
     }
 
     // We don't rely on the data from the API to show posts
