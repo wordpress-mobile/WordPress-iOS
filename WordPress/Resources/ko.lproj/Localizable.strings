@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 16:54:10+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:13:53+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "도메인 검색";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "사람들이 웹사이트를 찾고 방문하는 데 도움이 되도록 짧고 인상적인 키워드를 검색하세요.";
+
 /* No comment provided by engineer. */
 "Search input field." = "입력 필드를 검색합니다.";
 
@@ -9649,6 +9652,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "하루에 적은 금액으로 단 몇 분 만에 글 또는 페이지를 홍보하세요.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "언제든지 캠페인 성과를 추적하고 취소하세요.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "콘텐츠가 수백만 개의 워드프레스 및 Tumblr 사이트에 표시됩니다.";
 
 /* Title for the Blaze overlay. */
@@ -9692,6 +9698,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "지금 시도";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "사이트에 관한 정보를 표시하기에 적합한 카드를 추가하세요.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "표시할 카드 없음";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "홈 탭 개인 설정";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "체크 표시가 재정의된 파라미터에 표시됩니다.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "선택한 파라미터를 여기에서 새 값을 정의하여 재정의하세요.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "원격 또는 기본 값 없음";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "원격 구성";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "로컬 기능 플래그";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "원격 기능 플래그";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "찾고 공유하고 팔로우하기 쉬운 사이트 주소로 자신에게 유리하게 웹에 대한 권리를 주장하세요.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "사용자 정의 도메인으로 온라인 ID 소유";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
@@ -9989,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "완료";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "사용자 계정 연결";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "스마트폰에서 워드프레스 사이트의 유용한 알림을 받으려면 사용자 계정을 연결해야 합니다.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "사이트에서 통계를 사용하려면 젯팩 플러그인을 해당 사용자 계정에 연결해야 합니다.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "통계, 리더, 알림 및 기타 기능이 곧 젯팩 모바일 앱으로 이동합니다.";
 
@@ -10172,6 +10223,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that prompts users to switch to the Jetpack app. */
 "movedToJetpack.jetpackButtonTitle" = "젯팩 앱으로 전환";
 
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "jetpack.com에서 더 알아보기";
+
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.notifications.title" = "알림이 젯팩 앱으로 이동되었습니다.";
 
@@ -10223,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "비밀번호";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "사이트에서 발생하는 상황에 따라 다른 콘텐츠가 카드에 표시될 수 있습니다. 더 많은 카드와 제어 기능을 연구하고 있습니다.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "카드 추가 또는 숨기기";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "임시글";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "블로깅 프롬프트";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "예약된 글";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "오늘의 통계";
+
+/* Page title */
+"personalizeHome.title" = "홈 탭 개인 설정";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "전화번호";
 
@@ -10240,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze로 홍보";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "모든 응답 보기";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "사이트 설정으로 이동하여 다시 켜기";
@@ -10318,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "공유 오류";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "위의 예와 같이 사람들이 웹 브라우저에서 도메인을 통해 사이트를 찾고 방문할 수 있습니다.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "프롬프트 표시";
@@ -10633,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "워드프레스, 사이트, 사이트, 블로그, 블로그";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "젯팩 앱으로 전환";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "젯팩 없이 계속";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "워드프레스 앱에서 지원되지 않는 개별 젯팩 플러그인을 %1$@에서 사용하고 있습니다.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "워드프레스 앱에서 지원되지 않는 %2$@ 플러그인을 %1$@에서 사용하고 있습니다.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "이 사이트의 모든 앱 기능을 사용할 수 있도록 전체 젯팩 플러그인 연결 방법을 안내해 드리는 젯팩 앱으로 전환하세요.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "죄송합니다. 이 사이트는 워드프레스 앱에서 지원되지 않습니다.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "워드프레스 앱 삭제 요망";

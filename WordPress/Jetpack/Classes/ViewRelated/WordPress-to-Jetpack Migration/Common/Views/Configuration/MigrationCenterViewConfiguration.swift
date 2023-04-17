@@ -22,10 +22,10 @@ private extension MigrationCenterViewConfiguration {
                                                        comment: "Highlighted text in the footer of the migration notifications screen.")
 
         static let doneText = NSLocalizedString("migration.done.footer",
-                                                   value: "Please delete the WordPress app to avoid data conflicts.",
+                                                   value: "We recommend uninstalling the WordPress app on your device to avoid data conflicts.",
                                                    comment: "Footer for the migration done screen.")
         static let doneHighlightedText = NSLocalizedString("migration.done.footer.highlighted",
-                                                       value: "delete the WordPress app",
+                                                       value: "uninstalling the WordPress app",
                                                        comment: "Highlighted text in the footer of the migration done screen.")
 
         static func text(for step: MigrationStep) -> String {

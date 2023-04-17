@@ -28,14 +28,14 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: ["is_following": false], statusCode: 200, headers: nil)
         }
         stub(condition: isPath("/rest/v1.1/sites/42/follows/new")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
         stub(condition: isPath("/rest/v1.2/read/sites/42")) { _ in
             HTTPStubsResponse(jsonObject: [
                 "feed_ID": 100,
                 "feed_URL": "https://test.blog/feed",
                 "post_count": 0,
-            ], statusCode: 200, headers: nil)
+            ] as [String: Any], statusCode: 200, headers: nil)
         }
 
         let success = expectation(description: "The success block should be called")
@@ -48,14 +48,14 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: ["is_following": false], statusCode: 200, headers: nil)
         }
         stub(condition: isPath("/rest/v1.1/sites/42/follows/new")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
         stub(condition: isPath("/rest/v1.2/read/sites/42")) { _ in
             HTTPStubsResponse(jsonObject: [
                 "feed_ID": 100,
                 "feed_URL": "https://test.blog/feed",
                 "post_count": 0,
-            ], statusCode: 200, headers: nil)
+            ] as [String: Any], statusCode: 200, headers: nil)
         }
 
         let success = expectation(description: "The success block should be called")
@@ -65,7 +65,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
     func testUnfollowSiteByID() {
         stub(condition: isPath("/rest/v1.1/sites/42/follows/mine/delete")) { _ in
-            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
 
         let success = expectation(description: "The success block should be called")

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-23 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:11:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "ドメインを検索";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "ユーザーがあなたのサイトを探し、アクセスしやすくなる短く覚えやすいキーワードを検索します。";
+
 /* No comment provided by engineer. */
 "Search input field." = "検索用の入力フィールド。";
 
@@ -9649,6 +9652,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "1日わずか数百円、たった数分で投稿やページを宣伝できます。";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "キャンペーンのパフォーマンスを追跡したりいつでもキャンセルしたりできます。";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "コンテンツは数百万もの WordPress と Tumblr のサイトに表示されます。";
 
 /* Title for the Blaze overlay. */
@@ -9692,6 +9698,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "今すぐ試す";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "ニーズに合ったカードを追加してサイトに関する情報を表示します。";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "表示するカードがありません";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "ホームタブをパーソナライズ";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "上書きした変数はチェックマークで表示されます。";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "ここで新しい値を定義して選択した変数を上書きします。";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "リモート値またはデフォルト値なし";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "リモート設定";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "ローカル機能フラグ";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "リモート機能フラグ";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "見つけやすく、共有やフォローがしやすいサイトアドレスを使って自分のサイトであることを示しましょう。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "カスタムドメインで自分のデジタルアイデンティティを手に入れましょう";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
@@ -9989,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完了";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "ユーザーアカウントを連携する";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、ユーザーアカウントに連携する必要があります。";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "サイトで統計情報を使用するには、Jetpack プラグインをユーザーアカウントに連携する必要があります。";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "統計、Reader、通知などの機能は、まもなく Jetpack モバイルアプリに移動します。";
 
@@ -10226,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "パスワード";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "サイトで発生した内容に基づいてカードにはさまざまなコンテンツが表示されることがあります。 さらに多くのカードやコントロールに取り組んでいます。";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "カードを追加または非表示";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "下書きの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "ブログのプロンプト";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "予約済みの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "今日の統計情報";
+
+/* Page title */
+"personalizeHome.title" = "ホームタブのパーソナライズ";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話番号";
 
@@ -10243,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "すべての回答を表示";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "「サイトの設定」に移動して表示をオンに戻す";
@@ -10321,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "共有エラー";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "上記の例のように、ドメインを使用するとユーザーは、Web ブラウザーからサイトを見つけてアクセスできます。";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "プロンプトを表示";
@@ -10636,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, サイト, サイト, ブログ, ブログ";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack アプリに切り替える";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Jetpack なしで連携";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ は WordPress アプリでサポートされていない個々の Jetpack プラグインを使用しています。";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ は WordPress アプリでサポートされていない %2$@ プラグインを使用しています。";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Jetpack アプリに切り替えてください。このサイトでアプリの全機能を使用できるよう完全な Jetpack プラグインを接続する方法についてご案内します。";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "申し訳ございませんが、このサイトは WordPress アプリでサポートされていません";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "WordPress アプリを削除してください";

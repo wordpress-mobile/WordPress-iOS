@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-23 17:54:24+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:11:35+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "搜尋網域";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "搜尋簡短好記的關鍵字，有助於使用者找到並造訪你的網站。";
+
 /* No comment provided by engineer. */
 "Search input field." = "搜尋意見回饋欄位。";
 
@@ -9649,6 +9652,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "只要幾分鐘就能宣傳任何文章或頁面；每天只需支付幾美元。";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "追蹤行銷活動成效，並可隨時取消。";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "你的內容會出現在數百萬個 WordPress 和 Tumblr 網站上。";
 
 /* Title for the Blaze overlay. */
@@ -9692,6 +9698,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "立即試試";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "新增符合你所需的資訊卡，以查看有關網站的資訊。";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "沒有資訊卡可顯示";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "打造個人化「首頁」分頁";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "覆寫的參數會以核取記號表示。";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "請在此處定義新值，以覆寫所選參數。";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "沒有遠端或預設值";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "遠端設定";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "本機功能旗標";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "遠端功能旗標";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "建立易於搜尋、分享和追蹤的網站位址，打造屬於自己的網路園地。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "隱藏此訊息";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "利用自訂網域，讓你在網路上聲名遠播";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "點兩下即可變更單位";
@@ -9989,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完成";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "連結使用者帳號";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "若要在手機上收到來自 WordPress 網站的實用通知，必須連結你的使用者帳號。";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "若要使用網站的「統計」功能，必須將 Jetpack 外掛程式連結至你的使用者帳號。";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "「統計資料」、「閱讀器」、「通知」及其他功能即將搬遷至 Jetpack 行動應用程式。";
 
@@ -10226,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "密碼";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "資訊卡可根據網站活動顯示不同內容。 我們正在開發更多資訊卡和控制功能。";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "新增或隱藏資訊卡";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "草稿文章";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "網誌提示";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "已排程的文章";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "本日統計";
+
+/* Page title */
+"personalizeHome.title" = "打造個人化「首頁」分頁";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";
 
@@ -10243,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "使用 Blaze 進行宣傳";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "檢視所有回應";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "前往「網站設定」以重新啟用";
@@ -10321,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "分享錯誤";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "如同上方範例，網域可讓使用者從網頁瀏覽器找到並造訪你的網站。";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "顯示提示";
@@ -10636,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, 網站, 網站, 網誌, 網誌";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "切換至 Jetpack 應用程式";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "繼續但不使用 Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ 正在使用 WordPress 應用程式不支援的 Jetpack 個別外掛程式。";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ 正在使用 WordPress 應用程式不支援的 %2$@ 外掛程式。";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "請切換至 Jetpack 應用程式，我們會引導你連結完整 Jetpack 外掛程式，你即可使用此網站的所有應用程式功能。";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "抱歉，WordPress 應用程式不支援此網站";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "請刪除 WordPress 應用程式";

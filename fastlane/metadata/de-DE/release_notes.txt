@@ -1,0 +1,1 @@
+Wenn du dich bei einer selbst gehosteten Website anmeldest, die eine Verbindung mit Jetpack über einzelne Plugins herstellt, wird dir ein Pop-up-Fenster mit einem Hinweis angezeigt, dass diese Verbindungsart die Kernfunktionen der App noch nicht unterstützt. Du kannst dieses Problem umgehen, indem du zur Jetpack-App wechselst. Auf, auf und davon.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-15 15:59:42+0000 */
+/* Translation-Revision-Date: 2023-04-13 19:12:45+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -10148,6 +10148,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Chyba sdílení";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/vasweb.cz";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Posledních 7 dní";
 
@@ -10369,6 +10375,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, stránky, stránka, blogy, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Přepněte do aplikace Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Pokračovat bez Jetpacku";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ používá jednotlivé pluginy Jetpack, které aplikace WordPress nepodporuje.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ používá plugin %2$@, který aplikace WordPress nepodporuje.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Přejděte do aplikace Jetpack, kde vás provedeme připojením úplného pluginu Jetpack, abyste mohli používat všechny funkce aplikací pro tento web.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Tento web není aplikací WordPress podporován";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Odstraňte WordPress aplikaci";

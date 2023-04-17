@@ -17,6 +17,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case pagesDashboardCard
     case activityLogDashboardCard
     case sdkLessGoogleSignIn
+    case bloggingPromptsSocial
 
     var defaultValue: Bool {
         switch self {
@@ -50,6 +51,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .sdkLessGoogleSignIn:
             return false
+        case .bloggingPromptsSocial:
+            return AppConfiguration.isJetpack
         }
     }
 
@@ -86,6 +89,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "dashboard_card_activity_log"
         case .sdkLessGoogleSignIn:
             return "google_signin_without_sdk"
+        case .bloggingPromptsSocial:
+            return "blogging_prompts_social_enabled"
         }
     }
 
@@ -121,6 +126,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Activity Log Dashboard Card"
         case .sdkLessGoogleSignIn:
             return "Sign-In with Google without the Google SDK"
+        case .bloggingPromptsSocial:
+            return "Blogging Prompts Social"
         }
     }
 
