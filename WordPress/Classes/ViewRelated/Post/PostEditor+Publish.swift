@@ -47,6 +47,8 @@ protocol PublishingEditor where Self: UIViewController {
     var debouncer: Debouncer { get }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
+
+    func emitPostSaveEvent()
 }
 
 var postPublishedReceipt: Receipt?
@@ -54,6 +56,10 @@ var postPublishedReceipt: Receipt?
 extension PublishingEditor {
 
     func publishingDismissed() {
+
+    }
+
+    func emitPostSaveEvent() {
 
     }
 
@@ -86,14 +92,14 @@ extension PublishingEditor {
             analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
-
-
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,
         analyticsStat: WPAnalyticsStat?) {
 
         mapUIContentToPostAndSave(immediate: true)
+
+        emitPostSaveEvent()
 
         // Cancel publishing if media is currently being uploaded
         if !action.isAsync && !dismissWhenDone && isUploadingMedia {

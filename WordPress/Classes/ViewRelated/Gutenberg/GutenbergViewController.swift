@@ -5,7 +5,7 @@ import Aztec
 import WordPressFlux
 import Kanvas
 
-class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
@@ -544,6 +544,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     func gutenbergDidRequestFeaturedImageId(_ mediaID: NSNumber) {
         gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
+    }
+
+    func emitPostSaveEvent() {
+        gutenberg.postHasBeenJustSaved()
     }
 
     // MARK: - Event handlers
