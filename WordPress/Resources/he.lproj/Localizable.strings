@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-05 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: he_IL */
@@ -6490,6 +6490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "לחפש דומיין";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "כדאי לחפש מילת מפתח קצרה שקל לזכור כדי לעזור לאנשים למצוא את האתר שלך ולבקר בו.";
+
 /* No comment provided by engineer. */
 "Search input field." = "שדה להזנת חיפוש.";
 
@@ -9696,6 +9699,42 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "כדאי לנסות עכשיו";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "להוסיף כרטיסים שמתאימים לדרישות שלך כדי להציג מידע לגבי האתר.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "אין כרטיסים לתצוגה";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "להתאים אישית את הלשונית 'בית' באתר שלך";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "פרמטרים שנדרסו מסומנים בסימן אישור.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "לדרוס את הפרמטר שנבחר על ידי הגדרה של הערך החדש כאן.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "אין ערך מרוחק או ערך בברירת מחדל";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "שינוי תצורה מרחוק";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "סימונים של אפשרויות מקומיות";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "סימונים של אפשרויות מרוחקות";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "לבנות את הפינה האישית שלך באינטרנט בעזרת כתובת אתר שיהיה קל למצוא, לשתף ולעקוב אחריה.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "להסתיר את המידע";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "לשלוט בזהות המקוונת שלך באמצעות דומיין אישי";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
@@ -9992,6 +10031,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "הושלם";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "לחבר את חשבון המשתמש שלך";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "כדי לקבל הודעות שימושיות לטלפון מאתר שלך ב-WordPress, עליך לחבר את חשבון המשתמש שלך.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "כדי להשתמש בנתונים סטטיסטיים באתר שלך, עליך לחבר את התוסף של Jetpack לחשבון המשתמש שלך.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "האפשרויות של נתונים סטטיסטיים, Reader, הודעות ואפשרויות אחרות יועברו בקרוב אל האפליקציה של Jetpack לנייד.";
 
@@ -10229,6 +10277,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "סיסמה";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "הכרטיסים עשויים להציג תוכן שונה בהתאם לפעילות באתר שלך. אנחנו עובדים על הוספה של כרטיסים ופקדים נוספים.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "להוסיף או להסתיר כרטיסים";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "טיוטות פוסטים";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "הצעות כתיבה בבלוג";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "פוסטים מתוזמנים";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "הנתונים הסטטיסטיים של היום";
+
+/* Page title */
+"personalizeHome.title" = "להתאים אישית את הלשונית 'בית'";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "מספר טלפון";
 
@@ -10246,6 +10318,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "לקדם עם Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "להציג את כל התשובות";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "יש לעבור אל הגדרות האתר כדי להפעיל אותן בחזרה";
@@ -10324,6 +10399,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "שגיאה בשיתוף";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "כמו הדוגמה שמוצגת למעלה, דומיין מאפשר לאנשים למצוא את האתר שלך ולבקר בו מדפדפן האינטרנט שלהם.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "להציג הצעות כתיבה";
@@ -10639,6 +10723,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, אתרים, אתר, בלוגים, בלוג";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "החלפה לאפליקציה של Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "להמשיך בלי Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "האתר %1$@ משתמש בתוספים יחידים של Jetpack, אשר אינם נתמכים באפליקציה של WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "האתר %1$@ משתמש בתוסף %2$@, אשר אינו נתמך באפליקציה של WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "עליך לעבור לאפליקציה של Jetpack. אנחנו נדריך אותך איך להתחבר לתוסף המלא של Jetpack כדי שתהיה לך אפשרות להשתמש בכל האפשרויות של האפליקציה לניהול האתר הזה.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "מצטערים, האתר אינו נתמך באפליקציה של WordPress";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "יש למחוק את האפליקציה של WordPress";

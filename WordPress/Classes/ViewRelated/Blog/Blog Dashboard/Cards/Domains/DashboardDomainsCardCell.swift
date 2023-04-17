@@ -11,12 +11,12 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
 
         let onViewTap: () -> Void = { [weak self] in
             guard let self,
-                  let presentingViewController = self.presentingViewController?.mySiteViewController,
+                  let presentingViewController = self.presentingViewController,
                   let blog = self.blog else {
                 return
             }
 
-            DomainsDashboardCoordinator.presentDomainsDashboard(with: presentingViewController,
+            DomainsDashboardCoordinator.presentDomainsDashboard(in: presentingViewController,
                                                                 source: Strings.source,
                                                                 blog: blog)
             DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardTapped(in: self.row)
@@ -43,7 +43,7 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
         frameView.onEllipsisButtonTap = cardViewModel.onEllipsisTap
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu
-        frameView.title = Strings.title
+        frameView.setTitle(Strings.title)
         frameView.clipsToBounds = true
         frameView.translatesAutoresizingMaskIntoConstraints = false
         return frameView

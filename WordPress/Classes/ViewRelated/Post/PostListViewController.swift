@@ -920,6 +920,8 @@ private extension PostListViewController {
             return NoResultsText.noTrashedTitle
         case .published:
             return NoResultsText.noPublishedTitle
+        case .allNonTrashed:
+            return ""
         }
     }
 

@@ -1,0 +1,1 @@
+Jetpack'e bireysel eklentiler üzerinden bağlanan ve kullanıcı tarafından barındırılan bir sitede oturum açtığınızda, bu tür bir bağlantının uygulamanın temel özelliklerini henüz desteklemediğini belirten bir açılır pencere göreceksiniz. Jetpack uygulamasına geçerek bu sorundan kurtulabilirsiniz. Gittikçe daha iyiye.

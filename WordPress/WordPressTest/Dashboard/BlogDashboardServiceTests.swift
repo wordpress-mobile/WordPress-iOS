@@ -435,6 +435,6 @@ class BlogDashboardPostsParserMock: BlogDashboardPostsParser {
             return postsDictionary
         }
 
-        return ["has_published": false, "draft": [[:]], "scheduled": [[:]]]
+        return ["has_published": false, "draft": [[String: Any]()], "scheduled": [[String: Any]()]]
     }
 }
