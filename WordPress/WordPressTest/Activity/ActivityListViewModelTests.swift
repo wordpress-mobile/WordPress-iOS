@@ -140,24 +140,8 @@ extension Activity {
 
     static func create(from dictionary: [String: AnyObject]) -> Activity {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601WithMilliseconds
+        decoder.dateDecodingStrategy = .supportMultipleDateFormats
         let data = try! JSONSerialization.data(withJSONObject: dictionary, options: [])
         return try! decoder.decode(Activity.self, from: data)
-    }
-}
-
-extension JSONDecoder.DateDecodingStrategy {
-    static let iso8601WithMilliseconds = custom {
-        let container = try $0.singleValueContainer()
-        let string = try container.decode(String.self)
-
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-
-        if let date = formatter.date(from: string) {
-            return date
-        }
-
-        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date: \(string)")
     }
 }
