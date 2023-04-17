@@ -24,9 +24,9 @@ extension UIColor {
         }
 
         enum Border {
-            static let primary = Color("borderPrimary")
-            static let secondary = Color("borderSecondary")
-            static let divider = Color("borderDivider")
+            static let primary = UIColor(named: "borderPrimary")
+            static let secondary = UIColor(named: "borderSecondary")
+            static let divider = UIColor(named: "borderDivider")
         }
 
         enum Theme {

@@ -5,57 +5,90 @@ struct ColorGallery: View {
 
     var body: some View {
         List {
-            Section(header: sectionTitle("Theme")) {
-                listItem(
-                    with: "Primary",
-                    hexString: hexString(for: .DS.Theme.primary),
-                    color: Color.DS.Theme.primary
-                )
+            themeSection
+            foregroundSection
+            backgroundSection
+            borderSection
+        }
+    }
+
+    private var themeSection: some View {
+        Section(header: sectionTitle("Theme")) {
+            listItem(
+                with: "Primary",
+                hexString: hexString(for: .DS.Theme.primary),
+                color: Color.DS.Theme.primary
+            )
+        }
+    }
+
+    private var foregroundSection: some View {
+        Section(header: sectionTitle("Foreground")) {
+            listItem(
+                with: "Primary",
+                hexString: hexString(for: .DS.Foreground.primary),
+                color: Color.DS.Foreground.primary
+            )
+            listItem(
+                with: "Secondary",
+                hexString: hexString(for: .DS.Foreground.secondary),
+                color: Color.DS.Foreground.secondary
+            )
+            listItem(
+                with: "Tertiary",
+                hexString: hexString(for: .DS.Foreground.tertiary),
+                color: Color.DS.Foreground.tertiary
+            )
+            listItem(
+                with: "Quaternary",
+                hexString: hexString(for: .DS.Foreground.quaternary),
+                color: Color.DS.Foreground.quaternary
+            )
             }
-            Section(header: sectionTitle("Foreground")) {
-                listItem(
-                    with: "Primary",
-                    hexString: hexString(for: .DS.Foreground.primary),
-                    color: Color.DS.Foreground.primary
-                )
-                listItem(
-                    with: "Secondary",
-                    hexString: hexString(for: .DS.Foreground.secondary),
-                    color: Color.DS.Foreground.secondary
-                )
-                listItem(
-                    with: "Tertiary",
-                    hexString: hexString(for: .DS.Foreground.tertiary),
-                    color: Color.DS.Foreground.tertiary
-                )
-                listItem(
-                    with: "Quaternary",
-                    hexString: hexString(for: .DS.Foreground.quaternary),
-                    color: Color.DS.Foreground.quaternary
-                )
-            }
-            Section(header: sectionTitle("Background")) {
-                listItem(
-                    with: "Primary",
-                    hexString: hexString(for: .DS.Background.primary),
-                    color: Color.DS.Background.primary
-                )
-                listItem(
-                    with: "Secondary",
-                    hexString: hexString(for: .DS.Background.secondary),
-                    color: Color.DS.Background.secondary
-                )
-                listItem(
-                    with: "Tertiary",
-                    hexString: hexString(for: .DS.Background.tertiary),
-                    color: Color.DS.Background.tertiary
-                )
-                listItem(
-                    with: "Quaternary",
-                    hexString: hexString(for: .DS.Background.quaternary),
-                    color: Color.DS.Background.quaternary
-                )
-            }
+    }
+
+    private var backgroundSection: some View {
+        Section(header: sectionTitle("Background")) {
+            listItem(
+                with: "Primary",
+                hexString: hexString(for: .DS.Background.primary),
+                color: Color.DS.Background.primary
+            )
+            listItem(
+                with: "Secondary",
+                hexString: hexString(for: .DS.Background.secondary),
+                color: Color.DS.Background.secondary
+            )
+            listItem(
+                with: "Tertiary",
+                hexString: hexString(for: .DS.Background.tertiary),
+                color: Color.DS.Background.tertiary
+            )
+            listItem(
+                with: "Quaternary",
+                hexString: hexString(for: .DS.Background.quaternary),
+                color: Color.DS.Background.quaternary
+            )
+        }
+    }
+
+    private var borderSection: some View {
+        Section(header: sectionTitle("Border")) {
+            listItem(
+                with: "Divider",
+                hexString: hexString(for: .DS.Border.divider),
+                color: Color.DS.Border.divider
+            )
+            listItem(
+                with: "Primary",
+                hexString: hexString(for: .DS.Border.primary),
+                color: Color.DS.Border.primary
+            )
+            listItem(
+                with: "Secondary",
+                hexString: hexString(for: .DS.Border.secondary),
+                color: Color.DS.Border.secondary
+            )
         }
     }
 
