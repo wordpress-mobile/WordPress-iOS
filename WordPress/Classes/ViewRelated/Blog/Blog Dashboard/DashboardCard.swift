@@ -152,7 +152,7 @@ enum DashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
         case pages
-//        case activity // TODO: Uncomment this when activity log support is added to the endpoint
+        case activity
     }
 }
 
