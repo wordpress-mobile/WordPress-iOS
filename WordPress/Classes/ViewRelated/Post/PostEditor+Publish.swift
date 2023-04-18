@@ -56,11 +56,11 @@ var postPublishedReceipt: Receipt?
 extension PublishingEditor {
 
     func publishingDismissed() {
-
+        // Default implementation is empty, can be optionally implemented by other classes.
     }
 
     func emitPostSaveEvent() {
-
+        // Default implementation is empty, can be optionally implemented by other classes.
     }
 
     func removeFailedMedia() {
