@@ -6,6 +6,11 @@ protocol PagesCardView: AnyObject {
     var tableView: UITableView { get }
 }
 
+fileprivate enum PagesState: CaseIterable {
+    case loading
+    case loaded
+}
+
 enum PagesListSection: CaseIterable {
     case pages
     case loading
@@ -30,7 +35,7 @@ class PagesCardViewModel: NSObject {
 
     private var isSyncing = false
 
-    private var currentState: PagesListSection = .loading {
+    private var currentState: PagesState = .loading {
         didSet {
             if oldValue != currentState {
                 forceReloadSnapshot()
@@ -175,7 +180,7 @@ private extension PagesCardViewModel {
     }
 
     func hideLoading() {
-        currentState = .pages
+        currentState = .loaded
     }
 
     func showLoadingIfNeeded() {
@@ -184,7 +189,7 @@ private extension PagesCardViewModel {
             currentState = .loading
         }
         else {
-            currentState = .pages
+            currentState = .loaded
         }
     }
 
@@ -256,7 +261,7 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
         var snapshot = Snapshot()
         snapshot.appendSections(PagesListSection.allCases)
         switch currentState {
-        case .pages:
+        case .loaded:
             var adjustedPagesSnapshot = pagesSnapshot
 
             // Delete extra pages
@@ -307,6 +312,6 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
     private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
         dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
-        view?.tableView.allowsSelection = currentState == .pages
+        view?.tableView.allowsSelection = currentState == .loaded
     }
 }
