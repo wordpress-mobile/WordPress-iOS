@@ -6,6 +6,7 @@ extension BlogService {
     enum BlogServiceDomainError: Error {
         case noAccountForSpecifiedBlog(blog: Blog)
         case noSiteIDForSpecifiedBlog(blog: Blog)
+        case noWordPressComRestApi(blog: Blog)
     }
 
     /// Convenience method to be able to refresh the blogs from ObjC.
@@ -14,6 +15,11 @@ extension BlogService {
     func refreshDomains(for blog: Blog, success: (() -> Void)?, failure: ((Error) -> Void)?) {
         guard let account = blog.account else {
             failure?(BlogServiceDomainError.noAccountForSpecifiedBlog(blog: blog))
+            return
+        }
+
+        guard account.wordPressComRestApi != nil else {
+            failure?(BlogServiceDomainError.noWordPressComRestApi(blog: blog))
             return
         }
 
