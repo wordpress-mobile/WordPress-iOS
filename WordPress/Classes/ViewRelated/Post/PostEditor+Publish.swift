@@ -101,8 +101,6 @@ extension PublishingEditor {
 
         mapUIContentToPostAndSave(immediate: true)
 
-        emitPostSaveEvent()
-
         // Cancel publishing if media is currently being uploaded
         if !action.isAsync && !dismissWhenDone && isUploadingMedia {
             displayMediaIsUploadingAlert()
@@ -147,6 +145,8 @@ extension PublishingEditor {
             self.post.isFirstTimePublish = action == .publish || action == .publishNow
 
             self.post.shouldAttemptAutoUpload = true
+
+            emitPostSaveEvent()
 
             if let analyticsStat = analyticsStat {
                 if self is StoryEditor {
