@@ -2,8 +2,18 @@ import UIKit
 
 final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
+    enum ActivityLogSection: CaseIterable {
+        case activities
+    }
+
+    typealias DataSource = UITableViewDiffableDataSource<ActivityLogSection, Activity>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<ActivityLogSection, Activity>
+
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
+    private lazy var dataSource = createDataSource()
+
+    private let store = StoreContainer.shared.activity
 
     // MARK: - Views
 
@@ -14,15 +24,39 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         return frameView
     }()
 
+
+    lazy var tableView: UITableView = {
+        let tableView = DashboardCardTableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = false
+        tableView.backgroundColor = nil
+        let activityCellNib = ActivityTableViewCell.defaultNib
+        tableView.register(activityCellNib, forCellReuseIdentifier: ActivityTableViewCell.defaultReuseID)
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+
     // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        commonInit()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        commonInit()
+    }
+
+    private func commonInit() {
+        setupView()
+    }
+
+    // MARK: - Lifecycle
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        tableView.dataSource = nil
     }
 
     // MARK: - View setup
@@ -30,6 +64,9 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     private func setupView() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: .defaultHigh)
+
+        cardFrameView.add(subview: tableView)
+        tableView.delegate = self
     }
 
     // MARK: - BlogDashboardCardConfigurable
@@ -38,13 +75,13 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         self.blog = blog
         self.presentingViewController = viewController
 
-        configureContextMenu(blog: blog)
+        tableView.dataSource = dataSource
+        updateDataSource(with: apiResponse?.activity?.current?.orderedItems ?? [])
 
-        // FIXME: configure card using api response
-        // Expecting a list of type [Activity]
+        configureContextMenu(for: blog)
     }
 
-    private func configureContextMenu(blog: Blog) {
+    private func configureContextMenu(for blog: Blog) {
         cardFrameView.onEllipsisButtonTap = {
             BlogDashboardAnalytics.trackContextualMenuAccessed(for: .activityLog)
         }
@@ -80,6 +117,43 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
 }
 
+// MARK: - Diffable DataSource
+
+extension DashboardActivityLogCardCell {
+
+    private func createDataSource() -> DataSource {
+        return DataSource(tableView: tableView) { (tableView, indexPath, activity) -> UITableViewCell? in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ActivityTableViewCell.defaultReuseID) as? ActivityTableViewCell else {
+                return UITableViewCell()
+            }
+
+            let formattableActivity = FormattableActivity(with: activity)
+            cell.configureCell(formattableActivity, displaysDate: true)
+            return cell
+        }
+    }
+
+    private func updateDataSource(with activities: [Activity]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections(ActivityLogSection.allCases)
+
+        let activitiesToDisplay = Array(activities.prefix(Constants.maxActivitiesCount))
+        snapshot.appendItems(activitiesToDisplay, toSection: .activities)
+
+        dataSource.apply(snapshot)
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension DashboardActivityLogCardCell: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: Show Activity Detail
+    }
+}
+
+// MARK: - Helpers
+
 extension DashboardActivityLogCardCell {
 
     static func shouldShowCard(for blog: Blog) -> Bool {
@@ -94,6 +168,10 @@ extension DashboardActivityLogCardCell {
 }
 
 extension DashboardActivityLogCardCell {
+
+    private enum Constants {
+        static let maxActivitiesCount = 3
+    }
 
     private enum Strings {
         static let title = NSLocalizedString("dashboardCard.ActivityLog.title",
