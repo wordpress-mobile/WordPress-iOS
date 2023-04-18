@@ -14,11 +14,13 @@ fileprivate enum PagesState: CaseIterable {
 enum PagesListSection: CaseIterable {
     case pages
     case loading
+    case create
 }
 
 enum PagesListItem: Hashable {
     case page(NSManagedObjectID)
     case ghost(Int)
+    case createPage(expanded: Bool, hasPages: Bool)
 }
 
 /// Responsible for populating a table view with pages
@@ -61,6 +63,8 @@ class PagesCardViewModel: NSObject {
             return self.configurePageCell(objectID: objectID, tableView: tableView, indexPath: indexPath)
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
+        case .createPage(let expanded, let hasPages):
+            return UITableViewCell()
         }
 
     }
@@ -259,9 +263,9 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
 
     private func createSnapshot(currentSnapshot: Snapshot, pagesSnapshot: PagesSnapshot) -> Snapshot {
         var snapshot = Snapshot()
-        snapshot.appendSections(PagesListSection.allCases)
         switch currentState {
         case .loaded:
+            snapshot.appendSections([.pages, .create])
             var adjustedPagesSnapshot = pagesSnapshot
 
             // Delete extra pages
@@ -279,7 +283,10 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
                                                             pagesSnapshot: pagesSnapshot)
             snapshot.reloadItems(reloadIdentifiers)
 
+            snapshot.appendItems([.createPage(expanded: true, hasPages: true)], toSection: .create)
+
         case .loading:
+            snapshot.appendSections([.loading])
             let items: [PagesListItem] = (0..<Constants.numberOfPages).map { .ghost($0) }
             snapshot.appendItems(items, toSection: .loading)
         }
