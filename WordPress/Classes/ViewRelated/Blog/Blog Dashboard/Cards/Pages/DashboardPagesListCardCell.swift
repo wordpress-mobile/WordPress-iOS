@@ -21,6 +21,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
         tableView.register(DashboardPageCell.self, forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
+        tableView.register(DashboardPageCreationCell.self, forCellReuseIdentifier: DashboardPageCreationCell.defaultReuseID)
         let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
         tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
         tableView.separatorStyle = .none
@@ -72,7 +73,9 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 // MARK: - BlogDashboardCardConfigurable
 
 extension DashboardPagesListCardCell {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog,
+                   viewController: BlogDashboardViewController?,
+                   apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
 

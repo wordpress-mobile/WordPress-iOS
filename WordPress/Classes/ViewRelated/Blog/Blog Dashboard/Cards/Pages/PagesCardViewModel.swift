@@ -64,7 +64,7 @@ class PagesCardViewModel: NSObject {
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
         case .createPage(let expanded, let hasPages):
-            return UITableViewCell()
+            return self.configureCreationCell(expanded: expanded, hasPages: hasPages, tableView: tableView, indexPath: indexPath)
         }
 
     }
@@ -135,6 +135,13 @@ private extension PagesCardViewModel {
         cell?.contentView.startGhostAnimation(style: style)
         return cell ?? UITableViewCell()
     }
+
+    private func configureCreationCell(expanded: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCell.defaultReuseID, for: indexPath) as? DashboardPageCreationCell
+        cell?.configure(expanded: expanded, hasPages: hasPages)
+        return cell ?? UITableViewCell()
+    }
+
 }
 
 // MARK: - Private methods
