@@ -35,17 +35,17 @@ extension AddressTableViewCell.ViewModel {
         static let free = NSLocalizedString(
             "domain.suggestions.row.free",
             value: "Free",
-            comment: ""
+            comment: "The text to display for free domains in 'Site Creation > Choose a domain' screen"
         )
         static let yearly = NSLocalizedString(
             "domain.suggestions.row.yearly",
             value: "per year",
-            comment: ""
+            comment: "The text to display for paid domains in 'Site Creation > Choose a domain' screen"
         )
         static let firstYear = NSLocalizedString(
             "domain.suggestions.row.first-year",
             value: "for the first year",
-            comment: ""
+            comment: "The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen"
         )
         static let recommended = NSLocalizedString(
             "domain.suggestions.row.recommended",
