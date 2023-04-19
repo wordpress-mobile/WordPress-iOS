@@ -268,8 +268,8 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
     /// Untrusted errors should be monitored and requires our attention.
     var trusted: Bool {
         switch self {
-        case .invalidInput, .internal: return false
-        default: return true
+        case .canceled, .other: return true
+        default: return false
         }
     }
 
