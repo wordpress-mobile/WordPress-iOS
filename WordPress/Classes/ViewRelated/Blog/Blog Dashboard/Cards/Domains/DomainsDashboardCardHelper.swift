@@ -1,6 +1,6 @@
 import Foundation
 
-final class DomainsDashboardCardHelper {
+@objc final class DomainsDashboardCardHelper: NSObject {
 
     /// Checks conditions for showing domain dashboard cards
     static func shouldShowCard(
@@ -30,5 +30,9 @@ final class DomainsDashboardCardHelper {
 
         BlogDashboardPersonalizationService(siteID: siteID)
             .setEnabled(false, for: .domainsDashboardCard)
+    }
+
+    @objc static func isFeatureEnabled() -> Bool {
+        return AppConfiguration.isJetpack && RemoteFeatureFlag.domainsDashboardCard.enabled()
     }
 }

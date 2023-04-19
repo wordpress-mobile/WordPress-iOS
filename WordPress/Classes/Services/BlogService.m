@@ -192,13 +192,15 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
     
-    dispatch_group_enter(syncGroup);
-    [self refreshDomainsFor:blog success:^{
-        dispatch_group_leave(syncGroup);
-    } failure:^(NSError * _Nonnull error) {
-        DDLogError(@"Failed refreshing domains: %@", error);
-        dispatch_group_leave(syncGroup);
-    }];
+    if ([DomainsDashboardCardHelper isFeatureEnabled]) {
+        dispatch_group_enter(syncGroup);
+        [self refreshDomainsFor:blog success:^{
+            dispatch_group_leave(syncGroup);
+        } failure:^(NSError * _Nonnull error) {
+            DDLogError(@"Failed refreshing domains: %@", error);
+            dispatch_group_leave(syncGroup);
+        }];
+    }
     
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
