@@ -2,6 +2,10 @@ import UIKit
 
 class DashboardPageCreationCell: UITableViewCell, Reusable {
 
+    // MARK: Variables
+
+    weak var viewModel: PagesCardViewModel?
+
     // MARK: Views
 
     private lazy var mainStackView: UIStackView = {
@@ -121,7 +125,7 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
     // MARK: Actions
 
     @objc func createPageButtonTapped() {
-        // TODO: To be implemented
+        viewModel?.createPage()
     }
 }
 

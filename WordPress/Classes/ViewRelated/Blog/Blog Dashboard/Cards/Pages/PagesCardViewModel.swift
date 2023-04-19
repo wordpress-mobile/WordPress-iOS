@@ -4,6 +4,7 @@ import UIKit
 
 protocol PagesCardView: AnyObject {
     var tableView: UITableView { get }
+    var parentViewController: UIViewController? { get }
 }
 
 fileprivate enum PagesState: CaseIterable {
@@ -104,6 +105,19 @@ class PagesCardViewModel: NSObject {
         fetchedResultsController?.object(at: indexPath)
     }
 
+    func createPage() {
+        guard let viewController = view?.parentViewController else {
+            return
+        }
+        PageCoordinator.showLayoutPickerIfNeeded(from: viewController, forBlog: blog) { [weak self] selectedLayout in
+            guard let blog = self?.blog else {
+                return
+            }
+            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content, appliedTemplate: selectedLayout?.slug)
+            viewController.present(editorViewController, animated: false)
+        }
+    }
+
     func tearDown() {
         DashboardPostsSyncManager.shared.removeListener(self)
         fetchedResultsController?.delegate = nil
@@ -138,6 +152,7 @@ private extension PagesCardViewModel {
 
     private func configureCreationCell(expanded: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCell.defaultReuseID, for: indexPath) as? DashboardPageCreationCell
+        cell?.viewModel = self
         cell?.configure(expanded: expanded, hasPages: hasPages)
         return cell ?? UITableViewCell()
     }

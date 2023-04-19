@@ -2,6 +2,10 @@ import UIKit
 
 final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardView {
 
+    var parentViewController: UIViewController? {
+        presentingViewController
+    }
+
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
     private var viewModel: PagesCardViewModel?
