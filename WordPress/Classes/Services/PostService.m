@@ -268,11 +268,30 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         if (forceDraftIfCreating) {
             remotePost.status = PostStatusDraft;
         }
-
-        [remote createPost:remotePost
-                   success:successBlock
-                   failure:failureBlock];
+        [self createPost:remotePost
+                  remote:remote
+                 success:successBlock
+                 failure:failureBlock];
     }
+}
+
+
+/// Creates new post on the server.
+/// If the post type is scheduled, another call to update the post is made after creation to fix the modified date.
+- (void)createPost:(RemotePost *)post
+            remote:(id<PostServiceRemote>)remote
+           success:(void (^)(RemotePost *post))success
+           failure:(void (^)(NSError *error))failure;
+{
+    [remote createPost:post success:^(RemotePost *post) {
+        if ([post.status isEqualToString:PostStatusScheduled]) {
+            [remote updatePost:post success:success failure:failure];
+        }
+        else {
+            success(post);
+        }
+        
+    } failure:failure];
 }
 
 #pragma mark - Autosave Related
