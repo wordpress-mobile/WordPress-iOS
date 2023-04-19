@@ -18,7 +18,7 @@ class DashboardTests: XCTestCase {
         removeApp()
     }
 
-    func testDomainsCard() throws {
+    func testDomainsCardNavigation() throws {
         try MySiteScreen()
             .verifyDomainsCard()
             .tapDomainsCard()
