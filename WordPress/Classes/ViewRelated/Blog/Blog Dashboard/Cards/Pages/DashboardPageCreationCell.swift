@@ -11,7 +11,7 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
         stackView.spacing = Metrics.mainStackViewSpacing
         stackView.directionalLayoutMargins = Metrics.mainStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews([labelsStackView])
+        stackView.addArrangedSubviews([labelsStackView, imageSuperView])
         return stackView
     }()
 
@@ -45,6 +45,7 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
             button.configuration = buttonConfig
         } else {
             button.titleLabel?.font = font
+            button.setTitleColor(.jetpackGreen, for: .normal)
             button.contentEdgeInsets = Metrics.createPageButtonContentEdgeInsets
             button.flipInsetsForRightToLeftLayoutDirection()
         }
@@ -57,12 +58,30 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.font = WPStyleGuide.regularTextFont()
         label.textColor = .secondaryLabel
         label.text = Strings.descriptionLabelText
         return label
+    }()
+
+    private lazy var imageSuperView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(promoImageView)
+        view.pinSubviewToAllEdges(promoImageView, insets: Metrics.promoImageSuperViewInsets)
+        return view
+    }()
+
+    private lazy var promoImageView: UIImageView = {
+        let image = UIImage(named: Graphics.promoImage)
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = Colors.promoImageBackgroundColor
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = Metrics.promoImageCornerRadius
+        NSLayoutConstraint.activate(imageView.constrain(size: Metrics.promoImageSize))
+        return imageView
     }()
 
     // MARK: Initializers
@@ -111,12 +130,23 @@ private extension DashboardPageCreationCell {
         static let mainStackViewSpacing: CGFloat = 16
         static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         static let labelsStackViewSpacing: CGFloat = 2
-        static let labelsStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 16, leading: 0, bottom: 16, trailing: 0)
+        static let labelsStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 15, leading: 0, bottom: 15, trailing: 0)
         static let createPageButtonContentInsets = NSDirectionalEdgeInsets.zero
         static let createPageButtonContentEdgeInsets = UIEdgeInsets.zero
+        static let promoImageSize: CGSize = .init(width: 110, height: 80)
+        static let promoImageSuperViewInsets: UIEdgeInsets = .init(top: 10, left: 0, bottom: 10, right: 0)
+        static let promoImageCornerRadius: CGFloat = 5
+
+    }
+
+    enum Graphics {
+        static let promoImage = "pagesCardPromoImage"
     }
 
     enum Colors {
+        private static let lightPromoImageBackgroundColor = UIColor(red: 0.937, green: 0.937, blue: 0.957, alpha: 1)
+        static let promoImageBackgroundColor = UIColor(light: lightPromoImageBackgroundColor,
+                                                       dark: .clear)
     }
 
     enum Strings {
