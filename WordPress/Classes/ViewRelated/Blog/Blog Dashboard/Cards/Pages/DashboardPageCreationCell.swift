@@ -115,6 +115,7 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
 
     private func applyStyle() {
         backgroundColor = .clear
+        selectionStyle = .none
     }
 
     private func setupViews() {

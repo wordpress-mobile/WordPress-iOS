@@ -136,6 +136,16 @@ extension DashboardPagesListCardCell {
 extension DashboardPagesListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let isPagesSection = indexPath.section == 0
+        if isPagesSection {
+            handlePageSelected(at: indexPath)
+        } else {
+            handleCreatePageSectionSelected()
+        }
+
+    }
+
+    private func handlePageSelected(at indexPath: IndexPath) {
         guard let page = viewModel?.pageAt(indexPath),
               let presentingViewController else {
             return
@@ -146,6 +156,10 @@ extension DashboardPagesListCardCell: UITableViewDelegate {
         if didOpenEditor {
             // TODO: Track editor opened
         }
+    }
+
+    private func handleCreatePageSectionSelected() {
+        viewModel?.createPage()
     }
 }
 
