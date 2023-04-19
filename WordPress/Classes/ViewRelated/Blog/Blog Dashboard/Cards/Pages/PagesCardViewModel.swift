@@ -21,7 +21,7 @@ enum PagesListSection: CaseIterable {
 enum PagesListItem: Hashable {
     case page(NSManagedObjectID)
     case ghost(Int)
-    case createPage(expanded: Bool, hasPages: Bool)
+    case createPage(compact: Bool, hasPages: Bool)
 }
 
 /// Responsible for populating a table view with pages
@@ -64,8 +64,8 @@ class PagesCardViewModel: NSObject {
             return self.configurePageCell(objectID: objectID, tableView: tableView, indexPath: indexPath)
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
-        case .createPage(let expanded, let hasPages):
-            return self.configureCreationCell(expanded: expanded, hasPages: hasPages, tableView: tableView, indexPath: indexPath)
+        case .createPage(let compact, let hasPages):
+            return self.configureCreationCell(compact: compact, hasPages: hasPages, tableView: tableView, indexPath: indexPath)
         }
 
     }
@@ -150,10 +150,10 @@ private extension PagesCardViewModel {
         return cell ?? UITableViewCell()
     }
 
-    private func configureCreationCell(expanded: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureCreationCell(compact: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCell.defaultReuseID, for: indexPath) as? DashboardPageCreationCell
         cell?.viewModel = self
-        cell?.configure(expanded: expanded, hasPages: hasPages)
+        cell?.configure(compact: compact, hasPages: hasPages)
         return cell ?? UITableViewCell()
     }
 
@@ -305,7 +305,11 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
                                                             pagesSnapshot: pagesSnapshot)
             snapshot.reloadItems(reloadIdentifiers)
 
-            snapshot.appendItems([.createPage(expanded: true, hasPages: true)], toSection: .create)
+            // Add Create Page Item
+            // Section should be compact if there are more than one pages. Should be expanded otherwise.
+            let createPageItem: PagesListItem = .createPage(compact: pageItems.hasMultiplePages,
+                                                            hasPages: pageItems.hasPages)
+            snapshot.appendItems([createPageItem], toSection: .create)
 
         case .loading:
             snapshot.appendSections([.loading])
@@ -342,5 +346,15 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
         dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
         view?.tableView.allowsSelection = currentState == .loaded
+    }
+}
+
+private extension Array where Element == PagesListItem {
+    var hasPages: Bool {
+        return !isEmpty
+    }
+
+    var hasMultiplePages: Bool {
+        return count > 1
     }
 }
