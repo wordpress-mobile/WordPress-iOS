@@ -34,7 +34,6 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.contentHorizontalAlignment = .leading
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(createPageButtonTapped), for: .touchUpInside)
         let font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
 
@@ -53,6 +52,8 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
             button.contentEdgeInsets = Metrics.createPageButtonContentEdgeInsets
             button.flipInsetsForRightToLeftLayoutDirection()
         }
+
+        button.heightAnchor.constraint(equalToConstant: Metrics.createPageButtonHeight).isActive = true
 
         return button
     }()
@@ -139,6 +140,7 @@ private extension DashboardPageCreationCell {
         static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         static let labelsStackViewSpacing: CGFloat = 2
         static let labelsStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 15, leading: 0, bottom: 15, trailing: 0)
+        static let createPageButtonHeight: CGFloat = 22
         static let createPageButtonContentInsets = NSDirectionalEdgeInsets.zero
         static let createPageButtonContentEdgeInsets = UIEdgeInsets.zero
         static let promoImageSize: CGSize = .init(width: 110, height: 80)

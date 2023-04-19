@@ -22,6 +22,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
     lazy var tableView: UITableView = {
         let tableView = DashboardCardTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
         tableView.register(DashboardPageCell.self, forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
