@@ -39,6 +39,12 @@ fi
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
+echo "--- LISTING DIR ~/Library/Logs/CoreSimulator"
+cd ~/Library/Logs/CoreSimulator && ls -Rla && zip -rq core-simulator-crash-files.zip *.crash
+
+echo "--- LISTING DIR ~/Library/Logs/DiagnosticReports/"
+cd ~/Library/Logs/DiagnosticReports/ && ls -Rla && zip -rq diag-reports-crash-files.zip *.crash
+
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
   echo "UI Tests seems to have passed (exit code 0). All good 👍"
