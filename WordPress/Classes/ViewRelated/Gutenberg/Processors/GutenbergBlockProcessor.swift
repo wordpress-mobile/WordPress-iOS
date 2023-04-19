@@ -162,9 +162,9 @@ private extension GutenbergBlockProcessor {
     ///         - text: The string that the following parameter is found in.
     ///     - Returns: True if the block tag is self-closing.
     func isSelfClosingTag(forMatch openTag: NSTextCheckingResult, in text: String) -> Bool {
-        let range = openTag.range
-        let substring = text[Range(range, in: text)!]
-        return substring.hasSuffix("/-->")
+        let tagRange = text.range(from: openTag.range)
+        let tagSubstring = text[tagRange]
+        return tagSubstring.hasSuffix("/-->")
     }
 
     /// Determines if there are an equal number of opening and closing block tags in the provided text.
