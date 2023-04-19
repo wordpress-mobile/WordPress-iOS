@@ -54,8 +54,6 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
 
-        // TODO: Remove this when configure() is implemented
-        button.setTitle(Strings.createPageButtonText, for: .normal)
         return button
     }()
 
@@ -102,8 +100,13 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
 
     // MARK: Public Functions
 
-    func configure(expanded: Bool, hasPages: Bool) {
-        // TODO: Configure cell bases on passed values
+    func configure(compact: Bool, hasPages: Bool) {
+        descriptionLabel.isHidden = compact
+        imageSuperView.isHidden = compact
+
+        let buttonTitle = hasPages ? Strings.createPageButtonText : Strings.addPagesButtonText
+        createPageButton.setTitle(buttonTitle, for: .normal)
+
     }
 
     // MARK: Helpers
@@ -160,6 +163,9 @@ private extension DashboardPageCreationCell {
                                                             comment: "Title of a label that encourages the user to create a new page.")
         static let createPageButtonText = NSLocalizedString("dashboardCard.pages.create.button.title",
                                                             value: "Create another page",
+                                                            comment: "Title of a button that starts the page creation flow.")
+        static let addPagesButtonText = NSLocalizedString("dashboardCard.pages.add.button.title",
+                                                            value: "Add pages to your site",
                                                             comment: "Title of a button that starts the page creation flow.")
     }
 }
