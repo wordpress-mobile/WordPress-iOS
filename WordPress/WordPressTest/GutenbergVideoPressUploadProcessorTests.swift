@@ -5,7 +5,7 @@ import XCTest
 class GutenbergVideoPressUploadProcessorTests: XCTestCase {
 
     let blockWithDefaultAttrsContent = """
-    <!-- wp:videopress/video {"id":-181231834} /-->
+    <!-- wp:videopress/video {"id":-181231834, "src":"file:///LocalFolder/181231834.mp4"} /-->
     """
 
     let blockWithDefaultAttrsResultContent = """
