@@ -18,6 +18,7 @@ class DashboardTests: XCTestCase {
         removeApp()
     }
 
+    // This test is JP only.
     func testDomainsCardNavigation() throws {
         try MySiteScreen()
             .verifyDomainsCard()
