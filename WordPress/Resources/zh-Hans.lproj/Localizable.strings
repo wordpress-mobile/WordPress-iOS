@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "添加此电话链接";
 
+/* No comment provided by engineer. */
+"Add title" = "添加标题";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "正在添加站点功能";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "全部";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -2360,9 +2364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "拒绝";
-
-/* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "描述图片的用途。 如果图片仅作装饰用，请留空。";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -9639,7 +9640,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "在数以百万计的站点上展示您的作品。";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "隐藏此内容";
 
 /* Title for the Blaze dashboard card. */
@@ -10142,26 +10143,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "似乎您仍然安装了 WordPress 应用。 我们建议您删除 WordPress 应用以避免发生数据冲突。";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "知道了";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "需要帮助？";
 
-/* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "您不再需要 WordPress 应用";
-
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "完成";
-
-/* Footer for the migration done screen. */
-"migration.done.footer" = "请删除 WordPress 应用以避免发生数据冲突。";
-
-/* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "删除 WordPress 应用";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "我们已转移您的所有数据和设置。 一切都完好如初。";
@@ -10741,9 +10730,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "抱歉，WordPress 应用不支持此站点。";
-
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "请删除 WordPress 应用";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "您的站点";

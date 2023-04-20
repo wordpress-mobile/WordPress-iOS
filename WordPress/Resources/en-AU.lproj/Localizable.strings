@@ -487,6 +487,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Add this telephone link";
 
+/* No comment provided by engineer. */
+"Add title" = "Add title";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Adding site features";
 
@@ -518,7 +521,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "All";
 
 /* Footer of the free domain registration section for a paid plan.

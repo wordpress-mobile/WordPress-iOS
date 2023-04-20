@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-13 19:12:45+0000 */
+/* Translation-Revision-Date: 2023-04-14 07:24:49+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Přidejte tento telefonní odkaz";
 
+/* No comment provided by engineer. */
+"Add title" = "Přidat název";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Přidávání funkcí webu";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Vše";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -1150,6 +1154,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blokovaný web";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "Blokovaný uživatel";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -2348,9 +2355,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Odmítnout";
-
-/* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Popište účel obrázku. Pokud je obrázek čistě dekorativní, ponechte toto pole prázdné.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -9600,6 +9604,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Odmítnout";
 
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Zvýraznit příspěvek teď";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Váš obsah se objeví na milionech webů WordPress a Tumblr.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Přiveďte na svůj web větší návštěvnost se zvýrazněním";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Zvýrazněte tuto stránku";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Zvýrazněte tento příspěvek";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Odmítnout";
 
@@ -9632,6 +9651,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Zkuste to teď";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Skrýt toto";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dvojitým klepnutím změníte jednotku";
@@ -9983,26 +10005,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Odmítnout";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Vypadá to, že máte stále nainstalovanou aplikaci WordPress. Doporučujeme smazat WordPress aplikaci, abyste předešli konfliktům dat.";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Mám to";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Potřebujete pomoci?";
 
-/* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Už nepotřebujete WordPress aplikaci";
-
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Dokončit";
-
-/* Footer for the migration done screen. */
-"migration.done.footer" = "Smažte WordPress aplikaci, abyste předešli konfliktům dat.";
-
-/* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "Odstraňte WordPress aplikaci";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Přenesli jsme všechna vaše data a nastavení. Všechno je tam, kde jsi to nechal.";
@@ -10055,11 +10065,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Vítejte v Jetpacku!";
 
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Práce na konceptu příspěvku";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "koncept příspěvku";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Dnešní statistika";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Statistiky";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odmítnout";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Odmítnout";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "To se mi líbí";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Ne, díky";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Odeslat zpětnou vazbu";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "z";
@@ -10069,6 +10100,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "password" = "heslo";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Zvýraznění";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Naplánovaný příspěvek";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Dnešní statistika";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonní číslo";
@@ -10084,6 +10124,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Vybrané možnosti obrázku";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Zobrazit všechny odpovědi";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Odmítnout";
@@ -10393,9 +10436,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Tento web není aplikací WordPress podporován";
-
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Odstraňte WordPress aplikaci";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "váš web";
