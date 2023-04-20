@@ -9,11 +9,11 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     typealias DataSource = UITableViewDiffableDataSource<ActivityLogSection, Activity>
     typealias Snapshot = NSDiffableDataSourceSnapshot<ActivityLogSection, Activity>
 
-    private var blog: Blog?
-    private weak var presentingViewController: BlogDashboardViewController?
-    private lazy var dataSource = createDataSource()
+    private(set) var blog: Blog?
+    private(set) weak var presentingViewController: BlogDashboardViewController?
+    private(set) lazy var dataSource = createDataSource()
 
-    private let store = StoreContainer.shared.activity
+    let store = StoreContainer.shared.activity
 
     // MARK: - Views
 
@@ -23,7 +23,6 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         frameView.setTitle(Strings.title)
         return frameView
     }()
-
 
     lazy var tableView: UITableView = {
         let tableView = DashboardCardTableView()
@@ -76,6 +75,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         tableView.dataSource = dataSource
+        // FIXME: fetch rewind status first, then show activity
         updateDataSource(with: apiResponse?.activity?.current?.orderedItems ?? [])
 
         configureContextMenu(for: blog)
@@ -148,7 +148,12 @@ extension DashboardActivityLogCardCell {
 
 extension DashboardActivityLogCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Show Activity Detail
+        guard let activity = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        let formattableActivity = FormattableActivity(with: activity)
+        presentDetailsFor(activity: formattableActivity)
     }
 }
 
