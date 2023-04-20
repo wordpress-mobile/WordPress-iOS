@@ -40,10 +40,10 @@ echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
 echo "--- LISTING DIR ~/Library/Logs/CoreSimulator"
-cd ~/Library/Logs/CoreSimulator && ls -Rla && zip -rq core-simulator-crash-files.zip * || true
+ls -Rla ~/Library/Logs/CoreSimulator && zip -rq build/results/core-simulator-crash-files.zip ~/Library/Logs/CoreSimulator/* || true
 
 echo "--- LISTING DIR ~/Library/Logs/DiagnosticReports/"
-cd ~/Library/Logs/DiagnosticReports/ && ls -Rla && zip -rq diag-reports-crash-files.zip * || true
+ls -Rla ~/Library/Logs/DiagnosticReports/ && zip -rq build/results/diag-reports-crash-files.zip ~/Library/Logs/DiagnosticReports/* || true
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
