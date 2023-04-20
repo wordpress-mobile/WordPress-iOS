@@ -45,7 +45,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages", "activity"])
             expect.fulfill()
         }
 
