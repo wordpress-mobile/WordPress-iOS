@@ -772,6 +772,9 @@ EXTERNAL SOURCES:
     :commit: d7648442bc6b75dfa364e1a886ef414332eef282
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+  WordPressShared:
+    :branch: trunk
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d7648442bc6b75dfa364e1a886ef414332eef282/third-party-podspecs/Yoga.podspec.json
 
@@ -787,6 +790,9 @@ CHECKOUT OPTIONS:
     :commit: d7648442bc6b75dfa364e1a886ef414332eef282
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+  WordPressShared:
+    :commit: d86b274e1d06964317c430b4e434d37b2a9891a7
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -889,6 +895,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 5c91187f31bf49dc42fcd038c3d3a2652184de33
+PODFILE CHECKSUM: 51641cf36639a2b4398b0d2374c76eed5dac043e
 
 COCOAPODS: 1.11.3
