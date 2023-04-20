@@ -77,8 +77,6 @@ extension DashboardActivityLogCardCell: JetpackBackupStatusViewControllerDelegat
 extension DashboardActivityLogCardCell: JetpackRestoreStatusViewControllerDelegate {
 
     func didFinishViewing(_ controller: JetpackRestoreStatusViewController) {
-        controller.dismiss(animated: true) {
-            // FIXME: fetch rewind status
-        }
+        controller.dismiss(animated: true)
     }
 }

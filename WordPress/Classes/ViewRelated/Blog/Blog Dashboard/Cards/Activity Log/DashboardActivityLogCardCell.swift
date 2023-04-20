@@ -75,7 +75,6 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         tableView.dataSource = dataSource
-        // FIXME: fetch rewind status first, then show activity
         updateDataSource(with: apiResponse?.activity?.current?.orderedItems ?? [])
 
         configureHeaderAction(for: blog)
