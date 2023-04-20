@@ -105,7 +105,7 @@ private extension BlogDashboardService {
         }
 
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .supportMultipleDateFormats
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 
