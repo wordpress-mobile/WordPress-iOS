@@ -22,13 +22,16 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
     lazy var tableView: UITableView = {
         let tableView = DashboardCardTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
-        tableView.register(DashboardPageCell.self, forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
-        tableView.register(DashboardPageCreationCell.self, forCellReuseIdentifier: DashboardPageCreationCell.defaultReuseID)
-        let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
-        tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
+        tableView.register(DashboardPageCell.self,
+                           forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
+        tableView.register(DashboardPageCreationCompactCell.self,
+                           forCellReuseIdentifier: DashboardPageCreationCompactCell.defaultReuseID)
+        tableView.register(DashboardPageCreationExpandedCell.self,
+                           forCellReuseIdentifier: DashboardPageCreationExpandedCell.defaultReuseID)
+        tableView.register(BlogDashboardPostCardGhostCell.defaultNib,
+                           forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
         tableView.separatorStyle = .none
         return tableView
     }()

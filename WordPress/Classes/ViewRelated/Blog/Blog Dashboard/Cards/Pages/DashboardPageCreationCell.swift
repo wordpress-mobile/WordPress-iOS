@@ -1,9 +1,21 @@
 import UIKit
 
-class DashboardPageCreationCell: UITableViewCell, Reusable {
+final class DashboardPageCreationCompactCell: DashboardPageCreationCell, Reusable {
+    override var isCompact: Bool {
+        return true
+    }
+}
+
+final class DashboardPageCreationExpandedCell: DashboardPageCreationCell, Reusable { }
+
+class DashboardPageCreationCell: UITableViewCell {
 
     // MARK: Variables
 
+    /// Variable indicating the cell layout type. Cell is expanded by default
+    var isCompact: Bool {
+        return false
+    }
     weak var viewModel: PagesCardViewModel?
 
     // MARK: Views
@@ -15,7 +27,8 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
         stackView.spacing = Metrics.mainStackViewSpacing
         stackView.directionalLayoutMargins = Metrics.mainStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews([labelsStackView, imageSuperView])
+        let subviews = isCompact ? [labelsStackView] : [labelsStackView, imageSuperView]
+        stackView.addArrangedSubviews(subviews)
         return stackView
     }()
 
@@ -26,7 +39,8 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
         stackView.spacing = Metrics.labelsStackViewSpacing
         stackView.directionalLayoutMargins = Metrics.labelsStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews([createPageButton, descriptionLabel])
+        let subviews = isCompact ? [createPageButton] : [createPageButton, descriptionLabel]
+        stackView.addArrangedSubviews(subviews)
         return stackView
     }()
 
@@ -52,8 +66,6 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
             button.contentEdgeInsets = Metrics.createPageButtonContentEdgeInsets
             button.flipInsetsForRightToLeftLayoutDirection()
         }
-
-        button.heightAnchor.constraint(equalToConstant: Metrics.createPageButtonHeight).isActive = true
 
         return button
     }()
@@ -101,13 +113,9 @@ class DashboardPageCreationCell: UITableViewCell, Reusable {
 
     // MARK: Public Functions
 
-    func configure(compact: Bool, hasPages: Bool) {
-        descriptionLabel.isHidden = compact
-        imageSuperView.isHidden = compact
-
+    func configure(hasPages: Bool) {
         let buttonTitle = hasPages ? Strings.createPageButtonText : Strings.addPagesButtonText
         createPageButton.setTitle(buttonTitle, for: .normal)
-
     }
 
     // MARK: Helpers
@@ -140,7 +148,6 @@ private extension DashboardPageCreationCell {
         static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         static let labelsStackViewSpacing: CGFloat = 2
         static let labelsStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 15, leading: 0, bottom: 15, trailing: 0)
-        static let createPageButtonHeight: CGFloat = 22
         static let createPageButtonContentInsets = NSDirectionalEdgeInsets.zero
         static let createPageButtonContentEdgeInsets = UIEdgeInsets.zero
         static let promoImageSize: CGSize = .init(width: 110, height: 80)

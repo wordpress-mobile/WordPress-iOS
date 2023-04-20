@@ -151,9 +151,16 @@ private extension PagesCardViewModel {
     }
 
     private func configureCreationCell(compact: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCell.defaultReuseID, for: indexPath) as? DashboardPageCreationCell
+        var cell: DashboardPageCreationCell?
+        if compact {
+            cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCompactCell.defaultReuseID,
+                                                 for: indexPath) as? DashboardPageCreationCell
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationExpandedCell.defaultReuseID,
+                                                 for: indexPath) as? DashboardPageCreationCell
+        }
         cell?.viewModel = self
-        cell?.configure(compact: compact, hasPages: hasPages)
+        cell?.configure(hasPages: hasPages)
         return cell ?? UITableViewCell()
     }
 
