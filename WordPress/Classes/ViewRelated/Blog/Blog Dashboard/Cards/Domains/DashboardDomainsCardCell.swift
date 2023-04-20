@@ -61,7 +61,7 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
     }()
 
     private lazy var dashboardDomainsCardSearchView: UIView = {
-        let searchView = UIView.embedSwiftUIView(DashboardDomainsCardSearchVew())
+        let searchView = UIView.embedSwiftUIView(DashboardDomainsCardSearchView())
         searchView.translatesAutoresizingMaskIntoConstraints = false
         return searchView
     }()

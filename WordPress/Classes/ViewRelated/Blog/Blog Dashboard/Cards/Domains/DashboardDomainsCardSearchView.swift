@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DashboardDomainsCardSearchVew: View {
+struct DashboardDomainsCardSearchView: View {
     @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -45,7 +45,7 @@ struct DashboardDomainsCardSearchVew: View {
     }
 }
 
-private extension DashboardDomainsCardSearchVew {
+private extension DashboardDomainsCardSearchView {
     enum Metrics {
         static let padding: CGFloat = 8
         static let cornerRadius: CGFloat = 16
