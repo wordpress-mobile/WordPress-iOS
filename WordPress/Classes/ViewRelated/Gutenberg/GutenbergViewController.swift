@@ -483,6 +483,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     func toggleEditingMode() {
+        emitPostSaveEvent()
         gutenberg.toggleHTMLMode()
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
