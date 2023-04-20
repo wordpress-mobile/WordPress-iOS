@@ -78,7 +78,14 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         // FIXME: fetch rewind status first, then show activity
         updateDataSource(with: apiResponse?.activity?.current?.orderedItems ?? [])
 
+        configureHeaderAction(for: blog)
         configureContextMenu(for: blog)
+    }
+
+    private func configureHeaderAction(for blog: Blog) {
+        cardFrameView.onHeaderTap = { [weak self] in
+            self?.showActivityLog(for: blog)
+        }
     }
 
     private func configureContextMenu(for blog: Blog) {
@@ -90,7 +97,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
         let activityAction = UIAction(title: Strings.allActivity,
                                       image: Style.allActivityImage,
-                                      handler: { _ in self.showActivityLog(for: blog) })
+                                      handler: { [weak self] _ in self?.showActivityLog(for: blog) })
 
         // Wrap the activity action in a menu to display a divider between the activity action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
