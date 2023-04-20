@@ -5,12 +5,18 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     var posts: BlogDashboardPosts?
     var todaysStats: BlogDashboardStats?
     var pages: [BlogDashboardPage]?
-    var activity: [BlogDashboardActivity]? // FIXME: Replace this after `WordPressKit.Activity` is made Codable
+    var activity: [Activity]?
 
     struct BlogDashboardPosts: Decodable, Hashable {
         var hasPublished: Bool?
         var draft: [BlogDashboardPost]?
         var scheduled: [BlogDashboardPost]?
+
+        enum CodingKeys: String, CodingKey {
+            case hasPublished = "has_published"
+            case draft
+            case scheduled
+        }
     }
 
     // We don't rely on the data from the API to show posts
@@ -26,7 +32,16 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     // We don't rely on the data from the API to show pages
     struct BlogDashboardPage: Decodable, Hashable { }
 
-    // FIXME: Remove this after `WordPressKit.Activity` is made Codable
-    struct BlogDashboardActivity: Decodable, Hashable { }
+    enum CodingKeys: String, CodingKey {
+        case posts
+        case todaysStats = "todays_stats"
+        case pages
+        case activity
+    }
+}
 
+extension Activity: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(activityID)
+    }
 }

@@ -44,7 +44,7 @@ public class GutenbergBlockProcessor: Processor {
     /// 2. The block attributes
     ///
     var openTagRegex: NSRegularExpression {
-        let pattern = "\\<!--[ ]?(\(name))([\\s\\S]*?)-->"
+        let pattern = "\\<!--[ ]?(\(name))([\\s\\S]*?)\\/?-->"
         return try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
     }
 
@@ -107,7 +107,15 @@ private extension GutenbergBlockProcessor {
     private func process(_ match: NSTextCheckingResult, in text: String) -> (NSRange, String)? {
 
         var result: (NSRange, String)? = nil
-        if let closingRange = locateClosingTag(forMatch: match, in: text) {
+        if isSelfClosingTag(forMatch: match, in: text) {
+            let attributes = readAttributes(from: match, in: text)
+            let block = GutenbergBlock(name: name, attributes: attributes, content: "")
+
+            if let replacement = replacer(block) {
+                result = (match.range, replacement)
+            }
+        }
+        else if let closingRange = locateClosingTag(forMatch: match, in: text) {
             let attributes = readAttributes(from: match, in: text)
             let content = readContent(from: match, withClosingRange: closingRange, in: text)
             let parsedContent = process(content) // Recurrsively parse nested blocks and process those seperatly
@@ -145,6 +153,18 @@ private extension GutenbergBlockProcessor {
         }
 
         return nil
+    }
+
+    /// Determines if the block tag is self-closing.
+    /// E.g.: <!-- wp:videopress/video {"guid":"AbCdE","id":100} /-->
+    ///     - Parameters:
+    ///         - openTag: The match reperesenting an opening block tag
+    ///         - text: The string that the following parameter is found in.
+    ///     - Returns: True if the block tag is self-closing.
+    func isSelfClosingTag(forMatch openTag: NSTextCheckingResult, in text: String) -> Bool {
+        let tagRange = text.range(from: openTag.range)
+        let tagSubstring = text[tagRange]
+        return tagSubstring.hasSuffix("/-->")
     }
 
     /// Determines if there are an equal number of opening and closing block tags in the provided text.
