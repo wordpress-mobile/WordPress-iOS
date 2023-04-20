@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-07 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:11:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -9650,6 +9650,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionOne" = "1日わずか数百円、たった数分で投稿やページを宣伝できます。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "キャンペーンのパフォーマンスを追跡したりいつでもキャンセルしたりできます。";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "コンテンツは数百万もの WordPress と Tumblr のサイトに表示されます。";

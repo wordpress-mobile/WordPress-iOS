@@ -36,6 +36,10 @@ class BlogDashboardViewModel {
         return PostListFilter.scheduledFilter().statuses.strings
     }()
 
+    private lazy var pageStatusesToSync: [String] = {
+        return PostListFilter.allNonTrashedFilter().statuses.strings
+    }()
+
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
@@ -139,10 +143,13 @@ private extension BlogDashboardViewModel {
 
     func syncPosts(for cards: [DashboardCardModel]) {
         if cards.hasDrafts {
-            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: draftStatusesToSync)
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: draftStatusesToSync)
         }
         if cards.hasScheduled {
-            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: scheduledStatusesToSync)
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: scheduledStatusesToSync)
+        }
+        if cards.hasPages {
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .page, statuses: pageStatusesToSync)
         }
     }
 
@@ -225,5 +232,9 @@ private extension Collection where Element == DashboardCardModel {
 
     var hasScheduled: Bool {
         return contains(where: { $0.cardType == .scheduledPosts })
+    }
+
+    var hasPages: Bool {
+        return contains(where: { $0.cardType == .pages })
     }
 }

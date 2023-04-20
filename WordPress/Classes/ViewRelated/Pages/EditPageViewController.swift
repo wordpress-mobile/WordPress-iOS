@@ -1,6 +1,7 @@
 import UIKit
 
 class EditPageViewController: UIViewController {
+    var entryPoint: PostEditorEntryPoint = .unknown
     fileprivate var page: Page?
     fileprivate var blog: Blog
     fileprivate var postTitle: String?
@@ -90,6 +91,7 @@ class EditPageViewController: UIViewController {
     }
 
     private func show(_ editor: EditorViewController) {
+        editor.entryPoint = entryPoint
         editor.onClose = { [weak self] _, _ in
             // Dismiss navigation controller
             self?.dismiss(animated: true) {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-07 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:12:18+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
@@ -1116,6 +1116,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice that a page without content has been created */
 "Blank page created" = "已创建空白页";
+
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -9748,6 +9751,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "关注";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-05 13:54:09+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:14:26+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -10337,6 +10337,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "لقد قمت بتسجيل الدخول!";
 
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "حظر هذا المستخدم";
 
@@ -10397,8 +10400,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "خطأ في المشاركة";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "على غرار المثال أعلاه، يسمح النطاق للأشخاص بالعثور على موقعك وزيارته من متصفح الويب لديهم.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "إظهار المطالبات";

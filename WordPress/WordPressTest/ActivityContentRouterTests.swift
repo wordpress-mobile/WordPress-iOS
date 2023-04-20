@@ -15,8 +15,8 @@ final class ActivityContentRouterTests: XCTestCase {
         super.tearDown()
     }
 
-    func testRouteToComment() {
-        let commentActivity = getCommentActivity()
+    func testRouteToComment() throws {
+        let commentActivity = try getCommentActivity()
         let router = ActivityContentRouter(activity: commentActivity, coordinator: testCoordinator)
 
         router.routeTo(commentURL)
@@ -26,8 +26,8 @@ final class ActivityContentRouterTests: XCTestCase {
         XCTAssertEqual(testCoordinator.commentSiteID?.intValue, testData.testSiteID)
     }
 
-    func testRouteToPost() {
-        let activity = getPostActivity()
+    func testRouteToPost() throws {
+        let activity = try getPostActivity()
         let router = ActivityContentRouter(activity: activity, coordinator: testCoordinator)
 
         router.routeTo(postURL)
@@ -49,13 +49,15 @@ extension ActivityContentRouterTests {
         return URL(string: testData.testCommentURL)!
     }
 
-    func getCommentActivity() -> FormattableActivity {
-        let activity = try! Activity.create(from: testData.getCommentEventDictionary())
+    func getCommentActivity() throws -> FormattableActivity {
+        let data = try JSONSerialization.data(withJSONObject: testData.getCommentEventDictionary())
+        let activity = try JSONDecoder().decode(Activity.self, from: data)
         return FormattableActivity(with: activity)
     }
 
-    func getPostActivity() -> FormattableActivity {
-        let activity = try! Activity.create(from: testData.getPostEventDictionary())
+    func getPostActivity() throws -> FormattableActivity {
+        let data = try JSONSerialization.data(withJSONObject: testData.getPostEventDictionary())
+        let activity = try JSONDecoder().decode(Activity.self, from: data)
         return FormattableActivity(with: activity)
     }
 }

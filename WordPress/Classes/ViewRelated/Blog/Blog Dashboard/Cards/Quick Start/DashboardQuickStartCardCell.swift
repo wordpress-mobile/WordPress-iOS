@@ -61,7 +61,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
 
         }
 
-        cardFrameView.title = Strings.title(for: blog.quickStartType)
+        cardFrameView.setTitle(Strings.title(for: blog.quickStartType))
     }
 
     private func configureOnEllipsisButtonTap(sourceRect: CGRect) {
