@@ -74,6 +74,7 @@ class DashboardPageCreationCell: UITableViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 2
         label.font = WPStyleGuide.regularTextFont()
         label.textColor = .secondaryLabel
@@ -85,7 +86,15 @@ class DashboardPageCreationCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promoImageView)
-        view.pinSubviewToAllEdges(promoImageView, insets: Metrics.promoImageSuperViewInsets)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: promoImageView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: promoImageView.trailingAnchor),
+            view.topAnchor.constraint(lessThanOrEqualTo: promoImageView.topAnchor,
+                                      constant: -Metrics.promoImageSuperViewInsets.top),
+            view.bottomAnchor.constraint(greaterThanOrEqualTo: promoImageView.bottomAnchor,
+                                         constant: Metrics.promoImageSuperViewInsets.bottom),
+            view.centerYAnchor.constraint(equalTo: promoImageView.centerYAnchor)
+        ])
         return view
     }()
 
