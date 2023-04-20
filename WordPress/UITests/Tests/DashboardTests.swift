@@ -23,7 +23,6 @@ class DashboardTests: XCTestCase {
         try MySiteScreen()
             .verifyDomainsCard()
             .tapDomainsCard()
-
-        XCTAssertTrue(DomainsScreen.isLoaded(), "\"Domains\" screen isn't loaded after \"Domains\" card tap.")
+            .verifyDomainsScreenLoaded()
     }
 }

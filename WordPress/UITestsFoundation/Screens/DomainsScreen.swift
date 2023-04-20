@@ -23,4 +23,10 @@ public class DomainsScreen: ScreenObject {
     public static func isLoaded() -> Bool {
         (try? DomainsScreen().isLoaded) ?? false
     }
+
+    @discardableResult
+    public func verifyDomainsScreenLoaded() -> Self {
+        XCTAssertTrue(DomainsScreen.isLoaded(), "\"Domains\" screen isn't loaded.")
+        return self
+    }
 }
