@@ -37,7 +37,8 @@ class DashboardPageCreationCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = Metrics.labelsStackViewSpacing
-        stackView.directionalLayoutMargins = Metrics.labelsStackViewLayoutMargins
+        let layoutMargins = isCompact ? Metrics.labelsStackViewCompactLayoutMargins : Metrics.labelsStackViewLayoutMargins
+        stackView.directionalLayoutMargins = layoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
         let subviews = isCompact ? [createPageButton] : [createPageButton, descriptionLabel]
         stackView.addArrangedSubviews(subviews)
@@ -148,6 +149,7 @@ private extension DashboardPageCreationCell {
         static let mainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         static let labelsStackViewSpacing: CGFloat = 2
         static let labelsStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 15, leading: 0, bottom: 15, trailing: 0)
+        static let labelsStackViewCompactLayoutMargins: NSDirectionalEdgeInsets = .init(top: 15, leading: 0, bottom: 7, trailing: 0)
         static let createPageButtonContentInsets = NSDirectionalEdgeInsets.zero
         static let createPageButtonContentEdgeInsets = UIEdgeInsets.zero
         static let promoImageSize: CGSize = .init(width: 110, height: 80)
