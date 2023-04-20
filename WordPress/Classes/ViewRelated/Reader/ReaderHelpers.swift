@@ -368,9 +368,9 @@ struct ReaderPostMenuButtonTitles {
         let blogName = {
             guard let blogNameForDisplay = post.blogNameForDisplay() else {
                 if let siteID = post.siteID, let postID = post.postID {
-                    WordPressAppDelegate.crashLogging?.logMessage("Expected blogNameForDisplay() to exist",
-                                                                  properties: ["siteID": siteID, "postID": postID],
-                                                                  level: .error)
+                    CrashLogging.main.logMessage("Expected blogNameForDisplay() to exist",
+                                                 properties: ["siteID": siteID, "postID": postID],
+                                                 level: .error)
                 }
                 return NoticeMessages.unknownSiteText
             }
