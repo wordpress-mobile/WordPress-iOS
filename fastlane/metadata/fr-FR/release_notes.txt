@@ -1,1 +1,0 @@
-When you log in to a self-hosted site that connects to Jetpack through individual plugins, you’ll see a pop-up stating that this type of connection doesn’t support the app’s core features yet. You can get around that problem by switching over to the Jetpack app. Up, up, and away.
