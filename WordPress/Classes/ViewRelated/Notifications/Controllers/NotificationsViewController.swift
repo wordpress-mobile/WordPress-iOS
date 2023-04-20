@@ -2071,7 +2071,9 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 extension NotificationsViewController: WPScrollableViewController {
     // Used to scroll view to top when tapping on tab bar item when VC is already visible.
     func scrollViewToTop() {
-        tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        if isViewLoaded {
+            tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        }
     }
 }
 
