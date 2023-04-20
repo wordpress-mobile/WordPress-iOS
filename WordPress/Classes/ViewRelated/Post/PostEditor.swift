@@ -152,6 +152,7 @@ extension PostEditor {
 enum PostEditorEntryPoint: String {
     case unknown
     case postsList
+    case pagesList
     case dashboard
     case bloggingPromptsFeatureIntroduction = "blogging_prompts_introduction"
     case bloggingPromptsActionSheetHeader = "add_new_sheet_answer_prompt"

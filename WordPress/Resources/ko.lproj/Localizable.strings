@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-05 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-04-13 12:13:53+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -9652,6 +9652,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "하루에 적은 금액으로 단 몇 분 만에 글 또는 페이지를 홍보하세요.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "언제든지 캠페인 성과를 추적하고 취소하세요.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "콘텐츠가 수백만 개의 워드프레스 및 Tumblr 사이트에 표시됩니다.";
 
 /* Title for the Blaze overlay. */
@@ -10219,6 +10222,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that prompts users to switch to the Jetpack app. */
 "movedToJetpack.jetpackButtonTitle" = "젯팩 앱으로 전환";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "jetpack.com에서 더 알아보기";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.notifications.title" = "알림이 젯팩 앱으로 이동되었습니다.";

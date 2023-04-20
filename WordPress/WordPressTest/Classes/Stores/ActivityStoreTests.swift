@@ -61,10 +61,10 @@ class ActivityStoreTests: CoreDataTestCase {
 
     // Check if loadMoreActivities keep the activies and add the new retrieved ones
     //
-    func testLoadMoreActivitiesKeepTheExistent() {
+    func testLoadMoreActivitiesKeepTheExistent() throws {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
-        store.state.activities[jetpackSiteRef] = [Activity.mock()]
-        activityServiceMock.activitiesToReturn = [Activity.mock(), Activity.mock()]
+        store.state.activities[jetpackSiteRef] = try [Activity.mock()]
+        activityServiceMock.activitiesToReturn = try [Activity.mock(), Activity.mock()]
         activityServiceMock.hasMore = true
 
         dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: nil, beforeDate: nil, group: []))
@@ -75,10 +75,10 @@ class ActivityStoreTests: CoreDataTestCase {
 
     // resetActivities remove all activities
     //
-    func testResetActivities() {
+    func testResetActivities() throws {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
-        store.state.activities[jetpackSiteRef] = [Activity.mock()]
-        activityServiceMock.activitiesToReturn = [Activity.mock(), Activity.mock()]
+        store.state.activities[jetpackSiteRef] = try [Activity.mock()]
+        activityServiceMock.activitiesToReturn = try [Activity.mock(), Activity.mock()]
         activityServiceMock.hasMore = true
 
         dispatch(.resetActivities(site: jetpackSiteRef))
@@ -90,10 +90,10 @@ class ActivityStoreTests: CoreDataTestCase {
 
     // Check if loadMoreActivities keep the activies and add the new retrieved ones
     //
-    func testReturnOnlyRewindableActivities() {
+    func testReturnOnlyRewindableActivities() throws {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
-        store.state.activities[jetpackSiteRef] = [Activity.mock()]
-        activityServiceMock.activitiesToReturn = [Activity.mock(isRewindable: true), Activity.mock()]
+        store.state.activities[jetpackSiteRef] = try [Activity.mock()]
+        activityServiceMock.activitiesToReturn = try [Activity.mock(isRewindable: true), Activity.mock()]
         activityServiceMock.hasMore = true
 
         store.onlyRestorableItems = true

@@ -323,7 +323,8 @@ class DashboardCardTests: CoreDataTestCase {
         let scheduled = hasScheduled ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let posts = BlogDashboardRemoteEntity.BlogDashboardPosts(hasPublished: hasPublished, draft: drafts, scheduled: scheduled)
         let pages = hasPages ? [BlogDashboardRemoteEntity.BlogDashboardPage()] : []
-        let activity = hasActivity ? [BlogDashboardRemoteEntity.BlogDashboardActivity()] : []
+        let activities = try? [Activity.mock()]
+        let activity = hasActivity ? activities : nil
         return BlogDashboardRemoteEntity(posts: posts, todaysStats: nil, pages: pages, activity: activity)
     }
 

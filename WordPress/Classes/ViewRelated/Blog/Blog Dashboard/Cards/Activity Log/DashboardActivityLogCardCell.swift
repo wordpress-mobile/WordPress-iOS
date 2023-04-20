@@ -10,7 +10,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.title = Strings.title
+        frameView.setTitle(Strings.title)
         return frameView
     }()
 
@@ -100,8 +100,8 @@ extension DashboardActivityLogCardCell {
                                              value: "Recent activity",
                                              comment: "Title for the Activity Log dashboard card.")
         static let allActivity = NSLocalizedString("dashboardCard.ActivityLog.contextMenu.allActivity",
-                                                   value: "Recent activity",
-                                                   comment: "Title for the Activity Log dashboard card.")
+                                                   value: "All activity",
+                                                   comment: "Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen.")
     }
 
     private enum Style {

@@ -7,6 +7,7 @@ import Foundation
         case draft
         case scheduled
         case trashed
+        case allNonTrashed
     }
 
     @objc var hasMore: Bool
@@ -41,6 +42,8 @@ import Foundation
     var sortField: AbstractPost.SortField {
         switch filterType {
         case .draft:
+            fallthrough
+        case .allNonTrashed:
             return .dateModified
         default:
             return .dateCreated
@@ -182,6 +185,36 @@ import Foundation
 
         let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
         filter.accessibilityIdentifier = "trashed"
+
+        return filter
+    }
+
+    @objc class func allNonTrashedFilter() -> PostListFilter {
+        let filterType: Status = .allNonTrashed
+        let statuses: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
+
+        let query =
+            // Existing non-trashed posts
+            "(statusAfterSync = status AND status IN (%@))"
+            // Existing non-trashed posts transitioned to another status but not uploaded yet
+            + " OR (statusAfterSync != status AND statusAfterSync IN (%@))"
+            // Non-trashed posts existing only on the device
+            + " OR (postID = %i AND status IN (%@))"
+            // Include other existing non-trashed posts with `nil` `statusAfterSync`. This is
+            // unlikely but this ensures that those posts will show up somewhere.
+            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
+        let predicate = NSPredicate(format: query,
+                                    statuses.strings,
+                                    statuses.strings,
+                                    BasePost.defaultPostIDValue,
+                                    statuses.strings,
+                                    BasePost.defaultPostIDValue,
+                                    statuses.strings)
+
+        let title = NSLocalizedString("All", comment: "Title of the drafts filter. This filter shows a list of draft posts.")
+
+        let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        filter.accessibilityIdentifier = "all"
 
         return filter
     }

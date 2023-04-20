@@ -28,7 +28,8 @@ class BlogDashboardState {
         !hasCachedData && failedToLoad
     }
 
-    @Atomic var syncingStatuses: [String] = []
+    @Atomic var postsSyncingStatuses: [String] = []
+    @Atomic var pagesSyncingStatuses: [String] = []
 
     private init() { }
 

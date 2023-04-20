@@ -4,7 +4,6 @@
 enum FeatureFlag: Int, CaseIterable {
     case bloggingPrompts
     case bloggingPromptsEnhancements
-    case bloggingPromptsSocial
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -52,8 +51,6 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .bloggingPromptsEnhancements:
             return AppConfiguration.isJetpack
-        case .bloggingPromptsSocial:
-            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -154,8 +151,6 @@ extension FeatureFlag {
             return "Blogging Prompts"
         case .bloggingPromptsEnhancements:
             return "Blogging Prompts Enhancements"
-        case .bloggingPromptsSocial:
-            return "Blogging Prompts Social"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:

@@ -146,7 +146,10 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addHeightObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateCollectionViewHeight(notification:)), name: .postCardTableViewSizeChanged, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.updateCollectionViewHeight(notification:)),
+                                               name: .dashboardCardTableViewSizeChanged,
+                                               object: nil)
     }
 
     private func addWillEnterForegroundObserver() {
