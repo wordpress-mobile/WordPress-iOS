@@ -18,7 +18,7 @@ private struct ElementStringIDs {
     static let switchSiteButton = "SwitchSiteButton"
     static let dashboardButton = "Home"
     static let segmentedControlMenuButton = "Menu"
-    static let domainsCardHeaderButton = "Own your online identity with a custom domain"
+    static let domainsCardHeaderButton = "Find a custom domain"
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
