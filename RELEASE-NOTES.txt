@@ -1,6 +1,6 @@
 22.3
 -----
-* [**] Block Editor: Enable VideoPress block [#20580]
+* [**] Block Editor: Enable VideoPress block (only on Simple WPCOM sites) [#20580]
 
 22.2
 -----
