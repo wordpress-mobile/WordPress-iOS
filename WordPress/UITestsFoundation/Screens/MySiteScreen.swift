@@ -16,8 +16,9 @@ private struct ElementStringIDs {
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
-    static let dashboardButton = "Home Row"
+    static let dashboardButton = "Home"
     static let segmentedControlMenuButton = "Menu"
+    static let domainsCardHeaderButton = "Find a custom domain"
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
@@ -52,12 +53,18 @@ public class MySiteScreen: ScreenObject {
     }
 
     let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells[ElementStringIDs.dashboardButton]
+        $0.buttons[ElementStringIDs.dashboardButton]
     }
 
     let segmentedControlMenuButton: (XCUIApplication) -> XCUIElement = {
         $0.buttons[ElementStringIDs.segmentedControlMenuButton]
     }
+
+    let domainsCardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons[ElementStringIDs.domainsCardHeaderButton]
+    }
+
+    var domainsCardButton: XCUIElement { domainsCardButtonGetter(app) }
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -146,8 +153,9 @@ public class MySiteScreen: ScreenObject {
         return try ActionSheetComponent()
     }
 
-    public func goToHomeScreen() {
+    public func goToHomeScreen() -> Self {
         homeButtonGetter(app).tap()
+        return self
     }
 
     @discardableResult
@@ -169,5 +177,27 @@ public class MySiteScreen: ScreenObject {
 
     public static func isLoaded() -> Bool {
         (try? MySiteScreen().isLoaded) ?? false
+    }
+
+    @discardableResult
+    public func verifyDomainsCard() -> Self {
+        let cardText = app.staticTexts["Stake your claim on your corner of the web with a site address that’s easy to find, share and follow."]
+        XCTAssertTrue(domainsCardButton.waitForIsHittable(), "Domains card header was not displayed.")
+        XCTAssertTrue(cardText.waitForIsHittable(), "Domains card text was not displayed.")
+        return self
+    }
+
+    @discardableResult
+    public func tapDomainsCard() throws -> DomainsScreen {
+        domainsCardButton.tap()
+        return try DomainsScreen()
+    }
+
+    @discardableResult
+    public func scrollToDomainsCard() throws -> Self {
+        let collectionView = app.collectionViews.firstMatch
+        let cardCell = collectionView.cells.containing(.other, identifier: "domains-card-contentview").firstMatch
+        cardCell.scrollIntoView(within: collectionView)
+        return self
     }
 }
