@@ -130,7 +130,7 @@ extension DashboardActivityLogCardCell {
     private func createDataSource() -> DataSource {
         return DataSource(tableView: tableView) { (tableView, indexPath, activity) -> UITableViewCell? in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ActivityTableViewCell.defaultReuseID) as? ActivityTableViewCell else {
-                return UITableViewCell()
+                return nil
             }
 
             let formattableActivity = FormattableActivity(with: activity)
