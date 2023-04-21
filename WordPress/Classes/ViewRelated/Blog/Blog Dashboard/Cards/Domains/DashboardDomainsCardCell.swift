@@ -60,34 +60,21 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
         return label
     }()
 
+    private lazy var dashboardDomainsCardSearchView: UIView = {
+        let searchView = UIView.embedSwiftUIView(DashboardDomainsCardSearchView())
+        searchView.translatesAutoresizingMaskIntoConstraints = false
+        return searchView
+    }()
+
     private lazy var containerStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dashboardIconView, descriptionLabel])
-        stackView.axis = .horizontal
+        let stackView = UIStackView(arrangedSubviews: [dashboardDomainsCardSearchView, descriptionLabel])
+        stackView.axis = .vertical
         stackView.spacing = Metrics.stackViewSpacing
-        stackView.alignment = .center
+        stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.directionalLayoutMargins = Metrics.contentDirectionalLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
-    }()
-
-    private lazy var dashboardIconView: UIView = {
-        let circleView = UIView(frame: .zero)
-        circleView.backgroundColor = .jetpackGreen
-        circleView.layer.cornerRadius = Metrics.iconSize / 2
-        circleView.layer.masksToBounds = true
-        circleView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            circleView.widthAnchor.constraint(equalToConstant: Metrics.iconSize),
-            circleView.heightAnchor.constraint(equalToConstant: Metrics.iconSize)
-        ])
-
-        circleView.addSubview(dashboardIcon)
-        NSLayoutConstraint.activate([
-            dashboardIcon.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            dashboardIcon.centerYAnchor.constraint(equalTo: circleView.centerYAnchor)
-        ])
-        return circleView
     }()
 
     private lazy var dashboardIcon: UIImageView = {
@@ -148,14 +135,12 @@ extension DashboardDomainsCardCell {
     }
 
     private enum Style {
-        static let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         static let descriptionLabelFont = WPStyleGuide.fontForTextStyle(.subheadline)
         static let hideThisImage = UIImage(systemName: "minus.circle")
     }
 
     private enum Metrics {
-        static let stackViewSpacing = 16.0
-        static let iconSize = 40.0
+        static let stackViewSpacing: CGFloat = -20 // Negative since the views should overlap
         static let contentDirectionalLayoutMargins = NSDirectionalEdgeInsets(top: 8.0,
                                                                              leading: 16.0,
                                                                              bottom: 8.0,
@@ -163,8 +148,8 @@ extension DashboardDomainsCardCell {
     }
 
     private enum Strings {
-        static let title = NSLocalizedString("domain.dashboard.card.title",
-                                             value: "Own your online identity with a custom domain",
+        static let title = NSLocalizedString("domain.dashboard.card.shortTitle",
+                                             value: "Find a custom domain",
                                              comment: "Title for the Domains dashboard card.")
         static let description = NSLocalizedString("domain.dashboard.card.description",
                                                    value: "Stake your claim on your corner of the web with a site address that’s easy to find, share and follow.",
