@@ -7,11 +7,11 @@ final class DomainPurchasingWebFlowController {
     // MARK: - Constants
 
     fileprivate enum Constants {
-        static let checkoutWebAddress = "https://wordpress.com/checkout/"
+        static let wordpressBaseURL = "https://wordpress.com"
+        static let checkoutWebAddress = "\(wordpressBaseURL)/checkout"
         static let storeSandboxCookieName = "store_sandbox"
         static let storeSandboxCookieDomain = ".wordpress.com"
-        static let checkoutSuccessURLPrefix = "https://wordpress.com/checkout/thank-you/"
-        static let checkoutURLPrefix = "https://wordpress.com/checkout"
+        static let checkoutSuccessURLPrefix = "\(checkoutWebAddress)/thank-you/"
     }
 
     // MARK: - Dependencies
@@ -170,7 +170,7 @@ final class DomainPurchasingWebFlowController {
         domain: Domain,
         completion: (Result<String, DomainPurchasingError>) -> Void
     ) {
-        let canOpenNewURL = newURL.absoluteString.starts(with: Constants.checkoutURLPrefix)
+        let canOpenNewURL = newURL.absoluteString.starts(with: Constants.checkoutWebAddress)
         guard canOpenNewURL else {
             let error = DomainPurchasingError.unsupportedRedirect(fromURL: oldURL, toURL: newURL)
             completion(.failure(error))
