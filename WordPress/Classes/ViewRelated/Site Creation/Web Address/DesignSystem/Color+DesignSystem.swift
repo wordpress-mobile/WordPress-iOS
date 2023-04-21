@@ -16,16 +16,8 @@ extension Color {
             static let secondary = Color("backgroundSecondary")
             static let tertiary = Color("backgroundTertiary")
             static let quaternary = Color("backgroundQuaternary")
-        }
 
-        enum Border {
-            static let primary = Color("borderPrimary")
-            static let secondary = Color("borderSecondary")
-            static let divider = Color("borderDivider")
-        }
-
-        enum Theme {
-            static var primary: Color {
+            static var brand: Color {
                 if AppConfiguration.isJetpack {
                     return jetpack
                 } else {
@@ -33,7 +25,13 @@ extension Color {
                 }
             }
 
-            private static let jetpack = Color("themeJetpack")
+            private static let jetpack = Color("brandJetpack")
+        }
+
+        enum Border {
+            static let primary = Color("borderPrimary")
+            static let secondary = Color("borderSecondary")
+            static let divider = Color("borderDivider")
         }
     }
 }

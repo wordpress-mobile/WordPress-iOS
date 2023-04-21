@@ -5,20 +5,9 @@ struct ColorGallery: View {
 
     var body: some View {
         List {
-            themeSection
             foregroundSection
             backgroundSection
             borderSection
-        }
-    }
-
-    private var themeSection: some View {
-        Section(header: sectionTitle("Theme")) {
-            listItem(
-                with: "Primary",
-                hexString: hexString(for: .DS.Theme.primary),
-                color: Color.DS.Theme.primary
-            )
         }
     }
 
@@ -44,11 +33,16 @@ struct ColorGallery: View {
                 hexString: hexString(for: .DS.Foreground.quaternary),
                 color: Color.DS.Foreground.quaternary
             )
-            }
+        }
     }
 
     private var backgroundSection: some View {
         Section(header: sectionTitle("Background")) {
+            listItem(
+                with: "Brand",
+                hexString: hexString(for: .DS.Background.brand),
+                color: Color.DS.Background.brand
+            )
             listItem(
                 with: "Primary",
                 hexString: hexString(for: .DS.Background.primary),

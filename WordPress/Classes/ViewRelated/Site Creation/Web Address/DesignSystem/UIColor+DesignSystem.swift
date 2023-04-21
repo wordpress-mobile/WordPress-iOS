@@ -21,16 +21,8 @@ extension UIColor {
             static let secondary = UIColor(named: "backgroundSecondary")
             static let tertiary = UIColor(named: "backgroundTertiary")
             static let quaternary = UIColor(named: "backgroundQuaternary")
-        }
 
-        enum Border {
-            static let primary = UIColor(named: "borderPrimary")
-            static let secondary = UIColor(named: "borderSecondary")
-            static let divider = UIColor(named: "borderDivider")
-        }
-
-        enum Theme {
-            static var primary: UIColor? {
+            static var brand: UIColor? {
                 if AppConfiguration.isJetpack {
                     return jetpack
                 } else {
@@ -38,7 +30,13 @@ extension UIColor {
                 }
             }
 
-            private static let jetpack = UIColor(named: "themeJetpack")
+            private static let jetpack = UIColor(named: "brandJetpack")
+        }
+
+        enum Border {
+            static let primary = UIColor(named: "borderPrimary")
+            static let secondary = UIColor(named: "borderSecondary")
+            static let divider = UIColor(named: "borderDivider")
         }
     }
 }
