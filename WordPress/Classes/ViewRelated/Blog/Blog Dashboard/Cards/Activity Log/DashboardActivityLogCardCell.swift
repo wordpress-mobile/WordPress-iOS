@@ -79,6 +79,10 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
         configureHeaderAction(for: blog)
         configureContextMenu(for: blog)
+
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown,
+                                            properties: ["type": DashboardCard.activityLog.rawValue],
+                                            blog: blog)
     }
 
     private func configureHeaderAction(for blog: Blog) {

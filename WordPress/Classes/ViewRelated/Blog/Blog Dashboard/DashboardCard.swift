@@ -16,7 +16,7 @@ enum DashboardCard: String, CaseIterable {
     case draftPosts
     case scheduledPosts
     case pages
-    case activityLog
+    case activityLog = "activity_log"
     case nextPost = "create_next"
     case createPost = "create_first"
     case jetpackBadge
