@@ -193,13 +193,14 @@ final class DomainPurchasingWebFlowController {
     /// Metadata to attach to error or track events.
     private func userInfo(domain: DomainSuggestion, site: Blog) -> [String: Any] {
         let homeURL = site.homeURL as String?
-        var userInfo = [String: Any]()
-        userInfo["siteID"] = site.dotComID?.intValue
-        userInfo["siteHomeURL"] = homeURL
-        userInfo["siteHostURL"] = URL(string: homeURL ?? "")?.host
-        userInfo["domainName"] = domain.domainName
-        userInfo["domainSupportsPrivacy"] = domain.supportsPrivacy
-        userInfo["checkoutWebAddress"] = Self.Constants.checkoutWebAddress
+        var userInfo: [String: Any] = [
+            "siteID": site.dotComID?.intValue as Any,
+            "siteHomeURL": homeURL as Any,
+            "siteHostURL": URL(string: homeURL ?? "")?.host as Any,
+            "domainName": domain.domainName,
+            "domainSupportsPrivacy": domain.supportsPrivacy as Any,
+            "checkoutWebAddress": Self.Constants.checkoutWebAddress,
+        ]
         if let presentingViewController {
             userInfo["presentingViewController"] = String(describing: type(of: presentingViewController))
         }
