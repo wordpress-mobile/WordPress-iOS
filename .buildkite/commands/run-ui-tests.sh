@@ -39,11 +39,15 @@ fi
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
-echo "--- LISTING DIR ~/Library/Logs/CoreSimulator"
-ls -Rla ~/Library/Logs/CoreSimulator && zip -rq build/results/core-simulator-crash-files.zip ~/Library/Logs/CoreSimulator/* || true
+echo "--- FOR"
+for file in ~/Library/Logs/DiagnosticReports/*.ips; do cp "$file" "build/results/CRASH_$(basename "$file")"; done
+echo "--- CP"
+cp ~/Library/Logs/DiagnosticReports/*.ips build/results/
 
-echo "--- LISTING DIR ~/Library/Logs/DiagnosticReports/"
-ls -Rla ~/Library/Logs/DiagnosticReports/ && zip -rq build/results/diag-reports-crash-files.zip ~/Library/Logs/DiagnosticReports/* || true
+echo "--- FOR - NO FILES"
+for file in ~/Library/Logs/DiagnosticReports/*.X; do cp "$file" "build/results/CRASH_$(basename "$file")"; done
+echo "--- CP - NO FILES"
+cp ~/Library/Logs/DiagnosticReports/*.X build/results/
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
