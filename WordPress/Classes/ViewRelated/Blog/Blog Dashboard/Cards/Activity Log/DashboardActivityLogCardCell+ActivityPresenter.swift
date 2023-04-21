@@ -12,6 +12,10 @@ extension DashboardActivityLogCardCell: ActivityPresenter {
             return
         }
 
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: ["type": DashboardCard.activityLog.rawValue],
+                          blog: blog)
+
         let detailVC = ActivityDetailViewController.loadFromStoryboard()
         detailVC.site = site
         detailVC.rewindStatus = store.state.rewindStatus[site]
