@@ -192,4 +192,12 @@ public class MySiteScreen: ScreenObject {
         domainsCardButton.tap()
         return try DomainsScreen()
     }
+
+    @discardableResult
+    public func scrollToDomainsCard() throws -> Self {
+        let collectionView = app.collectionViews.firstMatch
+        let cardCell = collectionView.cells.containing(.other, identifier: "domains-card-contentview").firstMatch
+        cardCell.scrollIntoView(within: collectionView)
+        return self
+    }
 }

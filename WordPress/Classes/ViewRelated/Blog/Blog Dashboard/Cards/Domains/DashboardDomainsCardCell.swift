@@ -121,6 +121,7 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
     private func setupView() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Constants.cardFrameConstraintPriority)
+        contentView.accessibilityIdentifier = "domains-card-contentview"
         cardFrameView.add(subview: containerStackView)
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
