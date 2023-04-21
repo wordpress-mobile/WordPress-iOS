@@ -61,7 +61,7 @@ final class DomainPurchasingWebFlowController {
                 }
             }
         }
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController else {
             middleware(.failure(.internal("The presentingViewController is deallocated")))
             return
         }
