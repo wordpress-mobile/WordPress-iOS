@@ -107,7 +107,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     private func attemptSiteCreation() {
         let creationRequest = siteCreator.build()
-        let shouldPerformDomainPurchasingStep = !(siteCreator.address?.isFree ?? false)
+        let shouldPerformDomainPurchasingStep = siteCreator.shouldShowDomainCheckout
         service.createSite(creationRequest: creationRequest) { [weak self] status in
             guard let self = self else {
                 return

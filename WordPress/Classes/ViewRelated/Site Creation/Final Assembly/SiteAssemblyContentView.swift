@@ -140,8 +140,9 @@ final class SiteAssemblyContentView: UIView {
     }
 
     let siteCreator: SiteCreator
+
     private lazy var shouldShowDomainPurchase: Bool = {
-        FeatureFlag.siteCreationDomainPurchasing.enabled && !(siteCreator.address?.isFree ?? false)
+        siteCreator.shouldShowDomainCheckout
     }()
 
     // MARK: SiteAssemblyContentView

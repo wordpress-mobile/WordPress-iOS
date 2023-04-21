@@ -55,6 +55,11 @@ final class SiteCreator {
         information?.title != nil
     }
 
+    /// Flag indicating whether the domain checkout flow should appear or not.
+    var shouldShowDomainCheckout: Bool {
+        return FeatureFlag.siteCreationDomainPurchasing.enabled && !(address?.isFree ?? false)
+    }
+
     /// Returns the domain suggestion if there's one,
     /// - otherwise a site name if there's one,
     /// - otherwise an empty string.
