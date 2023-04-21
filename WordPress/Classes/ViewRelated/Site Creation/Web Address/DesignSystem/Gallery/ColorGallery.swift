@@ -4,11 +4,14 @@ struct ColorGallery: View {
     @SwiftUI.Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        List {
-            foregroundSection
-            backgroundSection
-            borderSection
+        NavigationView {
+            List {
+                foregroundSection
+                backgroundSection
+                borderSection
+            }
         }
+        .navigationTitle("Colors")
     }
 
     private var foregroundSection: some View {

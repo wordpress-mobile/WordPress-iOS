@@ -28,23 +28,6 @@ extension WPStyleGuide {
             return gravatar
         }
 
-        public static func summaryRegularStyle() -> [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: summaryParagraph,
-                     .font: summaryRegularFont,
-                     .foregroundColor: UIColor.text]
-        }
-
-        public static func summaryBoldStyle() -> [NSAttributedString.Key: Any] {
-            return [.paragraphStyle: summaryParagraph,
-                    .font: summaryBoldFont,
-                    .foregroundColor: UIColor.text]
-        }
-
-        public static func timestampStyle() -> [NSAttributedString.Key: Any] {
-            return  [.font: timestampFont,
-                     .foregroundColor: UIColor.textSubtle]
-        }
-
         public static func backgroundColor() -> UIColor {
             return .listForeground
         }
