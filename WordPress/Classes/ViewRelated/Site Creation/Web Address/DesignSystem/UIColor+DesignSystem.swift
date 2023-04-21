@@ -7,22 +7,22 @@ import UIKit
 /// accessing to light or dark variants specifically via trait collection does not return the right values
 /// if the color is initialized as such. Probably one of the reasons why they advise against it.
 /// To make these values non-optional, we use `Color` versions as fallback.
-extension UIColor {
+public extension UIColor {
     enum DS {
-        enum Foreground {
-            static let primary = UIColor(named: "foregroundPrimary")
-            static let secondary = UIColor(named: "foregroundSecondary")
-            static let tertiary = UIColor(named: "foregroundTertiary")
-            static let quaternary = UIColor(named: "backgroundQuaternary")
+        public enum Foreground {
+            public static let primary = UIColor(named: DesignSystemColorNames.Foreground.primary)
+            public static let secondary = UIColor(named: DesignSystemColorNames.Foreground.secondary)
+            public static let tertiary = UIColor(named: DesignSystemColorNames.Foreground.tertiary)
+            public static let quaternary = UIColor(named: DesignSystemColorNames.Foreground.quaternary)
         }
 
-        enum Background {
-            static let primary = UIColor(named: "backgroundPrimary")
-            static let secondary = UIColor(named: "backgroundSecondary")
-            static let tertiary = UIColor(named: "backgroundTertiary")
-            static let quaternary = UIColor(named: "backgroundQuaternary")
+        public enum Background {
+            public static let primary = UIColor(named: DesignSystemColorNames.Background.primary)
+            public static let secondary = UIColor(named: DesignSystemColorNames.Background.secondary)
+            public static let tertiary = UIColor(named: DesignSystemColorNames.Background.tertiary)
+            public static let quaternary = UIColor(named: DesignSystemColorNames.Background.quaternary)
 
-            static var brand: UIColor? {
+            public static var brand: UIColor? {
                 if AppConfiguration.isJetpack {
                     return jetpack
                 } else {
@@ -30,13 +30,13 @@ extension UIColor {
                 }
             }
 
-            private static let jetpack = UIColor(named: "brandJetpack")
+            private static let jetpack = UIColor(named: DesignSystemColorNames.Background.jetpack)
         }
 
-        enum Border {
-            static let primary = UIColor(named: "borderPrimary")
-            static let secondary = UIColor(named: "borderSecondary")
-            static let divider = UIColor(named: "borderDivider")
+        public enum Border {
+            public static let primary = UIColor(named: DesignSystemColorNames.Border.primary)
+            public static let secondary = UIColor(named: DesignSystemColorNames.Border.secondary)
+            public static let divider = UIColor(named: DesignSystemColorNames.Border.divider)
         }
     }
 }
