@@ -34,7 +34,6 @@ extension DashboardActivityLogCardCell: ActivityPresenter {
         }
 
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
-        backupOptionsVC.backupStatusDelegate = self
         backupOptionsVC.presentedFrom = from ?? "dashboard"
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         presentingViewController.present(navigationVC, animated: true)
@@ -60,15 +59,6 @@ extension DashboardActivityLogCardCell: ActivityPresenter {
         restoreOptionsVC.presentedFrom = from ?? "dashboard"
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         presentingViewController.present(navigationVC, animated: true)
-    }
-}
-
-// MARK: - JetpackBackupStatusViewControllerDelegate
-
-extension DashboardActivityLogCardCell: JetpackBackupStatusViewControllerDelegate {
-
-    func didFinishViewing() {
-        // Do nothing
     }
 }
 
