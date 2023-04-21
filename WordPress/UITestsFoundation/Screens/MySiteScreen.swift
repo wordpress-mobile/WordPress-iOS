@@ -196,7 +196,7 @@ public class MySiteScreen: ScreenObject {
     @discardableResult
     public func scrollToDomainsCard() throws -> Self {
         let collectionView = app.collectionViews.firstMatch
-        let cardCell = collectionView.cells.containing(.other, identifier: "domains-card-contentview").firstMatch
+        let cardCell = collectionView.cells.containing(.other, identifier: "dashboard-domains-card-contentview").firstMatch
         cardCell.scrollIntoView(within: collectionView)
         return self
     }
