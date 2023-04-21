@@ -38,6 +38,13 @@ public class PasswordScreen: ScreenObject {
         let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
 
+        // The Simulator might as to save the password which, of course, we don't want to do
+        if app.buttons["Save Password"].waitForExistence(timeout: 5) {
+            // There should be no need to wait for this button to exist since it's part of the same
+            // alert where "Save Password" is.
+            app.buttons["Not Now"].tap()
+        }
+
         return self
     }
 
