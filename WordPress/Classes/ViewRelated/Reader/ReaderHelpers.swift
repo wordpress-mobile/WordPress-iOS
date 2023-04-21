@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import WordPressFlux
+import AutomatticTracks
 
 
 // MARK: - Reader Notifications
