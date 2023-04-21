@@ -568,6 +568,9 @@
 "Add Contents to Post" = "Add Contents to Post";
 
 /* No comment provided by engineer. */
+"Add description" = "Add description";
+
+/* No comment provided by engineer. */
 "ADD IMAGE" = "ADD IMAGE";
 
 /* No comment provided by engineer. */
@@ -638,6 +641,9 @@
 "Add this telephone link" = "Add this telephone link";
 
 /* No comment provided by engineer. */
+"Add title" = "Add title";
+
+/* No comment provided by engineer. */
 "Add To Beginning" = "Add To Beginning";
 
 /* No comment provided by engineer. */
@@ -692,7 +698,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "All";
 
 /* An option in a list. Automatically approve all comments */
@@ -1175,7 +1182,7 @@
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Display your work across millions of sites.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Hide this";
 
 /* Title for the Blaze dashboard card. */
@@ -1269,6 +1276,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's Viewer";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Hide this";
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Dismiss";
@@ -2378,6 +2388,27 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Dashboard";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Recent activity";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Recent activity";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Draft";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "Published";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "Scheduled";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "All pages";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Pages";
+
 /* Title for a threat that includes the number of database rows affected */
 "Database %1$d threats" = "Database %1$d threats";
 
@@ -2499,7 +2530,7 @@
 "Deny" = "Deny";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe the purpose of the image. Leave empty if the image is purely decorative.";
+"Describe the purpose of the image. Leave empty if decorative." = "Describe the purpose of the image. Leave empty if decorative.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2629,6 +2660,15 @@
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "Own your online identity with a custom domain";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "We’ve emailed a receipt to your address on file.";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "It may take up to a day for your blog and your new domain to be fully connected.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "Domain Purchase Complete";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domains";
@@ -2809,6 +2849,9 @@
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicate block";
+
+/* No comment provided by engineer. */
+"Dynamic" = "Dynamic";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "E.g. Fashion, Poetry, Politics";
@@ -4919,6 +4962,9 @@ Please install the %3$@ to use the app with this site.";
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Manage Sites";
 
+/* No comment provided by engineer. */
+"Manual" = "Manual";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manual Offsets";
 
@@ -5087,7 +5133,7 @@ Please install the %3$@ to use the app with this site.";
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "It looks like you still have the WordPress app installed. We recommend you delete the WordPress app to avoid data conflicts.";
+"migration.deleteWordpress.description" = "It looks like you still have the WordPress app installed.";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Got it";
@@ -5096,16 +5142,16 @@ Please install the %3$@ to use the app with this site.";
 "migration.deleteWordpress.secondaryButton" = "Need help?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "You no longer need the WordPress app";
+"migration.deleteWordpress.title" = "You no longer need the WordPress app on your device";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Finish";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "Please delete the WordPress app to avoid data conflicts.";
+"migration.done.footer" = "We recommend uninstalling the WordPress app on your device to avoid data conflicts.";
 
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "delete the WordPress app";
+"migration.done.footer.highlighted" = "uninstalling the WordPress app";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We’ve transferred all your data and settings. Everything is right where you left it.";
@@ -5307,6 +5353,18 @@ Please install the %3$@ to use the app with this site.";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "My Top Ten Cafes";
+
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Content";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Maintenance";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Social";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Traffic";
 
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Work on a draft post";
@@ -6122,10 +6180,16 @@ Please install the %3$@ to use the app with this site.";
 "personalizeHome.cardsSectionHeader" = "Add or hide cards";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Recent activity";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Draft posts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Pages";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "Blogging prompts";
@@ -6172,6 +6236,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* User action to play a video on the editor. */
 "Play video" = "Play video";
+
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Playback Bar Color";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Playback Settings";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Please add some content before trying to publish.";
@@ -6531,6 +6601,9 @@ Please install the %3$@ to use the app with this site.";
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Privacy";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Privacy and Rating";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Privacy notice for California users";
 
@@ -6848,6 +6921,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Remove block" = "Remove block";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Remove blocks";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Remove Featured Image";
@@ -10350,7 +10426,10 @@ from anywhere.";
 "WP-content directory" = "WP-content directory";
 
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Please delete the WordPress app";
+"wp.migration.successCard.description" = "Welcome to the Jetpack app. You can uninstall the WordPress app.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Learn more";
 
 /* Placeholder text for inline compose view */
 "Write a reply" = "Write a reply";
