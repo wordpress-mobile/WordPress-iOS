@@ -227,7 +227,9 @@ private extension PagesCardViewModel {
     }
 
     func trackCardDisplayedIfNeeded() {
-        // TODO: Implement tracking
+        if currentState == .loaded {
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": DashboardCard.pages.rawValue], blog: blog)
+        }
     }
 
     enum Constants {
@@ -250,8 +252,6 @@ extension PagesCardViewModel: DashboardPostsSyncManagerListener {
 
         isSyncing = false
         if success {
-            updateDashboardStateWithSuccessfulSync()
-
             hideLoading()
         }
     }
