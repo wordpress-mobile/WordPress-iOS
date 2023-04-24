@@ -4,6 +4,7 @@ import AutomatticTracks
 // Jetpack is not supported
 enum ABTest: String, CaseIterable {
     case unknown = "unknown"
+    case siteCreationDomainPurchasing = "jpios_site_creation_domain_purchasing_v1"
 
     /// Returns a variation for the given experiment
     var variation: Variation {
