@@ -10,6 +10,14 @@ enum ABTest: String, CaseIterable {
     var variation: Variation {
         return ExPlat.shared?.experiment(self.rawValue) ?? .control
     }
+
+    ///
+    var isTreatmentVariation: Bool {
+        switch variation {
+        case .treatment: return true
+        default: return false
+        }
+    }
 }
 
 extension ABTest {
