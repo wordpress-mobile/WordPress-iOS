@@ -395,7 +395,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 }
 
                 navigationController.present(wizard, animated: true)
-                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+                SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
             })
         }
 

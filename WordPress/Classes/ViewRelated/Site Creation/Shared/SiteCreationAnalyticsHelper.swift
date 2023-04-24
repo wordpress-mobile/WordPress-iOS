@@ -26,6 +26,11 @@ class SiteCreationAnalyticsHelper {
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
 
+    // MARK: - Lifecycle
+    static func trackSiteCreationAccessed(source: String) {
+        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+    }
+
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
         WPAnalytics.track(.enhancedSiteCreationIntentQuestionViewed)
