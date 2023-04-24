@@ -17,8 +17,9 @@ final class DomainsDashboardCardHelper {
         let isAdmin = blog.isAdmin
         let hasOtherDomains = blog.domainsList.count > 0
         let hasDomainCredit = blog.hasDomainCredit
+        let isWPForTeamsSite = blog.isWPForTeams() // P2 site
 
-        return (isHostedAtWPcom || isAtomic) && isAdmin && !hasOtherDomains && !hasDomainCredit
+        return (isHostedAtWPcom || isAtomic) && isAdmin && !hasOtherDomains && !hasDomainCredit && !isWPForTeamsSite
     }
 
     static func hideCard(for blog: Blog?) {
