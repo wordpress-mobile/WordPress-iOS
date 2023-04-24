@@ -125,6 +125,10 @@ class PagesCardViewModel: NSObject {
 
     private func trackCreateSectionTapped() {
         trackCardItemTapped(subtype: Constants.analyticsCreationItemSubtype)
+
+        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
+                          properties: [WPAppAnalyticsKeyTapSource: Constants.analyticsPageCreationSource],
+                          blog: blog)
     }
 
     private func trackCardItemTapped(subtype: String) {
@@ -257,6 +261,7 @@ private extension PagesCardViewModel {
         static let analyticsSubtypeKey = "sub_type"
         static let analyticsPageItemSubtype = "page"
         static let analyticsCreationItemSubtype = "create"
+        static let analyticsPageCreationSource = "pages_card"
     }
 }
 
