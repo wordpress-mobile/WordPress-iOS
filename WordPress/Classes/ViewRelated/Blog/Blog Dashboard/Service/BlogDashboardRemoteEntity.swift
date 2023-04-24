@@ -5,7 +5,7 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     var posts: BlogDashboardPosts?
     var todaysStats: BlogDashboardStats?
     var pages: [BlogDashboardPage]?
-    var activity: [Activity]?
+    var activity: BlogDashboardActivity?
 
     struct BlogDashboardPosts: Decodable, Hashable {
         var hasPublished: Bool?
@@ -31,6 +31,14 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
 
     // We don't rely on the data from the API to show pages
     struct BlogDashboardPage: Decodable, Hashable { }
+
+    struct BlogDashboardActivity: Decodable, Hashable {
+        var current: CurrentActivity?
+
+        struct CurrentActivity: Decodable, Hashable {
+            var orderedItems: [Activity]?
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
         case posts

@@ -309,7 +309,7 @@ class DashboardCardTests: CoreDataTestCase {
         let identifiers = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
 
         // Then
-        XCTAssertEqual(identifiers, ["todays_stats", "posts", "pages"])
+        XCTAssertEqual(identifiers, ["todays_stats", "posts", "pages", "activity"])
     }
 
     // MARK: Helpers
@@ -324,7 +324,8 @@ class DashboardCardTests: CoreDataTestCase {
         let posts = BlogDashboardRemoteEntity.BlogDashboardPosts(hasPublished: hasPublished, draft: drafts, scheduled: scheduled)
         let pages = hasPages ? [BlogDashboardRemoteEntity.BlogDashboardPage()] : []
         let activities = try? [Activity.mock()]
-        let activity = hasActivity ? activities : nil
+        let currentActivity = BlogDashboardRemoteEntity.BlogDashboardActivity.CurrentActivity(orderedItems: activities)
+        let activity = hasActivity ? BlogDashboardRemoteEntity.BlogDashboardActivity(current: currentActivity) : nil
         return BlogDashboardRemoteEntity(posts: posts, todaysStats: nil, pages: pages, activity: activity)
     }
 
