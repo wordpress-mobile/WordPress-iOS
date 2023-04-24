@@ -38,7 +38,7 @@ extension DashboardActivityLogCardCell: ActivityPresenter {
         }
 
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
-        backupOptionsVC.presentedFrom = from ?? Constants.tabSource
+        backupOptionsVC.presentedFrom = from ?? Constants.sourceIdentifier
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         presentingViewController.present(navigationVC, animated: true)
     }
@@ -60,7 +60,7 @@ extension DashboardActivityLogCardCell: ActivityPresenter {
                                                                    isAwaitingCredentials: store.isAwaitingCredentials(site: site))
 
         restoreOptionsVC.restoreStatusDelegate = self
-        restoreOptionsVC.presentedFrom = from ?? Constants.tabSource
+        restoreOptionsVC.presentedFrom = from ?? Constants.sourceIdentifier
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         presentingViewController.present(navigationVC, animated: true)
     }
@@ -72,5 +72,12 @@ extension DashboardActivityLogCardCell: JetpackRestoreStatusViewControllerDelega
 
     func didFinishViewing(_ controller: JetpackRestoreStatusViewController) {
         controller.dismiss(animated: true)
+    }
+}
+
+extension DashboardActivityLogCardCell {
+
+    private enum Constants {
+        static let sourceIdentifier = "dashboard"
     }
 }

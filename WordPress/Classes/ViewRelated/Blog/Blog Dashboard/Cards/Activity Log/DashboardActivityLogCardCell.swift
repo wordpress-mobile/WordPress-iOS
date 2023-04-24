@@ -189,7 +189,7 @@ extension DashboardActivityLogCardCell {
 
 extension DashboardActivityLogCardCell {
 
-    enum Constants {
+    private enum Constants {
         static let maxActivitiesCount = 3
         static let headerTapSource = "activity_card_header"
         static let contextMenuTapSource = "activity_card_context_menu"
