@@ -140,7 +140,7 @@ final class SiteAssemblyWizardContent: UIViewController {
             }
             if status == .succeeded,
                shouldPerformDomainPurchasingStep,
-               let domain = siteCreator.address,
+               let domain = self.siteCreator.address,
                let blog = self.createdBlog {
                 self.attemptDomainPurchasing(domain: domain, site: blog)
             } else {
