@@ -154,12 +154,11 @@ extension DashboardPagesListCardCell: UITableViewDelegate {
               let presentingViewController else {
             return
         }
-        let didOpenEditor = PageEditorPresenter.handle(page: page,
-                                                       in: presentingViewController,
-                                                       entryPoint: .dashboard)
-        if didOpenEditor {
-            // TODO: Track editor opened
-        }
+        PageEditorPresenter.handle(page: page,
+                                   in: presentingViewController,
+                                   entryPoint: .dashboard)
+
+        viewModel?.trackPageTapped()
     }
 
     private func handleCreatePageSectionSelected() {

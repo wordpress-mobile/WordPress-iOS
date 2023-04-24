@@ -116,6 +116,25 @@ class PagesCardViewModel: NSObject {
             let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content, appliedTemplate: selectedLayout?.slug)
             viewController.present(editorViewController, animated: false)
         }
+        trackCreateSectionTapped()
+    }
+
+    func trackPageTapped() {
+        trackCardItemTapped(subtype: Constants.analyticsPageItemSubtype)
+    }
+
+    private func trackCreateSectionTapped() {
+        trackCardItemTapped(subtype: Constants.analyticsCreationItemSubtype)
+    }
+
+    private func trackCardItemTapped(subtype: String) {
+        let properties = [
+            Constants.analyticsTypeKey: DashboardCard.pages.rawValue,
+            Constants.analyticsSubtypeKey: subtype
+        ]
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: properties,
+                          blog: blog)
     }
 
     func tearDown() {
@@ -234,6 +253,10 @@ private extension PagesCardViewModel {
 
     enum Constants {
         static let numberOfPages = 3
+        static let analyticsTypeKey = "type"
+        static let analyticsSubtypeKey = "sub_type"
+        static let analyticsPageItemSubtype = "page"
+        static let analyticsCreationItemSubtype = "create"
     }
 }
 

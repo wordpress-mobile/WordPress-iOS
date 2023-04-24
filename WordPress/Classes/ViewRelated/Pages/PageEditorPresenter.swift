@@ -2,6 +2,7 @@ import Foundation
 import WordPressFlux
 
 struct PageEditorPresenter {
+    @discardableResult
     static func handle(page: Page, in presentingViewController: UIViewController, entryPoint: PostEditorEntryPoint) -> Bool {
         guard !page.isSitePostsPage else {
             showSitePostPageUneditableNotice()
