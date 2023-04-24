@@ -1971,7 +1971,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
     
     [WPAnalytics track:WPAnalyticsStatActivityLogViewed
-                 withProperties:@{WPAppAnalyticsKeyTabSource: @"site_menu"}];
+                 withProperties:@{WPAppAnalyticsKeyTapSource: @"site_menu"}];
 }
 
 - (void)showBlaze

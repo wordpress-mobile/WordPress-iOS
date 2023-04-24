@@ -87,7 +87,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
     private func configureHeaderAction(for blog: Blog) {
         cardFrameView.onHeaderTap = { [weak self] in
-            self?.showActivityLog(for: blog)
+            self?.showActivityLog(for: blog, tapSource: Constants.headerTapSource)
         }
     }
 
@@ -100,7 +100,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
         let activityAction = UIAction(title: Strings.allActivity,
                                       image: Style.allActivityImage,
-                                      handler: { [weak self] _ in self?.showActivityLog(for: blog) })
+                                      handler: { [weak self] _ in self?.showActivityLog(for: blog, tapSource: Constants.contextMenuTapSource) })
 
         // Wrap the activity action in a menu to display a divider between the activity action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
@@ -118,7 +118,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
     // MARK: - Navigation
 
-    private func showActivityLog(for blog: Blog) {
+    private func showActivityLog(for blog: Blog, tapSource: String) {
         guard let activityLogController = JetpackActivityLogViewController(blog: blog) else {
             return
         }
@@ -126,8 +126,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
         WPAnalytics.track(.activityLogViewed,
                           withProperties: [
-                            WPAppAnalyticsKeyTabSource: Constants.tabSource,
-                            WPAppAnalyticsKeyTapSource: Constants.tapSource
+                            WPAppAnalyticsKeyTapSource: tapSource
                           ])
     }
 
@@ -192,8 +191,8 @@ extension DashboardActivityLogCardCell {
 
     enum Constants {
         static let maxActivitiesCount = 3
-        static let tabSource = "dashboard"
-        static let tapSource = "activity_log_card"
+        static let headerTapSource = "activity_card_header"
+        static let contextMenuTapSource = "activity_card_context_menu"
     }
 
     private enum Strings {
