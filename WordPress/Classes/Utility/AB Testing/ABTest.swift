@@ -11,7 +11,7 @@ enum ABTest: String, CaseIterable {
         return ExPlat.shared?.experiment(self.rawValue) ?? .control
     }
 
-    ///
+    /// Flag indicating whether the experiment's variation is treament or not.
     var isTreatmentVariation: Bool {
         switch variation {
         case .treatment: return true
