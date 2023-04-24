@@ -123,6 +123,12 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
             return
         }
         presentingViewController?.navigationController?.pushViewController(activityLogController, animated: true)
+
+        WPAnalytics.track(.activityLogViewed,
+                          withProperties: [
+                            WPAppAnalyticsKeyTabSource: Constants.tabSource,
+                            WPAppAnalyticsKeyTapSource: Constants.tapSource
+                          ])
     }
 
 }
@@ -184,8 +190,10 @@ extension DashboardActivityLogCardCell {
 
 extension DashboardActivityLogCardCell {
 
-    private enum Constants {
+    enum Constants {
         static let maxActivitiesCount = 3
+        static let tabSource = "dashboard"
+        static let tapSource = "activity_log_card"
     }
 
     private enum Strings {
