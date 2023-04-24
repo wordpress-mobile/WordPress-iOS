@@ -226,13 +226,6 @@ private extension PagesCardViewModel {
         }
     }
 
-    func updateDashboardStateWithSuccessfulSync() {
-        // TODO: Do something like this:
-        // blog.dashboardState.pagesSynced = true
-        // This will be needed if we need to determine if there are pages
-        // or not while parsing the cards endpoint response
-    }
-
     func trackCardDisplayedIfNeeded() {
         // TODO: Implement tracking
     }
