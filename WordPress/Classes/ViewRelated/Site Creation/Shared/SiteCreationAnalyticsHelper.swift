@@ -25,10 +25,30 @@ class SiteCreationAnalyticsHelper {
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
+    private static let treatmentVariationValue = "treatment_variation_value"
 
     // MARK: - Lifecycle
     static func trackSiteCreationAccessed(source: String) {
         WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+
+            let domainPurchasingExperimentProperties: [String: String] = {
+                var dict: [String: String]
+                switch ABTest.siteCreationDomainPurchasing.variation {
+                case .control:
+                    dict = [Self.variationKey: "control"]
+                case .treatment(let val):
+                    dict = [Self.variationKey: "treatment"]
+                    if let val {
+                        dict[Self.treatmentVariationValue] = val
+                    }
+                }
+                return dict
+            }()
+
+            Self.track(.domainPurchasingExperiment, properties: domainPurchasingExperimentProperties)
+        }
     }
 
     // MARK: - Site Intent
@@ -142,6 +162,11 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
+    private static func track(_ event: SiteCreationAnalyticsEvent, properties: [String: String] = [:]) {
+        let event = AnalyticsEvent(name: event.rawValue, properties: properties)
+        WPAnalytics.track(event)
+    }
+
     private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
         var result: [AnyHashable: Any] = [:]
 
