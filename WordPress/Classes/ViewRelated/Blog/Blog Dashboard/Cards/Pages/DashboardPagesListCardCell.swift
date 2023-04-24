@@ -73,7 +73,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 
     private func configureHeaderAction() {
         cardFrameView.onHeaderTap = { [weak self] in
-            self?.showPagesList()
+            self?.showPagesList(source: .header)
         }
     }
 }
@@ -111,7 +111,7 @@ extension DashboardPagesListCardCell {
     private func makeAllPagesAction() -> UIMenuElement {
         let allPagesAction = UIAction(title: Strings.allPages,
                                       image: Style.allPagesImage,
-                                      handler: { _ in self.showPagesList() })
+                                      handler: { _ in self.showPagesList(source: .contextMenu) })
 
         // Wrap the pages action in a menu to display a divider between the pages action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
@@ -128,11 +128,14 @@ extension DashboardPagesListCardCell {
 
     // MARK: Actions
 
-    private func showPagesList() {
+    private func showPagesList(source: PagesListSource) {
         guard let blog, let presentingViewController else {
             return
         }
         PageListViewController.showForBlog(blog, from: presentingViewController)
+        WPAppAnalytics.track(.openedPages,
+                             withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: source.rawValue],
+                             with: blog)
     }
 }
 
@@ -179,6 +182,11 @@ extension DashboardPagesListCardCell {
 }
 
 private extension DashboardPagesListCardCell {
+
+    enum PagesListSource: String {
+        case header = "pages_card_header"
+        case contextMenu = "pages_card_context_menu"
+    }
 
     enum Strings {
         static let title = NSLocalizedString("dashboardCard.Pages.title",
