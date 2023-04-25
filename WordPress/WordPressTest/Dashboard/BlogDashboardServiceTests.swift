@@ -45,7 +45,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages", "activity"])
             expect.fulfill()
         }
 
@@ -122,7 +122,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertNotNil(activityCardItem)
 
             // 2 activity items
-            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.count, 2)
+            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.current!.orderedItems!.count, 2)
 
             expect.fulfill()
         }

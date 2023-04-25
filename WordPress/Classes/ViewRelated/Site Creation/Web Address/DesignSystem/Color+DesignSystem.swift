@@ -1,17 +1,62 @@
 import SwiftUI
 
-extension Color {
+/// Design System Color extensions. Keep it in sync with its sibling file `UIColor+DesignSystem`
+/// to support borth API's equally.
+public extension Color {
     enum DS {
-        enum Foreground {
-            static let primary = Color("foregroundPrimary")
-            static let secondary = Color("foregroundSecondary")
-            static let tertiary = Color("foregroundTertiary")
+        public enum Foreground {
+            public static let primary = Color(DesignSystemColorNames.Foreground.primary)
+            public static let secondary = Color(DesignSystemColorNames.Foreground.secondary)
+            public static let tertiary = Color(DesignSystemColorNames.Foreground.tertiary)
+            public static let quaternary = Color(DesignSystemColorNames.Foreground.quaternary)
         }
 
-        enum Background {
-            static let primary = Color("backgroundPrimary")
-            static let secondary = Color("backgroundSecondary")
-            static let tertiary = Color("backgroundTertiary")
+        public enum Background {
+            public static let primary = Color(DesignSystemColorNames.Background.primary)
+            public static let secondary = Color(DesignSystemColorNames.Background.secondary)
+            public static let tertiary = Color(DesignSystemColorNames.Background.tertiary)
+            public static let quaternary = Color(DesignSystemColorNames.Background.quaternary)
+
+            public static var brand: Color {
+                if AppConfiguration.isJetpack {
+                    return jetpack
+                } else {
+                    return jetpack // FIXME: WordPress colors
+                }
+            }
+
+            private static let jetpack = Color(DesignSystemColorNames.Background.jetpack)
         }
+
+        public enum Border {
+            public static let primary = Color(DesignSystemColorNames.Border.primary)
+            public static let secondary = Color(DesignSystemColorNames.Border.secondary)
+            public static let divider = Color(DesignSystemColorNames.Border.divider)
+        }
+    }
+}
+
+/// Once we move Design System to its own module, we should keep this `internal`
+/// as we don't need to expose it to the application module
+internal enum DesignSystemColorNames {
+    internal enum Foreground {
+        internal static let primary = "foregroundPrimary"
+        internal static let secondary = "foregroundSecondary"
+        internal static let tertiary = "foregroundTertiary"
+        internal static let quaternary = "foregroundQuaternary"
+    }
+
+    internal enum Background {
+        internal static let primary = "backgroundPrimary"
+        internal static let secondary = "backgroundSecondary"
+        internal static let tertiary = "backgroundTertiary"
+        internal static let quaternary = "backgroundQuaternary"
+        internal static let jetpack = "brandJetpack"
+    }
+
+    internal enum Border {
+        internal static let primary = "borderPrimary"
+        internal static let secondary = "borderSecondary"
+        internal static let divider = "borderDivider"
     }
 }

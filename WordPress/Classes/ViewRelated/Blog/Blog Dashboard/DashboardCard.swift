@@ -16,7 +16,7 @@ enum DashboardCard: String, CaseIterable {
     case draftPosts
     case scheduledPosts
     case pages
-    case activityLog
+    case activityLog = "activity_log"
     case nextPost = "create_next"
     case createPost = "create_first"
     case jetpackBadge
@@ -129,7 +129,7 @@ enum DashboardCard: String, CaseIterable {
         case .pages:
             return true
         case .activityLog:
-            return true // FIXME: hide card if there's no activities
+            return apiResponse.hasActivities
         default:
             return false
         }
@@ -152,24 +152,28 @@ enum DashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
         case pages
-//        case activity // TODO: Uncomment this when activity log support is added to the endpoint
+        case activity
     }
 }
 
 private extension BlogDashboardRemoteEntity {
-     var hasDrafts: Bool {
-         return (self.posts?.draft?.count ?? 0) > 0
-     }
+    var hasDrafts: Bool {
+        return (self.posts?.draft?.count ?? 0) > 0
+    }
 
-     var hasScheduled: Bool {
-         return (self.posts?.scheduled?.count ?? 0) > 0
-     }
+    var hasScheduled: Bool {
+        return (self.posts?.scheduled?.count ?? 0) > 0
+    }
 
-     var hasNoDraftsOrScheduled: Bool {
-         return !hasDrafts && !hasScheduled
-     }
+    var hasNoDraftsOrScheduled: Bool {
+        return !hasDrafts && !hasScheduled
+    }
 
-     var hasPublished: Bool {
-         return self.posts?.hasPublished ?? true
-     }
- }
+    var hasPublished: Bool {
+        return self.posts?.hasPublished ?? true
+    }
+
+    var hasActivities: Bool {
+        return (self.activity?.current?.orderedItems?.count ?? 0) > 0
+    }
+}

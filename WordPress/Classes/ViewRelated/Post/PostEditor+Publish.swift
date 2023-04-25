@@ -47,6 +47,8 @@ protocol PublishingEditor where Self: UIViewController {
     var debouncer: Debouncer { get }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
+
+    func emitPostSaveEvent()
 }
 
 var postPublishedReceipt: Receipt?
@@ -54,7 +56,11 @@ var postPublishedReceipt: Receipt?
 extension PublishingEditor {
 
     func publishingDismissed() {
+        // Default implementation is empty, can be optionally implemented by other classes.
+    }
 
+    func emitPostSaveEvent() {
+        // Default implementation is empty, can be optionally implemented by other classes.
     }
 
     func removeFailedMedia() {
@@ -139,6 +145,8 @@ extension PublishingEditor {
             self.post.isFirstTimePublish = action == .publish || action == .publishNow
 
             self.post.shouldAttemptAutoUpload = true
+
+            emitPostSaveEvent()
 
             if let analyticsStat = analyticsStat {
                 if self is StoryEditor {

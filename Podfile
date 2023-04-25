@@ -20,9 +20,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 2.0-beta'
+  # pod 'WordPressShared', '~> 2.0-beta'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', tag: ''
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
+  pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
@@ -91,7 +91,7 @@ def shared_style_pods
 end
 
 def gutenberg_pods
-  gutenberg tag: 'v1.93.0'
+  gutenberg tag: 'v1.94.0-alpha2'
 end
 
 def gutenberg(options)
