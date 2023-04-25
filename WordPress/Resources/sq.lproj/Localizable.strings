@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-22 13:03:16+0000 */
+/* Translation-Revision-Date: 2023-04-19 08:22:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sq_AL */
@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Shto këtë lidhje telefoni";
 
+/* No comment provided by engineer. */
+"Add title" = "Shtoni titull";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Shtim veçorish sajti";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Krejt";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -2354,9 +2358,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Mohoje";
-
-/* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Përshkruani qëllimin e figurës. Lëreni të zbrazët, nëse figura është thjesht dekorative.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -6478,6 +6479,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Kërkoni për një përkatësi";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Kërkoni për një fjalëkyç të shkurtër dhe që mund të mbahet mend, për t’i ndihmuar njerëzit të gjejnë dhe vizitojnë sajtin tuaj.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Fushë dhëniesh kërkimi.";
 
@@ -9621,7 +9625,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Shfaqeni punën tuaj nëpër miliona sajte.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Fshihe këtë";
 
 /* Title for the Blaze dashboard card. */
@@ -9680,6 +9684,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Provojeni tani";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Shtoni karta që përkojnë me nevojat tuaja, për të parë hollësi rreth sajtit tuaj.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Pa skeda për shfaqje";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personalizoni skedën tuaj krye";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Parametrat e anashkaluar tregohen me një shenjë.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Anashkaloni parametrin e zgjedhur duke përcaktuar këtu një vlerë të re.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Pa vlerë të largët, apo fillestare";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Formësim Së Largëti";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Afirmoni pretendimin tuaj për qoshen tuaj në internet, me një adresë sajti që është kollaj të gjendet, jepet dhe ndiqet.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Fshihe këtë";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.title" = "Bëhuni zot i identitetin tuaj internetor, përmes një përkatësie vetjake";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "që të ndryshoni njësinë, prekeni dy herë";
@@ -9974,6 +10008,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "U bë";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Lidhni llogarinë tuaj të përdoruesit";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "Që të merrni nga sajti juaj WordPress njoftime të dobishme në telefonin tuaj, do t’ju duhet të lidheni me llogarinë tuaj të përdoruesit.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "Që të përdorni statistika në sajtin tuaj, do t’ju duhet të lidhni shtojcën Jetpack me llogarinë tuaj të përdoruesit.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të kalohen së shpejti te aplikacioni Jetpack për celular.";
 
@@ -10076,26 +10119,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Duket sikur keni ende të instaluar aplikacionin WordPress. Rekomandojmë ta fshini aplikacionin WordPress, për të shmangur përplasje të dhënash.";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "E kuptova";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Ju duhet ndihmë?";
 
-/* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "S’ju duhet më aplikacioni WordPress";
-
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Përfundoje";
-
-/* Footer for the migration done screen. */
-"migration.done.footer" = "Ju lutemi, fshijeni aplikacionin WordPress, që të shmangen përplasje të dhënash.";
-
-/* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "fshije aplikacionin WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Kemi shpërngulur krejt të dhënat dhe rregullimet tuaja. Gjithçka është mu atje ku e latë.";
@@ -10211,6 +10242,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "password" = "fjalëkalim";
 
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Kartat mund të shfaqin lëndë të ndryshme, në varësi të çka ndodh në sajtin tuaj. Po punojmë për më tepër karta dhe kontrolle.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Shtoni ose fshihni karta";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Hartoni postime";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Cytje blogimi";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Postime të planifikuara";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Statistika për sot";
+
+/* Page title */
+"personalizeHome.title" = "Personalizoni Skedën Krye";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numër telefoni";
 
@@ -10228,6 +10280,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovojeni me Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Për t’i aktivizuar, vizitoni Rregullime Sajti";
@@ -10303,6 +10358,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Gabim Gjatë Ndarjes Me të Tjerë";
+
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/emriisajtittuaj.com";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Në ngjashmëri me shembullin më sipër, një përkatësi u lejon njerëzve të gjejnë dhe vizitojnë sajtin tuaj që nga shfletuesi.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "EmriiSajtitTuaj.com";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Shfaq cytje";
@@ -10619,8 +10683,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sajte, sajt, blogje, blog";
 
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Ju lutemi, fshini aplikacionin WordPress";
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Kaloni te aplikacioni Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Vazhdo pa Jetpack-un";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ po përdor shtojca individuale Jetpack, çka nuk mbulohet nga Aplikacioni WordPress.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ po përdor shtojcën %2$@, çka nuk mbulohet nga Aplikacioni WordPress.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Ju lutemi, kaloni te aplikacioni Jetpack, prej nga do t’ju udhëheqin përmes lidhjes së shtojcës së plotë Jetpack, që të mund të përdorni për këtë sajt krejt veçoritë e aplikacionit.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Na ndjeni, ky sajt nuk mbulohet nga aplikacioni WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "sajti juaj";

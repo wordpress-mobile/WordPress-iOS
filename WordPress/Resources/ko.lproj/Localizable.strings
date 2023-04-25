@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "이 전화번호 링크 추가하기";
 
+/* No comment provided by engineer. */
+"Add title" = "제목 추가하기";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "사이트 기능 추가";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "모든";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -2360,9 +2364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "거부하기";
-
-/* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "이미지의 용도를 설명합니다. 이미지가 장식용이면 비워둡니다.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -9639,7 +9640,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "수백만 개 사이트에 작업을 표시하세요.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "숨기기";
 
 /* Title for the Blaze dashboard card. */
@@ -10142,26 +10143,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "아직 워드프레스 앱이 설치되어 있는 것 같습니다. 데이터가 충돌하지 않도록 워드프레스 앱을 삭제하는 것이 좋습니다.";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "알겠습니다.";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "도움말이 필요하신가요?";
 
-/* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "더는 워드프레스 앱 필요 없음";
-
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "마침";
-
-/* Footer for the migration done screen. */
-"migration.done.footer" = "데이터가 충돌하지 않도록 워드프레스 앱을 삭제하세요.";
-
-/* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "워드프레스 앱 삭제";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "모든 데이터와 설정을 이전하겠습니다. 모든 것이 그대로 다 남아 있습니다.";
@@ -10741,9 +10730,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "죄송합니다. 이 사이트는 워드프레스 앱에서 지원되지 않습니다.";
-
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "워드프레스 앱 삭제 요망";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "내 사이트";

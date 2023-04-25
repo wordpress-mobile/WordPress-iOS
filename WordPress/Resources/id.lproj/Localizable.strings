@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Tambahkan link telepon ini";
 
+/* No comment provided by engineer. */
+"Add title" = "Tambahkan judul";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Menambahkan fitur situs";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Semua";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -2360,9 +2364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Tolak";
-
-/* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Jelaskan maksud gambar tersebut. Biarkan kosong jika gambar hanya hiasan.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -9639,7 +9640,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Tunjukkan karya Anda di jutaan situs.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Tutup";
 
 /* Title for the Blaze dashboard card. */
@@ -10142,26 +10143,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Tutup";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Aplikasi WordPress sepertinya masih terinstal. Kami sarankan untuk menghapus aplikasi WordPress guna mencegah terjadinya konflik data.";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Saya mengerti";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Butuh bantuan?";
 
-/* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Anda tidak lagi membutuhkan aplikasi WordPress";
-
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Selesai";
-
-/* Footer for the migration done screen. */
-"migration.done.footer" = "Harap hapus aplikasi WordPress untuk mencegah terjadinya konflik data.";
-
-/* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "hapus aplikasi WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Kami telah mentransfer semua data dan pengaturan Anda. Semua percis seperti terakhir Anda tinggalkan.";
@@ -10741,9 +10730,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Maaf, situs ini tidak didukung oleh aplikasi WordPress";
-
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Harap hapus aplikasi WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "situs Anda";

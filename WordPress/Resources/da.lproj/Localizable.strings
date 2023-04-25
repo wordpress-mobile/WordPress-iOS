@@ -45,6 +45,9 @@
 /* No comment provided by engineer. */
 "Add alt text" = "Tilføj alternativ tekst";
 
+/* No comment provided by engineer. */
+"Add title" = "Tilføj en titel";
+
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avanceret";
 

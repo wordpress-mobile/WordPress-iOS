@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Añadir este enlace de teléfono";
 
+/* No comment provided by engineer. */
+"Add title" = "Añadir título";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Añadiendo las características del sitio";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Todo";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -2360,9 +2364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Denegar";
-
-/* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Describe el propósito de la imagen. Déjalo vacío si la imagen es puramente decorativa.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -9639,7 +9640,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Muestra tu trabajo en millones de sitios";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Ocultar esto";
 
 /* Title for the Blaze dashboard card. */
@@ -10142,26 +10143,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Descartar";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Parece que tienes instalada la aplicación de WordPress. Te recomendamos que elimines la aplicación de WordPress para evitar conflictos de datos.";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "De acuerdo";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "¿Necesitas ayuda?";
 
-/* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Ya no necesitas la aplicación de WordPress";
-
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Terminar";
-
-/* Footer for the migration done screen. */
-"migration.done.footer" = "Elimina la aplicación de WordPress para evitar conflictos de datos.";
-
-/* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "eliminar la aplicación de WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Hemos transferido todos tus datos y ajustes. Todo está tal y como lo dejaste.";
@@ -10741,9 +10730,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Lo siento, esto no es compatible con la aplicación WordPress";
-
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Elimina la aplicación de WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "tu sitio";

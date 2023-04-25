@@ -184,6 +184,9 @@
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Adicionar etiquetas";
 
+/* No comment provided by engineer. */
+"Add title" = "Adicionar título";
+
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Endereço";
@@ -203,7 +206,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Tudo";
 
 /* An option in a list. Automatically approve all comments */

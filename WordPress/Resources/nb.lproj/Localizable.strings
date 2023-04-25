@@ -438,6 +438,9 @@ translators: Block name. %s: The localized block name */
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Legg til stikkord";
 
+/* No comment provided by engineer. */
+"Add title" = "Legg til tittel";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Legger til funksjoner";
 
@@ -469,7 +472,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alle";
 
 /* Footer of the free domain registration section for a paid plan.
