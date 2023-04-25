@@ -12,13 +12,10 @@ import Foundation
             return false
         }
 
-        let isHostedAtWPcom = blog.isHostedAtWPcom
-        let isAtomic = blog.isAtomic()
-        let isAdmin = blog.isAdmin
         let hasOtherDomains = blog.domainsList.count > 0
         let hasDomainCredit = blog.hasDomainCredit
 
-        return (isHostedAtWPcom || isAtomic) && isAdmin && !hasOtherDomains && !hasDomainCredit
+        return blog.supports(.domains) && !hasOtherDomains && !hasDomainCredit
     }
 
     static func hideCard(for blog: Blog?) {
