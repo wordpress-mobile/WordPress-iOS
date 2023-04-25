@@ -71,7 +71,7 @@ class BlogDashboardCardFrameView: UIView {
         button.setTitle("\(Strings.newLabel) ✨", for: .normal)
         button.setTitleColor(.text, for: .normal)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         button.backgroundColor = Colors.newButtonBackgroundColor
         button.layer.cornerRadius = Constants.newButtonCornerRadius
         button.contentEdgeInsets = Constants.newButtonInsets
@@ -272,7 +272,7 @@ class BlogDashboardCardFrameView: UIView {
         static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         static let buttonContainerStackViewPadding: CGFloat = 8
         static let mainStackViewTrailingPadding: CGFloat = 32
-        static let newButtonInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 4).flippedForRightToLeft
+        static let newButtonInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 6).flippedForRightToLeft
         static let newButtonCornerRadius: CGFloat = 4
     }
 
