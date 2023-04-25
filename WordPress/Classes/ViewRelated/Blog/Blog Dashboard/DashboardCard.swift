@@ -84,8 +84,10 @@ enum DashboardCard: String, CaseIterable {
             return JetpackInstallPluginHelper.shouldShowCard(for: blog)
         case .quickStart:
             return QuickStartTourGuide.quickStartEnabled(for: blog) && mySiteSettings.defaultSection == .dashboard
-        case .draftPosts, .scheduledPosts, .todaysStats:
+        case .draftPosts, .scheduledPosts:
             return shouldShowRemoteCard(apiResponse: apiResponse)
+        case .todaysStats:
+            return DashboardStatsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .nextPost, .createPost:
             return !DashboardPromptsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
@@ -125,9 +127,9 @@ enum DashboardCard: String, CaseIterable {
         case .createPost:
             return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
         case .todaysStats:
-            return true
+            return apiResponse.hasStats
         case .pages:
-            return true
+            return apiResponse.hasPages
         case .activityLog:
             return apiResponse.hasActivities
         default:
@@ -153,16 +155,29 @@ enum DashboardCard: String, CaseIterable {
         case posts
         case pages
         case activity
+
+        func supported(by blog: Blog) -> Bool {
+            switch self {
+            case .todaysStats:
+                return DashboardStatsCardCell.shouldShowCard(for: blog)
+            case .posts:
+                return true
+            case .pages:
+                return DashboardPagesListCardCell.shouldShowCard(for: blog)
+            case .activity:
+                return DashboardActivityLogCardCell.shouldShowCard(for: blog)
+            }
+        }
     }
 }
 
 private extension BlogDashboardRemoteEntity {
     var hasDrafts: Bool {
-        return (self.posts?.draft?.count ?? 0) > 0
+        return (self.posts?.value?.draft?.count ?? 0) > 0
     }
 
     var hasScheduled: Bool {
-        return (self.posts?.scheduled?.count ?? 0) > 0
+        return (self.posts?.value?.scheduled?.count ?? 0) > 0
     }
 
     var hasNoDraftsOrScheduled: Bool {
@@ -170,10 +185,18 @@ private extension BlogDashboardRemoteEntity {
     }
 
     var hasPublished: Bool {
-        return self.posts?.hasPublished ?? true
+        return self.posts?.value?.hasPublished ?? true
+    }
+
+    var hasPages: Bool {
+        return self.pages?.value != nil
+    }
+
+    var hasStats: Bool {
+        return self.todaysStats?.value != nil
     }
 
     var hasActivities: Bool {
-        return (self.activity?.current?.orderedItems?.count ?? 0) > 0
+        return (self.activity?.value?.current?.orderedItems?.count ?? 0) > 0
     }
-}
+ }

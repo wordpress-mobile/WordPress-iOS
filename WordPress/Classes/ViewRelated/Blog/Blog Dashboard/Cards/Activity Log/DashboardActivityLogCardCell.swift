@@ -75,7 +75,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         tableView.dataSource = dataSource
-        updateDataSource(with: apiResponse?.activity?.current?.orderedItems ?? [])
+        updateDataSource(with: apiResponse?.activity?.value?.current?.orderedItems ?? [])
 
         configureHeaderAction(for: blog)
         configureContextMenu(for: blog)

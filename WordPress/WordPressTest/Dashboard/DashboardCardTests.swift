@@ -18,7 +18,7 @@ class DashboardCardTests: CoreDataTestCase {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        blog = BlogBuilder(mainContext).build()
+        blog = BlogBuilder(mainContext).withAnAccount().build()
         blog.isAdmin = true
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
@@ -73,15 +73,26 @@ class DashboardCardTests: CoreDataTestCase {
 
     // MARK: Stats
 
-    func testShouldAlwaysShowStatsCard() {
+    func testShouldShowStatsCard() {
         // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
+        let apiResponse = buildEntity(hasStats: true)
 
         // When
         let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: apiResponse)
 
         // Then
         XCTAssertTrue(shouldShow)
+    }
+
+    func testShouldNotShowStatsCard() {
+        // Given
+        let apiResponse = buildEntity(hasStats: false)
+
+        // When
+        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertFalse(shouldShow)
     }
 
     // MARK: Ghost
@@ -314,19 +325,23 @@ class DashboardCardTests: CoreDataTestCase {
 
     // MARK: Helpers
 
-    private func buildEntity(hasDrafts: Bool = false,
+    private func buildEntity(hasStats: Bool = false,
+                             hasDrafts: Bool = false,
                              hasScheduled: Bool = false,
                              hasPublished: Bool = false,
                              hasPages: Bool = false,
                              hasActivity: Bool = false) -> BlogDashboardRemoteEntity {
+        let stats = hasStats ? FailableDecodable(value: BlogDashboardRemoteEntity.BlogDashboardStats(views: 1, visitors: 2, likes: 3, comments: 0)) : nil
         let drafts = hasDrafts ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let scheduled = hasScheduled ? [BlogDashboardRemoteEntity.BlogDashboardPost()] : []
         let posts = BlogDashboardRemoteEntity.BlogDashboardPosts(hasPublished: hasPublished, draft: drafts, scheduled: scheduled)
+        let wrappedPosts = FailableDecodable(value: posts)
         let pages = hasPages ? [BlogDashboardRemoteEntity.BlogDashboardPage()] : []
+        let wrappedPages = FailableDecodable(value: pages)
         let activities = try? [Activity.mock()]
         let currentActivity = BlogDashboardRemoteEntity.BlogDashboardActivity.CurrentActivity(orderedItems: activities)
-        let activity = hasActivity ? BlogDashboardRemoteEntity.BlogDashboardActivity(current: currentActivity) : nil
-        return BlogDashboardRemoteEntity(posts: posts, todaysStats: nil, pages: pages, activity: activity)
+        let activity = hasActivity ? FailableDecodable(value: BlogDashboardRemoteEntity.BlogDashboardActivity(current: currentActivity)) : nil
+        return BlogDashboardRemoteEntity(posts: wrappedPosts, todaysStats: stats, pages: wrappedPages, activity: activity)
     }
 
 }

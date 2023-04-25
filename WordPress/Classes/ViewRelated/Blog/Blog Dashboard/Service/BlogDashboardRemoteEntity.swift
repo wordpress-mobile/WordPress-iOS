@@ -2,10 +2,10 @@ import Foundation
 
 struct BlogDashboardRemoteEntity: Decodable, Hashable {
 
-    var posts: BlogDashboardPosts?
-    var todaysStats: BlogDashboardStats?
-    var pages: [BlogDashboardPage]?
-    var activity: BlogDashboardActivity?
+    var posts: FailableDecodable<BlogDashboardPosts>?
+    var todaysStats: FailableDecodable<BlogDashboardStats>?
+    var pages: FailableDecodable<[BlogDashboardPage]>?
+    var activity: FailableDecodable<BlogDashboardActivity>?
 
     struct BlogDashboardPosts: Decodable, Hashable {
         var hasPublished: Bool?

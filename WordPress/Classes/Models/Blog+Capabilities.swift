@@ -67,6 +67,12 @@ extension Blog {
         return isAdmin || isUserCapableOf(.EditPages)
     }
 
+    /// Returns true if the current user is allowed to view Stats
+    ///
+    @objc public func isViewingStatsAllowed() -> Bool {
+        return isAdmin || isUserCapableOf(.ViewStats)
+    }
+
     private func isUserCapableOf(_ capability: String) -> Bool {
         return capabilities?[capability] as? Bool ?? false
     }

@@ -1891,6 +1891,8 @@
 		80D9D00129E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFFF29E85EBF00FE3400 /* PageEditorPresenter.swift */; };
 		80D9D00329EF4C7F00FE3400 /* DashboardPageCreationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9D00229EF4C7F00FE3400 /* DashboardPageCreationCell.swift */; };
 		80D9D00429EF4C7F00FE3400 /* DashboardPageCreationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9D00229EF4C7F00FE3400 /* DashboardPageCreationCell.swift */; };
+		80D9D04629F760C400FE3400 /* FailableDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9D04529F760C400FE3400 /* FailableDecodable.swift */; };
+		80D9D04729F765C900FE3400 /* FailableDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9D04529F760C400FE3400 /* FailableDecodable.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
 		80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */; };
@@ -7254,6 +7256,7 @@
 		80D9CFFC29E711E200FE3400 /* DashboardPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPageCell.swift; sourceTree = "<group>"; };
 		80D9CFFF29E85EBF00FE3400 /* PageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageEditorPresenter.swift; sourceTree = "<group>"; };
 		80D9D00229EF4C7F00FE3400 /* DashboardPageCreationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPageCreationCell.swift; sourceTree = "<group>"; };
+		80D9D04529F760C400FE3400 /* FailableDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailableDecodable.swift; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
 		80EF672427F3D63B0063B138 /* DashboardStatsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsStackView.swift; sourceTree = "<group>"; };
@@ -13086,6 +13089,14 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
+		80D9D04429F7609F00FE3400 /* Generics */ = {
+			isa = PBXGroup;
+			children = (
+				80D9D04529F760C400FE3400 /* FailableDecodable.swift */,
+			);
+			path = Generics;
+			sourceTree = "<group>";
+		};
 		80EF9288280D27F20064A971 /* PropertyWrappers */ = {
 			isa = PBXGroup;
 			children = (
@@ -13340,6 +13351,7 @@
 				F181EDE326B2AC3100C61241 /* BackgroundTasks */,
 				F15D1FB7265C40C300854EE5 /* Blogging Reminders */,
 				FEC2602D283FB9D4003D886A /* Blogging Prompts */,
+				80D9D04429F7609F00FE3400 /* Generics */,
 				F10465122554260600655194 /* Gesture Recognizer */,
 				326E2818250AC4610029EBF0 /* Image Dimension Parser */,
 				1A433B1B2254CBC300AE7910 /* Networking */,
@@ -21400,6 +21412,7 @@
 				738B9A5921B85CF20005062B /* KeyboardInfo.swift in Sources */,
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
 				FA8E2FE527C6AE4500DA0982 /* QuickStartChecklistView.swift in Sources */,
+				80D9D04629F760C400FE3400 /* FailableDecodable.swift in Sources */,
 				17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
@@ -24308,6 +24321,7 @@
 				08CBC77A29AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */,
 				FABB23132602FC2C00C8785C /* WordPress-87-88.xcmappingmodel in Sources */,
 				FABB23142602FC2C00C8785C /* UsersService.swift in Sources */,
+				80D9D04729F765C900FE3400 /* FailableDecodable.swift in Sources */,
 				FABB23152602FC2C00C8785C /* SharePost+UIActivityItemSource.swift in Sources */,
 				FABB23162602FC2C00C8785C /* WPWebViewController.m in Sources */,
 				FABB23172602FC2C00C8785C /* ShadowView.swift in Sources */,
