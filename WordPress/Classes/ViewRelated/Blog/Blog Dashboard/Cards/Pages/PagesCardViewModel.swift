@@ -4,16 +4,24 @@ import UIKit
 
 protocol PagesCardView: AnyObject {
     var tableView: UITableView { get }
+    var parentViewController: UIViewController? { get }
+}
+
+fileprivate enum PagesState: CaseIterable {
+    case loading
+    case loaded
 }
 
 enum PagesListSection: CaseIterable {
     case pages
     case loading
+    case create
 }
 
 enum PagesListItem: Hashable {
     case page(NSManagedObjectID)
     case ghost(Int)
+    case createPage(compact: Bool, hasPages: Bool)
 }
 
 /// Responsible for populating a table view with pages
@@ -30,7 +38,7 @@ class PagesCardViewModel: NSObject {
 
     private var isSyncing = false
 
-    private var currentState: PagesListSection = .loading {
+    private var currentState: PagesState = .loading {
         didSet {
             if oldValue != currentState {
                 forceReloadSnapshot()
@@ -56,6 +64,8 @@ class PagesCardViewModel: NSObject {
             return self.configurePageCell(objectID: objectID, tableView: tableView, indexPath: indexPath)
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
+        case .createPage(let compact, let hasPages):
+            return self.configureCreationCell(compact: compact, hasPages: hasPages, tableView: tableView, indexPath: indexPath)
         }
 
     }
@@ -95,6 +105,19 @@ class PagesCardViewModel: NSObject {
         fetchedResultsController?.object(at: indexPath)
     }
 
+    func createPage() {
+        guard let viewController = view?.parentViewController else {
+            return
+        }
+        PageCoordinator.showLayoutPickerIfNeeded(from: viewController, forBlog: blog) { [weak self] selectedLayout in
+            guard let blog = self?.blog else {
+                return
+            }
+            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content, appliedTemplate: selectedLayout?.slug)
+            viewController.present(editorViewController, animated: false)
+        }
+    }
+
     func tearDown() {
         DashboardPostsSyncManager.shared.removeListener(self)
         fetchedResultsController?.delegate = nil
@@ -126,6 +149,21 @@ private extension PagesCardViewModel {
         cell?.contentView.startGhostAnimation(style: style)
         return cell ?? UITableViewCell()
     }
+
+    private func configureCreationCell(compact: Bool, hasPages: Bool, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        var cell: DashboardPageCreationCell?
+        if compact {
+            cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationCompactCell.defaultReuseID,
+                                                 for: indexPath) as? DashboardPageCreationCell
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: DashboardPageCreationExpandedCell.defaultReuseID,
+                                                 for: indexPath) as? DashboardPageCreationCell
+        }
+        cell?.viewModel = self
+        cell?.configure(hasPages: hasPages)
+        return cell ?? UITableViewCell()
+    }
+
 }
 
 // MARK: - Private methods
@@ -175,7 +213,7 @@ private extension PagesCardViewModel {
     }
 
     func hideLoading() {
-        currentState = .pages
+        currentState = .loaded
     }
 
     func showLoadingIfNeeded() {
@@ -184,7 +222,7 @@ private extension PagesCardViewModel {
             currentState = .loading
         }
         else {
-            currentState = .pages
+            currentState = .loaded
         }
     }
 
@@ -254,9 +292,9 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
 
     private func createSnapshot(currentSnapshot: Snapshot, pagesSnapshot: PagesSnapshot) -> Snapshot {
         var snapshot = Snapshot()
-        snapshot.appendSections(PagesListSection.allCases)
         switch currentState {
-        case .pages:
+        case .loaded:
+            snapshot.appendSections([.pages, .create])
             var adjustedPagesSnapshot = pagesSnapshot
 
             // Delete extra pages
@@ -274,7 +312,14 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
                                                             pagesSnapshot: pagesSnapshot)
             snapshot.reloadItems(reloadIdentifiers)
 
+            // Add Create Page Item
+            // Section should be compact if there are more than one pages. Should be expanded otherwise.
+            let createPageItem: PagesListItem = .createPage(compact: pageItems.hasMultiplePages,
+                                                            hasPages: pageItems.hasPages)
+            snapshot.appendItems([createPageItem], toSection: .create)
+
         case .loading:
+            snapshot.appendSections([.loading])
             let items: [PagesListItem] = (0..<Constants.numberOfPages).map { .ghost($0) }
             snapshot.appendItems(items, toSection: .loading)
         }
@@ -307,6 +352,16 @@ extension PagesCardViewModel: NSFetchedResultsControllerDelegate {
     private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
         dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
-        view?.tableView.allowsSelection = currentState == .pages
+        view?.tableView.allowsSelection = currentState == .loaded
+    }
+}
+
+private extension Array where Element == PagesListItem {
+    var hasPages: Bool {
+        return !isEmpty
+    }
+
+    var hasMultiplePages: Bool {
+        return count > 1
     }
 }

@@ -2,6 +2,10 @@ import UIKit
 
 final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardView {
 
+    var parentViewController: UIViewController? {
+        presentingViewController
+    }
+
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
     private var viewModel: PagesCardViewModel?
@@ -20,9 +24,14 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
-        tableView.register(DashboardPageCell.self, forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
-        let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
-        tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
+        tableView.register(DashboardPageCell.self,
+                           forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
+        tableView.register(DashboardPageCreationCompactCell.self,
+                           forCellReuseIdentifier: DashboardPageCreationCompactCell.defaultReuseID)
+        tableView.register(DashboardPageCreationExpandedCell.self,
+                           forCellReuseIdentifier: DashboardPageCreationExpandedCell.defaultReuseID)
+        tableView.register(BlogDashboardPostCardGhostCell.defaultNib,
+                           forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -72,7 +81,9 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 // MARK: - BlogDashboardCardConfigurable
 
 extension DashboardPagesListCardCell {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog,
+                   viewController: BlogDashboardViewController?,
+                   apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
 
@@ -129,6 +140,16 @@ extension DashboardPagesListCardCell {
 extension DashboardPagesListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let isPagesSection = indexPath.section == 0
+        if isPagesSection {
+            handlePageSelected(at: indexPath)
+        } else {
+            handleCreatePageSectionSelected()
+        }
+
+    }
+
+    private func handlePageSelected(at indexPath: IndexPath) {
         guard let page = viewModel?.pageAt(indexPath),
               let presentingViewController else {
             return
@@ -139,6 +160,10 @@ extension DashboardPagesListCardCell: UITableViewDelegate {
         if didOpenEditor {
             // TODO: Track editor opened
         }
+    }
+
+    private func handleCreatePageSectionSelected() {
+        viewModel?.createPage()
     }
 }
 
