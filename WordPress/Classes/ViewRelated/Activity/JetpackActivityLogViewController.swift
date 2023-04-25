@@ -49,8 +49,6 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         super.viewDidLoad()
 
         extendedLayoutIncludesOpaqueBars = true
-
-        WPAnalytics.track(.activityLogViewed)
     }
 
     private func configureBanner() {
