@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "urlPattern": "/wpcom/v2/sites/.*/rewind/capabilities.*",
+    "urlPattern": "/wpcom/v2/sites/106707880/rewind/capabilities.*",
     "queryParameters": {
-      "locale": {
+      "_locale": {
         "matches": "(.*)"
       }
     }
