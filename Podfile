@@ -216,9 +216,9 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.13'
+  # pod 'Automattic-Tracks-iOS', '~> 0.13'
   # While in PR
-  # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
+  pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: 'task/expat-split-event-name-prefix-and-platform'
   # Local Development
   # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 
@@ -404,7 +404,9 @@ pre_install do |installer|
   installer.pod_targets.each do |pod|
     # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
     # linking it resolves this.
-    if pod.name == 'Sentry'
+    #
+    # The regex is to match both "Sentry" and "SentryPrivate" pods.
+    if pod.name =~ /^Sentry/
       dynamic << pod
       next
     end
