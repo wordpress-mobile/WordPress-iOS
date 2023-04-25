@@ -65,7 +65,7 @@ class BlogDashboardCardFrameView: UIView {
     }()
 
     /// Button displayed to the left of the ellipsis button.
-    /// Displayed when isNew is set to true. Use interaction is disabled.
+    /// Displayed when isNew is set to true. User interaction is disabled.
     private(set) lazy var newButton: UIButton = {
         let button = UIButton()
         button.setTitle("\(Strings.newLabel) ✨", for: .normal)
