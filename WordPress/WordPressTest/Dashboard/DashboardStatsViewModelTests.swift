@@ -6,7 +6,8 @@ class DashboardStatsViewModelTests: XCTestCase {
     func testReturnCorrectDataFromAPIResponse() {
         // Given
         let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: 1, visitors: 2, likes: 3, comments: 0)
-        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let stats = FailableDecodable(value: statsData)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: stats)
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
@@ -18,7 +19,8 @@ class DashboardStatsViewModelTests: XCTestCase {
     func testReturnedDataIsFormattedCorrectly() {
         // Given
         let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: 10000, visitors: 200000, likes: 3000000, comments: 0)
-        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let stats = FailableDecodable(value: statsData)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: stats)
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
@@ -30,7 +32,8 @@ class DashboardStatsViewModelTests: XCTestCase {
     func testReturnZeroIfAPIResponseIsEmpty() {
         // Given
         let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: nil, visitors: nil, likes: nil, comments: nil)
-        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let stats = FailableDecodable(value: statsData)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: stats)
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
@@ -42,7 +45,8 @@ class DashboardStatsViewModelTests: XCTestCase {
     func testReturnTrueIfAllTodaysStatsAreZero() {
         // Given
         let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: 0, visitors: 0, likes: 0, comments: 0)
-        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let stats = FailableDecodable(value: statsData)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: stats)
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then
@@ -52,7 +56,8 @@ class DashboardStatsViewModelTests: XCTestCase {
     func testReturnFalseIfNotAllTodaysStatsAreZero() {
         // Given
         let statsData = BlogDashboardRemoteEntity.BlogDashboardStats(views: 1, visitors: 0, likes: 0, comments: 0)
-        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: statsData)
+        let stats = FailableDecodable(value: statsData)
+        let apiResponse = BlogDashboardRemoteEntity(posts: nil, todaysStats: stats)
         let viewModel = DashboardStatsViewModel(apiResponse: apiResponse)
 
         // When & Then

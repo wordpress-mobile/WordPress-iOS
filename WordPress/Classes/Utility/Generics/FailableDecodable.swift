@@ -9,6 +9,10 @@ struct FailableDecodable<T: Decodable & Hashable>: Decodable {
         return try? result.get()
     }
 
+    init(value: T) {
+        result = Result.success(value)
+    }
+
     init(from decoder: Decoder) throws {
         result = Result(catching: { try T(from: decoder) })
     }
