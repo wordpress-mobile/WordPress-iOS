@@ -286,6 +286,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return "activity_log"
         } else if presenter is BackupListViewController {
             return "backup"
+        } else if presenter is DashboardActivityLogCardCell {
+            return "dashboard"
         } else {
             return "unknown"
         }
