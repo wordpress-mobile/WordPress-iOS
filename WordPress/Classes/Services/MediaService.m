@@ -176,11 +176,18 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 #pragma mark - Updating media
 
 - (void)updateMedia:(Media *)media
+            fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
+    RemoteMedia *remoteMedia;
+    if (fieldsToUpdate != nil && [fieldsToUpdate count] > 0) {
+        remoteMedia = [self remoteMediaFromMedia:media fieldsToUpdate:fieldsToUpdate];
+    } else {
+        remoteMedia = [self remoteMediaFromMedia:media];
+    }
+    
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
-    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
     NSManagedObjectID *mediaObjectID = media.objectID;
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
@@ -219,8 +226,16 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 failure:failureBlock];
 }
 
+- (void)updateMedia:(Media *)media
+            success:(void (^)(void))success
+            failure:(void (^)(NSError *error))failure
+{
+    [self updateMedia:media fieldsToUpdate:nil success:success failure:failure];
+}
+
 - (void)updateMedia:(NSArray<Media *> *)mediaObjects
-     overallSuccess:(void (^)(void))overallSuccess
+            fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+            overallSuccess:(void (^)(void))overallSuccess
             failure:(void (^)(NSError *error))failure
 {
     if (mediaObjects.count == 0) {
@@ -254,12 +269,19 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
     for (Media *media in mediaObjects) {
         // This effectively ignores any errors presented
-        [self updateMedia:media success:^{
+        [self updateMedia:media fieldsToUpdate:fieldsToUpdate success:^{
             individualOperationCompletion(true);
         } failure:^(NSError * __unused error) {
             individualOperationCompletion(false);
         }];
     }
+}
+
+- (void)updateMedia:(NSArray<Media *> *)mediaObjects
+     overallSuccess:(void (^)(void))overallSuccess
+            failure:(void (^)(NSError *error))failure
+{
+    [self updateMedia:mediaObjects fieldsToUpdate:nil overallSuccess:overallSuccess failure:failure];
 }
 
 #pragma mark - Private helpers
