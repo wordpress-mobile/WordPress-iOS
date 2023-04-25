@@ -65,6 +65,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         contentView.pinSubviewToAllEdges(cardFrameView, priority: .defaultHigh)
 
         cardFrameView.add(subview: tableView)
+        cardFrameView.isNew = true
         tableView.delegate = self
     }
 
