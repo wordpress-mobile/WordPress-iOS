@@ -64,9 +64,32 @@ class BlogDashboardCardFrameView: UIView {
         return containerStackView
     }()
 
+    /// Button displayed to the left of the ellipsis button.
+    /// Displayed when isNew is set to true. Use interaction is disabled.
+    private(set) lazy var newButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("\(Strings.newLabel) ✨", for: .normal)
+        button.setTitleColor(.text, for: .normal)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        button.backgroundColor = Colors.newButtonBackgroundColor
+        button.layer.cornerRadius = Constants.newButtonCornerRadius
+        button.contentEdgeInsets = Constants.newButtonInsets
+        button.isUserInteractionEnabled = false
+        button.accessibilityTraits = .staticText
+        return button
+    }()
+
     private var mainStackViewTrailingConstraint: NSLayoutConstraint?
 
     weak var currentView: UIView?
+
+    /// Shows or hides the new button
+    var isNew: Bool = false {
+        didSet {
+            newButton.isHidden = !isNew
+        }
+    }
 
     /// Closure to be called when anywhere in the view is tapped.
     /// If set, the chevron image is displayed.
@@ -161,7 +184,9 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         mainStackView.addArrangedSubview(headerStackView)
-        headerStackView.addArrangedSubviews([titleLabel, ellipsisButton])
+        headerStackView.addArrangedSubviews([titleLabel, newButton, ellipsisButton])
+
+        newButton.isHidden = !isNew
     }
 
     /// Configures button container stack view
@@ -247,9 +272,17 @@ class BlogDashboardCardFrameView: UIView {
         static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         static let buttonContainerStackViewPadding: CGFloat = 8
         static let mainStackViewTrailingPadding: CGFloat = 32
+        static let newButtonInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 4).flippedForRightToLeft
+        static let newButtonCornerRadius: CGFloat = 4
+    }
+
+    private enum Colors {
+        private static let darkModeBackgroundColor = UIColor(red: 0.173, green: 0.173, blue: 0.18, alpha: 1)
+        static let newButtonBackgroundColor = UIColor(light: .secondarySystemBackground, dark: darkModeBackgroundColor)
     }
 
     private enum Strings {
         static let ellipsisButtonAccessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for more button in dashboard quick start card.")
+        static let newLabel = NSLocalizedString("dashboardCard.newLabel", value: "New", comment: "Label for new dashboard cards.")
     }
 }
