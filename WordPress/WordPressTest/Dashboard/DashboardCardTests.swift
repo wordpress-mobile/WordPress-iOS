@@ -84,6 +84,17 @@ class DashboardCardTests: CoreDataTestCase {
         XCTAssertTrue(shouldShow)
     }
 
+    func testShouldNotShowStatsCard() {
+        // Given
+        let apiResponse = buildEntity(hasStats: false)
+
+        // When
+        let shouldShow = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: apiResponse)
+
+        // Then
+        XCTAssertFalse(shouldShow)
+    }
+
     // MARK: Ghost
 
     func testShouldShowGhostCardOnFirstLoad() {
