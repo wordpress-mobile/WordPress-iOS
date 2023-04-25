@@ -626,4 +626,43 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
     return remoteMedia;
 }
 
+- (RemoteMedia *)remoteMediaFromMedia:(Media *)media fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+{
+    RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
+    remoteMedia.mediaID = media.mediaID;
+
+    NSMutableDictionary *updateDict = [NSMutableDictionary dictionary];
+    for (NSString *field in fieldsToUpdate) {
+        id value = [media valueForKey:field];
+        if (value) {
+            if ([field isEqualToString: @"fileExtension"]) {
+                updateDict[field] = [media fileExtension] ?: @"unknown";
+            } else if ([field isEqualToString: @"mimeType"]) {
+                updateDict[field] = [media mimeType];
+            } else {
+                updateDict[field] = value;
+            }
+        }
+    }
+
+    remoteMedia.url = [NSURL URLWithString:updateDict[@"remoteURL"]];
+    remoteMedia.largeURL = [NSURL URLWithString:updateDict[@"remoteLargeURL"]];
+    remoteMedia.mediumURL = [NSURL URLWithString:updateDict[@"remoteMediumURL"]];
+    remoteMedia.date = updateDict[@"creationDate"];
+    remoteMedia.file = updateDict[@"filename"];
+    remoteMedia.extension = updateDict[@"fileExtension"];
+    remoteMedia.title = updateDict[@"title"];
+    remoteMedia.caption = updateDict[@"caption"];
+    remoteMedia.descriptionText = updateDict[@"desc"];
+    remoteMedia.alt = updateDict[@"alt"];
+    remoteMedia.height = updateDict[@"height"];
+    remoteMedia.width = updateDict[@"width"];
+    remoteMedia.localURL = updateDict[@"absoluteLocalURL"];
+    remoteMedia.mimeType = updateDict[@"mimeType"];
+    remoteMedia.videopressGUID = updateDict[@"videopressGUID"];
+    remoteMedia.remoteThumbnailURL = updateDict[@"remoteThumbnailURL"];
+    remoteMedia.postID = updateDict[@"postID"];
+    return remoteMedia;
+}
+
 @end
