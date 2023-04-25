@@ -159,6 +159,7 @@ extension WPStyleGuide {
             "themes": GridiconType.themes,
             "trash": GridiconType.trash,
             "user": GridiconType.user,
+            "video": GridiconType.video
         ]
     }
 }
