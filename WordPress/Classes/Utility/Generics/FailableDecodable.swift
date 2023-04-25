@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// Acts as a wrapper around decodable types, and marks them as failable.
 /// This allows the decoding process to succeed even if the decoder was unable to decode a failable item.
 struct FailableDecodable<T: Decodable & Hashable>: Decodable {

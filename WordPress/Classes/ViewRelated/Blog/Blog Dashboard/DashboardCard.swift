@@ -131,7 +131,7 @@ enum DashboardCard: String, CaseIterable {
         case .pages:
             return apiResponse.hasPages
         case .activityLog:
-            return true // FIXME: hide card if there's no activities
+            return apiResponse.hasActivities
         default:
             return false
         }
@@ -154,7 +154,7 @@ enum DashboardCard: String, CaseIterable {
         case todaysStats = "todays_stats"
         case posts
         case pages
-//        case activity // TODO: Uncomment this when activity log support is added to the endpoint
+        case activity
 
         func supported(by blog: Blog) -> Bool {
             switch self {
@@ -164,6 +164,8 @@ enum DashboardCard: String, CaseIterable {
                 return true
             case .pages:
                 return DashboardPagesListCardCell.shouldShowCard(for: blog)
+            case .activity:
+                return DashboardActivityLogCardCell.shouldShowCard(for: blog)
             }
         }
     }
@@ -192,5 +194,9 @@ private extension BlogDashboardRemoteEntity {
 
     var hasStats: Bool {
         return self.todaysStats?.value != nil
+    }
+
+    var hasActivities: Bool {
+        return (self.activity?.value?.current?.orderedItems?.count ?? 0) > 0
     }
  }

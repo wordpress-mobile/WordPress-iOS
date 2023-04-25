@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/wpcom/v2/mobile/feature-flags",
+    "queryParameters": {
+      "_locale": {
+        "matches": "(.*)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "dashboard_card_domain": true
+    }
+  }
+}

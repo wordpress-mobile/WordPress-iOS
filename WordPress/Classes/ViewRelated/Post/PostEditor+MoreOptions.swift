@@ -76,6 +76,8 @@ extension PostEditor {
             return
         }
 
+        emitPostSaveEvent()
+
         savePostBeforePreview() { [weak self] previewURLString, error in
             guard let self = self else {
                 return
