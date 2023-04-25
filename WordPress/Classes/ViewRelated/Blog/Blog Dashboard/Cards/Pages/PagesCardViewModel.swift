@@ -120,21 +120,21 @@ class PagesCardViewModel: NSObject {
     }
 
     func trackPageTapped() {
-        trackCardItemTapped(subtype: Constants.analyticsPageItemSubtype)
+        trackCardItemTapped(itemType: Constants.analyticsPageItemType)
     }
 
     private func trackCreateSectionTapped() {
-        trackCardItemTapped(subtype: Constants.analyticsCreationItemSubtype)
+        trackCardItemTapped(itemType: Constants.analyticsCreationItemType)
 
         WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
                           properties: [WPAppAnalyticsKeyTapSource: Constants.analyticsPageCreationSource],
                           blog: blog)
     }
 
-    private func trackCardItemTapped(subtype: String) {
+    private func trackCardItemTapped(itemType: String) {
         let properties = [
             Constants.analyticsTypeKey: DashboardCard.pages.rawValue,
-            Constants.analyticsSubtypeKey: subtype
+            Constants.analyticsItemTypeKey: itemType
         ]
         WPAnalytics.track(.dashboardCardItemTapped,
                           properties: properties,
@@ -258,9 +258,9 @@ private extension PagesCardViewModel {
     enum Constants {
         static let numberOfPages = 3
         static let analyticsTypeKey = "type"
-        static let analyticsSubtypeKey = "sub_type"
-        static let analyticsPageItemSubtype = "page"
-        static let analyticsCreationItemSubtype = "create"
+        static let analyticsItemTypeKey = "item_type"
+        static let analyticsPageItemType = "page"
+        static let analyticsCreationItemType = "create"
         static let analyticsPageCreationSource = "pages_card"
     }
 }
