@@ -7,6 +7,8 @@ extension Variation {
         switch self {
         case .treatment:
             return "treatment"
+        case .customTreatment:
+            return "custom_treatment"
         case .control:
             return "control"
         }
