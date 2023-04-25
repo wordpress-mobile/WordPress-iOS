@@ -77,6 +77,7 @@ class BlogDashboardCardFrameView: UIView {
         button.contentEdgeInsets = Constants.newButtonInsets
         button.isUserInteractionEnabled = false
         button.accessibilityTraits = .staticText
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return button
     }()
 
