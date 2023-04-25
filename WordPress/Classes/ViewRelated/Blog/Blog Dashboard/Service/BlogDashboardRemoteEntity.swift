@@ -2,10 +2,10 @@ import Foundation
 
 struct BlogDashboardRemoteEntity: Decodable, Hashable {
 
-    var posts: BlogDashboardPosts?
-    var todaysStats: BlogDashboardStats?
-    var pages: [BlogDashboardPage]?
-    var activity: [BlogDashboardActivity]? // FIXME: Replace this after `WordPressKit.Activity` is made Codable
+    var posts: FailableDecodable<BlogDashboardPosts>?
+    var todaysStats: FailableDecodable<BlogDashboardStats>?
+    var pages: FailableDecodable<[BlogDashboardPage]>?
+    var activity: FailableDecodable<[BlogDashboardActivity]>? // FIXME: Replace this after `WordPressKit.Activity` is made Codable
 
     struct BlogDashboardPosts: Decodable, Hashable {
         var hasPublished: Bool?

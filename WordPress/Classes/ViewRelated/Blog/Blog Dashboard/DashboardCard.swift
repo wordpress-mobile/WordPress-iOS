@@ -171,11 +171,11 @@ enum DashboardCard: String, CaseIterable {
 
 private extension BlogDashboardRemoteEntity {
     var hasDrafts: Bool {
-        return (self.posts?.draft?.count ?? 0) > 0
+        return (self.posts?.value?.draft?.count ?? 0) > 0
     }
 
     var hasScheduled: Bool {
-        return (self.posts?.scheduled?.count ?? 0) > 0
+        return (self.posts?.value?.scheduled?.count ?? 0) > 0
     }
 
     var hasNoDraftsOrScheduled: Bool {
@@ -183,14 +183,14 @@ private extension BlogDashboardRemoteEntity {
     }
 
     var hasPublished: Bool {
-        return self.posts?.hasPublished ?? true
+        return self.posts?.value?.hasPublished ?? true
     }
 
     var hasPages: Bool {
-        return self.pages != nil
+        return self.pages?.value != nil
     }
 
     var hasStats: Bool {
-        return self.todaysStats != nil
+        return self.todaysStats?.value != nil
     }
  }
