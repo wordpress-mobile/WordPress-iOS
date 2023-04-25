@@ -134,7 +134,7 @@ extension DashboardPagesListCardCell {
         }
         PageListViewController.showForBlog(blog, from: presentingViewController)
         WPAppAnalytics.track(.openedPages,
-                             withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: source.rawValue],
+                             withProperties: [WPAppAnalyticsKeyTapSource: source.rawValue],
                              with: blog)
     }
 }
