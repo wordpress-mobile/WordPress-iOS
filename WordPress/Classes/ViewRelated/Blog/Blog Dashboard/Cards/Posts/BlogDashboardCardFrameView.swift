@@ -272,7 +272,7 @@ class BlogDashboardCardFrameView: UIView {
         static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         static let buttonContainerStackViewPadding: CGFloat = 8
         static let mainStackViewTrailingPadding: CGFloat = 32
-        static let newButtonInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 6).flippedForRightToLeft
+        static let newButtonInsets = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 8)
         static let newButtonCornerRadius: CGFloat = 4
     }
 
