@@ -116,6 +116,29 @@ class PagesCardViewModel: NSObject {
             let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content, appliedTemplate: selectedLayout?.slug)
             viewController.present(editorViewController, animated: false)
         }
+        trackCreateSectionTapped()
+    }
+
+    func trackPageTapped() {
+        trackCardItemTapped(itemType: Constants.analyticsPageItemType)
+    }
+
+    private func trackCreateSectionTapped() {
+        trackCardItemTapped(itemType: Constants.analyticsCreationItemType)
+
+        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
+                          properties: [WPAppAnalyticsKeyTapSource: Constants.analyticsPageCreationSource],
+                          blog: blog)
+    }
+
+    private func trackCardItemTapped(itemType: String) {
+        let properties = [
+            Constants.analyticsTypeKey: DashboardCard.pages.rawValue,
+            Constants.analyticsItemTypeKey: itemType
+        ]
+        WPAnalytics.track(.dashboardCardItemTapped,
+                          properties: properties,
+                          blog: blog)
     }
 
     func tearDown() {
@@ -226,19 +249,19 @@ private extension PagesCardViewModel {
         }
     }
 
-    func updateDashboardStateWithSuccessfulSync() {
-        // TODO: Do something like this:
-        // blog.dashboardState.pagesSynced = true
-        // This will be needed if we need to determine if there are pages
-        // or not while parsing the cards endpoint response
-    }
-
     func trackCardDisplayedIfNeeded() {
-        // TODO: Implement tracking
+        if currentState == .loaded {
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": DashboardCard.pages.rawValue], blog: blog)
+        }
     }
 
     enum Constants {
         static let numberOfPages = 3
+        static let analyticsTypeKey = "type"
+        static let analyticsItemTypeKey = "item_type"
+        static let analyticsPageItemType = "page"
+        static let analyticsCreationItemType = "create"
+        static let analyticsPageCreationSource = "pages_card"
     }
 }
 
@@ -257,8 +280,6 @@ extension PagesCardViewModel: DashboardPostsSyncManagerListener {
 
         isSyncing = false
         if success {
-            updateDashboardStateWithSuccessfulSync()
-
             hideLoading()
         }
     }
