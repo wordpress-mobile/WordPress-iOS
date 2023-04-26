@@ -174,7 +174,7 @@
 {
     Media *media = [self generateMedia: @100];
     
-    // Check that only `title` are `postID` details are passed for updating the media item.
+    // Check that only `title` and `postID` details are passed for updating the media item.
     // NOTE: `mediaID` is always passed as it's mandatory for the update.
     BOOL (^checkRemoteMedia)(id obj) = ^BOOL(RemoteMedia *remoteMedia) {
         if (![remoteMedia.mediaID isEqualToNumber:media.mediaID]) {
@@ -230,7 +230,7 @@
     // We use the same details except `mediaId` in the defined media items.
     NSArray<Media *> *mediaItems = [NSArray arrayWithObjects: media, [self generateMedia:@101], nil];
     
-    // Check that only `title` are `postID` details are passed for updating the media item.
+    // Check that only `title` and `postID` details are passed for updating the media item.
     // NOTE: `mediaID` is always passed as it's mandatory for the update.
     BOOL (^checkRemoteMedia)(id obj) = ^BOOL(RemoteMedia *remoteMedia) {
         if (![remoteMedia.mediaID isEqualToNumber:mediaItems[0].mediaID] &&
