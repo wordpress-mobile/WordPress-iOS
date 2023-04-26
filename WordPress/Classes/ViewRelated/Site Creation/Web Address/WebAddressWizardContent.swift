@@ -473,8 +473,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                 sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
                 sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
             ])
-            setAddressHintVisibility(isHidden: true)
         }
+        setAddressHintVisibility(isHidden: true)
     }
 
     // MARK: - Others
@@ -532,7 +532,6 @@ extension WebAddressWizardContent: UITextFieldDelegate {
 
 extension WebAddressWizardContent: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        siteTemplateHostingController.view.isHidden = true
         clearSelectionAndCreateSiteButton()
     }
 
