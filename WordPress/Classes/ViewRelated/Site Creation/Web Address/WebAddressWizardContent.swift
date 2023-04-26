@@ -20,6 +20,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         return .hidden
     }
 
+    /// Checks if the Domain Purchasing Feature Flag is enabled
+    private let domainPurchasingEnabled = FeatureFlag.siteCreationDomainPurchasing.enabled
+
     /// The creator collects user input as they advance through the wizard flow.
     private let siteCreator: SiteCreator
     private let service: SiteAddressService
@@ -231,7 +234,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
         let cellCount = hasExactMatch ? data.count : data.count + 1
-        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressCell.estimatedSize.height)
+        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
     }
 
@@ -322,9 +325,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupCells() {
-        let cellName = AddressCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
+        let cellName = String(describing: AddressTableViewCell.self)
+        table.register(AddressTableViewCell.self, forCellReuseIdentifier: cellName)
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         table.cellLayoutMarginsFollowReadableWidth = true
     }
@@ -372,14 +374,17 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
+        if !domainPurchasingEnabled {
+            table.separatorStyle = .none
+        }
         table.dataSource = self
-        table.estimatedRowHeight = AddressCell.estimatedSize.height
+        table.estimatedRowHeight = AddressTableViewCell.estimatedSize.height
         setupTableBackground()
         setupTableSeparator()
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
-        table.separatorStyle = .none // Remove Seperator from from section headers we'll add in seperators when creating cells.
+        table.isAccessibilityElement = false
     }
 
     private func setupTableBackground() {
@@ -388,6 +393,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setupTableSeparator() {
         table.separatorColor = .divider
+        table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
     }
 
     private func query(from textField: UITextField?) -> String? {
@@ -562,30 +568,30 @@ private extension WebAddressWizardContent {
 extension WebAddressWizardContent: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard !isShowingError else { return 1 }
-        return (!hasExactMatch && section == 0) ? 1 : data.count
+        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? 1 : data.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard data.count > 0 else { return nil }
-        return (!hasExactMatch && section == 0) ? nil : Strings.suggestions
+        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? nil : Strings.suggestions
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (!hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
+        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return hasExactMatch ? 1 : 2
+        return (domainPurchasingEnabled || hasExactMatch) ? 1 : 2
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return (!hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
+        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isShowingError {
             return configureErrorCell(tableView, cellForRowAt: indexPath)
-        } else if !hasExactMatch && indexPath.section == 0 {
+        } else if !domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0 {
             return configureNoMatchCell(table, cellForRowAt: indexPath)
         } else {
             return configureAddressCell(tableView, cellForRowAt: indexPath)
@@ -603,20 +609,27 @@ extension WebAddressWizardContent: UITableViewDataSource {
             return newCell
         }()
 
-        cell.textLabel?.attributedText = AddressCell.processName("\(lastSearchQuery ?? "").wordpress.com")
+        cell.textLabel?.attributedText = AddressTableViewCell.processName("\(lastSearchQuery ?? "").wordpress.com")
         return cell
     }
 
     func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressCell.cellReuseIdentifier()) as? AddressCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressTableViewCell.self)) as? AddressTableViewCell else {
             assertionFailure("This is a programming error - AddressCell has not been properly registered!")
             return UITableViewCell()
         }
 
         let domainSuggestion = data[indexPath.row]
-        cell.model = domainSuggestion
-        cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
-        cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
+        if domainPurchasingEnabled {
+            let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
+            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, tags: tags)
+            cell.update(with: viewModel)
+        } else {
+            cell.update(with: domainSuggestion)
+            cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
+            cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
+        }
+
         return cell
     }
 
@@ -636,7 +649,7 @@ extension WebAddressWizardContent: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // Prevent selection if it's the no matches cell
-        return (!hasExactMatch && indexPath.section == 0) ? nil : indexPath
+        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? nil : indexPath
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
