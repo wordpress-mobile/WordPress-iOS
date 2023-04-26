@@ -25,28 +25,22 @@ class SiteCreationAnalyticsHelper {
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
-    private static let treatmentVariationValue = "treatment_variation_value"
+    private static let customTreatmentNameKey = "custom_treatment_variation_name"
 
     // MARK: - Lifecycle
     static func trackSiteCreationAccessed(source: String) {
         WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
 
         if FeatureFlag.siteCreationDomainPurchasing.enabled {
-
             let domainPurchasingExperimentProperties: [String: String] = {
-                var dict: [String: String]
-                switch ABTest.siteCreationDomainPurchasing.variation {
-                case .control:
-                    dict = [Self.variationKey: "control"]
-                case .treatment(let val):
-                    dict = [Self.variationKey: "treatment"]
-                    if let val {
-                        dict[Self.treatmentVariationValue] = val
-                    }
+                var dict: [String: String] = [Self.variationKey: ABTest.siteCreationDomainPurchasing.variation.tracksProperty]
+
+                if case let .customTreatment(name) = ABTest.siteCreationDomainPurchasing.variation {
+                    dict[Self.customTreatmentNameKey] = name
                 }
+
                 return dict
             }()
-
             Self.track(.domainPurchasingExperiment, properties: domainPurchasingExperimentProperties)
         }
     }

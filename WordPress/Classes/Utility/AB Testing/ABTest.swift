@@ -14,8 +14,8 @@ enum ABTest: String, CaseIterable {
     /// Flag indicating whether the experiment's variation is treament or not.
     var isTreatmentVariation: Bool {
         switch variation {
-        case .treatment: return true
-        default: return false
+        case .treatment, .customTreatment: return true
+        case .control: return false
         }
     }
 }
