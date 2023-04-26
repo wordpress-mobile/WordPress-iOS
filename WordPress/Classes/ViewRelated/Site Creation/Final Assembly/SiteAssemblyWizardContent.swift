@@ -164,7 +164,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                 self.contentView.isFreeDomain = true
                 switch error {
                 case .unsupportedRedirect, .internal, .invalidInput, .other:
-                    self.installErrorStateViewController(with: .domainCheckoutFailed)
+                    self.installDomainCheckoutErrorStateViewController(domain: domain, site: site)
                     self.contentView.status = .failed
                 case .canceled:
                     self.contentView.status = .succeeded
@@ -190,13 +190,6 @@ final class SiteAssemblyWizardContent: UIViewController {
     private func installErrorStateViewController(with type: ErrorStateViewType) {
         var configuration = ErrorStateViewConfiguration.configuration(type: type)
 
-        configuration.contactSupportActionHandler = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.contactSupportTapped()
-        }
-
         configuration.retryActionHandler = { [weak self] in
             guard let self = self else {
                 return
@@ -204,16 +197,46 @@ final class SiteAssemblyWizardContent: UIViewController {
             self.retryTapped()
         }
 
-        configuration.dismissalActionHandler = { [weak self] in
-            guard let self = self else {
+        self.installErrorStateViewController(with: configuration)
+    }
+
+    private func installDomainCheckoutErrorStateViewController(domain: DomainSuggestion, site: Blog) {
+        var configuration = ErrorStateViewConfiguration.configuration(type: .domainCheckoutFailed)
+
+        configuration.retryActionHandler = { [weak self] in
+            guard let self else {
                 return
             }
-            self.dismissTapped()
+            self.attemptDomainPurchasing(domain: domain, site: site)
+        }
+
+        self.installErrorStateViewController(with: configuration)
+    }
+
+    private func installErrorStateViewController(with configuration: ErrorStateViewConfiguration) {
+        var configuration = configuration
+
+        if configuration.contactSupportActionHandler == nil {
+            configuration.contactSupportActionHandler = { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.contactSupportTapped()
+            }
+        }
+
+        if configuration.dismissalActionHandler == nil {
+            configuration.dismissalActionHandler = { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.dismissTapped()
+            }
         }
 
         let errorStateViewController = ErrorStateViewController(with: configuration)
 
-        contentView.errorStateView = errorStateViewController.view
+        self.contentView.errorStateView = errorStateViewController.view
 
         errorStateViewController.willMove(toParent: self)
         addChild(errorStateViewController)
