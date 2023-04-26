@@ -9,9 +9,9 @@ final class DomainPurchasingWebFlowController {
     fileprivate enum Constants {
         static let wordpressBaseURL = "https://wordpress.com"
         static let checkoutWebAddress = "\(wordpressBaseURL)/checkout"
+        static let checkoutSuccessURLPrefix = "\(checkoutWebAddress)/thank-you/"
         static let storeSandboxCookieName = "store_sandbox"
         static let storeSandboxCookieDomain = ".wordpress.com"
-        static let checkoutSuccessURLPrefix = "\(checkoutWebAddress)/thank-you/"
     }
 
     // MARK: - Dependencies
@@ -252,7 +252,7 @@ extension DomainPurchasingWebFlowController.Domain {
               let homeURLString = site.homeURL,
               let homeURL = URL(string: homeURLString as String),
               let hostURLString = homeURL.host,
-              let hostURL = URL(string: DomainPurchasingWebFlowController.Constants.checkoutWebAddress + hostURLString)
+              let hostURL = URL(string: DomainPurchasingWebFlowController.Constants.checkoutWebAddress + "/\(hostURLString)")
         else {
             return nil
         }
