@@ -116,16 +116,17 @@ extension AddressTableViewCell.ViewModel {
             return nil
         }
 
-        // Return the cached formatter if the currency code is the same.
-        guard Self.Cache.currencyFormatter?.currencyCode == code else {
-            return Self.Cache.currencyFormatter
-        }
+        let formatter = Self.Cache.currencyFormatter ?? {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.maximumFractionDigits = 2
+            formatter.minimumFractionDigits = 0
+            return formatter
+        }()
 
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 0
-        formatter.currencyCode = code
+        if formatter.currencyCode != code {
+            formatter.currencyCode = code
+        }
 
         Self.Cache.currencyFormatter = formatter
 
