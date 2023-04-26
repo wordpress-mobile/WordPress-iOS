@@ -33,12 +33,6 @@ final class SiteAssemblyContentView: UIView {
         $0.numberOfLines = 0
         $0.font = WPStyleGuide.fontForTextStyle(.body)
         $0.textColor = .text
-        let createdDescription = NSLocalizedString(
-            "domain.purchase.preview.description",
-            value: "We’ve emailed a receipt to your address on file.",
-            comment: "Domain Purchase Completion description."
-        )
-        $0.text = createdDescription
         return $0
     }(UILabel())
 
@@ -57,7 +51,7 @@ final class SiteAssemblyContentView: UIView {
         $0.textColor = .text
         let footerText = NSLocalizedString(
             "domain.purchase.preview.footer",
-            value: "It may take up to a day for your blog and your new domain to be fully connected.",
+            value: "It may take up to 30 minutes for your custom domain to start working.",
             comment: "Domain Purchase Completion footer"
         )
         $0.text = footerText
@@ -166,13 +160,8 @@ final class SiteAssemblyContentView: UIView {
                 label.textAlignment = .center
             }
 
-            let createdText = NSLocalizedString(
-                "Your site has been created!",
-                comment: "User-facing string, presented to reflect that site assembly completed successfully."
-            )
-
-            label.text = createdText
-            label.accessibilityLabel = createdText
+            label.text = Strings.Free.completionTitle
+            label.accessibilityLabel = Strings.Free.completionTitle
 
             return label
         }()
@@ -381,18 +370,14 @@ final class SiteAssemblyContentView: UIView {
                 constant: 24
             )
 
-            let createdText = NSLocalizedString(
-                "domain.purchase.preview.title",
-                value: "Domain Purchase Complete",
-                comment: "User-facing string, presented to reflect that site assembly completed successfully."
-            )
-            completionLabel.text = createdText
-            completionLabel.accessibilityLabel = createdText
-
+            completionLabel.text = Strings.Paid.completionTitle
+            completionLabel.accessibilityLabel = Strings.Paid.completionTitle
+            completionDescription.text = Strings.Paid.description
         } else {
             assembledSiteViewBottomConstraint = assembledSiteView.bottomAnchor.constraint(
                 equalTo: buttonContainerView?.topAnchor ?? bottomAnchor
             )
+            completionDescription.text = Strings.Free.description
         }
 
         NSLayoutConstraint.activate([
@@ -520,7 +505,7 @@ final class SiteAssemblyContentView: UIView {
                     }
 
                     self.completionLabel.isHidden = false
-                    self.completionDescription.isHidden = !self.shouldShowDomainPurchase
+                    self.completionDescription.isHidden = false
                     self.footnoteLabel.isHidden = !self.shouldShowDomainPurchase
 
 
@@ -533,5 +518,34 @@ final class SiteAssemblyContentView: UIView {
                     self.layoutIfNeeded()
                 })
             })
+    }
+}
+
+private enum Strings {
+    enum Paid {
+        static let completionTitle = NSLocalizedString(
+            "domain.purchase.preview.title",
+            value: "Kudos, your site is live!",
+            comment: "Reflects that site is live when domain purchase feature flag is ON."
+        )
+
+        static let description = NSLocalizedString(
+            "domain.purchase.preview.paid.description",
+            value: "We’ve emailed your receipt. Next, we'll help you get it ready for everyone.",
+            comment: "Domain Purchase Completion description (only for PAID domains)."
+        )
+    }
+
+    enum Free {
+        static let completionTitle = NSLocalizedString(
+            "Your site has been created!",
+            comment: "User-facing string, presented to reflect that site assembly completed successfully."
+        )
+        static let description = NSLocalizedString(
+            "domain.purchase.preview.free.description",
+            value: "Next, we'll help you get it ready to be browsed.",
+            comment: "Domain Purchase Completion description (only for FREE domains)."
+        )
+
     }
 }
