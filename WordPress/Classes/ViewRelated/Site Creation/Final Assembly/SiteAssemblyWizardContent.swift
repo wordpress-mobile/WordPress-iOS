@@ -235,6 +235,15 @@ final class SiteAssemblyWizardContent: UIViewController {
             }
         }
 
+        // Remove previous error state view controller
+        if let errorStateViewController {
+            errorStateViewController.willMove(toParent: nil)
+            errorStateViewController.view?.removeFromSuperview()
+            errorStateViewController.removeFromParent()
+            errorStateViewController.didMove(toParent: nil)
+        }
+
+        // Install new error state view controller
         let errorStateViewController = ErrorStateViewController(with: configuration)
 
         self.contentView.errorStateView = errorStateViewController.view
