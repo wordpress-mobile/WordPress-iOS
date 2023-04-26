@@ -125,6 +125,12 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 }
 
+extension DashboardStatsCardCell {
+    static func shouldShowCard(for blog: Blog) -> Bool {
+        return blog.supports(.stats)
+    }
+}
+
 // MARK: Constants
 
 private extension DashboardStatsCardCell {

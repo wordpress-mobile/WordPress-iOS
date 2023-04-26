@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-05 13:54:09+0000 */
+/* Translation-Revision-Date: 2023-04-19 19:24:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -567,6 +567,9 @@ translators: Block name. %s: The localized block name */
 "Add button text" = "Lägg till knapptext";
 
 /* No comment provided by engineer. */
+"Add description" = "Lägg till beskrivning";
+
+/* No comment provided by engineer. */
 "Add image or video" = "Lägg till bild eller video";
 
 /* Accessibility hint text for adding an image to a new user account. */
@@ -624,6 +627,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Länka till detta telefonnummer";
 
+/* No comment provided by engineer. */
+"Add title" = "Lägg till rubrik";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Lägger till olika webbplatsfunktioner";
 
@@ -661,7 +667,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alla";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -2362,7 +2369,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Neka";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Beskriv bildens syfte. Lämna tomt om bilden endast har dekorativ funktion.";
+"Describe the purpose of the image. Leave empty if decorative." = "Beskriv syftet med bilden. Lämna tomt om det är dekorativt.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2657,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicera block";
+
+/* No comment provided by engineer. */
+"Dynamic" = "Dynamisk";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "T.ex. mode, poesi, politik";
@@ -4407,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Hantera webbplats";
 
+/* No comment provided by engineer. */
+"Manual" = "Manuell";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manuella offset-värden";
 
@@ -6112,6 +6125,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Ta bort block";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Ta bort block";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Ta bort från insikterna";
@@ -9639,7 +9655,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Visa ditt arbete på miljontals webbplatser.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Dölj detta";
 
 /* Title for the Blaze dashboard card. */
@@ -9665,6 +9681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Marknadsför det här inlägget";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Dölj detta";
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
@@ -9708,6 +9727,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Anpassa din hem-flik";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Senaste aktivitet";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Senaste aktivitet";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "Alla sidor";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Sidor";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Utkast";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "Publicerat";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "Schemalagd";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Åsidosatta parametrar markeras med en bock.";
 
@@ -9734,6 +9774,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "Äg din identitet online med en anpassad domän";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Det kan ta upp till en dag för din blogg och din nya domän att vara helt anslutna.";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";
@@ -10143,7 +10186,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Avfärda";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Det verkar som att du fortfarande har WordPress-appen installerad. Vi rekommenderar att du tar bort WordPress-appen för att undvika datakonflikter.";
+"migration.deleteWordpress.description" = "Det ser ut som att du fortfarande har WordPress-appen installerad.";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Jag förstår";
@@ -10152,16 +10195,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "Behöver du hjälp?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Du behöver inte längre WordPress-appen";
+"migration.deleteWordpress.title" = "Du behöver inte längre WordPress-appen på din enhet";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Avsluta";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "Ta bort WordPress-appen för att undvika datakonflikter.";
+"migration.done.footer" = "Vi rekommenderar att du avinstallerar WordPress-appen på din enhet för att undvika datakonflikter.";
 
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "ta bort WordPress-appen";
+"migration.done.footer.highlighted" = "avinstallerar WordPress-appen";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Vi har flyttat över alla data och dina inställningar, så allt är precis som förut.";
@@ -10235,6 +10278,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "Statistik har flyttat till Jetpack-appen.";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Innehåll";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Underhåll";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Socialt";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Trafik";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Arbeta på ett inläggsutkast";
 
@@ -10284,10 +10339,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "Dölj eller visa kort";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Senaste aktivitet";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Utkastinlägg";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Sidor";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "Bloggningsprompter";
@@ -10743,7 +10804,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "wordpress.jetpack.plugin.modal.title" = "Denna webbplats stöds inte av WordPress-appen";
 
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Ta bort WordPress-appen";
+"wp.migration.successCard.description" = "Välkommen till Jetpack-appen. Du kan avinstallera WordPress-appen.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Lär dig mer";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "din webbplats";

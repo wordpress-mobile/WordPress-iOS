@@ -45,7 +45,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
-            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages"])
+            XCTAssertEqual(self.remoteServiceMock.didRequestCards, ["todays_stats", "posts", "pages", "activity"])
             expect.fulfill()
         }
 
@@ -67,22 +67,22 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertNotNil(scheduledPostsCardItem)
 
             // Has published is `true`
-            XCTAssertTrue(draftPostsCardItem!.apiResponse!.posts!.hasPublished!)
+            XCTAssertTrue(draftPostsCardItem!.apiResponse!.posts!.value!.hasPublished!)
 
             // 3 scheduled item
-            XCTAssertEqual(draftPostsCardItem!.apiResponse!.posts!.draft!.count, 3)
+            XCTAssertEqual(draftPostsCardItem!.apiResponse!.posts!.value!.draft!.count, 3)
 
             // 1 scheduled item
-            XCTAssertEqual(draftPostsCardItem!.apiResponse!.posts!.scheduled!.count, 1)
+            XCTAssertEqual(draftPostsCardItem!.apiResponse!.posts!.value!.scheduled!.count, 1)
 
             // Has published is `true`
-            XCTAssertTrue(scheduledPostsCardItem!.apiResponse!.posts!.hasPublished!)
+            XCTAssertTrue(scheduledPostsCardItem!.apiResponse!.posts!.value!.hasPublished!)
 
             // 3 scheduled item
-            XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.draft!.count, 3)
+            XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.value!.draft!.count, 3)
 
             // 1 scheduled item
-            XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.scheduled!.count, 1)
+            XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.value!.scheduled!.count, 1)
 
             expect.fulfill()
         }
@@ -102,7 +102,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertNotNil(pagesCardItem)
 
             // 2 page items
-            XCTAssertEqual(pagesCardItem!.apiResponse!.pages!.count, 2)
+            XCTAssertEqual(pagesCardItem!.apiResponse!.pages!.value!.count, 2)
 
             expect.fulfill()
         }
@@ -122,7 +122,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertNotNil(activityCardItem)
 
             // 2 activity items
-            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.count, 2)
+            XCTAssertEqual(activityCardItem!.apiResponse!.activity!.value!.current!.orderedItems!.count, 2)
 
             expect.fulfill()
         }
@@ -143,10 +143,10 @@ class BlogDashboardServiceTests: CoreDataTestCase {
             XCTAssertNotNil(todaysStatsItem)
 
             // Entity has the correct values
-            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.views, 0)
-            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.visitors, 0)
-            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.likes, 0)
-            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.comments, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.value!.views, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.value!.visitors, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.value!.likes, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.value!.comments, 0)
 
             expect.fulfill()
         }

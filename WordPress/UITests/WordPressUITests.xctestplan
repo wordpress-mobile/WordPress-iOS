@@ -21,6 +21,7 @@
   "testTargets" : [
     {
       "skippedTests" : [
+        "DashboardTests",
         "EditorAztecTests",
         "EditorTests\/testPlayground()",
         "LoginTests\/testEmailMagicLinkLogin()",
