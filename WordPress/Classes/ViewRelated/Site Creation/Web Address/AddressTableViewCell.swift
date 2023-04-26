@@ -27,12 +27,12 @@ final class AddressTableViewCell: UITableViewCell {
     }()
 
     private let dotView: UIView = {
-        let size = Appearance.dotViewRadius * 2
+        let length = Appearance.dotViewRadius * 2
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = Appearance.dotViewRadius
         view.translatesAutoresizingMaskIntoConstraints = true
-        view.frame.size = .init(width: size, height: size)
+        view.frame.size = .init(width: length, height: length)
         return view
     }()
 
