@@ -159,12 +159,17 @@ final class SiteAssemblyWizardContent: UIViewController {
             case .success(let domain):
                 self.contentView.siteName = domain
                 self.contentView.isFreeDomain = false
-            case .failure:
+                self.contentView.status = .succeeded
+            case .failure(let error):
                 self.contentView.isFreeDomain = true
-                // TODO: We should discuss how to handle domain purchasing errors
-                break
+                switch error {
+                case .unsupportedRedirect, .internal, .invalidInput, .other:
+                    self.installErrorStateViewController(with: .domainCheckoutFailed)
+                    self.contentView.status = .failed
+                case .canceled:
+                    self.contentView.status = .succeeded
+                }
             }
-            self.contentView.status = .succeeded
         }
     }
 
