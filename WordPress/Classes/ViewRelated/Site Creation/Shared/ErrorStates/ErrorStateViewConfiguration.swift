@@ -13,6 +13,7 @@ enum ErrorStateViewType {
     case general
     case networkUnreachable
     case siteLoading
+    case domainCheckoutFailed
 }
 
 // MARK: ErrorViewConfiguration
@@ -53,7 +54,7 @@ struct ErrorStateViewConfiguration {
 extension ErrorStateViewType {
     var localizedTitle: String {
         switch self {
-        case .general, .siteLoading:
+        case .general, .siteLoading, .domainCheckoutFailed:
             return NSLocalizedString("There was a problem",
                                      comment: "This primary message message is displayed if a user encounters a general error.")
         case .networkUnreachable:
@@ -69,6 +70,12 @@ extension ErrorStateViewType {
                                      comment: "This secondary message is displayed if a user encounters a general error.")
         case .networkUnreachable:
             return nil
+        case .domainCheckoutFailed:
+            return NSLocalizedString(
+                "site.creation.assembly.step.domain.checkout.error.subtitle",
+                value: "Your website has been created successfully, but we encountered an issue while preparing your custom domain for checkout. Please try again or contact support for assistance.",
+                comment: "The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons."
+            )
         }
     }
 }
