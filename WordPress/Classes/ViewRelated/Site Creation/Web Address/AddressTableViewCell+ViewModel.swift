@@ -115,11 +115,25 @@ extension AddressTableViewCell.ViewModel {
         guard let code else {
             return nil
         }
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 0
-        formatter.currencyCode = code
+
+        let formatter = Self.Cache.currencyFormatter ?? {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.maximumFractionDigits = 2
+            formatter.minimumFractionDigits = 0
+            return formatter
+        }()
+
+        if formatter.currencyCode != code {
+            formatter.currencyCode = code
+        }
+
+        Self.Cache.currencyFormatter = formatter
+
         return formatter
+    }
+
+    private enum Cache {
+        static var currencyFormatter: NumberFormatter?
     }
 }

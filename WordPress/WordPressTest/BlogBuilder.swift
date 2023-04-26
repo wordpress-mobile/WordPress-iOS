@@ -137,6 +137,10 @@ final class BlogBuilder {
         return self
     }
 
+    func with(isWPForTeamsSite: Bool) -> Self {
+        return set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
+    }
+
     @discardableResult
     func build() -> Blog {
         return blog
