@@ -579,7 +579,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureSiteManagement:
             return [self supportsSiteManagementServices];
         case BlogFeatureDomains:
-            return ([self isHostedAtWPcom] || [self isAtomic]) && [self isAdmin] && ![self isWPForTeams];
+            return [self isHostedAtWPcom] && [self supportsSiteManagementServices];
         case BlogFeatureNoncePreviews:
             return [self supportsRestApi] && ![self isHostedAtWPcom];
         case BlogFeatureMediaMetadataEditing:
