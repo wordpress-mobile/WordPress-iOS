@@ -85,4 +85,19 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
 
         XCTAssertFalse(result, "Card should not show when the feature flag is disabled")
     }
+
+    func testShouldNotShowCardForP2s() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(atomic: false)
+            .with(isAdmin: true)
+            .with(registeredDomainCount: 0)
+            .with(hasDomainCredit: false)
+            .with(isWPForTeamsSite: true)
+            .build()
+
+        let result = DomainsDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
+
+        XCTAssertFalse(result, "Card should not show when the site is P2 site")
+    }
 }
