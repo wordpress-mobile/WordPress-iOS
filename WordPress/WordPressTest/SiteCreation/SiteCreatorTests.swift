@@ -38,6 +38,7 @@ class SiteCreatorTests: XCTestCase {
             "domain_name": "domainName.com" as AnyObject,
             "product_id": 42 as AnyObject,
             "supports_privacy": true as AnyObject,
+            "is_free": true as AnyObject
         ]
         creator.address = try! DomainSuggestion(json: domainSuggestionPayload)
 

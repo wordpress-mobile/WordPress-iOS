@@ -66,7 +66,6 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 
     private func setupView() {
         cardFrameView.add(subview: tableView)
-        cardFrameView.isNew = true
 
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: .defaultHigh)
