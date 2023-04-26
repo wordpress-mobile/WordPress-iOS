@@ -207,6 +207,7 @@ final class SiteAssemblyWizardContent: UIViewController {
             guard let self else {
                 return
             }
+            self.contentView.status = .inProgress
             self.attemptDomainPurchasing(domain: domain, site: site)
         }
 
