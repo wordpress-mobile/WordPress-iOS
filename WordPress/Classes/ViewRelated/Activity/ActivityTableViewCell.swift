@@ -2,7 +2,7 @@ import Foundation
 import Gridicons
 import WordPressShared.WPTableViewCell
 
-open class ActivityTableViewCell: WPTableViewCell {
+open class ActivityTableViewCell: WPTableViewCell, NibReusable {
 
     var actionButtonHandler: ((UIButton) -> Void)?
 
@@ -18,16 +18,23 @@ open class ActivityTableViewCell: WPTableViewCell {
 
     // MARK: - Public Methods
 
-    func configureCell(_ formattableActivity: FormattableActivity) {
+    func configureCell(_ formattableActivity: FormattableActivity, displaysDate: Bool = false) {
         activity = formattableActivity.activity
         guard let activity = activity else {
             return
         }
 
+        dateLabel.isHidden = !displaysDate
+        bulletLabel.isHidden = !displaysDate
+
         summaryLabel.text = activity.summary
+        dateLabel.text = activity.published.toMediumString()
+        bulletLabel.text = "\u{2022}"
         contentLabel.text = activity.text
 
         summaryLabel.textColor = .textSubtle
+        dateLabel.textColor = .textSubtle
+        bulletLabel.textColor = .textSubtle
         contentLabel.textColor = .text
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
@@ -39,8 +46,7 @@ open class ActivityTableViewCell: WPTableViewCell {
         }
 
         contentView.backgroundColor = Style.backgroundColor()
-        actionButtonContainer.isHidden  = !activity.isRewindable
-
+        actionButtonContainer.isHidden  = !activity.isRewindable || displaysDate
         actionButton.setImage(actionGridicon, for: .normal)
         actionButton.tintColor = .listIcon
         actionButton.accessibilityIdentifier = "activity-cell-action-button"
@@ -65,6 +71,8 @@ open class ActivityTableViewCell: WPTableViewCell {
     @IBOutlet fileprivate var iconImageView: UIImageView!
     @IBOutlet fileprivate var contentLabel: UILabel!
     @IBOutlet fileprivate var summaryLabel: UILabel!
+    @IBOutlet fileprivate var bulletLabel: UILabel!
+    @IBOutlet fileprivate var dateLabel: UILabel!
     @IBOutlet fileprivate var actionButtonContainer: UIView!
     @IBOutlet fileprivate var actionButton: UIButton!
 }

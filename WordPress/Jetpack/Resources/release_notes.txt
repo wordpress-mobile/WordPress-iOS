@@ -1,6 +1,7 @@
-* [**] Added a dashboard card for purchasing domains. [#20424]
-* [*] [internal] [Jetpack-only] Redesigned the migration success card. [#20515]
-* [**] [internal] Refactored Google SignIn implementation to not use the Google SDK [#20128]
-* [***] Block Editor: Resolved scroll-jump issues and enhanced caret focus management [https://github.com/WordPress/gutenberg/pull/48791]
-* [**] Blogging Prompts: adds the ability to view other users' responses to a prompt. [#20540]
+We got out our red pens and made some changes in the editor. When you press “return” to add a new block, the editor no longer jumps up before scrolling back down to the new block.
 
+But wait, there’s more! Go ahead and spin your phone right round—your keyboard and text will stay visible when you rotate your device from landscape to portrait.
+
+Blogging prompts now allow you to see other users’ responses to specific topics. Your response is still the best, we promise.
+
+Finally, we added a new card to your dashboard so you can easily buy a custom site domain within the app.

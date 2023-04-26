@@ -535,8 +535,9 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsRestApi] && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
         case BlogFeatureCommentLikes:
-        case BlogFeatureStats:
             return [self supportsRestApi];
+        case BlogFeatureStats:
+            return [self supportsRestApi] && [self isViewingStatsAllowed];
         case BlogFeatureStockPhotos:
             return [self supportsRestApi] && [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
         case BlogFeatureTenor:

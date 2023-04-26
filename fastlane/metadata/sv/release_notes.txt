@@ -1,1 +1,0 @@
-När du loggar in på en webbplats som drivs på egen server och ansluter till Jetpack via enskilda tillägg visas en popup som meddelar att denna typ av anslutning inte stöder appens kärnfunktioner ännu. Du kan kringgå det här problemet genom att växla över till Jetpack-appen. Upp, upp och iväg.

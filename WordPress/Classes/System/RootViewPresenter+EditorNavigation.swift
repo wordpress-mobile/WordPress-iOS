@@ -80,9 +80,9 @@ extension RootViewPresenter {
             return
         }
 
-        let blogID = blog.dotComID?.intValue ?? 0 as Any
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "page"])
-
+        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
+                          properties: [WPAppAnalyticsKeyTapSource: source],
+                          blog: blog)
         PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) { [weak self] (selectedLayout) in
             self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content, templateKey: selectedLayout?.slug)
         }
