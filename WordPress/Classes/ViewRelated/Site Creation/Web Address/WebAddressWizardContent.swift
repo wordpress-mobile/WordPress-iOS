@@ -217,9 +217,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         updateNoResultsLabelTopInset()
 
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
-            guard let `self` = self else { return }
+            guard let self else { return }
 
-            if domainPurchasingEnabled {
+            if self.domainPurchasingEnabled {
                 if !self.siteTemplateHostingController.view.isHidden {
                     self.updateTitleViewVisibility(true)
                 }
