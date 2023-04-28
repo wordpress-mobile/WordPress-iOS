@@ -135,8 +135,12 @@ final class SiteAssemblyContentView: UIView {
 
     let siteCreator: SiteCreator
 
+    var isFreeDomain: Bool?
     private lazy var shouldShowDomainPurchase: Bool = {
-        siteCreator.shouldShowDomainCheckout
+        if let isFreeDomain = isFreeDomain {
+            return isFreeDomain
+        }
+        return siteCreator.shouldShowDomainCheckout
     }()
 
     // MARK: SiteAssemblyContentView
