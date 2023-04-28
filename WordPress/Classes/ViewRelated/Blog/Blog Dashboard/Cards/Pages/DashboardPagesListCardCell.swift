@@ -2,6 +2,10 @@ import UIKit
 
 final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardView {
 
+    var parentViewController: UIViewController? {
+        presentingViewController
+    }
+
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
     private var viewModel: PagesCardViewModel?
@@ -20,9 +24,14 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
-        tableView.register(DashboardPageCell.self, forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
-        let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
-        tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
+        tableView.register(DashboardPageCell.self,
+                           forCellReuseIdentifier: DashboardPageCell.defaultReuseID)
+        tableView.register(DashboardPageCreationCompactCell.self,
+                           forCellReuseIdentifier: DashboardPageCreationCompactCell.defaultReuseID)
+        tableView.register(DashboardPageCreationExpandedCell.self,
+                           forCellReuseIdentifier: DashboardPageCreationExpandedCell.defaultReuseID)
+        tableView.register(BlogDashboardPostCardGhostCell.defaultNib,
+                           forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -64,7 +73,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 
     private func configureHeaderAction() {
         cardFrameView.onHeaderTap = { [weak self] in
-            self?.showPagesList()
+            self?.showPagesList(source: .header)
         }
     }
 }
@@ -72,7 +81,9 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
 // MARK: - BlogDashboardCardConfigurable
 
 extension DashboardPagesListCardCell {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog,
+                   viewController: BlogDashboardViewController?,
+                   apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
 
@@ -100,7 +111,7 @@ extension DashboardPagesListCardCell {
     private func makeAllPagesAction() -> UIMenuElement {
         let allPagesAction = UIAction(title: Strings.allPages,
                                       image: Style.allPagesImage,
-                                      handler: { _ in self.showPagesList() })
+                                      handler: { _ in self.showPagesList(source: .contextMenu) })
 
         // Wrap the pages action in a menu to display a divider between the pages action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
@@ -117,11 +128,14 @@ extension DashboardPagesListCardCell {
 
     // MARK: Actions
 
-    private func showPagesList() {
+    private func showPagesList(source: PagesListSource) {
         guard let blog, let presentingViewController else {
             return
         }
         PageListViewController.showForBlog(blog, from: presentingViewController)
+        WPAppAnalytics.track(.openedPages,
+                             withProperties: [WPAppAnalyticsKeyTapSource: source.rawValue],
+                             with: blog)
     }
 }
 
@@ -129,16 +143,29 @@ extension DashboardPagesListCardCell {
 extension DashboardPagesListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let isPagesSection = indexPath.section == 0
+        if isPagesSection {
+            handlePageSelected(at: indexPath)
+        } else {
+            handleCreatePageSectionSelected()
+        }
+
+    }
+
+    private func handlePageSelected(at indexPath: IndexPath) {
         guard let page = viewModel?.pageAt(indexPath),
               let presentingViewController else {
             return
         }
-        let didOpenEditor = PageEditorPresenter.handle(page: page,
-                                                       in: presentingViewController,
-                                                       entryPoint: .dashboard)
-        if didOpenEditor {
-            // TODO: Track editor opened
-        }
+        PageEditorPresenter.handle(page: page,
+                                   in: presentingViewController,
+                                   entryPoint: .dashboard)
+
+        viewModel?.trackPageTapped()
+    }
+
+    private func handleCreatePageSectionSelected() {
+        viewModel?.createPage()
     }
 }
 
@@ -155,6 +182,11 @@ extension DashboardPagesListCardCell {
 }
 
 private extension DashboardPagesListCardCell {
+
+    enum PagesListSource: String {
+        case header = "pages_card_header"
+        case contextMenu = "pages_card_context_menu"
+    }
 
     enum Strings {
         static let title = NSLocalizedString("dashboardCard.Pages.title",

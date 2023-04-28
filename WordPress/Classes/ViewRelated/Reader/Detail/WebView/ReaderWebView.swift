@@ -178,7 +178,9 @@ class ReaderWebView: WKWebView {
             :root {
               --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
-            --color-neutral-10: #\(UIColor(light: .muriel(color: .gray, .shade10),
+              --color-neutral-5: #\(UIColor(light: .muriel(color: .gray, .shade5),
+                            dark: .muriel(color: .gray, .shade80)).color(for: trait).hexString() ?? "");
+              --color-neutral-10: #\(UIColor(light: .muriel(color: .gray, .shade10),
                             dark: .muriel(color: .gray, .shade30)).color(for: trait).hexString() ?? "");
               --color-neutral-40: #\(UIColor(light: .muriel(color: .gray, .shade40),
               dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");

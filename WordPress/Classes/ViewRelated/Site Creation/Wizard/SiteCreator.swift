@@ -46,13 +46,18 @@ final class SiteCreator {
             siteURLString: siteURLString,
             isPublic: true,
             siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
-            findAvailableURL: address == nil
+            findAvailableURL: !(address?.isFree ?? false)
         )
         return request
     }
 
     var hasSiteTitle: Bool {
         information?.title != nil
+    }
+
+    /// Flag indicating whether the domain checkout flow should appear or not.
+    var shouldShowDomainCheckout: Bool {
+        return FeatureFlag.siteCreationDomainPurchasing.enabled && !(address?.isFree ?? false)
     }
 
     /// Returns the domain suggestion if there's one,

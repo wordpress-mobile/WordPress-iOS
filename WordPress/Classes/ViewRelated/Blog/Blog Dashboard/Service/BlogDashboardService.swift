@@ -27,7 +27,7 @@ final class BlogDashboardService {
             return
         }
 
-        let cardsToFetch: [String] = DashboardCard.RemoteDashboardCard.allCases.map { $0.rawValue }
+        let cardsToFetch: [String] = DashboardCard.RemoteDashboardCard.allCases.filter {$0.supported(by: blog)}.map { $0.rawValue }
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, success: { [weak self] cardsDictionary in
 
@@ -105,7 +105,7 @@ private extension BlogDashboardService {
         }
 
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .supportMultipleDateFormats
         return try? decoder.decode(BlogDashboardRemoteEntity.self, from: data)
     }
 

@@ -17,6 +17,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// The service with which the final assembly interacts to coordinate site creation.
     private let service: SiteAssemblyService
 
+    /// Displays the domain checkout web view.
+    private lazy var domainPurchasingController = DomainPurchasingWebFlowController(viewController: self)
+
     /// The new `Blog`, if successfully created; `nil` otherwise.
     private var createdBlog: Blog?
 
@@ -104,7 +107,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     private func attemptSiteCreation() {
         let creationRequest = siteCreator.build()
-
+        let shouldPerformDomainPurchasingStep = siteCreator.shouldShowDomainCheckout
         service.createSite(creationRequest: creationRequest) { [weak self] status in
             guard let self = self else {
                 return
@@ -135,7 +138,31 @@ final class SiteAssemblyWizardContent: UIViewController {
                 // making ANY modification to this stat please refer to: p4qSXL-35X-p2
                 SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
             }
-            self.contentView.status = status
+            if status == .succeeded,
+               shouldPerformDomainPurchasingStep,
+               let domain = self.siteCreator.address,
+               let blog = self.createdBlog {
+                self.attemptDomainPurchasing(domain: domain, site: blog)
+            } else {
+                self.contentView.status = status
+            }
+        }
+    }
+
+    /// The site must be created before attempting domain purchasing.
+    private func attemptDomainPurchasing(domain: DomainSuggestion, site: Blog) {
+        self.domainPurchasingController.purchase(domain: domain, site: site) { [weak self] result in
+            guard let self else {
+                return
+            }
+            switch result {
+            case .success(let domain):
+                self.contentView.siteName = domain
+            case .failure:
+                // TODO: We should discuss how to handle domain purchasing errors
+                break
+            }
+            self.contentView.status = .succeeded
         }
     }
 

@@ -1,13 +1,13 @@
 {
     "request": {
       "method": "GET",
-      "urlPath": "/wpcom/v2/sites/181977606/dashboard/cards-data/",
+      "urlPath": "/wpcom/v2/sites/106707880/dashboard/cards-data/",
       "queryParameters": {
-        "locale": {
+        "_locale": {
             "matches": "(.*)"
         },
         "cards": {
-            "equalTo": "todays_stats,posts"
+            "equalTo": "todays_stats,posts,pages"
         }
       }
     },
@@ -22,8 +22,8 @@
         },
         "posts": {
             "has_published": true,
-            "draft": [{}],
-            "scheduled": [{}]
+            "draft": [],
+            "scheduled": []
         }
       }
     }

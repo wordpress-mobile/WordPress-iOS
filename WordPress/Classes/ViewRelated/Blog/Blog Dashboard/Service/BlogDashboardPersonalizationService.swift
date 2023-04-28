@@ -26,7 +26,9 @@ struct BlogDashboardPersonalizationService {
         settings[siteID] = isEnabled
         repository.set(settings, forKey: key)
 
-        NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
+        }
     }
 
     private func getSettings(for card: DashboardCard) -> [String: Bool] {

@@ -140,8 +140,9 @@ final class SiteAssemblyContentView: UIView {
     }
 
     let siteCreator: SiteCreator
+
     private lazy var shouldShowDomainPurchase: Bool = {
-        FeatureFlag.siteCreationDomainPurchasing.enabled && !(siteCreator.address?.isFree ?? false)
+        siteCreator.shouldShowDomainCheckout
     }()
 
     // MARK: SiteAssemblyContentView
@@ -348,6 +349,10 @@ final class SiteAssemblyContentView: UIView {
     private func installAssembledSiteView() {
         guard let siteName = siteName, let siteURLString = siteURLString else {
             return
+        }
+
+        if let assembledSiteView {
+            assembledSiteView.removeFromSuperview()
         }
 
         let assembledSiteView = AssembledSiteView(domainName: siteName, siteURLString: siteURLString, siteCreator: siteCreator)
