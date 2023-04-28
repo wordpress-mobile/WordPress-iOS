@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-19 19:24:15+0000 */
+/* Translation-Revision-Date: 2023-04-26 00:33:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -5501,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "Spela video";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Färg på uppspelningsfältet";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Uppspelningsinställningar";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Lägg till något innehåll innan du försöker publicera.";
 
@@ -5853,6 +5859,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to privacy settings page
    Privacy Settings Title */
 "Privacy Settings" = "Inställningar för integritet";
+
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Integritet och klassificering";
 
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Integritetsnotis för användare i Kalifornien";
@@ -9775,8 +9784,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "Äg din identitet online med en anpassad domän";
 
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "Vi har skickat ett kvitto till din registrerade e-postadress.";
+
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Det kan ta upp till en dag för din blogg och din nya domän att vara helt anslutna.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "Domänköpet har slutförts";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-14 07:24:49+0000 */
+/* Translation-Revision-Date: 2023-04-21 07:35:44+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "Přidat text tlačítka";
+
+/* No comment provided by engineer. */
+"Add description" = "Přidat popis";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Přidat obrázek nebo video";
@@ -10011,8 +10014,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Potřebujete pomoci?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "Už nepotřebujete WordPress aplikaci";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Dokončit";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "Odstraňte WordPress aplikaci";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Přenesli jsme všechna vaše data a nastavení. Všechno je tam, kde jsi to nechal.";

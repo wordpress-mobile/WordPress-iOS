@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-15 13:44:05+0000 */
+/* Translation-Revision-Date: 2023-04-27 20:39:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "Button-Text hinzufügen.";
+
+/* No comment provided by engineer. */
+"Add description" = "Beschreibung hinzufügen";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Bild oder Video hinzufügen";
@@ -2365,6 +2368,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Ablehnen";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "Beschreibe den Zweck des Bildes. Lass dieses Feld frei, falls es dekorativ ist.";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2658,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Block duplizieren";
+
+/* No comment provided by engineer. */
+"Dynamic" = "Dynamisch";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "z. B. Mode, Poesie, Politik";
@@ -4408,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Site verwalten";
 
+/* No comment provided by engineer. */
+"Manual" = "Manuell";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manueller Versatz";
 
@@ -5489,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "Video abspielen";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Farbe der Wiedergabeleiste";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Wiedergabeeinstellungen";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Bitte füge vor der Veröffentlichung beliebige Inhalte hinzu.";
 
@@ -5842,6 +5860,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "Datenschutzeinstellungen";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Datenschutz und Bewertung";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Datenschutzhinweis für Benutzer in Kalifornien";
 
@@ -6113,6 +6134,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Block entfernen";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Blöcke entfernen";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Aus Einsichten entfernen";
@@ -9667,6 +9691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Diesen Beitrag mit Blaze bewerben";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Ausblenden";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Verwerfen";
 
@@ -9709,6 +9736,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Startseiten-Tab personalisieren";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Letzte Aktivität";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Letzte Aktivität";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "Alle Seiten";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Seiten";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Entwurf";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "Veröffentlicht";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "Geplant";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Überschriebene Parameter sind mit einem Häkchen gekennzeichnet.";
 
@@ -9735,6 +9783,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "Personalisiere deine Online-Identität mit einer individuellen Domain";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "Wir haben dir einen Beleg an die von dir hinterlegte E-Mail-Adresse geschickt.";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Es kann bis zu einem Tag dauern, bis dein Blog und deine neue Domain vollständig verbunden sind.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "Domain-Kauf abgeschlossen";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "Zum Wechseln der Einheit zweimal tippen";
@@ -10143,14 +10200,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Verwerfen";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Offenbar hast du die WordPress-App noch installiert.";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Verstanden";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Brauchst du Hilfe?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "Du brauchst die WordPress-App nicht mehr auf deinem Gerät";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Beenden";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Wir empfehlen dir, die WordPress-App auf deinem Gerät zu deinstallieren, um Datenkonflikte zu vermeiden.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "WordPress-App löschen";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Wir haben all deine Daten und Einstellungen übertragen. Alles ist genauso wie vorher.";
@@ -10224,6 +10293,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "Statistiken wurden in die Jetpack-App verschoben.";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Inhalt";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Wartungsmodus";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Social";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Traffic";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "An einem Beitragsentwurf arbeiten";
 
@@ -10273,10 +10354,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "Karten hinzufügen oder ausblenden";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Letzte Aktivität";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Beitragsentwürfe";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Seiten";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "Blog-Schreibanregungen";
@@ -10730,6 +10817,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Leider wird diese Website von der WordPress-APP nicht unterstützt";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "Willkommen bei der Jetpack-App. Du kannst die WordPress-App deinstallieren.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Weitere Informationen";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "deine Website";

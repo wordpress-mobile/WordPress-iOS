@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-19 08:22:04+0000 */
+/* Translation-Revision-Date: 2023-04-27 09:30:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sq_AL */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "Shtoni tekst butoni";
+
+/* No comment provided by engineer. */
+"Add description" = "Shtoni përshkrim";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Shtoni figurë ose video";
@@ -10125,8 +10128,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Ju duhet ndihmë?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "S’ju duhet më aplikacioni WordPress në pajisjen tuaj";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Përfundoje";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "çinstalim i aplikacionit WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Kemi shpërngulur krejt të dhënat dhe rregullimet tuaja. Gjithçka është mu atje ku e latë.";

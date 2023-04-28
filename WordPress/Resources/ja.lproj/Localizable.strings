@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-13 12:11:23+0000 */
+/* Translation-Revision-Date: 2023-04-27 20:40:02+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "ボタンのテキストを追加";
+
+/* No comment provided by engineer. */
+"Add description" = "説明を追加";
 
 /* No comment provided by engineer. */
 "Add image or video" = "画像または動画を追加";
@@ -2365,6 +2368,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "非承認";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "画像の目的を説明します。 デザインである場合は、空欄のままにします。";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2658,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "ブロックを複製";
+
+/* No comment provided by engineer. */
+"Dynamic" = "ダイナミック";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "例: ファッション、詩、政治";
@@ -4408,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "サイトの管理";
 
+/* No comment provided by engineer. */
+"Manual" = "手動";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "マニュアルオフセット";
 
@@ -5489,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "動画を再生";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "再生バーの色";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "再生設定";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "投稿する前にいくつかコンテンツを追加してください。";
 
@@ -5842,6 +5860,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "プライバシー設定";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "プライバシーと評価";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "カリフォルニア州のユーザーへのプライバシー通知";
 
@@ -6113,6 +6134,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "ブロックを削除";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "ブロックを削除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "統計概要から削除";
@@ -9667,6 +9691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "この投稿を目立たせる";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "非表示";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "削除";
 
@@ -9709,6 +9736,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "ホームタブをパーソナライズ";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "最近のアクティビティ";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "最近のアクティビティ";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "固定ページ一覧";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "ページ";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "下書き";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "公開済み";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "予約済み";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "上書きした変数はチェックマークで表示されます。";
 
@@ -9735,6 +9783,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "カスタムドメインで自分のデジタルアイデンティティを手に入れましょう";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "登録されたメールアドレスにレシートを送信しました。";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "ブログと新しいドメインが完全に連携するまでに最大1日かかることがあります。";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "ドメインの購入完了";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
@@ -10143,14 +10200,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "削除";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "WordPress アプリがまだインストールされているようです。";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "OK";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "ヘルプが必要ですか ?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "お使いの端末に WordPress アプリは不要になりました";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "完了";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "データの競合を避けるため、お使いの端末から WordPress アプリをアンインストールすることをおすすめします。";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "WordPress アプリを削除";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "すべてのデータと設定を転送しました。 すべて移行先にあります。";
@@ -10224,6 +10293,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "統計は Jetpack アプリに移動しました。";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "コンテンツ";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "メンテナンス";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "ソーシャル";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "トラフィック";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "下書き投稿を作成";
 
@@ -10273,10 +10354,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "カードを追加または非表示";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "最近のアクティビティ";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "下書きの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "ページ";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "ブログのプロンプト";
@@ -10730,6 +10817,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "申し訳ございませんが、このサイトは WordPress アプリでサポートされていません";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "Jetpack アプリへようこそ。WordPress アプリはアンインストールできます。";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "さらに詳しく";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "あなたのサイト";
