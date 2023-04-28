@@ -12,10 +12,15 @@ import Foundation
             return false
         }
 
+        /// If this propery is empty, it indicates that domain information is not yet loaded
+        let hasLoadedDomains = blog.freeDomain != nil
         let hasOtherDomains = blog.domainsList.count > 0
         let hasDomainCredit = blog.hasDomainCredit
 
-        return blog.supports(.domains) && !hasOtherDomains && !hasDomainCredit
+        return blog.supports(.domains)
+            && hasLoadedDomains
+            && !hasOtherDomains
+            && !hasDomainCredit
     }
 
     static func hideCard(for blog: Blog?) {
