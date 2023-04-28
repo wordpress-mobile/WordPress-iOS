@@ -477,21 +477,25 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self?.refreshControl.endRefreshing()
             }
 
-            blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.updateNavigationTitle(for: blog)
-                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
-                self.blogDashboardViewController?.reloadCardsLocally()
-            }
+            syncBlogAndAllMetadata(blog)
 
             /// Update today's prompt if the blog has blogging prompts enabled.
             fetchPrompt(for: blog)
         }
 
         WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])
+    }
+
+    private func syncBlogAndAllMetadata(_ blog: Blog) {
+        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.updateNavigationTitle(for: blog)
+            self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+            self.blogDashboardViewController?.reloadCardsLocally()
+        }
     }
 
     // MARK: - Segmented Control
@@ -850,6 +854,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             blogDetailsViewController?.preloadMetadata()
             blogDetailsViewController?.showInitialDetailsForBlog()
         case .dashboard:
+            syncBlogAndAllMetadata(blog)
             blogDashboardViewController?.update(blog: blog)
         }
     }
