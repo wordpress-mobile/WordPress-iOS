@@ -30,6 +30,11 @@ final class BlogBuilder {
         return self
     }
 
+    func with(supportsDomains: Bool) -> Self {
+        return with(isHostedAtWPCom: supportsDomains)
+            .with(isAdmin: supportsDomains)
+    }
+
     func with(planID: Int) -> Self {
         blog.planID = planID as NSNumber
         return self

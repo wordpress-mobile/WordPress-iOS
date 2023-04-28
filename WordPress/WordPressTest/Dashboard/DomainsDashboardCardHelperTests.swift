@@ -2,11 +2,9 @@ import XCTest
 @testable import WordPress
 
 final class DomainsDashboardCardHelperTests: CoreDataTestCase {
-    func testShouldShowCardEnabledFeatureFlagAndHostedAtWPcom() {
+    func testShouldShowCardBlogSupportsDomains() {
         let blog = BlogBuilder(mainContext)
-            .isHostedAtWPcom()
-            .with(atomic: false)
-            .with(isAdmin: true)
+            .with(supportsDomains: true)
             .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
@@ -16,39 +14,21 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
         XCTAssertTrue(result, "Card should show for WPcom hosted blogs")
     }
 
-    func testShouldShowCardEnabledFeatureFlagAndAtomic() {
+    func testShouldNotShowCardBlogDoesNotSupportDomains() {
         let blog = BlogBuilder(mainContext)
-            .isNotHostedAtWPcom()
-            .with(atomic: true)
-            .with(isAdmin: true)
+            .with(supportsDomains: false)
             .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
 
         let result = DomainsDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
 
-        XCTAssertTrue(result, "Card should show for Atomic blogs")
-    }
-
-    func testShouldNotShowCardNotAdmin() {
-        let blog = BlogBuilder(mainContext)
-            .isHostedAtWPcom()
-            .with(atomic: false)
-            .with(isAdmin: false)
-            .with(registeredDomainCount: 0)
-            .with(hasDomainCredit: false)
-            .build()
-
-        let result = DomainsDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
-
-        XCTAssertFalse(result, "Card should not show for non-admin users")
+        XCTAssertFalse(result, "Card should show for blogs that do not support domains")
     }
 
     func testShouldNotShowCardHasOtherDomains() {
         let blog = BlogBuilder(mainContext)
-            .isHostedAtWPcom()
-            .with(atomic: false)
-            .with(isAdmin: true)
+            .with(supportsDomains: true)
             .with(registeredDomainCount: 2)
             .with(hasDomainCredit: false)
             .build()
@@ -60,9 +40,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
 
     func testShouldNotShowCardHasDomainCredit() {
         let blog = BlogBuilder(mainContext)
-            .isHostedAtWPcom()
-            .with(atomic: false)
-            .with(isAdmin: true)
+            .with(supportsDomains: true)
             .with(registeredDomainCount: 0)
             .with(hasDomainCredit: true)
             .build()
@@ -74,9 +52,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
 
     func testShouldNotShowCardFeatureFlagDisabled() {
         let blog = BlogBuilder(mainContext)
-            .isHostedAtWPcom()
-            .with(atomic: false)
-            .with(isAdmin: true)
+            .with(supportsDomains: true)
             .with(registeredDomainCount: 0)
             .with(hasDomainCredit: false)
             .build()
@@ -84,20 +60,5 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
         let result = DomainsDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: false)
 
         XCTAssertFalse(result, "Card should not show when the feature flag is disabled")
-    }
-
-    func testShouldNotShowCardForP2s() {
-        let blog = BlogBuilder(mainContext)
-            .isHostedAtWPcom()
-            .with(atomic: false)
-            .with(isAdmin: true)
-            .with(registeredDomainCount: 0)
-            .with(hasDomainCredit: false)
-            .with(isWPForTeamsSite: true)
-            .build()
-
-        let result = DomainsDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
-
-        XCTAssertFalse(result, "Card should not show when the site is P2 site")
     }
 }
