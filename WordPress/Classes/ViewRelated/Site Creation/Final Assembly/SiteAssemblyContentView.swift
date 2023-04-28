@@ -136,12 +136,12 @@ final class SiteAssemblyContentView: UIView {
     let siteCreator: SiteCreator
 
     var isFreeDomain: Bool?
-    private lazy var shouldShowDomainPurchase: Bool = {
+    private func shouldShowDomainPurchase() -> Bool {
         if let isFreeDomain = isFreeDomain {
             return !isFreeDomain
         }
         return siteCreator.shouldShowDomainCheckout
-    }()
+    }
 
     // MARK: SiteAssemblyContentView
 
@@ -366,7 +366,7 @@ final class SiteAssemblyContentView: UIView {
         self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
 
         let assembledSiteViewBottomConstraint: NSLayoutConstraint
-        if shouldShowDomainPurchase {
+        if shouldShowDomainPurchase() {
             assembledSiteView.layer.cornerRadius = 12
             assembledSiteView.layer.masksToBounds = true
             assembledSiteViewBottomConstraint = footnoteLabel.topAnchor.constraint(
@@ -510,7 +510,9 @@ final class SiteAssemblyContentView: UIView {
 
                     self.completionLabel.isHidden = false
                     self.completionDescription.isHidden = false
-                    self.footnoteLabel.isHidden = !self.shouldShowDomainPurchase
+                    self.completionLabel.text = self.shouldShowDomainPurchase() ? Strings.Paid.completionTitle : Strings.Free.completionTitle
+                    self.completionDescription.text = self.shouldShowDomainPurchase() ? Strings.Paid.description : Strings.Free.description
+                    self.footnoteLabel.isHidden = !self.shouldShowDomainPurchase()
 
 
                     if let buttonView = self.buttonContainerView {
