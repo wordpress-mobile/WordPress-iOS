@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-13 12:13:53+0000 */
+/* Translation-Revision-Date: 2023-04-27 20:39:32+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "추가 버튼 텍스트";
+
+/* No comment provided by engineer. */
+"Add description" = "설명 추가";
 
 /* No comment provided by engineer. */
 "Add image or video" = "이미지 또는 비디오 추가";
@@ -2365,6 +2368,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "거부하기";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "이미지의 용도를 설명합니다. 장식용이면 비워둡니다.";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2658,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "블록 복제하기";
+
+/* No comment provided by engineer. */
+"Dynamic" = "동적";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "예: 패션, 시, 정치";
@@ -4408,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "사이트 관리";
 
+/* No comment provided by engineer. */
+"Manual" = "수동";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "수동 오프셋";
 
@@ -5489,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "비디오 재생";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "재생 표시줄 색상";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "재생 설정";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "발행을 시도하기 전에 약간의 콘텐츠를 추가하시기 바랍니다.";
 
@@ -5842,6 +5860,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "개인 정보 설정";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "개인정보 및 평점";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "캘리포니아 사용자를 위한 개인정보 공지";
 
@@ -6113,6 +6134,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "블록 제거하기";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "블록 제거";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
@@ -9667,6 +9691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "이 글 Blaze";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "숨기기";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
 
@@ -9709,6 +9736,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "홈 탭 개인 설정";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "최근 활동";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "최근 활동";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "모든 페이지";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "페이지";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "임시글";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "발행됨";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "예약됨";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "체크 표시가 재정의된 파라미터에 표시됩니다.";
 
@@ -9735,6 +9783,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "사용자 정의 도메인으로 온라인 ID 소유";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "파일에 있는 주소로 영수증을 이메일로 보내드렸습니다.";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "블로그와 새 도메인이 완전히 연결되려면 하루 정도 걸릴 수 있습니다.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "도메인 구매 완료";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
@@ -10143,14 +10200,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "아직 워드프레스 앱이 설치되어 있는 것 같습니다.";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "알겠습니다.";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "도움말이 필요하신가요?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "더는 기기에 워드프레스 앱이 필요하지 않습니다.";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "마침";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "데이터가 충돌하지 않도록 기기에서 워드프레스 앱을 제거하는 것이 좋습니다.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "워드프레스 앱 제거";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "모든 데이터와 설정을 이전하겠습니다. 모든 것이 그대로 다 남아 있습니다.";
@@ -10224,6 +10293,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "통계가 젯팩 앱으로 이동되었습니다.";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "콘텐츠";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "유지보수";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "소셜";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "트래픽";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "임시글로 글 작업";
 
@@ -10273,10 +10354,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "카드 추가 또는 숨기기";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "최근 활동";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "임시글";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "페이지";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "블로깅 프롬프트";
@@ -10730,6 +10817,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "죄송합니다. 이 사이트는 워드프레스 앱에서 지원되지 않습니다.";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "젯팩 앱에 오신 것을 환영합니다. 워드프레스 앱을 제거하실 수 있습니다.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "더 알아보기";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "내 사이트";

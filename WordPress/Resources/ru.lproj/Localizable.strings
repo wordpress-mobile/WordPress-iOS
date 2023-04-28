@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-19 19:59:53+0000 */
+/* Translation-Revision-Date: 2023-04-25 11:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
@@ -2368,6 +2368,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Отклонить";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "Опишите назначение изображения. Оставьте поле пустым, если оно служит для оформления.";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2661,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Дублировать блок";
+
+/* No comment provided by engineer. */
+"Dynamic" = "Динамический";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "Пример: Мода, поэзия, политика";
@@ -4411,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Управление сайтом";
 
+/* No comment provided by engineer. */
+"Manual" = "Ручной";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Вручную";
 
@@ -5492,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "Воспроизвести видео";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Цвет панели воспроизведения";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Настройки воспроизведения";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Пожалуйста добавьте что-нибудь в содержимое перед публикацией.";
 
@@ -5845,6 +5860,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "Настройки конфиденциальности";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Конфиденциальность и рейтинг";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Уведомление о конфиденциальности для жителей Калифорнии";
 
@@ -6116,6 +6134,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Удалить блок";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Удалить блоки";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Удалить с экрана тенденций";
@@ -9670,6 +9691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Выделить эту запись";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Свернуть";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Закрыть";
 
@@ -9712,6 +9736,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Настроить вкладку «Главная»";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Недавние действия";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Недавние действия";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "Все страницы";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Страницы";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Черновик";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "Опубликовано";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "Запланировано";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Переопределенные параметры обозначаются галочкой.";
 
@@ -9738,6 +9783,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "Пользовательский домен ― ваше лицо в Интернете";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "Чек отправлен на указанный адрес электронной почты.";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Полное подключение нового домена к блогу может занять до суток.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "Покупка домена завершена";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "нажмите дважды для смены единиц";
@@ -10146,6 +10200,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Закрыть";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Кажется, у вас всё ещё установлено приложение WordPress.";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Понятно";
 
@@ -10157,6 +10214,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Завершить";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Рекомендуем удалить приложение WordPress с устройства, чтобы избежать конфликтов данных.";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "удаление приложения WordPress";
@@ -10233,6 +10293,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "Статистика перемещена в приложение Jetpack.";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Содержимое";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Обслуживание";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Соцсети";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Посещаемость";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Работа над черновой записью";
 
@@ -10282,10 +10354,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "Добавление и скрытие карточек";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Недавние действия";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Черновики записей";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Страницы";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "Подсказки по ведению блога";
@@ -10739,6 +10817,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Приложение WordPress не поддерживает этот сайт";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "Добро пожаловать в приложение Jetpack. Можете удалить приложение WordPress.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Подробнее";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "ваш сайт";

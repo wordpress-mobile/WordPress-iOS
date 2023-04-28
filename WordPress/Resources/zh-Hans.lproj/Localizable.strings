@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-13 12:12:18+0000 */
+/* Translation-Revision-Date: 2023-04-25 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "添加按钮文字";
+
+/* No comment provided by engineer. */
+"Add description" = "添加描述";
 
 /* No comment provided by engineer. */
 "Add image or video" = "添加图片或视频";
@@ -2365,6 +2368,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "拒绝";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "描述图像的用途。 如果作装饰用，请留空。";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2658,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "复制区块";
+
+/* No comment provided by engineer. */
+"Dynamic" = "动态";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "例如： 时尚、诗歌、政治";
@@ -4408,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "管理站点";
 
+/* No comment provided by engineer. */
+"Manual" = "手动";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "手动选择偏差";
 
@@ -5489,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "播放视频";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "播放栏颜色";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "播放设置";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "请先添加一些内容，然后再尝试发布。";
 
@@ -5842,6 +5860,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "隐私设置";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "隐私和评级";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "面向加州用户的隐私声明";
 
@@ -6113,6 +6134,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "移除区块";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "移除区块";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "从数据分析中删除";
@@ -9667,6 +9691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "大力宣传此文章";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "隐藏此内容";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "忽略";
 
@@ -9709,6 +9736,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "对您的“首页”选项卡进行个性化";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "近期的动态";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "近期的动态";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "所有页面";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "页面";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "草稿";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "已发布";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "预发布";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "覆盖的参数由复选标记表示。";
 
@@ -9735,6 +9783,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "使用自定义域名拥有您的在线身份";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "我们向存档的电子邮件地址发送了收据。";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "您的博客和您的新域名最多需要一天的时间才能完全连接。";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "域名购买完成";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
@@ -10143,14 +10200,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "似乎您仍然安装了 WordPress 应用。";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "知道了";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "需要帮助？";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "您的设备上不再需要 WordPress 应用";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "完成";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "我们建议您卸载设备上的 WordPress 应用以避免发生数据冲突。";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "卸载 WordPress 应用";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "我们已转移您的所有数据和设置。 一切都完好如初。";
@@ -10224,6 +10293,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "统计信息已移至 Jetpack 应用程序。";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "内容";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "维护";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "社交";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "流量";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "继续撰写文章草稿";
 
@@ -10273,10 +10354,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "添加或隐藏卡片";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "近期的动态";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "草稿文章";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "页面";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "博客提示";
@@ -10730,6 +10817,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "抱歉，WordPress 应用不支持此站点。";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "欢迎使用 Jetpack app。您可以卸载 WordPress 应用。";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "详细了解";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "您的站点";

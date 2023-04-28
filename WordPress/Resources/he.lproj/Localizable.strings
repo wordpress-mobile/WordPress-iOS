@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-05 13:54:09+0000 */
+/* Translation-Revision-Date: 2023-04-27 20:38:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: he_IL */
@@ -565,6 +565,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "להוסיף טקסט לכפתור";
+
+/* No comment provided by engineer. */
+"Add description" = "להוסיף תיאור";
 
 /* No comment provided by engineer. */
 "Add image or video" = "להוסיף תמונה או וידאו";
@@ -2365,6 +2368,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "דחייה";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "לתאר את מטרת התמונה. אם התמונה נועדה לקישוט בלבד, יש להשאיר את השדה ריק.";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2658,6 +2664,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Duplicate block" = "לשכפל בלוק";
+
+/* No comment provided by engineer. */
+"Dynamic" = "דינמי";
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "לדוגמה, אופנה, שירה, פוליטיקה";
@@ -4408,6 +4417,9 @@ translators: Block name. %s: The localized block name */
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "ניהול אתר";
 
+/* No comment provided by engineer. */
+"Manual" = "ידני";
+
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "התאמות ידניות";
 
@@ -5489,6 +5501,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "הפעלת וידאו";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "הצבע של סרגל הניגון";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "הגדרות ניגון";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "יש להוסיף תוכן לפני לחיצה על פרסום.";
 
@@ -5842,6 +5860,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "הגדרות פרטיות";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "פרטיות ודירוג";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "הצהרת פרטיות למשתמשים מקליפורניה";
 
@@ -6113,6 +6134,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "להסיר בלוק";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "להסיר בלוקים";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
@@ -9667,6 +9691,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "להשתמש ב-Blaze בפוסט הזה";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "להסתיר את המידע";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "ביטול";
 
@@ -9709,6 +9736,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "להתאים אישית את הלשונית 'בית' באתר שלך";
 
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "פעילות אחרונה";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "פעילות אחרונה";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "כל העמודים";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "עמודים";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "טיוטה";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "פורסם";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "מתוזמן לפרסום";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "פרמטרים שנדרסו מסומנים בסימן אישור.";
 
@@ -9735,6 +9783,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Domains dashboard card. */
 "domain.dashboard.card.title" = "לשלוט בזהות המקוונת שלך באמצעות דומיין אישי";
+
+/* Domain Purchase Completion description. */
+"domain.purchase.preview.description" = "שלחנו לך את הקבלה לכתובת המעודכנת אצלנו.";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "ייתכן שיידרש עד יום אחד להשלמת החיבור בין הבלוג לדומיין החדש.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"domain.purchase.preview.title" = "רכישת הדומיין הושלמה";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
@@ -10143,14 +10200,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "ביטול";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "נראה שהאפליקציה של WordPress עדיין מותקנת אצלך.";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "הבנתי";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "נדרשת לך עזרה?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "כבר אין לך צורך באפליקציה של WordPress במכשיר לך";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "סיום";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "אנחנו ממליצים להסיר את ההתקנה של האפליקציה של WordPress כדי להימנע מהתנגשויות נתונים.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "מסיר את ההתקנה של האפליקציה של WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "העברנו את כל הנתונים וההגדרות שלך. השארנו הכול במקום.";
@@ -10224,6 +10293,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "הנתונים הסטטיסטיים עברו לאפליקציה של Jetpack.";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "תוכן";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "תחזוקה";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "רשתות חברתיות";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "תעבורה";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "לערוך פוסט טיוטה";
 
@@ -10273,10 +10354,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "להוסיף או להסתיר כרטיסים";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "פעילות אחרונה";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Blaze";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "טיוטות פוסטים";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "עמודים";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "הצעות כתיבה בבלוג";
@@ -10730,6 +10817,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "מצטערים, האתר אינו נתמך באפליקציה של WordPress";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "שמחים שהצטרפת לאפליקציה של Jetpack. אפשר להסיר את ההתקנה של האפליקציה של WordPress כעת.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "למידע נוסף";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "האתר שלך";
