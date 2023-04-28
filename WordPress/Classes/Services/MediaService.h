@@ -50,11 +50,12 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 /**
- Updates the media object details to the server. This method doesn't allow you to update media file,
- because that always stays static after the initial upload, it only allows to change details like,
- caption, alternative text, etc...
+ Updates the media object details. All fields defined in the media object will be updated.
+ 
+ NOTE: This method doesn't allow you to update media file, because that always stays static after the initial
+ upload, it only allows to change details like, caption, alternative text, etc...
 
- @param media object to upload to the server.
+ @param media object to update.
  @success a block that will be invoked when the media upload finished with success
  @failure a block that will be invoked when there is upload error.
  */
@@ -63,14 +64,44 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 /**
- Updates multiple media objects similar to -updateMedia:success:failure: but batches them
- together. The success handler is only called when all updates succeed. Failure is called
+ Updates the specified defails of media object.
+
+ @param media object to update.
+ @param fieldsToUpdate Fields to be updated of media object.
+ @success a block that will be invoked when the media upload finished with success
+ @failure a block that will be invoked when there is upload error.
+ */
+- (void)updateMedia:(nonnull Media *)media
+     fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
+
+/**
+ Updates multiple media objects similar to `-updateMedia:success:failure:` but batches them
+ together. All fields defined in the media objects will be updated.
+ 
+ The success handler is only called when all updates succeed. Failure is called
  if the entire process fails in some catostrophic way.
  
  @param mediaObjects An array of media objects to update
  @param success
  */
 - (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
+     overallSuccess:(nullable void (^)(void))overallSuccess
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
+
+/**
+ Updates specified details of multiple media objects.
+ 
+ The success handler is only called when all updates succeed. Failure is called
+ if the entire process fails in some catostrophic way.
+ 
+ @param mediaObjects An array of media objects to update
+ @param fieldsToUpdate Fields to be updated of media objects.
+ @param success
+ */
+- (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
+     fieldsToUpdate:(NSArray<NSString *> *)fieldsToUpdate
      overallSuccess:(nullable void (^)(void))overallSuccess
             failure:(nullable void (^)(NSError * _Nullable error))failure;
 
