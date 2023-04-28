@@ -64,7 +64,7 @@ final class DomainsDashboardCardHelperTests: CoreDataTestCase {
 
         let result = DomainsDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
 
-        XCTAssertFalse(result, "Card should not show for blogs with domain credit")
+        XCTAssertFalse(result, "Card should not until domain information is loaded")
     }
 
     func testShouldNotShowCardFeatureFlagDisabled() {
