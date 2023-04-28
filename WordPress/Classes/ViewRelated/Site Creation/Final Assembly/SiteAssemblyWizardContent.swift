@@ -158,7 +158,9 @@ final class SiteAssemblyWizardContent: UIViewController {
             switch result {
             case .success(let domain):
                 self.contentView.siteName = domain
+                self.contentView.isFreeDomain = false
             case .failure:
+                self.contentView.isFreeDomain = true
                 // TODO: We should discuss how to handle domain purchasing errors
                 break
             }
