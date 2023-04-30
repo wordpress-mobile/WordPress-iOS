@@ -3,7 +3,7 @@
     color-scheme: light dark;
 
     /* custom variables. */
-    --wordpress-blue-color: rgba(6, 117, 196, 1);
+    --primary-color: rgba(6, 117, 196, 1);
     --mention-background-color: rgba(2, 103, 255, .1);
     --monospace-font: ui-monospace, monospace;
 }
@@ -11,7 +11,7 @@
 /* overrides for dark color scheme. */
 @media(prefers-color-scheme: dark) {
     :root {
-        --wordpress-blue-color: rgba(57, 156, 227, 1);
+        --primary-color: rgba(57, 156, 227, 1);
         --mention-background-color: rgba(2, 103, 255, .2);
     }
 }
@@ -68,7 +68,7 @@ figure {
 /** LINKS **/
 
 a {
-    color: var(--wordpress-blue-color);
+    color: var(--primary-color);
 }
 
 a.mention {

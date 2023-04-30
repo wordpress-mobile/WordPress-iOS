@@ -119,16 +119,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
-    /// Cache the HTML template format. We only need read the template once.
-    private static let htmlTemplateFormat: String? = {
-        guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
-              let templateString = try? String(contentsOfFile: templatePath) else {
-            return nil
-        }
-
-        return templateString
-    }()
-
     private var renderer: CommentContentRenderer? = nil
 
     private var renderMethod: RenderMethod?

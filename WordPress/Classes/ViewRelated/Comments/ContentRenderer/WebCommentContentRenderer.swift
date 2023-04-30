@@ -97,6 +97,18 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
 private extension WebCommentContentRenderer {
     struct Constants {
         static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
+
+        static let highlightColor = UIColor(light: .primary, dark: .muriel(color: .primary, .shade30))
+
+        static let mentionBackgroundColor: UIColor = {
+            var darkColor = UIColor.muriel(color: .primary, .shade90)
+
+            if AppConfiguration.isWordPress {
+                darkColor = darkColor.withAlphaComponent(0.5)
+            }
+
+            return UIColor(light: .muriel(color: .primary, .shade0), dark: darkColor)
+        }()
     }
 
     /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
@@ -107,11 +119,16 @@ private extension WebCommentContentRenderer {
     /// Cache the HTML template format. We only need read the template once.
     static let htmlTemplateFormat: String? = {
         guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
-              let templateString = try? String(contentsOfFile: templatePath) else {
+              let templateStringFormat = try? String(contentsOfFile: templatePath) else {
             return nil
         }
 
-        return templateString
+        return String(format: templateStringFormat,
+                      Constants.highlightColor.lightVariant().cssRGBAString(),
+                      Constants.highlightColor.darkVariant().cssRGBAString(),
+                      Constants.mentionBackgroundColor.lightVariant().cssRGBAString(),
+                      Constants.mentionBackgroundColor.darkVariant().cssRGBAString(),
+                      "%@")
     }()
 
     /// Returns a formatted HTML string by loading the template for rich comment.
@@ -147,5 +164,21 @@ private extension WebCommentContentRenderer {
         htmlContentCache = htmlContent
 
         return htmlContent
+    }
+}
+
+private extension UIColor {
+    func cssRGBAString(customAlpha: CGFloat? = nil) -> String {
+        let red = Int(rgbaComponents.red * 255)
+        let green = Int(rgbaComponents.green * 255)
+        let blue = Int(rgbaComponents.blue * 255)
+        let alpha = {
+            guard let customAlpha, customAlpha <= 1.0 else {
+                return rgbaComponents.alpha
+            }
+            return customAlpha
+        }()
+
+        return "rgba(\(red), \(green), \(blue), \(alpha))"
     }
 }
