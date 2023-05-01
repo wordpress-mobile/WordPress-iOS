@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './Gutenberg/cocoapods_helper'
+
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
 # For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
 install! 'cocoapods', warn_for_multiple_pod_sources: false
@@ -77,7 +79,7 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
-  gutenberg_pods
+  gutenberg_pod
 end
 
 def shared_with_extension_pods
@@ -90,91 +92,6 @@ def shared_style_pods
   pod 'Gridicons', '~> 1.1.0'
 end
 
-def gutenberg_pods
-  gutenberg tag: 'v1.94.0'
-end
-
-def gutenberg(options)
-  options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
-  options[:submodules] = true
-  local_gutenberg = ENV.fetch('LOCAL_GUTENBERG', nil)
-  if local_gutenberg
-    options = { path: local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
-  end
-  pod 'Gutenberg', options
-  pod 'RNTAztecView', options
-
-  gutenberg_dependencies options
-end
-
-def gutenberg_dependencies(options)
-  # Note that the pods in this array might seem unused if you look for
-  # `import` statements in this codebase. However, make sure to also check
-  # whether they are used in the gutenberg-mobile and Gutenberg projects.
-  #
-  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
-  dependencies = %w[
-    FBLazyVector
-    React
-    ReactCommon
-    RCTRequired
-    RCTTypeSafety
-    React-Core
-    React-CoreModules
-    React-RCTActionSheet
-    React-RCTAnimation
-    React-RCTBlob
-    React-RCTImage
-    React-RCTLinking
-    React-RCTNetwork
-    React-RCTSettings
-    React-RCTText
-    React-RCTVibration
-    React-callinvoker
-    React-cxxreact
-    React-jsinspector
-    React-jsi
-    React-jsiexecutor
-    React-logger
-    React-perflogger
-    React-runtimeexecutor
-    boost
-    Yoga
-    RCT-Folly
-    glog
-    react-native-safe-area
-    react-native-safe-area-context
-    react-native-video
-    react-native-webview
-    RNSVG
-    react-native-slider
-    BVLinearGradient
-    react-native-get-random-values
-    react-native-blur
-    RNScreens
-    RNReanimated
-    RNGestureHandler
-    RNCMaskedView
-    RNCClipboard
-    RNFastImage
-    React-Codegen
-    React-bridging
-  ]
-  if options[:path]
-    podspec_prefix = options[:path]
-  else
-    tag_or_commit = options[:tag] || options[:commit]
-    podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
-  end
-
-  # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
-  pod 'FBReactNativeSpec', podspec: "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
-
-  dependencies.each do |pod_name|
-    pod pod_name, podspec: "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
-  end
-end
-
 abstract_target 'Apps' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -185,7 +102,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg_pods
+  gutenberg_pod
 
   ## Third party libraries
   ## =====================
