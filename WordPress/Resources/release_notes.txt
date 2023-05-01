@@ -1,3 +1,3 @@
-We got out our red pens and made some changes in the editor. When you press “return” to add a new block, the editor no longer jumps up before scrolling back down to the new block.
+* [*] [internal] Allow updating specific fields when updating media details. [#20606]
+* [**] Block Editor: Enable VideoPress block (only on Simple WPCOM sites) [#20580]
 
-But wait, there’s more! Go ahead and spin your phone right round—your keyboard and text will stay visible when you rotate your device from landscape to portrait.

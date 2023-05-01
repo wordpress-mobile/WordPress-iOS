@@ -2388,11 +2388,14 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Dashboard";
 
-/* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "Recent activity";
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "All activity";
 
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Recent activity";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Add pages to your site";
 
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "Draft";
@@ -2405,6 +2408,12 @@
 
 /* Title for an action that opens the full pages list. */
 "dashboardCard.Pages.contextMenu.allPages" = "All pages";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Create another page";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Start with bespoke, mobile friendly layouts.";
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pages";
@@ -2540,6 +2549,9 @@
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Design System";
+
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
 
@@ -2659,16 +2671,37 @@
 "domain.dashboard.card.menu.hide" = "Hide this";
 
 /* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "Own your online identity with a custom domain";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "We’ve emailed a receipt to your address on file.";
+"domain.dashboard.card.shortTitle" = "Find a custom domain";
 
 /* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "It may take up to a day for your blog and your new domain to be fully connected.";
+"domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";
 
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "Domain Purchase Complete";
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Next, we'll help you get it ready to be browsed.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "We’ve emailed your receipt. Next, we'll help you get it ready for everyone.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Kudos, your site is live!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Best Alternative";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "for the first year";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Free";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Recommended";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Sale";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "per year";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domains";
@@ -4780,6 +4813,9 @@ Please install the %3$@ to use the app with this site.";
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Load more posts";
 
+/* No comment provided by engineer. */
+"Loading" = "Loading";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Loading Activities...";
 
@@ -6776,6 +6812,10 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "this site";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -9437,6 +9477,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "unknown url";
+
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Unlabeled color. %s";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Unlike the Comment.";
