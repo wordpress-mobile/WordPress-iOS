@@ -404,9 +404,7 @@ pre_install do |installer|
   installer.pod_targets.each do |pod|
     # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
     # linking it resolves this.
-    #
-    # The regex is to match both "Sentry" and "SentryPrivate" pods.
-    if pod.name =~ /^Sentry/
+    if %w[Sentry SentryPrivate].include? pod.name
       dynamic << pod
       next
     end
