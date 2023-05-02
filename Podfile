@@ -216,9 +216,9 @@ abstract_target 'Apps' do
 
   # Production
 
-  # pod 'Automattic-Tracks-iOS', '~> 0.13'
+  pod 'Automattic-Tracks-iOS', '~> 2.2'
   # While in PR
-  pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: 'task/expat-split-event-name-prefix-and-platform'
+  # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development
   # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 
