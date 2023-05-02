@@ -1,7 +1,0 @@
-Pegamos nossas canetas vermelhas e fizemos algumas alterações no editor. Quando você pressiona Return para adicionar um novo bloco, o editor agora não rola mais pra cima antes de rolar pra baixo até o bloco.
-
-Mas espere, tem mais! Experimente virar seu telefone. O teclado e o texto permanecerão visíveis quando você girar o dispositivo de paisagem para retrato.
-
-Agora é possível ver as respostas de outros usuários para temas específicos com sugestões para blogs. Não se preocupe, sua resposta ainda é a melhor.
-
-Então, adicionamos um novo cartão ao painel para que você possa comprar com facilidade um domínio de site personalizado no aplicativo.

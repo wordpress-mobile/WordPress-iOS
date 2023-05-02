@@ -1,7 +1,0 @@
-Abbiamo tirato fuori le nostre penne rosse e apportato alcune modifiche all'editor. Quando si preme "Invio" per aggiungere un nuovo blocco, l'editor non salta più prima di scorrere verso il basso fino al nuovo blocco.
-
-E aspetta, c'è dell'altro! Vai avanti e fai girare il telefono: la tastiera e il testo rimarranno visibili quando ruoti il dispositivo da orizzontale a verticale.
-
-Le richieste di blog ora consentono di vedere le risposte di altri utenti a argomenti specifici. La tua risposta è ancora la migliore, lo promettiamo.
-
-Infine, abbiamo aggiunto una nuova scheda alla tua scheda in modo da poter acquistare facilmente un dominio del sito personalizzato all'interno dell'app.

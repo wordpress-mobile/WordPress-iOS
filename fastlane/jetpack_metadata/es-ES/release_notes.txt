@@ -1,7 +1,0 @@
-Nos hemos puesto manos a la obra y hemos hecho algunos cambios en el editor. Al pulsar “Intro” para añadir un nuevo bloque, el editor ya no salta antes de desplazarse hacia abajo hasta el nuevo bloque.
-
-Pero espera, ¡hay más! Prueba a girar el teléfono hacia la derecha: seguirás viendo el teclado y el texto cuando rotes el dispositivo del formato vertical al horizontal.
-
-Ahora puedes ver las respuestas de otros usuarios a temas concretos en las sugerencias para bloguear. Sin embargo, te garantizamos que tus respuestas seguirán siendo las más destacadas.
-
-Finalmente, hemos añadido una nueva tarjeta a tu escritorio para que puedas crear fácilmente un dominio personalizado para tu sitio en la aplicación.
