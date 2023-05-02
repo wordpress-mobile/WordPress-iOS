@@ -20,8 +20,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         return .hidden
     }
 
-    /// Checks if the Domain Purchasing Feature Flag is enabled
-    private let domainPurchasingEnabled = FeatureFlag.siteCreationDomainPurchasing.enabled
+    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
+    private var domainPurchasingEnabled: Bool {
+        return siteCreator.domainPurchasingEnabled
+    }
 
     /// The creator collects user input as they advance through the wizard flow.
     private let siteCreator: SiteCreator
@@ -146,7 +148,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func configureUIIfNeeded() {
-        guard FeatureFlag.siteCreationDomainPurchasing.enabled else {
+        guard domainPurchasingEnabled else {
             return
         }
 
@@ -160,7 +162,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func loadHeaderView() {
 
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             searchBar.searchBarStyle = UISearchBar.Style.default
             searchBar.translatesAutoresizingMaskIntoConstraints = false
             WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
@@ -215,9 +217,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         updateNoResultsLabelTopInset()
 
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
-            guard let `self` = self else { return }
+            guard let self else { return }
 
-            if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            if self.domainPurchasingEnabled {
                 if !self.siteTemplateHostingController.view.isHidden {
                     self.updateTitleViewVisibility(true)
                 }
@@ -332,7 +334,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func restoreSearchIfNeeded() {
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             search(searchBar.text)
         } else {
             search(query(from: searchTextField))
@@ -422,7 +424,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             "search_term": lastSearchQuery as AnyObject
         ]
 
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
         }
 
@@ -447,7 +449,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     // MARK: - Search logic
 
     private func setAddressHintVisibility(isHidden: Bool) {
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             siteTemplateHostingController.view?.isHidden = isHidden
         } else {
             sitePromptView.isHidden = isHidden
@@ -455,7 +457,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func addAddressHintView() {
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             guard let siteCreationView = siteTemplateHostingController.view else {
                 return
             }
@@ -661,7 +663,7 @@ extension WebAddressWizardContent: UITableViewDelegate {
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
 
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             searchBar.resignFirstResponder()
         } else {
             searchTextField.resignFirstResponder()

@@ -51,7 +51,10 @@ final class DomainsServiceAdapter: SiteAddressService {
 
     // MARK: Properties
 
-    private let domainPurchasingEnabled = FeatureFlag.siteCreationDomainPurchasing.enabled
+    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
+    private var domainPurchasingEnabled: Bool {
+        FeatureFlag.siteCreationDomainPurchasing.enabled && ABTest.siteCreationDomainPurchasing.isTreatmentVariation
+    }
 
     /**
      Corresponds to:
