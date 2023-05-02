@@ -9737,9 +9737,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "dasboard.personalizeHomeButtonTitle" = "Startseiten-Tab personalisieren";
 
 /* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "Letzte Aktivität";
-
-/* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Letzte Aktivität";
 
 /* Title for an action that opens the full pages list. */
@@ -9780,18 +9777,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ausblenden";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "Personalisiere deine Online-Identität mit einer individuellen Domain";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "Wir haben dir einen Beleg an die von dir hinterlegte E-Mail-Adresse geschickt.";
-
-/* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "Es kann bis zu einem Tag dauern, bis dein Blog und deine neue Domain vollständig verbunden sind.";
-
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "Domain-Kauf abgeschlossen";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "Zum Wechseln der Einheit zweimal tippen";

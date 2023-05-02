@@ -9737,9 +9737,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "dasboard.personalizeHomeButtonTitle" = "对您的“首页”选项卡进行个性化";
 
 /* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "近期的动态";
-
-/* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "近期的动态";
 
 /* Title for an action that opens the full pages list. */
@@ -9780,18 +9777,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隐藏此内容";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "使用自定义域名拥有您的在线身份";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "我们向存档的电子邮件地址发送了收据。";
-
-/* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "您的博客和您的新域名最多需要一天的时间才能完全连接。";
-
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "域名购买完成";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
