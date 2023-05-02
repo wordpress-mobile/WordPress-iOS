@@ -14,6 +14,7 @@ import WordPressAuthenticator
     static let shareAppName: ShareAppName = .wordpress
     static let mobileAnnounceAppId = "2"
     @objc static let eventNamePrefix = "wpios"
+    @objc static let explatPlatform = "wpios"
     @objc static let authKeychainServiceName = "public-api.wordpress.com"
 
     /// Notifications Constants

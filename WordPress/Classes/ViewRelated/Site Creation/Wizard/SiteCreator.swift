@@ -55,9 +55,14 @@ final class SiteCreator {
         information?.title != nil
     }
 
+    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
+    var domainPurchasingEnabled: Bool {
+        FeatureFlag.siteCreationDomainPurchasing.enabled && ABTest.siteCreationDomainPurchasing.isTreatmentVariation
+    }
+
     /// Flag indicating whether the domain checkout flow should appear or not.
     var shouldShowDomainCheckout: Bool {
-        return FeatureFlag.siteCreationDomainPurchasing.enabled && !(address?.isFree ?? false)
+        domainPurchasingEnabled && !(address?.isFree ?? false)
     }
 
     /// Returns the domain suggestion if there's one,

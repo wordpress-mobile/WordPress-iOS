@@ -7,6 +7,8 @@ extension Variation {
         switch self {
         case .treatment:
             return "treatment"
+        case .customTreatment:
+            return "custom_treatment"
         case .control:
             return "control"
         }
@@ -23,6 +25,25 @@ class SiteCreationAnalyticsHelper {
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
+    private static let customTreatmentNameKey = "custom_treatment_variation_name"
+
+    // MARK: - Lifecycle
+    static func trackSiteCreationAccessed(source: String) {
+        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+
+        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            let domainPurchasingExperimentProperties: [String: String] = {
+                var dict: [String: String] = [Self.variationKey: ABTest.siteCreationDomainPurchasing.variation.tracksProperty]
+
+                if case let .customTreatment(name) = ABTest.siteCreationDomainPurchasing.variation {
+                    dict[Self.customTreatmentNameKey] = name
+                }
+
+                return dict
+            }()
+            Self.track(.domainPurchasingExperiment, properties: domainPurchasingExperimentProperties)
+        }
+    }
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
@@ -135,6 +156,11 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
+    private static func track(_ event: SiteCreationAnalyticsEvent, properties: [String: String] = [:]) {
+        let event = AnalyticsEvent(name: event.rawValue, properties: properties)
+        WPAnalytics.track(event)
+    }
+
     private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
         var result: [AnyHashable: Any] = [:]
 

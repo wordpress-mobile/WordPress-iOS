@@ -734,7 +734,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
             self.present(wizard, animated: true)
-            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+            SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
         })
     }
 
