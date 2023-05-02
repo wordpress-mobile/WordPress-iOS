@@ -1,3 +1,0 @@
-Hemos sacado el bolígrafo rojo y hemos hecho algunos cambios en el editor. Cuando pulsas  en «volver» para añadir un nuevo bloque, el editor ya no salta hacia arriba antes de volver a desplazarse hacia abajo hasta el nuevo bloque.
-
-Pero espera, ¡hay más! Dale la vuelta a tu teléfono: el teclado y el texto seguirán visibles cuando gires el dispositivo de horizontal a vertical.

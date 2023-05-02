@@ -1,3 +1,0 @@
-Kırmızı kalemlerimizi çıkardık ve düzenleyicide bazı değişiklikler yaptık. Yeni bir blok eklemek için "return" tuşuna bastığınızda artık düzenleyici yeni bloğa geri gitmeden önce yukarı atlamaz.
-
-Bitmedi, dahası var! Telefonunuzu sağa döndürmeyi deneyin; cihazınızı yataydan dikeye döndürdüğünüzde klavyeniz ve metniniz görünür durumda kalacak.

@@ -1,3 +1,0 @@
-We got out our red pens and made some changes in the editor. When you press “return” to add a new block, the editor no longer jumps up before scrolling back down to the new block.
-
-Attendez, vous avez encore tant à découvrir ! Go ahead and spin your phone right round—your keyboard and text will stay visible when you rotate your device from landscape to portrait.
