@@ -2,12 +2,13 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
+# Either use commit or tag, if both are left uncommented, tag will take precedence.
+GUTENBERG_CONFIG = {
+  # commit: '',
+  tag: 'v1.94.0'
+}
+
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
-
-TAG_MODE = { tag: 'v1.94.0' }
-COMMIT_MODE = { commit: '' }
-
-MODE = TAG_MODE
 
 # Note that the pods in this array might seem unused if you look for
 # `import` statements in this codebase. However, make sure to also check
@@ -62,8 +63,8 @@ DEPENDENCIES = %w[
   React-bridging
 ].freeze
 
-def gutenberg_pod(mode: MODE)
-  options = mode.dup
+def gutenberg_pod(config: GUTENBERG_CONFIG)
+  options = config
 
   local_gutenberg_key = 'LOCAL_GUTENBERG'
   local_gutenberg = ENV.fetch(local_gutenberg_key, nil)
