@@ -2,8 +2,9 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
+DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
+
 TAG_MODE = { tag: 'v1.94.0' }
-LOCAL_MODE = { path: '../../gutenberg-mobile' }
 COMMIT_MODE = { commit: '' }
 
 MODE = TAG_MODE
@@ -64,9 +65,12 @@ DEPENDENCIES = %w[
 def gutenberg_pod(mode: MODE)
   options = mode.dup
 
-  local_gutenberg = ENV.fetch('LOCAL_GUTENBERG', nil)
+  local_gutenberg_key = 'LOCAL_GUTENBERG'
+  local_gutenberg = ENV.fetch(local_gutenberg_key, nil)
   if local_gutenberg
-    options = { path: local_gutenberg.include?('/') ? local_gutenberg : LOCAL_MODE[:path] }
+    options = { path: File.exist?(local_gutenberg) ? local_gutenberg : DEFAULT_GUTENBERG_LOCATION }
+
+    raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{local_gutenberg_key} environment variable." unless File.exist?(options[:path])
   else
     options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
     options[:submodules] = true
