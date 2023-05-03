@@ -2,6 +2,8 @@
 
 Supporting right to left layout is fairly simple and most of the hard work has already been done by Apple.
 
+## Technical considerations
+
 Here are a few tips to ensure this implementation is flawless throughout the app: 
 
 * Avoid using `.textAlignment = .left/.right` in favor of `.natural`
@@ -32,3 +34,7 @@ The easiest way to counter this problem is by not overriding those methods, and 
 
 If the requested layout is more complex, take  this problem into account and test the RTL layout until it works :]
 You can get ideas by looking at the `WPWalkthroughTextField` class.
+
+## Testing considerations
+
+UI changes related to copy should be tested with right-to-left languages. Even if translation isn’t complete, formatting should still respect the right-to-left layout.
