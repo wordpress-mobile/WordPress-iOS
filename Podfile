@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './Gutenberg/cocoapods_helper'
+require_relative './Gutenberg/cocoapods_helpers'
 
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
 # For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
