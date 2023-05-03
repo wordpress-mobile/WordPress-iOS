@@ -24,6 +24,12 @@ Layout/LineLength:
 Layout/EmptyLines:
   Exclude: *xfiles
 
+Style/MutableConstant:
+  Exclude:
+    # CocoaPods mutates some input values.
+    # It's simpler to relax this rule than to address each individually by passing mutable copies
+    - Gutenberg/cocoapods_helper.rb
+
 Style/AsciiComments:
   Exclude: *xfiles
 

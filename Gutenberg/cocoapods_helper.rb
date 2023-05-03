@@ -2,9 +2,9 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
-TAG_MODE = { tag: 'v1.94.0' }.freeze
-LOCAL_MODE = { path: '../../gutenberg-mobile' }.freeze
-COMMIT_MODE = { commit: '' }.freeze
+TAG_MODE = { tag: 'v1.94.0' }
+LOCAL_MODE = { path: '../../gutenberg-mobile' }
+COMMIT_MODE = { commit: '' }
 
 MODE = TAG_MODE
 
