@@ -51,6 +51,15 @@ class BlockEditorSettingsService {
             fetchTheme(completion)
         }
     }
+
+    @MainActor
+    func fetchSettings() async -> Result<SettingsServiceResult, Error> {
+        await withCheckedContinuation { continuation in
+            fetchSettings { result in
+                continuation.resume(returning: result)
+            }
+        }
+    }
 }
 
 // MARK: Editor `theme_supports` support
