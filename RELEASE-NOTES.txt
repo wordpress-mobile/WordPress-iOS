@@ -1,5 +1,6 @@
 22.4
 -----
+* [**] [internal] Attempt to fix an image loading crash in post editor. [#20633]
 
 
 22.3
