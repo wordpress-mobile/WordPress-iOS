@@ -188,9 +188,9 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func tapDomainsCard() throws -> DomainsScreen {
+    public func tapDomainsCard() throws -> DomainsSuggestionsScreen {
         domainsCardButton.tap()
-        return try DomainsScreen()
+        return try DomainsSuggestionsScreen()
     }
 
     @discardableResult

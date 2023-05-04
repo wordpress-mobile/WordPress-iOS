@@ -24,6 +24,6 @@ class DashboardTests: XCTestCase {
             .scrollToDomainsCard()
             .verifyDomainsCard()
             .tapDomainsCard()
-            .verifyDomainsScreenLoaded()
+            .verifyDomainsSuggestionsScreenLoaded()
     }
 }
