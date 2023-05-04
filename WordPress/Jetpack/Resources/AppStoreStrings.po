@@ -81,15 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v22.2-whats-new"
+msgctxt "v22.3-whats-new"
 msgid ""
-"We got out our red pens and made some changes in the editor. When you press “return” to add a new block, the editor no longer jumps up before scrolling back down to the new block.\n"
-"\n"
-"But wait, there’s more! Go ahead and spin your phone right round—your keyboard and text will stay visible when you rotate your device from landscape to portrait.\n"
-"\n"
-"Blogging prompts now allow you to see other users’ responses to specific topics. Your response is still the best, we promise.\n"
-"\n"
-"Finally, we added a new card to your dashboard so you can easily buy a custom site domain within the app.\n"
+"Breaking news—VideoPress blocks are now enabled for Simple WordPress.com websites, so you can host and embed high-quality videos to your heart’s content. We hope those videos include cats.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
