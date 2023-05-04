@@ -91,10 +91,13 @@ def gutenberg_dependencies(options:)
     podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
   end
 
+  podspec_prefix += '/third-party-podspecs'
+  podspec_extension = 'podspec.json'
+
   # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
-  pod 'FBReactNativeSpec', podspec: "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
+  pod 'FBReactNativeSpec', podspec: "#{podspec_prefix}/FBReactNativeSpec/FBReactNativeSpec.#{podspec_extension}"
 
   DEPENDENCIES.each do |pod_name|
-    pod pod_name, podspec: "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
+    pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
   end
 end
