@@ -1,6 +1,7 @@
 22.4
 -----
 
+* [*] [internal] [Jetpack-only] Domains Dashboard Card: Immediately opening domains search after tapping the card. [#20638]
 
 22.3
 -----
