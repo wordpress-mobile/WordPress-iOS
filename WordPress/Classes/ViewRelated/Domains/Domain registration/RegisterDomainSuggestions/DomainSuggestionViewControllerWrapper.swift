@@ -15,33 +15,13 @@ struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
         self.blog = blog
         self.domainType = domainType
         self.onDismiss = onDismiss
-        self.domainSuggestionViewController = RegisterDomainSuggestionsViewController.instance(site: blog,
-                                                                                               domainType: domainType,
-                                                                                               includeSupportButton: false)
+        self.domainSuggestionViewController = DomainsDashboardFactory.makeDomainsSuggestionViewController(blog: blog, domainType: domainType, onDismiss: onDismiss)
     }
 
     func makeUIViewController(context: Context) -> LightNavigationController {
-        let blogService = BlogService(coreDataStack: ContextManager.shared)
-
-        self.domainSuggestionViewController.domainPurchasedCallback = { domain in
-            blogService.syncBlogAndAllMetadata(self.blog) { }
-            WPAnalytics.track(.domainCreditRedemptionSuccess)
-            self.presentDomainCreditRedemptionSuccess(domain: domain)
-        }
-
         let navigationController = LightNavigationController(rootViewController: domainSuggestionViewController)
         return navigationController
     }
 
     func updateUIViewController(_ uiViewController: LightNavigationController, context: Context) { }
-
-    private func presentDomainCreditRedemptionSuccess(domain: String) {
-
-        let controller = DomainCreditRedemptionSuccessViewController(domain: domain) { _ in
-            self.domainSuggestionViewController.dismiss(animated: true) {
-                self.onDismiss()
-            }
-        }
-        domainSuggestionViewController.present(controller, animated: true)
-    }
 }
