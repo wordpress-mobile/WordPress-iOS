@@ -1,3 +1,0 @@
-We hebben onze rode pen gepakt en wat wijzigingen aangebracht in de editor. Als je op 'enter' drukt om een nieuw blok toe te voegen, springt de editor niet langer naar boven als je omlaag scrolt naar het nieuwe blok.
-
-Maar wacht, dat is nog niet alles! Het toetsenbord van je telefoon en tekst blijven zichtbaar als je je toestel draait van liggend naar staand.

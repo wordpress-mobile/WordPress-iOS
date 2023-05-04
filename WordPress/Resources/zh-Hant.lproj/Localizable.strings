@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-27 20:38:52+0000 */
+/* Translation-Revision-Date: 2023-05-02 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -2378,6 +2378,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "設計";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "設計系統";
 
 /* Title for the desktop web preview */
 "Desktop" = "桌上型電腦";
@@ -8410,6 +8413,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "不明搜尋字詞";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "未標記的顏色。 %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "收回留言的讚。";
 
@@ -9736,8 +9742,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "打造個人化「首頁」分頁";
 
-/* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "最近活動";
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "所有活動";
 
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "最近活動";
@@ -9748,6 +9754,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "頁面";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "在你的網站上新增頁面";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "草稿";
 
@@ -9756,6 +9765,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "已排程";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "建立其他頁面";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "從適合行動裝置瀏覽的可自訂版面開始。";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "覆寫的參數會以核取記號表示。";
@@ -9782,16 +9797,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "domain.dashboard.card.menu.hide" = "隱藏此訊息";
 
 /* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "利用自訂網域，讓你在網路上聲名遠播";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "我們已將收據傳送到你登記的電子郵件地址。";
+"domain.dashboard.card.shortTitle" = "尋找自訂網域";
 
 /* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "你的網誌和新網域最多可能需要一天才能完全連接。";
+"domain.purchase.preview.footer" = "你的自訂網域最多可能需要 30 分鐘才能開始運作。";
 
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "網域購買完成";
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "接下來，我們會協助你讓網站可供瀏覽。";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "我們已將收據透過電子郵件傳送給你了。 接下來，我們會協助你準備好向所有人推出網站。";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "恭喜，你的網站已上線！";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "最佳替代選項";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "第一年";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "免費";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "推薦";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "特價";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "每年";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "點兩下即可變更單位";
@@ -10412,6 +10448,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "你已登入！";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "此網站";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

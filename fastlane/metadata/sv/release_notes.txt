@@ -1,3 +1,0 @@
-Vi plockade fram rättningspennorna och ändrade några saker i redigeraren. När du trycker på ”Enter” för att lägga till ett nytt block hoppar redigeraren inte längre tillbaka innan den rullar ned till det nya blocket.
-
-Men det finns fler nyheter! Nu kan du vrida på telefonen utan problem – tangentbordet och texten försvinner inte längre när du växlar telefonen mellan liggande och stående orientering.

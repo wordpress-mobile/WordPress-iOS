@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-20 13:53:08+0000 */
+/* Translation-Revision-Date: 2023-05-01 05:54:15+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -2379,6 +2379,9 @@ translators: Block name. %s: The localized block name */
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Sistem de proiectare";
+
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
 
@@ -4234,6 +4237,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Încarcă mai multe articole";
+
+/* No comment provided by engineer. */
+"Loading" = "Încarc";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Încarc activitățile...";
@@ -8410,6 +8416,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Termeni de căutare necunoscuți";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Culoare fără etichetă. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Anulează aprecierea comentariului.";
 
@@ -9736,8 +9745,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personalizează fila Prima pagină";
 
-/* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "Activități recente";
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Toate activitățile";
 
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Activități recente";
@@ -9748,6 +9757,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pagini";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Adaugă pagini pe site-ul tău";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "Ciorne";
 
@@ -9756,6 +9768,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "Programate";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Creează o altă pagină";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Începe cu aranjamente personalizate, prietenoase pentru dispozitivele mobile.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Parametrii contramandați sunt marcați cu o bifă.";
@@ -9782,16 +9800,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "domain.dashboard.card.menu.hide" = "Ascunde asta";
 
 /* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "Cu un domeniu personalizat, ai o identitate proprie online";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "Ți-am trimis chitanța printr-un email la adresa cu care te-ai înregistrat la noi.";
+"domain.dashboard.card.shortTitle" = "Găsește un domeniu personalizat";
 
 /* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "S-ar putea să dureze aproape o zi până când blogul și domeniul să fie conectate integral.";
+"domain.purchase.preview.footer" = "Poate să dureze până la 30 de minute până când domeniul tău personalizat va începe să funcționeze.";
 
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "Cumpărarea domeniului este finalizată";
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "În continuare, te vom ajuta să îl pregătești pentru a fi răsfoit.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Ți-am trimis chitanța prin email. În continuare, te vom ajuta să îl pregătești pentru toată lumea.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Felicitări, site-ul tău este live!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Cea mai bună alternativă";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "în primul an";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Gratuit";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Recomandat";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Reducere";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "pe an";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "atinge de două ori pentru a schimba unitatea";
@@ -10412,6 +10451,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Ești autentificat!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "acest site";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

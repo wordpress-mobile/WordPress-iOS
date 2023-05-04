@@ -1,6 +1,12 @@
 import Foundation
 
 extension WPAnalytics {
+
+    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
+    private static var domainPurchasingEnabled: Bool {
+        FeatureFlag.siteCreationDomainPurchasing.enabled && ABTest.siteCreationDomainPurchasing.isTreatmentVariation
+    }
+
     static func domainsProperties(for blog: Blog) -> [AnyHashable: Any] {
         // For now we do not have the `siteCreation` route implemented so hardcoding `menu`
         domainsProperties(usingCredit: blog.canRegisterDomainWithPaidPlan, origin: .menu)
@@ -11,7 +17,7 @@ extension WPAnalytics {
         origin: DomainPurchaseWebViewViewOrigin?
     ) -> [AnyHashable: Any] {
         var dict: [AnyHashable: Any] = ["using_credit": usingCredit.stringLiteral]
-        if FeatureFlag.siteCreationDomainPurchasing.enabled,
+        if Self.domainPurchasingEnabled,
            let origin = origin {
             dict["origin"] = origin.rawValue
         }

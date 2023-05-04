@@ -1,3 +1,0 @@
-Kami mengevaluasi editor dan mengubah-ubah beberapa fiturnya. Jika Anda menekan “kembali” untuk menambahkan blok baru, editor tidak lagi melompat naik sebelum bergulir turun ke blok baru.
-
-Tapi tunggu, masih ada banyak kejutan. Coba putar ponsel Anda. Keyboard dan teks akan tetap terlihat ketika perangkat diputar dari posisi lanskap ke potret.
