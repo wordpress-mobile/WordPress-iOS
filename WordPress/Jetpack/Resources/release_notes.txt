@@ -1,3 +1,1 @@
-* [*] [internal] Allow updating specific fields when updating media details. [#20606]
-* [**] Block Editor: Enable VideoPress block (only on Simple WPCOM sites) [#20580]
-
+Breaking news—VideoPress blocks are now enabled for Simple WordPress.com websites, so you can host and embed high-quality videos to your heart’s content. We hope those videos include cats.
