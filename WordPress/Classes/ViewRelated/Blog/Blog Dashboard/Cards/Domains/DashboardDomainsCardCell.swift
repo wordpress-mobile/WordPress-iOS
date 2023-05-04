@@ -16,9 +16,9 @@ class DashboardDomainsCardCell: DashboardCollectionViewCell {
                 return
             }
 
-            DomainsDashboardCoordinator.presentDomainsDashboard(in: presentingViewController,
-                                                                source: Strings.source,
-                                                                blog: blog)
+            DomainsDashboardCoordinator.presentDomainsSuggestions(in: presentingViewController,
+                                                                  source: Strings.source,
+                                                                  blog: blog)
             DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardTapped(in: self.row)
         }
 
