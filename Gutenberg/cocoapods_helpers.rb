@@ -2,11 +2,7 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
-# Either use commit or tag, if both are left uncommented, tag will take precedence.
-GUTENBERG_CONFIG = {
-  # commit: '',
-  tag: 'v1.94.0'
-}
+require_relative './version'
 
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
 

@@ -29,6 +29,7 @@ Style/MutableConstant:
     # CocoaPods mutates some input values.
     # It's simpler to relax this rule than to address each individually by passing mutable copies.
     - Gutenberg/cocoapods_helpers.rb
+    - Gutenberg/version.rb
 
 Style/AsciiComments:
   Exclude: *xfiles
