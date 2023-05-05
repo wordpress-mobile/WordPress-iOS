@@ -1,12 +1,12 @@
 22.4
 -----
-* [**] [internal] Attempt to fix an image loading crash in post editor. [#20633]
 
 
 22.3
 -----
 * [*] [internal] Allow updating specific fields when updating media details. [#20606]
 * [**] Block Editor: Enable VideoPress block (only on Simple WPCOM sites) [#20580]
+* [**] [internal] Attempt to fix an image loading crash in post editor. [#20633]
 
 22.2
 -----
