@@ -1,3 +1,0 @@
-Wir haben die Ärmel hochgekrempelt und ein paar Änderungen am Editor vorgenommen. Wenn du die Eingabetaste drückst, um einen neuen Block hinzuzufügen, springt der Editor nicht mehr erst nach oben und scrollt dann wieder zum neuen Block.
-
-Aber warte, es gibt noch mehr! Dreh doch mal dein Smartphone — Tastatur und Text bleiben jetzt sichtbar, wenn du vom Quer- ins Hochformat wechselst.

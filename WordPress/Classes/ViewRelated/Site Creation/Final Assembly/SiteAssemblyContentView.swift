@@ -158,7 +158,7 @@ final class SiteAssemblyContentView: UIView {
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
             label.textColor = .text
 
-            if FeatureFlag.siteCreationDomainPurchasing.enabled {
+            if siteCreator.domainPurchasingEnabled {
                 label.textAlignment = .natural
             } else {
                 label.textAlignment = .center

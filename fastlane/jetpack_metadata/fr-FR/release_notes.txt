@@ -1,7 +1,0 @@
-Nous avons sorti notre stylo rouge et avons apporté quelques modifications dans l’éditeur. Lorsque vous appuyez sur « Retour » pour ajouter un nouveau bloc, l’éditeur ne saute plus avant le défilement vers le nouveau bloc en bas de la page.
-
-Mais ce n’est pas tout ! Essayez de faire pivoter votre téléphone vers la droite. Votre clavier et votre texte restent désormais visibles lorsque votre appareil passe du mode paysage au mode portrait.
-
-Blogging prompts now allow you to see other users’ responses to specific topics. Your response is still the best, we promise.
-
-Finally, we added a new card to your dashboard so you can easily buy a custom site domain within the app.

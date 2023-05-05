@@ -1,7 +1,0 @@
-Wir haben die Ärmel hochgekrempelt und ein paar Änderungen am Editor vorgenommen. Wenn du die Eingabetaste drückst, um einen neuen Block hinzuzufügen, springt der Editor nicht mehr erst nach oben und scrollt dann wieder zum neuen Block.
-
-Aber warte, es gibt noch mehr! Dreh doch mal dein Smartphone — Tastatur und Text bleiben jetzt sichtbar, wenn du vom Quer- ins Hochformat wechselst.
-
-In Blog-Schreibanregungen kannst du jetzt Benutzerantworten zu bestimmten Themen sehen. Aber deine Antwort wird immer noch die Beste sein, versprochen.
-
-Und zu guter Letzt haben wir deinem Dashboard eine neue Karte hinzugefügt, damit du ganz einfach in der App eine individuelle Website-Domain kaufen kannst.

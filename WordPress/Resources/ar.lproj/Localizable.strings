@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-27 20:38:42+0000 */
+/* Translation-Revision-Date: 2023-05-02 09:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -2379,6 +2379,9 @@ translators: Block name. %s: The localized block name */
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "التصميم";
 
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "تصميم نظام";
+
 /* Title for the desktop web preview */
 "Desktop" = "جهاز سطح المكتب";
 
@@ -4234,6 +4237,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "تحميل المزيد من المقالات";
+
+/* No comment provided by engineer. */
+"Loading" = "تحميل";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "جاري تحميل الأنشطة...";
@@ -8410,6 +8416,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "مصطلحات بحث غير معروفة";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "لون غير مصنّف. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "إلغاء الإعجاب بالتعليق.";
 
@@ -9736,8 +9745,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "علامة تبويب تخصيص صفحتك الرئيسية";
 
-/* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "آخر نشاط";
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "كل النشاط";
 
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "آخر نشاط";
@@ -9748,6 +9757,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "الصفحات";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "إضافة صفحات إلى موقعك";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "مسودة";
 
@@ -9756,6 +9768,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "مجدول";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "إنشاء صفحة أخرى";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "ابدأ بتخطيطات معدة حسب الطلب ومناسبة للهواتف المحمولة.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "يُشار إلى المعلمات التي تم تجاوزها بعلامة اختيار.";
@@ -9782,16 +9800,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "domain.dashboard.card.menu.hide" = "إخفاء هذا";
 
 /* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "امتلاك هويتك على الإنترنت مع نطاق مخصص";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "سنُرسِل إيصالاً عبر البريد الإلكتروني إلى عنوانك المسجّل.";
+"domain.dashboard.card.shortTitle" = "العثور على نطاق مخصص";
 
 /* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "قد يستغرق الأمر يومًا للربط بين مدونتك ونطاقك الجديد بالكامل.";
+"domain.purchase.preview.footer" = "قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك المخصص بالعمل.";
 
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "اكتمل شراء النطاق";
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "ثم سنساعدك على جعله جاهزًا للتصفح.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "لقد أرسلنا إليك الإيصال الخاص بك في رسالة عبر البريد الإلكتروني. بعدها، سنساعدك على جعله جاهزًا للجميع.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "أحسنت، أصبح موقعك نابضًا بالحياة!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "أفضل بديل";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "للعام الأول";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "مجانًا";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "موصى به";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "تخفيض";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "سنوياً";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "أنقر نقرًا مزدوجًا لتغيير الوحدة";
@@ -10412,6 +10451,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "لقد قمت بتسجيل الدخول!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "هذا الموقع";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

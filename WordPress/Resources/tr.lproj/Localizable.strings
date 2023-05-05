@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-25 08:47:03+0000 */
+/* Translation-Revision-Date: 2023-05-01 15:14:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -2379,6 +2379,9 @@ translators: Block name. %s: The localized block name */
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Tasarım";
 
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Tasarım Sistemi";
+
 /* Title for the desktop web preview */
 "Desktop" = "Masaüstü";
 
@@ -4234,6 +4237,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Daha fazla yazı yükle";
+
+/* No comment provided by engineer. */
+"Loading" = "Yükleniyor";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Etkinlikler yükleniyor...";
@@ -8410,6 +8416,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Bilinmeyen arama terimleri";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Etiketsiz renk. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Yorumun beğenisini kaldırır.";
 
@@ -9736,8 +9745,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Ana sayfa sekmenizi kişiselleştirin";
 
-/* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "Son etkinlik";
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Tüm etkinlik";
 
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Son etkinlik";
@@ -9748,6 +9757,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Sayfalar";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Sitenize sayfalar ekleyin";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "Taslak";
 
@@ -9756,6 +9768,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "Zamanlanmış";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Başka bir sayfa oluştur";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Sipariş üzerine oluşturulan mobil uyumlu düzenlerle başlayın";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "İptal edilen parametreler bir onay işareti ile gösterilir.";
@@ -9782,16 +9800,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
 
 /* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "Özel alan adıyla çevrimiçi kimliğinizin sahibi olun";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "Kayıtlı adresinize bir makbuz gönderdik.";
+"domain.dashboard.card.shortTitle" = "Özel bir alan adı bulun";
 
 /* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "Blogunuzun ve yeni etki alanınızın tamamen birbirine bağlanması bir gün kadar sürebilir.";
+"domain.purchase.preview.footer" = "Özel alan adınızın çalışmaya başlaması 30 dakika kadar sürebilir.";
 
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "Alan adı satın alma işlemi tamamlandı";
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Ardından, sitenizi göz atılmaya hazır hale getirmenize yardımcı olacağız.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Makbuzunuzu e-posta ile gönderdik. Ardından, sitenizi herkes için hazırlamanıza yardımcı olacağız.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Tebrikler, siteniz yayında!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "En İyi Alternatif";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "ilk yıl için";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Ücretsiz";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Önerilen";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "İndirim";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "yıllık";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
@@ -10412,6 +10451,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Oturum açtınız!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "bu site";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

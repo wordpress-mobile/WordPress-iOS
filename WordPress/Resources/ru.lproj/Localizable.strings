@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-25 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-01 05:51:43+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
@@ -4234,6 +4234,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Загрузить другие записи";
+
+/* No comment provided by engineer. */
+"Loading" = "Загрузка";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Загрузка активности...";
@@ -9736,8 +9739,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Настроить вкладку «Главная»";
 
-/* Title for the Activity Log dashboard card. */
-"dashboardCard.ActivityLog.contextMenu.allActivity" = "Недавние действия";
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Вся активность";
 
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Недавние действия";
@@ -9780,18 +9783,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Свернуть";
-
-/* Title for the Domains dashboard card. */
-"domain.dashboard.card.title" = "Пользовательский домен ― ваше лицо в Интернете";
-
-/* Domain Purchase Completion description. */
-"domain.purchase.preview.description" = "Чек отправлен на указанный адрес электронной почты.";
-
-/* Domain Purchase Completion footer */
-"domain.purchase.preview.footer" = "Полное подключение нового домена к блогу может занять до суток.";
-
-/* User-facing string, presented to reflect that site assembly completed successfully. */
-"domain.purchase.preview.title" = "Покупка домена завершена";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "нажмите дважды для смены единиц";

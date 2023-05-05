@@ -1,7 +1,0 @@
-Kırmızı kalemlerimizi çıkardık ve düzenleyicide bazı değişiklikler yaptık. Yeni bir blok eklemek için "return" tuşuna bastığınızda artık düzenleyici yeni bloğa geri gitmeden önce yukarı atlamaz.
-
-Bitmedi, dahası var! Telefonunuzu sağa döndürmeyi deneyin; cihazınızı yataydan dikeye döndürdüğünüzde klavyeniz ve metniniz görünür durumda kalacak.
-
-Blog istemleri artık diğer kullanıcıların belirli temalara verdiği yanıtları görmenize olanak tanıyor. Söz veriyoruz, en iyi yanıt hâlâ sizinki.
-
-Son olarak, uygulamadan kolayca özel bir site alan adı satın alabilmeniz için panonuza yeni bir kart ekledik.

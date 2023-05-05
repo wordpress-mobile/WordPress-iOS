@@ -71,6 +71,18 @@ class SupportTableViewController: UITableViewController {
         createUserActivity()
     }
 
+    func show(from presentingViewController: UIViewController) {
+        let navigationController = UINavigationController.init(rootViewController: self)
+
+        if WPDeviceIdentification.isiPad() {
+            navigationController.modalTransitionStyle = .crossDissolve
+            navigationController.modalPresentationStyle = .formSheet
+        }
+
+        presentingViewController.present(navigationController, animated: true)
+    }
+
+    // TODO: Refactor this method to use the general `show(from:)` method
     @objc func showFromTabBar() {
         let navigationController = UINavigationController.init(rootViewController: self)
 

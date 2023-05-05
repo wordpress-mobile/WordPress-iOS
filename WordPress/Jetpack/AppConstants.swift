@@ -14,6 +14,7 @@ import WordPressKit
     static let shareAppName: ShareAppName = .jetpack
     static let mobileAnnounceAppId = "6"
     @objc static let eventNamePrefix = "jpios"
+    @objc static let explatPlatform = "wpios"
     @objc static let authKeychainServiceName = "jetpack.public-api.wordpress.com"
 
     /// Notifications Constants

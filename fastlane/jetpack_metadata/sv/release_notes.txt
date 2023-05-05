@@ -1,7 +1,0 @@
-Vi har plockat fram våra röda pennor och gjort lite ändringar i redigeraren. När du trycker på retur för att lägga till ett nytt block så hoppar inte längre redigeraren upp innan den bläddrar tillbaka ner till det nya blocket.
-
-Men det är inte allt! Testa att vrida runt på telefonen — tangentbordet och texten håller sig nu synliga när du roterar telefonen från liggande till stående.
-
-Nu kan du se andra användares svar på specifika ämnen i bloggningsprompter. Men ditt svar är fortfarande bäst förstås.
-
-Slutligen har vi lagt till ett nytt kort till din adminpanel så att du enkelt kan köpa en anpassad webbplatsdomän direkt i appen.

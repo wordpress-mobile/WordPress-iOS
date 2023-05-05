@@ -1,7 +1,0 @@
-Kami mengevaluasi editor dan mengubah-ubah beberapa fiturnya. Jika Anda menekan “kembali” untuk menambahkan blok baru, editor tidak lagi melompat naik sebelum bergulir turun ke blok baru.
-
-Tapi tunggu, masih ada banyak kejutan! Coba putar ponsel Anda. Keyboard dan teks akan tetap terlihat ketika perangkat diputar dari posisi lanskap ke potret.
-
-Dari prompt blogging, Anda kini dapat melihat respons pengguna lain terhadap topik tertentu yang disajikan. Tenang saja, respons Anda tetap yang terbaik.
-
-Terakhir, kami menambahkan kartu baru ke dasbor sehingga Anda mudah membeli domain situs kustom langsung dari dalam aplikasi.

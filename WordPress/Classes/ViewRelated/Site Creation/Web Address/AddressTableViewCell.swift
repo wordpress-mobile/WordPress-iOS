@@ -5,7 +5,9 @@ final class AddressTableViewCell: UITableViewCell {
 
     // MARK: - Dependencies
 
-    private let domainPurchasingEnabled = FeatureFlag.siteCreationDomainPurchasing.enabled
+    private var domainPurchasingEnabled: Bool {
+        FeatureFlag.siteCreationDomainPurchasing.enabled && ABTest.siteCreationDomainPurchasing.isTreatmentVariation
+    }
 
     // MARK: - Views
 

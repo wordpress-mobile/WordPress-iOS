@@ -48,6 +48,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         _contextManager = [TracksContextManager new];
         _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
         _tracksService.eventNamePrefix = AppConstants.eventNamePrefix;
+        _tracksService.platform = AppConstants.explatPlatform;
     }
     return self;
 }
