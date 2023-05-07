@@ -14,3 +14,6 @@ GUTENBERG_CONFIG = {
   # commit: '',
   tag: 'v1.94.0'
 }
+
+GITHUB_ORG = 'wordpress-mobile'
+REPO_NAME = 'gutenberg-mobile'

@@ -69,7 +69,7 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 
     raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{local_gutenberg_key} environment variable." unless File.exist?(options[:path])
   else
-    options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
+    options[:git] = "https://github.com/#{GITHUB_ORG}/#{REPO_NAME}.git"
     options[:submodules] = true
   end
 
@@ -84,7 +84,7 @@ def gutenberg_dependencies(options:)
     podspec_prefix = options[:path]
   else
     tag_or_commit = options[:tag] || options[:commit]
-    podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
+    podspec_prefix = "https://raw.githubusercontent.com/#{GITHUB_ORG}/#{REPO_NAME}/#{tag_or_commit}"
   end
 
   podspec_prefix += '/third-party-podspecs'
