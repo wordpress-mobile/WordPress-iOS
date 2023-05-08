@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This file isolates the definition of which version of Gutenberg to use.
-# This way, it can be accessed by multiple sources withou duplication.
+# This way, it can be accessed by multiple sources without duplication.
 
 # Either use commit or tag, if both are left uncommented, tag will take precedence.
 #
