@@ -13,13 +13,11 @@ public class LoginEpilogueScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [loginEpilogueTableGetter],
             app: app,
-            waitTimeout: 7
+            waitTimeout: 15
         )
     }
 
     public func continueWithSelectedSite(title: String? = nil) throws -> MySiteScreen {
-        loginEpilogueTable.waitForIsHittable(timeout: 10)
-
         if let title = title {
             let selectedSite = loginEpilogueTable.cells[title]
             selectedSite.tap()
