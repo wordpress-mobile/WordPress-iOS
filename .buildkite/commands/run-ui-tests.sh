@@ -19,9 +19,6 @@ tar -xf build-products-jetpack.tar
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- :cocoapods: Setting up Pods"
-install_cocoapods
-
 echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
