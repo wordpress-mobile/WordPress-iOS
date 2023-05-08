@@ -11,11 +11,13 @@ import UIKit
         presenter.presentBlogDetailsViewController(controller)
     }
 
-    static func presentDomainsDashboard(in dashboardViewController: BlogDashboardViewController,
-                                        source: String,
-                                        blog: Blog) {
-        WPAnalytics.trackEvent(.domainsDashboardViewed, properties: [WPAppAnalyticsKeySource: source], blog: blog)
-        let controller = DomainsDashboardFactory.makeDomainsDashboardViewController(blog: blog)
+    static func presentDomainsSuggestions(in dashboardViewController: BlogDashboardViewController,
+                                          source: String,
+                                          blog: Blog) {
+        let domainType: DomainType = blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect
+        let controller = DomainsDashboardFactory.makeDomainsSuggestionViewController(blog: blog, domainType: domainType) {
+            dashboardViewController.navigationController?.popViewController(animated: true)
+        }
         controller.navigationItem.largeTitleDisplayMode = .never
         dashboardViewController.show(controller, sender: nil)
     }

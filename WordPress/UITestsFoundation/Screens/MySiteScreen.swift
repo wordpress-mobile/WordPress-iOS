@@ -13,6 +13,7 @@ private struct ElementStringIDs {
     static let statsButton = "Stats Row"
     static let peopleButton = "People Row"
     static let settingsButton = "Settings Row"
+    static let domainsButton = "Domains Row"
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
@@ -62,6 +63,10 @@ public class MySiteScreen: ScreenObject {
 
     let domainsCardButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons[ElementStringIDs.domainsCardHeaderButton]
+    }
+
+    let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells[ElementStringIDs.domainsButton]
     }
 
     var domainsCardButton: XCUIElement { domainsCardButtonGetter(app) }
@@ -158,6 +163,11 @@ public class MySiteScreen: ScreenObject {
         return self
     }
 
+    public func goToDomainsScreen() throws -> DomainsScreen {
+        app.cells[ElementStringIDs.domainsButton].tap()
+        return try DomainsScreen()
+    }
+
     @discardableResult
     public func goToMenu() -> Self {
         // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
@@ -188,9 +198,9 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func tapDomainsCard() throws -> DomainsScreen {
+    public func tapDomainsCard() throws -> DomainsSuggestionsScreen {
         domainsCardButton.tap()
-        return try DomainsScreen()
+        return try DomainsSuggestionsScreen()
     }
 
     @discardableResult

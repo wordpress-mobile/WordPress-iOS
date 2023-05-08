@@ -147,6 +147,9 @@
 		011896A629D5B72500D34BA9 /* DomainsDashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A429D5B72500D34BA9 /* DomainsDashboardCoordinator.swift */; };
 		011896A829D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */; };
 		011896A929D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */; };
+		01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */; };
+		01281E9C2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
+		01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
 		0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
 		014192A02983F5E800CAEDB0 /* SupportConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */; };
@@ -5766,6 +5769,8 @@
 		011896A429D5B72500D34BA9 /* DomainsDashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardCoordinator.swift; sourceTree = "<group>"; };
 		011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardFactory.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
+		01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsSuggestionsScreen.swift; sourceTree = "<group>"; };
+		01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationTests.swift; sourceTree = "<group>"; };
 		0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfiguration.swift; sourceTree = "<group>"; };
 		0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfigurationTests.swift; sourceTree = "<group>"; };
 		0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampStore.swift; sourceTree = "<group>"; };
@@ -10351,7 +10356,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -11483,6 +11488,7 @@
 				BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */,
 				EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */,
 				D82E087729EEB7AF0098F500 /* DomainsScreen.swift */,
+				01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -15513,6 +15519,7 @@
 				CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */,
 				EAD2BF4127594DAB00A847BB /* StatsTests.swift */,
 				D82E087429EEB0B00098F500 /* DashboardTests.swift */,
+				01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -18634,14 +18641,14 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -22596,6 +22603,7 @@
 				3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */,
 				3F2F854226FAEA50000FCDA5 /* JetpackScanScreen.swift in Sources */,
 				3F2F855A26FAF227000FCDA5 /* EditorNoticeComponent.swift in Sources */,
+				01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */,
 				3F2F855D26FAF227000FCDA5 /* LoginCheckMagicLinkScreen.swift in Sources */,
 				EA78189427596B2F00554DFA /* ContactUsScreen.swift in Sources */,
 				D82E087829EEB7AF0098F500 /* DomainsScreen.swift in Sources */,
@@ -23496,6 +23504,7 @@
 				EA14533129AD874C001F3143 /* WPUITestCredentials.swift in Sources */,
 				EA14533229AD874C001F3143 /* SignupTests.swift in Sources */,
 				EA14533329AD874C001F3143 /* EditorFlow.swift in Sources */,
+				01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */,
 				EA14533429AD874C001F3143 /* UIApplication+mainWindow.swift in Sources */,
 				EA14533529AD874C001F3143 /* LoginFlow.swift in Sources */,
 				EA14533629AD874C001F3143 /* XCTest+Extensions.swift in Sources */,
@@ -25419,6 +25428,7 @@
 				CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */,
 				CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */,
 				CC52188C2278C622008998CE /* EditorFlow.swift in Sources */,
+				01281E9C2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */,
 				8B5FEAF125A746CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
 				BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */,
 				FF2716A11CABC7D40006E2D4 /* XCTest+Extensions.swift in Sources */,
@@ -30355,7 +30365,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30436,12 +30446,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
