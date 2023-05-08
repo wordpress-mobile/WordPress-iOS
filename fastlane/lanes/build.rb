@@ -101,7 +101,10 @@ platform :ios do
 
     # Only run UI tests in parallel.
     # At the time of writing with Xcode 14.3, we need to explicitly set this value despite using test plans that configure parallelism.
-    parallel_testing_value = options[:name] == "UITests"
+    parallel_testing_value = options[:name] == 'UITests'
+
+    puts "name is #{options[:name]}"
+    puts "The value is #{parallel_testing_value}"
 
     run_tests(
       workspace: WORKSPACE_PATH,
@@ -116,7 +119,7 @@ platform :ios do
       result_bundle: true,
       parallel_testing: parallel_testing_value,
       concurrent_workers: CONCURRENT_SIMULATORS,
-      max_concurrent_simulators: CONCURRENT_SIMULATORS,
+      max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
   end
 
