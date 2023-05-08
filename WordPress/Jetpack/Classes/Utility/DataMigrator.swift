@@ -44,15 +44,12 @@ final class DataMigrator {
 extension DataMigrator: ContentDataMigrating {
 
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
-        guard let backupLocation, copyDatabase(to: backupLocation) else {
-            let error = DataMigrationError.databaseExportError
-            self.crashLogger.logError(error)
-            completion?(.failure(error))
-            return
-        }
-        guard populateSharedDefaults() else {
-            let error = DataMigrationError.sharedUserDefaultsNil
-            self.crashLogger.logError(error)
+        do {
+            try copyDatabase(to: backupLocation)
+            try populateSharedDefaults()
+        } catch {
+            let error = (error as? DataMigrationError) ?? .databaseExportError(underlyingError: error)
+            log(error: error)
             completion?(.failure(error))
             return
         }
@@ -136,14 +133,11 @@ private extension DataMigrator {
         }
     }
 
-    func copyDatabase(to destination: URL) -> Bool {
-        do {
-            try coreDataStack.createStoreCopy(to: destination)
-        } catch {
-            DDLogError("Error copying database: \(error)")
-            return false
+    func copyDatabase(to destination: URL?) throws {
+        guard let destination else {
+            throw DataMigrationError.backupLocationNil
         }
-        return true
+        try coreDataStack.createStoreCopy(to: destination)
     }
 
     func restoreDatabase(from source: URL) -> Bool {
@@ -156,18 +150,16 @@ private extension DataMigrator {
         return true
     }
 
-    func populateSharedDefaults() -> Bool {
+    func populateSharedDefaults() throws {
         guard let sharedDefaults = sharedDefaults else {
-            return false
+            throw DataMigrationError.sharedUserDefaultsNil
         }
-
         let data = localDefaults.dictionaryRepresentation()
         var temporaryDictionary: [String: Any] = [:]
         for (key, value) in data {
             temporaryDictionary[key] = value
         }
         sharedDefaults.set(temporaryDictionary, forKey: DefaultsWrapper.dictKey)
-        return true
     }
 
     func populateFromSharedDefaults() -> Bool {
@@ -182,6 +174,11 @@ private extension DataMigrator {
         AppAppearance.overrideAppearance()
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
         return true
+    }
+
+    private func log(error: DataMigrationError, userInfo: [String: String]? = nil) {
+        DDLogError(error)
+        crashLogger.logError(error, userInfo: userInfo, level: .error)
     }
 }
 
