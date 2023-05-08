@@ -99,8 +99,8 @@ platform :ios do
     # Because we only support those two modes, we can infer the scheme name from the xctestrun name
     scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'
 
-    # Only run UI tests in parallel.
-    # At the time of writing with Xcode 14.3, we need to explicitly set this value despite using test plans that configure parallelism.
+    # Only run Jetpack UI tests in parallel.
+    # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
     parallel_testing_value = options[:name].include?('Jetpack')
 
     run_tests(
