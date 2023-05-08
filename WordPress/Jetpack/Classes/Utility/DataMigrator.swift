@@ -16,34 +16,6 @@ protocol ContentDataMigrating {
     func deleteExportedData()
 }
 
-enum DataMigrationError: LocalizedError, CustomNSError {
-    case databaseImportError
-    case databaseExportError
-    case sharedUserDefaultsNil
-    case dataNotReadyToImport
-
-    var errorDescription: String? {
-        switch self {
-        case .databaseImportError: return "The database couldn't be copied from shared directory"
-        case .databaseExportError: return "The database couldn't be copied to shared directory"
-        case .sharedUserDefaultsNil: return "Shared user defaults not found"
-        case .dataNotReadyToImport: return "The data wasn't ready to import"
-        }
-    }
-
-    static var errorDomain: String {
-        return String(describing: DataMigrationError.self)
-    }
-
-    var errorUserInfo: [String: Any] {
-        var userInfo = [String: Any]()
-        if let errorDescription {
-            userInfo[NSDebugDescriptionErrorKey] = errorDescription
-        }
-        return userInfo
-    }
-}
-
 final class DataMigrator {
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
