@@ -101,10 +101,7 @@ platform :ios do
 
     # Only run UI tests in parallel.
     # At the time of writing with Xcode 14.3, we need to explicitly set this value despite using test plans that configure parallelism.
-    parallel_testing_value = options[:name] == 'UITests'
-
-    puts "name is #{options[:name]}"
-    puts "The value is #{parallel_testing_value}"
+    parallel_testing_value = options[:name].include?('Jetpack')
 
     run_tests(
       workspace: WORKSPACE_PATH,
