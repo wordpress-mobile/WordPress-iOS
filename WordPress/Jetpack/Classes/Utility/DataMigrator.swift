@@ -66,20 +66,17 @@ extension DataMigrator: ContentDataMigrating {
             return
         }
 
-        guard let backupLocation, restoreDatabase(from: backupLocation) else {
-            let error = DataMigrationError.databaseImportError
-            self.crashLogger.logError(error)
-            completion?(.failure(error))
-            return
-        }
+        do {
+            try restoreDatabase(from: backupLocation)
 
-        /// Upon successful database restoration, the backup files in the App Group will be deleted.
-        /// This means that the exported data is no longer complete when the user attempts another migration.
-        isDataReadyToMigrate = false
+            /// Upon successful database restoration, the backup files in the App Group will be deleted.
+            /// This means that the exported data is no longer complete when the user attempts another migration.
+            isDataReadyToMigrate = false
 
-        guard populateFromSharedDefaults() else {
-            let error = DataMigrationError.sharedUserDefaultsNil
-            self.crashLogger.logError(error)
+            try populateFromSharedDefaults()
+        } catch {
+            let error = (error as? DataMigrationError) ?? DataMigrationError.databaseImportError(underlyingError: error)
+            log(error: error)
             completion?(.failure(error))
             return
         }
@@ -140,14 +137,11 @@ private extension DataMigrator {
         try coreDataStack.createStoreCopy(to: destination)
     }
 
-    func restoreDatabase(from source: URL) -> Bool {
-        do {
-            try coreDataStack.restoreStoreCopy(from: source)
-        } catch {
-            DDLogError("Error restoring database: \(error)")
-            return false
+    func restoreDatabase(from source: URL?) throws {
+        guard let source else {
+            throw DataMigrationError.backupLocationNil
         }
-        return true
+        try coreDataStack.restoreStoreCopy(from: source)
     }
 
     func populateSharedDefaults() throws {
@@ -162,18 +156,16 @@ private extension DataMigrator {
         sharedDefaults.set(temporaryDictionary, forKey: DefaultsWrapper.dictKey)
     }
 
-    func populateFromSharedDefaults() -> Bool {
+    func populateFromSharedDefaults() throws {
         guard let sharedDefaults = sharedDefaults,
               let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
-            return false
+            throw DataMigrationError.sharedUserDefaultsNil
         }
-
         for (key, value) in temporaryDictionary {
             localDefaults.set(value, forKey: key)
         }
         AppAppearance.overrideAppearance()
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
-        return true
     }
 
     private func log(error: DataMigrationError, userInfo: [String: String]? = nil) {

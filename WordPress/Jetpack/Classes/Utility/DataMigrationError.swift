@@ -1,7 +1,7 @@
 import Foundation
 
 enum DataMigrationError {
-    case databaseImportError
+    case databaseImportError(underlyingError: Error)
     case databaseExportError(underlyingError: Error)
     case backupLocationNil
     case sharedUserDefaultsNil
@@ -35,11 +35,16 @@ extension DataMigrationError: LocalizedError, CustomNSError {
     }
 
     var errorUserInfo: [String: Any] {
-        var userInfo = [String: Any]()
-        if let errorDescription {
-            userInfo[NSDebugDescriptionErrorKey] = errorDescription
+        switch self {
+        case .databaseExportError(let error), .databaseImportError(let error):
+            return (error as NSError).userInfo
+        default:
+            var userInfo = [String: Any]()
+            if let errorDescription {
+                userInfo[NSDebugDescriptionErrorKey] = errorDescription
+            }
+            return userInfo
         }
-        return userInfo
     }
 }
 
