@@ -19,8 +19,8 @@ tar -xf build-products-jetpack.tar
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- :cocoapods: Setting up Pods"
-install_cocoapods
+echo "--- :swift: Setting up Swift Packages"
+install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
