@@ -12,11 +12,11 @@ extension DataMigrationError: LocalizedError, CustomNSError {
 
     var errorDescription: String? {
         switch self {
-        case .databaseImportError: return "The database couldn't be copied from shared directory"
-        case .databaseExportError: return "The database couldn't be copied to shared directory"
         case .backupLocationNil: return "Database shared directory not found"
         case .sharedUserDefaultsNil: return "Shared user defaults not found"
         case .dataNotReadyToImport: return "The data wasn't ready to import"
+        case .databaseImportError(let error): return "Import Failed: \(error)"
+        case .databaseExportError(let error): return "Export Failed: \(error)"
         }
     }
 
@@ -27,10 +27,10 @@ extension DataMigrationError: LocalizedError, CustomNSError {
     var errorCode: Int {
         switch self {
         case .dataNotReadyToImport: return 100
-        case .databaseImportError: return 200
-        case .databaseExportError: return 300
-        case .backupLocationNil: return 400
-        case .sharedUserDefaultsNil: return 401
+        case .backupLocationNil: return 200
+        case .sharedUserDefaultsNil: return 201
+        case .databaseImportError(let error): return 1000 + (error as NSError).code
+        case .databaseExportError(let error): return 2000 + (error as NSError).code
         }
     }
 
