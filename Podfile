@@ -47,8 +47,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 8.0-beta'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'task/site-editor-settings-model-changes'
+  pod 'WordPressKit', '~> 8.1.0-beta'
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
