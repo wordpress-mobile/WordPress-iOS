@@ -181,6 +181,19 @@ extension ContextManager {
     }
 }
 
+extension ContextManager.ContextManagerError: LocalizedError, CustomDebugStringConvertible {
+    var errorDescription: String? {
+        switch self {
+        case .missingCoordinatorOrStore: return "Missing coordinator or store"
+        case .missingDatabase: return "Missing database"
+        }
+    }
+
+    var debugDescription: String {
+        return localizedDescription
+    }
+}
+
 extension CoreDataStack {
     /// Perform a query using the `mainContext` and return the result.
     func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
