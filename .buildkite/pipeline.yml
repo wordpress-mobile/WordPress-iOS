@@ -89,7 +89,7 @@ steps:
         env: *common_env
         plugins: *common_plugins
         artifact_paths:
-          - "build/results/*"
+          - "build/results/**/**"
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
@@ -104,7 +104,7 @@ steps:
         env: *common_env
         plugins: *common_plugins
         artifact_paths:
-          - "build/results/*"
+          - "build/results/**/**"
         notify:
           - github_commit_status:
               context: "UI Tests (iPad)"

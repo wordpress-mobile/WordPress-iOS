@@ -41,7 +41,7 @@ cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult
 
 echo "--- 💥 Collect Crash reports"
 find ~/Library/Logs/DiagnosticReports -name '*.ips' -print0 | while read -d $'\0' -r file; do
-  cp "$file" "build/results/[CRASH] $(basename "$file")"
+  cp  -p "$file" "build/results/crashes/$file"
 done
 
 echo "--- 🚦 Report Tests Status"
