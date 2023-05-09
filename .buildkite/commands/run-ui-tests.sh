@@ -40,7 +40,9 @@ echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
 echo "--- 💥 Collect Crash reports"
-for f in ~/Library/Logs/DiagnosticReports/*; do if [[ "$f" == *.ips* ]]; then cp "$f" "build/results/[CRASH]$(basename "$f")"; fi; done
+find ~/Library/Logs/DiagnosticReports -name '*.ips' -print0 | while read -d $'\0' -r file; do
+  cp "$file" "build/results/[CRASH] $(basename "$file")"
+done
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
