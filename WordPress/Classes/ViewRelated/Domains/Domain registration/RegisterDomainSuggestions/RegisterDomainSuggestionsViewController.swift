@@ -77,10 +77,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         title = TextContent.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
 
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                           target: self,
-                                           action: #selector(handleCancelButtonTapped))
-        navigationItem.leftBarButtonItem = cancelButton
+        /// If this is the first view controller in the navigation controller - show the cancel button
+        if navigationController?.children.count == 1 {
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                               target: self,
+                                               action: #selector(handleCancelButtonTapped))
+            navigationItem.leftBarButtonItem = cancelButton
+        }
 
         guard includeSupportButton else {
             return

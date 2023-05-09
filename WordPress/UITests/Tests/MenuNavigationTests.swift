@@ -1,7 +1,7 @@
 import UITestsFoundation
 import XCTest
 
-class DashboardTests: XCTestCase {
+final class MenuNavigationTests: XCTestCase {
 
     override func setUpWithError() throws {
         setUpTestSuite()
@@ -19,11 +19,10 @@ class DashboardTests: XCTestCase {
     }
 
     // This test is JP only.
-    func testDomainsCardNavigation() throws {
+    func testDomainsNavigation() throws {
         try MySiteScreen()
-            .scrollToDomainsCard()
-            .verifyDomainsCard()
-            .tapDomainsCard()
-            .verifyDomainsSuggestionsScreenLoaded()
+            .goToMenu()
+            .goToDomainsScreen()
+            .verifyDomainsScreenLoaded()
     }
 }

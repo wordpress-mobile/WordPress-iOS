@@ -1,6 +1,9 @@
 22.4
 -----
 
+* [*] [internal] [Jetpack-only] Domains Dashboard Card: Immediately opening domains search after tapping the card. [#20638]
+* [**] [Jetpack-only] Adds a dashboard card for viewing activity log. [#20569]
+* [**] [Jetpack-only] Adds a dashboard card for viewing pages. [#20524]
 
 22.3
 -----
