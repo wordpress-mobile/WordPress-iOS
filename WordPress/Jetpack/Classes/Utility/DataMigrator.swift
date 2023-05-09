@@ -48,7 +48,7 @@ extension DataMigrator: ContentDataMigrating {
             try copyDatabase(to: backupLocation)
             try populateSharedDefaults()
         } catch {
-            let error = (error as? DataMigrationError) ?? .databaseExportError(underlyingError: error)
+            let error = DataMigrationError.databaseExportError(underlyingError: error)
             log(error: error)
             completion?(.failure(error))
             return
@@ -75,7 +75,7 @@ extension DataMigrator: ContentDataMigrating {
 
             try populateFromSharedDefaults()
         } catch {
-            let error = (error as? DataMigrationError) ?? DataMigrationError.databaseImportError(underlyingError: error)
+            let error = DataMigrationError.databaseImportError(underlyingError: error)
             log(error: error)
             completion?(.failure(error))
             return

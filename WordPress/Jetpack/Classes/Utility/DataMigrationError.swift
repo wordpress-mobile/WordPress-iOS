@@ -15,8 +15,8 @@ extension DataMigrationError: LocalizedError, CustomNSError {
         case .backupLocationNil: return "Database shared directory not found"
         case .sharedUserDefaultsNil: return "Shared user defaults not found"
         case .dataNotReadyToImport: return "The data wasn't ready to import"
-        case .databaseImportError(let error): return "Import Failed: \(error)"
-        case .databaseExportError(let error): return "Export Failed: \(error)"
+        case .databaseImportError(let error): return "Import Failed: \(error.localizedDescription)"
+        case .databaseExportError(let error): return "Export Failed: \(error.localizedDescription)"
         }
     }
 
@@ -43,22 +43,14 @@ extension DataMigrationError: LocalizedError, CustomNSError {
                     "underlying-error-message": nsError.localizedDescription,
                     "underlying-error-user-info": nsError.userInfo]
         default:
-            var userInfo = [String: Any]()
-            if let errorDescription {
-                userInfo[NSDebugDescriptionErrorKey] = errorDescription
-            }
-            return userInfo
+            return [:]
         }
     }
 }
 
 extension DataMigrationError: CustomDebugStringConvertible {
-
     var debugDescription: String {
-        guard let desc = errorDescription else {
-            return String(describing: self)
-        }
-        return "[\(Self.errorDomain)] \(desc)"
+        return "[\(Self.errorDomain)] \(localizedDescription)"
     }
 }
 
