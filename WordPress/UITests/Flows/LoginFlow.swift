@@ -7,7 +7,7 @@ class LoginFlow {
     static func login(email: String, password: String, selectedSiteTitle: String? = nil) throws -> MySiteScreen {
         return try PrologueScreen().selectContinue()
             .proceedWith(email: email)
-            .proceedWith(password: password)
+            .proceedWithValidPassword()
             .continueWithSelectedSite(title: selectedSiteTitle)
             .dismissNotificationAlertIfNeeded()
     }
@@ -37,7 +37,7 @@ class LoginFlow {
         return try PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
             .proceedWith(email: email)
-            .proceedWith(password: password)
+            .proceedWithValidPassword()
         .continueWithSelectedSite()
         .dismissNotificationAlertIfNeeded()
     }

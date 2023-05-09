@@ -17,7 +17,7 @@ class LoginTests: XCTestCase {
     func testWPcomLoginLogout() throws {
         let prologueScreen = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .proceedWithValidPassword()
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
@@ -61,7 +61,7 @@ class LoginTests: XCTestCase {
     func testWPcomInvalidPassword() throws {
         _ = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .tryProceed(password: "invalidPswd")
+            .proceedWithInvalidPassword()
             .verifyLoginError()
     }
 
@@ -70,7 +70,7 @@ class LoginTests: XCTestCase {
     func testAddSelfHostedSiteAfterWPcomLogin() throws {
         try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .proceedWithValidPassword()
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite() //returns MySite screen
 

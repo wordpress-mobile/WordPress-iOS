@@ -12,13 +12,19 @@ public class PasswordScreen: ScreenObject {
         )
     }
 
-    public func proceedWith(password: String) throws -> LoginEpilogueScreen {
-        _ = tryProceed(password: password)
+    public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
+        try tryProceed(password: "pw")
 
         return try LoginEpilogueScreen()
     }
 
-    public func tryProceed(password: String) -> PasswordScreen {
+    public func proceedWithInvalidPassword() throws -> PasswordScreen {
+        try tryProceed(password: "invalidPswd")
+
+        return try PasswordScreen()
+    }
+
+    public func tryProceed(password: String) throws {
 
         let passwordTextField = expectedElement
 
@@ -48,8 +54,6 @@ public class PasswordScreen: ScreenObject {
             // alert where "Save Password" is.
             app.buttons["Not Now"].tap()
         }
-
-        return self
     }
 
     public func verifyLoginError() -> PasswordScreen {
