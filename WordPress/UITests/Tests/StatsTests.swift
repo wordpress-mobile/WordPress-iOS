@@ -6,7 +6,9 @@ class StatsTests: XCTestCase {
 
     override func setUpWithError() throws {
         setUpTestSuite()
+
         _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+
         statsScreen = try MySiteScreen()
             .goToMenu()
             .goToStatsScreen()
