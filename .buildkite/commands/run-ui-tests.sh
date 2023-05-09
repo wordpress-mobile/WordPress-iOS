@@ -39,6 +39,12 @@ fi
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
+echo "--- 💥 Collect Crash reports"
+mkdir -p build/results/crashes
+find ~/Library/Logs/DiagnosticReports -name '*.ips' -print0 | while read -d $'\0' -r file; do
+  cp "$file" "build/results/crashes/$(basename "$file")"
+done
+
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then
   echo "UI Tests seems to have passed (exit code 0). All good 👍"

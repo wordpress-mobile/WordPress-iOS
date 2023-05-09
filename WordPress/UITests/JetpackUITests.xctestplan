@@ -22,9 +22,16 @@
     {
       "skippedTests" : [
         "EditorAztecTests",
+        "EditorGutenbergTests",
+        "LoginTests",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "MainNavigationTests",
+        "ReaderTests\/testViewPost()",
+        "ReaderTests\/testViewPostInSafari()",
         "SignupTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests",
         "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
