@@ -19,6 +19,9 @@ public class PasswordScreen: ScreenObject {
     }
 
     public func tryProceed(password: String) -> PasswordScreen {
+
+        let passwordTextField = expectedElement
+
         // A hack to make tests pass for RtL languages.
         //
         // An unintended side effect of calling passwordTextField.tap() while testing a RtL language is that the
@@ -31,8 +34,9 @@ public class PasswordScreen: ScreenObject {
         //
         // Calling passwordTextField.doubleTap() prevents tests from failing by ensuring that the text field's
         // secureTextEntry property remains 'true'.
-        let passwordTextField = expectedElement
-        passwordTextField.doubleTap()
+        if Locale.current.identifier.contains("ar") {
+            passwordTextField.doubleTap()
+        }
 
         passwordTextField.typeText(password)
         let continueButton = app.buttons["Continue Button"]
