@@ -45,7 +45,7 @@ extension BlockEditorSettings: GutenbergEditorSettings {
 extension BlockEditorSettings {
     convenience init?(editorTheme: RemoteEditorTheme, context: NSManagedObjectContext) {
         self.init(context: context)
-        self.isFSETheme = false
+        self.isFSETheme = editorTheme.themeSupport?.blockTemplates ?? false
         self.lastUpdated = Date()
         self.checksum = editorTheme.checksum
 
