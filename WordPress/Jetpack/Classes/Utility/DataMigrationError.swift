@@ -61,3 +61,12 @@ extension DataMigrationError: CustomDebugStringConvertible {
         return "[\(Self.errorDomain)] \(desc)"
     }
 }
+
+extension DataMigrationError: Equatable {
+
+    static func ==(left: DataMigrationError, right: DataMigrationError) -> Bool {
+        let leftNSError = left as NSError
+        let rightNSError = right as NSError
+        return leftNSError == rightNSError
+    }
+}
