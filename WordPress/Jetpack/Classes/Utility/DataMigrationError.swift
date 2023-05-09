@@ -37,7 +37,11 @@ extension DataMigrationError: LocalizedError, CustomNSError {
     var errorUserInfo: [String: Any] {
         switch self {
         case .databaseExportError(let error), .databaseImportError(let error):
-            return (error as NSError).userInfo
+            let nsError = error as NSError
+            return ["underlying-error-domain": nsError.domain,
+                    "underlying-error-code": nsError.code,
+                    "underlying-error-message": nsError.localizedDescription,
+                    "underlying-error-user-info": nsError.userInfo]
         default:
             var userInfo = [String: Any]()
             if let errorDescription {
