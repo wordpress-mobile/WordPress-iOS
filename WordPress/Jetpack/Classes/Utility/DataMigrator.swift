@@ -168,9 +168,15 @@ private extension DataMigrator {
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
     }
 
-    private func log(error: DataMigrationError, userInfo: [String: String]? = nil) {
+    private func log(error: DataMigrationError, userInfo: [String: Any] = [:]) {
+        let userInfo = userInfo.merging(self.userInfo(for: error)) { $1 }
         DDLogError(error)
         crashLogger.logError(error, userInfo: userInfo, level: .error)
+    }
+
+    private func userInfo(for error: DataMigrationError) -> [String: Any] {
+        let defaultUserInfo = ["backup-location": backupLocation?.absoluteString as Any]
+        return defaultUserInfo.merging(error.errorUserInfo) { $1 }
     }
 }
 
