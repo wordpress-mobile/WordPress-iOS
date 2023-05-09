@@ -1513,6 +1513,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"install_jetpack_selected";
             break;
         case WPAnalyticsStatSentItemToGooglePlus:
+            // This needs to be changed in the pod WPAnalytics before changing
             eventName = @"sent_item_to_google_plus";
             break;
         case WPAnalyticsStatSentItemToInstapaper:

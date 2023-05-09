@@ -28,6 +28,7 @@
     } else if ([activityType isEqualToString:@"com.ideashower.ReadItLaterPro.AddToPocketExtension"]) {
         stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:@"com.google.GooglePlus.ShareExtension"]) {
+        // This needs to be changed in the pod WPAnalytics before changing
         stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
         return;
