@@ -87,25 +87,25 @@ extension MovedToJetpackViewModel {
 
         static let statsTitle = NSLocalizedString(
             "movedToJetpack.stats.title",
-            value: "Stats have moved to the Jetpack app.",
+            value: "Use WordPress with Stats in the Jetpack pp.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
         static let readerTitle = NSLocalizedString(
             "movedToJetpack.reader.title",
-            value: "Reader has moved to the Jetpack app.",
+            value: "Use WordPress with Reader in the Jetpack app.",
             comment: "Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app."
         )
 
         static let notificationsTitle = NSLocalizedString(
             "movedToJetpack.notifications.title",
-            value: "Notifications have moved to the Jetpack app.",
+            value: "Use WordPress with Notifications in the Jetpack app.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
         static let description = NSLocalizedString(
             "movedToJetpack.description",
-            value: "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app, and can now only be found in the Jetpack app.",
+            value: "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.",
             comment: "Description for the static screen displayed prompting users to switch the Jetpack app."
         )
 
