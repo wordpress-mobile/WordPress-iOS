@@ -71,7 +71,7 @@ class DataMigratorTests: XCTestCase {
         let migratorError = getExportDataMigratorError(migrator)
 
         // Then
-        XCTAssertEqual(migratorError, .sharedUserDefaultsNil)
+        XCTAssertEqual(migratorError, DataMigrationError.databaseExportError(underlyingError: DataMigrationError.sharedUserDefaultsNil))
     }
 
     func test_importData_givenDataIsNotExported_shouldFail() {
