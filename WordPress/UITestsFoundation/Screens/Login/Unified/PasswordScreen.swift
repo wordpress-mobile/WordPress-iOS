@@ -39,8 +39,10 @@ public class PasswordScreen: ScreenObject {
         //
         // Calling passwordTextField.doubleTap() prevents tests from failing by ensuring that the text field's
         // secureTextEntry property remains 'true'.
-        let passwordTextField = expectedElement
-        passwordTextField.doubleTap()
+
+        if Locale.current.identifier.contains("ar") {
+            passwordTextField.doubleTap()
+        }
 
         passwordTextField.typeText(password)
         let continueButton = app.buttons["Continue Button"]
