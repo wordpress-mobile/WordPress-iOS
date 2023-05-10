@@ -1,0 +1,12 @@
+{
+    "request": {
+      "method": "GET",
+      "urlPattern": "/wpcom/v2/sites/.*/rewind/capabilities.*"
+    },
+    "response": {
+      "status": 200,
+      "jsonBody": {
+            "capabilities": []
+      }
+    }
+  }
