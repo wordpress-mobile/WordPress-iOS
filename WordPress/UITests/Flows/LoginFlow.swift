@@ -7,7 +7,7 @@ class LoginFlow {
     static func login(email: String, password: String, selectedSiteTitle: String? = nil) throws -> MySiteScreen {
         return try PrologueScreen().selectContinue()
             .proceedWith(email: email)
-            .proceedWith(password: password)
+            .proceedWithValidPassword()
             .continueWithSelectedSite(title: selectedSiteTitle)
             .dismissNotificationAlertIfNeeded()
     }
@@ -20,15 +20,6 @@ class LoginFlow {
             .proceedWith(username: username, password: password)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-
-        // TODO: remove when unifiedAuth is permanent.
-        // Leaving here for now in case unifiedAuth is disabled.
-//        return WelcomeScreen().selectLogin()
-//            .goToSiteAddressLogin()
-//            .proceedWith(siteUrl: siteUrl)
-//            .proceedWith(username: username, password: password)
-//            .continueWithSelectedSite()
-//            .dismissNotificationAlertIfNeeded()
     }
 
     // Login with WP site via Site Address.
@@ -37,7 +28,7 @@ class LoginFlow {
         return try PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
             .proceedWith(email: email)
-            .proceedWith(password: password)
+            .proceedWithValidPassword()
         .continueWithSelectedSite()
         .dismissNotificationAlertIfNeeded()
     }
