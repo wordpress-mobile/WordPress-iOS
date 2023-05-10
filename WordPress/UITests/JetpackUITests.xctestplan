@@ -26,7 +26,6 @@
         "LoginTests\/testEmailMagicLinkLogin()",
         "SignupTests",
         "SignupTests\/testEmailSignup()",
-        "StatsTests",
         "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
