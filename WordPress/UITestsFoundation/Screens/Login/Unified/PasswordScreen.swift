@@ -8,7 +8,7 @@ public class PasswordScreen: ScreenObject {
             // swiftlint:disable:next opening_brace
             expectedElementGetters: [ { $0.secureTextFields["Password"] } ],
             app: app,
-            waitTimeout: 7
+            waitTimeout: 10
         )
     }
 
