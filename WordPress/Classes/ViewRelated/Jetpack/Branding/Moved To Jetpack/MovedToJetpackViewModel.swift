@@ -21,27 +21,9 @@ struct MovedToJetpackViewModel {
 
     let source: MovedToJetpackSource
 
-    var animationLtr: String {
-        switch source {
-        case .stats:
-            return Constants.statsLogoAnimationLtr
-        case .reader:
-            return Constants.readerLogoAnimationLtr
-        case .notifications:
-            return Constants.notificationsLogoAnimationLtr
-        }
-    }
+    let animationLtr: String = Constants.wpJetpackLogoAnimationLtr
 
-    var animationRtl: String {
-        switch source {
-        case .stats:
-            return Constants.statsLogoAnimationRtl
-        case .reader:
-            return Constants.readerLogoAnimationRtl
-        case .notifications:
-            return Constants.notificationsLogoAnimationRtl
-        }
-    }
+    let animationRtl: String = Constants.wpJetpackLogoAnimationRtl
 
     var title: String {
         switch source {
@@ -75,12 +57,8 @@ struct MovedToJetpackViewModel {
 extension MovedToJetpackViewModel {
 
     private enum Constants {
-        static let statsLogoAnimationLtr = "JetpackStatsLogoAnimation_ltr"
-        static let statsLogoAnimationRtl = "JetpackStatsLogoAnimation_rtl"
-        static let readerLogoAnimationLtr = "JetpackReaderLogoAnimation_ltr"
-        static let readerLogoAnimationRtl = "JetpackReaderLogoAnimation_rtl"
-        static let notificationsLogoAnimationLtr = "JetpackNotificationsLogoAnimation_ltr"
-        static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
+        static let wpJetpackLogoAnimationLtr = "JetpackWordPressLogoAnimation_ltr"
+        static let wpJetpackLogoAnimationRtl = "JetpackWordPressLogoAnimation_rtl"
     }
 
     private enum Strings {
