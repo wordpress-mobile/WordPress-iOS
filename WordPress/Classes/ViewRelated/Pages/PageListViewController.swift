@@ -62,6 +62,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
+    private lazy var editorSettingsService = {
+        return BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
+    }()
+
     // MARK: - GUI
 
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
@@ -232,6 +236,48 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override internal func postTypeToSync() -> PostServiceType {
         return .page
+    }
+
+    override func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> ())?, failure: ((NSError) -> ())?) {
+        // The success and failure blocks are called in the parent class `AbstractPostListViewController` by the `syncPosts` method. Since that class is
+        // used by both this one and the "Posts" screen, making changes to the sync helper is tough. To get around that, we make the fetch settings call
+        // async and then just await it before calling either the final success or failure block. This ensures that both the `syncPosts` call in the parent
+        // and the `fetchSettings` call here finish before calling the final success or failure block.
+        let (wrappedSuccess, wrappedFailure) = fetchEditorSettings(success: success, failure: failure)
+        super.syncHelper(syncHelper, syncContentWithUserInteraction: userInteraction, success: wrappedSuccess, failure: wrappedFailure)
+    }
+
+    private func fetchEditorSettings(success: ((Bool) -> ())?, failure: ((NSError) -> ())?) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
+        let fetchTask = Task { @MainActor [weak self] in
+            guard FeatureFlag.siteEditorMVP.enabled,
+                  let result = await editorSettingsService?.fetchSettings() else {
+                return
+            }
+            switch result {
+            case .success(let serviceResult):
+                if serviceResult.hasChanges {
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                DDLogError("Error fetching editor settings: \(error)")
+            }
+        }
+
+        let wrappedSuccess: (_ hasMore: Bool) -> () = { hasMore in
+            Task { @MainActor in
+                await fetchTask.value
+                success?(hasMore)
+            }
+        }
+
+        let wrappedFailure: (NSError) -> () = { error in
+            Task { @MainActor in
+                await fetchTask.value
+                failure?(error)
+            }
+        }
+
+        return (success: wrappedSuccess, failure: wrappedFailure)
     }
 
     override internal func lastSyncDate() -> Date? {
