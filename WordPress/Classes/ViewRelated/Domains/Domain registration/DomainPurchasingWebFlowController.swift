@@ -127,7 +127,10 @@ final class DomainPurchasingWebFlowController {
         // This was last checked by @diegoreymendez on 2021-09-22.
         //
         var result: Result<String, DomainPurchasingError>?
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: domain.hostURL, source: "domains_register")
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(
+            url: domain.hostURL,
+            source: origin?.rawValue ?? ""
+        )
         self.webViewURLChangeObservation = webViewController.webView.observe(\.url, options: [.new, .old]) { [weak self] _, change in
             guard let self = self, let newURL = change.newValue as? URL else {
                 return
@@ -312,7 +315,7 @@ extension DomainPurchasingWebFlowController.Domain {
     }
 }
 
-extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError {
+extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError, CustomDebugStringConvertible {
 
     /// Untrusted errors should be monitored and requires our attention.
     var trusted: Bool {
@@ -331,7 +334,7 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
 
     var errorDescription: String? {
         switch self {
-        case .invalidInput: return "Input provided is not valid to perform domain purchasing"
+        case .invalidInput: return "The input provided is not valid to perform domain purchasing"
         case .canceled: return "Domain purchasing flow is canceled"
         case .unsupportedRedirect: return "Unsupported domain purchasing URL"
         case .internal(let reason): return reason
@@ -345,7 +348,7 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
         case .invalidInput: return 500
         case .internal: return 501
         case .unsupportedRedirect: return 502
-        case .other(let error): return (error as NSError).code
+        case .other(let error): return 1000 + (error as NSError).code
         }
     }
 
@@ -353,11 +356,13 @@ extension DomainPurchasingWebFlowController.DomainPurchasingError: CustomNSError
         return "DomainPurchasingWebFlowError"
     }
 
+    var debugDescription: String {
+        let desc = errorDescription ?? String(describing: self)
+        return "[\(Self.errorDomain)] \(desc)"
+    }
+
     var errorUserInfo: [String: Any] {
         var userInfo = [String: Any]()
-        if let errorDescription {
-            userInfo[NSDebugDescriptionErrorKey] = errorDescription
-        }
         switch self {
         case .unsupportedRedirect(let fromURL, let toURL):
             userInfo["fromURL"] = fromURL?.absoluteString
