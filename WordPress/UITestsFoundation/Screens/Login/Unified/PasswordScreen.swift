@@ -25,7 +25,6 @@ public class PasswordScreen: ScreenObject {
     }
 
     public func tryProceed(password: String) throws {
-
         let passwordTextField = expectedElement
 
         // A hack to make tests pass for RtL languages.

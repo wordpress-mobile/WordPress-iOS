@@ -90,6 +90,7 @@ steps:
         plugins: *common_plugins
         artifact_paths:
           - "build/results/*"
+          - "build/results/crashes/*"
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
@@ -105,6 +106,7 @@ steps:
         plugins: *common_plugins
         artifact_paths:
           - "build/results/*"
+          - "build/results/crashes/*"
         notify:
           - github_commit_status:
               context: "UI Tests (iPad)"
