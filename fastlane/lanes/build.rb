@@ -111,13 +111,16 @@ platform :ios do
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
-      output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
+      output_types: '',
+      fail_build: false
       parallel_testing: parallel_testing_value,
       concurrent_workers: CONCURRENT_SIMULATORS,
       max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
+
+    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
