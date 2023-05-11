@@ -37,7 +37,7 @@ if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
 fi
 
 echo "--- 📦 Zipping test results"
-cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
+cd fastlane/test_output/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
 
 echo "--- 💥 Collecting Crash reports"
 mkdir -p build/results/crashes
@@ -52,6 +52,6 @@ else
   echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the Buildkite annotation, the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
 fi
-annotate_test_failures "build/results/report.junit"
+annotate_test_failures "fastlane/test_output/JetpackUITests.xml"
 
 exit $TESTS_EXIT_STATUS
