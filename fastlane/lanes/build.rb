@@ -111,6 +111,7 @@ platform :ios do
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: xctestrun_path,
+      output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
       output_types: '',
