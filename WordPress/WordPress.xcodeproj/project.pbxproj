@@ -3646,6 +3646,8 @@
 		F4D9AF4F288AD2E300803D40 /* SuggestionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */; };
 		F4D9AF51288AE23500803D40 /* SuggestionTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF50288AE23500803D40 /* SuggestionTableViewTests.swift */; };
 		F4D9AF53288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF52288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift */; };
+		F4DD58322A095210009A772D /* DataMigrationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DD58312A095210009A772D /* DataMigrationError.swift */; };
+		F4DD58332A095210009A772D /* DataMigrationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DD58312A095210009A772D /* DataMigrationError.swift */; };
 		F4DDE2C229C92F0D00C02A76 /* CrashLogging+Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DDE2C129C92F0D00C02A76 /* CrashLogging+Singleton.swift */; };
 		F4DDE2C329C92F0D00C02A76 /* CrashLogging+Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DDE2C129C92F0D00C02A76 /* CrashLogging+Singleton.swift */; };
 		F4E79301296EEE320025E8E0 /* MigrationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E79300296EEE320025E8E0 /* MigrationState.swift */; };
@@ -8997,6 +8999,7 @@
 		F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionViewModelTests.swift; sourceTree = "<group>"; };
 		F4D9AF50288AE23500803D40 /* SuggestionTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewTests.swift; sourceTree = "<group>"; };
 		F4D9AF52288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsTableViewDelegateMock.swift; sourceTree = "<group>"; };
+		F4DD58312A095210009A772D /* DataMigrationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationError.swift; sourceTree = "<group>"; };
 		F4DDE2C129C92F0D00C02A76 /* CrashLogging+Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CrashLogging+Singleton.swift"; sourceTree = "<group>"; };
 		F4E79300296EEE320025E8E0 /* MigrationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationState.swift; sourceTree = "<group>"; };
 		F4EDAA4B29A516E900622D3D /* ReaderPostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostService.swift; sourceTree = "<group>"; };
@@ -13216,6 +13219,7 @@
 			children = (
 				8332DD2329259AE300802F7D /* DataMigrator.swift */,
 				FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */,
+				F4DD58312A095210009A772D /* DataMigrationError.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -22336,6 +22340,7 @@
 				FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */,
 				7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */,
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
+				F4DD58322A095210009A772D /* DataMigrationError.swift in Sources */,
 				08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */,
 				FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */,
 				324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */,
@@ -24669,6 +24674,7 @@
 				FABB24092602FC2C00C8785C /* DiffAbstractValue+Attributes.swift in Sources */,
 				FABB240A2602FC2C00C8785C /* Environment.swift in Sources */,
 				FABB240B2602FC2C00C8785C /* AbstractPostListViewController.swift in Sources */,
+				F4DD58332A095210009A772D /* DataMigrationError.swift in Sources */,
 				FABB240C2602FC2C00C8785C /* ManagedAccountSettings.swift in Sources */,
 				FA88EAD6260AE69C001D232B /* TemplatePreviewViewController.swift in Sources */,
 				F41BDD7B29114E2400B7F2B0 /* MigrationStep.swift in Sources */,
