@@ -5386,6 +5386,8 @@
 		FAC1B82729B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B82629B1F1EE00E0C542 /* BlazePostPreviewView.swift */; };
 		FAC1B82829B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B82629B1F1EE00E0C542 /* BlazePostPreviewView.swift */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
+		FAD1263C2A0CF2F50004E24C /* String+NonbreakingSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1263B2A0CF2F50004E24C /* String+NonbreakingSpace.swift */; };
+		FAD1263D2A0CF2F50004E24C /* String+NonbreakingSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1263B2A0CF2F50004E24C /* String+NonbreakingSpace.swift */; };
 		FAD2538F26116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539126116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
@@ -9176,6 +9178,7 @@
 		FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeOverlayViewModel.swift; sourceTree = "<group>"; };
 		FAC1B82629B1F1EE00E0C542 /* BlazePostPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazePostPreviewView.swift; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
+		FAD1263B2A0CF2F50004E24C /* String+NonbreakingSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NonbreakingSpace.swift"; sourceTree = "<group>"; };
 		FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
 		FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
 		FAD256922611B01700EDAF88 /* UIColor+WordPressColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+WordPressColors.swift"; sourceTree = "<group>"; };
@@ -15069,6 +15072,7 @@
 				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
 				7360018E20A265C7001E5E31 /* String+Files.swift */,
 				C737553D27C80DD500C6E9A1 /* String+CondenseWhitespace.swift */,
+				FAD1263B2A0CF2F50004E24C /* String+NonbreakingSpace.swift */,
 				B55FFCF91F034F1A0070812C /* String+Ranges.swift */,
 				B54C02231F38F50100574572 /* String+RegEx.swift */,
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
@@ -22250,6 +22254,7 @@
 				326E281B250AC4A50029EBF0 /* ImageDimensionFetcher.swift in Sources */,
 				7435CE7320A4B9170075A1B9 /* AnimatedImageCache.swift in Sources */,
 				43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */,
+				FAD1263C2A0CF2F50004E24C /* String+NonbreakingSpace.swift in Sources */,
 				CE46018B21139E8300F242B6 /* FooterTextContent.swift in Sources */,
 				E6D6A1302683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
 				F1BC842E27035A1800C39993 /* BlogService+Domains.swift in Sources */,
@@ -23594,6 +23599,7 @@
 				FABB20EF2602FC2C00C8785C /* QuickStartTourGuide.swift in Sources */,
 				FABB20F02602FC2C00C8785C /* ReaderDetailToolbar.swift in Sources */,
 				80A2154429D1177A002FE8EB /* RemoteConfigDebugViewController.swift in Sources */,
+				FAD1263D2A0CF2F50004E24C /* String+NonbreakingSpace.swift in Sources */,
 				FABB20F12602FC2C00C8785C /* RecentSitesService.swift in Sources */,
 				FA332AD129C1F97A00182FBB /* MovedToJetpackViewController.swift in Sources */,
 				8BD66ED52787530C00CCD95A /* PostsCardViewModel.swift in Sources */,

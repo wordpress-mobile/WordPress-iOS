@@ -21,27 +21,9 @@ struct MovedToJetpackViewModel {
 
     let source: MovedToJetpackSource
 
-    var animationLtr: String {
-        switch source {
-        case .stats:
-            return Constants.statsLogoAnimationLtr
-        case .reader:
-            return Constants.readerLogoAnimationLtr
-        case .notifications:
-            return Constants.notificationsLogoAnimationLtr
-        }
-    }
+    let animationLtr: String = Constants.wpJetpackLogoAnimationLtr
 
-    var animationRtl: String {
-        switch source {
-        case .stats:
-            return Constants.statsLogoAnimationRtl
-        case .reader:
-            return Constants.readerLogoAnimationRtl
-        case .notifications:
-            return Constants.notificationsLogoAnimationRtl
-        }
-    }
+    let animationRtl: String = Constants.wpJetpackLogoAnimationRtl
 
     var title: String {
         switch source {
@@ -75,37 +57,33 @@ struct MovedToJetpackViewModel {
 extension MovedToJetpackViewModel {
 
     private enum Constants {
-        static let statsLogoAnimationLtr = "JetpackStatsLogoAnimation_ltr"
-        static let statsLogoAnimationRtl = "JetpackStatsLogoAnimation_rtl"
-        static let readerLogoAnimationLtr = "JetpackReaderLogoAnimation_ltr"
-        static let readerLogoAnimationRtl = "JetpackReaderLogoAnimation_rtl"
-        static let notificationsLogoAnimationLtr = "JetpackNotificationsLogoAnimation_ltr"
-        static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
+        static let wpJetpackLogoAnimationLtr = "JetpackWordPressLogoAnimation_ltr"
+        static let wpJetpackLogoAnimationRtl = "JetpackWordPressLogoAnimation_rtl"
     }
 
     private enum Strings {
 
         static let statsTitle = NSLocalizedString(
             "movedToJetpack.stats.title",
-            value: "Stats have moved to the Jetpack app.",
+            value: "Use WordPress with Stats in the Jetpack app.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
         static let readerTitle = NSLocalizedString(
             "movedToJetpack.reader.title",
-            value: "Reader has moved to the Jetpack app.",
+            value: "Use WordPress with Reader in the Jetpack app.",
             comment: "Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app."
         )
 
         static let notificationsTitle = NSLocalizedString(
             "movedToJetpack.notifications.title",
-            value: "Notifications have moved to the Jetpack app.",
+            value: "Use WordPress with Notifications in the Jetpack app.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
         static let description = NSLocalizedString(
             "movedToJetpack.description",
-            value: "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app, and can now only be found in the Jetpack app.",
+            value: "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.",
             comment: "Description for the static screen displayed prompting users to switch the Jetpack app."
         )
 
