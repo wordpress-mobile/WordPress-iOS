@@ -4,6 +4,9 @@
 * [*] [internal] [Jetpack-only] Domains Dashboard Card: Immediately opening domains search after tapping the card. [#20638]
 * [**] [Jetpack-only] Adds a dashboard card for viewing activity log. [#20569]
 * [**] [Jetpack-only] Adds a dashboard card for viewing pages. [#20524]
+* [*] [Jetpack-only] Block editor: Fix crash when trying to convert to regular blocks an undefined/deleted reusable block [https://github.com/WordPress/gutenberg/pull/50475]
+* [**] Block editor: Tapping on a nested block now gets focus directly instead of having to tap multiple times depending on the nesting levels. [https://github.com/WordPress/gutenberg/pull/50108]
+* [*] [Jetpack-only] Block editor: Use host app namespace in reusable block message [https://github.com/WordPress/gutenberg/pull/50478]
 
 22.3
 -----
