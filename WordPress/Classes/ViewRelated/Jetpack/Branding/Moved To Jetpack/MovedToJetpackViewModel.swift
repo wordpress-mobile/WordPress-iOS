@@ -65,7 +65,7 @@ extension MovedToJetpackViewModel {
 
         static let statsTitle = NSLocalizedString(
             "movedToJetpack.stats.title",
-            value: "Use WordPress with Stats in the Jetpack pp.",
+            value: "Use WordPress with Stats in the Jetpack app.",
             comment: "Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app."
         )
 
