@@ -16,34 +16,6 @@ protocol ContentDataMigrating {
     func deleteExportedData()
 }
 
-enum DataMigrationError: LocalizedError, CustomNSError {
-    case databaseImportError
-    case databaseExportError
-    case sharedUserDefaultsNil
-    case dataNotReadyToImport
-
-    var errorDescription: String? {
-        switch self {
-        case .databaseImportError: return "The database couldn't be copied from shared directory"
-        case .databaseExportError: return "The database couldn't be copied to shared directory"
-        case .sharedUserDefaultsNil: return "Shared user defaults not found"
-        case .dataNotReadyToImport: return "The data wasn't ready to import"
-        }
-    }
-
-    static var errorDomain: String {
-        return String(describing: DataMigrationError.self)
-    }
-
-    var errorUserInfo: [String: Any] {
-        var userInfo = [String: Any]()
-        if let errorDescription {
-            userInfo[NSDebugDescriptionErrorKey] = errorDescription
-        }
-        return userInfo
-    }
-}
-
 final class DataMigrator {
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
@@ -72,15 +44,12 @@ final class DataMigrator {
 extension DataMigrator: ContentDataMigrating {
 
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
-        guard let backupLocation, copyDatabase(to: backupLocation) else {
-            let error = DataMigrationError.databaseExportError
-            self.crashLogger.logError(error)
-            completion?(.failure(error))
-            return
-        }
-        guard populateSharedDefaults() else {
-            let error = DataMigrationError.sharedUserDefaultsNil
-            self.crashLogger.logError(error)
+        do {
+            try copyDatabase(to: backupLocation)
+            try populateSharedDefaults()
+        } catch {
+            let error = DataMigrationError.databaseExportError(underlyingError: error)
+            log(error: error)
             completion?(.failure(error))
             return
         }
@@ -97,20 +66,17 @@ extension DataMigrator: ContentDataMigrating {
             return
         }
 
-        guard let backupLocation, restoreDatabase(from: backupLocation) else {
-            let error = DataMigrationError.databaseImportError
-            self.crashLogger.logError(error)
-            completion?(.failure(error))
-            return
-        }
+        do {
+            try restoreDatabase(from: backupLocation)
 
-        /// Upon successful database restoration, the backup files in the App Group will be deleted.
-        /// This means that the exported data is no longer complete when the user attempts another migration.
-        isDataReadyToMigrate = false
+            /// Upon successful database restoration, the backup files in the App Group will be deleted.
+            /// This means that the exported data is no longer complete when the user attempts another migration.
+            isDataReadyToMigrate = false
 
-        guard populateFromSharedDefaults() else {
-            let error = DataMigrationError.sharedUserDefaultsNil
-            self.crashLogger.logError(error)
+            try populateFromSharedDefaults()
+        } catch {
+            let error = DataMigrationError.databaseImportError(underlyingError: error)
+            log(error: error)
             completion?(.failure(error))
             return
         }
@@ -164,52 +130,53 @@ private extension DataMigrator {
         }
     }
 
-    func copyDatabase(to destination: URL) -> Bool {
-        do {
-            try coreDataStack.createStoreCopy(to: destination)
-        } catch {
-            DDLogError("Error copying database: \(error)")
-            return false
+    func copyDatabase(to destination: URL?) throws {
+        guard let destination else {
+            throw DataMigrationError.backupLocationNil
         }
-        return true
+        try coreDataStack.createStoreCopy(to: destination)
     }
 
-    func restoreDatabase(from source: URL) -> Bool {
-        do {
-            try coreDataStack.restoreStoreCopy(from: source)
-        } catch {
-            DDLogError("Error restoring database: \(error)")
-            return false
+    func restoreDatabase(from source: URL?) throws {
+        guard let source else {
+            throw DataMigrationError.backupLocationNil
         }
-        return true
+        try coreDataStack.restoreStoreCopy(from: source)
     }
 
-    func populateSharedDefaults() -> Bool {
+    func populateSharedDefaults() throws {
         guard let sharedDefaults = sharedDefaults else {
-            return false
+            throw DataMigrationError.sharedUserDefaultsNil
         }
-
         let data = localDefaults.dictionaryRepresentation()
         var temporaryDictionary: [String: Any] = [:]
         for (key, value) in data {
             temporaryDictionary[key] = value
         }
         sharedDefaults.set(temporaryDictionary, forKey: DefaultsWrapper.dictKey)
-        return true
     }
 
-    func populateFromSharedDefaults() -> Bool {
+    func populateFromSharedDefaults() throws {
         guard let sharedDefaults = sharedDefaults,
               let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
-            return false
+            throw DataMigrationError.sharedUserDefaultsNil
         }
-
         for (key, value) in temporaryDictionary {
             localDefaults.set(value, forKey: key)
         }
         AppAppearance.overrideAppearance()
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
-        return true
+    }
+
+    private func log(error: DataMigrationError, userInfo: [String: Any] = [:]) {
+        let userInfo = userInfo.merging(self.userInfo(for: error)) { $1 }
+        DDLogError(error)
+        crashLogger.logError(error, userInfo: userInfo, level: .error)
+    }
+
+    private func userInfo(for error: DataMigrationError) -> [String: Any] {
+        let defaultUserInfo = ["backup-location": backupLocation?.absoluteString as Any]
+        return defaultUserInfo.merging(error.errorUserInfo) { $1 }
     }
 }
 

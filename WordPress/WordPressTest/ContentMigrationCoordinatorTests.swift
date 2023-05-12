@@ -70,7 +70,8 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
     }
 
     func test_startAndDo_givenExportError_shouldInvokeClosureWithError() {
-        mockDataMigrator.exportErrorToReturn = .databaseExportError
+        let error: DataMigrationError = .databaseExportError(underlyingError: ContextManager.ContextManagerError.missingCoordinatorOrStore)
+        mockDataMigrator.exportErrorToReturn = error
 
         let expect = expectation(description: "Content migration should fail")
         coordinator.startAndDo { result in

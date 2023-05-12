@@ -8,6 +8,12 @@ This is a short recap of the most important points for a successful implementati
 We also have a fast guide on [how to use VoiceOver](using-voiceover.md)
 
 ## Dynamic type
+
+### Testing considerations
+
+Verify how UI changes look with the system font set to larger and smaller sizes. Also try system-wide bold text.
+
+### Coding considerations
 -   Avoid constraining the height of a  `UILabel`,  `UIButton`, or any view that has a  `UILabel`  or a  `UIButton`  as a child view.
 -   In cases where a minimum height is necessary, use a constraint relation`greaterThanOrEqualTo`.
 -   In most cases for  `UIButton`  instances, setting  `.contentEdgeInsets`  top and bottom will be enough to get a minimum height.
@@ -25,8 +31,16 @@ We also have a fast guide on [how to use VoiceOver](using-voiceover.md)
 
 Be careful with [static tables.](dynamic-type-guidelines.md#the-static-tableview-case)
 
+## Increased contrast
+
+Verify how UI changes look with the system-wide high contrast.
+
 ## VoiceOver
 
 - To test the new (or modified) UI with VoiceOver is the best we can do to ensure a good adoption of this feature.
 - Add accessibility labels to elements with not enough text-based information (i.e a button with just a number or an image).
 - For complex UI elements that represent one unit of information, make that unit a single VoiceOver element with a label that explains its content as we would explain it to another person.
+
+## Dark mode
+
+Verify how UI changes look in light and dark modes.

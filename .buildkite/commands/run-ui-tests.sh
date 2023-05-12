@@ -19,8 +19,8 @@ tar -xf build-products-jetpack.tar
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- :cocoapods: Setting up Pods"
-install_cocoapods
+echo "--- :swift: Setting up Swift Packages"
+install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
@@ -38,6 +38,10 @@ fi
 
 echo "--- 📦 Zipping test results"
 cd build/results/ && zip -rq JetpackUITests.xcresult.zip JetpackUITests.xcresult && cd -
+
+echo "--- 💥 Collecting Crash reports"
+mkdir -p build/results/crashes
+find ~/Library/Logs/DiagnosticReports -name '*.ips' -exec cp "{}" "build/results/crashes/" \;
 
 echo "--- 🚦 Report Tests Status"
 if [[ $TESTS_EXIT_STATUS -eq 0 ]]; then

@@ -68,6 +68,16 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 extension DashboardQuickActionsCardCell {
 
     func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
+        hideUnsupportedActionIfNeeded(for: blog)
+        configureTapEvents(for: blog, with: sourceController)
+    }
+
+    private func hideUnsupportedActionIfNeeded(for blog: Blog) {
+        statsButton.isHidden = !blog.supports(.stats)
+        pagesButton.isHidden = !blog.supports(.pages)
+    }
+
+    private func configureTapEvents(for blog: Blog, with sourceController: UIViewController) {
         statsButton.onTap = { [weak self] in
             self?.showStats(for: blog, from: sourceController)
         }

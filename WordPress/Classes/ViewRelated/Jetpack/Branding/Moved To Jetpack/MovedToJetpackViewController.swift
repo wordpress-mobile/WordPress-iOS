@@ -76,7 +76,7 @@ final class MovedToJetpackViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.title
+        label.text = viewModel.title.replacingLastSpaceWithNonBreakingSpace
         label.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
