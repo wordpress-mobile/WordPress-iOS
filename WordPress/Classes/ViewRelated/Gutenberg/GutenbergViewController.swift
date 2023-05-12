@@ -100,6 +100,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var postIsReblogged: Bool = false
 
+    var isEditorClosing: Bool = false
+
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {
@@ -205,7 +207,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
 
         self.html = html
-        gutenberg.updateHtml(html)
+
+        // Avoid sending the HTML back to the editor if it's closing.
+        // Otherwise, it will cause the editor to recreate all blocks.
+        if !isEditorClosing {
+            gutenberg.updateHtml(html)
+        }
     }
 
     func getHTML() -> String {
@@ -912,6 +919,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                     showAlertForEmptyPostPublish()
                 }
             case .close:
+                isEditorClosing = true
                 cancelEditing()
             case .more:
                 displayMoreSheet()
