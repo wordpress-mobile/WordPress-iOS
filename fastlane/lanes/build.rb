@@ -263,6 +263,7 @@ platform :ios do
       scheme: 'WordPress Alpha',
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
+      app_icon: ':wordpress:', # Use Buildkite emoji
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS
     )
   end
@@ -281,6 +282,7 @@ platform :ios do
       scheme: 'Jetpack',
       output_app_name: 'Jetpack Alpha',
       appcenter_app_name: 'jetpack-installable-builds',
+      app_icon: ':jetpack:', # Use Buildkite emoji
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK
     )
   end
@@ -313,7 +315,7 @@ platform :ios do
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
   # rubocop:disable Metrics/AbcSize
-  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, sentry_project_slug:)
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:)
     configuration = 'Release-Alpha'
 
     # Get the current build version, and update it if needed
@@ -371,6 +373,7 @@ platform :ios do
     # Post PR Comment
     comment_body = prototype_build_details_comment(
       app_display_name: output_app_name,
+      app_icon: app_icon,
       app_center_org_name: APPCENTER_OWNER_NAME,
       metadata: { Configuration: configuration },
       fold: true
