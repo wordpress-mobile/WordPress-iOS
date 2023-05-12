@@ -12,8 +12,18 @@ final class PageListTableViewHandler: WPTableViewHandler {
         return status == .scheduled
     }
 
+    var showEditorHomepage: Bool {
+        guard FeatureFlag.siteEditorMVP.enabled else {
+            return false
+        }
+
+        let isFSETheme = blog.blockEditorSettings?.isFSETheme ?? false
+        return isFSETheme && status == .published && !groupResults
+    }
+
     private var pages: [Page] = []
     private let blog: Blog
+
     private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let publishedFilter = PostListFilter.publishedFilter()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
@@ -120,7 +130,8 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupResults ? super.tableView(tableView, numberOfRowsInSection: section) : pages.count
+        let additionalPage = showEditorHomepage ? 1 : 0
+        return groupResults ? super.tableView(tableView, numberOfRowsInSection: section) : pages.count + additionalPage
     }
 
 

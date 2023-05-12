@@ -19,6 +19,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let pageCellNibName = "PageListTableViewCell"
             static let restorePageCellIdentifier = "RestorePageCellIdentifier"
             static let restorePageCellNibName = "RestorePageTableViewCell"
+            static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
 
@@ -202,6 +203,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
         tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
+
+        tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
@@ -390,7 +393,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested page.
     ///
     fileprivate func pageAtIndexPath(_ indexPath: IndexPath) -> Page {
-        return _tableViewHandler.page(at: indexPath)
+        if _tableViewHandler.showEditorHomepage {
+            // Since we're adding a fake homepage cell, we need to adjust the index path to match
+            let adjustedIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
+            return _tableViewHandler.page(at: adjustedIndexPath)
+        } else {
+            return _tableViewHandler.page(at: indexPath)
+        }
     }
 
     // MARK: - TableView Handler Delegate Methods
@@ -464,8 +473,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let page = pageAtIndexPath(indexPath)
-        editPage(page)
+        if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+            // TODO: Open editor web view
+        } else {
+            let page = pageAtIndexPath(indexPath)
+            editPage(page)
+        }
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -473,14 +486,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return windowlessCell
         }
 
-        let page = pageAtIndexPath(indexPath)
+        if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+            let identifier = Constant.Identifiers.templatePageCellIdentifier
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+            return cell
+        } else {
+            let page = pageAtIndexPath(indexPath)
 
-        let identifier = cellIdentifierForPage(page)
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+            let identifier = cellIdentifierForPage(page)
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
-        configureCell(cell, at: indexPath)
-
-        return cell
+            configureCell(cell, at: indexPath)
+            return cell
+        }
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
