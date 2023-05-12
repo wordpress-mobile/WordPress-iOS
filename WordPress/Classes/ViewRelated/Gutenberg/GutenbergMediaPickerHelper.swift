@@ -125,9 +125,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     open func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
-        guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController else {
-            return true
-        }
+        let presenter = context.topmostPresentedViewController
         let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error)
         presenter.present(alert, animated: true)
         return true
