@@ -79,7 +79,6 @@ public class MySiteScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [
                 switchSiteButtonGetter,
-                statsButtonGetter,
                 postsButtonGetter,
                 mediaButtonGetter,
                 createButtonGetter
