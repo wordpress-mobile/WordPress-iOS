@@ -36,6 +36,6 @@ else
   echo "The Unit Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the Buildkite annotation, the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
 fi
-annotate_test_failures "build/results/report.junit"
+annotate_test_failures "build/results/WordPress.xml"
 
 exit $TESTS_EXIT_STATUS
