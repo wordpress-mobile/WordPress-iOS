@@ -3301,6 +3301,12 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         updateFormatBarInsertAssetCount()
     }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
+        let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error)
+        present(alert, animated: true)
+        return true
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
         if let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
             edit(fromMediaPicker: picker, assets: phAssets)
