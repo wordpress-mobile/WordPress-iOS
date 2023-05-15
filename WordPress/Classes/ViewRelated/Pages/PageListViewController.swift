@@ -397,9 +397,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             // Since we're adding a fake homepage cell, we need to adjust the index path to match
             let adjustedIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
             return _tableViewHandler.page(at: adjustedIndexPath)
-        } else {
-            return _tableViewHandler.page(at: indexPath)
         }
+        return _tableViewHandler.page(at: indexPath)
     }
 
     // MARK: - TableView Handler Delegate Methods
@@ -499,15 +498,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             let identifier = Constant.Identifiers.templatePageCellIdentifier
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
             return cell
-        } else {
-            let page = pageAtIndexPath(indexPath)
-
-            let identifier = cellIdentifierForPage(page)
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-
-            configureCell(cell, at: indexPath)
-            return cell
         }
+
+        let page = pageAtIndexPath(indexPath)
+
+        let identifier = cellIdentifierForPage(page)
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+
+        configureCell(cell, at: indexPath)
+        return cell
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
