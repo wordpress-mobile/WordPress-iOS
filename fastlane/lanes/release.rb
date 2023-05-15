@@ -44,10 +44,20 @@ platform :ios do
     )
     ios_update_release_notes(new_version: new_version)
 
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      push_to_git_remote
+    else
+      UI.message('Aborting code completion. See you later.')
+    end
+
     setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
-    ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
 
+    ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
   end
 
@@ -86,7 +96,16 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
-    trigger_beta_build
+
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the beta build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_beta_build
+    else
+      UI.message('Aborting beta deployment. See you later.')
+    end
   end
 
   # Sets the stage to start working on a hotfix
@@ -115,7 +134,16 @@ platform :ios do
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
     git_pull
-    trigger_release_build
+
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the release build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_release_build
+    else
+      UI.message('Aborting hotfix finalization. See you later.')
+    end
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -147,7 +175,15 @@ platform :ios do
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
-    trigger_release_build
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the release build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_release_build
+    else
+      UI.message('Aborting release finalization. See you later.')
+    end
   end
 
   # Triggers a beta build on CI
