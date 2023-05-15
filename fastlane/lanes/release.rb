@@ -229,22 +229,21 @@ end
 #
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
 lane :gutenberg_dep_check do
-  res = ''
+  require_relative './../../Gutenberg/version'
 
-  File.open File.join(PROJECT_ROOT_FOLDER, 'Podfile') do |file|
-    res = file.find { |line| line =~ /^(?!\s*#)(?=.*\bgutenberg\b).*(\bcommit|tag\b){1}.+/ }
-  end
-
-  UI.user_error!("Can't find any reference to Gutenberg!") if res.empty?
-  if res.include?('commit')
-    UI.user_error!("Gutenberg referenced by commit!\n#{res}") unless UI.interactive?
-
-    unless UI.confirm("Gutenberg referenced by commit!\n#{res}\nDo you want to continue anyway?")
-      UI.user_error!('Aborted by user request. Please fix Gutenberg reference and try again.')
+  case [GUTENBERG_CONFIG[:tag], GUTENBERG_CONFIG[:commit]]
+  when [nil, nil]
+    UI.user_error!('Could not find any Gutenberg version reference.')
+  when [nil, commit = GUTENBERG_CONFIG[:commit]]
+    if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
+      UI.message("Gutenberg version: #{commit}")
+    else
+      UI.user_error!('Aborting...')
     end
+  else
+    # If a tag is present, the commit value is ignored
+    UI.message("Gutenberg version: #{GUTENBERG_CONFIG[:tag]}")
   end
-
-  UI.message("Gutenberg version: #{res.scan(/'([^']*)'/)[0][0]}")
 end
 
 # Returns the path to the extracted Release Notes file for the given `app`.
