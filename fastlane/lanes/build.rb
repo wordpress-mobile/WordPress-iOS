@@ -5,6 +5,7 @@ SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
+CONCURRENT_SIMULATORS = 2
 
 # Shared options to use when invoking `gym` / `build_app`.
 #
@@ -98,6 +99,10 @@ platform :ios do
     # Because we only support those two modes, we can infer the scheme name from the xctestrun name
     scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'
 
+    # Only run Jetpack UI tests in parallel.
+    # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
+    parallel_testing_value = options[:name].include?('Jetpack')
+
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
@@ -108,8 +113,15 @@ platform :ios do
       xctestrun: xctestrun_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
-      result_bundle: true
+      result_bundle: true,
+      output_types: '',
+      fail_build: false,
+      parallel_testing: parallel_testing_value,
+      concurrent_workers: CONCURRENT_SIMULATORS,
+      max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
+
+    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
