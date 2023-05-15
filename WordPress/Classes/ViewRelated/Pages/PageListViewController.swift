@@ -27,6 +27,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let source = "page_list"
             static let pagePostType = "page"
         }
+
+        static let editorUrl = "site-editor.php?canvas=edit"
     }
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
@@ -482,7 +484,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
-            // TODO: Open editor web view
+            guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
+                return
+            }
+
+            let webViewController = WebViewControllerFactory.controller(url: editorUrl,
+                                                                        blog: blog,
+                                                                        source: Constant.Events.source)
+            let navigationController = UINavigationController(rootViewController: webViewController)
+            present(navigationController, animated: true)
         } else {
             let page = pageAtIndexPath(indexPath)
             editPage(page)
