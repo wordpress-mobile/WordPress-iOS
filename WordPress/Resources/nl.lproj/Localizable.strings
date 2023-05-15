@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-27 20:41:03+0000 */
+/* Translation-Revision-Date: 2023-05-02 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -4235,6 +4235,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Meer berichten laden";
 
+/* No comment provided by engineer. */
+"Loading" = "Laden";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Activiteiten laden...";
 
@@ -8410,6 +8413,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Onbekende zoektermen";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Kleur zonder label. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Reactie niet meer leuk vinden.";
 
@@ -9736,6 +9742,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personaliseer je startpagina";
 
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Alle activiteit";
+
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Recente activiteit";
 
@@ -9753,6 +9762,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "Gepland";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Nog een pagina aanmaken";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Ga aan de slag met op maat gemaakte lay-outs voor mobiele apparaten.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Overschreven parameters zijn gemarkeerd met een vinkje.";
@@ -9777,6 +9792,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "Een aangepast domein zoeken";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Het kan tot 30 minuten duren voor je aangepaste domein werkt.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Vervolgens helpen we je het gereed te maken om bekeken te worden.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "We hebben je betalingsbewijs naar je gemaild. Vervolgens helpen we je het gereed te maken voor iedereen.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Gefeliciteerd, je site is online!";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Aanbieding!";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";

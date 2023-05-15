@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-01 05:51:43+0000 */
+/* Translation-Revision-Date: 2023-05-03 09:54:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
@@ -2378,6 +2378,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Оформление";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Система проектирования";
 
 /* Title for the desktop web preview */
 "Desktop" = "ПК";
@@ -8413,6 +8416,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Неизвестные поисковые запросы";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Цвет без пометки. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Убрать отметку \"нравится\" с комментария.";
 
@@ -9751,6 +9757,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Страницы";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Добавить страницы на сайт";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "Черновик";
 
@@ -9759,6 +9768,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "Запланировано";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Создать еще одну страницу";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Начните с макетов для мобильных устройств.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Переопределенные параметры обозначаются галочкой.";
@@ -9783,6 +9798,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Свернуть";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "Найти особый домен";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Это может занять до 30 минут, после чего ваш особый домен начнёт работать.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Далее мы поможем вам сделать домен доступным для посетителей.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Мы отправили вам чек по эл. почте. Далее мы поможем вам подготовить домен к работе.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Ура, ваш сайт работает!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Лучшая альтернатива";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "на первый год";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Бесплатно";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Рекомендуемые";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Распродажа";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "в год";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "нажмите дважды для смены единиц";
@@ -10403,6 +10451,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Вход выполнен!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "этот сайт";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

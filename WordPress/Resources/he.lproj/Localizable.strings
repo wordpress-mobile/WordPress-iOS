@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-27 20:38:29+0000 */
+/* Translation-Revision-Date: 2023-05-02 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: he_IL */
@@ -2379,6 +2379,9 @@ translators: Block name. %s: The localized block name */
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "עיצוב";
 
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "מערכת עיצוב";
+
 /* Title for the desktop web preview */
 "Desktop" = "מחשב שולחני";
 
@@ -4234,6 +4237,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "טעינת פוסטים נוספים";
+
+/* No comment provided by engineer. */
+"Loading" = "טוען";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "טוען פעילויות...";
@@ -8410,6 +8416,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "מונחי חיפוש לא ידועים";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "צבע ללא תווית. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "ביטול 'לייק' לתגובה זו.";
 
@@ -9736,6 +9745,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "להתאים אישית את הלשונית 'בית' באתר שלך";
 
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "כל הפעילויות";
+
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "פעילות אחרונה";
 
@@ -9745,6 +9757,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "עמודים";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "להוסיף עמודים לאתר שלך";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "טיוטה";
 
@@ -9753,6 +9768,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "מתוזמן לפרסום";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "ליצור עמוד נוסף";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "להתחיל עם פריסות ידידותיות למכשירים ניידים בהתאמה אישית.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "פרמטרים שנדרסו מסומנים בסימן אישור.";
@@ -9777,6 +9798,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "להסתיר את המידע";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "למצוא דומיין אישי";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "יידרשו עד 30 דקות להתחלת הפעילות של הדומיין האישי.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "בשלב הבא, נעזור לך להכין את האתר לעיון.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "שלחנו את הקבלה שלך באימייל. בשלב הבא, נעזור לך להכין את האתר לשימוש המבקרים.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "כל הכבוד, האתר שלך פורסם!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "החלופה הטובה ביותר";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "בשנה הראשונה";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "חינם";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "מומלץ";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "מבצע";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "לשנה";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
@@ -10397,6 +10451,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "התחברת בהצלחה לחשבון!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "האתר הזה";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

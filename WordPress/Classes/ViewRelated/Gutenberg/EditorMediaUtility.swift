@@ -3,6 +3,10 @@ import Aztec
 import Gridicons
 
 final class AuthenticatedImageDownload: AsyncOperation {
+    enum DownloadError: Error {
+        case blogNotFound
+    }
+
     let url: URL
     let blogObjectID: NSManagedObjectID
     private let callbackQueue: DispatchQueue
@@ -10,6 +14,7 @@ final class AuthenticatedImageDownload: AsyncOperation {
     private let onFailure: (Error) -> ()
 
     init(url: URL, blogObjectID: NSManagedObjectID, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
+        assert(!blogObjectID.isTemporaryID)
         self.url = url
         self.blogObjectID = blogObjectID
         self.callbackQueue = callbackQueue
@@ -20,6 +25,12 @@ final class AuthenticatedImageDownload: AsyncOperation {
     override func main() {
         let result = ContextManager.shared.performQuery { context in
             Result {
+                // Can't fetch the blog using a temporary ID. This check is added as an attempt to prevent this crash:
+                // https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
+                guard !self.blogObjectID.isTemporaryID else {
+                    throw DownloadError.blogNotFound
+                }
+
                 let blog = try context.existingObject(with: self.blogObjectID) as! Blog
                 return MediaHost(with: blog) { error in
                     // We'll log the error, so we know it's there, but we won't halt execution.

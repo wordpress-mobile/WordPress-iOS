@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 05:33:39+0000 */
+/* Translation-Revision-Date: 2023-05-02 11:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -9804,6 +9804,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Domain Purchase Completion footer */
 "domain.purchase.preview.footer" = "Det kan ta upp till 30 minuter för din anpassade domän att börja fungera.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Nu ska vi hjälpa dig att göra den redo att visas i webbläsare.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Vi har skickat dig ett kvitto på din e-post. Nu ska vi hjälpa dig att få den redo för alla.";
 
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Grattis, din webbplats är live!";

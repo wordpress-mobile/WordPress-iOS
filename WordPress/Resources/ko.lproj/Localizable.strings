@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-27 20:39:32+0000 */
+/* Translation-Revision-Date: 2023-05-02 13:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -2378,6 +2378,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "디자인";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "디자인 시스템";
 
 /* Title for the desktop web preview */
 "Desktop" = "데스크탑";
@@ -8410,6 +8413,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "알 수 없는 검색어";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "레이블이 없는 색상입니다. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "댓글 좋아요 취소";
 
@@ -9736,6 +9742,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "홈 탭 개인 설정";
 
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "모든 활동";
+
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "최근 활동";
 
@@ -9745,6 +9754,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "페이지";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "사이트에 페이지 추가";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "임시글";
 
@@ -9753,6 +9765,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "예약됨";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "다른 페이지 생성";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "모바일 친화적인 맞춤형 레이아웃으로 시작하세요.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "체크 표시가 재정의된 파라미터에 표시됩니다.";
@@ -9777,6 +9795,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "사용자 정의 도메인 찾기";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "사용자 정의 도메인이 작동하기 시작하려면 30분 정도 걸릴 수 있습니다.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "이제부터 탐색할 수 있도록 도와드리겠습니다.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "영수증을 이메일로 보내드렸습니다. 이제부터 모든 사용자를 위해 준비하도록 도와드리겠습니다.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "사이트가 활성화되었습니다.";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "최선의 대안";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "첫해";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "무료";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "권장";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "세일";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "\/년";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
@@ -10397,6 +10448,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "로그인되었습니다!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "이 사이트";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

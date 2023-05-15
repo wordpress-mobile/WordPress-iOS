@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-25 22:54:07+0000 */
+/* Translation-Revision-Date: 2023-05-03 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: it */
@@ -2378,6 +2378,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Sistema di progettazione";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -8410,6 +8413,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Termini di ricerca sconosciuti";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Colore senza etichetta. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Togli il like al commento.";
 
@@ -9736,6 +9742,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personalizza la tua scheda home";
 
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Tutte le attività";
+
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Attività recente";
 
@@ -9745,6 +9754,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pagine";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Aggiungi pagine al sito";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "Bozza";
 
@@ -9753,6 +9765,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "Programmato";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Crea un'altra pagina";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Inizia con layout su misura e adatti ai dispositivi mobili.";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "I parametri sovrascritti sono contrassegnati da un segno di spunta.";
@@ -9777,6 +9795,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Nascondi";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "Trova un dominio personalizzato";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Potrebbero essere necessari fino a 30 minuti prima che il tuo dominio personalizzato inizi a funzionare.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "In seguito, ti aiuteremo a prepararlo per essere sfogliato.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Ti abbiamo inviato la ricevuta tramite e-mail. In seguito, ti aiuteremo a prepararlo per tutti.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Congratulazioni, il tuo sito è attivo.";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Alternativa migliore";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "per il primo anno";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Gratis";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Consigliato";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Offerta";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "all'anno";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "tocca due volte per modificare l'unità";
@@ -10397,6 +10448,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Sei connesso!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "questo sito";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";

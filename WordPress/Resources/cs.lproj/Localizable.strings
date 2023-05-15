@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-21 07:35:44+0000 */
+/* Translation-Revision-Date: 2023-05-10 10:51:24+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -4213,6 +4213,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Načíst více příspěvků";
+
+/* No comment provided by engineer. */
+"Loading" = "Načítání";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Načítání aktivit ...";
