@@ -49,7 +49,6 @@ platform :ios do
       bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
     )
       push_to_git_remote(tags: false)
-      push_to_git_remote
     else
       UI.message('Aborting code completion. See you later.')
     end
