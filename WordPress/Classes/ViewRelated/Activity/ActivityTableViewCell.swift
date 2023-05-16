@@ -24,6 +24,8 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
             return
         }
 
+        configureFonts()
+
         dateLabel.isHidden = !displaysDate
         bulletLabel.isHidden = !displaysDate
 
@@ -50,6 +52,16 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
         actionButton.setImage(actionGridicon, for: .normal)
         actionButton.tintColor = .listIcon
         actionButton.accessibilityIdentifier = "activity-cell-action-button"
+    }
+
+    private func configureFonts() {
+        contentLabel.adjustsFontForContentSizeCategory = true
+        contentLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+
+        [summaryLabel, bulletLabel, dateLabel].forEach {
+            $0.adjustsFontForContentSizeCategory = true
+            $0.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        }
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
@@ -88,6 +100,8 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
     open func configureCell(title: String,
                             summary: String,
                             progress: Float) {
+        configureFonts()
+
         self.title = title
         self.summary = summary
         self.progress = progress
@@ -103,5 +117,13 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         progressView.progressTintColor = .primary
         progressView.trackTintColor = UIColor(light: (.primary(.shade5)), dark: (.primary(.shade80)))
         progressView.setProgress(progress, animated: true)
+    }
+
+    private func configureFonts() {
+        contentLabel.adjustsFontForContentSizeCategory = true
+        contentLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+
+        summaryLabel.adjustsFontForContentSizeCategory = true
+        summaryLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     }
 }
