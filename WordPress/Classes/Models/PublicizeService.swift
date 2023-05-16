@@ -4,6 +4,7 @@ import CoreData
 open class PublicizeService: NSManagedObject {
     @objc static let googlePlusServiceID = "google_plus"
     @objc static let facebookServiceID = "facebook"
+    @objc static let defaultStatus = "ok"
 
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String
