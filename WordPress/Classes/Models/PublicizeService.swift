@@ -16,4 +16,5 @@ open class PublicizeService: NSManagedObject {
     @NSManaged open var order: NSNumber
     @NSManaged open var serviceID: String
     @NSManaged open var type: String
+    @NSManaged open var status: String
 }
