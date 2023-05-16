@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 149
+
+@dvdchr 2023-05-16
+
+- `PublicizeService`: added `status` attribute. (optional, default `ok`, `String`)
+
 ## WordPress 148
 
 @momozw 2023-02-20
