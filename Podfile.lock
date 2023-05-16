@@ -512,7 +512,7 @@ PODS:
     - WordPressKit (~> 8.0-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.1.0):
+  - WordPressKit (8.2.0-beta.0):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -612,7 +612,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 6.1-beta)
-  - WordPressKit (~> 8.1.0-beta)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/update-external-services-endpoint`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `trunk`)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.8-beta.1)
@@ -661,7 +661,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -776,6 +775,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.95.0
+  WordPressKit:
+    :branch: task/update-external-services-endpoint
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :branch: trunk
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -794,6 +796,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.95.0
+  WordPressKit:
+    :commit: d68538ed54f7132670937bb16f7ed5edfdab5884
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :commit: 9a010fdab8d31f9e1fa0511f231e7068ef0170b1
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -885,7 +890,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: b0b900696de5129a215adcd1e9ae6eb89da36ac8
-  WordPressKit: bd029b8210508e2329a88e132275b9a4cd361eb6
+  WordPressKit: 08ea29776ebe0c50a320754826a81906db565fd1
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 0d40b8d66b6dfdaa2d6a41e3be51249ff5898775
@@ -900,6 +905,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 4c4326c4701e76f5d39582d08081cc660086b694
+PODFILE CHECKSUM: 36fdd60d41147d4681fc3bffc64ce08d55f2a4bb
 
 COCOAPODS: 1.11.3
