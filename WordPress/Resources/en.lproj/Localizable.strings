@@ -2959,11 +2959,11 @@
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Editing reusable blocks is not yet supported on %s for Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Editing reusable blocks is not yet supported on %s for iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
@@ -5342,7 +5342,7 @@ Please install the %3$@ to use the app with this site.";
 "Move up" = "Move up";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app, and can now only be found in the Jetpack app.";
+"movedToJetpack.description" = "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Switching is free and only takes a minute.";
@@ -5354,13 +5354,13 @@ Please install the %3$@ to use the app with this site.";
 "movedToJetpack.learnMoreButtonTitle" = "Learn more at jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Notifications have moved to the Jetpack app.";
+"movedToJetpack.notifications.title" = "Use WordPress with Notifications in the Jetpack app.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Reader has moved to the Jetpack app.";
+"movedToJetpack.reader.title" = "Use WordPress with Reader in the Jetpack app.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Stats have moved to the Jetpack app.";
+"movedToJetpack.stats.title" = "Use WordPress with Stats in the Jetpack app.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Moves the comment to the Trash.";
@@ -7886,6 +7886,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https://yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Your website has been created successfully, but we encountered an issue while preparing your custom domain for checkout. Please try again or contact support for assistance.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Like the example above, a domain allows people to find and visit your site from their web browser.";
