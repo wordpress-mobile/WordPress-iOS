@@ -231,6 +231,7 @@ import Foundation
     case domainsRegistrationFormViewed
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
+    case domainsPurchaseSucceeded
 
     // My Site
     case mySitePullToRefresh
@@ -890,6 +891,8 @@ import Foundation
             return "domains_registration_form_submitted"
         case .domainsPurchaseWebviewViewed:
             return "domains_purchase_webview_viewed"
+        case .domainsPurchaseSucceeded:
+            return "domains_purchase_domain_success"
 
         // My Site
         case .mySitePullToRefresh:

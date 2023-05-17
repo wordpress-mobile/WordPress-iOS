@@ -18,7 +18,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     private let service: SiteAssemblyService
 
     /// Displays the domain checkout web view.
-    private lazy var domainPurchasingController = DomainPurchasingWebFlowController(viewController: self)
+    private lazy var domainPurchasingController = DomainPurchasingWebFlowController(viewController: self, origin: .siteCreation)
 
     /// The new `Blog`, if successfully created; `nil` otherwise.
     private var createdBlog: Blog?

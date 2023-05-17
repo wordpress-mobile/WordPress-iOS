@@ -156,7 +156,7 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
-    private static func track(_ event: SiteCreationAnalyticsEvent, properties: [String: String] = [:]) {
+    private static func track(_ event: EnhancedSiteCreationAnalyticsEvent, properties: [String: String] = [:]) {
         let event = AnalyticsEvent(name: event.rawValue, properties: properties)
         WPAnalytics.track(event)
     }
