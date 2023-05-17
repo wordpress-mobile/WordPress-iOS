@@ -37,3 +37,4 @@ Style/AsciiComments:
 Naming/FileName:
   Exclude:
     - fastlane/Matchfile
+    - Gutenberg/Gutenberg.podspec
