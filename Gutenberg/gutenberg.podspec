@@ -10,11 +10,17 @@ require_relative './version'
 
 raise 'Could not find Gutenberg version configuration' if GUTENBERG_CONFIG.nil?
 
-version = GUTENBERG_CONFIG[:commit]
+VERSION = GUTENBERG_CONFIG[:commit]
 
-raise "Trying to fetch Gutenberg XCFramework from Automattic's distribution server with invalid version '#{GUTENBERG_CONFIG}'" if version.nil?
+raise "Trying to fetch Gutenberg XCFramework from Automattic's distribution server with invalid version '#{GUTENBERG_CONFIG}'" if VERSION.nil?
 
-XCFRAMEWORK_STORAGE_URL = 'https://d2twmm2nzpx3bg.cloudfront.net/'
+XCFRAMEWORK_STORAGE_URL = 'https://d2twmm2nzpx3bg.cloudfront.net'
+
+XCFRAMEWORK_ZIP_URL = "#{XCFRAMEWORK_STORAGE_URL}/Gutenberg-#{VERSION}.zip"
+
+require 'net/http'
+
+raise "Could not find file at URL #{XCFRAMEWORK_ZIP_URL}" unless Net::HTTP.get_response(URI(XCFRAMEWORK_ZIP_URL)).code == '200'
 
 # A spec for a pod whose only job is delegating the XCFrameworks integration to CocoaPods.
 #
@@ -37,7 +43,7 @@ Pod::Spec.new do |s|
   # Tell CocoaPods where to download the XCFramework(s) ZIP with `source` and what to use from the ZIP's content with `vendored_frameworks`.
   #
   # See https://github.com/CocoaPods/CocoaPods/issues/10288
-  s.source = { http: "#{XCFRAMEWORK_STORAGE_URL}/Gutenberg-#{version}.zip", type: 'zip' }
+  s.source = { http: XCFRAMEWORK_ZIP_URL, type: 'zip' }
   s.ios.vendored_frameworks = [
     'Aztec.xcframework',
     'Gutenberg.xcframework',
