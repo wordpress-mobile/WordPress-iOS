@@ -357,9 +357,9 @@ platform :ios do
     commit = ENV.fetch('BUILDKITE_COMMIT', 'Unknown')
     pr = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
     release_notes = <<~NOTES
-      - Branch: \`#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}\`\n
+      - Branch: `#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}`\n
       - Commit: [#{commit[0...7]}](https://github.com/#{GITHUB_REPO}/commit/#{commit})\n
-      - Pull Request: [\##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
+      - Pull Request: [##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
     NOTES
 
     appcenter_upload(
