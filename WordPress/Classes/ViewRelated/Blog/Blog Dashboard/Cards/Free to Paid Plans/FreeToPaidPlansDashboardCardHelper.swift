@@ -12,7 +12,15 @@ import Foundation
             return false
         }
 
-        return true
+        /// If this propery is empty, it indicates that domain information is not yet loaded
+        let hasLoadedDomains = blog.freeDomain != nil
+        let hasMappedDomain = blog.hasMappedDomain()
+        let hasFreePlan = !blog.hasPaidPlan
+
+        return blog.supports(.domains)
+            && hasFreePlan
+            && hasLoadedDomains
+            && !hasMappedDomain
     }
 
     static func hideCard(for blog: Blog?) {
