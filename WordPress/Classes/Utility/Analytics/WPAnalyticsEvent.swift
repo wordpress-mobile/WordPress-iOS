@@ -254,6 +254,10 @@ import Foundation
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
 
+    // Page List
+    case pageListEditHomepageTapped
+    case pageListEditHomepageInfoTapped
+
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
     case readerFilterSheetDismissed
@@ -918,12 +922,20 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+
+        // Post List
         case .postListShareAction:
             return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
             return "post_list_button_pressed"
+
+        // Page List
+        case .pageListEditHomepageTapped:
+            return "page_list_edit_homepage_item_pressed"
+        case .pageListEditHomepageInfoTapped:
+            return "page_list_edit_homepage_info_pressed"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:

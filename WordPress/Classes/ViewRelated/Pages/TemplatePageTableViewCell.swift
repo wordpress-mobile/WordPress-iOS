@@ -52,6 +52,7 @@ private struct TemplatePageView: View {
             .frame(width: 24.0, height: 24.0)
             .foregroundColor(Color(UIColor.textSubtle))
             .onTapGesture {
+                WPAnalytics.track(.pageListEditHomepageInfoTapped)
                 guard let url = URL(string: Constants.supportUrl) else {
                     return
                 }
