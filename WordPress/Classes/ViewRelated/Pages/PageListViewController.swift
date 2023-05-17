@@ -26,6 +26,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         struct Events {
             static let source = "page_list"
             static let pagePostType = "page"
+            static let editHomepageSource = "page_list_edit_homepage"
         }
 
         static let editorUrl = "site-editor.php?canvas=edit"
@@ -490,7 +491,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
             let webViewController = WebViewControllerFactory.controller(url: editorUrl,
                                                                         blog: blog,
-                                                                        source: Constant.Events.source)
+                                                                        source: Constant.Events.editHomepageSource)
             let navigationController = UINavigationController(rootViewController: webViewController)
             present(navigationController, animated: true)
         } else {
