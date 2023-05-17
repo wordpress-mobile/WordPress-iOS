@@ -104,7 +104,7 @@ enum DashboardCard: String, CaseIterable {
         case .blaze:
             return BlazeHelper.shouldShowCard(for: blog)
         case .domainsDashboardCard:
-            return DomainsDashboardCardHelper.shouldShowCard(for: blog)
+            return DomainsDashboardCardHelper.shouldShowCard(for: blog) && !FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
         case .freeToPaidPlansDashboardCard:
             return FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
         case .empty:
