@@ -149,6 +149,10 @@
 		011896A929D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */; };
 		011F52BD2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BC2A15327700B04114 /* BaseDashboardDomainsCardCell.swift */; };
 		011F52BE2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BC2A15327700B04114 /* BaseDashboardDomainsCardCell.swift */; };
+		011F52C02A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */; };
+		011F52C12A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */; };
+		011F52C32A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */; };
+		011F52C42A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */; };
 		01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */; };
 		01281E9C2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
 		01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
@@ -5781,6 +5785,8 @@
 		011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardFactory.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		011F52BC2A15327700B04114 /* BaseDashboardDomainsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDashboardDomainsCardCell.swift; sourceTree = "<group>"; };
+		011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardCell.swift; sourceTree = "<group>"; };
+		011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardHelper.swift; sourceTree = "<group>"; };
 		01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsSuggestionsScreen.swift; sourceTree = "<group>"; };
 		01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationTests.swift; sourceTree = "<group>"; };
 		0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfiguration.swift; sourceTree = "<group>"; };
@@ -9668,6 +9674,8 @@
 		011F52BB2A15324800B04114 /* Free to Paid Plans */ = {
 			isa = PBXGroup;
 			children = (
+				011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */,
+				011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */,
 			);
 			path = "Free to Paid Plans";
 			sourceTree = "<group>";
@@ -21452,6 +21460,7 @@
 				3234BB342530EA980068DA40 /* ReaderRecommendedSiteCardCell.swift in Sources */,
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
+				011F52C32A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				17C1D7DC26735631006C8970 /* EmojiRenderer.swift in Sources */,
 				C81CCD7B243BF7A600A83E27 /* TenorStrings.swift in Sources */,
@@ -21542,6 +21551,7 @@
 				FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */,
 				9848DF8121B8BB5700B99DA4 /* PostingActivityLegend.swift in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
+				011F52C02A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift in Sources */,
 				E192E78C22EF453C008D725D /* WordPress-87-88.xcmappingmodel in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,
 				E125F1E71E8E59C800320B67 /* SharePost+UIActivityItemSource.swift in Sources */,
@@ -23693,6 +23703,7 @@
 				FABB21182602FC2C00C8785C /* TopViewedVideoStatsRecordValue+CoreDataProperties.swift in Sources */,
 				803BB97D2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
 				FABB21192602FC2C00C8785C /* NotificationContentRangeFactory.swift in Sources */,
+				011F52C12A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift in Sources */,
 				FABB211A2602FC2C00C8785C /* SiteInfo.swift in Sources */,
 				011F52BE2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */,
 				FABB211B2602FC2C00C8785C /* CredentialsService.swift in Sources */,
@@ -23802,6 +23813,7 @@
 				FABB21682602FC2C00C8785C /* NullBlogPropertySanitizer.swift in Sources */,
 				FABB21692602FC2C00C8785C /* StockPhotosStrings.swift in Sources */,
 				FABB216A2602FC2C00C8785C /* StatsViewController.m in Sources */,
+				011F52C42A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift in Sources */,
 				DC8F61F827032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */,
 				FABB216B2602FC2C00C8785C /* WPRichTextEmbed.swift in Sources */,
 				80EF928E280E83110064A971 /* QuickStartToursCollection.swift in Sources */,
