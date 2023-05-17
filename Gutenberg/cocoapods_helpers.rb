@@ -59,6 +59,7 @@ DEPENDENCIES = %w[
   React-bridging
 ].freeze
 
+# rubocop:disable Metrics/AbcSize
 def gutenberg_pod(config: GUTENBERG_CONFIG)
   options = config
 
@@ -68,23 +69,36 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
     options = { path: File.exist?(local_gutenberg) ? local_gutenberg : DEFAULT_GUTENBERG_LOCATION }
 
     raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{local_gutenberg_key} environment variable." unless File.exist?(options[:path])
-  else
+
+    pod 'Gutenberg', options
+    pod 'RNTAztecView', options
+
+    gutenberg_dependencies(options: options)
+  elsif options[:tag]
     options[:git] = "https://github.com/#{GITHUB_ORG}/#{REPO_NAME}.git"
     options[:submodules] = true
+
+    # This duplication with the branch above will disappear once tags will use pre-built binaries.
+    pod 'Gutenberg', options
+    pod 'RNTAztecView', options
+
+    gutenberg_dependencies(options: options)
+  elsif options[:commit]
+    pod 'Gutenberg', path: File.join(__dir__, 'gutenberg.podspec')
   end
-
-  pod 'Gutenberg', options
-  pod 'RNTAztecView', options
-
-  gutenberg_dependencies(options: options)
 end
+# rubocop:enable Metrics/AbcSize
 
 def gutenberg_dependencies(options:)
   if options[:path]
     podspec_prefix = options[:path]
+  elsif options[:tag]
+    tag = options[:tag]
+    podspec_prefix = "https://raw.githubusercontent.com/#{GITHUB_ORG}/#{REPO_NAME}/#{tag}"
+  elsif options[:commit]
+    return # when referencing via a commit, we donwload pre-built frameworks
   else
-    tag_or_commit = options[:tag] || options[:commit]
-    podspec_prefix = "https://raw.githubusercontent.com/#{GITHUB_ORG}/#{REPO_NAME}/#{tag_or_commit}"
+    raise "Unexpected Gutenberg dependencies configuration '#{options}'"
   end
 
   podspec_prefix += '/third-party-podspecs'
