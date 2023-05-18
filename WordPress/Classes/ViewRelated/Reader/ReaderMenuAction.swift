@@ -13,7 +13,15 @@ final class ReaderMenuAction {
                  source: ReaderPostMenuSource,
                  followCommentsService: FollowCommentsService
     ) {
-        self.execute(post: post, context: context, anchor: .view(anchor), vc: vc, source: source, followCommentsService: followCommentsService)
+        self.execute(
+            post: post,
+            context: context,
+            readerTopic: readerTopic,
+            anchor: .view(anchor),
+            vc: vc,
+            source: source,
+            followCommentsService: followCommentsService
+        )
     }
 
     func execute(post: ReaderPost,
