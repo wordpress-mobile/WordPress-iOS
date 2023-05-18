@@ -12,6 +12,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var site: Blog!
     var domainPurchasedCallback: ((String) -> Void)!
+    var domainAddedToCartCallback: (() -> Void)?
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
@@ -218,7 +219,16 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             pushRegisterDomainDetailsViewController(domain)
         case .siteRedirect:
             setPrimaryButtonLoading(true)
-            createCartAndPresentWebView(domain)
+            createCart(domain) { [weak self] in
+                self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+                self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            }
+        case .mapped:
+            setPrimaryButtonLoading(true)
+            createCart(domain) { [weak self] in
+                self?.domainAddedToCartCallback?()
+                self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            }
         default:
             break
         }
@@ -244,7 +254,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCartAndPresentWebView(_ domain: FullyQuotedDomainSuggestion) {
+    private func createCart(_ domain: FullyQuotedDomainSuggestion, completion: @escaping () -> ()) {
         guard let siteID = site.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
@@ -254,9 +264,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
                                                  domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
-                                                 success: { [weak self] _ in
-            self?.presentWebViewForCurrentSite(domainSuggestion: domain)
-            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                                                 success: { _ in
+            completion()
         },
                                                  failure: { error in })
     }
