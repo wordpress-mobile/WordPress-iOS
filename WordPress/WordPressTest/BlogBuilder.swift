@@ -142,6 +142,23 @@ final class BlogBuilder {
         return self
     }
 
+    func with(hasPaidPlan: Bool) -> Self {
+        blog.hasPaidPlan = hasPaidPlan
+        return self
+    }
+
+    func with(hasMappedDomain: Bool) -> Self {
+        set(blogOption: "unmapped_url", value: "http://domain1.com")
+
+        if hasMappedDomain {
+            set(blogOption: "home_url", value: "http://domain2.com")
+        } else {
+            set(blogOption: "home_url", value: "http://domain1.com")
+        }
+
+        return self
+    }
+
     func with(isWPForTeamsSite: Bool) -> Self {
         return set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
     }
