@@ -2588,6 +2588,8 @@
 		B0637543253E7E7A00FD45D2 /* GutenbergSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0637542253E7E7A00FD45D2 /* GutenbergSuggestionsViewController.swift */; };
 		B06378C0253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06378BE253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift */; };
 		B06378C1253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06378BF253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift */; };
+		B07F133E2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07F133D2A16C69800AF7FCF /* PlanSelectionViewController.swift */; };
+		B07F133F2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07F133D2A16C69800AF7FCF /* PlanSelectionViewController.swift */; };
 		B084E61F27E3B79F007BF7A8 /* SiteIntentStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */; };
 		B084E62027E3B7A4007BF7A8 /* SiteIntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B089140C27E1255D00CF468B /* SiteIntentViewController.swift */; };
 		B089140D27E1255D00CF468B /* SiteIntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B089140C27E1255D00CF468B /* SiteIntentViewController.swift */; };
@@ -7910,6 +7912,7 @@
 		B06378AE253F619500FD45D2 /* WordPress 103.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 103.xcdatamodel"; sourceTree = "<group>"; };
 		B06378BE253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSuggestion+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B06378BF253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSuggestion+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B07F133D2A16C69800AF7FCF /* PlanSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSelectionViewController.swift; sourceTree = "<group>"; };
 		B089140C27E1255D00CF468B /* SiteIntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentViewController.swift; sourceTree = "<group>"; };
 		B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentStep.swift; sourceTree = "<group>"; };
 		B0A6DEBE2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AztecPostViewController+MenuTests.swift"; path = "Aztec/AztecPostViewController+MenuTests.swift"; sourceTree = "<group>"; };
@@ -11879,6 +11882,7 @@
 				436D560B2117312600CEAA33 /* RegisterDomainSuggestions */,
 				43D74AD220FB5A82004AD934 /* Views */,
 				F47E154929E84A9300B6E426 /* DomainPurchasingWebFlowController.swift */,
+				B07F133D2A16C69800AF7FCF /* PlanSelectionViewController.swift */,
 			);
 			path = "Domain registration";
 			sourceTree = "<group>";
@@ -22391,6 +22395,7 @@
 				FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */,
 				324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
+				B07F133E2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */,
 				9822A8412624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */,
 				9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */,
 				17B7C8C120EE2A870042E260 /* Routes+Notifications.swift in Sources */,
@@ -23618,6 +23623,7 @@
 				FE29EFCE29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */,
 				FABB20D22602FC2C00C8785C /* AztecNavigationController.swift in Sources */,
 				FABB20D32602FC2C00C8785C /* Notification+Interface.swift in Sources */,
+				B07F133F2A16C69800AF7FCF /* PlanSelectionViewController.swift in Sources */,
 				FABB20D42602FC2C00C8785C /* ReaderSaveForLater+Analytics.swift in Sources */,
 				FABB20D52602FC2C00C8785C /* TagsCategoriesStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB20D62602FC2C00C8785C /* RevisionOperation.swift in Sources */,
