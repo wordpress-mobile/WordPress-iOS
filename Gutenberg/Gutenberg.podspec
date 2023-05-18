@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.version = '1.0.0' # The value here is irrelevant, but required
   s.summary = 'A spec to help integrating the Gutenberg XCFramework'
   s.homepage = 'https://apps.wordpress.com'
-  s.license = File.join(__dir__, '..', 'LICENSE')
+  s.license = { type: 'GPL', file: File.join(__dir__, '..', 'LICENSE') }
   s.authors = 'Automattic'
 
   s.ios.deployment_target = '13.0' # TODO: Read from common source
