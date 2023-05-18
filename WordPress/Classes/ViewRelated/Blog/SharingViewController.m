@@ -166,8 +166,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     switch (sectionType) {
         case SharingSectionAvailableServices:
             return NSLocalizedString(@"Jetpack Social Connections", @"Section title for Publicize services in Sharing screen");
+
+        case SharingSectionUnsupported:
+            return NSLocalizedString(@"Twitter Auto-sharing Is No Longer Available",
+                                     @"Section title for the disabled Twitter service in the Social screen");
+
         case SharingSectionSharingButtons:
             return NSLocalizedString(@"Sharing Buttons", @"Section title for the sharing buttons section in the Sharing screen");
+
         default:
             return nil;
     }
@@ -192,7 +198,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     SharingSectionType sectionType = [self sectionTypeForIndex:section];
     switch (sectionType) {
         case SharingSectionAvailableServices:
-            return self.publicizeServices.count;
+            return self.supportedServices.count;
+        case SharingSectionUnsupported:
+            return self.unsupportedServices.count;
         case SharingSectionSharingButtons:
             return 1;
         default:
@@ -202,6 +210,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // TODO: Remove?
     if ([self.publicizeServices count] > 0) {
         PublicizeService *publicizer = self.publicizeServices[indexPath.row];
         NSArray *connections = [self connectionsForService:publicizer];
@@ -230,7 +239,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
     switch(sectionType) {
-        case SharingSectionAvailableServices:
+        case SharingSectionAvailableServices: // fallthrough
+        case SharingSectionUnsupported:
             [self configurePublicizeCell:cell atIndexPath:indexPath];
             break;
 
@@ -247,11 +257,25 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return cell;
 }
 
+- (PublicizeService *)publicizeServiceForIndexPath:(NSIndexPath *)indexPath
+{
+    SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
+    switch(sectionType) {
+        case SharingSectionAvailableServices:
+            return self.supportedServices[indexPath.row];
+        case SharingSectionUnsupported:
+            return self.unsupportedServices[indexPath.row];
+        default:
+            return nil;
+    }
+}
+
 - (void)configurePublicizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    PublicizeService *publicizer = self.publicizeServices[indexPath.row];
+    PublicizeService *publicizer = [self publicizeServiceForIndexPath:indexPath];
     NSArray *connections = [self connectionsForService:publicizer];
-    
+
+    // TODO: Remove?
     if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceID] && [connections count] == 0) { // Temporarily hiding Google+
         cell.hidden = YES;
         return;
@@ -282,7 +306,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     // Check if any of the connections are broken.
     for (PublicizeConnection *pubConn in connections) {
-        if ([pubConn requiresUserAction]) {
+        if ([pubConn requiresUserAction] && [publicizer.status isEqualToString:PublicizeService.defaultStatus]) {
             cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
             break;
         }
@@ -292,15 +316,25 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController *controller;
-    if (indexPath.section == 0) {
-        PublicizeService *publicizer = self.publicizeServices[indexPath.row];
-        controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
-        [WPAppAnalytics track:WPAnalyticsStatSharingOpenedPublicize withBlog:self.blog];
+    SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
+    switch (sectionType) {
+        case SharingSectionAvailableServices: // fallthrough
+        case SharingSectionUnsupported: {
+            PublicizeService *publicizer = [self publicizeServiceForIndexPath:indexPath];
+            controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
+            [WPAppAnalytics track:WPAnalyticsStatSharingOpenedPublicize withBlog:self.blog];
 
-        [[QuickStartTourGuide shared] visited:QuickStartTourElementConnections];
-    } else {
-        controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
-        [WPAppAnalytics track:WPAnalyticsStatSharingOpenedSharingButtonSettings withBlog:self.blog];
+            [[QuickStartTourGuide shared] visited:QuickStartTourElementConnections];
+            break;
+        }
+
+        case SharingSectionSharingButtons:
+            controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+            [WPAppAnalytics track:WPAnalyticsStatSharingOpenedSharingButtonSettings withBlog:self.blog];
+            break;
+
+        default:
+            return;
     }
 
     [self.navigationController pushViewController:controller animated:YES];
@@ -312,6 +346,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (sectionType == SharingSectionSharingButtons && [SharingViewController jetpackBrandingVisibile]) {
         return [self makeJetpackBadge];
     }
+
+    // TODO: Show footer view for unsupported section.
 
     return nil;
 }
