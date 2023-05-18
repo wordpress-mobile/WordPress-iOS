@@ -7,10 +7,11 @@
 #import <WordPressUI/UIImage+Util.h>
 #import <WordPressShared/WPTableViewCell.h>
 
-typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
-    SharingPublicizeServices = 0,
-    SharingButtons,
-    SharingSectionCount,
+typedef NS_ENUM(NSInteger, SharingSectionType) {
+    SharingSectionUndefined = 1000,
+    SharingSectionAvailableServices,
+    SharingSectionUnsupported,
+    SharingSectionSharingButtons
 };
 
 static NSString *const CellIdentifier = @"CellIdentifier";
@@ -25,6 +26,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 // Contains unsupported Publicize services that are deprecated or temporarily disabled.
 @property (nonatomic, strong) NSArray<PublicizeService *> *unsupportedServices;
+
+// A list of `SharingSectionType` that represents the sections displayed in the table view.
+@property (nonatomic, strong) NSArray<NSNumber *> *sections;
 
 @property (nonatomic, weak) id delegate;
 @property (nonatomic) PublicizeServicesState *publicizeServicesState;
@@ -101,11 +105,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     self.publicizeServices = [PublicizeService allPublicizeServicesInContext:[self managedObjectContext] error:nil];
 
+    // Separate supported and unsupported Publicize services.
     NSPredicate *supportedPredicate = [NSPredicate predicateWithFormat:@"status == %@", PublicizeService.defaultStatus];
     self.supportedServices = [self.publicizeServices filteredArrayUsingPredicate:supportedPredicate];
 
     NSPredicate *unsupportedPredicate = [NSPredicate predicateWithFormat:@"status == %@", PublicizeService.unsupportedStatus];
     self.unsupportedServices = [self.publicizeServices filteredArrayUsingPredicate:unsupportedPredicate];
+
+    // Refresh table sections in case anything changes.
+    [self refreshSections];
 
     [self.tableView reloadData];
 }
@@ -116,23 +124,49 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Table view sections
+
+- (void)refreshSections {
+    NSMutableArray<NSNumber *> *sections = [NSMutableArray new];
+
+    if ([self.supportedServices count] > 0) {
+        [sections addObject:@(SharingSectionAvailableServices)];
+    }
+
+    if (self.unsupportedServices.count > 0) {
+        [sections addObject:@(SharingSectionUnsupported)];
+    }
+
+    if ([self.blog supportsShareButtons]) {
+        [sections addObject:@(SharingSectionSharingButtons)];
+    }
+
+    self.sections = sections;
+}
+
+- (SharingSectionType)sectionTypeForIndex:(NSInteger)index
+{
+    if (index >= self.sections.count) {
+        return SharingSectionUndefined;
+    }
+
+    return [self.sections objectAtIndex:index].intValue;
+}
+
 #pragma mark - UITableView Delegate methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger count = SharingSectionCount;
-    if (![self.blog supportsShareButtons]) {
-        count -= 1;
-    }
-    return count;
+    return self.sections.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case SharingPublicizeServices:
+    SharingSectionType sectionType = [self sectionTypeForIndex:section];
+    switch (sectionType) {
+        case SharingSectionAvailableServices:
             return NSLocalizedString(@"Jetpack Social Connections", @"Section title for Publicize services in Sharing screen");
-        case SharingButtons:
+        case SharingSectionSharingButtons:
             return NSLocalizedString(@"Sharing Buttons", @"Section title for the sharing buttons section in the Sharing screen");
         default:
             return nil;
@@ -141,7 +175,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    if (section == SharingPublicizeServices) {
+    SharingSectionType sectionType = [self sectionTypeForIndex:section];
+    if (sectionType == SharingSectionAvailableServices) {
         return NSLocalizedString(@"Connect your favorite social media services to automatically share new posts with friends.", @"");
     }
     return nil;
@@ -154,10 +189,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case SharingPublicizeServices:
+    SharingSectionType sectionType = [self sectionTypeForIndex:section];
+    switch (sectionType) {
+        case SharingSectionAvailableServices:
             return self.publicizeServices.count;
-        case SharingButtons:
+        case SharingSectionSharingButtons:
             return 1;
         default:
             return 0;
@@ -192,13 +228,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         cell.accessoryView = nil;
     }
 
-    if (indexPath.section == SharingPublicizeServices) {
-        [self configurePublicizeCell:cell atIndexPath:indexPath];
+    SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
+    switch(sectionType) {
+        case SharingSectionAvailableServices:
+            [self configurePublicizeCell:cell atIndexPath:indexPath];
+            break;
 
-    } else if (indexPath.section == SharingButtons) {
-        cell.textLabel.text = NSLocalizedString(@"Manage", @"Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.");
-        cell.detailTextLabel.text = nil;
-        cell.imageView.image = nil;
+        case SharingSectionSharingButtons:
+            cell.textLabel.text = NSLocalizedString(@"Manage", @"Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.");
+            cell.detailTextLabel.text = nil;
+            cell.imageView.image = nil;
+            break;
+
+        default:
+            return [UITableViewCell new];
     }
 
     return cell;
@@ -265,7 +308,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == SharingButtons && [SharingViewController jetpackBrandingVisibile]) {
+    SharingSectionType sectionType = [self sectionTypeForIndex:section];
+    if (sectionType == SharingSectionSharingButtons && [SharingViewController jetpackBrandingVisibile]) {
         return [self makeJetpackBadge];
     }
 
