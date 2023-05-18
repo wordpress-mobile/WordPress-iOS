@@ -5,6 +5,7 @@ open class PublicizeService: NSManagedObject {
     @objc static let googlePlusServiceID = "google_plus"
     @objc static let facebookServiceID = "facebook"
     @objc static let defaultStatus = "ok"
+    @objc static let unsupportedStatus = "unsupported"
 
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String

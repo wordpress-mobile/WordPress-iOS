@@ -18,7 +18,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 @interface SharingViewController ()
 
 @property (nonatomic, strong, readonly) Blog *blog;
-@property (nonatomic, strong) NSArray *publicizeServices;
+@property (nonatomic, strong) NSArray<PublicizeService *> *publicizeServices;
+
+// Contains Publicize services that are currently available for use.
+@property (nonatomic, strong) NSArray<PublicizeService *> *supportedServices;
+
+// Contains unsupported Publicize services that are deprecated or temporarily disabled.
+@property (nonatomic, strong) NSArray<PublicizeService *> *unsupportedServices;
+
 @property (nonatomic, weak) id delegate;
 @property (nonatomic) PublicizeServicesState *publicizeServicesState;
 @property (nonatomic) JetpackModuleHelper *jetpackModuleHelper;
@@ -34,6 +41,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (self) {
         _blog = blog;
         _publicizeServices = [NSMutableArray new];
+        _supportedServices = @[];
+        _unsupportedServices = @[];
         _delegate = delegate;
         _publicizeServicesState = [PublicizeServicesState new];
     }
@@ -91,6 +100,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)refreshPublicizers
 {
     self.publicizeServices = [PublicizeService allPublicizeServicesInContext:[self managedObjectContext] error:nil];
+
+    NSPredicate *supportedPredicate = [NSPredicate predicateWithFormat:@"status == %@", PublicizeService.defaultStatus];
+    self.supportedServices = [self.publicizeServices filteredArrayUsingPredicate:supportedPredicate];
+
+    NSPredicate *unsupportedPredicate = [NSPredicate predicateWithFormat:@"status == %@", PublicizeService.unsupportedStatus];
+    self.unsupportedServices = [self.publicizeServices filteredArrayUsingPredicate:unsupportedPredicate];
 
     [self.tableView reloadData];
 }
