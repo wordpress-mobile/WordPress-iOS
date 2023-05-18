@@ -90,13 +90,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [ReachabilityUtils dismissNoInternetConnectionNotice];
 }
 
--(void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
 {
     [self notifyDelegatePublicizeServicesChangedIfNeeded];
 }
@@ -238,7 +238,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 
     SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
-    switch(sectionType) {
+    switch (sectionType) {
         case SharingSectionAvailableServices: // fallthrough
         case SharingSectionUnsupported:
             [self configurePublicizeCell:cell atIndexPath:indexPath];
@@ -260,7 +260,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (PublicizeService *)publicizeServiceForIndexPath:(NSIndexPath *)indexPath
 {
     SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
-    switch(sectionType) {
+    switch (sectionType) {
         case SharingSectionAvailableServices:
             return self.supportedServices[indexPath.row];
         case SharingSectionUnsupported:
