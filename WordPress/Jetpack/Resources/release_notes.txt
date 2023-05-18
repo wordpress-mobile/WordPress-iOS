@@ -1,8 +1,9 @@
-* [*] [internal] Domains Dashboard Card: Immediately opening domains search after tapping the card. [#20638]
-* [**] Adds a dashboard card for viewing activity log. [#20569]
-* [**] Adds a dashboard card for viewing pages. [#20524]
-* [*] Block editor: Fix crash when trying to convert to regular blocks an undefined/deleted reusable block [https://github.com/WordPress/gutenberg/pull/50475]
-* [**] Block editor: Tapping on a nested block now gets focus directly instead of having to tap multiple times depending on the nesting levels. [https://github.com/WordPress/gutenberg/pull/50108]
-* [*] Block editor: Use host app namespace in reusable block message [https://github.com/WordPress/gutenberg/pull/50478]
-* [*] [internal] Enables domain purchases in site creation A/B experiment. [#20670]
-* [*] Classic Block: Fixes a crash that happens when attempting to add media to a classic block while the library permissions are missing. [#20666]
+We added cards to your dashboard. The Activity Log card shows your three most recent activities, and the Pages card shows the last three pages you modified.
+
+We also made some important changes in the block editor. To prevent an app crash, deleted and undefined reusable blocks can no longer be converted to regular blocks.
+
+When you tap on a nested text block, you can immediately edit content in that block—no more tapping through every nesting level to get where you want to go. (Our fingers were getting tired, too.)
+
+Speaking of reusable blocks—we updated the “editing not supported” message to remove the mention of WordPress. We know what app we’re using, we promise.
+
+Finally, we fixed a bug where the app would crash if you tried to upload media to a classic block without giving WordPress access to your device’s media library. Instead, you’ll see a prompt asking for media access. Easy peasy, lemon squeezy.
