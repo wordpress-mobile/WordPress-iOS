@@ -13,7 +13,7 @@ import Foundation
         }
 
         /// If this propery is empty, it indicates that domain information is not yet loaded
-        let hasLoadedDomains = blog.freeDomain != nil
+        let hasLoadedDomains = blog.domains?.isEmpty == false
         let hasMappedDomain = blog.hasMappedDomain()
         let hasFreePlan = !blog.hasPaidPlan
 
