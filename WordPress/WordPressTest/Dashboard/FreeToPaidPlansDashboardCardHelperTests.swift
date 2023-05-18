@@ -12,7 +12,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
 
         let result = FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog, isJetpack: true, featureFlagEnabled: true)
 
-        XCTAssertTrue(result, "Card should show for blogs with a free plan and a mapped domain")
+        XCTAssertTrue(result, "Card should show for blogs with a free plan and no mapped domain")
     }
 
     func testShouldNotShowCardWithoutFreePlan() {
@@ -32,6 +32,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
         let blog = BlogBuilder(mainContext)
             .with(supportsDomains: true)
             .with(domainCount: 1, of: .wpCom)
+            .with(domainCount: 1, of: .registered)
             .with(hasMappedDomain: true)
             .with(hasPaidPlan: false)
             .build()
