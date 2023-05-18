@@ -4,30 +4,58 @@ import XCTest
 
 final class ReaderPostCellActionsTests: CoreDataTestCase {
 
+    // MARK: - Constants
+
+    private enum Constants {
+        static let blockAndReportActions = ["Block this site", "Block this user", "Report this post", "Report this user"]
+    }
+
     // MARK: - Tests
 
-    /// Tests the block and report actions are visible for posts in the Following feed.
-    func testActionSheetContainsReportAndBlockActions() throws {
+    /// Tests the block and report actions are visible for posts in the Discover feed.
+    func testBlockAndReportActionsVisibleInDiscoverFeed() throws {
         // Given
         let viewController = MockViewController()
-        let post = makePost()
-        let cell = makeCell()
-        let actionsHandler = makePostCellActionsWithFollowingTopic(origin: viewController)
-        let expectedActions = ["Block this site", "Block this user", "Report this post", "Report this user"]
+        let topic = makeDiscoverTopic()
 
         // When
-        actionsHandler.readerCell(cell, menuActionForProvider: post, fromView: cell)
+        self.triggerPostMenuPresentation(in: viewController, topic: topic)
+        let presentedAlertController = try XCTUnwrap(viewController.presentedAlertController)
+        let actualActions = presentedAlertController.actions.compactMap { $0.title }
 
         // Then
+        let expectedActions = Constants.blockAndReportActions
+        XCTAssertTrue(Set(expectedActions).isSubset(of: actualActions))
+    }
+
+    /// Tests the block and report actions are visible for posts in the Following feed.
+    func testBlockAndReportActionsVisibleInFollowingFeed() throws {
+        // Given
+        let viewController = MockViewController()
+        let topic = makeFollowingTopic()
+
+        // When
+        self.triggerPostMenuPresentation(in: viewController, topic: topic)
         let presentedAlertController = try XCTUnwrap(viewController.presentedAlertController)
-        let actions = presentedAlertController.actions.compactMap { $0.title }
-        XCTAssertTrue(Set(expectedActions).isSubset(of: actions))
+        let actualActions = presentedAlertController.actions.compactMap { $0.title }
+
+        // Then
+        let expectedActions = Constants.blockAndReportActions
+        XCTAssertTrue(Set(expectedActions).isSubset(of: actualActions))
     }
 
     // MARK: - Helpers
 
-    private func makePostCellActionsWithFollowingTopic(origin: UIViewController) -> ReaderPostCellActions {
-        let topic = makeFollowingTopic()
+    /// Triggers the post menu presentation logic.
+    private func triggerPostMenuPresentation(in viewController: UIViewController, topic: ReaderAbstractTopic) {
+        let post = makePost()
+        let cell = makeCell()
+        let followingTopic = makeFollowingTopic()
+        let actionsHandler = makePostCellActions(topic: followingTopic, origin: viewController)
+        actionsHandler.readerCell(cell, menuActionForProvider: post, fromView: cell)
+    }
+
+    private func makePostCellActions(topic: ReaderAbstractTopic, origin: UIViewController) -> ReaderPostCellActions {
         let actions = ReaderPostCellActions(context: mainContext, origin: origin, topic: topic, visibleConfirmation: false)
         actions.isLoggedIn = true
         return actions
@@ -35,9 +63,13 @@ final class ReaderPostCellActionsTests: CoreDataTestCase {
 
     private func makeFollowingTopic() -> ReaderAbstractTopic {
         let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderDefaultTopic.entityName(), into: mainContext) as! ReaderDefaultTopic
-        topic.inUse = true
-        topic.following = true
         topic.path = "https://wordpress.com/read/following"
+        return topic
+    }
+
+    private func makeDiscoverTopic() -> ReaderAbstractTopic {
+        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderDefaultTopic.entityName(), into: mainContext) as! ReaderDefaultTopic
+        topic.path = "https://wordpress.com/read/sites/53424024/posts"
         return topic
     }
 
