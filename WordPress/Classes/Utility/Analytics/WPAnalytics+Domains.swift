@@ -7,9 +7,8 @@ extension WPAnalytics {
         FeatureFlag.siteCreationDomainPurchasing.enabled && ABTest.siteCreationDomainPurchasing.isTreatmentVariation
     }
 
-    static func domainsProperties(for blog: Blog) -> [AnyHashable: Any] {
-        // For now we do not have the `siteCreation` route implemented so hardcoding `menu`
-        domainsProperties(usingCredit: blog.canRegisterDomainWithPaidPlan, origin: .menu)
+    static func domainsProperties(for blog: Blog, origin: DomainPurchaseWebViewViewOrigin? = .menu) -> [AnyHashable: Any] {
+        domainsProperties(usingCredit: blog.canRegisterDomainWithPaidPlan, origin: origin)
     }
 
     static func domainsProperties(

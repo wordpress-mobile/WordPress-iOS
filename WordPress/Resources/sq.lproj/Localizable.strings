@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-04-27 09:30:36+0000 */
+/* Translation-Revision-Date: 2023-05-10 10:54:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sq_AL */
@@ -2362,6 +2362,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Mohoje";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "Përshkruani qëllimin e figurës. Lëreni të zbrazët, në qoftë dekorative.";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -4220,6 +4223,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Ngarko më tepër postime";
 
+/* No comment provided by engineer. */
+"Loading" = "Po ngarkohet";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Po ngarkohen Veprimtari…";
 
@@ -5480,6 +5486,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "Luaje videon";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Ngjyrë Shtylle Luajtjeje";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Rregullime Luajtjeje";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Ju lutemi, shtoni ca lëndë, përpara se të provoni të botoni.";
 
@@ -5833,6 +5845,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "Rregullime Privatësie";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Privatësi dhe Vlerësim";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Shënim mbi privatësinë për përdorues në Kalifornia";
 
@@ -6104,6 +6119,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Hiqe bllokun";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Hiqi blloqet";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hiqe nga Prirjet";
@@ -8374,6 +8392,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Terma të panjohur kërkimi";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Ngjyrë pa etiketë. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Shpëlqeheni Komentin.";
 
@@ -9655,6 +9676,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Promovojeni këtë postim në Blaze";
 
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Fshihe këtë";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Hidhe tej";
 
@@ -9697,6 +9721,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personalizoni skedën tuaj krye";
 
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "Krejt veprimtaria";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Veprimtari së fundi";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "Krejt faqet";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Faqe";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Shtoni faqe te sajti juaj";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Skicë";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "I botuar";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "I planifikuar";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Krijoni tjetër faqe";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Fillojani me skema të qepura me porosi, të përshtatshme për celular.";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Parametrat e anashkaluar tregohen me një shenjë.";
 
@@ -9714,6 +9768,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Fshihe këtë";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "Gjeni një përkatësi vetjake";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Mund të duhen deri në 30 minuta që përkatësia juaj vetjake të fillojë të funksionojë.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Më pas, do t’ju ndihmojmë të bëheni gati që t’ju shfletojnë.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Ju dërguan dëftesën tuaj me email. Më pas, do t’ju ndihmojmë të bëheni gati për këdo.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Përgëzime, sajti tuaj u bë!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Alternativa Më e Mirë";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "për vitin e parë";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Falas";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "E rekomanduar";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Ulje çmimi";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "në vit";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "që të ndryshoni njësinë, prekeni dy herë";
@@ -10119,6 +10206,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Duket sikur keni ende të instaluar aplikacionin WordPress.";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "E kuptova";
 
@@ -10130,6 +10220,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Përfundoje";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Rekomandojmë çinstalimin e aplikacionit WordPress në pajisjen tuaj, për të shmangur përplasje të dhënash.";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "çinstalim i aplikacionit WordPress";
@@ -10206,6 +10299,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "Statistikat kanë kaluar te aplikacioni Jetpack.";
 
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Lëndë";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Mirëmbajtje";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Shoqërore";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Trafik";
+
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Merruni me një skicë postimi";
 
@@ -10255,7 +10360,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.cardsSectionHeader" = "Shtoni ose fshihni karta";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Veprimtari së fundi";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Hartoni postime";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Faqe";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.prompts" = "Cytje blogimi";
@@ -10304,6 +10415,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Jeni i futur!";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "këtë sajt";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bllokoje këtë përdorues";
@@ -10706,6 +10821,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Na ndjeni, ky sajt nuk mbulohet nga aplikacioni WordPress";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "Mirë se vini te aplikacioni Jetpack. Mund të çinstaloni aplikacionin WordPress.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Mësoni më tepër";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "sajti juaj";

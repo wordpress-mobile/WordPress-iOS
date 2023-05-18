@@ -5,6 +5,7 @@ SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
+CONCURRENT_SIMULATORS = 2
 
 # Shared options to use when invoking `gym` / `build_app`.
 #
@@ -98,6 +99,10 @@ platform :ios do
     # Because we only support those two modes, we can infer the scheme name from the xctestrun name
     scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'
 
+    # Only run Jetpack UI tests in parallel.
+    # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
+    parallel_testing_value = options[:name].include?('Jetpack')
+
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
@@ -108,8 +113,15 @@ platform :ios do
       xctestrun: xctestrun_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
-      result_bundle: true
+      result_bundle: true,
+      output_types: '',
+      fail_build: false,
+      parallel_testing: parallel_testing_value,
+      concurrent_workers: CONCURRENT_SIMULATORS,
+      max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
+
+    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
@@ -263,6 +275,7 @@ platform :ios do
       scheme: 'WordPress Alpha',
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
+      app_icon: ':wordpress:', # Use Buildkite emoji
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS
     )
   end
@@ -281,6 +294,7 @@ platform :ios do
       scheme: 'Jetpack',
       output_app_name: 'Jetpack Alpha',
       appcenter_app_name: 'jetpack-installable-builds',
+      app_icon: ':jetpack:', # Use Buildkite emoji
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK
     )
   end
@@ -313,7 +327,7 @@ platform :ios do
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
   # rubocop:disable Metrics/AbcSize
-  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, sentry_project_slug:)
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:)
     configuration = 'Release-Alpha'
 
     # Get the current build version, and update it if needed
@@ -371,6 +385,7 @@ platform :ios do
     # Post PR Comment
     comment_body = prototype_build_details_comment(
       app_display_name: output_app_name,
+      app_icon: app_icon,
       app_center_org_name: APPCENTER_OWNER_NAME,
       metadata: { Configuration: configuration },
       fold: true

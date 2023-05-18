@@ -1,3 +1,7 @@
+22.5
+-----
+
+
 22.4
 -----
 
@@ -7,11 +11,14 @@
 * [*] [Jetpack-only] Block editor: Fix crash when trying to convert to regular blocks an undefined/deleted reusable block [https://github.com/WordPress/gutenberg/pull/50475]
 * [**] Block editor: Tapping on a nested block now gets focus directly instead of having to tap multiple times depending on the nesting levels. [https://github.com/WordPress/gutenberg/pull/50108]
 * [*] [Jetpack-only] Block editor: Use host app namespace in reusable block message [https://github.com/WordPress/gutenberg/pull/50478]
+* [*] [internal] [Jetpack-only] Enables domain purchases in site creation A/B experiment. [#20670]
+* [*] Classic Block: Fixes a crash that happens when attempting to add media to a classic block while the library permissions are missing. [#20666]
 
 22.3
 -----
 * [*] [internal] Allow updating specific fields when updating media details. [#20606]
 * [**] Block Editor: Enable VideoPress block (only on Simple WPCOM sites) [#20580]
+* [**] [internal] Attempt to fix an image loading crash in post editor. [#20633]
 
 22.2
 -----
