@@ -110,7 +110,16 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.supportedServices = [self.publicizeServices filteredArrayUsingPredicate:supportedPredicate];
 
     NSPredicate *unsupportedPredicate = [NSPredicate predicateWithFormat:@"status == %@", PublicizeService.unsupportedStatus];
-    self.unsupportedServices = [self.publicizeServices filteredArrayUsingPredicate:unsupportedPredicate];
+    NSArray<PublicizeService *> *unsupportedList = [self.publicizeServices filteredArrayUsingPredicate:unsupportedPredicate];
+
+    // only list unsupported services with existing connections.
+    NSMutableArray<PublicizeService *> *unsupportedServicesWithConnections = [NSMutableArray new];
+    for (PublicizeService *service in unsupportedList) {
+        if ([self connectionsForService:service].count > 0) {
+            [unsupportedServicesWithConnections addObject:service];
+        }
+    }
+    self.unsupportedServices = unsupportedServicesWithConnections;
 
     // Refresh table sections in case anything changes.
     [self refreshSections];
