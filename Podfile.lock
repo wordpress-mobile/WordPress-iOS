@@ -4,11 +4,11 @@ PODS:
     - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
-  - AppAuth (1.6.2):
-    - AppAuth/Core (= 1.6.2)
-    - AppAuth/ExternalUserAgent (= 1.6.2)
-  - AppAuth/Core (1.6.2)
-  - AppAuth/ExternalUserAgent (1.6.2):
+  - AppAuth (1.6.1):
+    - AppAuth/Core (= 1.6.1)
+    - AppAuth/ExternalUserAgent (= 1.6.1)
+  - AppAuth/Core (1.6.1)
+  - AppAuth/ExternalUserAgent (1.6.1):
     - AppAuth/Core
   - AppCenter (4.4.1):
     - AppCenter/Analytics (= 4.4.1)
@@ -512,7 +512,7 @@ PODS:
     - WordPressKit (~> 8.0-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.1.0):
+  - WordPressKit (8.1.0-beta.1):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -520,7 +520,7 @@ PODS:
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
   - WordPressUI (1.12.5)
-  - WPMediaPicker (1.8.8)
+  - WPMediaPicker (1.8.7)
   - wpxmlrpc (0.10.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -802,7 +802,7 @@ SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
-  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
   Automattic-Tracks-iOS: a1b020ab02f0e5a39c5d4e6870a498273f286158
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
@@ -885,10 +885,10 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: b0b900696de5129a215adcd1e9ae6eb89da36ac8
-  WordPressKit: bd029b8210508e2329a88e132275b9a4cd361eb6
+  WordPressKit: 707e723428027ac0aa9d514807e391117588dd5d
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
-  WPMediaPicker: 0d40b8d66b6dfdaa2d6a41e3be51249ff5898775
+  WPMediaPicker: 0d45dfd7b3c5651c5236ffd48c1b0b2f60a2d5d2
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   Yoga: 5e12f4deb20582f86f6323e1cdff25f07afc87f6
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
