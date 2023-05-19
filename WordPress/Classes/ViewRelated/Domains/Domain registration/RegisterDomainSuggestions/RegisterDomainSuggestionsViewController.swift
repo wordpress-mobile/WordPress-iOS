@@ -4,6 +4,12 @@ import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
+enum DomainSelectionType {
+    case registerWithPaidPlan
+    case purchaseWithPaidPlan
+    case purchaseSeparately
+}
+
 class RegisterDomainSuggestionsViewController: UIViewController {
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
@@ -17,7 +23,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
-    private var domainType: DomainType = .registered
+    private var domainSelectionType: DomainSelectionType = .purchaseSeparately
     private var includeSupportButton: Bool = true
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
@@ -45,13 +51,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     }()
 
     static func instance(site: Blog,
-                         domainType: DomainType = .registered,
+                         domainSelectionType: DomainSelectionType = .purchaseSeparately,
                          includeSupportButton: Bool = true,
                          domainPurchasedCallback: ((String) -> Void)? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.site = site
-        controller.domainType = domainType
+        controller.domainSelectionType = domainSelectionType
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
         controller.siteName = siteNameForSuggestions(for: site)
@@ -165,7 +171,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.delegate = self
             vc.siteName = siteName
             vc.blog = site
-            vc.domainType = domainType
+            vc.domainSelectionType = domainSelectionType
             vc.freeSiteAddress = site.freeSiteAddress
 
             if site.hasBloggerPlan {
@@ -214,23 +220,21 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        switch domainType {
-        case .registered:
+        switch domainSelectionType {
+        case .registerWithPaidPlan:
             pushRegisterDomainDetailsViewController(domain)
-        case .siteRedirect:
+        case .purchaseSeparately:
             setPrimaryButtonLoading(true)
             createCart(domain) { [weak self] in
                 self?.presentWebViewForCurrentSite(domainSuggestion: domain)
                 self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
             }
-        case .mapped:
+        case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
             createCart(domain) { [weak self] in
                 self?.domainAddedToCartCallback?()
                 self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
             }
-        default:
-            break
         }
     }
 

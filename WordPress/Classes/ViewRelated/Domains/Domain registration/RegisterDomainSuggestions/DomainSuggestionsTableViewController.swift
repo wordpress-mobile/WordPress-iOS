@@ -32,7 +32,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     var siteName: String?
     var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
-    var domainType: DomainType?
+    var domainSelectionType: DomainSelectionType?
     var freeSiteAddress: String = ""
 
     var useFadedColorForParentDomains: Bool {
@@ -319,8 +319,7 @@ extension DomainSuggestionsTableViewController {
     }
 
     private var shouldShowTopBanner: Bool {
-        if let domainType = domainType,
-           domainType == .siteRedirect {
+        if domainSelectionType == .purchaseSeparately {
             return true
         }
 
@@ -387,7 +386,7 @@ extension DomainSuggestionsTableViewController {
         let attributedString = NSMutableAttributedString()
 
         let hasDomainCredit = blog?.hasDomainCredit ?? false
-        let freeForFirstYear = hasDomainCredit || domainType == .mapped
+        let freeForFirstYear = hasDomainCredit || domainSelectionType == .purchaseWithPaidPlan
 
         if freeForFirstYear {
             attributedString.append(attributedFreeForTheFirstYear())

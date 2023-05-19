@@ -138,7 +138,11 @@ struct DomainsDashboardView: View {
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
     private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
-        return DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
+        return DomainSuggestionViewControllerWrapper(
+            blog: blog,
+            domainSelectionType: blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately,
+            onDismiss: onDismiss
+        )
     }
 
     private func updateDomainsList() {

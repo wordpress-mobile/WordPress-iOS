@@ -8,10 +8,10 @@ struct DomainsDashboardFactory {
         return viewController
     }
 
-    static func makeDomainsSuggestionViewController(blog: Blog, domainType: DomainType, onDismiss: @escaping () -> Void) -> RegisterDomainSuggestionsViewController {
+    static func makeDomainsSuggestionViewController(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) -> RegisterDomainSuggestionsViewController {
         let viewController = RegisterDomainSuggestionsViewController.instance(
             site: blog,
-            domainType: domainType,
+            domainSelectionType: domainSelectionType,
             includeSupportButton: false)
 
         viewController.domainPurchasedCallback = { domain in
