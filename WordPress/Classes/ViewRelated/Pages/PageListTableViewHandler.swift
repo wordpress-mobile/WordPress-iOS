@@ -13,7 +13,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     var showEditorHomepage: Bool {
-        guard FeatureFlag.siteEditorMVP.enabled else {
+        guard RemoteFeatureFlag.siteEditorMVP.enabled() else {
             return false
         }
 
