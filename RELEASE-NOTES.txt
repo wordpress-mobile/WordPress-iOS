@@ -1,7 +1,7 @@
 22.5
 -----
 * [*] [Jetpack-only] Reader: Fixed an issue that was causing the Report and Block actions to be missing from Post Menu actions sheet. [#20705]
-* [***] Enables editing of the site homepage for sites using block-based themes directly from the pages list. [#]
+* [***] Enables editing of the site homepage for sites using block-based themes directly from the pages list. [#20713]
 
 22.4
 -----
