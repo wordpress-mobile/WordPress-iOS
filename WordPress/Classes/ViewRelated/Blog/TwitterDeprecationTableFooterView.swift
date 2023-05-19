@@ -17,7 +17,7 @@
         label.textColor = .secondaryLabel
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 0.9
+        paragraphStyle.lineHeightMultiple = Constants.lineHeightMultiple
 
         let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ", attributes: [
             .paragraphStyle: paragraphStyle
@@ -60,12 +60,7 @@ private extension TwitterDeprecationTableFooterView {
         label.addGestureRecognizer(tapGesture)
 
         contentView.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
-            label.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor),
-            label.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor)
-        ])
+        contentView.pinSubviewToAllEdgeMargins(label)
     }
 
     @objc func labelTapped(_ sender: UITapGestureRecognizer) {
@@ -95,9 +90,7 @@ private extension TwitterDeprecationTableFooterView {
             return
         }
 
-        let range = NSMakeRange(characterIndex, 1)
         let attributes = attributedText.attributes(at: characterIndex, effectiveRange: nil)
-
         guard let attachmentURL = attributes[.attachment] as? URL else {
             return
         }
