@@ -1,3 +1,6 @@
+/// A subclass implementation of `UITableViewHeaderFooterView` that displays a text with a tappable link.
+/// Specifically used for Twitter deprecation purposes.
+///
 @objc class TwitterDeprecationTableFooterView: UITableViewHeaderFooterView {
 
     private let label: UILabel = {
@@ -8,10 +11,9 @@
         label.textColor = .secondaryLabel
 
         let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ")
-
-        if let destinationURL = Constants.blogPostURL {
+        if let linkURL = Constants.blogPostURL {
             let hyperlinkText = NSAttributedString(string: Constants.hyperlinkText, attributes: [
-                .link: destinationURL,
+                .attachment: linkURL,
                 .foregroundColor: UIColor.brand
             ])
             attributedString.append(hyperlinkText)
@@ -22,6 +24,8 @@
 
         return label
     }()
+
+    // MARK: Methods
 
     override public init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -74,7 +78,7 @@
         let range = NSMakeRange(characterIndex, 1)
         let attributes = attributedText.attributes(at: characterIndex, effectiveRange: nil)
 
-        guard let link = attributes[.link] as? URL else {
+        guard let link = attributes[.attachment] as? URL else {
             return
         }
 
@@ -82,6 +86,8 @@
 
         UIApplication.shared.open(link)
     }
+
+    // MARK: Constants
 
     private enum Constants {
         static let blogPostURL = URL(string: "https://wordpress.com/blog/2023/04/29/why-twitter-auto-sharing-is-coming-to-an-end/")
