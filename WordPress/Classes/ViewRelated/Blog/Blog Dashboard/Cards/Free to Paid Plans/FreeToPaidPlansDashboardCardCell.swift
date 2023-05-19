@@ -6,6 +6,14 @@ final class FreeToPaidPlansDashboardCardCell: BaseDashboardDomainsCardCell {
     }
 
     private lazy var cardViewModel: DashboardDomainsCardViewModel = {
+        let onViewShow: () -> Void = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            PlansTracker.trackFreeToPaidPlansDashboardCardShown(in: self.row)
+        }
+
         let onViewTap: () -> Void = { [weak self] in
             guard let self,
                   let presentingViewController = self.presentingViewController,
@@ -19,22 +27,22 @@ final class FreeToPaidPlansDashboardCardCell: BaseDashboardDomainsCardCell {
                 blog: blog
             )
 
-            // TODO: Analytics
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/20692
+            PlansTracker.trackFreeToPaidPlansDashboardCardTapped(in: self.row)
         }
 
         let onEllipsisTap: () -> Void = { [weak self] in
-            // TODO: Analytics
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/20692
+            guard let self else {
+                return
+            }
+
+            PlansTracker.trackFreeToPaidPlansDashboardCardMenuTapped(in: self.row)
         }
 
         let onHideThisTap: UIActionHandler = { [weak self] _ in
             guard let self else { return }
 
             FreeToPaidPlansDashboardCardHelper.hideCard(for: self.blog)
-
-            // TODO: Analytics
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/20692
+            PlansTracker.trackFreeToPaidPlansDashboardCardHidden(in: self.row)
 
             self.presentingViewController?.reloadCardsLocally()
         }
@@ -46,6 +54,7 @@ final class FreeToPaidPlansDashboardCardCell: BaseDashboardDomainsCardCell {
                 hideThis: Strings.hideThis,
                 source: Strings.source
             ),
+            onViewShow: onViewShow,
             onViewTap: onViewTap,
             onEllipsisTap: onEllipsisTap,
             onHideThisTap: onHideThisTap
