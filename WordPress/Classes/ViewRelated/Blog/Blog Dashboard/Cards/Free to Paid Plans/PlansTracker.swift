@@ -36,4 +36,11 @@ struct PlansTracker {
         let properties = ["source": source, planSelectionTypeKey: type.rawValue]
         WPAnalytics.track(.freeToPaidPlansDashboardCardMenuTapped, properties: properties)
     }
+
+    // MARK: - Checkout
+
+    static func trackCheckoutWebViewViewed(source: String) {
+        let properties = ["source": source]
+        WPAnalytics.track(.checkoutWebViewViewed, properties: properties)
+    }
 }
