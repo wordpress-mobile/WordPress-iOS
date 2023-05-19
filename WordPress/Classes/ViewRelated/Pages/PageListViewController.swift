@@ -255,7 +255,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func fetchEditorSettings(success: ((Bool) -> ())?, failure: ((NSError) -> ())?) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
         let fetchTask = Task { @MainActor [weak self] in
-            guard FeatureFlag.siteEditorMVP.enabled,
+            guard RemoteFeatureFlag.siteEditorMVP.enabled(),
                   let result = await editorSettingsService?.fetchSettings() else {
                 return
             }
@@ -437,7 +437,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(searchPredicate)
         }
 
-        if FeatureFlag.siteEditorMVP.enabled,
+        if RemoteFeatureFlag.siteEditorMVP.enabled(),
            blog.blockEditorSettings?.isFSETheme ?? false,
            let homepageID = blog.homepagePageID,
            let homepageType = blog.homepageType,
