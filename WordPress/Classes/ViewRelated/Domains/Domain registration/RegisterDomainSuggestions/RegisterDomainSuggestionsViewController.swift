@@ -23,7 +23,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
-    private var domainSelectionType: DomainSelectionType = .purchaseSeparately
+    private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
@@ -51,7 +51,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     }()
 
     static func instance(site: Blog,
-                         domainSelectionType: DomainSelectionType = .purchaseSeparately,
+                         domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
                          domainPurchasedCallback: ((String) -> Void)? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
