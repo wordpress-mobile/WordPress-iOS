@@ -485,6 +485,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+            WPAnalytics.track(.pageListEditHomepageTapped)
             guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
                 return
             }
