@@ -3,6 +3,12 @@
 ///
 @objc class TwitterDeprecationTableFooterView: UITableViewHeaderFooterView {
 
+    // The view controller that will present the web view.
+    @objc weak var presentingViewController: UIViewController? = nil
+
+    // For tracking purposes. See https://wp.me/pctCYC-OI#tracks
+    @objc var source: String? = nil
+
     private let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -11,9 +17,9 @@
         label.textColor = .secondaryLabel
 
         let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ")
-        if let linkURL = Constants.blogPostURL {
+        if let attachmentURL = Constants.blogPostURL {
             let hyperlinkText = NSAttributedString(string: Constants.hyperlinkText, attributes: [
-                .attachment: linkURL,
+                .attachment: attachmentURL,
                 .foregroundColor: UIColor.brand
             ])
             attributedString.append(hyperlinkText)
@@ -36,8 +42,13 @@
         super.init(coder: aDecoder)
         setupSubviews()
     }
+}
 
-    private func setupSubviews() {
+// MARK: - Private methods
+
+private extension TwitterDeprecationTableFooterView {
+
+    func setupSubviews() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         label.addGestureRecognizer(tapGesture)
 
@@ -50,8 +61,10 @@
         ])
     }
 
-    @objc private func labelTapped(_ sender: UITapGestureRecognizer) {
-        guard let attributedText = label.attributedText else {
+    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
+        guard let presentingViewController,
+              let source,
+              let attributedText = label.attributedText else {
             return
         }
 
@@ -78,18 +91,21 @@
         let range = NSMakeRange(characterIndex, 1)
         let attributes = attributedText.attributes(at: characterIndex, effectiveRange: nil)
 
-        guard let link = attributes[.attachment] as? URL else {
+        guard let attachmentURL = attributes[.attachment] as? URL else {
             return
         }
 
         // TODO: Tracking
 
-        UIApplication.shared.open(link)
+        // Ideally this shouldn't be the responsibility of this class, but I'm keeping it simple since it's temporary.
+        let webViewController = WebViewControllerFactory.controller(url: attachmentURL, source: source)
+        let navigationController = UINavigationController(rootViewController: webViewController)
+        presentingViewController.present(navigationController, animated: true)
     }
 
     // MARK: Constants
 
-    private enum Constants {
+    enum Constants {
         static let blogPostURL = URL(string: "https://wordpress.com/blog/2023/04/29/why-twitter-auto-sharing-is-coming-to-an-end/")
 
         static let deprecationNoticeText = NSLocalizedString(

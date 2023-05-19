@@ -352,11 +352,19 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     SharingSectionType sectionType = [self sectionTypeForIndex:section];
-    if (sectionType == SharingSectionSharingButtons && [SharingViewController jetpackBrandingVisibile]) {
-        return [self makeJetpackBadge];
-    }
+    switch (sectionType) {
+        case SharingSectionUnsupported:
+            return [self makeTwitterDeprecationFooterView];
 
-    // TODO: Show footer view for unsupported section.
+        case SharingSectionSharingButtons:
+            if ([SharingViewController jetpackBrandingVisibile]) {
+                return [self makeJetpackBadge];
+            }
+            break;
+
+        default:
+            break;
+    }
 
     return nil;
 }
