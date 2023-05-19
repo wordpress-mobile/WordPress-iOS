@@ -14,8 +14,8 @@ import UIKit
     static func presentDomainsSuggestions(in dashboardViewController: BlogDashboardViewController,
                                           source: String,
                                           blog: Blog) {
-        let domainType: DomainType = blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect
-        let controller = DomainsDashboardFactory.makeDomainsSuggestionViewController(blog: blog, domainType: domainType) {
+        let domainSelectionType: DomainSelectionType = blog.canRegisterDomainWithPaidPlan ? .registerWithPaidPlan : .purchaseSeparately
+        let controller = DomainsDashboardFactory.makeDomainsSuggestionViewController(blog: blog, domainSelectionType: domainSelectionType) {
             dashboardViewController.navigationController?.popViewController(animated: true)
         }
         controller.navigationItem.largeTitleDisplayMode = .never

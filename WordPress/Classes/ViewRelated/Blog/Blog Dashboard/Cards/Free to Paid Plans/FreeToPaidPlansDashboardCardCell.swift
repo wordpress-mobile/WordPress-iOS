@@ -7,8 +7,17 @@ final class FreeToPaidPlansDashboardCardCell: BaseDashboardDomainsCardCell {
 
     private lazy var cardViewModel: DashboardDomainsCardViewModel = {
         let onViewTap: () -> Void = { [weak self] in
-            // TODO: Present Domain Selection
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/20686
+            guard let self,
+                  let presentingViewController = self.presentingViewController,
+                  let blog = self.blog else {
+                return
+            }
+
+            FreeToPaidPlansCoordinator.presentFreeDomainWithAnnualPlanFlow(
+                in: presentingViewController,
+                source: Strings.source,
+                blog: blog
+            )
 
             // TODO: Analytics
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/20692

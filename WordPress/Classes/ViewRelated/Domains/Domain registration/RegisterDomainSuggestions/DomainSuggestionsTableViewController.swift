@@ -32,7 +32,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     var siteName: String?
     var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
-    var domainType: DomainType?
+    var domainSelectionType: DomainSelectionType?
     var freeSiteAddress: String = ""
 
     var useFadedColorForParentDomains: Bool {
@@ -319,8 +319,7 @@ extension DomainSuggestionsTableViewController {
     }
 
     private var shouldShowTopBanner: Bool {
-        if let domainType = domainType,
-           domainType == .siteRedirect {
+        if domainSelectionType == .purchaseSeparately {
             return true
         }
 
@@ -387,15 +386,16 @@ extension DomainSuggestionsTableViewController {
         let attributedString = NSMutableAttributedString()
 
         let hasDomainCredit = blog?.hasDomainCredit ?? false
+        let freeForFirstYear = hasDomainCredit || domainSelectionType == .purchaseWithPaidPlan
 
-        if hasDomainCredit {
+        if freeForFirstYear {
             attributedString.append(attributedFreeForTheFirstYear())
         } else if let saleCost = attributedSaleCost(for: suggestion) {
             attributedString.append(saleCost)
         }
 
-        attributedString.append(attributedSuggestionCost(for: suggestion, hasDomainCredit: hasDomainCredit))
-        attributedString.append(attributedPerYearPostfix(for: suggestion, hasDomainCredit: hasDomainCredit))
+        attributedString.append(attributedSuggestionCost(for: suggestion, freeForFirstYear: freeForFirstYear))
+        attributedString.append(attributedPerYearPostfix(for: suggestion, freeForFirstYear: freeForFirstYear))
 
         return attributedString
     }
@@ -418,22 +418,22 @@ extension DomainSuggestionsTableViewController {
             attributes: suggestionSaleCostAttributes())
     }
 
-    private func attributedSuggestionCost(for suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
+    private func attributedSuggestionCost(for suggestion: FullyQuotedDomainSuggestion, freeForFirstYear: Bool) -> NSAttributedString {
         NSAttributedString(
             string: suggestion.costString,
-            attributes: suggestionCostAttributes(striked: mustStrikeRegularPrice(suggestion, hasDomainCredit: hasDomainCredit)))
+            attributes: suggestionCostAttributes(striked: mustStrikeRegularPrice(suggestion, freeForFirstYear: freeForFirstYear)))
     }
 
-    private func attributedPerYearPostfix(for suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
+    private func attributedPerYearPostfix(for suggestion: FullyQuotedDomainSuggestion, freeForFirstYear: Bool) -> NSAttributedString {
         NSAttributedString(
             string: NSLocalizedString(" / year", comment: "Per-year postfix shown after a domain's cost."),
-            attributes: perYearPostfixAttributes(striked: mustStrikeRegularPrice(suggestion, hasDomainCredit: hasDomainCredit)))
+            attributes: perYearPostfixAttributes(striked: mustStrikeRegularPrice(suggestion, freeForFirstYear: freeForFirstYear)))
     }
 
     // MARK: - Attributed partial string attributes
 
-    private func mustStrikeRegularPrice(_ suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> Bool {
-        suggestion.saleCostString != nil || hasDomainCredit
+    private func mustStrikeRegularPrice(_ suggestion: FullyQuotedDomainSuggestion, freeForFirstYear: Bool) -> Bool {
+        suggestion.saleCostString != nil || freeForFirstYear
     }
 
     private func suggestionSaleCostAttributes() -> [NSAttributedString.Key: Any] {
