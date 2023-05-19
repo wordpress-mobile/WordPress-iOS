@@ -1,7 +1,12 @@
 import Foundation
 
 struct PlansTracker {
+    enum PlanSelectionType: String {
+        case domainAndPlanPackage = "domain_and_plan_package"
+    }
+
     private static let positionKey = "position_index"
+    private static let planSelectionTypeKey = "plan_selection_type"
 
     // MARK: - Dashboard Card
 
@@ -22,6 +27,13 @@ struct PlansTracker {
 
     static func trackFreeToPaidPlansDashboardCardMenuTapped(in position: Int) {
         let properties = [positionKey: position]
+        WPAnalytics.track(.freeToPaidPlansDashboardCardMenuTapped, properties: properties)
+    }
+
+    // MARK: - Plan Selection
+
+    static func trackPlanSelectionWebViewViewed(_ type: PlanSelectionType, source: String) {
+        let properties = ["source": source, planSelectionTypeKey: type.rawValue]
         WPAnalytics.track(.freeToPaidPlansDashboardCardMenuTapped, properties: properties)
     }
 }

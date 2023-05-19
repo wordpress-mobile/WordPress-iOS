@@ -158,6 +158,7 @@
 		011F52C92A16551A00B04114 /* FreeToPaidPlansCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */; };
 		011F52CF2A17A86500B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52CE2A17A86500B04114 /* PlansTracker.swift */; };
 		011F52D02A17A86500B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52CE2A17A86500B04114 /* PlansTracker.swift */; };
+		011F52D12A17C05600B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52CE2A17A86500B04114 /* PlansTracker.swift */; };
 		01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */; };
 		01281E9C2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
 		01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
@@ -23567,6 +23568,7 @@
 				EA14533129AD874C001F3143 /* WPUITestCredentials.swift in Sources */,
 				EA14533229AD874C001F3143 /* SignupTests.swift in Sources */,
 				EA14533329AD874C001F3143 /* EditorFlow.swift in Sources */,
+				011F52D12A17C05600B04114 /* PlansTracker.swift in Sources */,
 				01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */,
 				EA14533429AD874C001F3143 /* UIApplication+mainWindow.swift in Sources */,
 				EA14533529AD874C001F3143 /* LoginFlow.swift in Sources */,

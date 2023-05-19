@@ -493,6 +493,9 @@ import Foundation
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
 
+    // Plan Selection
+    case planSelectionWebViewViewed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1341,6 +1344,10 @@ import Foundation
             return "free_to_paid_plan_dashboard_card_tapped"
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
+
+        // Plan Selection
+        case .planSelectionWebViewViewed:
+            return "plan_selection_webview_viewed"
 
         } // END OF SWITCH
     }
