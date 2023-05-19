@@ -1,6 +1,8 @@
 22.5
 -----
 * [*] [Jetpack-only] Reader: Fix the display of the followed topics in the filter sheet when they're written in non-latin languages. [#20702]
+* [*] [Jetpack-only] Reader: Fixed an issue that was causing the Report and Block actions to be missing from Post Menu actions sheet. [#20705]
+
 
 22.4
 -----
