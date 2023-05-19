@@ -6,16 +6,20 @@ import WordPressKit
 struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
     private let blog: Blog
-    private let domainType: DomainType
+    private let domainSelectionType: DomainSelectionType
     private let onDismiss: () -> Void
 
     private var domainSuggestionViewController: RegisterDomainSuggestionsViewController
 
-    init(blog: Blog, domainType: DomainType, onDismiss: @escaping () -> Void) {
+    init(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) {
         self.blog = blog
-        self.domainType = domainType
+        self.domainSelectionType = domainSelectionType
         self.onDismiss = onDismiss
-        self.domainSuggestionViewController = DomainsDashboardFactory.makeDomainsSuggestionViewController(blog: blog, domainType: domainType, onDismiss: onDismiss)
+        self.domainSuggestionViewController = DomainsDashboardFactory.makeDomainsSuggestionViewController(
+            blog: blog,
+            domainSelectionType: domainSelectionType,
+            onDismiss: onDismiss
+        )
     }
 
     func makeUIViewController(context: Context) -> LightNavigationController {

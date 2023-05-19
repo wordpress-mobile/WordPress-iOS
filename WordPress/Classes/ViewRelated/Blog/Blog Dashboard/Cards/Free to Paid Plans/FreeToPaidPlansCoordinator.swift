@@ -8,7 +8,7 @@ import UIKit
     ) {
         let domainSuggestionsViewController = RegisterDomainSuggestionsViewController.instance(
             site: blog,
-            domainType: .mapped,
+            domainSelectionType: .purchaseWithPaidPlan,
             includeSupportButton: false
         )
 
