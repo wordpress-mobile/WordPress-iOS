@@ -16,9 +16,16 @@
         label.font = WPStyleGuide.tableviewSectionFooterFont()
         label.textColor = .secondaryLabel
 
-        let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ")
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 0.9
+
+        let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ", attributes: [
+            .paragraphStyle: paragraphStyle
+        ])
+
         if let attachmentURL = Constants.blogPostURL {
             let hyperlinkText = NSAttributedString(string: Constants.hyperlinkText, attributes: [
+                .paragraphStyle: paragraphStyle,
                 .attachment: attachmentURL,
                 .foregroundColor: UIColor.brand
             ])
@@ -106,6 +113,9 @@ private extension TwitterDeprecationTableFooterView {
     // MARK: Constants
 
     enum Constants {
+        // adjust attributedText's line height. The default settings look slightly stretched.
+        static let lineHeightMultiple = 0.9
+
         static let blogPostURL = URL(string: "https://wordpress.com/blog/2023/04/29/why-twitter-auto-sharing-is-coming-to-an-end/")
 
         static let deprecationNoticeText = NSLocalizedString(
