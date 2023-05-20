@@ -40,8 +40,6 @@ extension WPStyleGuide {
             return .gridicon(.print)
         case "email":
             return .gridicon(.mail)
-        case "google-plus-1":
-            iconName = "social-google-plus"
         case "press-this":
             iconName = "social-wordpress"
         default:
@@ -73,8 +71,6 @@ extension WPStyleGuide {
             return UIColor(fromRGBAColorWithRed: 59.0, green: 89.0, blue: 152.0, alpha: 1)
         case .Twitter:
             return UIColor(fromRGBAColorWithRed: 85, green: 172, blue: 238, alpha: 1)
-        case .Google:
-            return UIColor(fromRGBAColorWithRed: 220, green: 78, blue: 65, alpha: 1)
         case .LinkedIn:
             return UIColor(fromRGBAColorWithRed: 0, green: 119, blue: 181, alpha: 1)
         case .Tumblr:
@@ -87,7 +83,6 @@ extension WPStyleGuide {
     enum SharingServiceNames: String {
         case Facebook = "facebook"
         case Twitter = "twitter"
-        case Google = "google_plus"
         case LinkedIn = "linkedin"
         case Tumblr = "tumblr"
         case Path = "path"
