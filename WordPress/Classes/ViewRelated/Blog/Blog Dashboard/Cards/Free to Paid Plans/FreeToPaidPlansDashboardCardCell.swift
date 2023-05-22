@@ -52,7 +52,8 @@ final class FreeToPaidPlansDashboardCardCell: BaseDashboardDomainsCardCell {
                 title: Strings.title,
                 description: Strings.description,
                 hideThis: Strings.hideThis,
-                source: Strings.source
+                source: Strings.source,
+                accessibilityIdentifier: Strings.accessibilityIdentifier
             ),
             onViewShow: onViewShow,
             onViewTap: onViewTap,
@@ -74,5 +75,6 @@ extension FreeToPaidPlansDashboardCardCell {
                                                 value: "Hide this",
                                                 comment: "Title for a menu action in the context menu on the Free to Paid plans dashboard card.")
         static let source = "free_to_paid_plans_dashboard_card"
+        static let accessibilityIdentifier = "dashboard-free-to-paid-plans-card-contentview"
     }
 }
