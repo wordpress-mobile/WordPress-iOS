@@ -639,6 +639,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 mediaType = mediaType | WPMediaType.other.rawValue
             case .any:
                 mediaType = mediaType | WPMediaType.all.rawValue
+            @unknown default:
+                fatalError()
             }
         }
 
@@ -974,6 +976,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error, .fatal:
             DDLogError(message)
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -1059,6 +1063,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         switch buttonType {
             case .missingBlockAlertActionButton:
                 handleMissingBlockAlertButtonPressed()
+        @unknown default:
+            fatalError()
         }
     }
 
