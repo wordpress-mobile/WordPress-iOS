@@ -177,8 +177,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             return NSLocalizedString(@"Jetpack Social Connections", @"Section title for Publicize services in Sharing screen");
 
         case SharingSectionUnsupported:
-            return NSLocalizedString(@"Twitter Auto-sharing Is No Longer Available",
-                                     @"Section title for the disabled Twitter service in the Social screen");
+            return NSLocalizedStringWithDefaultValue(
+                                              @"social.section.disabledTwitter.header",
+                                              nil,
+                                              [NSBundle mainBundle],
+                                              @"Twitter Auto-Sharing Is No Longer Available",
+                                              @"Section title for the disabled Twitter service in the Social screen");
 
         case SharingSectionSharingButtons:
             return NSLocalizedString(@"Sharing Buttons", @"Section title for the sharing buttons section in the Sharing screen");
