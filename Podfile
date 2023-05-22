@@ -337,6 +337,8 @@ pre_install do |installer|
   end
   puts "Installing #{static.count} pods as static frameworks"
   puts "Installing #{dynamic.count} pods as dynamic frameworks"
+
+  gutenberg_pre_install_hook
 end
 
 post_install do |installer|
