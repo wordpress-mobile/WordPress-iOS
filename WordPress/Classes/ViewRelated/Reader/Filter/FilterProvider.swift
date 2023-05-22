@@ -257,7 +257,7 @@ extension ReaderTagTopic {
             let itemResult = result.map { tags in
                 tags.map { topic in
                     return TableDataItem(topic: topic, configure: { (cell) in
-                        cell.textLabel?.text = topic.slug
+                        cell.textLabel?.text = topic.slugForDisplay
                     })
                 }
             }
