@@ -1,0 +1,3 @@
+# The folder where our bespoke automatation downloads and unpacks the XCFrameworks archives.
+# Ideally, CocoaPods should do this, but for some reason I haven't yet been able to make it work.
+.build/
