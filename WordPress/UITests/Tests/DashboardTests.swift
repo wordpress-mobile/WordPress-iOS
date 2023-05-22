@@ -25,5 +25,7 @@ class DashboardTests: XCTestCase {
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
             .verifyDomainsSuggestionsScreenLoaded()
+            .selectDomain()
+            .confirmDomainSelection()
     }
 }
