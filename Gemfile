@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'archive-tar-minitar'
 gem 'cocoapods', '~> 1.11'
 gem 'commonmarker'
 gem 'danger', '~> 9.3'
