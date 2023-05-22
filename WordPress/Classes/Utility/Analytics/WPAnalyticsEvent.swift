@@ -483,6 +483,9 @@ import Foundation
     case directDomainsPurchaseDashboardCardTapped
     case directDomainsPurchaseDashboardCardHidden
 
+    // Jetpack Social - Twitter Deprecation Notice
+    case jetpackSocialTwitterNoticeLinkTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1313,6 +1316,10 @@ import Foundation
             return "direct_domains_purchase_dashboard_card_hidden"
         case .directDomainsPurchaseDashboardCardTapped:
             return "direct_domains_purchase_dashboard_card_tapped"
+
+        // Jetpack Social - Twitter Deprecation Notice
+        case .jetpackSocialTwitterNoticeLinkTapped:
+            return "twitter_notice_link_tapped"
 
         } // END OF SWITCH
     }
