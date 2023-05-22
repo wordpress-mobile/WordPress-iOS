@@ -19,4 +19,8 @@ open class PublicizeService: NSManagedObject {
     @NSManaged open var serviceID: String
     @NSManaged open var type: String
     @NSManaged open var status: String
+
+    @objc open var isSupported: Bool {
+        status == Self.defaultStatus
+    }
 }

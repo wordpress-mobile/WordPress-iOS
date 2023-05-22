@@ -16,9 +16,16 @@
         label.font = WPStyleGuide.tableviewSectionFooterFont()
         label.textColor = .secondaryLabel
 
-        let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ")
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = Constants.lineHeightMultiple
+
+        let attributedString = NSMutableAttributedString(string: "\(Constants.deprecationNoticeText) ", attributes: [
+            .paragraphStyle: paragraphStyle
+        ])
+
         if let attachmentURL = Constants.blogPostURL {
             let hyperlinkText = NSAttributedString(string: Constants.hyperlinkText, attributes: [
+                .paragraphStyle: paragraphStyle,
                 .attachment: attachmentURL,
                 .foregroundColor: UIColor.brand
             ])
@@ -53,12 +60,7 @@ private extension TwitterDeprecationTableFooterView {
         label.addGestureRecognizer(tapGesture)
 
         contentView.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
-            label.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor),
-            label.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor)
-        ])
+        contentView.pinSubviewToAllEdgeMargins(label)
     }
 
     @objc func labelTapped(_ sender: UITapGestureRecognizer) {
@@ -88,9 +90,7 @@ private extension TwitterDeprecationTableFooterView {
             return
         }
 
-        let range = NSMakeRange(characterIndex, 1)
         let attributes = attributedText.attributes(at: characterIndex, effectiveRange: nil)
-
         guard let attachmentURL = attributes[.attachment] as? URL else {
             return
         }
@@ -106,6 +106,9 @@ private extension TwitterDeprecationTableFooterView {
     // MARK: Constants
 
     enum Constants {
+        // adjust attributedText's line height. The default settings look slightly stretched.
+        static let lineHeightMultiple = 0.9
+
         static let blogPostURL = URL(string: "https://wordpress.com/blog/2023/04/29/why-twitter-auto-sharing-is-coming-to-an-end/")
 
         static let deprecationNoticeText = NSLocalizedString(
