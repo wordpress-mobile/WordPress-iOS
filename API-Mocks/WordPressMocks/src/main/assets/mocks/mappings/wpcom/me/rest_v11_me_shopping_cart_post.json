@@ -1,6 +1,6 @@
 {
     "request": {
-      "urlPattern": "/rest/v1.1/me/shopping-cart/*",
+      "urlPattern": "/rest/v1.1/me/shopping-cart/.*",
       "method": "POST"
     },
     "response": {

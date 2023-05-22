@@ -37,8 +37,8 @@ public class DomainsSuggestionsScreen: ScreenObject {
     }
 
     @discardableResult
-    public func confirmDomainSelection() throws -> Self {
+    public func goToPlanSelection() throws -> PlanSelectionScreen {
         app.buttons["Select domain"].tap()
-        return self
+        return try PlanSelectionScreen()
     }
 }

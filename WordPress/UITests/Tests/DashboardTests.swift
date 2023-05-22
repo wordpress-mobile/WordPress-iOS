@@ -2,7 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class DashboardTests: XCTestCase {
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
@@ -26,6 +25,7 @@ class DashboardTests: XCTestCase {
             .tapFreeToPaidPlansCard()
             .verifyDomainsSuggestionsScreenLoaded()
             .selectDomain()
-            .confirmDomainSelection()
+            .goToPlanSelection()
+            .verifyPlanSelectionScreenLoaded()
     }
 }
