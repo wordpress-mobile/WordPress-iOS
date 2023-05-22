@@ -17,6 +17,9 @@ Metrics/MethodLength:
   Max: 30
   Exclude: *xfiles
 
+Metrics/BlockLength:
+  Exclude: *.podspec
+
 Layout/LineLength:
   Max: 180
   Exclude: *xfiles

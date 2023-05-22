@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
+require 'pathname'
+require_relative './version'
+
 # A spec for a pod whose only job is delegating the XCFrameworks integration to CocoaPods.
 #
 # This is used to fetch Gutenberg builds that come from commits instead of tags.
 # Builds from tags are "official" and stable, so we distribute them via GitHub we'll eventually publish them on CocoaPods.
 # The artifacts for builds from commits are instead only stored on an Automattic's server.
 Pod::Spec.new do |s|
-  require_relative './version'
-
   raise 'Could not find Gutenberg version configuration' if GUTENBERG_CONFIG.nil?
 
   gutenberg_version = GUTENBERG_CONFIG[:commit]
@@ -37,12 +38,21 @@ Pod::Spec.new do |s|
   # Tell CocoaPods where to download the XCFramework(s) archive with `source` and what to use from its decompressed contents with `vendored_frameworks`.
   #
   # See https://github.com/CocoaPods/CocoaPods/issues/10288
-  s.source = { http: xcframework_archive_url }
+  #
+  # I can't get this to work out of the box, so instead of using a URL we take
+  # care of downloading and unarchiving and use a local source.
+  #
+  # s.source = { http: xcframework_archive_url }
+  s.source = { http: "file://#{GUTENBERG_DOWNLOADS_DIRECTORY}/Gutenberg-#{gutenberg_version}.tar.gz" }
   s.vendored_frameworks = [
     'Aztec.xcframework',
     'Gutenberg.xcframework',
     'React.xcframework',
     'RNTAztecView.xcframework',
     'yoga.xcframework'
-  ].map { |f| "Gutenberg/#{f}" } # prefix with the name of the folder generated when unarchiving
+  ].map do |f|
+    # This needs to be a relative path to the local extraction location and account for the archive folder structure.
+    Pathname.new("#{GUTENBERG_ARCHIVE_DIRECTORY}/Frameworks/#{f}")
+            .relative_path_from(__dir__).to_s
+  end
 end
