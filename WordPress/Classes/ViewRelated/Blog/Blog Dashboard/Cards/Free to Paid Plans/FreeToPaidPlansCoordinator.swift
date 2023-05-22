@@ -16,6 +16,8 @@ import UIKit
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
             let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
             domainSuggestionsViewController.show(planSelectionViewController, sender: nil)
+
+            PlansTracker.trackPlanSelectionWebViewViewed(.domainAndPlanPackage, source: "domains_register")
         }
 
         dashboardViewController.show(domainSuggestionsViewController, sender: nil)
