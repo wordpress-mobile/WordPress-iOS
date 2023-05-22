@@ -13,8 +13,9 @@ import UIKit
         )
 
         domainSuggestionsViewController.domainAddedToCartCallback = {
-            // TODO: Present Plans Selection and Checkout Flow
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/20688
+            guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
+            let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
+            domainSuggestionsViewController.show(planSelectionViewController, sender: nil)
         }
 
         dashboardViewController.show(domainSuggestionsViewController, sender: nil)
