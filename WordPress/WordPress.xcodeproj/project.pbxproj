@@ -156,9 +156,8 @@
 		011F52C62A15413800B04114 /* FreeToPaidPlansDashboardCardHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C52A15413800B04114 /* FreeToPaidPlansDashboardCardHelperTests.swift */; };
 		011F52C82A16551A00B04114 /* FreeToPaidPlansCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */; };
 		011F52C92A16551A00B04114 /* FreeToPaidPlansCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */; };
-		011F52CF2A17A86500B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52CE2A17A86500B04114 /* PlansTracker.swift */; };
-		011F52D02A17A86500B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52CE2A17A86500B04114 /* PlansTracker.swift */; };
-		011F52D12A17C05600B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52CE2A17A86500B04114 /* PlansTracker.swift */; };
+		011F52D32A1B84FF00B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D22A1B84FF00B04114 /* PlansTracker.swift */; };
+		011F52D42A1B84FF00B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D22A1B84FF00B04114 /* PlansTracker.swift */; };
 		01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */; };
 		01281E9C2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
 		01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
@@ -3664,6 +3663,7 @@
 		F4D9AF53288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF52288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift */; };
 		F4DD58322A095210009A772D /* DataMigrationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DD58312A095210009A772D /* DataMigrationError.swift */; };
 		F4DD58332A095210009A772D /* DataMigrationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DD58312A095210009A772D /* DataMigrationError.swift */; };
+		F4DD58362A168229009A772D /* ReaderPostCellActionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DD58352A168229009A772D /* ReaderPostCellActionsTests.swift */; };
 		F4DDE2C229C92F0D00C02A76 /* CrashLogging+Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DDE2C129C92F0D00C02A76 /* CrashLogging+Singleton.swift */; };
 		F4DDE2C329C92F0D00C02A76 /* CrashLogging+Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DDE2C129C92F0D00C02A76 /* CrashLogging+Singleton.swift */; };
 		F4E79301296EEE320025E8E0 /* MigrationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E79300296EEE320025E8E0 /* MigrationState.swift */; };
@@ -5795,7 +5795,7 @@
 		011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardHelper.swift; sourceTree = "<group>"; };
 		011F52C52A15413800B04114 /* FreeToPaidPlansDashboardCardHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardHelperTests.swift; sourceTree = "<group>"; };
 		011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansCoordinator.swift; sourceTree = "<group>"; };
-		011F52CE2A17A86500B04114 /* PlansTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansTracker.swift; sourceTree = "<group>"; };
+		011F52D22A1B84FF00B04114 /* PlansTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansTracker.swift; sourceTree = "<group>"; };
 		01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsSuggestionsScreen.swift; sourceTree = "<group>"; };
 		01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationTests.swift; sourceTree = "<group>"; };
 		0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfiguration.swift; sourceTree = "<group>"; };
@@ -9025,6 +9025,7 @@
 		F4D9AF50288AE23500803D40 /* SuggestionTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewTests.swift; sourceTree = "<group>"; };
 		F4D9AF52288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsTableViewDelegateMock.swift; sourceTree = "<group>"; };
 		F4DD58312A095210009A772D /* DataMigrationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationError.swift; sourceTree = "<group>"; };
+		F4DD58352A168229009A772D /* ReaderPostCellActionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCellActionsTests.swift; sourceTree = "<group>"; };
 		F4DDE2C129C92F0D00C02A76 /* CrashLogging+Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CrashLogging+Singleton.swift"; sourceTree = "<group>"; };
 		F4E79300296EEE320025E8E0 /* MigrationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationState.swift; sourceTree = "<group>"; };
 		F4EDAA4B29A516E900622D3D /* ReaderPostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostService.swift; sourceTree = "<group>"; };
@@ -9683,10 +9684,10 @@
 		011F52BB2A15324800B04114 /* Free to Paid Plans */ = {
 			isa = PBXGroup;
 			children = (
+				011F52D22A1B84FF00B04114 /* PlansTracker.swift */,
 				011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */,
 				011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */,
 				011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */,
-				011F52CE2A17A86500B04114 /* PlansTracker.swift */,
 			);
 			path = "Free to Paid Plans";
 			sourceTree = "<group>";
@@ -16768,6 +16769,7 @@
 				3F5094592454EC7A00C4470B /* Tabbed Reader */,
 				08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */,
 				08B954F228535EE800B07185 /* FeatureHighlightStoreTests.swift */,
+				F4DD58352A168229009A772D /* ReaderPostCellActionsTests.swift */,
 			);
 			name = Reader;
 			sourceTree = "<group>";
@@ -21047,6 +21049,7 @@
 				40F50B7E22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FAD95D2725B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
+				011F52D32A1B84FF00B04114 /* PlansTracker.swift in Sources */,
 				9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */,
 				C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */,
 				83C972E0281C45AB0049E1FE /* Post+BloggingPrompts.swift in Sources */,
@@ -21777,7 +21780,6 @@
 				404B35D322E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */,
 				80B016D12803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */,
-				011F52CF2A17A86500B04114 /* PlansTracker.swift in Sources */,
 				E64595F0256B5D7800F7F90C /* CommentAnalytics.swift in Sources */,
 				4A2172F828EAACFF0006F4F1 /* BlogQuery.swift in Sources */,
 				FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */,
@@ -23387,6 +23389,7 @@
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				17FC0032264D728E00FCBD37 /* SharingServiceTests.swift in Sources */,
 				D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */,
+				F4DD58362A168229009A772D /* ReaderPostCellActionsTests.swift in Sources */,
 				3236F7A124B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift in Sources */,
 				40E7FEC52211DF790032834E /* StatsRecordTests.swift in Sources */,
 				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
@@ -23568,7 +23571,6 @@
 				EA14533129AD874C001F3143 /* WPUITestCredentials.swift in Sources */,
 				EA14533229AD874C001F3143 /* SignupTests.swift in Sources */,
 				EA14533329AD874C001F3143 /* EditorFlow.swift in Sources */,
-				011F52D12A17C05600B04114 /* PlansTracker.swift in Sources */,
 				01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */,
 				EA14533429AD874C001F3143 /* UIApplication+mainWindow.swift in Sources */,
 				EA14533529AD874C001F3143 /* LoginFlow.swift in Sources */,
@@ -24994,6 +24996,7 @@
 				FEA7949126DF7F3700CEC520 /* WPStyleGuide+CommentDetail.swift in Sources */,
 				011896A029D30CAD00D34BA9 /* DomainsDashboardCardTracker.swift in Sources */,
 				FABB24C82602FC2C00C8785C /* StockPhotosPicker.swift in Sources */,
+				011F52D42A1B84FF00B04114 /* PlansTracker.swift in Sources */,
 				FABB24CA2602FC2C00C8785C /* UnifiedPrologueViewController.swift in Sources */,
 				FABB24CC2602FC2C00C8785C /* CollapsableHeaderViewController.swift in Sources */,
 				FABB24CD2602FC2C00C8785C /* Blog+Lookup.swift in Sources */,
@@ -25065,7 +25068,6 @@
 				010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FABB24FE2602FC2C00C8785C /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				FABB24FF2602FC2C00C8785C /* ChangeUsernameViewModel.swift in Sources */,
-				011F52D02A17A86500B04114 /* PlansTracker.swift in Sources */,
 				C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */,
 				FABB25002602FC2C00C8785C /* PlansLoadingIndicatorView.swift in Sources */,
 				FABB25012602FC2C00C8785C /* JetpackScanThreatDetailsViewController.swift in Sources */,
