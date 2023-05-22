@@ -100,6 +100,8 @@ extension Gutenberg.MediaType {
             return kUTTypeAudio
         case .other, .any: // needs to be specified by the blog's allowed types.
             return nil
+        @unknown default:
+            fatalError()
         }
     }
 }
