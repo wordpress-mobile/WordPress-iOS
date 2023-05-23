@@ -1,21 +1,20 @@
 import UIKit
 import WordPressFlux
 
-final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
+final class DashboardDomainRegistrationCardCell: BaseDashboardDomainsCardCell {
+
+    // MARK: - View Model
 
     override var viewModel: DashboardDomainsCardViewModel {
-        return cardViewModel ?? .empty
+        return cardViewModel
     }
 
-    private lazy var cardViewModel: DashboardDomainsCardViewModel? = {
-        guard let props = Unwrapped(presentingViewController: presentingViewController, blog: blog) else {
-            return nil
-        }
+    private lazy var cardViewModel: DashboardDomainsCardViewModel = {
         let onViewTap: () -> Void = { [weak self] in
-            self?.cardTapped(props: props)
+            self?.cardTapped()
         }
         let onHideThisTap: UIActionHandler = { [weak self] _ in
-            self?.hideCardTapped(props: props)
+            self?.hideCardTapped()
         }
         return DashboardDomainsCardViewModel(
             strings: .init(
@@ -31,7 +30,10 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
 
     // MARK: - User Interaction
 
-    private func cardTapped(props: Unwrapped) {
+    private func cardTapped() {
+        guard let props = makeUnwrappedProperties() else {
+            return
+        }
         WPAnalytics.track(.domainCreditRedemptionTapped)
         DomainsDashboardCoordinator.presentDomainsSuggestions(
             in: props.presentingViewController,
@@ -40,9 +42,12 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
         )
     }
 
-    private func hideCardTapped(props: Unwrapped) {
+    private func hideCardTapped() {
+        guard let props = makeUnwrappedProperties() else {
+            return
+        }
         let service = BlogDashboardPersonalizationService(siteID: props.siteID.intValue)
-        service.setEnabled(false, for: .registerDomain)
+        service.setEnabled(false, for: .domainRegistration)
     }
 
     // MARK: - Constants
@@ -77,10 +82,15 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
         Self.hasLoggedDomainCreditPromptShownEvent = true
     }
 
+    // MARK: - Helpers
+
+    private func makeUnwrappedProperties() -> Unwrapped? {
+        return Unwrapped(presentingViewController: presentingViewController, blog: blog)
+    }
+
     // MARK: - Supporting Types
 
     private struct Unwrapped {
-
         let presentingViewController: BlogDashboardViewController
         let blog: Blog
         let siteID: NSNumber
