@@ -34,7 +34,7 @@ struct PlansTracker {
 
     static func trackPlanSelectionWebViewViewed(_ type: PlanSelectionType, source: String) {
         let properties = ["source": source, planSelectionTypeKey: type.rawValue]
-        WPAnalytics.track(.freeToPaidPlansDashboardCardMenuTapped, properties: properties)
+        WPAnalytics.track(.planSelectionWebViewViewed, properties: properties)
     }
 
     // MARK: - Checkout
