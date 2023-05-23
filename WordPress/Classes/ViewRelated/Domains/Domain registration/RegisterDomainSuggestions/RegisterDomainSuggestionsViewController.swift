@@ -10,6 +10,17 @@ enum DomainSelectionType {
     case purchaseSeparately
 }
 
+private extension DomainSelectionType {
+    var analyticsSource: String {
+        switch self {
+        case .purchaseWithPaidPlan:
+            return "plan_selection"
+        case .registerWithPaidPlan, .purchaseSeparately:
+            return "domains_register"
+        }
+    }
+}
+
 class RegisterDomainSuggestionsViewController: UIViewController {
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
@@ -218,7 +229,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
 
-        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+        var properties = WPAnalytics.domainsProperties(for: site)
+        properties["source"] = domainSelectionType.analyticsSource
+        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: properties, blog: site)
 
         switch domainSelectionType {
         case .registerWithPaidPlan:
