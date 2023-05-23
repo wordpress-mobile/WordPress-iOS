@@ -317,9 +317,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     cell.detailTextLabel.text = str;
 
+    if (![publicizer isSupported]) {
+        cell.accessoryView = [WPStyleGuide sharingCellErrorAccessoryImageView];
+        return;
+    }
+
     // Check if any of the connections are broken.
     for (PublicizeConnection *pubConn in connections) {
-        if ([pubConn requiresUserAction] && [publicizer.status isEqualToString:PublicizeService.defaultStatus]) {
+        if ([pubConn requiresUserAction]) {
             cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
             break;
         }
