@@ -1,15 +1,37 @@
 import UIKit
 import WordPressFlux
 
-final class DashboardRegisterDomainCardCell: UICollectionViewCell, Reusable {
+final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
+
+    override var viewModel: DashboardDomainsCardViewModel {
+        return cardViewModel
+    }
+
+    private lazy var cardViewModel: DashboardDomainsCardViewModel = {
+        let onViewTap: () -> Void = { [weak self] in
+        }
+        let onEllipsisTap: () -> Void = { [weak self] in
+        }
+        let onHideThisTap: UIActionHandler = { [weak self] _ in
+        }
+        return DashboardDomainsCardViewModel(
+            strings: .init(
+                title: Strings.title,
+                description: Strings.content,
+                hideThis: Strings.hideThis,
+                source: "domains_dashboard_card"
+            ),
+            onViewTap: onViewTap,
+            onEllipsisTap: onEllipsisTap,
+            onHideThisTap: onHideThisTap
+        )
+    }()
+
+    // MARK: - User Interaction
 
     // MARK: - Constants
 
-    enum Constants {
-        static let spacing: CGFloat = 20
-        static let iconSize = CGSize(width: 18, height: 18)
-        static let constraintPriority = UILayoutPriority(999)
-    }
+    private static var hasLoggedDomainCreditPromptShownEvent: Bool = false
 
     private enum Strings {
         static let title = NSLocalizedString("Register Domain", comment: "Action to redeem domain credit.")
@@ -17,46 +39,14 @@ final class DashboardRegisterDomainCardCell: UICollectionViewCell, Reusable {
             "All WordPress.com plans include a custom domain name. Register your free premium domain now.",
             comment: "Information about redeeming domain credit on site dashboard."
         )
+        static let hideThis = NSLocalizedString(
+            "domain.dashboard.card.menu.hide",
+            value: "Hide this",
+            comment: "Title for a menu action in the context menu on the Jetpack install card."
+        )
     }
 
-    private static var hasLoggedDomainCreditPromptShownEvent: Bool = false
-
-    // MARK: - Views
-
-    private let frameView = BlogDashboardCardFrameView()
-
-    private let contentLabel: UILabel = {
-        let label = UILabel()
-        label.text = Strings.content
-        label.numberOfLines = 0
-        label.textColor = .secondaryLabel
-        label.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
-        return label
-    }()
-
-    private let contentStackView: UIStackView = {
-        let view = UIStackView()
-        view.isLayoutMarginsRelativeArrangement = true
-        return view
-    }()
-
-    // MARK: - Initializers
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let headerMargins = frameView.headerMargins
-        self.contentStackView.layoutMargins = .init(top: 0, left: headerMargins.left, bottom: 0, right: headerMargins.right)
-    }
+    // MARK: - View Lifecycle
 
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -65,16 +55,5 @@ final class DashboardRegisterDomainCardCell: UICollectionViewCell, Reusable {
         }
         WPAnalytics.track(WPAnalyticsStat.domainCreditPromptShown)
         Self.hasLoggedDomainCreditPromptShownEvent = true
-    }
-
-    // MARK: - Helpers
-
-    private func commonInit() {
-        frameView.setTitle(Strings.title, titleHint: nil)
-        frameView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(frameView)
-        contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
-        contentStackView.addArrangedSubview(contentLabel)
-        frameView.add(subview: contentStackView)
     }
 }
