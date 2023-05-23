@@ -12,14 +12,16 @@ import UIKit
             includeSupportButton: false
         )
 
+        let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
+
         domainSuggestionsViewController.domainAddedToCartCallback = {
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
             let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
-            domainSuggestionsViewController.show(planSelectionViewController, sender: nil)
+            navigationController.pushViewController(planSelectionViewController, animated: true)
 
             PlansTracker.trackPlanSelectionWebViewViewed(.domainAndPlanPackage, source: "domains_register")
         }
 
-        dashboardViewController.show(domainSuggestionsViewController, sender: nil)
+        dashboardViewController.present(navigationController, animated: true)
     }
 }
