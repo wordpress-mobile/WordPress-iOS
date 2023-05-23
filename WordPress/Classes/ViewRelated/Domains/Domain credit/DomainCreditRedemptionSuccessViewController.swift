@@ -41,7 +41,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         title.textAlignment = .center
         title.font = WPStyleGuide.serifFontForTextStyle(.largeTitle)
         title.textColor = .white
-        title.text = TextContent.title
+        title.text = TextContent.titleString
         title.adjustsFontForContentSizeCategory = true
         return title
     }()
@@ -186,7 +186,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     }
 
     private func makeDomainDetailsString(domain: String) -> String {
-        String(format: TextContent.domainDetailsString, domain)
+        String(format: TextContent.descriptionString, domain)
     }
 
     // MARK: - Actions
@@ -200,9 +200,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     private let subtitleFont = UIFont.preferredFont(forTextStyle: .title3)
 
     private enum TextContent {
-        static let title = NSLocalizedString("Congratulations on your purchase!", comment: "Title of domain name purchase success screen")
-        static let domainDetailsString = NSLocalizedString("Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.",
-                                                           comment: "Details about recently acquired domain on domain credit redemption success screen")
+        static let titleString = NSLocalizedString("domainPurchase.success.title", value: "All ready to go!", comment: "Title of domain name purchase success screen")
+        static let descriptionString = NSLocalizedString("domainPurchase.success.description", value: "Your new domain %1$@ is being set up.", comment: "Description of the recently acquired domain.")
+        static let activationString = NSLocalizedString("domainPurchase.success.activationDetails", value: "It may take up to 30 minutes for your domain to start working properly", comment: "Explanation of the time it takes for domain to start working after the purchase")
         static let doneButtonTitle = NSLocalizedString("Done",
                                                        comment: "Done button title")
     }
