@@ -95,7 +95,7 @@ private extension TwitterDeprecationTableFooterView {
             return
         }
 
-        // TODO: Tracking
+        WPAnalytics.track(.jetpackSocialTwitterNoticeLinkTapped, properties: ["source": source])
 
         // Ideally this shouldn't be the responsibility of this class, but I'm keeping it simple since it's temporary.
         let webViewController = WebViewControllerFactory.controller(url: attachmentURL, source: source)
