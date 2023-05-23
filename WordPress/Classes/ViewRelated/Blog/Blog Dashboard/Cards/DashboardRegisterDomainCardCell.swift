@@ -19,7 +19,7 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
                 title: Strings.title,
                 description: Strings.content,
                 hideThis: Strings.hideThis,
-                source: "domains_dashboard_card"
+                source: Strings.source
             ),
             onViewTap: onViewTap,
             onEllipsisTap: onEllipsisTap,
@@ -34,7 +34,10 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
     private static var hasLoggedDomainCreditPromptShownEvent: Bool = false
 
     private enum Strings {
-        static let title = NSLocalizedString("Register Domain", comment: "Action to redeem domain credit.")
+        static let title = NSLocalizedString(
+            "Register Domain",
+            comment: "Action to redeem domain credit."
+        )
         static let content = NSLocalizedString(
             "All WordPress.com plans include a custom domain name. Register your free premium domain now.",
             comment: "Information about redeeming domain credit on site dashboard."
@@ -44,6 +47,7 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
             value: "Hide this",
             comment: "Title for a menu action in the context menu on the Jetpack install card."
         )
+        static let source = "domain_registration_dashboard_card"
     }
 
     // MARK: - View Lifecycle
