@@ -36,23 +36,24 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     private lazy var titleLabel: UILabel = {
         let title = UILabel()
-        title.numberOfLines = 0
-        title.lineBreakMode = .byWordWrapping
-        title.textAlignment = .center
-        title.font = WPStyleGuide.serifFontForTextStyle(.largeTitle)
-        title.textColor = .white
-        title.text = TextContent.titleString
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
         title.adjustsFontForContentSizeCategory = true
+        title.adjustsFontSizeToFitWidth = true
+        title.numberOfLines = 0
+        title.textColor = .text
+        title.text = TextContent.titleString
         return title
     }()
 
     private lazy var subtitleLabel: UILabel = {
         let subtitle = UILabel()
-        subtitle.numberOfLines = 0
-        subtitle.lineBreakMode = .byWordWrapping
-        subtitle.textAlignment = .center
-        subtitle.textColor = .white
+        subtitle.translatesAutoresizingMaskIntoConstraints = false
+        subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitle.adjustsFontForContentSizeCategory = true
+        subtitle.adjustsFontSizeToFitWidth = true
+        subtitle.numberOfLines = 0
+        subtitle.textColor = .text
 
         let subtitleText = makeDomainDetailsString(domain: domain)
         subtitle.attributedText = applyDomainStyle(to: subtitleText, domain: domain)
@@ -68,14 +69,14 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     private lazy var doneButton: FancyButton = {
         let button = FancyButton()
-        button.isPrimary = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(TextContent.doneButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        button.isPrimary = false
+        button.isPrimary = true
+        button.primaryNormalBackgroundColor = .jetpackGreen
+        button.primaryHighlightBackgroundColor = .muriel(color: .jetpackGreen, .shade80)
         button.accessibilityIdentifier = Accessibility.doneButtonIdentifier
         button.accessibilityHint = Accessibility.doneButtonHint
-        button.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .muriel(name: .blue, .shade40))
         return button
     }()
 
@@ -87,14 +88,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         return view
     }()
-
-    private lazy var divider: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(white: 1.0, alpha: 0.3)
-        return view
-    }()
-
 
     // MARK: - View lifecycle
 
@@ -119,8 +112,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor(light: .primary, dark: .secondarySystemBackground)
-
+        view.backgroundColor = .basicBackground
         navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupViewHierarchy()
@@ -133,7 +125,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         scrollView.addSubview(stackViewContainer)
         view.addSubview(scrollView)
         view.addSubview(doneButtonContainer)
-        view.addSubview(divider)
     }
 
     private func configureConstraints() {
@@ -161,11 +152,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             doneButtonContainer.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
             doneButtonContainer.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
             doneButtonContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonControllerMinHeight),
-
-            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            divider.bottomAnchor.constraint(equalTo: doneButtonContainer.topAnchor),
-            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
         ])
     }
 
