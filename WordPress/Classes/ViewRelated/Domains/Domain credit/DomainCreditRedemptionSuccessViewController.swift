@@ -89,6 +89,36 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         return view
     }()
 
+    private lazy var informationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = Metrics.stackViewSpacing
+        stackView.alignment = .fill
+        stackView.backgroundColor = UIColor.secondarySystemBackground
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = Metrics.informationViewMargins
+        stackView.layer.cornerRadius = 8
+
+        let infoIconImage = UIImage(systemName: "info.circle")?.withTintColor(.textSubtle, renderingMode: .alwaysOriginal)
+        let infoIconImageView = UIImageView(image: infoIconImage)
+        infoIconImageView.contentMode = .scaleAspectFit
+        infoIconImageView.frame = CGRect(origin: .zero, size: Metrics.iconImageSize)
+
+        let informationLabel = UILabel()
+        informationLabel.translatesAutoresizingMaskIntoConstraints = false
+        informationLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        informationLabel.adjustsFontForContentSizeCategory = true
+        informationLabel.adjustsFontSizeToFitWidth = true
+        informationLabel.numberOfLines = 0
+        informationLabel.textColor = .textSubtle
+        informationLabel.text = TextContent.informationString
+
+        stackView.addArrangedSubviews([infoIconImageView, informationLabel])
+
+        return stackView
+    }()
+
     // MARK: - View lifecycle
 
     init(domain: String, continueButtonPressed: @escaping (String) -> Void) {
@@ -120,7 +150,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     }
 
     private func setupViewHierarchy() {
-        stackView.addArrangedSubviews([illustration, titleLabel, subtitleLabel])
+        stackView.addArrangedSubviews([illustration, titleLabel, subtitleLabel, informationStackView])
+        stackView.setCustomSpacing(Metrics.stackViewSpacing * 2, after: illustration)
+        stackView.setCustomSpacing(Metrics.stackViewSpacing * 2, after: subtitleLabel)
         stackViewContainer.addSubview(stackView)
         scrollView.addSubview(stackViewContainer)
         view.addSubview(scrollView)
@@ -188,7 +220,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     private enum TextContent {
         static let titleString = NSLocalizedString("domainPurchase.success.title", value: "All ready to go!", comment: "Title of domain name purchase success screen")
         static let descriptionString = NSLocalizedString("domainPurchase.success.description", value: "Your new domain %1$@ is being set up.", comment: "Description of the recently acquired domain.")
-        static let activationString = NSLocalizedString("domainPurchase.success.activationDetails", value: "It may take up to 30 minutes for your domain to start working properly", comment: "Explanation of the time it takes for domain to start working after the purchase")
+        static let informationString = NSLocalizedString("domainPurchase.success.information", value: "It may take up to 30 minutes for your domain to start working properly", comment: "Explanation of the time it takes for domain to start working after the purchase")
         static let doneButtonTitle = NSLocalizedString("Done",
                                                        comment: "Done button title")
     }
@@ -198,6 +230,8 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         static let buttonControllerMinHeight: CGFloat = 84.0
         static let edgePadding: CGFloat = 20.0
         static let doneButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let informationViewMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let iconImageSize = CGSize(width: 24, height: 24)
     }
 
     private enum Accessibility {
