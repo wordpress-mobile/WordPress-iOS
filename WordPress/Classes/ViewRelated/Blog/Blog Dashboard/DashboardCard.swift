@@ -111,7 +111,7 @@ enum DashboardCard: String, CaseIterable {
         case .freeToPaidPlansDashboardCard:
             return FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
         case .registerDomain:
-            return true
+            return DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
         case .empty:
             return false // Controlled manually based on other cards visibility
         case .personalize:
