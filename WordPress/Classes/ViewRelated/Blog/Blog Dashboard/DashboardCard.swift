@@ -13,6 +13,7 @@ enum DashboardCard: String, CaseIterable {
     case blaze
     case domainsDashboardCard
     case freeToPaidPlansDashboardCard
+    case registerDomain
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
@@ -59,6 +60,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardDomainsCardCell.self
         case .freeToPaidPlansDashboardCard:
             return FreeToPaidPlansDashboardCardCell.self
+        case .registerDomain:
+            return DashboardRegisterDomainCardCell.self
         case .empty:
             return BlogDashboardEmptyStateCell.self
         case .personalize:
@@ -107,6 +110,8 @@ enum DashboardCard: String, CaseIterable {
             return DomainsDashboardCardHelper.shouldShowCard(for: blog) && !FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
         case .freeToPaidPlansDashboardCard:
             return FreeToPaidPlansDashboardCardHelper.shouldShowCard(for: blog)
+        case .registerDomain:
+            return true
         case .empty:
             return false // Controlled manually based on other cards visibility
         case .personalize:
