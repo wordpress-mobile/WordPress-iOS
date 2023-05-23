@@ -32,7 +32,7 @@ public class DomainsSuggestionsScreen: ScreenObject {
 
     @discardableResult
     public func selectDomain() throws -> Self {
-        app.cells.lastMatch?.tap()
+        app.tables["DomainSuggestionsTable"].cells.lastMatch?.tap()
         return self
     }
 
