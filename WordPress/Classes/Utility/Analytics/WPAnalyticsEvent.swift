@@ -487,6 +487,18 @@ import Foundation
     case directDomainsPurchaseDashboardCardTapped
     case directDomainsPurchaseDashboardCardHidden
 
+    // Free to Paid Plans Dashboard Card
+    case freeToPaidPlansDashboardCardShown
+    case freeToPaidPlansDashboardCardTapped
+    case freeToPaidPlansDashboardCardMenuTapped
+    case freeToPaidPlansDashboardCardHidden
+
+    // Plan Selection
+    case planSelectionWebViewViewed
+
+    // Checkout
+    case checkoutWebViewViewed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1325,6 +1337,24 @@ import Foundation
             return "direct_domains_purchase_dashboard_card_hidden"
         case .directDomainsPurchaseDashboardCardTapped:
             return "direct_domains_purchase_dashboard_card_tapped"
+
+        // Free to Paid Plans Dashboard Card
+        case .freeToPaidPlansDashboardCardShown:
+            return "free_to_paid_plan_dashboard_card_shown"
+        case .freeToPaidPlansDashboardCardHidden:
+            return "free_to_paid_plan_dashboard_card_hidden"
+        case .freeToPaidPlansDashboardCardTapped:
+            return "free_to_paid_plan_dashboard_card_tapped"
+        case .freeToPaidPlansDashboardCardMenuTapped:
+            return "free_to_paid_plan_dashboard_card_menu_tapped"
+
+        // Plan Selection
+        case .planSelectionWebViewViewed:
+            return "plan_selection_webview_viewed"
+
+        // Checkout
+        case .checkoutWebViewViewed:
+            return "checkout_webview_viewed"
 
         } // END OF SWITCH
     }

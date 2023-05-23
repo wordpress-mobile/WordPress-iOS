@@ -94,7 +94,7 @@ class BaseDashboardDomainsCardCell: DashboardCollectionViewCell {
         self.blog = blog
         self.presentingViewController = viewController
 
-        DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardShown(in: row)
+        viewModel.onViewShow()
     }
 }
 
@@ -140,15 +140,18 @@ struct DashboardDomainsCardViewModel {
     }
 
     let strings: DashboardDomainsCardViewModel.Strings
+    let onViewShow: () -> Void
     let onViewTap: () -> Void
     let onEllipsisTap: () -> Void
     let onHideThisTap: UIActionHandler
 
     init(strings: DashboardDomainsCardViewModel.Strings,
+         onViewShow: @escaping () -> Void = {},
          onViewTap: @escaping () -> Void = {},
          onEllipsisTap: @escaping () -> Void = {},
          onHideThisTap: @escaping UIActionHandler = { _ in }) {
         self.strings = strings
+        self.onViewShow = onViewShow
         self.onViewTap = onViewTap
         self.onEllipsisTap = onEllipsisTap
         self.onHideThisTap = onHideThisTap

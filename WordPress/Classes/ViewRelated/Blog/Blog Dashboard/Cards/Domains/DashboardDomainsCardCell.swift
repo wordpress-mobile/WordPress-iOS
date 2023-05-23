@@ -6,6 +6,14 @@ final class DashboardDomainsCardCell: BaseDashboardDomainsCardCell {
     }
 
     private lazy var cardViewModel: DashboardDomainsCardViewModel = {
+        let onViewShow: () -> Void = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            DomainsDashboardCardTracker.trackDirectDomainsPurchaseDashboardCardShown(in: self.row)
+        }
+
         let onViewTap: () -> Void = { [weak self] in
             guard let self,
                   let presentingViewController = self.presentingViewController,
@@ -37,6 +45,7 @@ final class DashboardDomainsCardCell: BaseDashboardDomainsCardCell {
                 hideThis: Strings.hideThis,
                 source: Strings.source
             ),
+            onViewShow: onViewShow,
             onViewTap: onViewTap,
             onEllipsisTap: onEllipsisTap,
             onHideThisTap: onHideThisTap
