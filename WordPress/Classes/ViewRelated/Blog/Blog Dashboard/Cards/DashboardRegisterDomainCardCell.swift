@@ -4,15 +4,18 @@ import WordPressFlux
 final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
 
     override var viewModel: DashboardDomainsCardViewModel {
-        return cardViewModel
+        return cardViewModel ?? .empty
     }
 
-    private lazy var cardViewModel: DashboardDomainsCardViewModel = {
-        let onViewTap: () -> Void = { [weak self] in
+    private lazy var cardViewModel: DashboardDomainsCardViewModel? = {
+        guard let props = Unwrapped(presentingViewController: presentingViewController, blog: blog) else {
+            return nil
         }
-        let onEllipsisTap: () -> Void = { [weak self] in
+        let onViewTap: () -> Void = { [weak self] in
+            self?.cardTapped(props: props)
         }
         let onHideThisTap: UIActionHandler = { [weak self] _ in
+            self?.hideCardTapped(props: props)
         }
         return DashboardDomainsCardViewModel(
             strings: .init(
@@ -22,12 +25,25 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
                 source: Strings.source
             ),
             onViewTap: onViewTap,
-            onEllipsisTap: onEllipsisTap,
             onHideThisTap: onHideThisTap
         )
     }()
 
     // MARK: - User Interaction
+
+    private func cardTapped(props: Unwrapped) {
+        WPAnalytics.track(.domainCreditRedemptionTapped)
+        DomainsDashboardCoordinator.presentDomainsSuggestions(
+            in: props.presentingViewController,
+            source: Strings.source,
+            blog: props.blog
+        )
+    }
+
+    private func hideCardTapped(props: Unwrapped) {
+        let service = BlogDashboardPersonalizationService(siteID: props.siteID.intValue)
+        service.setEnabled(false, for: .registerDomain)
+    }
 
     // MARK: - Constants
 
@@ -59,5 +75,26 @@ final class DashboardRegisterDomainCardCell: BaseDashboardDomainsCardCell {
         }
         WPAnalytics.track(WPAnalyticsStat.domainCreditPromptShown)
         Self.hasLoggedDomainCreditPromptShownEvent = true
+    }
+
+    // MARK: - Supporting Types
+
+    private struct Unwrapped {
+
+        let presentingViewController: BlogDashboardViewController
+        let blog: Blog
+        let siteID: NSNumber
+
+        init?(presentingViewController: BlogDashboardViewController?,
+             blog: Blog?) {
+            guard let presentingViewController,
+                  let blog,
+                  let siteID = blog.dotComID else {
+                return nil
+            }
+            self.presentingViewController = presentingViewController
+            self.blog = blog
+            self.siteID = siteID
+        }
     }
 }
