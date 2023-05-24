@@ -256,7 +256,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private func fetchEditorSettings(success: ((Bool) -> ())?, failure: ((NSError) -> ())?) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
         let fetchTask = Task { @MainActor [weak self] in
             guard RemoteFeatureFlag.siteEditorMVP.enabled(),
-                  let result = await editorSettingsService?.fetchSettings() else {
+                  let result = await self?.editorSettingsService?.fetchSettings() else {
                 return
             }
             switch result {
