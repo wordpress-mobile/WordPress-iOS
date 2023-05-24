@@ -1,1 +1,9 @@
-Nouveauté – Les blocs VideoPress sont désormais activés pour les sites Web simples de WordPress.com, ce qui vous permet d’héberger et d’intégrer des vidéos de haute qualité à votre guise. Nous espérons qu’il y a des chats dans ces vidéos.
+Nous avons ajouté des cartes à votre tableau de bord. La carte Journal d’activités affiche vos trois activités les plus récentes, et la carte Pages affiche les trois dernières pages que vous avez modifiées.
+
+Nous avons également apporté quelques changements importants à l’éditeur de blocs. Pour empêcher le blocage d’une application, des blocs réutilisables supprimés et non définis ne peuvent plus être convertis en blocs normaux.
+
+Lorsque vous appuyez sur un bloc paragraphe imbriqué, vous pouvez immédiatement modifier le contenu de ce bloc. Il n’est plus nécessaire d’appuyer sur chaque niveau de l’imbrication pour accéder là où vous voulez. (Nos doigts se fatiguaient aussi.)
+
+En parlant des blocs réutilisables, nous avons mis à jour le message relatif à l’édition non prise en charge pour supprimer la mention de WordPress. Nous connaissons l’application que nous utilisons, promis.
+
+Enfin, nous avons corrigé un bug dans lequel l’application se bloquait si vous essayiez de charger des médias dans un bloc classique sans accorder à WordPress l’accès à la bibliothèque de médias de votre appareil. Une invite s’affichait plutôt pour vous demander l’accès aux médias. Un jeu d’enfant.
