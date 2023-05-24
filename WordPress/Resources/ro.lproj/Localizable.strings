@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-01 05:54:15+0000 */
+/* Translation-Revision-Date: 2023-05-23 09:44:14+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Editează videoul";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "WordPress pentru Android nu suportă încă editarea blocurilor reutilizabile";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "%s pentru Android nu suportă încă editarea blocurilor reutilizabile";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "WordPress pentru iOS nu suportă încă editarea blocurilor reutilizabile";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "%s pentru iOS nu suportă încă editarea blocurilor reutilizabile";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editarea acestui GIF îi va înlătura animația.";
@@ -7043,7 +7043,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
-"Skip" = "Sărit";
+"Skip" = "Sari peste";
 
 /* Menu title to skip today's prompt. */
 "Skip for today" = "Nu azi";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Bine ai venit la Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Statistici, Cititor, Notificări și alte funcționalități propulsate de Jetpack au fost înlăturate din aplicația WordPress. Pot fi găsite acum doar în aplicația Jetpack.";
+"movedToJetpack.description" = "Aplicația Jetpack are toate funcționalitățile aplicației WordPress, cu acces exclusiv la Statistici, Cititor, Notificări și altele.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Comutarea este gratuită și durează numai un minut.";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Află mai multe la jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Notificările s-au mutat în aplicația Jetpack.";
+"movedToJetpack.notifications.title" = "Folosește WordPress cu notificări în aplicația Jetpack.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Cititorul s-a mutat în aplicația Jetpack.";
+"movedToJetpack.reader.title" = "Folosește WordPress cu Cititor în aplicația Jetpack.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Statisticile s-au mutat în aplicația Jetpack.";
+"movedToJetpack.stats.title" = "Folosește WordPress cu Statistici în aplicația Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Conținut";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/numelesiteuluitau.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Ți-am creat cu succes site-ul web, dar am întâmpinat o problemă în timpul pregătirii domeniului tău personalizat. Te rog să încerci din nou sau să contactezi suportul pentru asistență.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "La fel ca în exemplul de mai sus, un domeniu le permite oamenilor să-ți găsească și să-ți viziteze site-ul din navigatoarele lor web.";

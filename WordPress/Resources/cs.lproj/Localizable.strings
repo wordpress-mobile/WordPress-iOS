@@ -2726,12 +2726,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Upravit video";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Úpravy opakovaně použitelných bloků zatím nejsou na WordPressu pro Android podporovány";
-
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Úpravy opakovaně použitelných bloků zatím nejsou na WordPressu pro iOS podporovány";
-
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Úpravou tohoto GIF odstraníte jeho animaci.";
 

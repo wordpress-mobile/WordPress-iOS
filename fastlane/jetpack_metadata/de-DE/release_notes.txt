@@ -1,1 +1,9 @@
-Tolle Neuigkeiten: VideoPress-Blöcke sind jetzt für einfache WordPress.com-Websites aktiviert, damit du Videos in hoher Qualität nach Herzenslust hosten und einbetten kannst. Wir hoffen, in den Videos sind Katzen zu sehen.
+Wir haben Karten zu deinem Dashboard hinzugefügt. Auf der Aktivitätsprotokoll-Karte werden dir deine drei aktuellsten Aktivitäten angezeigt und auf der Seiten-Karte siehst du die drei letzten von dir veränderten Seiten.
+
+Außerdem haben wir ein paar wichtige Änderungen am Block-Editor vorgenommen. Um zu verhindern, dass die App abstürzt, können gelöschte und nicht definierte, wiederverwendbare Blöcke nicht mehr in normale Blöcke umgewandelt werden.
+
+Wenn du auf einen verschachtelten Text-Block tippst, kannst du augenblicklich Inhalte in diesem Block bearbeiten. Es ist nicht mehr erforderlich, dass du dich durch jede Verschachtelungsebene tippst, um ans Ziel zu gelangen. (Auch unsere Finger taten weh.)
+
+Apropos wiederverwendbare Blöcke: Wir haben die Nachricht „editing not supported“ (Bearbeitung wird nicht unterstützt) aktualisiert und die Erwähnung von WordPress entfernt. Wir wissen, welche App wir verwenden – versprochen.
+
+Schließlich haben wir einen Fehler behoben, wodurch die App abgestürzt ist, wenn du Medien in den Classic-Block hochladen wolltest, ohne WordPress Zugriff auf die Mediathek deines Geräts zu gewähren. Stattdessen wird dir eine Aufforderung angezeigt, in der du um Medienzugriff gebeten wirst. Wenn das mal nicht kinderleicht ist.

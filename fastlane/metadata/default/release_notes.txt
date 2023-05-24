@@ -1,1 +1,3 @@
-Breaking news—VideoPress blocks are now enabled for Simple WordPress.com websites, so you can host and embed high-quality videos to your heart’s content. We hope those videos include cats.
+When you tap on a nested text block, you can immediately edit content in that block—no more tapping through every nesting level to get where you want to go. (Our fingers were getting tired, too.)
+
+We also fixed a bug where the app would crash if you tried to upload media to a classic block without giving WordPress access to your device’s media library. Instead, you’ll see a prompt asking for media access. Easy peasy, lemon squeezy.
