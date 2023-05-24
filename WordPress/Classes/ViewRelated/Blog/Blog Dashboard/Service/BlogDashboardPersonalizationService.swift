@@ -54,6 +54,8 @@ private func makeKey(for card: DashboardCard) -> String? {
         return "prompts-enabled-site-settings"
     case .domainsDashboardCard:
         return "domains-dashboard-card-enabled-site-settings"
+    case .freeToPaidPlansDashboardCard:
+        return "free-to-paid-plans-dashboard-card-enabled-site-settings"
     case .activityLog:
         return "activity-log-card-enabled-site-settings"
     case .pages:

@@ -148,7 +148,7 @@ extension ReaderRoute: NavigationAction {
         return (blogID, postID)
     }
 
-    private func isValidWpcomUrl(_ values: [String: String]) -> Bool {
+    func isValidWpcomUrl(_ values: [String: String]) -> Bool {
         let year = Int(values["post_year"] ?? "") ?? 0
         let month = Int(values["post_month"] ?? "") ?? 0
         let day = Int(values["post_day"] ?? "") ?? 0

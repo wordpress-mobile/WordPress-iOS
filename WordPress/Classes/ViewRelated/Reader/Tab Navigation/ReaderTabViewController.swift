@@ -89,6 +89,7 @@ class ReaderTabViewController: UIViewController {
                                            target: self,
                                            action: #selector(didTapSearchButton))
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
+        searchButton.accessibilityLabel = ReaderTabConstants.searchButtonAccessibilityLabel
 
         // Settings Button
         settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
@@ -96,6 +97,7 @@ class ReaderTabViewController: UIViewController {
         settingsButton.setImage(.gridicon(.readerFollowing), for: .normal)
         settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
+        settingsButton.accessibilityLabel = ReaderTabConstants.settingsButtonAccessibilityLabel
         let settingsButton = UIBarButtonItem(customView: settingsButton)
 
         navigationItem.rightBarButtonItems = [searchButton, settingsButton]
@@ -191,7 +193,17 @@ extension ReaderTabViewController {
     private enum ReaderTabConstants {
         static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         static let settingsButtonIdentifier = "ReaderSettingsButton"
+        static let settingsButtonAccessibilityLabel = NSLocalizedString(
+            "reader.navigation.settings.button.label",
+            value: "Reader Settings",
+            comment: "Reader settings button accessibility label."
+        )
         static let searchButtonAccessibilityIdentifier = "ReaderSearchBarButton"
+        static let searchButtonAccessibilityLabel = NSLocalizedString(
+            "reader.navigation.search.button.label",
+            value: "Search",
+            comment: "Reader search button accessibility label."
+        )
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"

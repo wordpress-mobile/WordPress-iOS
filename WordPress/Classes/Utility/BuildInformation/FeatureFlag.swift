@@ -39,7 +39,6 @@ enum FeatureFlag: Int, CaseIterable {
     case siteCreationDomainPurchasing
     case readerUserBlocking
     case personalizeHomeTab
-    case siteEditorMVP
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -126,8 +125,6 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .personalizeHomeTab:
             return false
-        case .siteEditorMVP:
-            return BuildConfiguration.current != .appStore
         }
     }
 
@@ -224,8 +221,6 @@ extension FeatureFlag {
             return "Reader User Blocking"
         case .personalizeHomeTab:
             return "Personalize Home Tab"
-        case .siteEditorMVP:
-            return "Site Editor MVP"
         }
     }
 }
