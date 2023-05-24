@@ -7,7 +7,7 @@
             "matches": "(.*)"
         },
         "cards": {
-            "equalTo": "todays_stats,posts,pages"
+            "equalTo": "todays_stats,posts"
         }
       }
     },
