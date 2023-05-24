@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-04 09:54:09+0000 */
+/* Translation-Revision-Date: 2023-05-17 12:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
@@ -2744,11 +2744,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "编辑视频";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Android 版 WordPress 尚不支持编辑可重用区块";
-
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "iOS 版 WordPress 尚不支持编辑可重用区块";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Android 版 %s 尚不支持编辑可重用区块";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "编辑此 GIF 将删除其动画。";
@@ -10312,7 +10309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "欢迎使用 Jetpack！";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "统计信息、阅读器、通知和其他由 Jetpack 提供支持的功能已从 WordPress 应用程序上删除，现在只能在 Jetpack 应用程序中使用。";
+"movedToJetpack.description" = "Jetpack 应用拥有 WordPress 应用的所有功能，现在可以独家访问统计信息、阅读器、通知等功能。";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "切换免费，只需一会儿。";
@@ -10324,13 +10321,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "请访问 jetpack.com 了解详情";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "通知已移至 Jetpack 应用程序。";
+"movedToJetpack.notifications.title" = "在 Jetpack 应用中结合使用 WordPress 和通知功能。";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "阅读器已移至 Jetpack 应用程序。";
+"movedToJetpack.reader.title" = "在 Jetpack 应用中结合使用 WordPress 和阅读器功能。";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "统计信息已移至 Jetpack 应用程序。";
+"movedToJetpack.stats.title" = "在 Jetpack 应用中结合使用 WordPress 和统计信息功能。";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "内容";
@@ -10521,6 +10518,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "您的网站已成功创建，但我们在为您准备自定义域名结账时遇到问题。 请重试或联系支持人员寻求帮助。";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "和上面的示例一样，域名可让人们从他们的 Web 浏览器中查找和访问您的站点。";

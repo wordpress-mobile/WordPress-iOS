@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-17 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: fr */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Modifier la vidéo";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "La modification des blocs réutilisables n’est pas encore prise en charge sur WordPress pour Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "La modification des blocs réutilisables n’est pas encore prise en charge sur %s pour Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "La modification des blocs réutilisables n’est pas encore prise en charge sur WordPress pour iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "La modification des blocs réutilisables n’est pas encore prise en charge sur %s pour iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "La modification de ce GIF supprimera son animation.";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Bienvenue dans Jetpack !";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Les statistiques, le lecteur, les notifications et d’autres fonctionnalités reposant sur Jetpack ont été supprimées de l’application WordPress et sont désormais uniquement disponibles dans l’application Jetpack.";
+"movedToJetpack.description" = "L’application Jetpack dispose de toutes les fonctionnalités de l’application WordPress et inclut désormais un accès exclusif aux statistiques, au lecteur, aux notifications, et plus encore.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Passer d’une application à l’autre est gratuit et ne prend qu’une minute.";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Lire la suite sur jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Les notifications sont désormais disponibles dans l’application Jetpack.";
+"movedToJetpack.notifications.title" = "Utilisez WordPress avec les notifications dans l’application Jetpack.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Le lecteur est désormais disponible dans l’application Jetpack.";
+"movedToJetpack.reader.title" = "Utilisez WordPress avec le lecteur dans l’application Jetpack.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Les statistiques sont désormais disponibles dans l’application Jetpack.";
+"movedToJetpack.stats.title" = "Utilisez WordPress avec les statistiques dans l’application Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Contenu";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Votre site Web a été créé, mais nous avons rencontré un problème lors de la préparation de votre domaine personnalisé pour la validation de la commande. Réessayez ou contactez l’assistance pour obtenir de l’aide.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Comme le montre l’exemple ci-dessus, un domaine permet aux internautes de trouver et de visiter votre site depuis leur navigateur Web.";
