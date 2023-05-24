@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-18 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "動画を編集";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "再利用ブロックの編集は WordPress for Android ではまだサポートされていません";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "再利用ブロックの編集は Android 用 %s ではまだサポートされていません";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "再利用ブロックの編集は WordPress for iOS ではまだサポートされていません";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "再利用ブロックの編集は iOS 用 %s ではまだサポートされていません";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "この GIF を編集するとアニメーションが削除されます。";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Jetpack へようこそ !";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "統計、Reader、通知などの Jetpack 機能は WordPress アプリから削除され、Jetpack アプリでのみ使用できるようになりました。";
+"movedToJetpack.description" = "Jetpack アプリで WordPress アプリの全機能に加えて統計、Reader、通知などを特別に利用できるようになりました。";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "切り替えは無料で、数分で終わります。";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "詳細は jetpack.com をご覧ください";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "通知は Jetpack アプリに移動しました。";
+"movedToJetpack.notifications.title" = "Jetpack アプリで WordPress と通知を利用できます。";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Reader は Jetpack アプリに移動しました。";
+"movedToJetpack.reader.title" = "Jetpack アプリで WordPress と Reader を利用できます。";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "統計は Jetpack アプリに移動しました。";
+"movedToJetpack.stats.title" = "Jetpack アプリで WordPress と統計を利用できます。";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "コンテンツ";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "サイトは正常に作成されましたが、カスタムドメインの購入手続きの準備中に問題が発生しました。 もう一度お試しいただくか、ヘルプが必要な場合はサポートにご連絡ください。";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "上記の例のように、ドメインを使用するとユーザーは、Web ブラウザーからサイトを見つけてアクセスできます。";

@@ -487,6 +487,9 @@ import Foundation
     case directDomainsPurchaseDashboardCardTapped
     case directDomainsPurchaseDashboardCardHidden
 
+    // Jetpack Social - Twitter Deprecation Notice
+    case jetpackSocialTwitterNoticeLinkTapped
+
     // Free to Paid Plans Dashboard Card
     case freeToPaidPlansDashboardCardShown
     case freeToPaidPlansDashboardCardTapped
@@ -1338,6 +1341,10 @@ import Foundation
         case .directDomainsPurchaseDashboardCardTapped:
             return "direct_domains_purchase_dashboard_card_tapped"
 
+        // Jetpack Social - Twitter Deprecation Notice
+        case .jetpackSocialTwitterNoticeLinkTapped:
+            return "twitter_notice_link_tapped"
+
         // Free to Paid Plans Dashboard Card
         case .freeToPaidPlansDashboardCardShown:
             return "free_to_paid_plan_dashboard_card_shown"
@@ -1355,7 +1362,6 @@ import Foundation
         // Checkout
         case .checkoutWebViewViewed:
             return "checkout_webview_viewed"
-
         } // END OF SWITCH
     }
 

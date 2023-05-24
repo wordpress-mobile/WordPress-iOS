@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-17 13:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "تحرير الفيديو";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "تحرير المكوِّنات القابلة لإعادة الاستخدام غير مدعوم بعد على ووردبريس لنظام تشغيل Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "تحرير المكوّنات القابلة لإعادة الاستخدام غير مدعوم بعد على %s لنظام التشغيل Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "تحرير المكوِّنات القابلة لإعادة الاستخدام غير مدعوم بعد على ووردبريس لنظام تشغيل iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "تحرير المكوّنات القابلة لإعادة الاستخدام غير مدعوم بعد على %s لنظام التشغيل iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "سيؤدي تحرير ملف GIF هذا إلى إزالة الرسوم المتحركة الخاصة به.";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "مرحبًا بك في Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "تمت إزالة ميزات الإحصاءات والقارئ والتنبيهات وغيرها من الميزات التي يدعمها Jetpack من تطبيق ووردبريس، ويمكن العثور عليها الآن في تطبيق Jetpack.";
+"movedToJetpack.description" = "يحتوي تطبيق Jetpack على كل وظائف تطبيق ووردبريس، إلى جانب وصول حصري الآن إلى ميزات Stats وReader وNotifications والمزيد.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "التبديل مجاني، ولا يستغرق سوى بضع دقائق.";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "معرفة المزيد على jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "انتقلت ميزة التنبيهات إلى تطبيق Jetpack.";
+"movedToJetpack.notifications.title" = "استخدم ووردبريس مع ميزة Notifications في تطبيق Jetpack.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "انتقلت ميزة القارئ إلى تطبيق Jetpack.";
+"movedToJetpack.reader.title" = "استخدم ووردبريس مع ميزة Reader في تطبيق Jetpack.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "انتقلت ميزة الإحصاءات إلى تطبيق Jetpack.";
+"movedToJetpack.stats.title" = "استخدم ووردبريس مع ميزة Stats في تطبيق Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "المحتوى";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "تم إنشاء موقعك على الويب بنجاح، لكننا واجهنا مشكلة في أثناء إعداد نطاقك المخصص للسداد. يرجى المحاولة مجددًا أو الاتصال بالدعم للحصول على المساعدة.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "على غرار المثال أعلاه، يسمح النطاق للأشخاص بالعثور على موقعك وزيارته من متصفح الويب لديهم.";
