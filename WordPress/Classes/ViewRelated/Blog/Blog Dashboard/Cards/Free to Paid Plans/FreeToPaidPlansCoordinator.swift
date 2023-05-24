@@ -17,7 +17,9 @@ import UIKit
         let planSelected = { checkoutURL in
             let viewModel = CheckoutViewModel(url: checkoutURL)
             let checkoutViewController = CheckoutViewController(viewModel: viewModel)
-            navigationController.pushViewController(checkoutViewController, animated: true)
+            checkoutViewController.configureSandboxStore {
+                navigationController.pushViewController(checkoutViewController, animated: true)
+            }
 
             PlansTracker.trackCheckoutWebViewViewed(source: "plan_selection")
         }
