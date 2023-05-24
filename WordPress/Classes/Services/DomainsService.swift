@@ -46,6 +46,7 @@ struct DomainsService {
                 self.mergeDomains(domains, forSite: siteID, in: context)
             }, completion: {
                 completion?(.success(()))
+                NotificationCenter.default.post(name: .domainsServiceDomainsRefreshed, object: nil)
             }, on: .main)
         }, failure: { error in
             completion?(.failure(error))
@@ -227,4 +228,9 @@ extension DomainsService {
     init(coreDataStack: CoreDataStack, account: WPAccount) {
         self.init(coreDataStack: coreDataStack, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
     }
+}
+
+extension NSNotification.Name {
+    /// Sent when domains are refreshed by ``DomainsService``
+    static let domainsServiceDomainsRefreshed = NSNotification.Name("DomainsServiceDomainsRefreshed")
 }
