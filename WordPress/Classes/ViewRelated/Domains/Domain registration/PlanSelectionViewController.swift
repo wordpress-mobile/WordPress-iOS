@@ -24,8 +24,13 @@ struct PlanSelectionViewModel {
         self.url = url
     }
 
+    func isPlanSelected(_ redirectionURL: URL) -> Bool {
+        return redirectionURL.absoluteString.starts(with: Constants.checkoutWebAddress)
+    }
+
     enum Constants {
         static let plansWebAddress = "https://wordpress.com/plans/yearly"
+        static let checkoutWebAddress = "https://wordpress.com/checkout"
         static let domainAndPlanPackageParameter = "domainAndPlanPackage"
         static let jetpackAppPlansParameter = "jetpackAppPlans"
     }
@@ -33,6 +38,9 @@ struct PlanSelectionViewModel {
 
 final class PlanSelectionViewController: WebKitViewController {
     let viewModel: PlanSelectionViewModel
+    var planSelectedCallback: ((URL) -> Void)?
+
+    private var webViewURLChangeObservation: NSKeyValueObservation?
 
     init(viewModel: PlanSelectionViewModel) {
         self.viewModel = viewModel
@@ -41,6 +49,29 @@ final class PlanSelectionViewController: WebKitViewController {
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
         super.init(configuration: configuration)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        observePlanSelection()
+    }
+
+    private func observePlanSelection() {
+        webViewURLChangeObservation = webView.observe(\.url, options: .new) { [weak self] _, change in
+            guard let self = self,
+                  let newURL = change.newValue as? URL else {
+                return
+            }
+
+            if self.viewModel.isPlanSelected(newURL) {
+                self.planSelectedCallback?(newURL)
+
+                /// Stay on Plan Selection page
+                self.webView.goBack()
+                self.webViewURLChangeObservation = nil
+            }
+        }
     }
 
     // MARK: - Required Init
