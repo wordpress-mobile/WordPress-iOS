@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.version = '1.0.0' # The value here is irrelevant, but required
   s.summary = 'A spec to help integrating the Gutenberg XCFramework'
   s.homepage = 'https://apps.wordpress.com'
-  s.license = { type: 'GPL', file: File.join(__dir__, '..', 'LICENSE') }
+  s.license = { type: 'GPL', file: '../LICENSE' }
   s.authors = 'Automattic'
 
   s.ios.deployment_target = '13.0' # TODO: Read from common source
@@ -43,7 +43,9 @@ Pod::Spec.new do |s|
   # care of downloading and unarchiving and use a local source.
   #
   # s.source = { http: xcframework_archive_url }
-  s.source = { http: "file://#{GUTENBERG_DOWNLOADS_DIRECTORY}/Gutenberg-#{gutenberg_version}.tar.gz" }
+  path = Pathname.new("#{GUTENBERG_DOWNLOADS_DIRECTORY}/Gutenberg-#{gutenberg_version}.tar.gz")
+    .relative_path_from(__dir__).to_s
+  s.source = { http: "file://#{path}" }
   s.vendored_frameworks = [
     'Aztec.xcframework',
     'Gutenberg.xcframework',

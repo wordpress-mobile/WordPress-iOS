@@ -4,6 +4,7 @@
 
 require 'archive/tar/minitar'
 require 'net/http'
+require 'pathname'
 require 'ruby-progressbar'
 require 'uri'
 require 'zlib'
@@ -89,7 +90,9 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 
     gutenberg_dependencies(options: options)
   elsif options[:commit]
-    pod 'Gutenberg', path: File.join(__dir__, 'gutenberg.podspec')
+    # Notice the use of relative path, otherwise we'd get the full path of the user that run the `pod install` command tracked in Podfile.lock.
+    # Also notice the path is relative from Dir.pwd, that is, the location where the script running this code is invoked.
+    pod 'Gutenberg', path: Pathname.new(File.join(__dir__, 'Gutenberg.podspec')).relative_path_from(Dir.pwd).to_s
   end
 end
 # rubocop:enable Metrics/AbcSize
