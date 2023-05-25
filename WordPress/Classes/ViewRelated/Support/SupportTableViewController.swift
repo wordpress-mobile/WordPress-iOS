@@ -33,9 +33,13 @@ class SupportTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    required convenience init(dismissTapped: (() -> ())? = nil) {
-        self.init(style: .grouped)
+    required convenience init(dismissTapped: (() -> ())?) {
+        self.init(configuration: .init(), style: .grouped)
         self.dismissTapped = dismissTapped
+    }
+
+    @objc public convenience init() {
+        self.init(configuration: .init(), style: .grouped)
     }
 
     // MARK: - View
