@@ -73,6 +73,7 @@ final class DashboardDomainRegistrationCardCell: BaseDashboardDomainsCardCell {
 
     // MARK: - Supporting Types
 
+    /// Encapsulates the unwrapping logic and returns nil if one of the passed in parameters is nil.
     private struct Unwrapped {
         let presentingViewController: BlogDashboardViewController
         let blog: Blog
