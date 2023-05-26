@@ -4,6 +4,12 @@ import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
+enum DomainSelectionType {
+    case registerWithPaidPlan
+    case purchaseWithPaidPlan
+    case purchaseSeparately
+}
+
 class RegisterDomainSuggestionsViewController: UIViewController {
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
@@ -12,11 +18,12 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var site: Blog!
     var domainPurchasedCallback: ((String) -> Void)!
+    var domainAddedToCartCallback: (() -> Void)?
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
-    private var domainType: DomainType = .registered
+    private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
@@ -44,13 +51,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     }()
 
     static func instance(site: Blog,
-                         domainType: DomainType = .registered,
+                         domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
                          domainPurchasedCallback: ((String) -> Void)? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.site = site
-        controller.domainType = domainType
+        controller.domainSelectionType = domainSelectionType
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
         controller.siteName = siteNameForSuggestions(for: site)
@@ -164,7 +171,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.delegate = self
             vc.siteName = siteName
             vc.blog = site
-            vc.domainType = domainType
+            vc.domainSelectionType = domainSelectionType
             vc.freeSiteAddress = site.freeSiteAddress
 
             if site.hasBloggerPlan {
@@ -213,14 +220,21 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        switch domainType {
-        case .registered:
+        switch domainSelectionType {
+        case .registerWithPaidPlan:
             pushRegisterDomainDetailsViewController(domain)
-        case .siteRedirect:
+        case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            createCartAndPresentWebView(domain)
-        default:
-            break
+            createCart(domain) { [weak self] in
+                self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+                self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            }
+        case .purchaseWithPaidPlan:
+            setPrimaryButtonLoading(true)
+            createCart(domain) { [weak self] in
+                self?.domainAddedToCartCallback?()
+                self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+            }
         }
     }
 
@@ -244,7 +258,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCartAndPresentWebView(_ domain: FullyQuotedDomainSuggestion) {
+    private func createCart(_ domain: FullyQuotedDomainSuggestion, completion: @escaping () -> ()) {
         guard let siteID = site.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
@@ -254,9 +268,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
                                                  domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
-                                                 success: { [weak self] _ in
-            self?.presentWebViewForCurrentSite(domainSuggestion: domain)
-            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                                                 success: { _ in
+            completion()
         },
                                                  failure: { error in })
     }
@@ -331,25 +344,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
-
-            $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
-            $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
-        }) {
-            // this code will only run if a store sandbox cookie has been set
-            let webView = webViewController.webView
-            let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-            cookieStore.getAllCookies { [weak self] cookies in
-
-                    var newCookies = cookies
-                    newCookies.append(storeSandboxCookie)
-
-                    cookieStore.setCookies(newCookies) {
-                        self?.present(navController, animated: true)
-                    }
-            }
-        } else {
-            present(navController, animated: true)
+        webViewController.configureSandboxStore { [weak self] in
+            self?.present(navController, animated: true)
         }
     }
 }

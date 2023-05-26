@@ -48,6 +48,15 @@ class RouteMatcher {
             let allValues = values.merging(placeholderValues,
                                            uniquingKeysWith: { (current, _) in current })
 
+            // If it's a wpcomPost reader route, then check if it's a valid wpcom url.
+            // Need to check since we have no guarantee that it's a valid wpcom url,
+            // other than the path having 4 components.
+            if let readerRoute = route as? ReaderRoute,
+               readerRoute == .wpcomPost,
+               !readerRoute.isValidWpcomUrl(allValues) {
+                return nil
+            }
+
             return route.matched(with: allValues)
         })
     }
