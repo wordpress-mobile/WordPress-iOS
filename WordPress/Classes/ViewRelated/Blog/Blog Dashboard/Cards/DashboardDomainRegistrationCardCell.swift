@@ -79,7 +79,7 @@ final class DashboardDomainRegistrationCardCell: BaseDashboardDomainsCardCell {
         let siteID: NSNumber
 
         init?(presentingViewController: BlogDashboardViewController?,
-             blog: Blog?) {
+              blog: Blog?) {
             guard let presentingViewController,
                   let blog,
                   let siteID = blog.dotComID else {
@@ -94,7 +94,7 @@ final class DashboardDomainRegistrationCardCell: BaseDashboardDomainsCardCell {
 
 // MARK: - Extensions
 
-extension DashboardDomainRegistrationCardCell {
+extension DashboardDomainRegistrationCardCell {
 
     private enum Strings {
         static let title = NSLocalizedString(
