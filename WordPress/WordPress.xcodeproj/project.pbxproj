@@ -158,6 +158,7 @@
 		011F52C92A16551A00B04114 /* FreeToPaidPlansCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */; };
 		011F52D32A1B84FF00B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D22A1B84FF00B04114 /* PlansTracker.swift */; };
 		011F52D42A1B84FF00B04114 /* PlansTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D22A1B84FF00B04114 /* PlansTracker.swift */; };
+		011F52D82A1BECA200B04114 /* PlanSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D72A1BECA200B04114 /* PlanSelectionScreen.swift */; };
 		011F52DA2A1CA53300B04114 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D92A1CA53300B04114 /* CheckoutViewController.swift */; };
 		011F52DB2A1CA53300B04114 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D92A1CA53300B04114 /* CheckoutViewController.swift */; };
 		01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */; };
@@ -5804,6 +5805,7 @@
 		011F52C52A15413800B04114 /* FreeToPaidPlansDashboardCardHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardHelperTests.swift; sourceTree = "<group>"; };
 		011F52C72A16551A00B04114 /* FreeToPaidPlansCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansCoordinator.swift; sourceTree = "<group>"; };
 		011F52D22A1B84FF00B04114 /* PlansTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansTracker.swift; sourceTree = "<group>"; };
+		011F52D72A1BECA200B04114 /* PlanSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSelectionScreen.swift; sourceTree = "<group>"; };
 		011F52D92A1CA53300B04114 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsSuggestionsScreen.swift; sourceTree = "<group>"; };
 		01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationTests.swift; sourceTree = "<group>"; };
@@ -11549,6 +11551,7 @@
 				EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */,
 				D82E087729EEB7AF0098F500 /* DomainsScreen.swift */,
 				01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */,
+				011F52D72A1BECA200B04114 /* PlanSelectionScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -22737,6 +22740,7 @@
 				3F107B1929B6F7E0009B3658 /* XCTestCase+Utils.swift in Sources */,
 				3F2F855326FAF227000FCDA5 /* EditorPostSettings.swift in Sources */,
 				3F2F856026FAF235000FCDA5 /* NotificationsScreen.swift in Sources */,
+				011F52D82A1BECA200B04114 /* PlanSelectionScreen.swift in Sources */,
 				3F2F854026FAE9DC000FCDA5 /* BlockEditorScreen.swift in Sources */,
 				3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */,
 				3F2F854726FAED51000FCDA5 /* MediaPickerAlbumListScreen.swift in Sources */,

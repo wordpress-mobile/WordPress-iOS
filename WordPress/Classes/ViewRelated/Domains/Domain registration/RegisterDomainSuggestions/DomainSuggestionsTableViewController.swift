@@ -79,6 +79,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
         let bundle = WordPressAuthenticator.bundle
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
+        tableView.accessibilityIdentifier = "DomainSuggestionsTable"
         setupBackgroundTapGestureRecognizer()
     }
 
