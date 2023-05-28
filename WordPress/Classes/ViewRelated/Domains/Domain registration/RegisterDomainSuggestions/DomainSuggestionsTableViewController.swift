@@ -47,7 +47,6 @@ class DomainSuggestionsTableViewController: UITableViewController {
     }
 
     private var noResultsViewController: NoResultsViewController?
-    private var siteTitleSuggestions: [FullyQuotedDomainSuggestion] = []
     private var searchSuggestions: [FullyQuotedDomainSuggestion] = [] {
         didSet {
             tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
@@ -100,15 +99,12 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
         // only procede with initial search if we don't have site title suggestions yet
         // (hopefully only the first time)
-        guard siteTitleSuggestions.count < 1,
+        guard searchSuggestions.count < 1,
             let nameToSearch = siteName else {
             return
         }
 
-        suggestDomains(for: nameToSearch) { [weak self] (suggestions) in
-            self?.siteTitleSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
-        }
+        suggestDomains(for: nameToSearch)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,7 +125,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     /// - Parameters:
     ///   - searchTerm: string to base suggestions on
     ///   - addSuggestions: function to call when results arrive
-    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [FullyQuotedDomainSuggestion]) ->()) {
+    private func suggestDomains(for searchTerm: String) {
         guard !isSearching else {
             return
         }
@@ -214,7 +210,7 @@ extension DomainSuggestionsTableViewController {
             if noSuggestions == true {
                 return 1
             }
-            return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
+            return searchSuggestions.count
         default:
             return 0
         }
@@ -234,11 +230,7 @@ extension DomainSuggestionsTableViewController {
                 cell = noResultsCell()
             } else {
                 let suggestion: FullyQuotedDomainSuggestion
-                if searchSuggestions.count > 0 {
-                    suggestion = searchSuggestions[indexPath.row]
-                } else {
-                    suggestion = siteTitleSuggestions[indexPath.row]
-                }
+                suggestion = searchSuggestions[indexPath.row]
                 cell = suggestionCell(suggestion)
             }
         }
@@ -498,11 +490,7 @@ extension DomainSuggestionsTableViewController {
 
         switch indexPath.section {
         case Sections.suggestions.rawValue:
-            if searchSuggestions.count > 0 {
-                selectedDomain = searchSuggestions[indexPath.row]
-            } else {
-                selectedDomain = siteTitleSuggestions[indexPath.row]
-            }
+            selectedDomain = searchSuggestions[indexPath.row]
         default:
             return
         }
@@ -542,9 +530,7 @@ extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
             return
         }
 
-        suggestDomains(for: searchTerm) { [weak self] (suggestions) in
-            self?.searchSuggestions = suggestions
-        }
+        suggestDomains(for: searchTerm)
     }
 }
 

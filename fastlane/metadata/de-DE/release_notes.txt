@@ -1,1 +1,3 @@
-Tolle Neuigkeiten: VideoPress-Blöcke sind jetzt für einfache WordPress.com-Websites aktiviert, damit du Videos in hoher Qualität nach Herzenslust hosten und einbetten kannst. Wir hoffen, in den Videos sind Katzen zu sehen.
+Wenn du auf einen verschachtelten Text-Block tippst, kannst du augenblicklich Inhalte in diesem Block bearbeiten. Es ist nicht mehr erforderlich, dass du dich durch jede Verschachtelungsebene tippst, um ans Ziel zu gelangen. (Auch unsere Finger taten weh.)
+
+Außerdem haben wir einen Fehler behoben, wodurch die App abgestürzt ist, wenn du Medien in den Classic-Block hochladen wolltest, ohne WordPress Zugriff auf die Mediathek deines Geräts zu gewähren. Stattdessen wird dir eine Aufforderung angezeigt, in der du um Medienzugriff gebeten wirst. Wenn das mal nicht kinderleicht ist.

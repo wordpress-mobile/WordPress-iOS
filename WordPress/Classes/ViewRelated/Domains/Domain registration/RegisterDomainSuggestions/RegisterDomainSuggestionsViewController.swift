@@ -344,25 +344,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
-
-            $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
-            $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
-        }) {
-            // this code will only run if a store sandbox cookie has been set
-            let webView = webViewController.webView
-            let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-            cookieStore.getAllCookies { [weak self] cookies in
-
-                    var newCookies = cookies
-                    newCookies.append(storeSandboxCookie)
-
-                    cookieStore.setCookies(newCookies) {
-                        self?.present(navController, animated: true)
-                    }
-            }
-        } else {
-            present(navController, animated: true)
+        webViewController.configureSandboxStore { [weak self] in
+            self?.present(navController, animated: true)
         }
     }
 }

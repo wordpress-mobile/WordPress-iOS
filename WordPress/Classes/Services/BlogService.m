@@ -150,6 +150,15 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                                 dispatch_group_leave(syncGroup);
                                             }];
 
+    SharingService *publicizeService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    dispatch_group_enter(syncGroup);
+    [publicizeService syncPublicizeServicesForBlog:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError * _Nullable error) {
+        DDLogError(@"Failed syncing publicize services for blog %@: %@", blog.url, error);
+        dispatch_group_leave(syncGroup);
+    }];
+
     dispatch_group_enter(syncGroup);
     [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
         [self updateMultiAuthor:users forBlog:blogObjectID];

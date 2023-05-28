@@ -97,7 +97,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         } else {
             return 0;
         }
-    } else if ([self hasConnectedAccounts]) {
+    } else if ([self hasConnectedAccounts] && self.publicizeService.isSupported) {
         return 2;
     }
     
@@ -128,6 +128,19 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionFooter:view];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (self.publicizeService.isSupported) {
+        return nil;
+    }
+
+    TwitterDeprecationTableFooterView *footerView = [TwitterDeprecationTableFooterView new];
+    footerView.presentingViewController = self;
+    footerView.source = @"social_connection_detail";
+
+    return footerView;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -191,7 +204,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     PublicizeConnection *connection = [[self connectionsForService] objectAtIndex:indexPath.row];
     cell.textLabel.text = connection.externalDisplay;
 
-    if ([connection requiresUserAction]) {
+    if (![self.publicizeService isSupported]) {
+        cell.accessoryView = [WPStyleGuide sharingCellErrorAccessoryImageView];
+    } else if ([connection requiresUserAction]) {
         cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
     }
 }

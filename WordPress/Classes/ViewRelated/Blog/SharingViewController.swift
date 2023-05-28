@@ -25,4 +25,15 @@ extension SharingViewController {
         JetpackBrandingCoordinator.presentOverlay(from: self)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .sharing)
     }
+
+    // MARK: Twitter Deprecation
+
+    @objc
+    func makeTwitterDeprecationFooterView() -> TwitterDeprecationTableFooterView {
+        let footerView = TwitterDeprecationTableFooterView()
+        footerView.presentingViewController = self
+        footerView.source = "social_connection_list"
+
+        return footerView
+    }
 }

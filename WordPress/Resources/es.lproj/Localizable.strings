@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-01 10:42:31+0000 */
+/* Translation-Revision-Date: 2023-05-17 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: es */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Editar el vídeo";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "WordPress para Android aún no es compatible con editar bloques reutilizables";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "La edición de bloques reutilizables todavía no está incluida en %s para Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "WordPress para iOS aún no es compatible con editar bloques reutilizables";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "La edición de bloques reutilizables todavía no está incluida en %s para iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editar este GIF eliminará su animación.";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "¡Te damos la bienvenida a Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Hemos eliminado algunas funciones (como Estadísticas, Lector o Notificaciones, entre otras) de la aplicación de WordPress y, ahora, solo están disponibles en la de Jetpack.";
+"movedToJetpack.description" = "La aplicación de Jetpack tiene todas las funciones de la aplicación de WordPress, y ahora ofrece acceso exclusivo a Estadísticas, Lector, Notificaciones y mucho más.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "El cambio es gratuito y solo lleva un minuto.";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Más información en jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Las notificaciones se han trasladado a la aplicación Jetpack.";
+"movedToJetpack.notifications.title" = "Usa WordPress con las notificaciones en la aplicación de Jetpack.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "El lector se ha trasladando a la aplicación de Jetpack.";
+"movedToJetpack.reader.title" = "Usa WordPress con el lector en la aplicación de Jetpack.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "La estadísticas ha trasladado a la aplicación de Jetpack.";
+"movedToJetpack.stats.title" = "Usa WordPress con las estadísticas en la aplicación de Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Contenido";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Tu sitio web se ha creado correctamente, pero hemos detectado una incidencia al preparar tu dominio personalizado para finalizar la compra. Inténtalo de nuevo o ponte en contacto con el soporte si necesitas ayuda.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Como en el ejemplo superior, un dominio le permite a la gente encontrar y visitar tu sitio desde su navegador.";
