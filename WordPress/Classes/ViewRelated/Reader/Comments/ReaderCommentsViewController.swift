@@ -33,6 +33,14 @@ extension NSNotification.Name {
             return .init()
         }
 
+        if FeatureFlag.commentModerationUpdate.enabled {
+            let headerView = CommentTableHeaderView(title: post.titleForDisplay(),
+                                                    subtitle: .commentThread,
+                                                    showsDisclosureIndicator: true)
+            headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleHeaderTapped)))
+            return headerView
+        }
+
         let cell = CommentHeaderTableViewCell()
         cell.backgroundColor = .systemBackground
         cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: allowsPushingPostDetails)
