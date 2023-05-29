@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 15:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-17 17:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: he_IL */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "לערוך וידאו";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-WordPress למערכת Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-%s למערכת Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-WordPress למערכת iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-%s למערכת iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "עריכה קובץ ה-GIF תסיר את ההנפשה שלו.";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "ברוך בואך אל Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "נתונים סטטיסטיים, Reader, הודעות ואפשרויות אחרות שמופעלות על ידי Jetpack הוסרו מאפליקציית WordPress וכעת ניתן לגשת אליהן רק באפליקציה של Jetpack.";
+"movedToJetpack.description" = "באפליקציה של Jetpack יש את כל הפונקציונליות של האפליקציה של WordPress ועכשיו גם גישה בלעדית לנתונים סטטיסטיים, ל-Reader, להודעות ועוד.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "ההחלפה היא חינמית ואורכת דקה בלבד.";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "מידע נוסף באתר Jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "ההודעות עברו לאפליקציה של Jetpack.";
+"movedToJetpack.notifications.title" = "להשתמש ב-WordPress עם 'הודעות' באפליקציה של Jetpack.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "הכלי Reader עבר לאפליקציה של Jetpack.";
+"movedToJetpack.reader.title" = "להשתמש ב-WordPress עם Reader באפליקציה של Jetpack.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "הנתונים הסטטיסטיים עברו לאפליקציה של Jetpack.";
+"movedToJetpack.stats.title" = "להשתמש ב-WordPress עם 'נתונים סטטיסטיים' באפליקציה של Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "תוכן";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "האתר שלך נוצר בהצלחה, אבל נתקלנו בבעיה במהלך ההכנה של הדומיין האישי שלך לתשלום בקופה. יש לנסות שוב או לפנות לתמיכה לעזרה.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "כמו הדוגמה שמוצגת למעלה, דומיין מאפשר לאנשים למצוא את האתר שלך ולבקר בו מדפדפן האינטרנט שלהם.";

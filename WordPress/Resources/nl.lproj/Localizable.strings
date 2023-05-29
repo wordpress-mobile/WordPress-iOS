@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 15:54:07+0000 */
+/* Translation-Revision-Date: 2023-05-17 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -2379,6 +2379,9 @@ translators: Block name. %s: The localized block name */
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Ontwerp";
 
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Ontwerpsysteem";
+
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
 
@@ -2740,12 +2743,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Bewerk video";
-
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door WordPress voor Android";
-
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door WordPress voor iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Deze GIF bewerken zal de animatie verwijderen.";
@@ -9754,6 +9751,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pagina's";
 
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Voeg pagina's toe aan je site";
+
 /* Title of label marking a draft page */
 "dashboardCard.pages.cell.status.draft" = "Concept";
 
@@ -9808,8 +9808,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Reflects that site is live when domain purchase feature flag is ON. */
 "domain.purchase.preview.title" = "Gefeliciteerd, je site is online!";
 
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Beste alternatief";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "voor het eerste jaar";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Gratis";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Aanbevolen";
+
 /* The 'Sale' label under the domain name in 'Choose a domain' screen */
 "domain.suggestions.row.sale" = "Aanbieding!";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "per jaar";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
@@ -10291,7 +10306,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Welkom bij Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Statistieken, Reader, meldingen en andere functies die door Jetpack aangedreven worden, zijn verwijderd uit de WordPress-app en kunnen nu alleen in de Jetpack-app gevonden worden.";
+"movedToJetpack.description" = "De Jetpack-app heeft alle functies van de WordPress-app, en nu ook exclusieve toegang tot Statistieken, Reader, Meldingen en meer.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Overstappen is gratis en duurt maar een minuut.";
@@ -10303,13 +10318,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Ga naar jetpack.com voor meer informatie";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Meldingen zijn verplaatst naar de Jetpack-app.";
+"movedToJetpack.notifications.title" = "Gebruik WordPress met Meldingen in de Jetpack-app";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Reader is naar de Jetpack-app verplaatst";
+"movedToJetpack.reader.title" = "Gebruik WordPress met Reader in de Jetpack-app.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Statistieken zijn verplaatst naar de Jetpack-app.";
+"movedToJetpack.stats.title" = "Gebruik WordPress met Statistieken in de Jetpack-app.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Inhoud";
@@ -10431,6 +10446,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
 
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "deze site";
+
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
@@ -10496,6 +10515,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Je website is aangemaakt, maar er is een probleem opgetreden bij je aangepaste domein voorbereiden op het afrekenen. Probeer het nog eens of neem contact met ons op voor hulp.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Een domein helpt mensen, zoals in het voorbeeld hierboven, je site te vinden en bezoeken vanuit hun webbrowser.";

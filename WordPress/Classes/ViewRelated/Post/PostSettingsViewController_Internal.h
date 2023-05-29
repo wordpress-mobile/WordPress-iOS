@@ -7,6 +7,7 @@ typedef enum {
     PostSettingsSectionFeaturedImage,
     PostSettingsSectionStickyPost,
     PostSettingsSectionShare,
+    PostSettingsSectionDisabledTwitter, // NOTE: Clean up when Twitter has been removed from Publicize services.
     PostSettingsSectionGeolocation,
     PostSettingsSectionMoreOptions
 } PostSettingsSection;

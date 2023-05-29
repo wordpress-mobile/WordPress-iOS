@@ -2732,12 +2732,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Përpunoni video";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në WordPress për Android";
-
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në WordPress për iOS";
-
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij.";
 
@@ -10278,9 +10272,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Mirë se vini te Jetpack-u!";
 
-/* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Statistikat, Lexuesi, Njoftimet dhe veçori të tjera të bazuara në Jetpack tani janë hequr prej aplikacionit WordPress dhe tani mund të gjenden vetëm në aplikacionin Jetpack.";
-
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Kalimi është falas dhe do vetëm një minutë.";
 
@@ -10289,15 +10280,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that displays a blog post in a web view. */
 "movedToJetpack.learnMoreButtonTitle" = "Mësoni më tepër, te jetpack.com";
-
-/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Njoftimet kanë kaluar te aplikacioni Jetpack.";
-
-/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Lexuesi ka kaluar te aplikacioni Jetpack.";
-
-/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Statistikat kanë kaluar te aplikacioni Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Lëndë";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 15:54:09+0000 */
+/* Translation-Revision-Date: 2023-05-17 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Video bearbeiten";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Das Bearbeiten von wiederverwendbaren Blöcken wird in WordPress für Android noch nicht unterstützt";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Das Bearbeiten von wiederverwendbaren Blöcken wird in %s für Android noch nicht unterstützt";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Das Bearbeiten von wiederverwendbaren Blöcken wird in WordPress für iOS noch nicht unterstützt";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Das Bearbeiten von wiederverwendbaren Blöcken wird in %s für iOS noch nicht unterstützt";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Wenn dieses GIF bearbeitet wird, wird die Animation entfernt.";
@@ -4237,6 +4237,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Lade weitere Beiträge";
+
+/* No comment provided by engineer. */
+"Loading" = "Wird geladen";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Aktivitäten werden geladen ...";
@@ -10309,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Willkommen bei Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Statistiken, der Reader, Benachrichtigungen und weitere von Jetpack unterstützte Funktionen wurden aus der WordPress-App entfernt und sind ab sofort ausschließlich in der Jetpack-App verfügbar.";
+"movedToJetpack.description" = "Die Jetpack-App verfügt über alle Funktionen der WordPress-App und bietet ab sofort exklusiven Zugriff auf Statistiken, den Reader, Benachrichtigungen und mehr.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Der Wechsel ist kostenlos und dauert nur eine Minute.";
@@ -10321,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Weitere Informationen auf jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Benachrichtigungen wurden in die Jetpack-App verschoben.";
+"movedToJetpack.notifications.title" = "Verwende WordPress mit Benachrichtigungen in der Jetpack-App.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Der Reader wurde in die Jetpack-App verschoben.";
+"movedToJetpack.reader.title" = "Verwende WordPress mit dem Reader in der Jetpack-App.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Statistiken wurden in die Jetpack-App verschoben.";
+"movedToJetpack.stats.title" = "Verwende WordPress mit Statistiken in der Jetpack-App.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Inhalt";
@@ -10518,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Deine Website wurde erfolgreich erstellt, wir haben jedoch ein Problem festgestellt, als wir deine individuelle Domain für den Bezahlvorgang vorbereitet haben. Bitte versuche es erneut oder kontaktiere den Support, um Hilfe zu erhalten.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Eine Domain, wie sie oben im Beispiel zu sehen ist, ermöglicht es anderen Personen, deine Website über ihren Internetbrowser zu finden und zu besuchen.";

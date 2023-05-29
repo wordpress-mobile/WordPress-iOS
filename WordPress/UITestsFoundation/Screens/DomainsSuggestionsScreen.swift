@@ -29,4 +29,16 @@ public class DomainsSuggestionsScreen: ScreenObject {
         XCTAssertTrue(DomainsSuggestionsScreen.isLoaded(), "\"Domains suggestions\" screen isn't loaded.")
         return self
     }
+
+    @discardableResult
+    public func selectDomain() throws -> Self {
+        app.tables["DomainSuggestionsTable"].cells.lastMatch?.tap()
+        return self
+    }
+
+    @discardableResult
+    public func goToPlanSelection() throws -> PlanSelectionScreen {
+        app.buttons["Select domain"].tap()
+        return try PlanSelectionScreen()
+    }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 08:02:36+0000 */
+/* Translation-Revision-Date: 2023-05-22 06:13:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Sunting video";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Menyunting blok pakai ulang belum didukung di WordPress untuk Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Menyunting blok pakai ulang belum didukung di %s untuk Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Menyunting blok pakai ulang belum didukung di WordPress untuk iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Menyunting blok pakai ulang belum didukung di %s untuk iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Mengedit GIF ini akan menghapus animasinya.";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Selamat datang di Jetpack!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "Statistik, Pembaca, Pemberitahuan, dan beragam fitur lain berbasis Jetpack telah dihapus dari aplikasi WordPress dan hanya dapat ditemukan di aplikasi Jetpack.";
+"movedToJetpack.description" = "Aplikasi Jetpack memiliki semua fungsionalitas aplikasi WordPress, dan sekarang memiliki akses eksklusif ke Statistik, Pembaca, Notifikasi, dan lainnya.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Baca selengkapnya di jetpack.com";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Pemberitahuan berpindah ke aplikasi Jetpack.";
+"movedToJetpack.notifications.title" = "Gunakan WordPress dengan Pemberitahuan di aplikasi Jetpack.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Pembaca berpindah ke aplikasi Jetpack.";
+"movedToJetpack.reader.title" = "Gunakan WordPress dengan Pembaca di aplikasi Jetpack.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "Statistik berpindah ke aplikasi Jetpack.";
+"movedToJetpack.stats.title" = "Gunakan WordPress dengan Statistik di aplikasi Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Konten";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/namasitusanda.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Situs Anda telah berhasil dibuat, tetapi terjadi masalah saat menyiapkan domain khusus Anda untuk checkout. Silakan coba lagi atau hubungi dukungan untuk mendapatkan bantuan.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Seperti contoh di atas, domain membantu orang untuk menemukan dan mengunjungi situs Anda dari peramban  web mereka.";

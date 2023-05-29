@@ -133,6 +133,7 @@ private extension BlogDashboardViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
     }
 
     func updateCurrentCards(cards: [DashboardCardModel]) {

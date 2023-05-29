@@ -14,10 +14,12 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case blaze
     case wordPressIndividualPluginSupport
     case domainsDashboardCard
+    case freeToPaidPlansDashboardCard
     case pagesDashboardCard
     case activityLogDashboardCard
     case sdkLessGoogleSignIn
     case bloggingPromptsSocial
+    case siteEditorMVP
 
     var defaultValue: Bool {
         switch self {
@@ -45,6 +47,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return AppConfiguration.isWordPress
         case .domainsDashboardCard:
             return false
+        case .freeToPaidPlansDashboardCard:
+            return false
         case .pagesDashboardCard:
             return false
         case .activityLogDashboardCard:
@@ -53,6 +57,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .bloggingPromptsSocial:
             return AppConfiguration.isJetpack
+        case .siteEditorMVP:
+            return true
         }
     }
 
@@ -83,6 +89,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wp_individual_plugin_overlay"
         case .domainsDashboardCard:
             return "dashboard_card_domain"
+        case .freeToPaidPlansDashboardCard:
+            return "dashboard_card_free_to_paid_plans"
         case .pagesDashboardCard:
             return "dashboard_card_pages"
         case .activityLogDashboardCard:
@@ -91,6 +99,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "google_signin_without_sdk"
         case .bloggingPromptsSocial:
             return "blogging_prompts_social_enabled"
+        case .siteEditorMVP:
+            return "site_editor_mvp"
         }
     }
 
@@ -120,6 +130,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Jetpack Individual Plugin Support for WordPress"
         case .domainsDashboardCard:
             return "Domains Dashboard Card"
+        case .freeToPaidPlansDashboardCard:
+            return "Free to Paid Plans Dashboard Card"
         case .pagesDashboardCard:
             return "Pages Dashboard Card"
         case .activityLogDashboardCard:
@@ -128,6 +140,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Sign-In with Google without the Google SDK"
         case .bloggingPromptsSocial:
             return "Blogging Prompts Social"
+        case .siteEditorMVP:
+            return "Site Editor MVP"
         }
     }
 

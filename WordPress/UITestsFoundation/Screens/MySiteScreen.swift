@@ -19,7 +19,7 @@ private struct ElementStringIDs {
     static let switchSiteButton = "SwitchSiteButton"
     static let dashboardButton = "Home"
     static let segmentedControlMenuButton = "Menu"
-    static let domainsCardHeaderButton = "Find a custom domain"
+    static let freeToPaidPlansCardHeaderButton = "Free domain with an annual plan"
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
@@ -61,15 +61,15 @@ public class MySiteScreen: ScreenObject {
         $0.buttons[ElementStringIDs.segmentedControlMenuButton]
     }
 
-    let domainsCardButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.domainsCardHeaderButton]
+    let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons[ElementStringIDs.freeToPaidPlansCardHeaderButton]
     }
 
     let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells[ElementStringIDs.domainsButton]
     }
 
-    var domainsCardButton: XCUIElement { domainsCardButtonGetter(app) }
+    var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -189,23 +189,23 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyDomainsCard() -> Self {
-        let cardText = app.staticTexts["Stake your claim on your corner of the web with a site address that’s easy to find, share and follow."]
-        XCTAssertTrue(domainsCardButton.waitForIsHittable(), "Domains card header was not displayed.")
-        XCTAssertTrue(cardText.waitForIsHittable(), "Domains card text was not displayed.")
+    public func verifyFreeToPaidPlansCard() -> Self {
+        let cardText = app.staticTexts["Get a free domain for the first year, remove ads on your site, and increase your storage."]
+        XCTAssertTrue(freeToPaidPlansCardButton.waitForIsHittable(), "Free to Paid plans card header was not displayed.")
+        XCTAssertTrue(cardText.waitForIsHittable(), "Free to Paid plans card text was not displayed.")
         return self
     }
 
     @discardableResult
-    public func tapDomainsCard() throws -> DomainsSuggestionsScreen {
-        domainsCardButton.tap()
+    public func tapFreeToPaidPlansCard() throws -> DomainsSuggestionsScreen {
+        freeToPaidPlansCardButton.tap()
         return try DomainsSuggestionsScreen()
     }
 
     @discardableResult
-    public func scrollToDomainsCard() throws -> Self {
+    public func scrollToFreeToPaidPlansCard() throws -> Self {
         let collectionView = app.collectionViews.firstMatch
-        let cardCell = collectionView.cells.containing(.other, identifier: "dashboard-domains-card-contentview").firstMatch
+        let cardCell = collectionView.cells.containing(.other, identifier: "dashboard-free-to-paid-plans-card-contentview").firstMatch
         cardCell.scrollIntoView(within: collectionView)
         return self
     }

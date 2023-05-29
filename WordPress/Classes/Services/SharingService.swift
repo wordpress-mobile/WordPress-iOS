@@ -34,14 +34,15 @@ import WordPressKit
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
     @objc func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
-        guard let remote = remoteForBlog(blog) else {
+        guard let remote = remoteForBlog(blog),
+              let blogID = blog.dotComID else {
             return
         }
-        remote.getPublicizeServices({ remoteServices in
+
+        remote.getPublicizeServices(for: blogID, success: { remoteServices in
             // Process the results
             self.mergePublicizeServices(remoteServices, success: success)
-        },
-        failure: failure)
+        }, failure: failure)
     }
 
 
@@ -346,6 +347,7 @@ import WordPressKit
         pubService?.order = remoteService.order
         pubService?.serviceID = remoteService.serviceID
         pubService?.type = remoteService.type
+        pubService?.status = (remoteService.status.isEmpty ? PublicizeService.defaultStatus : remoteService.status)
 
         return pubService!
     }

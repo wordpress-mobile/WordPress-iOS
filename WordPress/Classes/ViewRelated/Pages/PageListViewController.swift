@@ -255,8 +255,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func fetchEditorSettings(success: ((Bool) -> ())?, failure: ((NSError) -> ())?) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
         let fetchTask = Task { @MainActor [weak self] in
-            guard FeatureFlag.siteEditorMVP.enabled,
-                  let result = await editorSettingsService?.fetchSettings() else {
+            guard RemoteFeatureFlag.siteEditorMVP.enabled(),
+                  let result = await self?.editorSettingsService?.fetchSettings() else {
                 return
             }
             switch result {
@@ -437,7 +437,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(searchPredicate)
         }
 
-        if FeatureFlag.siteEditorMVP.enabled,
+        if RemoteFeatureFlag.siteEditorMVP.enabled(),
            blog.blockEditorSettings?.isFSETheme ?? false,
            let homepageID = blog.homepagePageID,
            let homepageType = blog.homepageType,
@@ -485,6 +485,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+            WPAnalytics.track(.pageListEditHomepageTapped)
             guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
                 return
             }

@@ -255,6 +255,10 @@ import Foundation
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
 
+    // Page List
+    case pageListEditHomepageTapped
+    case pageListEditHomepageInfoTapped
+
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
     case readerFilterSheetDismissed
@@ -482,6 +486,21 @@ import Foundation
     case directDomainsPurchaseDashboardCardShown
     case directDomainsPurchaseDashboardCardTapped
     case directDomainsPurchaseDashboardCardHidden
+
+    // Jetpack Social - Twitter Deprecation Notice
+    case jetpackSocialTwitterNoticeLinkTapped
+
+    // Free to Paid Plans Dashboard Card
+    case freeToPaidPlansDashboardCardShown
+    case freeToPaidPlansDashboardCardTapped
+    case freeToPaidPlansDashboardCardMenuTapped
+    case freeToPaidPlansDashboardCardHidden
+
+    // Plan Selection
+    case planSelectionWebViewViewed
+
+    // Checkout
+    case checkoutWebViewViewed
 
     /// A String that represents the event
     var value: String {
@@ -921,12 +940,20 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+
+        // Post List
         case .postListShareAction:
             return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
             return "post_list_button_pressed"
+
+        // Page List
+        case .pageListEditHomepageTapped:
+            return "page_list_edit_homepage_item_pressed"
+        case .pageListEditHomepageInfoTapped:
+            return "page_list_edit_homepage_info_pressed"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
@@ -1314,6 +1341,27 @@ import Foundation
         case .directDomainsPurchaseDashboardCardTapped:
             return "direct_domains_purchase_dashboard_card_tapped"
 
+        // Jetpack Social - Twitter Deprecation Notice
+        case .jetpackSocialTwitterNoticeLinkTapped:
+            return "twitter_notice_link_tapped"
+
+        // Free to Paid Plans Dashboard Card
+        case .freeToPaidPlansDashboardCardShown:
+            return "free_to_paid_plan_dashboard_card_shown"
+        case .freeToPaidPlansDashboardCardHidden:
+            return "free_to_paid_plan_dashboard_card_hidden"
+        case .freeToPaidPlansDashboardCardTapped:
+            return "free_to_paid_plan_dashboard_card_tapped"
+        case .freeToPaidPlansDashboardCardMenuTapped:
+            return "free_to_paid_plan_dashboard_card_menu_tapped"
+
+        // Plan Selection
+        case .planSelectionWebViewViewed:
+            return "plan_selection_webview_viewed"
+
+        // Checkout
+        case .checkoutWebViewViewed:
+            return "checkout_webview_viewed"
         } // END OF SWITCH
     }
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-17 15:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "비디오 편집";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "재활용 가능한 블록 편집은 아직 Android용 WordPress에서 지원되지 않습니다.";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "재사용 가능한 블록 편집은 아직 Android용 %s에서 지원되지 않습니다.";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "재활용 가능한 블록 편집은 아직 iOS용 WordPress에서 지원되지 않습니다.";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "재사용 가능한 블록 편집은 아직 iOS용 %s에서 지원되지 않습니다.";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
@@ -4237,6 +4237,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "더 많은 글 로드";
+
+/* No comment provided by engineer. */
+"Loading" = "로드 중";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "활동 로드 중...";
@@ -10309,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "젯팩에 오신 것을 환영합니다!";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "통계, 리더, 알림 및 기타 젯팩에서는 워드프레스 앱에서 제거된 기능이 제공되며, 젯팩 앱에서만 찾을 수 있습니다.";
+"movedToJetpack.description" = "젯팩 앱에서는 워드프레스 앱의 모든 기능을 보유하며, 이제 통계, 리더, 알림 등에 독점적으로 접근할 수 있습니다.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "전환은 무료이며 1분밖에 걸리지 않습니다.";
@@ -10321,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "jetpack.com에서 더 알아보기";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "알림이 젯팩 앱으로 이동되었습니다.";
+"movedToJetpack.notifications.title" = "젯팩 앱에서 알림과 함께 워드프레스를 사용하세요.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "리더가 젯팩 앱으로 이동되었습니다.";
+"movedToJetpack.reader.title" = "젯팩 앱에서 리더와 함께 워드프레스를 사용하세요.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "통계가 젯팩 앱으로 이동되었습니다.";
+"movedToJetpack.stats.title" = "젯팩 앱에서 통계와 함께 워드프레스를 사용하세요.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "콘텐츠";
@@ -10518,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "웹사이트가 생성되었지만, 체크아웃용 사용자 정의 도메인을 준비하는 동안 문제가 발생했습니다. 다시 시도하거나 지원팀에 도움을 문의하세요.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "위의 예와 같이 사람들이 웹 브라우저에서 도메인을 통해 사이트를 찾고 방문할 수 있습니다.";

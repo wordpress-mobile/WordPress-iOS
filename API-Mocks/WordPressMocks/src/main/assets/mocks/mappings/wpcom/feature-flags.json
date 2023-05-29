@@ -11,7 +11,8 @@
   "response": {
     "status": 200,
     "jsonBody": {
-      "dashboard_card_domain": true
+      "dashboard_card_domain": false,
+      "dashboard_card_free_to_paid_plans": true
     }
   }
 }

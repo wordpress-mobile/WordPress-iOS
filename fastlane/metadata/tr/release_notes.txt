@@ -1,1 +1,3 @@
-Son dakika haberi—VideoPress blokları artık basit WordPress.com web siteleri için etkinleştirildi; böylece yüksek kaliteli videoları istediğiniz gibi barındırabilir ve yerleştirebilirsiniz. Umarız bu videolar kedileri içerir.
+İç içe bir metin blokuna dokunduğunuzda, bu bloktaki içeriği hemen düzenleyebilirsiniz. Artık gitmek istediğiniz yere ulaşmak için her iç içe seviyeye dokunarak ilerlemeniz gerekmiyor. (Bizim parmaklarımız da yoruluyordu.)
+
+Ayrıca cihazınızın ortam kütüphanesine WordPress erişimi vermeden klasik bir bloka ortam yüklemeyi denediğinizde uygulamanın çökmesine neden olan hatayı düzelttik. Bunun yerine, ortam erişimi isteyen bir istem göreceksiniz. Bu kadar kolay.

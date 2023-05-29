@@ -86,7 +86,7 @@ platform :ios do
       path.include?(options[:name])
     end.first
 
-    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
     inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
     # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
@@ -357,9 +357,9 @@ platform :ios do
     commit = ENV.fetch('BUILDKITE_COMMIT', 'Unknown')
     pr = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
     release_notes = <<~NOTES
-      - Branch: \`#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}\`\n
+      - Branch: `#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}`\n
       - Commit: [#{commit[0...7]}](https://github.com/#{GITHUB_REPO}/commit/#{commit})\n
-      - Pull Request: [\##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
+      - Pull Request: [##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
     NOTES
 
     appcenter_upload(
