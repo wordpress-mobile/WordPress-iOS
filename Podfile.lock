@@ -612,10 +612,10 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 6.1-beta)
-  - WordPressKit (~> 8.2.0-beta.1)
+  - WordPressKit (~> 8.2-beta)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `trunk`)
   - WordPressUI (~> 1.12.5)
-  - WPMediaPicker (~> 1.8.8-beta.1)
+  - WPMediaPicker (~> 1.8-beta)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.96.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -900,6 +900,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 6a75813f75f63e26b524f5df1c763147e269d7f8
+PODFILE CHECKSUM: 8f3801df87501615cc7418c5a128cd9136848813
 
 COCOAPODS: 1.11.3
