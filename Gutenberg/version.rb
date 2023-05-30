@@ -11,7 +11,7 @@
 #
 #   LOCAL_GUTENBERG=../my-gutenberg-fork bundle exec pod install
 GUTENBERG_CONFIG = {
-  commit: '2f59f168963e64fd2f5de436e7d727fa7694b7b4'
+  commit: '038dec2fa085debc9a2c86dbc3dc67c6946dc9f6'
   # tag: 'v1.96.0'
 }
 
