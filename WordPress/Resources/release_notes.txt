@@ -2,4 +2,5 @@
 * [*] Block editor: Add disabled style to `Cell` component [https://github.com/WordPress/gutenberg/pull/50665]
 * [**] Block editor: Fix undo/redo history when inserting a link configured to open in a new tab [https://github.com/WordPress/gutenberg/pull/50460]
 * [*] Block editor: [List block] Fix an issue when merging a list item into a Paragraph would remove its nested list items [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5785]
+* [**] Block editor: Tapping any type of nested block moves focus to the nested block directly, rather than requiring multiple taps to navigate down each nesting levels. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5781]
 
