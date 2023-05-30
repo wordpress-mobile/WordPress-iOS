@@ -615,7 +615,7 @@ DEPENDENCIES:
   - WordPressKit (~> 8.2-beta)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `trunk`)
   - WordPressUI (~> 1.12.5)
-  - WPMediaPicker (~> 1.8.8-beta.1)
+  - WPMediaPicker (~> 1.8-beta)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/038dec2fa085debc9a2c86dbc3dc67c6946dc9f6/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
