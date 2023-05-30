@@ -12,6 +12,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackMigrationPreventDuplicateNotifications
     case wordPressSupportForum
     case blaze
+    case blazeManageCampaigns
     case wordPressIndividualPluginSupport
     case domainsDashboardCard
     case freeToPaidPlansDashboardCard
@@ -42,6 +43,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .wordPressSupportForum:
             return true
         case .blaze:
+            return false
+        case .blazeManageCampaigns:
             return false
         case .wordPressIndividualPluginSupport:
             return AppConfiguration.isWordPress
@@ -85,6 +88,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
+        case .blazeManageCampaigns:
+            return "blaze_manage_campaigns"
         case .wordPressIndividualPluginSupport:
             return "wp_individual_plugin_overlay"
         case .domainsDashboardCard:
@@ -126,6 +131,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Provide support through a forum"
         case .blaze:
             return "Blaze"
+        case .blazeManageCampaigns:
+            return "Blaze Manage Campaigns"
         case .wordPressIndividualPluginSupport:
             return "Jetpack Individual Plugin Support for WordPress"
         case .domainsDashboardCard:
