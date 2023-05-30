@@ -1,3 +1,8 @@
+22.6
+-----
+* [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
+
+
 22.5
 -----
 * [*] [Jetpack-only] Reader: Fix the display of the followed topics in the filter sheet when they're written in non-latin languages. [#20702]
