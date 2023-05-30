@@ -2,7 +2,6 @@ import ScreenObject
 import XCTest
 
 public class DomainsSuggestionsScreen: ScreenObject {
-    public let tabBar: TabNavComponent
 
     let siteDomainsNavbarHeaderGetter: (XCUIApplication) -> XCUIElement = {
         $0.staticTexts["Search domains"]
@@ -11,8 +10,6 @@ public class DomainsSuggestionsScreen: ScreenObject {
     var siteDomainsNavbarHeader: XCUIElement { siteDomainsNavbarHeaderGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        tabBar = try TabNavComponent()
-
         try super.init(
             expectedElementGetters: [ siteDomainsNavbarHeaderGetter ],
             app: app,
@@ -28,5 +25,17 @@ public class DomainsSuggestionsScreen: ScreenObject {
     public func verifyDomainsSuggestionsScreenLoaded() -> Self {
         XCTAssertTrue(DomainsSuggestionsScreen.isLoaded(), "\"Domains suggestions\" screen isn't loaded.")
         return self
+    }
+
+    @discardableResult
+    public func selectDomain() throws -> Self {
+        app.tables["DomainSuggestionsTable"].cells.lastMatch?.tap()
+        return self
+    }
+
+    @discardableResult
+    public func goToPlanSelection() throws -> PlanSelectionScreen {
+        app.buttons["Select domain"].tap()
+        return try PlanSelectionScreen()
     }
 }

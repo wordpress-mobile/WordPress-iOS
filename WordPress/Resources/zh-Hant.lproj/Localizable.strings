@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-05-17 10:54:26+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -2744,11 +2744,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "編輯視訊";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Android 版 WordPress 尚不支援編輯可重複使用區塊";
-
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "iOS 版 WordPress 尚不支援編輯可重複使用區塊";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Android 版 %s 尚不支援編輯可重複使用區塊";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "編輯此 GIF 會移除動畫。";
@@ -4237,6 +4234,9 @@ translators: Block name. %s: The localized block name */
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "載入更多文章";
+
+/* No comment provided by engineer. */
+"Loading" = "正在載入";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "正在載入活動⋯⋯";
@@ -10309,7 +10309,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "歡迎使用 Jetpack！";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "WordPress 應用程式已移除「統計」、「閱讀器」、「通知」和其他 Jetpack 提供的功能，你現在只能在 Jetpack 應用程式中找到這些功能。";
+"movedToJetpack.description" = "Jetpack 應用程式具備 WordPress 應用程式所有功能，現在還可獨家使用統計資料、閱讀器、通知等功能。";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "切換完全免費，只要 1 分鐘就能完成。";
@@ -10321,13 +10321,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "前往 jetpack.com 深入瞭解";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "「通知」已搬遷至 Jetpack 應用程式。";
+"movedToJetpack.notifications.title" = "在 Jetpack 應用程式中使用 WordPress 和通知功能。";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "「閱讀器」已搬遷至 Jetpack 應用程式。";
+"movedToJetpack.reader.title" = "在 Jetpack 應用程式中使用 WordPress 和閱讀器。";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "「統計」已搬遷至 Jetpack 應用程式。";
+"movedToJetpack.stats.title" = "在 Jetpack 應用程式中使用 WordPress 和統計資料功能。";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "內容";
@@ -10518,6 +10518,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "你的網站已成功建立，但準備你的自訂網域以結帳時發生問題。 請再試一次，或聯絡支援團隊取得協助。";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "如同上方範例，網域可讓使用者從網頁瀏覽器找到並造訪你的網站。";

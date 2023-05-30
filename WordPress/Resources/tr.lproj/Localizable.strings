@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-01 15:14:41+0000 */
+/* Translation-Revision-Date: 2023-05-17 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -2744,11 +2744,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Videoyu düzenle";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Yeniden kullanılabilir blokların düzenlenmesi Android için WordPress'te henüz desteklenmemektedir";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Tekrar kullanılabilir blokların düzenlenmesi Android için %s sitesinde henüz desteklenmemektedir";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Yeniden kullanılabilir blokların düzenlenmesi iOS için WordPress'te henüz desteklenmemektedir";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Tekrar kullanılabilir blokların düzenlenmesi iOS için %s sitesinde henüz desteklenmemektedir";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Bu GIF'i düzenlemek animasyonunu kaldıracaktır.";
@@ -10312,7 +10312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.welcome.title" = "Jetpack'e hoş geldiniz.";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "İstatistikler, Okuyucu, Bildirimler ve Jetpack destekli diğer özellikler WordPress uygulamasından kaldırıldı ve artık yalnızca Jetpack uygulamasında bulunuyor.";
+"movedToJetpack.description" = "Jetpack uygulaması, WordPress uygulamasının tüm işlevlerine ve artık İstatistikler, Okuyucu, Bildirimler ve daha fazlasına özel erişime sahiptir.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
@@ -10324,13 +10324,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Jetpack.com'da daha fazla bilgi edinin";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Bildirimler, Jetpack uygulamasına geçti.";
+"movedToJetpack.notifications.title" = "Jetpack uygulamasında WordPress'i Bildirimler ile kullanın.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.reader.title" = "Okuyucu, Jetpack uygulamasına geçti.";
+"movedToJetpack.reader.title" = "Jetpack uygulamasında WordPress'i Okuyucu kullanın.";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.stats.title" = "İstatistikler, Jetpack uygulamasına geçti.";
+"movedToJetpack.stats.title" = "Jetpack uygulamasında WordPress'i İstatistikler ile kullanın.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "İçerik";
@@ -10521,6 +10521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/siteadi.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Web siteniz başarıyla oluşturuldu, ancak özel alan adınızı ödeme için hazırlarken bir sorunla karşılaştık. Lütfen tekrar deneyin veya yardım için destek birimine başvurun.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Yukarıdaki örnekte olduğu gibi, bir alan adı, kişilerin web sitenizi bir web tarayıcısı üzerinden bulmasını ve ziyaret etmesini sağlar.";

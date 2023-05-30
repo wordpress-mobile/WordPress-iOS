@@ -12,14 +12,28 @@ import UIKit
             includeSupportButton: false
         )
 
-        domainSuggestionsViewController.domainAddedToCartCallback = {
+        let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
+
+        let planSelected = { checkoutURL in
+            let viewModel = CheckoutViewModel(url: checkoutURL)
+            let checkoutViewController = CheckoutViewController(viewModel: viewModel)
+            checkoutViewController.configureSandboxStore {
+                navigationController.pushViewController(checkoutViewController, animated: true)
+            }
+
+            PlansTracker.trackCheckoutWebViewViewed(source: "plan_selection")
+        }
+
+        let domainAddedToCart = {
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
             let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
-            domainSuggestionsViewController.show(planSelectionViewController, sender: nil)
+            planSelectionViewController.planSelectedCallback = planSelected
+            navigationController.pushViewController(planSelectionViewController, animated: true)
 
             PlansTracker.trackPlanSelectionWebViewViewed(.domainAndPlanPackage, source: "domains_register")
         }
+        domainSuggestionsViewController.domainAddedToCartCallback = domainAddedToCart
 
-        dashboardViewController.show(domainSuggestionsViewController, sender: nil)
+        dashboardViewController.present(navigationController, animated: true)
     }
 }

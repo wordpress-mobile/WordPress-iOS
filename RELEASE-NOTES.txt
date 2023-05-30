@@ -1,16 +1,20 @@
 22.6
-----
+-----
 * [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
+
 
 22.5
 -----
 * [*] [Jetpack-only] Reader: Fix the display of the followed topics in the filter sheet when they're written in non-latin languages. [#20702]
 * [*] [Jetpack-only] Reader: Fixed an issue that was causing the Report and Block actions to be missing from Post Menu actions sheet. [#20705]
 * [***] Enables editing of the site homepage for sites using block-based themes directly from the pages list. [#20713]
+* [*] Block editor: Add disabled style to `Cell` component [https://github.com/WordPress/gutenberg/pull/50665]
+* [**] Block editor: Fix undo/redo history when inserting a link configured to open in a new tab [https://github.com/WordPress/gutenberg/pull/50460]
+* [**] [Jetpack-only] Block editor: Disable details settings for not belonged VideoPress videos [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5782]
+* [*] Block editor: [List block] Fix an issue when merging a list item into a Paragraph would remove its nested list items [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5785]
 
 22.4
 -----
-
 * [*] [internal] [Jetpack-only] Domains Dashboard Card: Immediately opening domains search after tapping the card. [#20638]
 * [**] [Jetpack-only] Adds a dashboard card for viewing activity log. [#20569]
 * [**] [Jetpack-only] Adds a dashboard card for viewing pages. [#20524]

@@ -1,1 +1,3 @@
-Berita terkini—Blok VideoPress kini tersedia pada situs web Simple WordPress.com, sehingga Anda dapat menghosting dan menyematkan video berkualitas tinggi ke konten inti Anda. Kami harap video tersebut menyertakan kucing.
+Saat Anda mengetuk blok teks bersusun, Anda dapat langsung menyunting konten di blok tersebut—tidak perlu mengetuk di tiap susunan untuk menyunting kontennya. (Jari kami juga capek.)
+
+Kami juga memperbaiki bug yang membuat aplikasi crash saat Anda mengunduh media ke blok klasik tanpa memberi WordPress akses ke pustaka media perangkat. Sekarang, Anda akan melihat prompt yang meminta akses media. Mudah sekali, bukan?

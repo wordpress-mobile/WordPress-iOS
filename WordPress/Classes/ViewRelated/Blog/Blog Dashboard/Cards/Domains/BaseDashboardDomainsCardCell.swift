@@ -77,7 +77,7 @@ class BaseDashboardDomainsCardCell: DashboardCollectionViewCell {
     private func setupView() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Constants.cardFrameConstraintPriority)
-        contentView.accessibilityIdentifier = "dashboard-domains-card-contentview"
+        contentView.accessibilityIdentifier = viewModel.strings.accessibilityIdentifier
         cardFrameView.add(subview: containerStackView)
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
@@ -126,15 +126,18 @@ struct DashboardDomainsCardViewModel {
         let description: String
         let hideThis: String
         let source: String
+        let accessibilityIdentifier: String
 
         init(title: String = "",
              description: String = "",
              hideThis: String = "",
-             source: String = "") {
+             source: String = "",
+             accessibilityIdentifier: String = "") {
             self.title = title
             self.description = description
             self.hideThis = hideThis
             self.source = source
+            self.accessibilityIdentifier = accessibilityIdentifier
         }
 
     }

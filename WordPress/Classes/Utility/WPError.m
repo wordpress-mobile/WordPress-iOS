@@ -136,7 +136,7 @@ NSInteger const SupportButtonIndex = 0;
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * _Nonnull __unused action) {
-                                                               SupportTableViewController *supportVC = [SupportTableViewController new];
+                                                               SupportTableViewController *supportVC = [[SupportTableViewController alloc] init];
                                                                [supportVC showFromTabBar];
                                                                [WPError internalInstance].alertShowing = NO;
                                                            }];

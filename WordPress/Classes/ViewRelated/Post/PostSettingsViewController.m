@@ -73,6 +73,7 @@ FeaturedImageViewControllerDelegate>
 
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
+@property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
 
 @property (nonatomic, strong) NoResultsViewController *noResultsView;
 @property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
@@ -106,6 +107,7 @@ FeaturedImageViewControllerDelegate>
     self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         self.apost = aPost;
+        self.unsupportedConnections = @[];
     }
     return self;
 }
@@ -130,7 +132,7 @@ FeaturedImageViewControllerDelegate>
     self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
                            NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
                            NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
-    
+
     [self setupFormatsList];
     [self setupPublicizeConnections];
 
@@ -165,7 +167,8 @@ FeaturedImageViewControllerDelegate>
 
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
-    
+
+    [self setupPublicizeConnections]; // Refresh in case the user disconnects from unsupported services.
     [self configureMetaSectionRows];
     [self reloadData];
 }
@@ -230,7 +233,27 @@ FeaturedImageViewControllerDelegate>
 
 - (void)setupPublicizeConnections
 {
-    self.publicizeConnections = self.post.blog.sortedConnections;
+    // Separate Twitter connections if the service is unsupported.
+    PublicizeService *twitterService = [PublicizeService lookupPublicizeServiceNamed:@"twitter"
+                                                                           inContext:self.apost.managedObjectContext];
+
+    if (!twitterService || [twitterService isSupported]) {
+        return;
+    }
+
+    NSMutableArray<PublicizeConnection *> *supportedConnections = [NSMutableArray new];
+    NSMutableArray<PublicizeConnection *> *unsupportedConnections = [NSMutableArray new];
+    for (PublicizeConnection *connection in self.post.blog.sortedConnections) {
+        if ([connection.service isEqualToString:twitterService.serviceID]) {
+            [unsupportedConnections addObject:connection];
+            continue;
+        }
+
+        [supportedConnections addObject:connection];
+    }
+
+    self.publicizeConnections = supportedConnections;
+    self.unsupportedConnections = unsupportedConnections;
 }
 
 - (void)setupReachability
@@ -287,6 +310,15 @@ FeaturedImageViewControllerDelegate>
     } failure:^(NSError * _Nonnull __unused error) {
         completionBlock();
     }];
+}
+
+// sync the latest state of Twitter.
+- (void)syncPublicizeServices
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.sharingService syncPublicizeServicesForBlog:self.apost.blog success:^{
+        [weakSelf setupPublicizeConnections];
+    } failure:nil];
 }
 
 #pragma mark - Instance Methods
@@ -357,12 +389,14 @@ FeaturedImageViewControllerDelegate>
 - (void)configureSections
 {
     NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
+    NSNumber *disabledTwitterSection = @(PostSettingsSectionDisabledTwitter);
     NSMutableArray *sections = [@[ @(PostSettingsSectionTaxonomy),
                                   @(PostSettingsSectionMeta),
                                   @(PostSettingsSectionFormat),
                                   @(PostSettingsSectionFeaturedImage),
                                   stickyPostSection,
                                   @(PostSettingsSectionShare),
+                                  disabledTwitterSection,
                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
@@ -370,6 +404,11 @@ FeaturedImageViewControllerDelegate>
     if (![self.apost.blog supports:BlogFeatureWPComRESTAPI] && !self.apost.blog.isAdmin) {
         [sections removeObject:stickyPostSection];
     }
+
+    if (self.unsupportedConnections.count == 0) {
+        [sections removeObject:disabledTwitterSection];
+    }
+
     self.sections = [sections copy];
 }
 
@@ -402,6 +441,9 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionShare) {
         return [self numberOfRowsForShareSection];
 
+    } else if (sec == PostSettingsSectionDisabledTwitter) {
+        return self.unsupportedConnections.count;
+
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
 
@@ -431,10 +473,31 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
         return NSLocalizedString(@"Jetpack Social", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
+    } else if (sec == PostSettingsSectionDisabledTwitter) {
+        return NSLocalizedStringWithDefaultValue(@"postSettings.section.disabledTwitter.header",
+                                                 nil,
+                                                 [NSBundle mainBundle],
+                                                 @"Twitter Auto-Sharing Is No Longer Available",
+                                                 @"Section title for the disabled Twitter service in the Post Settings screen");
+
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
 
     }
+    return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
+    if (sec == PostSettingsSectionDisabledTwitter) {
+        TwitterDeprecationTableFooterView *footerView = [[TwitterDeprecationTableFooterView alloc] init];
+        footerView.presentingViewController = self;
+        footerView.source = @"post_settings";
+
+        return footerView;
+    }
+
     return nil;
 }
 
@@ -496,7 +559,7 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
-    } else if (sec == PostSettingsSectionShare) {
+    } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
         cell = [self configureShareCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
@@ -510,6 +573,7 @@ FeaturedImageViewControllerDelegate>
     [tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
     if (cell.tag == PostSettingsRowCategories) {
         [self showCategoriesSelection];
@@ -531,6 +595,8 @@ FeaturedImageViewControllerDelegate>
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
         [self showFeaturedImageRemoveOrRetryActionAtIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionDisabledTwitter) {
+        [self showShareDetailForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
         [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
@@ -805,10 +871,12 @@ FeaturedImageViewControllerDelegate>
 {
     UITableViewCell *cell;
     BOOL canEditSharing = [self.post canEditPublicizeSettings];
+    NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
+    NSArray<PublicizeConnection *> *connections = sec == PostSettingsSectionShare ? self.publicizeConnections : self.unsupportedConnections;
 
-    if (indexPath.row < self.publicizeConnections.count) {
+    if (indexPath.row < connections.count) {
         cell = [self getWPTableViewImageAndAccessoryCell];
-        PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
+        PublicizeConnection *connection = connections[indexPath.row];
         UIImage *image = [WPStyleGuide iconForService: connection.service];
         [cell.imageView setImage:image];
         if (canEditSharing) {
@@ -817,7 +885,9 @@ FeaturedImageViewControllerDelegate>
         cell.textLabel.text = connection.externalDisplay;
         cell.textLabel.enabled = canEditSharing;
         if (connection.isBroken) {
-            cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
+            cell.accessoryView = sec == PostSettingsSectionShare ?
+                                  [WPStyleGuide sharingCellWarningAccessoryImageView] :
+                                  [WPStyleGuide sharingCellErrorAccessoryImageView];
         } else {
             UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
             // This interaction is handled at a cell level
@@ -1074,6 +1144,18 @@ FeaturedImageViewControllerDelegate>
             }
         }
     }
+}
+
+- (void)showShareDetailForIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row >= self.unsupportedConnections.count) {
+        return;
+    }
+
+    PublicizeConnection *connection = self.unsupportedConnections[indexPath.row];
+    SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.apost.blog
+                                                                            publicizeConnection:connection];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showEditShareMessageController
