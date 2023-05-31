@@ -1,7 +1,7 @@
 22.6
 -----
 * [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
-
+* [**] Add a "Personalize Home Tab" button to the bottom of the My Site Dashboard that opens a new screen where you can customize which dashboard cards are visible. You can now also hide any of the dashboard cards directly from My Site Dashboard using the "more" menu. [#20296]
 
 22.5
 -----
