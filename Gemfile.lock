@@ -381,7 +381,7 @@ PLATFORMS
 
 DEPENDENCIES
   archive-tar-minitar
-  cocoapods (~> 1.11)
+  cocoapods (~> 1.12, >= 1.12.1)
   commonmarker
   danger (~> 9.3)
   danger-rubocop (~> 0.10)
