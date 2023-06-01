@@ -43,9 +43,8 @@ Pod::Spec.new do |s|
   # care of downloading and unarchiving and use a local source.
   #
   s.source = { http: xcframework_archive_url }
-  # path = Pathname.new("#{GUTENBERG_DOWNLOADS_DIRECTORY}/Gutenberg-#{gutenberg_version}.tar.gz")
-    # .relative_path_from(__dir__).to_s
-  s.source = { http: "file://#{path}" }
+  # path = Pathname.new("#{GUTENBERG_DOWNLOADS_DIRECTORY}/Gutenberg-#{gutenberg_version}.tar.gz").relative_path_from(__dir__).to_s
+  # s.source = { http: "file://#{path}" }
   s.vendored_frameworks = [
     'Aztec.xcframework',
     'Gutenberg.xcframework',
@@ -55,20 +54,6 @@ Pod::Spec.new do |s|
   ].map do |f|
     # This needs to be a relative path to the local extraction location and account for the archive folder structure.
     # Pathname.new("#{GUTENBERG_ARCHIVE_DIRECTORY}/Frameworks/#{f}").relative_path_from(__dir__).to_s
-    ".gutenberg/frameworks/Frameworks/#{f}"
+    "Frameworks/#{f}"
   end
-
-  # Download the archive after this spec has been downloaded
-  #
-  # Warning: If the pod is installed with the :path option this command will not be executed.
-  s.prepare_command = <<-CMD
-    echo '...'
-    set +x
-    pwd
-    mkdir -p .gutenberg/downloads
-    mkdir -p .gutenberg/frameworks
-    curl --progress-bar #{xcframework_archive_url} -o .gutenberg/downloads/Gutenberg.xcframework.tar.gz
-    tar -xzf .gutenberg/downloads/Gutenberg.xcframework.tar.gz --directory=.gutenberg/frameworks
-    ls
-  CMD
 end
