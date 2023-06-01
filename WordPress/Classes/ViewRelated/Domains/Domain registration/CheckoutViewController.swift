@@ -6,9 +6,13 @@ struct CheckoutViewModel {
 
 final class CheckoutViewController: WebKitViewController {
     let viewModel: CheckoutViewModel
+    let purchaseCallback: (() -> Void)?
 
-    init(viewModel: CheckoutViewModel) {
+    private var webViewURLChangeObservation: NSKeyValueObservation?
+
+    init(viewModel: CheckoutViewModel, purchaseCallback: (() -> Void)?) {
         self.viewModel = viewModel
+        self.purchaseCallback = purchaseCallback
 
         let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.authenticateWithDefaultAccount()
@@ -20,5 +24,28 @@ final class CheckoutViewController: WebKitViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        observePurchase()
+    }
+
+    private func observePurchase() {
+        webViewURLChangeObservation = webView.observe(\.url, options: .new) { [weak self] _, change in
+            guard let self = self,
+                  let newURL = change.newValue as? URL else {
+                return
+            }
+
+            if newURL.absoluteString.hasPrefix("https://wordpress.com/checkout/thank-you") {
+                self.purchaseCallback?()
+
+                /// Stay on Checkout page
+                self.webView.goBack()
+                self.webViewURLChangeObservation = nil
+            }
+        }
     }
 }

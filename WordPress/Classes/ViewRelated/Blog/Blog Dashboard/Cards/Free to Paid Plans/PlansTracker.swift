@@ -43,4 +43,11 @@ struct PlansTracker {
         let properties = ["source": source]
         WPAnalytics.track(.checkoutWebViewViewed, properties: properties)
     }
+
+    // MARK: - Purchase Result
+
+    static func trackPurchaseResult(source: String) {
+        let properties = ["source": source]
+        WPAnalytics.track(.domainCreditRedemptionSuccess, withProperties: properties)
+    }
 }
