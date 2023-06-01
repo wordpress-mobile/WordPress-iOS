@@ -28,4 +28,15 @@ class DashboardTests: XCTestCase {
             .goToPlanSelection()
             .verifyPlanSelectionScreenLoaded()
     }
+
+    func testPagesCardHeaderNavigation() throws {
+        try MySiteScreen()
+            .scrollToPagesCard()
+            .verifyPagesCard()
+            .verifyPagesCard(hasPage: "Blog")
+            .verifyPagesCard(hasPage: "Shop")
+            .verifyPagesCard(hasPage: "Cart")
+            .tapPagesCardHeader()
+            .verifyPagesScreenLoaded()
+    }
 }
