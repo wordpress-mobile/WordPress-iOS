@@ -125,7 +125,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerUserBlocking:
             return true
         case .personalizeHomeTab:
-            return false
+            return AppConfiguration.isJetpack
         case .commentModerationUpdate:
             return false
         }
