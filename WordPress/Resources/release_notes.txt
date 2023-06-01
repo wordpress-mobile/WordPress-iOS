@@ -1,6 +1,9 @@
-* [***] Enables editing of the site homepage for sites using block-based themes directly from the pages list. [#20713]
-* [*] Block editor: Add disabled style to `Cell` component [https://github.com/WordPress/gutenberg/pull/50665]
-* [**] Block editor: Fix undo/redo history when inserting a link configured to open in a new tab [https://github.com/WordPress/gutenberg/pull/50460]
-* [*] Block editor: [List block] Fix an issue when merging a list item into a Paragraph would remove its nested list items [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5785]
-* [**] Block editor: Tapping any type of nested block moves focus to the nested block directly, rather than requiring multiple taps to navigate down each nesting levels. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5781]
+If your site uses a block-based theme, you can now edit your site’s home page directly from the Pages list. Raised hands emoji.
 
+We solved an issue around setting links to open in a new tab. When typing text after this link, you can now undo and redo the text without any issues.
+
+Tap-to-edit is now available for all nested block types—no more tapping through every nesting level to reach a specific piece of content.
+
+Speaking of nesting, we also fixed a bug where merging a list item into a paragraph would remove any nested text for that list item.
+
+Finally, we’ve updated the design of disabled cells so it’s easier to tell when a cell isn’t in use.
