@@ -96,7 +96,7 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
     # Using a remote spec for a test
     #
     # pod 'Gutenberg', path: Pathname.new(File.join(__dir__, 'Gutenberg.podspec')).relative_path_from(Dir.pwd).to_s
-    pod 'Gutenberg', podspec: 'https://raw.githubusercontent.com/wordpress-mobile/WordPress-iOS/4b2a6120cb5545af04db1492c5c359c0f3912ea8/Gutenberg.podspec'
+    pod 'Gutenberg', podspec: 'https://raw.githubusercontent.com/wordpress-mobile/WordPress-iOS/d782a0cf2cd8479e88c84b22eb95508f2c8e05cf/Gutenberg.podspec'
   end
 end
 # rubocop:enable Metrics/AbcSize
