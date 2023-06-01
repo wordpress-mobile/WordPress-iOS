@@ -92,7 +92,11 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
   elsif options[:commit]
     # Notice the use of relative path, otherwise we'd get the full path of the user that run the `pod install` command tracked in Podfile.lock.
     # Also notice the path is relative from Dir.pwd, that is, the location where the script running this code is invoked.
-    pod 'Gutenberg', path: Pathname.new(File.join(__dir__, 'Gutenberg.podspec')).relative_path_from(Dir.pwd).to_s
+    #
+    # Using a remote spec for a test
+    #
+    # pod 'Gutenberg', path: Pathname.new(File.join(__dir__, 'Gutenberg.podspec')).relative_path_from(Dir.pwd).to_s
+    pod 'Gutenberg', podspec: 'https://raw.githubusercontent.com/wordpress-mobile/WordPress-iOS/4b2a6120cb5545af04db1492c5c359c0f3912ea8/Gutenberg.podspec'
   end
 end
 # rubocop:enable Metrics/AbcSize
