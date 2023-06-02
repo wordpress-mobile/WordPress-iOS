@@ -32,15 +32,20 @@ struct DomainResultView: View {
 
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: Metrics.interItemVerticalPadding) {
+            VStack(alignment: .leading) {
                 Image("Domains Lockup")
                     .padding(Metrics.logoPadding)
+                    .frame(height: Metrics.logoHeight)
                     .accessibility(hidden: true)
+
+                Spacer().frame(height: Metrics.logoToTitleSpacing)
 
                 Text(TextContent.title)
                     .multilineTextAlignment(.leading)
                     .font(.largeTitle.bold())
                     .foregroundColor(Color.primary)
+
+                Spacer().frame(height: Metrics.titleToSubtitleSpacing)
 
                 AttributedLabel(dynamicHeight: $subtitleHeight) {
                     $0.attributedText = subtitleWith(domain: domain)
@@ -48,14 +53,21 @@ struct DomainResultView: View {
                 .foregroundColor(Color(UIColor.muriel(color: .text)))
                 .frame(height: subtitleHeight)
 
-                HStack(spacing: Metrics.noticeBoxHorizontalSpacing) {
+                Spacer().frame(height: Metrics.subtitleToNoticeBoxSpacing)
+
+                HStack() {
                     Image(uiImage: .gridicon(.infoOutline))
+                        .frame(height: Metrics.iconHeight)
                         .foregroundColor(Color(UIColor.muriel(color: .gray)))
                         .accessibility(hidden: true)
+
+                    Spacer().frame(width: Metrics.iconToNoticeSpacing)
+
                     Text(TextContent.notice)
+                        .font(.footnote)
                         .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
                 }
-                .padding(Metrics.noticeBoxInsets)
+                .padding(Metrics.noticeBoxPadding)
                 .frame(maxWidth: .infinity)
                 .background(Color(UIColor.tertiaryFill))
                 .cornerRadius(Metrics.noticeBoxCornerRadius)
@@ -64,11 +76,12 @@ struct DomainResultView: View {
             VStack {
                 Spacer()
                 Button(action: dismiss) {
-                    ShapeWithTextView(title: TextContent.primaryButtonTitle).largeRoundedRectangle()
+                    ShapeWithTextView(title: TextContent.primaryButtonTitle)
+                        .largeRoundedRectangle()
+                        .font(.headline)
                 }
             }
             .padding(Metrics.screenPadding)
-
         }
     }
 
@@ -101,17 +114,21 @@ private extension DomainResultView {
     }
 
     private enum Metrics {
-        static let screenPadding = 15.0
-        static let interItemVerticalPadding = 20.0
+        static let screenPadding = 16.0
         static let logoPadding = 10.0
-        static let noticeBoxInsets = EdgeInsets(top: 15, leading: 10, bottom: 15, trailing: 10)
-        static let noticeBoxCornerRadius = 10.0
-        static let noticeBoxHorizontalSpacing = 15.0
+        static let logoHeight = 65.0
+        static let logoToTitleSpacing = 33.0
+        static let titleToSubtitleSpacing = 16.0
+        static let noticeBoxCornerRadius = 8.0
+        static let noticeBoxPadding = EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
+        static let iconHeight = 24.0
+        static let iconToNoticeSpacing = 16.0
+        static let subtitleToNoticeBoxSpacing = 32.0
         static let primaryButtonCornerRadius = 7.0
     }
 
     private enum Fonts {
-        static let subtitleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .regular)
-        static let subtitleFontBold = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        static let subtitleFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .regular)
+        static let subtitleFontBold = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .bold)
     }
 }
