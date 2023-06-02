@@ -96,7 +96,7 @@ private extension DomainResultView {
                                               value: "It may take up to 30 minutes for your domain to start working properly",
                                               comment: "Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready.")
         static let primaryButtonTitle = NSLocalizedString("freeToPaidPlans.resultView.done",
-                                                          value: "Done!",
+                                                          value: "Done",
                                                           comment: "Done button title on the domain purchase result screen. Closes the screen.")
     }
 
