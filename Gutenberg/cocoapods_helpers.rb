@@ -2,7 +2,6 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
-require 'archive/tar/minitar'
 require 'net/http'
 require 'pathname'
 require 'ruby-progressbar'
@@ -91,7 +90,7 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
     gutenberg_dependencies(options: options)
   elsif options[:commit]
     # Notice the use of relative path, otherwise we'd get the full path of the user that run the `pod install` command tracked in Podfile.lock.
-    # Also notice the path is relative from Dir.pwd, that is, the location where the script running this code is invoked.
+    # Also notice the path is relative from Dir.pwd, that is, the location where the script running this code is invoked to avoid absolute paths making the checksum non determinstic.
     pod 'Gutenberg', path: Pathname.new(File.join(__dir__, 'Gutenberg.podspec')).relative_path_from(Dir.pwd).to_s
   end
 end
@@ -123,82 +122,4 @@ end
 def archive_url(commit:)
   xcframework_storage_url = 'https://d2twmm2nzpx3bg.cloudfront.net'
   "#{xcframework_storage_url}/Gutenberg-#{commit}.tar.gz"
-end
-
-def gutenberg_pre_install_hook
-  # At this time, we only support XCFramework-commit builds
-  commit = GUTENBERG_CONFIG[:commit]
-  if commit.nil?
-    puts 'Skipping Gutenberg XCFramework download because no commit was given.'
-    return
-  end
-
-  url = archive_url(commit: commit)
-  archive_download_path = File.join(GUTENBERG_DOWNLOADS_DIRECTORY, File.basename(url))
-
-  if File.exist?(archive_download_path)
-    puts "Skipping download for #{url} because archive already exists at #{archive_download_path}."
-  else
-    download(archive_url: url, destination: archive_download_path)
-  end
-
-  extract(
-    archive: archive_download_path,
-    destination: GUTENBERG_ARCHIVE_DIRECTORY
-  )
-end
-
-private
-
-# rubocop:disable Metrics/AbcSize
-def download(archive_url:, destination:)
-  puts "Attempting to download #{archive_url} to #{destination}..."
-
-  FileUtils.mkdir_p(File.dirname(destination))
-
-  # Perform HTTP HEAD request to retrieve file size
-  uri = URI.parse(archive_url)
-  http = Net::HTTP.new(uri.host, uri.port)
-  http.use_ssl = true
-  response = http.head(uri.path)
-
-  # Check if the response is successful and contains Content-Length header
-  content_length_key = 'Content-Length'
-  raise "Failed to retrieve file information: #{response.code} #{response.message}" unless response.is_a?(Net::HTTPSuccess) && response.key?(content_length_key)
-
-  file_size = response[content_length_key].to_i
-
-  # Check file size
-  raise 'File size is 0. Aborting download.' if file_size.zero?
-
-  puts "File size: #{(file_size / (1024.0 * 1024.0)).round(2)} MB"
-
-  progress_bar = ProgressBar.create(title: 'Downloading Gutenberg XCFrameworks archive', total: file_size, format: '%t |%B| %p%%')
-
-  http.request_get(uri.path) do |archive_response|
-    File.open(destination, 'wb') do |file|
-      archive_response.read_body do |chunk|
-        file.write(chunk)
-        progress_bar.progress += chunk.length
-      end
-    end
-  end
-
-  progress_bar.finish
-
-  puts 'Finished downloading.'
-end
-# rubocop:enable Metrics/AbcSize
-
-def extract(archive:, destination:)
-  FileUtils.rm_rf(destination)
-  FileUtils.mkdir_p(destination)
-
-  puts "Extracting #{archive} to #{destination}..."
-
-  Zlib::GzipReader.open(archive) do |gzip_file|
-    Archive::Tar::Minitar.unpack(gzip_file, destination)
-  end
-
-  puts 'Finished extracting.'
 end

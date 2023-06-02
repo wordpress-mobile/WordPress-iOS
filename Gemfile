@@ -2,7 +2,6 @@
 
 source 'https://rubygems.org'
 
-gem 'archive-tar-minitar'
 # 1.12.x and higher, starting from 1.12.1
 gem 'cocoapods', '~> 1.12', '>= 1.12.1'
 gem 'commonmarker'
