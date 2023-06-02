@@ -1,9 +1,0 @@
-Hemos añadido tarjetas a tu escritorio. La tarjeta Registro de actividad muestra tus tres actividades más recientes y la tarjeta Páginas, las tres últimas páginas que has modificado.
-
-También hemos realizado algunos cambios importantes en el editor de bloques. Para evitar fallos en la aplicación, los bloques reutilizables que se hayan eliminado o que no se hayan definido ya no se podrán convertir en bloques normales.
-
-Cuando tocas en un bloque de texto anidado, puedes editar su contenido de forma inmediata. Ya no hay que tocar en todos los niveles de anidado para llegar adonde quieres ir. (A nosotros también se nos estaban cansando los dedos).
-
-Hablando de bloques reutilizables: hemos actualizado el mensaje "Editar (no compatible)" para quitar la mención de WordPress. Prometemos que sabemos qué aplicación estamos usando.
-
-Por último, hemos corregido un error por el cual la aplicación fallaba al intentar subir archivos multimedia a un bloque clásico sin permitir a WordPress acceder a la biblioteca de medios del dispositivo. En su lugar, aparecerá un mensaje solicitando el acceso a los archivos multimedia. Pan comido.

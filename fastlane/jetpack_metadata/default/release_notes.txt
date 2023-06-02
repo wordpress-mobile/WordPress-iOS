@@ -1,9 +1,13 @@
-We added cards to your dashboard. The Activity Log card shows your three most recent activities, and the Pages card shows the last three pages you modified.
+If your site uses a block-based theme, you can now edit your site’s home page directly from the Pages list. Raised hands emoji.
 
-We also made some important changes in the block editor. To prevent an app crash, deleted and undefined reusable blocks can no longer be converted to regular blocks.
+We solved an issue around setting links to open in a new tab. When typing text after this link, you can now undo and redo the text without any issues.
 
-When you tap on a nested text block, you can immediately edit content in that block—no more tapping through every nesting level to get where you want to go. (Our fingers were getting tired, too.)
+Visible detail settings are now disabled for VideoPress videos that don’t belong to your site.
 
-Speaking of reusable blocks—we updated the “editing not supported” message to remove the mention of WordPress. We know what app we’re using, we promise.
+Tap-to-edit is now available for all nested block types—no more tapping through every nesting level to reach a specific piece of content.
 
-Finally, we fixed a bug where the app would crash if you tried to upload media to a classic block without giving WordPress access to your device’s media library. Instead, you’ll see a prompt asking for media access. Easy peasy, lemon squeezy.
+Speaking of nesting, we fixed a bug where merging a list item into a paragraph would remove any nested text for that list item.
+
+We were squashing bugs anyway, so we went ahead and fixed a couple in the reader, too. When you filter your followed topics, text in non-latin languages (like Arabic) now displays properly. The Report and Block actions are also back where they belong in the post menu.
+
+Finally, we’ve updated the design of disabled cells so it’s easier to tell when a cell isn’t in use.
