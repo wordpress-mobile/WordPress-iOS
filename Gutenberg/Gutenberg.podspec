@@ -61,7 +61,12 @@ Pod::Spec.new do |s|
   end
 
   # Print the message here because the prepare_command output is not forwarded by CocoaPods
-  puts "Will skip downloading Gutenberg archive because it already exists at #{relative_download_path}" if File.exist? relative_download_path
+  if File.exist? relative_download_path
+    puts "📦 Will skip downloading Gutenberg archive because it already exists at #{relative_download_path}"
+  else
+    puts "⬇️ Will download Gutenberg archive to #{relative_download_path}"
+  end
+
   s.prepare_command = <<-CMD
     mkdir -p #{relative_download_directory}
     if [[ ! -f "#{relative_download_path}" ]]; then
