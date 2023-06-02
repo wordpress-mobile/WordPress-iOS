@@ -16,8 +16,13 @@ import SwiftUI
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
 
         let purchaseCallback = { (domainName: String) in
+
+            let blogService = BlogService(coreDataStack: ContextManager.shared)
+            blogService.syncBlogAndAllMetadata(blog) { }
+
             let resultView = DomainResultView(domain: domainName) {
                 dashboardViewController.dismiss(animated: true)
+                dashboardViewController.reloadCardsLocally()
             }
             let viewController = UIHostingController(rootView: resultView)
             navigationController.setNavigationBarHidden(true, animated: false)
