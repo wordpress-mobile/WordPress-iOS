@@ -1,14 +1,14 @@
 import Foundation
 
 struct BlogDashboardHelpers {
-    static func makeHideCardAction(for card: DashboardCard, siteID: Int) -> UIAction {
+    static func makeHideCardAction(for card: DashboardCard, blog: Blog) -> UIAction {
         UIAction(
             title: Strings.hideThis,
             image: UIImage(systemName: "minus.circle"),
             attributes: [.destructive],
             handler: { _ in
                 BlogDashboardAnalytics.trackHideTapped(for: card)
-                BlogDashboardPersonalizationService(siteID: siteID)
+                BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
                     .setEnabled(false, for: card)
             })
     }

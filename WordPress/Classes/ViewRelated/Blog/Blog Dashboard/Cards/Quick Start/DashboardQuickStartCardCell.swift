@@ -51,12 +51,12 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
             fallthrough
 
         case .newSite:
-            configureOnEllipsisButtonTap(sourceRect: cardFrameView.ellipsisButton.frame)
+            configureOnEllipsisButtonTap(sourceRect: cardFrameView.ellipsisButton.frame, blog: blog)
             cardFrameView.showHeader()
 
         case .existingSite:
             cardFrameView.configureButtonContainerStackView()
-            configureOnEllipsisButtonTap(sourceRect: cardFrameView.buttonContainerStackView.frame)
+            configureOnEllipsisButtonTap(sourceRect: cardFrameView.buttonContainerStackView.frame, blog: blog)
             cardFrameView.hideHeader()
 
         }
@@ -64,14 +64,20 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
         cardFrameView.setTitle(Strings.title(for: blog.quickStartType))
     }
 
-    private func configureOnEllipsisButtonTap(sourceRect: CGRect) {
-        cardFrameView.onEllipsisButtonTap = { [weak self] in
-            guard let self = self,
-                  let viewController = self.viewController,
-                  let blog = self.blog else {
-                return
+    private func configureOnEllipsisButtonTap(sourceRect: CGRect, blog: Blog) {
+        if FeatureFlag.personalizeHomeTab.enabled {
+            cardFrameView.addMoreMenu(items: [
+                BlogDashboardHelpers.makeHideCardAction(for: .quickStart, blog: blog)
+            ], card: .quickStart)
+        } else {
+            cardFrameView.onEllipsisButtonTap = { [weak self] in
+                guard let self = self,
+                      let viewController = self.viewController,
+                      let blog = self.blog else {
+                    return
+                }
+                viewController.removeQuickStart(from: blog, sourceView: self.cardFrameView, sourceRect: sourceRect)
             }
-            viewController.removeQuickStart(from: blog, sourceView: self.cardFrameView, sourceRect: sourceRect)
         }
     }
 }

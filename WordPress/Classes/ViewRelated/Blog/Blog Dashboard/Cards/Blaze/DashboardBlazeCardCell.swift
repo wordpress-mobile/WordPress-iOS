@@ -55,7 +55,7 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
 
     private func setupView() {
         contentView.addSubview(cardView)
-        contentView.pinSubviewToAllEdges(cardView, priority: .defaultHigh)
+        contentView.pinSubviewToAllEdges(cardView, priority: UILayoutPriority(999))
     }
 
     // MARK: - BlogDashboardCardConfigurable

@@ -44,4 +44,12 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
         // Then settings for site 1 are ignored
         XCTAssertTrue(service.isEnabled(.quickStart))
     }
+
+    func testThatUserDefaultsKeysAreSpecifiedForAllPersonalizableCards() {
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        for card in DashboardCard.personalizableCards {
+            service.setEnabled(false, for: card)
+            XCTAssertFalse(service.isEnabled(card))
+        }
+    }
 }

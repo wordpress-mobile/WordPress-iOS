@@ -103,7 +103,10 @@ extension DashboardPagesListCardCell {
         }
         cardFrameView.ellipsisButton.showsMenuAsPrimaryAction = true
 
-        let children = [makeAllPagesAction(), makeHideCardAction(blog: blog)].compactMap { $0 }
+        let children = [
+            makeAllPagesAction(),
+            BlogDashboardHelpers.makeHideCardAction(for: .pages, blog: blog)
+        ].compactMap { $0 }
 
         cardFrameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: children)
     }
@@ -117,13 +120,6 @@ extension DashboardPagesListCardCell {
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline
         let allPagesSubmenu = UIMenu(title: String(), options: .displayInline, children: [allPagesAction])
         return allPagesSubmenu
-    }
-
-    private func makeHideCardAction(blog: Blog) -> UIMenuElement? {
-        guard let siteID = blog.dotComID?.intValue else {
-            return nil
-        }
-        return BlogDashboardHelpers.makeHideCardAction(for: .pages, siteID: siteID)
     }
 
     // MARK: Actions

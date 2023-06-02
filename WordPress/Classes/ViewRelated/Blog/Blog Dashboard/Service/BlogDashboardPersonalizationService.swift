@@ -62,7 +62,9 @@ private func makeKey(for card: DashboardCard) -> String? {
         return "activity-log-card-enabled-site-settings"
     case .pages:
         return "pages-card-enabled-site-settings"
-    case .quickStart, .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize, .empty:
+    case .quickStart:
+        return "quick-start-card-enabled-site-settings"
+    case .jetpackBadge, .jetpackInstall, .nextPost, .createPost, .failure, .ghost, .personalize, .empty:
         return nil
     }
 }
