@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct DomainResultView: View {
-
     @State private var subtitleHeight: CGFloat = .zero
     let domain: String
     let dismiss: () -> Void
 
     private struct AttributedLabel: UIViewRepresentable {
         typealias UIViewType = UILabel
+        var currentWidth: CGFloat
         @Binding var dynamicHeight: CGFloat
+        var configuration: (UIViewType) -> Void
 
         func makeUIView(context: Context) -> UILabel {
             let label = UIViewType()
@@ -20,14 +21,11 @@ struct DomainResultView: View {
 
         func updateUIView(_ uiView: UILabel, context: Context) {
             configuration(uiView)
-
             // Makes the label vertically hug its multi-line content
             DispatchQueue.main.async {
-                dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width, height: CGFloat.greatestFiniteMagnitude)).height
+                dynamicHeight = uiView.sizeThatFits(CGSize(width: currentWidth, height: CGFloat.greatestFiniteMagnitude)).height
             }
         }
-
-        var configuration: (UIViewType) -> Void
     }
 
     var body: some View {
@@ -49,7 +47,7 @@ struct DomainResultView: View {
 
                         Spacer().frame(height: Metrics.titleToSubtitleSpacing)
 
-                        AttributedLabel(dynamicHeight: $subtitleHeight) {
+                        AttributedLabel(currentWidth: geometry.size.width, dynamicHeight: $subtitleHeight) {
                             $0.attributedText = subtitleWith(domain: domain)
                         }
                         .foregroundColor(Color(UIColor.muriel(color: .text)))
@@ -95,7 +93,6 @@ struct DomainResultView: View {
         attributedString.setAttributes([.font: Fonts.subtitleFontBold], range: range)
         return attributedString
     }
-
 }
 
 // MARK: - Constants
