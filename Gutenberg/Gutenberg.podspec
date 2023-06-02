@@ -37,15 +37,18 @@ Pod::Spec.new do |s|
 
   # Tell CocoaPods where to download the XCFramework(s) archive with `source` and what to use from its decompressed contents with `vendored_frameworks`.
   #
-  # See https://github.com/CocoaPods/CocoaPods/issues/10288
+  # Unfortunately, CocoaPods currently (1.12.1) does not work when it comes to local specs with http sources.
   #
-  # I can't get this to work out of the box, so instead of using a URL we take
-  # care of downloading and unarchiving and use a local source.
-  #
+  # See https://github.com/CocoaPods/CocoaPods/issues/10288#issuecomment-1517711223
   # s.source = { http: xcframework_archive_url }
-  path = Pathname.new("#{GUTENBERG_DOWNLOADS_DIRECTORY}/Gutenberg-#{gutenberg_version}.tar.gz")
-    .relative_path_from(__dir__).to_s
-  s.source = { http: "file://#{path}" }
+  archive_name = "Gutenberg-#{gutenberg_version}.tar.gz"
+  # Always use relative paths, otherwise the checksums in the lockfile will change from machine to machine
+  relative_extracted_archive_directory = Pathname.new("#{GUTENBERG_ARCHIVE_DIRECTORY}").relative_path_from(__dir__).to_s
+  relative_download_directory = Pathname.new(GUTENBERG_DOWNLOADS_DIRECTORY).relative_path_from(__dir__).to_s
+  relative_download_path = File.join(relative_download_directory, archive_name)
+
+  s.source = { http: "file://#{relative_download_path}" }
+
   s.vendored_frameworks = [
     'Aztec.xcframework',
     'Gutenberg.xcframework',
@@ -54,7 +57,17 @@ Pod::Spec.new do |s|
     'yoga.xcframework'
   ].map do |f|
     # This needs to be a relative path to the local extraction location and account for the archive folder structure.
-    Pathname.new("#{GUTENBERG_ARCHIVE_DIRECTORY}/Frameworks/#{f}")
-            .relative_path_from(__dir__).to_s
+    File.join(relative_extracted_archive_directory, 'Frameworks', f)
   end
+
+  # Print the message here because the prepare_command output is not forwarded by CocoaPods
+  puts "Will skip downloading Gutenberg archive because it already exists at #{relative_download_path}" if File.exist? relative_download_path
+  s.prepare_command = <<-CMD
+    mkdir -p #{relative_download_directory}
+    if [[ ! -f "#{relative_download_path}" ]]; then
+      curl --progress-bar #{xcframework_archive_url} -o #{relative_download_path}
+    fi
+    mkdir -p #{relative_extracted_archive_directory}
+    tar -xzf #{relative_download_path} --directory=#{relative_extracted_archive_directory}
+  CMD
 end
