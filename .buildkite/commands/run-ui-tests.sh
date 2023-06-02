@@ -50,6 +50,11 @@ else
   echo "The UI Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the Buildkite annotation, the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
 fi
-annotate_test_failures "build/results/JetpackUITests.xml"
+
+if [[ $BUILDKITE_BRANCH == trunk ]] || [[ $BUILDKITE_BRANCH == release/* ]]; then
+    annotate_test_failures "build/results/JetpackUITests.xml" --slack "build-and-ship"
+else
+    annotate_test_failures "build/results/JetpackUITests.xml"
+fi
 
 exit $TESTS_EXIT_STATUS
