@@ -50,6 +50,6 @@ import SwiftUI
         }
         domainSuggestionsViewController.domainAddedToCartCallback = domainAddedToCart
 
-	dashboardViewController.present(navigationController, animated: true)
+        dashboardViewController.present(navigationController, animated: true)
     }
 }
