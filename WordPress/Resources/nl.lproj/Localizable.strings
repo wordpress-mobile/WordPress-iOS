@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 11:54:09+0000 */
+/* Translation-Revision-Date: 2023-05-31 16:54:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s heeft geen URL ingesteld";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s link";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s voorbeelden nog niet beschikbaar";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blok-editor ingeschakeld";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Blok gegroepeerd";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokkeer verdachte inlogpogingen";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blokkeer deze site";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Blokgroepering ongedaan gemaakt";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Geblokkeerde site";
@@ -9849,6 +9858,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "volgen";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Ontvang een gratis domein voor eerste jaar, verwijder advertenties van je website en krijg meer opslagruimte.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Dit verbergen";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Stel je blogging herinneringen in";
 
@@ -10377,6 +10392,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promoten met Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Jouw homepage gebruikt een themasjabloon en wordt in de webeditor geopend.";
+
 /* No comment provided by engineer. */
 "password" = "wachtwoord";
 
@@ -10425,6 +10443,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opties uitgelichte afbeelding";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promoten met Blaze";
 
@@ -10445,6 +10466,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader-instellingen";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10530,6 +10554,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Herinneringen";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Meer informatie";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Automatisch delen op Twitter is niet meer beschikbaar omdat Twitter de voorwaarden en prijzen heeft gewijzigd.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Afgelopen 7 dagen";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-18 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-06-01 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s リンク";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%sプレビューはまだご利用いただけません";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "ブロックエディターを有効にしました";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "ブロックがグループ化されました";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "悪意のあるログイン試行をブロックする";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "このサイトをブロック";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "ブロックのグループが解除されました";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "サイトがブロックされました";
@@ -9855,6 +9864,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "フォロー";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "初年度は無料でドメインを取得でき、サイト上の広告が削除され、ストレージが増えます。";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "年間プランではドメイン名が無料で利用できます";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "ブログ投稿のリマインダーを設定";
 
@@ -10383,6 +10401,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Blaze を使って宣伝";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "ホームページではテーマテンプレートが使用されており、Web エディターで開きます。";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "ホームページ";
+
 /* No comment provided by engineer. */
 "password" = "パスワード";
 
@@ -10431,6 +10455,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
 
@@ -10451,6 +10478,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "ログインしました !";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "検索";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader 設定";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10569,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "リマインダー";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "さらに詳しく";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去7日間";

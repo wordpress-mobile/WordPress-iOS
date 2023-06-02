@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-16 21:04:54+0000 */
+/* Translation-Revision-Date: 2023-05-30 10:18:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "Ingen URL angiven för %s";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "Länk för %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Förhandsgranskning av %s är inte tillgängligt ännu";
@@ -9855,6 +9858,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "följ";
 
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Dölj detta";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Gratis domän med ett årligt paket";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Ställ in bloggningspåminnelser";
 
@@ -10383,6 +10392,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Marknadsför med Blaze";
 
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Startsida";
+
 /* No comment provided by engineer. */
 "password" = "lösenord";
 
@@ -10431,6 +10443,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Marknadsför med Blaze";
 
@@ -10451,6 +10466,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Sök";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10554,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Påminnelser";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Få reda på mer";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Automatisk delning på Twitter är inte längre tillgängligt på grund av Twitters ändringar i villkor och pris.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Senaste 7 dagarna";
