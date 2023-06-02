@@ -26,6 +26,9 @@ private struct ElementStringIDs {
     static let pagesCardId = "dashboard-pages-card-frameview"
     static let pagesCardHeaderButton = "Pages"
     static let pagesCardCreatePageButton = "Create another page"
+    // "Activity Log" Card
+    static let activityLogCardId = "dashboard-activity-log-card-frameview"
+    static let activityLogCardHeaderButton = "Recent activity"
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
@@ -87,10 +90,20 @@ public class MySiteScreen: ScreenObject {
         $0.cells[ElementStringIDs.domainsButton]
     }
 
+    let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.activityLogCardId]
+    }
+
+    let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.activityLogCardId].buttons[ElementStringIDs.activityLogCardHeaderButton]
+    }
+
     var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
     var pagesCard: XCUIElement { pagesCardGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
+    var activityLogCard: XCUIElement { activityLogCardGetter(app) }
+    var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -232,6 +245,21 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
+    public func verifyActivityLogCard() -> Self {
+        XCTAssertTrue(activityLogCardHeaderButton.waitForIsHittable(), "Activity Log card: header not displayed.")
+        XCTAssertTrue(activityLogCard.buttons["More"].waitForIsHittable(), "Activity Log card: context menu not displayed.")
+        return self
+    }
+
+    @discardableResult
+    public func verifyActivityLogCard(hasActivityPartial activityTitle: String) -> Self {
+        XCTAssertTrue(
+            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(),
+            "Activity Log card: \"\(activityTitle)\" activity not displayed.")
+        return self
+    }
+
+    @discardableResult
     public func tapFreeToPaidPlansCard() throws -> DomainsSuggestionsScreen {
         freeToPaidPlansCardButton.tap()
         return try DomainsSuggestionsScreen()
@@ -253,6 +281,18 @@ public class MySiteScreen: ScreenObject {
     public func tapPagesCardHeader() throws -> PagesScreen {
         pagesCardHeaderButton.tap()
         return try PagesScreen()
+    }
+
+    @discardableResult
+    public func scrollToActivityLogCard() throws -> Self {
+        scrollToCard(withId: ElementStringIDs.activityLogCardId)
+        return self
+    }
+
+    @discardableResult
+    public func tapActivityLogCardHeader() throws -> ActivityLogScreen {
+        activityLogCardHeaderButton.tap()
+        return try ActivityLogScreen()
     }
 
     func scrollToCard(withId id: String) {
