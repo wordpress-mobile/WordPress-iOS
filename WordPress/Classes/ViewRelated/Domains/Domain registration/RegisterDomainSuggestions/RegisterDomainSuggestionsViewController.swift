@@ -378,14 +378,12 @@ extension RegisterDomainSuggestionsViewController {
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
 
-        static let errorTitle = NSLocalizedString(
-            "domains.failure.title",
-            value: "Sorry, the domain you are trying to add can not be bought on the Jetpack app at this time.", comment: "Content show when the domain selection action fails.")
-        static let errorDismiss = NSLocalizedString(
-            "domains.failure.dismiss",
-            value: "Dismiss",
-            comment: "Action shown in a bottom notice to dismiss it."
-        )
+        static let errorTitle = NSLocalizedString("domains.failure.title",
+                                                  value: "Sorry, the domain you are trying to add can not be bought on the Jetpack app at this time.",
+                                                  comment: "Content show when the domain selection action fails.")
+        static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
+                                                    value: "Dismiss",
+                                                    comment: "Action shown in a bottom notice to dismiss it.")
     }
 
     enum Constants {
