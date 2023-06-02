@@ -1,3 +1,0 @@
-Quando tocchi un blocco di testo nidificato, puoi modificare immediatamente il contenuto in quel blocco. Non dovrai più toccare ogni livello di nidificazione per arrivare dove desideri. (Anche noi avevamo le dita stanche.)
-
-Abbiamo anche corretto un bug a causa del quale l'app si arrestava in modo anomalo se provavi a caricare elementi multimediali su un blocco classico senza consentire a WordPress l'accesso alla libreria multimediale del dispositivo. Visualizzerai invece un messaggio che richiede l'accesso agli elementi multimediali. Facile come bere un bicchier d'acqua.

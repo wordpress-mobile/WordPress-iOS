@@ -1,3 +1,9 @@
-Saat Anda mengetuk blok teks bersusun, Anda dapat langsung menyunting konten di blok tersebut—tidak perlu mengetuk di tiap susunan untuk menyunting kontennya. (Jari kami juga capek.)
+Jika situs Anda menggunakan tema berbasis blok, Anda sekarang dapat mengedit halaman beranda situs Anda langsung dari daftar Halaman. Emoji tangan terangkat.
 
-Kami juga memperbaiki bug yang membuat aplikasi crash saat Anda mengunduh media ke blok klasik tanpa memberi WordPress akses ke pustaka media perangkat. Sekarang, Anda akan melihat prompt yang meminta akses media. Mudah sekali, bukan?
+Kami telah menyelesaikan kendala seputar pengaturan tautan untuk dibuka pada tab baru. Ketika mengetik teks setelah tautan ini, Anda sekarang dapat membatalkan dan mengulangi teks tanpa masalah.
+
+Ketuk-untuk-mengedit sekarang tersedia untuk semua jenis blok bertingkat—tidak perlu lagi mengetuk setiap tingkat penjajaran untuk mencapai konten tertentu.
+
+Berbicara tentang penjajaran, kami juga memperbaiki gangguan di mana menggabungkan isi daftar ke dalam paragraf akan menghapus teks bertingkat untuk item daftar tersebut.
+
+Terakhir, kami telah memperbarui desain sel yang dinonaktifkan sehingga lebih mudah untuk mengetahui ketika sel tidak digunakan.
