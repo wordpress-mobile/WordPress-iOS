@@ -18,6 +18,11 @@ extension Array where Element: Hashable {
     public var unique: [Element] {
         return Array(Set(self))
     }
+
+    public func deduplicated() -> [Element] {
+        var seen = Set<Element>()
+        return filter { seen.insert($0).inserted }
+    }
 }
 
 extension Array where Element: Equatable {
