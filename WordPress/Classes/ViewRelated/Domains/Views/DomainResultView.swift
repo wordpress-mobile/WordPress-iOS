@@ -33,7 +33,6 @@ struct DomainResultView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: Metrics.interItemVerticalPadding) {
-
                 Image("Domains Lockup")
                     .padding(Metrics.logoPadding)
                     .accessibility(hidden: true)
@@ -45,7 +44,8 @@ struct DomainResultView: View {
 
                 AttributedLabel(dynamicHeight: $subtitleHeight) {
                     $0.attributedText = subtitleWith(domain: domain)
-                }.foregroundColor(Color(UIColor.muriel(color: .text)))
+                }
+                .foregroundColor(Color(UIColor.muriel(color: .text)))
                 .frame(height: subtitleHeight)
 
                 HStack(spacing: Metrics.noticeBoxHorizontalSpacing) {
@@ -54,17 +54,20 @@ struct DomainResultView: View {
                         .accessibility(hidden: true)
                     Text(TextContent.notice)
                         .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
-                }.padding(Metrics.noticeBoxInsets)
+                }
+                .padding(Metrics.noticeBoxInsets)
                 .frame(maxWidth: .infinity)
                 .background(Color(UIColor.tertiaryFill))
                 .cornerRadius(Metrics.noticeBoxCornerRadius)
             }.padding(Metrics.screenPadding)
+
             VStack {
                 Spacer()
                 Button(action: dismiss) {
                     ShapeWithTextView(title: TextContent.primaryButtonTitle).largeRoundedRectangle()
                 }
-            }.padding(Metrics.screenPadding)
+            }
+            .padding(Metrics.screenPadding)
 
         }
     }
