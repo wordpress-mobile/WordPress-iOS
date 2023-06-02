@@ -31,58 +31,61 @@ struct DomainResultView: View {
     }
 
     var body: some View {
-        ZStack {
-            VStack(alignment: .leading) {
-                Image("Domains Lockup")
-                    .padding(Metrics.logoPadding)
-                    .frame(height: Metrics.logoHeight)
-                    .accessibility(hidden: true)
+        VStack {
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        Image("Domains Lockup")
+                            .padding(Metrics.logoPadding)
+                            .frame(height: Metrics.logoHeight)
+                            .accessibility(hidden: true)
 
-                Spacer().frame(height: Metrics.logoToTitleSpacing)
+                        Spacer().frame(height: Metrics.logoToTitleSpacing)
 
-                Text(TextContent.title)
-                    .multilineTextAlignment(.leading)
-                    .font(.largeTitle.bold())
-                    .foregroundColor(Color.primary)
+                        Text(TextContent.title)
+                            .multilineTextAlignment(.leading)
+                            .font(.largeTitle.bold())
+                            .foregroundColor(Color.primary)
 
-                Spacer().frame(height: Metrics.titleToSubtitleSpacing)
+                        Spacer().frame(height: Metrics.titleToSubtitleSpacing)
 
-                AttributedLabel(dynamicHeight: $subtitleHeight) {
-                    $0.attributedText = subtitleWith(domain: domain)
-                }
-                .foregroundColor(Color(UIColor.muriel(color: .text)))
-                .frame(height: subtitleHeight)
+                        AttributedLabel(dynamicHeight: $subtitleHeight) {
+                            $0.attributedText = subtitleWith(domain: domain)
+                        }
+                        .foregroundColor(Color(UIColor.muriel(color: .text)))
+                        .frame(height: subtitleHeight)
 
-                Spacer().frame(height: Metrics.subtitleToNoticeBoxSpacing)
+                        Spacer().frame(height: Metrics.subtitleToNoticeBoxSpacing)
 
-                HStack() {
-                    Image(uiImage: .gridicon(.infoOutline))
-                        .frame(height: Metrics.iconHeight)
-                        .foregroundColor(Color(UIColor.muriel(color: .gray)))
-                        .accessibility(hidden: true)
+                        HStack() {
+                            Image(uiImage: .gridicon(.infoOutline))
+                                .frame(height: Metrics.iconHeight)
+                                .foregroundColor(Color(UIColor.muriel(color: .gray)))
+                                .accessibility(hidden: true)
 
-                    Spacer().frame(width: Metrics.iconToNoticeSpacing)
+                            Spacer().frame(width: Metrics.iconToNoticeSpacing)
 
-                    Text(TextContent.notice)
-                        .font(.footnote)
-                        .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
-                }
-                .padding(Metrics.noticeBoxPadding)
-                .frame(maxWidth: .infinity)
-                .background(Color(UIColor.tertiaryFill))
-                .cornerRadius(Metrics.noticeBoxCornerRadius)
-            }.padding(Metrics.screenPadding)
-
-            VStack {
-                Spacer()
-                Button(action: dismiss) {
-                    ShapeWithTextView(title: TextContent.primaryButtonTitle)
-                        .largeRoundedRectangle()
-                        .font(.headline)
+                            Text(TextContent.notice)
+                                .font(.footnote)
+                                .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
+                        }
+                        .padding(Metrics.noticeBoxPadding)
+                        .frame(maxWidth: .infinity)
+                        .background(Color(UIColor.tertiaryFill))
+                        .cornerRadius(Metrics.noticeBoxCornerRadius)
+                    }
+                    .frame(width: geometry.size.width)
+                    .frame(minHeight: geometry.size.height)
                 }
             }
-            .padding(Metrics.screenPadding)
+
+            Button(action: dismiss) {
+                ShapeWithTextView(title: TextContent.primaryButtonTitle)
+                    .largeRoundedRectangle()
+                    .font(.headline)
+            }
         }
+        .padding(Metrics.screenPadding)
     }
 
     private func subtitleWith(domain: String) -> NSAttributedString {
