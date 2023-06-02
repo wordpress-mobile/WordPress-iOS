@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './Gutenberg/cocoapods_helpers'
+require 'xcodeproj'
 
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
 # For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
@@ -13,7 +14,7 @@ raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_
 inhibit_all_warnings!
 use_frameworks!
 
-app_ios_deployment_target = Gem::Version.new('13.0')
+app_ios_deployment_target = Gem::Version.new(Xcodeproj::Config.new(File.new('./config/Common.xcconfig')).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
 
 platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
