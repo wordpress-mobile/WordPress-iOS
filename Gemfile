@@ -2,7 +2,8 @@
 
 source 'https://rubygems.org'
 
-gem 'cocoapods', '~> 1.11'
+# 1.12.x and higher, starting from 1.12.1
+gem 'cocoapods', '~> 1.12', '>= 1.12.1'
 gem 'commonmarker'
 gem 'danger', '~> 9.3'
 gem 'danger-rubocop', '~> 0.10'
