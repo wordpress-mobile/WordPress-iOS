@@ -25,6 +25,7 @@ private struct ElementStringIDs {
     // "Pages" Card
     static let pagesCardId = "dashboard-pages-card-frameview"
     static let pagesCardHeaderButton = "Pages"
+    static let pagesCardMoreButton = "More"
     static let pagesCardCreatePageButton = "Create another page"
 }
 
@@ -79,8 +80,12 @@ public class MySiteScreen: ScreenObject {
         $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardHeaderButton]
     }
 
+    let pagesCardMoreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardHeaderButton]
+    }
+
     let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardCreatePageButton]
+        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardMoreButton]
     }
 
     let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -90,6 +95,7 @@ public class MySiteScreen: ScreenObject {
     var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
     var pagesCard: XCUIElement { pagesCardGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
+    var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
 
     static var isVisible: Bool {
@@ -219,9 +225,9 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func verifyPagesCard() -> Self {
-        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(), "Pages card: header not displayed.")
-        XCTAssertTrue(pagesCard.buttons["More"].waitForIsHittable(), "Pages card: context menu not displayed.")
-        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(), "Pages card: Create Page button not displayed.")
+        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(), "Pages card: Header not displayed.")
+        XCTAssertTrue(pagesCardMoreButton.waitForIsHittable(), "Pages card: Context menu button not displayed.")
+        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(), "Pages card: \"Create Page\" button not displayed.")
         return self
     }
 

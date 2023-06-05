@@ -1,6 +1,7 @@
 import UITestsFoundation
 import XCTest
 
+// These tests are Jetpack only.
 class DashboardTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
@@ -17,7 +18,7 @@ class DashboardTests: XCTestCase {
         removeApp()
     }
 
-    // This test is JP only.
+
     func testFreeToPaidCardNavigation() throws {
         try MySiteScreen()
             .scrollToFreeToPaidPlansCard()
