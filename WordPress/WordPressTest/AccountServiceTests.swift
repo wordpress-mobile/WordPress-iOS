@@ -147,24 +147,10 @@ class AccountServiceTests: CoreDataTestCase {
 
     func testMergeMultipleDuplicateAccounts() throws {
         let context = contextManager.mainContext
-        let account1 = WPAccount(context: context)
-        account1.userID = 1
-        account1.username = "username"
-        account1.authToken = "authToken"
-        account1.uuid = UUID().uuidString
 
-        let account2 = WPAccount(context: context)
-        account2.userID = 1
-        account2.username = "username"
-        account2.authToken = "authToken"
-        account2.uuid = UUID().uuidString
-
-        let account3 = WPAccount(context: context)
-        account3.userID = 1
-        account3.username = "username"
-        account3.authToken = "authToken"
-        account3.uuid = UUID().uuidString
-
+        let account1 = WPAccount.fixture(context: context, userID: 1)
+        let account2 = WPAccount.fixture(context: context, userID: 1)
+        let account3 = WPAccount.fixture(context: context, userID: 1)
 
         account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
         account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
@@ -240,17 +226,8 @@ class AccountServiceTests: CoreDataTestCase {
     }
 
     func testPurgeAccount() throws {
-        let account1 = WPAccount(context: mainContext)
-        account1.userID = 1
-        account1.username = "username"
-        account1.authToken = "authToken"
-        account1.uuid = UUID().uuidString
-
-        let account2 = WPAccount(context: mainContext)
-        account2.userID = 1
-        account2.username = "username"
-        account2.authToken = "authToken"
-        account2.uuid = UUID().uuidString
+        let account1 = WPAccount.fixture(context: mainContext, userID: 1)
+        let account2 = WPAccount.fixture(context: mainContext, userID: 2)
 
         contextManager.saveContextAndWait(mainContext)
         try XCTAssertEqual(mainContext.count(for: WPAccount.fetchRequest()), 2)
