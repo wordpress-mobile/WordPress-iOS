@@ -8,11 +8,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
     private var service: AccountSettingsService!
 
     override func setUp() {
-        let account = WPAccount(context: mainContext)
-        account.username = "test"
-        account.authToken = "token"
-        account.userID = 1
-        account.uuid = UUID().uuidString
+        let account = WPAccount.fixture(context: mainContext)
 
         let settings = ManagedAccountSettings(context: mainContext)
         settings.account = account
