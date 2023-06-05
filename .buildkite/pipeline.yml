@@ -2,7 +2,7 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/a8c-ci-toolkit#2.17.0
+    - automattic/a8c-ci-toolkit#mokagio/omit-details-annotation-when-empty
     - automattic/git-s3-cache#1.1.4:
         bucket: "a8c-repo-mirrors"
         repo: "automattic/wordpress-ios/"
@@ -10,6 +10,7 @@ common_params:
   - &common_env
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
     IMAGE_ID: xcode-14.2
+    BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: true
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -17,25 +18,6 @@ steps:
   #################
   # Create Prototype Builds for WP and JP
   #################
-  - group: "🛠 Prototype Builds"
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
 
   #################
   # Create Builds for Testing
