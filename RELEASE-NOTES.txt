@@ -1,7 +1,7 @@
 22.6
 -----
 * [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
-* [**] [internal] [Jetpack-only] Domains selection: Show error message when selecting unsupported domains. [#20786]
+* [*] [Jetpack-only] Domains selection: Show error message when selecting unsupported domains. [#20786]
 
 22.5
 -----
