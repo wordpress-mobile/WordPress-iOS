@@ -821,6 +821,7 @@
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
 		3F759FBA2A2DA93B0039A845 /* WPAccount+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F759FB92A2DA93B0039A845 /* WPAccount+Fixture.swift */; };
+		3F759FBC2A2DB2CF0039A845 /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F759FBB2A2DB2CF0039A845 /* TestError.swift */; };
 		3F762E9326784A950088CD45 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9226784A950088CD45 /* Logger.swift */; };
 		3F762E9526784B540088CD45 /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9426784B540088CD45 /* WireMock.swift */; };
 		3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */; };
@@ -6484,6 +6485,7 @@
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
 		3F759FB92A2DA93B0039A845 /* WPAccount+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+Fixture.swift"; sourceTree = "<group>"; };
+		3F759FBB2A2DB2CF0039A845 /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		3F762E9226784A950088CD45 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3F762E9426784B540088CD45 /* WireMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireMock.swift; sourceTree = "<group>"; };
 		3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
@@ -12114,13 +12116,14 @@
 		59B48B601B99E0B0008EBB84 /* TestUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				59B48B611B99E132008EBB84 /* JSONObject.swift */,
-				E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */,
-				570BFD8F2282418A007859A8 /* PostBuilder.swift */,
+				2481B1D4260D4E8B00AE59DB /* AccountBuilder.swift */,
 				57B71D4D230DB5F200789A68 /* BlogBuilder.swift */,
+				E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */,
+				59B48B611B99E132008EBB84 /* JSONObject.swift */,
 				F11023A223186BCA00C4E84A /* MediaBuilder.swift */,
 				57889AB723589DF100DAE56D /* PageBuilder.swift */,
-				2481B1D4260D4E8B00AE59DB /* AccountBuilder.swift */,
+				570BFD8F2282418A007859A8 /* PostBuilder.swift */,
+				3F759FBB2A2DB2CF0039A845 /* TestError.swift */,
 			);
 			name = TestUtilities;
 			sourceTree = "<group>";
@@ -23278,6 +23281,7 @@
 				FF9A6E7121F9361700D36D14 /* MediaUploadHashTests.swift in Sources */,
 				B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */,
 				7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */,
+				3F759FBC2A2DB2CF0039A845 /* TestError.swift in Sources */,
 				40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */,
 				57240224234E5BE200227067 /* PostServiceSelfHostedTests.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
