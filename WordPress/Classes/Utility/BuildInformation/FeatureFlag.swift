@@ -40,6 +40,7 @@ enum FeatureFlag: Int, CaseIterable {
     case readerUserBlocking
     case personalizeHomeTab
     case commentModerationUpdate
+    case jetpackSocial
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -125,9 +126,11 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerUserBlocking:
             return true
         case .personalizeHomeTab:
-            return false
+            return AppConfiguration.isJetpack
         case .commentModerationUpdate:
             return false
+        case .jetpackSocial:
+            return AppConfiguration.isJetpack && BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -226,6 +229,8 @@ extension FeatureFlag {
             return "Personalize Home Tab"
         case .commentModerationUpdate:
             return "Comments Moderation Update"
+        case .jetpackSocial:
+            return "Jetpack Social"
         }
     }
 }
