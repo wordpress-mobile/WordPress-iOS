@@ -379,7 +379,7 @@ extension RegisterDomainSuggestionsViewController {
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
 
         static let errorTitle = NSLocalizedString("domains.failure.title",
-                                                  value: "Sorry, the domain you are trying to add can not be bought on the Jetpack app at this time.",
+                                                  value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
                                                   comment: "Content show when the domain selection action fails.")
         static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
                                                     value: "Dismiss",
