@@ -1,0 +1,15 @@
+{
+    "request": {
+      "urlPattern": "/plans/yearly/.*",
+      "method": "GET"
+    },
+    "response": {
+      "status": 200,
+      "bodyFileName": "plans_yearly.html",
+      "headers": {
+        "Content-Type": "text/html",
+        "Connection": "keep-alive",
+        "Cache-Control": "no-cache, must-revalidate, max-age=0"
+      }
+    }
+  }

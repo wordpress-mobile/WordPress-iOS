@@ -1,0 +1,15 @@
+{
+    "request": {
+      "urlPattern": "/checkout/.*",
+      "method": "GET"
+    },
+    "response": {
+      "status": 200,
+      "bodyFileName": "checkout.html",
+      "headers": {
+        "Content-Type": "text/html",
+        "Connection": "keep-alive",
+        "Cache-Control": "no-cache, must-revalidate, max-age=0"
+      }
+    }
+  }
