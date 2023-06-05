@@ -21,15 +21,24 @@ class AccountSettingsServiceTests: CoreDataTestCase {
     }
 
     func testUpdateSuccess() throws {
-        stub(condition: isPath("/rest/v1.1/me/settings")) { _ in
-            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
-        }
+        // We've seen some flakiness in CI on this test, and therefore are using a stub object rather than stubbing the HTTP requests.
+        // Since this approach bypasses the entire network stack, the hope is that it'll result in a more robust test.
+        //
+        // This is the second test in this class edited this way.
+        // If we'll need to update a third, we shall also take the time to update the rest of the tests.
+        let service = AccountSettingsService(
+            userID: 1,
+            remote: AccountSettingsRemoteInterfaceStub(updateSettingResult: .success(())),
+            coreDataStack: contextManager
+        )
+
         waitUntil { done in
-            self.service.saveChange(.firstName("Updated"), finished: { success in
+            service.saveChange(.firstName("Updated"), finished: { success in
                 expect(success).to(beTrue())
                 done()
             })
         }
+
         expect(self.managedAccountSettings()?.firstName).to(equal("Updated"))
     }
 
