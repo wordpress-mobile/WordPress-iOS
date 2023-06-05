@@ -199,9 +199,7 @@ final class BlogTests: CoreDataTestCase {
         // Create an account with duplicated blogs
         let xmlrpc = "https://xmlrpc.test.wordpress.com"
         let account = try await contextManager.performAndSave { context in
-            let account = WPAccount(context: context)
-            account.username = "username"
-            account.authToken = "authToken"
+            let account = WPAccount.fixture(context: context)
             account.blogs = Set(
                 (1...10).map { _ in
                     let blog = BlogBuilder(context).build()
