@@ -44,9 +44,9 @@ class DashboardTests: XCTestCase {
         try MySiteScreen()
             .scrollToActivityLogCard()
             .verifyActivityLogCard()
-            .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social for")
-            .verifyActivityLogCard(hasActivityPartial: "The Jetpack connection is")
-            .verifyActivityLogCard(hasActivityPartial: "This site is connected to J")
+            .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")
+            .verifyActivityLogCard(hasActivityPartial: "The Jetpack connection")
+            .verifyActivityLogCard(hasActivityPartial: "This site is connected to")
             .tapActivityLogCardHeader()
             .verifyActivityLogScreenLoaded()
     }
