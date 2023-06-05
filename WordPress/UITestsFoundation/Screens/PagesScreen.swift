@@ -29,4 +29,10 @@ public class PagesScreen: ScreenObject {
         XCTAssertTrue(PagesScreen.isLoaded(), "\"Pages\" screen isn't loaded.")
         return self
     }
+
+    @discardableResult
+    public func verifyPagesScreen(hasPage pageTitle: String) -> Self {
+        XCTAssertTrue(pagesTable.staticTexts[pageTitle].waitForIsHittable(), "Pages Screen: \"\(pageTitle)\" page not displayed.")
+        return self
+    }
 }

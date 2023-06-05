@@ -39,5 +39,8 @@ class DashboardTests: XCTestCase {
             .verifyPagesCard(hasPage: "Cart")
             .tapPagesCardHeader()
             .verifyPagesScreenLoaded()
+            .verifyPagesScreen(hasPage: "Blog")
+            .verifyPagesScreen(hasPage: "Shop")
+            .verifyPagesScreen(hasPage: "Cart")
     }
 }
