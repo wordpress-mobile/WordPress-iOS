@@ -18,7 +18,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var site: Blog!
     var domainPurchasedCallback: ((String) -> Void)!
-    var domainAddedToCartCallback: (() -> Void)?
+    var domainAddedToCartCallback: ((String) -> Void)?
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
@@ -243,7 +243,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             createCart(
                 domain,
                 onSuccess: { [weak self] in
-                    self?.domainAddedToCartCallback?()
+                    self?.domainAddedToCartCallback?(domain.domainName)
                     self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure

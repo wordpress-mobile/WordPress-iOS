@@ -2605,6 +2605,8 @@
 		B0AC50DD251E96270039E022 /* ReaderCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AC50DC251E96270039E022 /* ReaderCommentsViewController.swift */; };
 		B0B68A9C252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */; };
 		B0B68A9D252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B68A9B252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift */; };
+		B0B89DC02A1E882F003D5295 /* DomainResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */; };
+		B0B89DC12A1E882F003D5295 /* DomainResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */; };
 		B0CD27CF286F8858009500BF /* JetpackBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CD27CE286F8858009500BF /* JetpackBannerView.swift */; };
 		B0CD27D0286F8858009500BF /* JetpackBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CD27CE286F8858009500BF /* JetpackBannerView.swift */; };
 		B0F2EFBF259378E600C7EB6D /* SiteSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F2EFBE259378E600C7EB6D /* SiteSuggestionService.swift */; };
@@ -7934,6 +7936,7 @@
 		B0AC50DC251E96270039E022 /* ReaderCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsViewController.swift; sourceTree = "<group>"; };
 		B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B0B68A9B252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainResultView.swift; sourceTree = "<group>"; };
 		B0CD27CE286F8858009500BF /* JetpackBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerView.swift; sourceTree = "<group>"; };
 		B0DDC2EB252F7C4F002BAFB3 /* WordPress 100.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 100.xcdatamodel"; sourceTree = "<group>"; };
 		B0F2EFBE259378E600C7EB6D /* SiteSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSuggestionService.swift; sourceTree = "<group>"; };
@@ -11322,6 +11325,7 @@
 		3F55A01826FCB0BD0049D379 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B0B89DBF2A1E882F003D5295 /* DomainResultView.swift */,
 				3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */,
 				3F3DD0B126FD176800F5F121 /* PresentationCard.swift */,
 				3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */,
@@ -22102,6 +22106,7 @@
 				E1468DE71E794A4D0044D80F /* LanguageSelectorViewController.swift in Sources */,
 				E14694071F3459E2004052C8 /* PluginListViewController.swift in Sources */,
 				FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */,
+				B0B89DC02A1E882F003D5295 /* DomainResultView.swift in Sources */,
 				7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */,
 				931215F4267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift in Sources */,
 				FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */,
@@ -25346,6 +25351,7 @@
 				FABB25A52602FC2C00C8785C /* BlogToJetpackAccount.m in Sources */,
 				FABB25A62602FC2C00C8785C /* NotificationSettingsViewController.swift in Sources */,
 				FABB25A72602FC2C00C8785C /* ChangeUsernameViewController.swift in Sources */,
+				B0B89DC12A1E882F003D5295 /* DomainResultView.swift in Sources */,
 				173DF292274522A1007C64B5 /* AppAboutScreenConfiguration.swift in Sources */,
 				FABB25A82602FC2C00C8785C /* RichTextView.swift in Sources */,
 				FABB25A92602FC2C00C8785C /* ScenePresenter.swift in Sources */,
