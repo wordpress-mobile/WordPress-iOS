@@ -39,8 +39,6 @@ import SwiftUI
             checkoutViewController.configureSandboxStore {
                 navigationController.pushViewController(checkoutViewController, animated: true)
             }
-
-            PlansTracker.trackCheckoutWebViewViewed(source: "plan_selection")
         }
 
         let domainAddedToCart = { (domainName: String) in
@@ -50,8 +48,6 @@ import SwiftUI
                 planSelected(domainName, checkoutURL)
             }
             navigationController.pushViewController(planSelectionViewController, animated: true)
-
-            PlansTracker.trackPlanSelectionWebViewViewed(.domainAndPlanPackage, source: "domains_register")
         }
         domainSuggestionsViewController.domainAddedToCartCallback = domainAddedToCart
 
