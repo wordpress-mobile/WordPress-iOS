@@ -18,7 +18,6 @@ class DashboardTests: XCTestCase {
         removeApp()
     }
 
-
     func testFreeToPaidCardNavigation() throws {
         try MySiteScreen()
             .scrollToFreeToPaidPlansCard()
