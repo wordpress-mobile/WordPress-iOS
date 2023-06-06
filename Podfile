@@ -12,9 +12,9 @@ source 'https://cdn.cocoapods.org/'
 raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_GEMFILE].any? { |k| ENV.key?(k) }
 
 VERSION_XCCONFIG_PATH = File.join(File.expand_path(__dir__), 'config', 'Common.xcconfig')
-app_ios_deployment_target = Gem::Version.new(Xcodeproj::Config.new(VERSION_XCCONFIG_PATH).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
+APP_IOS_DEPLOYMENT_TARGET = Gem::Version.new(Xcodeproj::Config.new(VERSION_XCCONFIG_PATH).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
 
-platform :ios, app_ios_deployment_target.version
+platform :ios, APP_IOS_DEPLOYMENT_TARGET.version
 inhibit_all_warnings!
 use_frameworks!
 workspace 'WordPress.xcworkspace'
@@ -395,7 +395,7 @@ post_install do |installer|
 
     target.build_configurations.each do |configuration|
       pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= APP_IOS_DEPLOYMENT_TARGET
     end
   end
 
