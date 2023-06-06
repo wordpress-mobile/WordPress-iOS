@@ -29,8 +29,8 @@ struct PlanSelectionViewModel {
     }
 
     enum Constants {
-        static let plansWebAddress = "https://wordpress.com/plans/yearly"
-        static let checkoutWebAddress = "https://wordpress.com/checkout"
+        static let plansWebAddress = "\(Environment.current.wordPressComURL)plans/yearly"
+        static let checkoutWebAddress = "\(Environment.current.wordPressComURL)checkout"
         static let domainAndPlanPackageParameter = "domainAndPlanPackage"
         static let jetpackAppPlansParameter = "jetpackAppPlans"
     }

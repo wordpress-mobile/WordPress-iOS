@@ -41,7 +41,7 @@ final class CheckoutViewController: WebKitViewController {
                 return
             }
 
-            if newURL.absoluteString.hasPrefix("https://wordpress.com/checkout/thank-you") {
+            if newURL.absoluteString.hasPrefix("\(Environment.current.wordPressComURL)checkout/thank-you") {
                 self.purchaseCallback?(self)
 
                 /// Stay on Checkout page
