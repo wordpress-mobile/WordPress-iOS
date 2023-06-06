@@ -42,4 +42,18 @@ class DashboardTests: XCTestCase {
             .verifyPagesScreen(hasPage: "Shop")
             .verifyPagesScreen(hasPage: "Cart")
     }
+
+    func testActivityLogCardHeaderNavigation() throws {
+        try MySiteScreen()
+            .scrollToActivityLogCard()
+            .verifyActivityLogCard()
+            .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")
+            .verifyActivityLogCard(hasActivityPartial: "The Jetpack connection")
+            .verifyActivityLogCard(hasActivityPartial: "This site is connected to")
+            .tapActivityLogCardHeader()
+            .verifyActivityLogScreenLoaded()
+            .verifyActivityLogScreen(hasActivityPartial: "Enabled Jetpack Social")
+            .verifyActivityLogScreen(hasActivityPartial: "The Jetpack connection")
+            .verifyActivityLogScreen(hasActivityPartial: "This site is connected to")
+    }
 }
