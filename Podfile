@@ -11,12 +11,12 @@ source 'https://cdn.cocoapods.org/'
 
 raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_GEMFILE].any? { |k| ENV.key?(k) }
 
-inhibit_all_warnings!
-use_frameworks!
-
-app_ios_deployment_target = Gem::Version.new(Xcodeproj::Config.new(File.new('./config/Common.xcconfig')).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
+VERSION_XCCONFIG_PATH = File.join(File.expand_path(__dir__), 'config', 'Common.xcconfig')
+app_ios_deployment_target = Gem::Version.new(Xcodeproj::Config.new(VERSION_XCCONFIG_PATH).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
 
 platform :ios, app_ios_deployment_target.version
+inhibit_all_warnings!
+use_frameworks!
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
