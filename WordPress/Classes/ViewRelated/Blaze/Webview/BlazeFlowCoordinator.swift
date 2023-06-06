@@ -6,6 +6,7 @@ import UIKit
     case menuItem
     case postsList
     case pagesList
+    case campaignsList
 
     var description: String {
         switch self {
@@ -17,6 +18,8 @@ import UIKit
             return "posts_list"
         case .pagesList:
             return "pages_list"
+        case .campaignsList:
+            return "campaigns_list"
         }
     }
 
