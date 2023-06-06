@@ -6,7 +6,6 @@ struct PlansTracker {
     }
 
     private static let positionKey = "position_index"
-    private static let planSelectionTypeKey = "plan_selection_type"
 
     // MARK: - Dashboard Card
 
