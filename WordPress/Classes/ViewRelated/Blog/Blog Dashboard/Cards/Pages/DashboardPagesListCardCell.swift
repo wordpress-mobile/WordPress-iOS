@@ -16,6 +16,7 @@ final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardVi
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.setTitle(Strings.title)
+        frameView.accessibilityIdentifier = "dashboard-pages-card-frameview"
         return frameView
     }()
 

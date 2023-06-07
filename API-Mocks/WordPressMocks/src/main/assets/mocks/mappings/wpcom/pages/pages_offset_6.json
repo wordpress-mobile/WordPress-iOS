@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/v1.2/sites/106707880/posts",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      },
+      "type": {
+        "equalTo": "page"
+      },
+      "offset": {
+        "equalTo": "3"
+      }        
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "found": 0,
+      "posts": [],
+      "meta": {
+        "links": {
+          "counts": "https://public-api.wordpress.com/rest/v1.2/sites/1/post-counts/page"
+        }
+      }
+    }
+  }
+}

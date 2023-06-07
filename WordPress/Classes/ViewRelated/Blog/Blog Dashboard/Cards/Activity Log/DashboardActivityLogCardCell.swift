@@ -21,6 +21,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.setTitle(Strings.title)
+        frameView.accessibilityIdentifier = "dashboard-activity-log-card-frameview"
         return frameView
     }()
 
