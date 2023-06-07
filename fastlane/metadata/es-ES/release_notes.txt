@@ -1,0 +1,9 @@
+Si tu sitio utiliza un tema basado en bloques, ahora puedes editar la página de inicio de tu sitio directamente desde la lista de páginas. Emoji de manos levantadas.
+
+Hemos resuelto un problema relacionado con el ajuste de los enlaces para que se abran en una nueva pestaña. Al escribir texto después de este enlace, ahora puedes deshacer y rehacer el texto sin problemas.
+
+La función «Tocar para editar» ahora está disponible para todos los tipos de bloques anidados: ya no es necesario tocar todos los niveles de anidamiento para llegar a un contenido específico.
+
+Hablando de anidamiento, también hemos corregido un error por el que la fusión de un elemento de lista en un párrafo eliminaba cualquier texto anidado para ese elemento de lista.
+
+Por último, hemos actualizado el diseño de las celdas desactivadas para que sea más fácil saber cuándo una celda no está en uso.
