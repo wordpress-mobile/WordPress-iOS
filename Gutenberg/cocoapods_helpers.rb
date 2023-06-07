@@ -84,7 +84,7 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 
     gutenberg_dependencies(options: options)
   elsif options[:commit]
-    pod 'Gutenberg', podspec: "https://d2twmm2nzpx3bg.cloudfront.net/Gutenberg-#{options[:commit]}.podspec"
+    pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{options[:commit]}.podspec"
   end
 end
 # rubocop:enable Metrics/AbcSize
