@@ -1,6 +1,6 @@
 import UIKit
 
-final class BlazeCampaignsViewController: UIViewController {
+final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Views
 
@@ -15,6 +15,14 @@ final class BlazeCampaignsViewController: UIViewController {
     // MARK: - Properties
 
     private var blog: Blog
+
+    private var isLoading: Bool = false {
+        didSet {
+            if isLoading != oldValue {
+                showNoResultsViewIfNeeded()
+            }
+        }
+    }
 
     // MARK: - Initializers
 
@@ -34,6 +42,12 @@ final class BlazeCampaignsViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupNavBar()
+        setupNoResults()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchCampaigns()
     }
 
     // MARK: - Private helpers
@@ -47,15 +61,70 @@ final class BlazeCampaignsViewController: UIViewController {
         navigationItem.rightBarButtonItem = dismissButton
     }
 
+    private func setupNoResults() {
+        noResultsViewController.delegate = self
+    }
+
+    private func fetchCampaigns() {
+        isLoading = true
+
+        // FIXME: Call BlazeService
+    }
+
     @objc private func promotePostButtonTapped() {
         // TODO: Track event
         BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
 }
 
+// MARK: - No results
+
+extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
+
+    private func showNoResultsViewIfNeeded() {
+        guard !isLoading else {
+            showLoadingView()
+            return
+        }
+
+        // FIXME: if results aren't empty, hide the no results view and return
+
+        showNoResultsView()
+    }
+
+    private func showNoResultsView() {
+        hideNoResults()
+        noResultsViewController.hideImageView()
+        configureAndDisplayNoResults(on: view,
+                                     title: NoResults.emptyTitle,
+                                     subtitle: NoResults.emptySubtitle,
+                                     buttonTitle: Strings.promoteButtonTitle)
+    }
+
+    private func showLoadingView() {
+        hideNoResults()
+        configureAndDisplayNoResults(on: view,
+                                     title: NoResults.loadingTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView())
+    }
+
+    func actionButtonPressed() {
+        promotePostButtonTapped()
+    }
+}
+
+// MARK: - Constants
+
 extension BlazeCampaignsViewController {
 
     private enum Strings {
         static let navigationTitle = NSLocalizedString("blaze.campaigns.title", value: "Blaze Campaigns", comment: "Title for the screen that allows users to manage their Blaze campaigns.")
+        static let promoteButtonTitle = NSLocalizedString("blaze.campaigns.promote.button.title", value: "Promote", comment: "Button title for the button that shows the Blaze flow when tapped.")
+    }
+
+    private enum NoResults {
+        static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
+        static let emptyTitle = NSLocalizedString("blaze.campaigns.empty.title", value: "You have no campaigns", comment: "Title displayed when there are no Blaze campaigns to display.")
+        static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click promote to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
     }
 }
