@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-30 10:18:31+0000 */
+/* Translation-Revision-Date: 2023-06-05 09:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -1146,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blockredigeraren är aktiverad";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Block grupperat";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blockera obehöriga inloggningsförsök";
 
@@ -1160,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blockera denna webbplats";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Block avgrupperat";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
@@ -9858,6 +9864,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "följ";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Få en gratis domän det första året, ta bort annonser från din webbplats och utöka ditt lagringsutrymme.";
+
 /* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.menu.hide" = "Dölj detta";
 
@@ -10392,6 +10401,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Marknadsför med Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Din startsida använder en temamall och kommer att öppnas i webbredigeraren.";
+
 /* Title of the theme template homepage cell */
 "pages.template.title" = "Startsida";
 
@@ -10469,6 +10481,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Sök";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Läsarinställningar";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */

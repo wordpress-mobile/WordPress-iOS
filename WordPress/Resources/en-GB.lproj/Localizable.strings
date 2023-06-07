@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-03-14 10:18:24+0000 */
+/* Translation-Revision-Date: 2023-06-04 17:31:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: en_GB */
@@ -568,6 +568,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add button text" = "Add button text";
+
+/* No comment provided by engineer. */
+"Add description" = "Add description";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Add image or video";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block editor enabled";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Block grouped";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Block malicious login attempts";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Block this site";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Block ungrouped";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
@@ -2368,6 +2377,9 @@ translators: Block name. %s: The localized block name */
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Deny";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "Describe the purpose of the image. Leave empty if decorative.";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2375,6 +2387,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Design System";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2662,6 +2677,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicate block";
 
+/* No comment provided by engineer. */
+"Dynamic" = "Dynamic";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "E.g. Fashion, Poetry, Politics";
 
@@ -2734,6 +2752,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Editing reusable blocks is not yet supported on %s for Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Editing reusable blocks is not yet supported on %s for iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
@@ -4223,6 +4247,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Load more posts";
 
+/* No comment provided by engineer. */
+"Loading" = "Loading";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Loading Activities...";
 
@@ -4404,6 +4431,9 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Manage site";
+
+/* No comment provided by engineer. */
+"Manual" = "Manual";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manual Offsets";
@@ -5486,6 +5516,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to play a video on the editor. */
 "Play video" = "Play video";
 
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Playback Bar Colour";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Playback Settings";
+
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Please add some content before trying to publish.";
 
@@ -5839,6 +5875,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "Privacy Settings";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Privacy and Rating";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Privacy notice for California users";
 
@@ -6110,6 +6149,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Remove block";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Remove blocks";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
@@ -6487,6 +6529,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Search for a domain";
+
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Search for a short and memorable keyword to help people find and visit your website.";
 
 /* No comment provided by engineer. */
 "Search input field." = "Search input field.";
@@ -8380,6 +8425,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Unknown search terms";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Unlabeled colour. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Unlike the Comment.";
 
@@ -9613,6 +9661,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "an hour";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "What do you think about Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "What do you think about WordPress?";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
@@ -9641,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "Promote any post or page in only a few minutes for just a few dollars a day.";
 
 /* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Track your campaign's performance and cancel at anytime.";
+
+/* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "Your content will appear on millions of WordPress and Tumblr sites.";
 
 /* Title for the Blaze overlay. */
@@ -9651,6 +9708,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Blaze this post";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Hide this";
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Dismiss";
@@ -9685,6 +9745,102 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Try it now";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Add cards that fit your needs to see information about your site.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "No cards to display";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Personalise your home tab";
+
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "All activity";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Recent activity";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "All pages";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Pages";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Add pages to your site";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Draft";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "Published";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "Scheduled";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Create another page";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Start with bespoke, mobile friendly layouts.";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Overridden parameters are denoted by a checkmark.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Override the chosen param by defining a new value here.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "No remote or default value";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Remote Config";
+
+/* Title of the Local Feature Flags screen used in debug builds of the app */
+"debugMenu.section.localFeatureFlags" = "Local Feature Flags";
+
+/* Title of the Remote Feature Flags screen used in debug builds of the app */
+"debugMenu.section.remoteFeatureFlags" = "Remote Feature Flags";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Stake your claim on your corner of the web with a site address that’s easy to find, share and follow.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Hide this";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "Find a custom domain";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "It may take up to 30 minutes for your custom domain to start working.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Next, we'll help you get it ready to be browsed.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "We’ve emailed your receipt. Next, we'll help you get it ready for everyone.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Kudos, your site is live!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Best Alternative";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "for the first year";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Free";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Recommended";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Sale";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "per year";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "double tap to change unit";
 
@@ -9707,6 +9863,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "follow";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Get a free domain for the first year, remove ads on your site, and increase your storage.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Hide this";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Free domain with an annual plan";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Set up blogging reminders";
@@ -9843,6 +10008,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
 
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Moving to the Jetpack app in a few days.";
+
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";
 
@@ -9978,6 +10146,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Done";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Connect your user account";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "To get helpful notifications on your phone from your WordPress site, you'll need to connect to your user account.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "To use stats on your site, you'll need to connect the Jetpack plugin to your user account.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.";
 
@@ -10080,14 +10257,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "It looks like you still have the WordPress app installed.";
+
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Got it";
 
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Need help?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "You no longer need the WordPress app on your device";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Finish";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "We recommend uninstalling the WordPress app on your device to avoid data conflicts.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "uninstalling the WordPress app";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We’ve transferred all your data and settings. Everything is right where you left it.";
@@ -10140,11 +10329,68 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welcome to Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Switching is free and only takes a minute.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Switch to the Jetpack app";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Learn more at jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Use WordPress with Notifications in the Jetpack app.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Use WordPress with Reader in the Jetpack app.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Use WordPress with Stats in the Jetpack app.";
+
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Content";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Maintenance";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Social";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Traffic";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Work on a draft post";
+
+/* The part in the title that should be highlighted. */
+"my-sites.drafts.card.title.hint" = "draft post";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Today's Stats";
+
+/* The part of the title that needs to be emphasized */
+"my-sites.stats.card.title.hint" = "Stats";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Dismiss";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Dismiss";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Could improve";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "I like it";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "No thanks";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Send feedback";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "of";
@@ -10155,8 +10401,44 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promote with Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Your homepage is using a Theme template and will open in the web editor.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Homepage";
+
 /* No comment provided by engineer. */
 "password" = "password";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Add or hide cards";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Recent activity";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Draft posts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Pages";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Blogging prompts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Scheduled posts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Today's stats";
+
+/* Page title */
+"personalizeHome.title" = "Personalise Home Tab";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";
@@ -10173,8 +10455,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Featured Image Options";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promote with Blaze";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "View all responses";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Visit Site Settings to turn back on";
@@ -10190,6 +10478,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "You're logged in!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Search";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader Settings";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "this site";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10254,11 +10552,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Sharing Error";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Your website has been created successfully, but we encountered an issue while preparing your custom domain for checkout. Please try again or contact support for assistance.";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Like the example above, a domain allows people to find and visit your site from their web browser.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Show prompts";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Find out more";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter auto-sharing is no longer available due to Twitter's changes in terms and pricing.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Last 7 days";
@@ -10568,6 +10887,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Switch to the Jetpack app";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Continue without Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ is using individual Jetpack plugins, which isn't supported by the WordPress App.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ is using the %2$@ plugin, which isn't supported by the WordPress App.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Please switch to the Jetpack app where we'll guide you through connecting the full Jetpack plugin so that you can use all the apps features for this site.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Sorry, this site isn't supported by the WordPress app";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successCard.description" = "Welcome to the Jetpack app. You can uninstall the WordPress app.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Learn more";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "your site";
