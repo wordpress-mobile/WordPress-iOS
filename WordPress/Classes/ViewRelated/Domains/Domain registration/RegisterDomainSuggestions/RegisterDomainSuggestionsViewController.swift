@@ -11,14 +11,17 @@ enum DomainSelectionType {
 }
 
 class RegisterDomainSuggestionsViewController: UIViewController {
+    typealias DomainPurchasedCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
+    typealias DomainAddedToCartCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
+
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     private var constraintsInitialized = false
 
     private var site: Blog!
-    var domainPurchasedCallback: ((String) -> Void)!
-    var domainAddedToCartCallback: ((String) -> Void)?
+    var domainPurchasedCallback: DomainPurchasedCallback!
+    var domainAddedToCartCallback: DomainAddedToCartCallback?
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
@@ -53,7 +56,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     static func instance(site: Blog,
                          domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
-                         domainPurchasedCallback: ((String) -> Void)? = nil) -> RegisterDomainSuggestionsViewController {
+                         domainPurchasedCallback: DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.site = site
@@ -243,8 +246,12 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             createCart(
                 domain,
                 onSuccess: { [weak self] in
-                    self?.domainAddedToCartCallback?(domain.domainName)
-                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainAddedToCartCallback?(self, domain.domainName)
+                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
                 },
                 onFailure: onFailure
             )
@@ -267,7 +274,13 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
 
         let controller = RegisterDomainDetailsViewController()
-        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
+        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self else {
+                return
+            }
+
+            self.domainPurchasedCallback?(self, name)
+        }
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -354,7 +367,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 navController.dismiss(animated: true)
             }) { domain in
                 self.dismiss(animated: true, completion: { [weak self] in
-                    self?.domainPurchasedCallback(domain)
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainPurchasedCallback(self, domain)
                 })
             }
         }
