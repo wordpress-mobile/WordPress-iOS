@@ -183,6 +183,15 @@ class BlogDashboardCardFrameView: UIView {
         buttonContainerStackView.removeFromSuperview()
     }
 
+    /// Adds the "more" button with the given actions to the corner of the cell.
+    func addMoreMenu(items: [UIMenuElement], card: DashboardCard) {
+        onEllipsisButtonTap = {
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
+        }
+        ellipsisButton.showsMenuAsPrimaryAction = true
+        ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: items)
+    }
+
     private func updateEllipsisButtonState() {
         ellipsisButton.isHidden = onEllipsisButtonTap == nil
         let headerPadding = ellipsisButton.isHidden ?

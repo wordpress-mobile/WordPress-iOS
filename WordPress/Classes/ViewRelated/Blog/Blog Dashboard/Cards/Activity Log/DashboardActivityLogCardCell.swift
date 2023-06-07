@@ -113,8 +113,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         let activitySubmenu = UIMenu(title: String(), options: .displayInline, children: [activityAction])
 
 
-        let hideThisAction = BlogDashboardHelpers.makeHideCardAction(for: .activityLog,
-                                                                     siteID: blog.dotComID?.intValue ?? 0)
+        let hideThisAction = BlogDashboardHelpers.makeHideCardAction(for: .activityLog, blog: blog)
 
         cardFrameView.ellipsisButton.menu = UIMenu(title: String(), options: .displayInline, children: [
             activitySubmenu,

@@ -300,6 +300,10 @@ extension ActivityStore {
     }
 
     func fetchBackupStatus(site: JetpackSiteRef) {
+        guard site.hasBackup else {
+            return
+        }
+
         state.fetchingBackupStatus[site] = true
 
         backupService.getAllBackupStatus(for: site, success: { [actionDispatcher] backupsStatus in
