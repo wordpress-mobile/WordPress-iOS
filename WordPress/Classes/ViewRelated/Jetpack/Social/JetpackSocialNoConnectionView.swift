@@ -39,6 +39,7 @@ struct JetpackSocialNoConnectionView: View {
        Image(image)
             .resizable()
             .frame(width: 32.0, height: 32.0)
+            .clipShape(Circle())
     }
 }
 
