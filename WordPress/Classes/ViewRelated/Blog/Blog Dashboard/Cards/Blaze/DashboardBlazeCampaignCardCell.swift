@@ -66,7 +66,7 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
         let viewModel = DashboardBlazeCampaignCardCellViewModel(response: mockResponse)!
         campaignView.configure(with: viewModel.campaign, blog: blog)
         buttonShowMoreCampaigns.isHidden = viewModel.isButtonShowMoreHidden
-        buttonShowMoreCampaigns.setTitle(String(format: "+ \(Strings.showMoreCampaigns)", viewModel.totalCampaignCount), for: .normal)
+        buttonShowMoreCampaigns.setTitle(viewModel.buttonShowMoreTitle, for: .normal)
     }
 
     // MARK: - Actions
@@ -79,7 +79,14 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
 private extension DashboardBlazeCampaignCardCell {
     enum Strings {
         static let cardTitle = NSLocalizedString("my-sites.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
-        static let showMoreCampaigns = NSLocalizedString("my-sites.blazeCampaigns.showMoreCampaigns", value: "%d active campaigns", comment: "Title for button that shows more campaigns. Takes the number of campaigns as a parameter.")
+
+        static func buttonShowMoreText(forCampaignCount count: Int) -> String {
+            let format = count == 1 ? showMoreCampaignsOne : showMoreCampaignsTwoOrMore
+            return String(format: "+ \(format)", count)
+        }
+
+        static let showMoreCampaignsOne = NSLocalizedString("my-sites.blazeCampaigns.showMoreCampaignsOne", value: "%d active campaign", comment: "Title for button that shows more campaigns. Takes the number of campaigns as a parameter.")
+        static let showMoreCampaignsTwoOrMore = NSLocalizedString("my-sites.blazeCampaigns.showMoreCampaignsTwoOrMore", value: "%d active campaigns", comment: "Title for button that shows more campaigns. Takes the number of campaigns as a parameter.")
     }
 }
 
@@ -87,6 +94,7 @@ final class DashboardBlazeCampaignCardCellViewModel {
     let campaign: DashboardBlazeCampaignViewModel
     let totalCampaignCount: Int
     var isButtonShowMoreHidden: Bool { totalCampaignCount < 2 }
+    let buttonShowMoreTitle: String
 
     init?(response: BlazeCampaignsSearchResponse) {
         guard let campaign = response.campaigns?.first else {
@@ -94,6 +102,7 @@ final class DashboardBlazeCampaignCardCellViewModel {
         }
         self.campaign = DashboardBlazeCampaignViewModel(campaign: campaign)
         self.totalCampaignCount = response.totalItems ?? 1
+        self.buttonShowMoreTitle = DashboardBlazeCampaignCardCell.Strings.buttonShowMoreText(forCampaignCount: totalCampaignCount - 1)
     }
 }
 
