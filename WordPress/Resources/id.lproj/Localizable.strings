@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-22 06:13:41+0000 */
+/* Translation-Revision-Date: 2023-05-30 18:54:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "URL %s belum ditetapkan ";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s tautan";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Pratinjau %s belum tersedia";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Penyunting blok diaktifkan";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Blok dikelompokkan";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Memblokir upaya login berbahaya";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blokir situs ini";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Blok tidak dikelompokkan";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Situs yang diblokir";
@@ -9855,6 +9864,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "ikuti";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Dapatkan domain gratis untuk tahun pertama, hilangkan iklan di situs Anda, dan perbesar ruang penyimpanan Anda.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Tutup";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Domain gratis dengan paket tahunan";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Siapkan pengingat blogging";
 
@@ -10383,6 +10401,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promosikan dengan Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Beranda Anda menggunakan templat Tema dan akan dibuka di editor web.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Beranda";
+
 /* No comment provided by engineer. */
 "password" = "Kata sandi";
 
@@ -10431,6 +10455,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Pilihan Gambar Andalan";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
 
@@ -10451,6 +10478,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Anda sudah login!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Pencarian";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Pengaturan Pembaca";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10569,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Pengingat";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Baca selengkapnya";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Fitur berbagi otomatis ke Twitter tidak lagi tersedia karena adanya perubahan ketentuan dan harga dari Twitter.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 hari terakhir";

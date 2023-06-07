@@ -1,9 +1,13 @@
-Abbiamo aggiunto schede alla tua bacheca. La scheda Log attività mostra le tue tre attività più recenti, mentre la scheda Pagine mostra le ultime tre pagine che hai modificato.
+Se il sito utilizza un tema basato su blocchi, ora puoi modificare la homepage del tuo sito direttamente dall'Elenco delle pagine. Emoji con le mani alzate.
 
-Abbiamo anche apportato alcune importanti modifiche all'editor a blocchi. Per evitare un arresto anomalo dell'app, i blocchi riutilizzabili eliminati e non definiti non possono più essere convertiti in blocchi normali.
+Abbiamo risolto un problema relativo all'impostazione dei link da aprire in una nuova scheda. Quando si digita il testo dopo questo link, è ora possibile annullare e reinserire il testo senza problemi
 
-Quando tocchi un blocco di testo nidificato, puoi modificare immediatamente il contenuto in quel blocco. Non dovrai più toccare ogni livello di nidificazione per arrivare dove desideri. (Anche noi avevamo le dita stanche.)
+Le impostazioni dei dettagli visibili sono ora disabilitate per i video VideoPress che non appartengono al sito.
 
-A proposito di blocchi riutilizzabili, abbiamo aggiornato il messaggio "Modifica non supportata" per rimuovere la citazione di WordPress. Sappiamo quale app stiamo usando, lo promettiamo.
+Tocca per modificare è ora disponibile per tutti i tipi di blocchi nidificati: non è più necessario toccare ogni livello di nidificazione per raggiungere un contenuto specifico.
 
-Infine, abbiamo corretto un bug a causa del quale l'app si arrestava in modo anomalo se provavi a caricare elementi multimediali su un blocco classico senza consentire a WordPress l'accesso alla libreria multimediale del dispositivo. Visualizzerai invece un messaggio che richiede l'accesso agli elementi multimediali. Facile come bere un bicchier d'acqua.
+Parlando di nidificazione, abbiamo corretto un bug a causa del quale l'unione di un elemento dell'elenco in un paragrafo rimuoveva qualsiasi testo nidificato per tale elemento dell'elenco.
+
+Stavamo comunque eliminando i bug, quindi siamo andati avanti e ne abbiamo corretti anche un paio nel lettore. Quando si filtrano i temi seguiti, il testo nelle lingue non latine (come l'arabo) ora viene visualizzato correttamente. Anche le azioni Segnala e Blocca sono tornate al loro posto nel menu dell'articolo.
+
+Infine, abbiamo aggiornato il design delle celle disabilitate in modo che sia più facile capire quando una cella non è in uso.

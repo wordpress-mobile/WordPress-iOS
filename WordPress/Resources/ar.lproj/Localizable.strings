@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 13:54:09+0000 */
+/* Translation-Revision-Date: 2023-05-31 13:54:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "ليس لدى %s عنوان URL معين";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s رابط";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "معاينات %s غير متاحة حتى الآن";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "تم تمكين محرر المكوّنات";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "تم تجميع المكوّنات";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "تم حظر محاولات تسجيل الدخول الضارة";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "حظر هذا الموقع";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "تم إلغاء تجميع المكوّنات";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
@@ -9855,6 +9864,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "متابعة";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "احصل على نطاق مجاني للعام الأول، وأزل الإعلانات على موقعك، وارفع مساحة التخزين لديك.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "إخفاء ذلك";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "نطاق مجاني مع خطة سنوية";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "تعيين تذكيرات التدوين";
 
@@ -10383,6 +10401,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "الترويج مع الإبراز";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "تستخدم صفحتك الرئيسية قالب القالب وستفتح في محرر الويب.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "الصفحة الرئيسية";
+
 /* No comment provided by engineer. */
 "password" = "كلمة المرور";
 
@@ -10431,6 +10455,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "خيارات الصور المتميزة";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "لا تتوافر ميزة المشاركة التلقائية في تويتر بعد الآن";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
 
@@ -10451,6 +10478,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "لقد قمت بتسجيل الدخول!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "البحث";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "إعدادات القارئ";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10569,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "التذكيرات";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "لا تتوافر ميزة المشاركة التلقائية في تويتر بعد الآن";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "اكتشاف المزيد";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "لا تتوافر ميزة المشاركة التلقائية على تويتر بعد الآن بسبب التغييرات التي أجرتها تويتر في الشروط والأسعار.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "آخر 7 أيام";

@@ -266,6 +266,9 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s s’ka të caktuar URL";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s lidhje";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Paraparjet %s s’janë ende të mundshme";
 
 /* translators: %s: social link name e.g: \"Instagram\". */

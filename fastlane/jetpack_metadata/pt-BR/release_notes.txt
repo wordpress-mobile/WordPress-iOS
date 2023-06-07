@@ -1,9 +1,13 @@
-Adicionamos cartões ao seu painel. O cartão de Registro de atividades mostra as suas três últimas atividades e o cartão de Páginas, as últimas três páginas que você modificou.
+Se o seu site usa um tema baseado em bloco, agora é possível editar a página inicial diretamente na lista Páginas. Emoji de mãos para o alto.
 
-Nós também fizemos algumas alterações importantes no editor de blocos. Para prevenir que o aplicativo trave, os blocos reutilizáveis deletados e indefinidos não podem mais ser convertidos em blocos comuns.
+Resolvemos um problema que ocorria ao configurar links para abrir em uma nova guia. Agora você pode desfazer e refazer o texto digitado após esse link sem problemas.
 
-Ao tocar em um bloco de texto aninhado, você pode editar o conteúdo desse bloco na mesma hora, sem precisar tocar em todos os níveis de aninhamento para chegar aonde deseja. (Também estávamos sofrendo com isso)
+As configurações de detalhes visíveis estão desativadas para vídeos do VideoPress que não pertencem ao site.
 
-Ainda sobre os blocos reutilizáveis, atualizamos a mensagem “edição não suportada” para remover a menção ao WordPress. A gente sabe qual é o aplicativo, sério.
+Agora é possível tocar para editar qualquer tipo de bloco aninhado, sem precisar tocar em cada nível de aninhamento para chegar a um conteúdo específico.
 
-Por fim, corrigimos um bug em que o aplicativo travava se você tentasse fazer upload de mídia para um bloco clássico sem dar acesso ao WordPress para a biblioteca de mídia do seu dispositivo. Agora, você verá uma sugestão pedindo permissão para o acesso às mídias. Mamão com açúcar.
+Por falar nisso, corrigimos um bug que removia qualquer texto aninhado de um item de lista ao agrupar o item em um parágrafo.
+
+Já que estávamos eliminando bugs, corrigimos alguns no leitor também. Ao filtrar os tópicos que você segue, o texto em línguas não românicas (como o árabe) agora aparece corretamente. As ações Reportar e Bloquear estão de volta ao seu devido lugar no menu de post.
+
+Por fim, atualizamos o design de células desativadas para facilitar a identificação de quando uma célula não está em uso.

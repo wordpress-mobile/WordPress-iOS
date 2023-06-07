@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-10 10:51:24+0000 */
+/* Translation-Revision-Date: 2023-05-31 19:11:27+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s nemá nastavenou URL";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s odkaz";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s náhledy zatím nejsou k dispozici";
@@ -2725,6 +2728,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Upravit video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Úpravy opakovaně použitelných bloků zatím nejsou na %s pro Android podporovány";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Úpravy opakovaně použitelných bloků zatím nejsou na %s pro iOS podporovány";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Úpravou tohoto GIF odstraníte jeho animaci.";

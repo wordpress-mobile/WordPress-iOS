@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 10:54:26+0000 */
+/* Translation-Revision-Date: 2023-05-31 17:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s 沒有 URL 集";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s 連結";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "尚未推出 %s 預覽";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "已啟用區塊編輯器";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "已將區塊設為群組";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "封鎖惡意的登入嘗試";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "封鎖此網站";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "已取消區塊群組";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "封鎖的網站";
@@ -9852,6 +9861,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "追蹤";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "免費使用網域一年、移除網站上的廣告，並增加儲存空間。";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "隱藏";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "年繳方案附贈免費網域";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "設定網誌提醒";
 
@@ -10380,6 +10398,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "使用 Blaze 進行宣傳";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "你的首頁正在使用佈景主題範本，且將於網頁編輯器開啟。";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "首頁";
+
 /* No comment provided by engineer. */
 "password" = "密碼";
 
@@ -10428,6 +10452,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "精選圖片選項";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter 自動分享功能已無法使用";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "使用 Blaze 進行宣傳";
 
@@ -10448,6 +10475,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "你已登入！";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "搜尋";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "閱讀器設定";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10533,6 +10566,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "提醒";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter 自動分享功能已無法使用";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "深入瞭解";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "由於 Twitter 變更條款和定價，Twitter 自動分享功能已無法使用。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去 7 天";

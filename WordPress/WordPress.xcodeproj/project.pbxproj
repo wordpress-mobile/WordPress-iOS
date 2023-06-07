@@ -3797,6 +3797,9 @@
 		FA347AF226EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */; };
 		FA347AF326EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */; };
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
+		FA3FBF8B2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */; };
+		FA3FBF8C2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */; };
+		FA3FBF8E2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4B202F29A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */; };
@@ -9155,6 +9158,8 @@
 		FA347AEC26EB6E300096604B /* GrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GrowAudienceCell.xib; sourceTree = "<group>"; };
 		FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsGhostGrowAudienceCell.xib; sourceTree = "<group>"; };
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
+		FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModel.swift; sourceTree = "<group>"; };
+		FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModelTests.swift; sourceTree = "<group>"; };
 		FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogScreen.swift; sourceTree = "<group>"; };
 		FA4104732639393700E90EBF /* JetpackScanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanScreen.swift; sourceTree = "<group>"; };
 		FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupScreen.swift; sourceTree = "<group>"; };
@@ -13672,6 +13677,7 @@
 				0118969029D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift */,
 				0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */,
 				011F52C52A15413800B04114 /* FreeToPaidPlansDashboardCardHelperTests.swift */,
+				FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -17726,6 +17732,7 @@
 			children = (
 				FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */,
 				FAD7626329F1480E00C09583 /* DashboardActivityLogCardCell+ActivityPresenter.swift */,
+				FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */,
 			);
 			path = "Activity Log";
 			sourceTree = "<group>";
@@ -20940,6 +20947,7 @@
 				400A2C842217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataProperties.swift in Sources */,
 				7E4123BE20F4097B00DF8486 /* NotificationContentRangeFactory.swift in Sources */,
 				FA332AD429C1FC7A00182FBB /* MovedToJetpackViewModel.swift in Sources */,
+				FA3FBF8B2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */,
 				E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */,
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
 				F9B862C92478170A008B093C /* EncryptedLogTableViewController.swift in Sources */,
@@ -23496,6 +23504,7 @@
 				FE32E7F12844971000744D80 /* ReminderScheduleCoordinatorTests.swift in Sources */,
 				4688E6CC26AB571D00A5D894 /* RequestAuthenticatorTests.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
+				FA3FBF8E2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift in Sources */,
 				938466B92683CA0E00A538DC /* ReferrerDetailsViewModelTests.swift in Sources */,
 				FECA44322836647100D01F15 /* PromptRemindersSchedulerTests.swift in Sources */,
 				FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */,
@@ -25334,6 +25343,7 @@
 				FABB25902602FC2C00C8785C /* SharingViewController.m in Sources */,
 				FABB25912602FC2C00C8785C /* FormattableActivity.swift in Sources */,
 				FABB25922602FC2C00C8785C /* RevisionPreviewTextViewManager.swift in Sources */,
+				FA3FBF8C2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */,
 				FABB25932602FC2C00C8785C /* StatsChartLegendView.swift in Sources */,
 				C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */,
 				C3FF78E928354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */,

@@ -1,9 +1,13 @@
-Kami telah menambahkan kartu ke dasbor Anda. Kartu Log Aktivitas menunjukkan tiga aktivitas terkini Anda, sedangkan kartu Halaman menunjukkan tiga halaman yang terakhir Anda ubah.
+Jika situs Anda menggunakan tema berbasis blok, kini Anda dapat menyunting halaman beranda langsung dari daftar Halaman. Emotikon angkat tangan.
 
-Kami juga membuat sejumlah perubahan penting di editor blok. Demi mencegah terjadinya crash pada aplikasi, blok pakai ulang yang dihapus dan tidak ditentukan kini tidak dapat diubah menjadi blok reguler.
+Kami telah mengatasi masalah seputar baris tautan yang akan terbuka di tab baru. Saat mengetik teks biasa di belakang tautan ini, kini Anda bisa urungkan dan ulangi pengetikan teks tanpa masalah.
 
-Saat Anda mengetuk blok teks bersusun, Anda dapat langsung menyunting konten di blok tersebut—tidak perlu mengetuk di tiap susunan untuk menyunting kontennya. (Jari kami juga capek.)
+Pengaturan detail yang tampak telah dinonaktifkan untuk video-video VideoPress yang bukan bagian dari situs Anda.
 
-Mengenai blok pakai ulang—kami telah memperbarui pesan "penyuntingan tidak didukung" sehingga tak lagi menyebutkan nama WordPress. Kami sudah tahu kok, aplikasi apa yang kami gunakan.
+Fitur ketuk untuk menyunting kini tersedia untuk semua jenis blok bertumpuk—tidak perlu lagi mengetuk tiap tingkat dalam tumpukan untuk menuju konten tertentu.
 
-Terakhir, kami juga memperbaiki bug yang membuat aplikasi crash saat Anda mengunduh media ke blok klasik tanpa memberi WordPress akses ke pustaka media perangkat. Sekarang, Anda akan melihat prompt yang meminta akses media. Mudah sekali, bukan?
+Masih soal tumpukan, kami juga memperbaiki bug yang menyebabkan terhapusnya teks bertumpuk untuk sebuah item daftar ketika item daftar tersebut digabungkan ke dalam sebuah paragraf.
+
+Nah, selagi membasmi bug ini, kami sekalian mengatasi beberapa bug di pembaca. Saat Anda menyaring topik-topik yang Anda ikuti, teks yang tidak berhuruf latin (misalnya huruf Arab) kini bisa tampil normal. Aksi Laporkan dan Blokir juga kembali ke tempat semula di menu pos.
+
+Terakhir, kami memperbarui desain sel-sel nonaktif, sehingga lebih mudah untuk mengetahui mana saja sel yang tidak digunakan.
