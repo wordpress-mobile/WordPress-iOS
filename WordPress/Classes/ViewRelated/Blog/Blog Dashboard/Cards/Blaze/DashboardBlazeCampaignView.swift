@@ -70,7 +70,7 @@ final class DashboardBlazeCampaignView: UIView {
 
         statsView.isHidden = !viewModel.isShowingStats
         if viewModel.isShowingStats {
-            statsView.arrangedSubviews.forEach(statsView.removeArrangedSubview)
+            statsView.arrangedSubviews.forEach { $0.removeFromSuperview() }
             makeStatsViews(for: viewModel).forEach(statsView.addArrangedSubview)
         }
     }

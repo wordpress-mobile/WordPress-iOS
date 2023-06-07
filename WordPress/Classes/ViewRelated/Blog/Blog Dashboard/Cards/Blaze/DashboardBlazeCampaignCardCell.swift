@@ -9,21 +9,21 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
     private lazy var buttonShowMoreCampaigns: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
         button.setTitleColor(UIColor.primary, for: .normal)
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.contentHorizontalAlignment = .leading
         button.addTarget(self, action: #selector(buttonShowMoreTapped), for: .touchUpInside)
-
         return button
     }()
 
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
-        stackView.spacing = 16
+        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+        stackView.spacing = 4
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
@@ -83,7 +83,7 @@ private extension DashboardBlazeCampaignCardCell {
     }
 }
 
-private final class DashboardBlazeCampaignCardCellViewModel {
+final class DashboardBlazeCampaignCardCellViewModel {
     let campaign: DashboardBlazeCampaignViewModel
     let totalCampaignCount: Int
     var isButtonShowMoreHidden: Bool { totalCampaignCount < 2 }

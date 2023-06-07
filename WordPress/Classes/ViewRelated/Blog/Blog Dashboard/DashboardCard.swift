@@ -55,9 +55,7 @@ enum DashboardCard: String, CaseIterable {
         case .jetpackBadge:
             return DashboardBadgeCell.self
         case .blaze:
-            #warning("TEMP")
-            return DashboardBlazeCampaignCardCell.self
-//            return DashboardBlazeCardCell.self
+            return DashboardBlazeCardCell.self
         case .domainsDashboardCard:
             return DashboardDomainsCardCell.self
         case .freeToPaidPlansDashboardCard:
