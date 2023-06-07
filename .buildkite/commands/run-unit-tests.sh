@@ -36,6 +36,11 @@ else
   echo "The Unit Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the Buildkite annotation, the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
 fi
-annotate_test_failures "build/results/WordPress.xml"
+
+if [[ $BUILDKITE_BRANCH == trunk ]] || [[ $BUILDKITE_BRANCH == release/* ]]; then
+    annotate_test_failures "build/results/WordPress.xml" --slack "build-and-ship"
+else
+    annotate_test_failures "build/results/WordPress.xml"
+fi
 
 exit $TESTS_EXIT_STATUS

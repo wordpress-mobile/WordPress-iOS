@@ -18,7 +18,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var site: Blog!
     var domainPurchasedCallback: ((String) -> Void)!
-    var domainAddedToCartCallback: (() -> Void)?
+    var domainAddedToCartCallback: ((String) -> Void)?
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
@@ -220,21 +220,34 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
+        let onFailure: () -> () = { [weak self] in
+            self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+        }
+
         switch domainSelectionType {
         case .registerWithPaidPlan:
             pushRegisterDomainDetailsViewController(domain)
         case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            createCart(domain) { [weak self] in
-                self?.presentWebViewForCurrentSite(domainSuggestion: domain)
-                self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
-            }
+            createCart(
+                domain,
+                onSuccess: { [weak self] in
+                    self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure
+            )
         case .purchaseWithPaidPlan:
             setPrimaryButtonLoading(true)
-            createCart(domain) { [weak self] in
-                self?.domainAddedToCartCallback?()
-                self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
-            }
+            createCart(
+                domain,
+                onSuccess: { [weak self] in
+                    self?.domainAddedToCartCallback?(domain.domainName)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure
+            )
         }
     }
 
@@ -258,7 +271,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCart(_ domain: FullyQuotedDomainSuggestion, completion: @escaping () -> ()) {
+    private func createCart(_ domain: FullyQuotedDomainSuggestion,
+                            onSuccess: @escaping () -> (),
+                            onFailure: @escaping () -> ()) {
         guard let siteID = site.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
@@ -269,9 +284,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                                                  domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { _ in
-            completion()
+            onSuccess()
         },
-                                                 failure: { error in })
+                                                 failure: { _ in
+            onFailure()
+        })
     }
 
     static private let checkoutURLPrefix = "https://wordpress.com/checkout"
@@ -360,6 +377,13 @@ extension RegisterDomainSuggestionsViewController {
         static let primaryButtonTitle = NSLocalizedString("Select domain",
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
+
+        static let errorTitle = NSLocalizedString("domains.failure.title",
+                                                  value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
+                                                  comment: "Content show when the domain selection action fails.")
+        static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
+                                                    value: "Dismiss",
+                                                    comment: "Action shown in a bottom notice to dismiss it.")
     }
 
     enum Constants {

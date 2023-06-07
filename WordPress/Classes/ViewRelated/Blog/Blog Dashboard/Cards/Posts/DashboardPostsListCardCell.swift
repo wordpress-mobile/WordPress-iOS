@@ -110,13 +110,9 @@ extension DashboardPostsListCardCell {
     private func addContextMenu(card: DashboardCard, blog: Blog) {
         guard FeatureFlag.personalizeHomeTab.enabled else { return }
 
-        frameView.onEllipsisButtonTap = {
-            BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
-        }
-        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        frameView.ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: [
-            BlogDashboardHelpers.makeHideCardAction(for: card, siteID: blog.dotComID?.intValue ?? 0)
-        ])
+        frameView.addMoreMenu(items: [
+            BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+        ], card: card)
     }
 
     private func configureDraftsList(blog: Blog) {

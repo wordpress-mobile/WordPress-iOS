@@ -78,7 +78,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         }
         WPAnalytics.track(.dashboardCardItemTapped, properties: ["type": DashboardCard.personalize.rawValue], blog: blog)
         let viewController = UIHostingController(rootView: NavigationView {
-            BlogDashboardPersonalizationView(viewModel: .init(service: .init(siteID: siteID)))
+            BlogDashboardPersonalizationView(viewModel: .init(service: .init(siteID: siteID), quickStartType: blog.quickStartType))
         }.navigationViewStyle(.stack)) // .stack is required for iPad
         if UIDevice.isPad() {
             viewController.modalPresentationStyle = .formSheet
