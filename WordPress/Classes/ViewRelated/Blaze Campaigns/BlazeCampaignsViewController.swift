@@ -4,7 +4,7 @@ final class BlazeCampaignsViewController: UIViewController {
 
     // MARK: - Views
 
-    private lazy var dismissButton: UIBarButtonItem = {
+    private lazy var plusButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "plus"),
                                      style: .plain,
                                      target: self,
