@@ -3,6 +3,16 @@
     {
       "filename" : "icon-tumblr.svg",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-tumblr-dark.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

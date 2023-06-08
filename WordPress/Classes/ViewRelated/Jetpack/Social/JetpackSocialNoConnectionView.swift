@@ -6,9 +6,10 @@ struct JetpackSocialNoConnectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12.0) {
-            HStack(spacing: -6.0) {
+            HStack(spacing: -5.0) {
                 iconImage("icon-tumblr")
                 iconImage("icon-facebook")
+                iconImage("icon-twitter")
                 iconImage("icon-linkedin")
             }
             Text(Constants.bodyText)
@@ -40,6 +41,7 @@ struct JetpackSocialNoConnectionView: View {
             .resizable()
             .frame(width: 32.0, height: 32.0)
             .clipShape(Circle())
+            .overlay(Circle().stroke(Color(UIColor.listForeground), lineWidth: 2.0))
     }
 }
 
