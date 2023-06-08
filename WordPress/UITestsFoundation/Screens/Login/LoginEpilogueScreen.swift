@@ -13,7 +13,7 @@ public class LoginEpilogueScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [loginEpilogueTableGetter],
             app: app,
-            waitTimeout: 60
+            waitTimeout: 30
         )
     }
 
@@ -26,10 +26,7 @@ public class LoginEpilogueScreen: ScreenObject {
             firstSite.tap()
         }
 
-//        try dismissQuickStartPromptIfNeeded()
-//        try dismissOnboardingQuestionsPromptIfNeeded()
         try OnboardingQuestionsPromptScreen().skipOnboarding()
-//        try dismissFeatureIntroductionIfNeeded()
         return try MySiteScreen()
     }
 
@@ -39,8 +36,7 @@ public class LoginEpilogueScreen: ScreenObject {
         let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
         firstSite.tap()
 
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
+        try OnboardingQuestionsPromptScreen().skipOnboarding()
         return try MySitesScreen()
     }
 
