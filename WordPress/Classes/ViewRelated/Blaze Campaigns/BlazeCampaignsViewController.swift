@@ -44,7 +44,7 @@ final class BlazeCampaignsViewController: UIViewController {
 
     private func setupNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = dismissButton
+        navigationItem.rightBarButtonItem = plusButton
     }
 
     @objc private func plusButtonTapped() {
