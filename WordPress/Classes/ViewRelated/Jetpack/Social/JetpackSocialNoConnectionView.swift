@@ -12,6 +12,8 @@ struct JetpackSocialNoConnectionView: View {
                 iconImage("icon-twitter")
                 iconImage("icon-linkedin")
             }
+            .accessibilityElement()
+            .accessibilityLabel(Constants.iconGroupAccessibilityLabel)
             Text(Constants.bodyText)
                 .font(.callout)
             HStack {
@@ -85,6 +87,10 @@ private struct Constants {
                                                value: "Connect your profiles",
                                                comment: "Title for the connect button to add social sharing for the Jetpack Social no connection view")
     static let notNowText = NSLocalizedString("social.noconnection.notnow",
-                                               value: "Not now",
-                                               comment: "Title for the not now button to hide the Jetpack Social no connection view")
+                                              value: "Not now",
+                                              comment: "Title for the not now button to hide the Jetpack Social no connection view")
+    static let iconGroupAccessibilityLabel = NSLocalizedString("social.noconnection.icons.accessibility.label",
+                                                               value: "Social media icons",
+                                                               comment: "Accessibility label for the social media icons in the Jetpack Social no connection view")
+
 }
