@@ -40,13 +40,19 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
 
         frameView.setTitle(Strings.cardTitle)
         frameView.onHeaderTap = { [weak self] in
-            self?.didTapHeader()
+            self?.showCampaignList()
         }
     }
 
-    private func didTapHeader() {
+    private func showCampaignList() {
         guard let presentingViewController, let blog else { return }
         BlazeFlowCoordinator.presentBlazeCampaigns(in: presentingViewController, blog: blog)
+    }
+
+    private func makeShowCampaignsMenuAction() -> UIAction {
+        UIAction(title: Strings.viewAllCampaigns, image: UIImage(systemName: "ellipsis.circle")) { [weak self] _ in
+            self?.showCampaignList()
+        }
     }
 
     // MARK: - BlogDashboardCardConfigurable
@@ -56,7 +62,12 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         frameView.addMoreMenu(items: [
-            BlogDashboardHelpers.makeHideCardAction(for: .blaze, blog: blog)
+            UIMenu(options: .displayInline, children: [
+                makeShowCampaignsMenuAction()
+            ]),
+            UIMenu(options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: .blaze, blog: blog)
+            ])
         ], card: .blaze)
 
         let viewModel = DashboardBlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
@@ -67,6 +78,7 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
 private extension DashboardBlazeCampaignCardCell {
     enum Strings {
         static let cardTitle = NSLocalizedString("dashboardCard.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
+        static let viewAllCampaigns = NSLocalizedString("dashboardCard.blazeCampaigns.viewAllCampaigns", value: "View all campaigns", comment: "Title for the View All Campaigns button in the More menu")
     }
 
     enum Constants {
