@@ -58,7 +58,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     private func setupNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = dismissButton
+        navigationItem.rightBarButtonItem = plusButton
     }
 
     private func setupNoResults() {
