@@ -55,6 +55,10 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
         self.blog = blog
         self.presentingViewController = viewController
 
+        frameView.addMoreMenu(items: [
+            BlogDashboardHelpers.makeHideCardAction(for: .blaze, blog: blog)
+        ], card: .blaze)
+
         let viewModel = DashboardBlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
         campaignView.configure(with: viewModel, blog: blog)
     }
