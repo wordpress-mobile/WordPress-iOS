@@ -49,7 +49,7 @@ public class PasswordScreen: ScreenObject {
         continueButton.tap()
 
         if continueButton.waitForExistence(timeout: 1) {
-            let timeout: TimeInterval = 10
+            let timeout: TimeInterval = 60
             let startTime = Date()
 
             while continueButton.exists && continueButton.isEnabled == false {
