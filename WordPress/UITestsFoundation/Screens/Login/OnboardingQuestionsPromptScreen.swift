@@ -25,4 +25,10 @@ public class OnboardingQuestionsPromptScreen: ScreenObject {
     static func isLoaded() -> Bool {
         (try? OnboardingQuestionsPromptScreen().isLoaded) ?? false
     }
+
+    public func skipOnboarding() throws {
+        if skipButton.waitForExistence(timeout: 3) {
+            skipButton.tap()
+        }
+    }
 }

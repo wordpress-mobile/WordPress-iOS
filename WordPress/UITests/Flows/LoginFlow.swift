@@ -29,8 +29,8 @@ class LoginFlow {
             .proceedWithWP(siteUrl: siteUrl)
             .proceedWith(email: email)
             .proceedWithValidPassword()
-        .continueWithSelectedSite()
-        .dismissNotificationAlertIfNeeded()
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
     }
 
     // Login with self-hosted site via Site Address.
