@@ -9,7 +9,7 @@ public class ReaderScreen: ScreenObject {
 
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 // swiftlint:skip:next opening_brace

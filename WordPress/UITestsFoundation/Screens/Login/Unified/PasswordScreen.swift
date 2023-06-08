@@ -48,27 +48,24 @@ public class PasswordScreen: ScreenObject {
         let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
 
-        guard continueButton.waitForExistence(timeout: 1) else {
-            tapSaveButton()
-            return // Exit the function if the button does not exist
-        }
+        if continueButton.waitForExistence(timeout: 1) {
+            let timeout: TimeInterval = 60
+            let startTime = Date()
 
-        let timeout: TimeInterval = 60
-        let startTime = Date()
+            while continueButton.exists && continueButton.isEnabled == false {
+                if Date().timeIntervalSince(startTime) > timeout {
+                    XCTFail("Continue button still disabled!")
+                    break // Exit the loop if the timeout is exceeded
+                }
 
-        while continueButton.exists && continueButton.isEnabled == false {
-            if Date().timeIntervalSince(startTime) > timeout {
-                XCTFail("Continue button still disabled!")
-                break // Exit the loop if the timeout is exceeded
+                RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
             }
-
-            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
         }
 
-        tapSaveButton()
+        tapSavePasswordButton()
     }
 
-    private func tapSaveButton() {
+    private func tapSavePasswordButton() {
         // The Simulator might ask to save the password which, of course, we don't want to do
         if app.buttons["Save Password"].waitForExistence(timeout: 3) {
             // There should be no need to wait for this button to exist since it's part of the same

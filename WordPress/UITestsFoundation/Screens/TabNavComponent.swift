@@ -64,6 +64,7 @@ public class TabNavComponent: ScreenObject {
         return try BlockEditorScreen()
     }
 
+    @discardableResult
     public func goToReaderScreen() throws -> ReaderScreen {
         readerTabButton.tap()
         return try ReaderScreen()
