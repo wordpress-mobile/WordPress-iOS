@@ -88,11 +88,11 @@ final class DashboardBlazeCampaignView: UIView {
 
 private extension DashboardBlazeCampaignView {
     enum Strings {
-        static let impressions = NSLocalizedString("my-sites.blazeCampaigns.impressions", value: "Impressions", comment: "Title for impressions stats view")
-        static let clicks = NSLocalizedString("my-sites.blazeCampaigns.clicks", value: "Clicks", comment: "Title for impressions stats view")
+        static let impressions = NSLocalizedString("dashboardCard.blazeCampaigns.impressions", value: "Impressions", comment: "Title for impressions stats view")
+        static let clicks = NSLocalizedString("dashboardCard.blazeCampaigns.clicks", value: "Clicks", comment: "Title for impressions stats view")
     }
 
-    private struct Constants {
+    enum Constants {
         static let imageSize = CGSize(width: 44, height: 44)
     }
 }

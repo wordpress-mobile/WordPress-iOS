@@ -13,7 +13,7 @@ final class DashboardBlazeCampaignStatusView: UIView {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .semibold)
 
         addSubview(titleLabel)
-        pinSubviewToAllEdges(titleLabel, insets: .init(top: 4, left: 4, bottom: 3, right: 4))
+        pinSubviewToAllEdges(titleLabel, insets: Constants.titleInsets)
     }
 
     required init?(coder: NSCoder) {
@@ -26,7 +26,14 @@ final class DashboardBlazeCampaignStatusView: UIView {
         self.titleLabel.textColor = viewModel.textColor
         self.backgroundColor = viewModel.backgroundColor
         self.layer.masksToBounds = true
-        self.layer.cornerRadius = 4
+        self.layer.cornerRadius = Constants.cornerRadius
+    }
+}
+
+private extension DashboardBlazeCampaignStatusView {
+    enum Constants {
+        static let titleInsets = UIEdgeInsets(top: 4, left: 4, bottom: 3, right: 4)
+        static let cornerRadius: CGFloat = 4
     }
 }
 

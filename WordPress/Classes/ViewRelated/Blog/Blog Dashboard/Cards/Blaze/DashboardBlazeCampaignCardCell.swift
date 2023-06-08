@@ -1,28 +1,14 @@
 import UIKit
-import SwiftUI
 import WordPressKit
 
 final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
     private let frameView = BlogDashboardCardFrameView()
     private let campaignView = DashboardBlazeCampaignView()
 
-    private lazy var buttonShowMoreCampaigns: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
-        button.setTitleColor(UIColor.primary, for: .normal)
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.contentHorizontalAlignment = .leading
-        button.addTarget(self, action: #selector(buttonShowMoreTapped), for: .touchUpInside)
-        return button
-    }()
-
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+        stackView.layoutMargins = Constants.contentInsets
         stackView.spacing = 4
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
@@ -51,7 +37,16 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
 
         frameView.add(subview: contentStackView)
         contentStackView.addArrangedSubview(campaignView)
-        contentStackView.addArrangedSubview(buttonShowMoreCampaigns)
+
+        frameView.setTitle(Strings.cardTitle)
+        frameView.onHeaderTap = { [weak self] in
+            self?.didTapHeader()
+        }
+    }
+
+    private func didTapHeader() {
+        guard let presentingViewController, let blog else { return }
+        BlazeFlowCoordinator.presentBlazeCampaigns(in: presentingViewController, blog: blog)
     }
 
     // MARK: - BlogDashboardCardConfigurable
@@ -60,49 +55,18 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
         self.blog = blog
         self.presentingViewController = viewController
 
-
-        frameView.setTitle(Strings.cardTitle)
-
-        let viewModel = DashboardBlazeCampaignCardCellViewModel(response: mockResponse)!
-        campaignView.configure(with: viewModel.campaign, blog: blog)
-        buttonShowMoreCampaigns.isHidden = viewModel.isButtonShowMoreHidden
-        buttonShowMoreCampaigns.setTitle(viewModel.buttonShowMoreTitle, for: .normal)
-    }
-
-    // MARK: - Actions
-
-    @objc private func buttonShowMoreTapped() {
-        // TODO: Show campaign list
+        let viewModel = DashboardBlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
+        campaignView.configure(with: viewModel, blog: blog)
     }
 }
 
 private extension DashboardBlazeCampaignCardCell {
     enum Strings {
-        static let cardTitle = NSLocalizedString("my-sites.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
-
-        static func buttonShowMoreText(forCampaignCount count: Int) -> String {
-            let format = count == 1 ? showMoreCampaignsOne : showMoreCampaignsTwoOrMore
-            return String(format: "+ \(format)", count)
-        }
-
-        static let showMoreCampaignsOne = NSLocalizedString("my-sites.blazeCampaigns.showMoreCampaignsOne", value: "%d active campaign", comment: "Title for button that shows more campaigns. Takes the number of campaigns as a parameter.")
-        static let showMoreCampaignsTwoOrMore = NSLocalizedString("my-sites.blazeCampaigns.showMoreCampaignsTwoOrMore", value: "%d active campaigns", comment: "Title for button that shows more campaigns. Takes the number of campaigns as a parameter.")
+        static let cardTitle = NSLocalizedString("dashboardCard.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
     }
-}
 
-final class DashboardBlazeCampaignCardCellViewModel {
-    let campaign: DashboardBlazeCampaignViewModel
-    let totalCampaignCount: Int
-    var isButtonShowMoreHidden: Bool { totalCampaignCount < 2 }
-    let buttonShowMoreTitle: String
-
-    init?(response: BlazeCampaignsSearchResponse) {
-        guard let campaign = response.campaigns?.first else {
-            return nil
-        }
-        self.campaign = DashboardBlazeCampaignViewModel(campaign: campaign)
-        self.totalCampaignCount = response.totalItems ?? 1
-        self.buttonShowMoreTitle = DashboardBlazeCampaignCardCell.Strings.buttonShowMoreText(forCampaignCount: totalCampaignCount - 1)
+    enum Constants {
+        static let contentInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
     }
 }
 
