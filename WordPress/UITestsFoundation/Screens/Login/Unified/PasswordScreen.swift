@@ -52,7 +52,7 @@ public class PasswordScreen: ScreenObject {
             let timeout: TimeInterval = 10
             let startTime = Date()
 
-            while continueButton.isEnabled == false {
+            while continueButton.exists && continueButton.isEnabled == false {
                 if Date().timeIntervalSince(startTime) > timeout {
                     XCTFail("Continue button still disabled!")
                 }
