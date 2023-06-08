@@ -4,11 +4,11 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Views
 
-    private lazy var dismissButton: UIBarButtonItem = {
+    private lazy var plusButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "plus"),
                                      style: .plain,
                                      target: self,
-                                     action: #selector(promotePostButtonTapped))
+                                     action: #selector(plusButtonTapped))
         return button
     }()
 
@@ -71,7 +71,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         // FIXME: Call BlazeService
     }
 
-    @objc private func promotePostButtonTapped() {
+    @objc private func plusButtonTapped() {
         // TODO: Track event
         BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
