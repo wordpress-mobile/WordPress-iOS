@@ -96,15 +96,15 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
         hideNoResults()
         noResultsViewController.hideImageView()
         configureAndDisplayNoResults(on: view,
-                                     title: NoResults.emptyTitle,
-                                     subtitle: NoResults.emptySubtitle,
+                                     title: Strings.NoResults.emptyTitle,
+                                     subtitle: Strings.NoResults.emptySubtitle,
                                      buttonTitle: Strings.promoteButtonTitle)
     }
 
     private func showLoadingView() {
         hideNoResults()
         configureAndDisplayNoResults(on: view,
-                                     title: NoResults.loadingTitle,
+                                     title: Strings.NoResults.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
@@ -115,16 +115,16 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
 
 // MARK: - Constants
 
-extension BlazeCampaignsViewController {
+private extension BlazeCampaignsViewController {
 
-    private enum Strings {
+    enum Strings {
         static let navigationTitle = NSLocalizedString("blaze.campaigns.title", value: "Blaze Campaigns", comment: "Title for the screen that allows users to manage their Blaze campaigns.")
         static let promoteButtonTitle = NSLocalizedString("blaze.campaigns.promote.button.title", value: "Promote", comment: "Button title for the button that shows the Blaze flow when tapped.")
-    }
 
-    private enum NoResults {
-        static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
-        static let emptyTitle = NSLocalizedString("blaze.campaigns.empty.title", value: "You have no campaigns", comment: "Title displayed when there are no Blaze campaigns to display.")
-        static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click promote to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
+        enum NoResults {
+            static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
+            static let emptyTitle = NSLocalizedString("blaze.campaigns.empty.title", value: "You have no campaigns", comment: "Title displayed when there are no Blaze campaigns to display.")
+            static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click promote to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
+        }
     }
 }
