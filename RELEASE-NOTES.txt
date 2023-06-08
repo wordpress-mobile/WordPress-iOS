@@ -3,6 +3,7 @@
 * [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
 * [**] [Jetpack-only] Add a "Personalize Home Tab" button to the bottom of the My Site Dashboard that opens a new screen where you can customize which dashboard cards are visible. You can now also hide any of the dashboard cards directly from My Site Dashboard using the "more" menu. [#20296]
 * [*] [Jetpack-only] Domains selection: Show error message when selecting unsupported domains. [#20786]
+* [***] [internal] Allow users to purchase a WP.com plan (Personal or Premium) and in doing so get a domain free for the first year. Entry point is new dashboard card. []
 
 22.5
 -----
