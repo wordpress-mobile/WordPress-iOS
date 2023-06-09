@@ -23,13 +23,15 @@ class ReaderTests: XCTestCase {
     let commentContent = "Test comment."
 
     func testViewPost() throws {
-        try ReaderScreen().openLastPost()
-        XCTAssert(readerScreen.postContentEquals(expectedPostContent))
+        try ReaderScreen()
+            .openLastPost()
+            .verifyPostContentEquals(expectedPostContent)
     }
 
     func testViewPostInSafari() throws {
-        try ReaderScreen().openLastPostInSafari()
-        XCTAssert(readerScreen.postContentEquals(expectedPostContent))
+        try ReaderScreen()
+            .openLastPostInSafari()
+            .verifyPostContentEquals(expectedPostContent)
     }
 
     func testAddCommentToPost() throws {
