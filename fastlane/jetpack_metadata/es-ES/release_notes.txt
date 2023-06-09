@@ -1,0 +1,13 @@
+Si tu sitio utiliza un tema basado en bloques, ahora puedes editar la página de inicio del sitio directamente desde la Lista de páginas. Emoji de las manos levantadas.
+
+Hemos corregido un problema relacionado con la configuración de enlaces para abrir en una pestaña nueva. Al escribir texto después de este enlace, ahora puedes deshacer y rehacer el texto sin ningún problema.
+
+Ahora, los ajustes de detalles visibles están deshabilitados para los videos de VideoPress que no pertenezcan a tu sitio.
+
+La opción de tocar para editar ahora está disponible para todos los tipos de bloques anidados. Ya no hay que tocar en todos los niveles de anidado para llegar a un contenido concreto.
+
+Hablando de anidado, hemos corregido un error por el que la fusión de un elemento de lista en un párrafo quitaba todo el texto anidado de este elemento.
+
+Como estábamos corrigiendo errores, seguimos haciéndolo y también solucionamos un par de ellos en el lector. Al filtrar los temas que sigues, ahora el texto en idiomas no latinos (como el árabe) se ve correctamente. Además, las acciones Denunciar y Bloquear vuelven a estar donde debían en el menú de entradas.
+
+Para terminar, hemos actualizado el diseño de las celdas deshabilitadas, por lo que es más fácil reconocer cuándo una celda no está en uso.
