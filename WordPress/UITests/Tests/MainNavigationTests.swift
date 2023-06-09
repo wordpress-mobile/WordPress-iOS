@@ -34,9 +34,7 @@ class MainNavigationTests: XCTestCase {
    func testTabBarNavigation() throws {
        XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
-       try MySiteScreen()
-           .tabBar.goToReaderScreen()
-
+       try TabNavComponent().goToReaderScreen()
        XCTAssert(ReaderScreen.isLoaded(), "Reader screen isn't loaded.")
 
        // We may get a notifications fancy alert when loading the reader for the first time
@@ -44,8 +42,8 @@ class MainNavigationTests: XCTestCase {
            alert.cancelAlert()
        }
 
-       try MySiteScreen()
-           .tabBar.goToNotificationsScreen()
+       try TabNavComponent()
+           .goToNotificationsScreen()
            .dismissNotificationAlertIfNeeded()
 
        XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in
