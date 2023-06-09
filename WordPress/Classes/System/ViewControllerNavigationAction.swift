@@ -1,6 +1,9 @@
 import Foundation
 
-/// Encapsulates a navigation action and can be chained with other navigation actions.
+/// `ViewControllerNavigationAction` encapsulates a navigation action performed on a view controller.
+/// It includes the capability to chain these actions together to perform a sequence of navigations.
+/// This sequence is internally represented as a linked list where each node represents a navigation action.
+/// The `then` method is used to chain navigation actions, and the `start` method initiates the sequence.
 final class ViewControllerNavigationAction {
 
     /// Reference to the first navigation action. It also represents the first node in a Linked List.
@@ -73,6 +76,8 @@ final class ViewControllerNavigationAction {
 
 extension ViewControllerNavigationAction {
 
+    /// `Context` provides the necessary data for a navigation action, including whether
+    /// the navigation is animated and the view controller initiating the navigation.
     struct Context {
 
         let animated: Bool

@@ -12,6 +12,9 @@ extension RootViewPresenter {
 
     // MARK: - Navigators
 
+    /// Creates a navigation action to navigate to the "Me" scene.
+    ///
+    /// The "Me" scene's navigation controller is popped to the root in case the "Me" scene was already presented.
     private func navigateToMeScene() -> ViewControllerNavigationAction {
         return .init { [weak self] context, completion in
             guard let self else {
@@ -24,6 +27,7 @@ extension RootViewPresenter {
         }
     }
 
+    /// Creates a navigation action to navigate to the "App Settings" from the "Me" scene.
     private func navigateToAppSettings() -> ViewControllerNavigationAction {
         return .init { context, completion in
             let me: MeViewController = try context.presentingViewController()
@@ -35,6 +39,7 @@ extension RootViewPresenter {
         }
     }
 
+    /// Creates a navigation action to navigate to the "Privacy Settings" from the "App Settings" scene.
     private func navigateToPrivacySettings() -> ViewControllerNavigationAction {
         return .init { context, completion in
             let appSettings: AppSettingsViewController = try context.presentingViewController()
