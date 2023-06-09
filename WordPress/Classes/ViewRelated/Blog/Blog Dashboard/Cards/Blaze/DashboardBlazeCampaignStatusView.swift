@@ -49,17 +49,41 @@ struct DashboardBlazeCampaignViewStatusViewModel {
 
         switch status {
         case .created, .processing, .scheduled, .canceled:
-            self.textColor = UIColor(fromHex: 0x4F3500)
-            self.backgroundColor = UIColor(fromHex: 0xF5E6B3)
+            self.textColor = UIColor(
+                light: UIColor(fromHex: 0x4F3500),
+                dark: UIColor(fromHex: 0xDEB100)
+            )
+            self.backgroundColor = UIColor(
+                light: UIColor(fromHex: 0xF5E6B3),
+                dark: UIColor(fromHex: 0x332200)
+            )
         case .rejected:
-            self.textColor = UIColor(fromHex: 0x8A2424)
-            self.backgroundColor = UIColor(fromHex: 0xFACFD2)
+            self.textColor = UIColor(
+                light: UIColor(fromHex: 0x8A2424),
+                dark: UIColor(fromHex: 0xF86368)
+            )
+            self.backgroundColor = UIColor(
+                light: UIColor(fromHex: 0xFACFD2),
+                dark: UIColor(fromHex: 0x451313)
+            )
         case .active, .approved:
-            self.textColor = UIColor(fromHex: 0x00450C)
-            self.backgroundColor = UIColor(fromHex: 0xB8E6BF)
+            self.textColor = UIColor(
+                light: UIColor(fromHex: 0x00450C),
+                dark: UIColor(fromHex: 0x00BA37)
+            )
+            self.backgroundColor = UIColor(
+                light: UIColor(fromHex: 0xB8E6BF),
+                dark: UIColor(fromHex: 0x003008)
+            )
         case .finished:
-            self.textColor = UIColor(fromHex: 0x02395C)
-            self.backgroundColor = UIColor(fromHex: 0xBBE0FA)
+            self.textColor = UIColor(
+                light: UIColor(fromHex: 0x02395C),
+                dark: UIColor(fromHex: 0x399CE3)
+            )
+            self.backgroundColor = UIColor(
+                light: UIColor(fromHex: 0xBBE0FA),
+                dark: UIColor(fromHex: 0x01283D)
+            )
         case .unknown:
             self.textColor = .label
             self.backgroundColor = .secondarySystemBackground
