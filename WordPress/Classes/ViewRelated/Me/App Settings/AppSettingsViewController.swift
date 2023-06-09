@@ -136,9 +136,13 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - Navigation
 
-    func navigateToPrivacySettings(animated: Bool = true) {
+    func navigateToPrivacySettings(animated: Bool = true, completion: ((PrivacySettingsViewController) -> Void)? = nil) {
         let destination = PrivacySettingsViewController(style: .insetGrouped)
-        self.navigationController?.pushViewController(destination, animated: animated)
+        CATransaction.perform {
+            self.navigationController?.pushViewController(destination, animated: animated)
+        } completion: {
+            completion?(destination)
+        }
     }
 
     // MARK: - Actions
