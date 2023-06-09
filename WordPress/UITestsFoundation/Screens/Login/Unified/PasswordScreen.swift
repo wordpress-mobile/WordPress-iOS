@@ -59,6 +59,10 @@ public class PasswordScreen: ScreenObject {
                 }
 
                 RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+
+                if !(continueButton.exists && continueButton.isEnabled == false) {
+                    break // Exit the loop if the condition is no longer met
+                }
             }
         }
 
