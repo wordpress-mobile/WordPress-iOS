@@ -17,7 +17,7 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
         button.contentHorizontalAlignment = .leading
         button.setTitle(Strings.createCampaignButton, for: .normal)
         button.addTarget(self, action: #selector(buttonCreateCampaignTapped), for: .touchUpInside)
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitleColor(UIColor.primary, for: .normal)
         button.contentEdgeInsets = Constants.createCampaignInsets
