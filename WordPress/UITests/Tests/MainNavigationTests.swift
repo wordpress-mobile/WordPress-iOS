@@ -8,7 +8,7 @@ class MainNavigationTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        mySiteScreen = try TabNavComponent()
+        try TabNavComponent()
             .goToMySiteScreen()
             .goToMenu()
     }
@@ -25,7 +25,7 @@ class MainNavigationTests: XCTestCase {
     func testLoadsPeopleScreen() throws {
         XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
-        try mySiteScreen
+        try MySiteScreen()
             .goToPeople()
 
         XCTAssertTrue(PeopleScreen.isLoaded(), "PeopleScreen screen isn't loaded.")
@@ -34,7 +34,7 @@ class MainNavigationTests: XCTestCase {
    func testTabBarNavigation() throws {
        XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
-       _ = try mySiteScreen
+       try MySiteScreen()
            .tabBar.goToReaderScreen()
 
        XCTAssert(ReaderScreen.isLoaded(), "Reader screen isn't loaded.")
@@ -44,7 +44,7 @@ class MainNavigationTests: XCTestCase {
            alert.cancelAlert()
        }
 
-       _ = try mySiteScreen
+       try MySiteScreen()
            .tabBar.goToNotificationsScreen()
            .dismissNotificationAlertIfNeeded()
 
