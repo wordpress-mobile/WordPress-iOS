@@ -1,0 +1,9 @@
+Siteniz blok tabanlı bir tema kullanıyorsa sitenizin ana sayfasını artık doğrudan Sayfa listesinden düzenleyebilirsiniz. Eller havaya emojisi.
+
+Bağlantıları yeni bir sekmede açılacak şekilde ayarlamayla ilgili bir sorunu çözdük. Bu bağlantıdan sonra metin yazarken artık metni herhangi bir sorun yaşamadan geri alabilir veya yineleyebilirsiniz.
+
+Düzenlemek için dokunun seçeneği, artık tüm iç içe blok türleri için kullanılabiliyor. Artık spesifik bir içerik parçasına ulaşmak için her iç içe seviyeye dokunarak ilerlemeniz gerekmiyor.
+
+İç içe yerleşimle ilgili olarak, bir liste öğesi bir paragrafla birleştirildiğinde bu liste öğesindeki tüm iç içe metinlerin kaldırılmasına neden olan bir hatayı da düzelttik.
+
+Son olarak, devre dışı bırakılmış hücrelerin tasarımını güncelledik. Böylece hücrenin kullanımda olmadığını anlamak artık daha kolay.

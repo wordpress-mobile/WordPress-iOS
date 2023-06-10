@@ -1,9 +1,9 @@
 Wenn deine Website ein blockbasiertes Theme verwendet, kannst du die Startseite deiner Website jetzt direkt über die Seitenliste bearbeiten. Emoji mit zwei erhobenen Händen.
 
-Wir haben ein Problem behoben, das auftrat, wenn festgelegt wird, dass Links in einem neuen Tab geöffnet werden sollen. Wenn du nach diesem Link Text eingibst, kannst du den Text jetzt rückgängig machen und wiederherstellen, ohne dass Probleme auftreten.
+Wir haben ein Problem behoben, das auftrat, wenn festgelegt wurde, dass Links in einem neuen Tab geöffnet werden sollen. Wenn du nach diesem Link Text eingibst, kannst du die Texteingabe jetzt rückgängig machen und den Text wiederherstellen, ohne dass Probleme auftreten.
 
-Alle verschachtelten Blöcke können jetzt durch Antippen bearbeitet werden – du musst nicht mehr durch alle Verschachtelungsebenen tippen, um einen bestimmten Inhalt zu erreichen.
+Alle verschachtelten Blocktypen können jetzt durch Antippen bearbeitet werden – du musst nicht mehr durch alle Verschachtelungsebenen tippen, um einen bestimmten Inhalt zu erreichen.
 
-Apropos Verschachteln: Wir haben außerdem einen Bug behoben, durch den der verschachtelte Text zu einem Listenelement entfernt wurde, wenn dieses mit einem Absatz zusammengeführt wurde.
+Apropos Verschachteln: Wir haben außerdem einen Fehler behoben, durch den der verschachtelte Text zu einem Listenelement entfernt wurde, wenn dieses mit einem Absatz zusammengeführt wurde.
 
 Und zu guter Letzt haben wir das Design von deaktivierten Zellen verändert, damit leichter zu erkennen ist, wenn eine Zelle nicht verwendet wird.

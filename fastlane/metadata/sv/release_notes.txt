@@ -1,0 +1,9 @@
+Om din webbplats använder ett blockbaserat tema kan du nu redigera webbplatsens startsida direkt från listan Sidor. Emoji med upphöjda händer.
+
+Vi har löst ett problem rörande att ställa in länkar så att de öppnas på en ny flik. När du skriver text efter den här länken kan du nu ångra och skriva om texten utan problem.
+
+Tryck för att redigera är nu tillgängligt för alla inbäddade blocktyper – du behöver inte längre trycka dig igenom varje inbäddningsnivå för att komma till en specifik del innehåll.
+
+På tal om inbäddning, vi har även åtgärdat en bugg som gjorde att sammanslagning av ett listobjekt med ett stycke tog bort all inbäddad text för det aktuella listobjektet.
+
+Slutligen har vi även uppdaterat designen för inaktiverade celler, så att det är lättare att se när en cell inte används.
