@@ -1,3 +1,7 @@
+22.7
+-----
+
+
 22.6
 -----
 * [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
