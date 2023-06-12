@@ -2,8 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class ReaderTests: XCTestCase {
-    private var readerScreen: ReaderScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 

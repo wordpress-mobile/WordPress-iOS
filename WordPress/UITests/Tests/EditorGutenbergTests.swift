@@ -2,8 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
-    private var editorScreen: BlockEditorScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
