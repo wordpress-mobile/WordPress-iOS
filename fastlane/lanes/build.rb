@@ -102,6 +102,8 @@ platform :ios do
     # Only run Jetpack UI tests in parallel.
     # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
     parallel_testing_value = options[:name].include?('Jetpack')
+    # Parallelism disabled to debug UI tests crashes seen in CI
+    parallel_testing_value = false
 
     run_tests(
       workspace: WORKSPACE_PATH,
