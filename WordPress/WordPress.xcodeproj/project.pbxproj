@@ -25954,7 +25954,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackStatsWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackStatsWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Stats Widget";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Jetpack iOS Development Stats Widget";
@@ -26010,9 +26010,9 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackStatsWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackStatsWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackStatsWidgets";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.jetpack.JetpackStatsWidgets";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgets-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -26170,7 +26170,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Jetpack iOS Development Intents";
 				SKIP_INSTALL = YES;
@@ -26223,9 +26223,9 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackIntents";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.jetpack.JetpackIntents";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressIntents/Supporting Files/WordPressIntents-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -27563,7 +27563,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackShare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Share Extension";
 				SKIP_INSTALL = YES;
@@ -27632,9 +27632,9 @@
 					"$(inherited)",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackShare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackShare";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.jetpack.JetpackShare";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -27825,7 +27825,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackDraftAction;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackDraftAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "03b7c1c5-4846-447e-a75c-4005a8e52a68";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Draft Action Extensions";
@@ -27881,10 +27881,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackDraftAction;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackDraftAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3dd880ae-7e5a-4858-ab4e-6e482e856041";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackDraftAction";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.jetpack.JetpackDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -28040,7 +28040,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Notification Service Ext.";
 				SKIP_INSTALL = YES;
@@ -28090,9 +28090,9 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -29243,7 +29243,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -29291,7 +29291,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.JetpackUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -29336,7 +29336,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.JetpackUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Jetpack;
@@ -29379,7 +29379,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha.JetpackUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Jetpack;
@@ -29643,7 +29643,7 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG -D JETPACK";
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development";
@@ -29711,10 +29711,10 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D JETPACK";
-				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.jetpack";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;

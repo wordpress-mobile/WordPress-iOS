@@ -99,5 +99,5 @@ extension ScreenObject {
 
 extension XCUIApplication {
 
-    static let jetpack = XCUIApplication(bundleIdentifier: "com.automattic.jetpack")
+    static let jetpack = XCUIApplication(bundleIdentifier: "com.jetpack")
 }
