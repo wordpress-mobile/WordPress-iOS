@@ -19,22 +19,34 @@ struct SiteSettingsView: View {
 
     var body: some View {
         List {
-            Section(header: Text(Strings.Sections.general), content: {
-                siteTitleRow
-            })
+            sections
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(Strings.title)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if presentationMode.wrappedValue.isPresented {
-                    closeButton
-                }
-            }
-        }
         .onReceive(viewModel.onDismissableError) {
             SVProgressHUD.showDismissibleError(withStatus: $0)
+        }
+        .backport.refreshable {
+            await viewModel.refresh()
+        }
+        .onAppear {
+            Task { await viewModel.refresh() }
+        }
+        .navigationTitle(Strings.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { toolbar }
+    }
+
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            if presentationMode.wrappedValue.isPresented {
+                closeButton
+            }
+        }
+    }
+
+    private var sections: some View {
+        Section(header: Text(Strings.Sections.general)) {
+            siteTitleRow
         }
     }
 

@@ -13,6 +13,17 @@ final class SiteSettingsViewModel: ObservableObject {
         self.service = BlogService(coreDataStack: ContextManager.shared)
     }
 
+    func refresh() async -> Void {
+        await withUnsafeContinuation { continuation in
+            service.syncSettings(for: blog, success: {
+                continuation.resume()
+            }, failure: { error in
+                continuation.resume()
+                DDLogError("Error while refreshing blog settings: \(error)")
+            })
+        }
+    }
+
     func updateSiteTitle(_ value: String) {
         guard value != blog.settings?.name else { return }
         blog.settings?.name = value

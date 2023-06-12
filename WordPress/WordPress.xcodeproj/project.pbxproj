@@ -350,6 +350,8 @@
 		0C60DF7A2A377C3800509C91 /* SiteSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DF782A377C3800509C91 /* SiteSettingsView.swift */; };
 		0C60DF7E2A37C90200509C91 /* SiteSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DF7D2A37C90200509C91 /* SiteSettingsViewModel.swift */; };
 		0C60DF7F2A37C90200509C91 /* SiteSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DF7D2A37C90200509C91 /* SiteSettingsViewModel.swift */; };
+		0C60DF812A37CFED00509C91 /* SwiftUI+Backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */; };
+		0C60DF822A37CFED00509C91 /* SwiftUI+Backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */; };
 		0CB4056B29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056C29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056E29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */; };
@@ -6060,6 +6062,7 @@
 		0C391E632A312DB20040EA91 /* DashboardBlazeCampaignViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignViewModelTests.swift; sourceTree = "<group>"; };
 		0C60DF782A377C3800509C91 /* SiteSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSettingsView.swift; sourceTree = "<group>"; };
 		0C60DF7D2A37C90200509C91 /* SiteSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSettingsViewModel.swift; sourceTree = "<group>"; };
+		0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Backport.swift"; sourceTree = "<group>"; };
 		0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationService.swift; sourceTree = "<group>"; };
 		0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationServiceTests.swift; sourceTree = "<group>"; };
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
@@ -15241,6 +15244,7 @@
 				C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */,
 				C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */,
 				F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */,
+				0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -22333,6 +22337,7 @@
 				176CE91627FB44C100F1E32B /* StatsBaseCell.swift in Sources */,
 				E1C2260723901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
+				0C60DF812A37CFED00509C91 /* SwiftUI+Backport.swift in Sources */,
 				D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */,
 				3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
@@ -24329,6 +24334,7 @@
 				FABB226C2602FC2C00C8785C /* ParentPageSettingsViewController.swift in Sources */,
 				FABB226D2602FC2C00C8785C /* Queue.swift in Sources */,
 				FABB226E2602FC2C00C8785C /* SwitchTableViewCell.swift in Sources */,
+				0C60DF822A37CFED00509C91 /* SwiftUI+Backport.swift in Sources */,
 				3FBB2D2C27FB6CB200C57BBF /* SiteNameViewController.swift in Sources */,
 				17171375265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift in Sources */,
 				FABB226F2602FC2C00C8785C /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
