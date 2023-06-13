@@ -67,7 +67,8 @@ struct SiteSettingsView: View {
         }, content: {
             SettingsCell(
                 title: Strings.General.siteTitle,
-                value: settings.name ?? Strings.General.siteTitlePlaceholder
+                value: settings.name,
+                placeholder: Strings.General.siteTitlePlaceholder
             )
         })
     }
@@ -82,15 +83,12 @@ struct SiteSettingsView: View {
             )
             .navigationTitle(Strings.General.tagline)
         }, content: {
-            SettingsCell(
-                title: Strings.General.tagline,
-                value: settings.tagline ?? Strings.General.taglinePlaceholder
-            )
+            SettingsCell(title: Strings.General.tagline, value: settings.tagline)
         })
     }
 
     private var addressRow: some View {
-        SettingsCell(title: Strings.General.address, value: blog.url ?? "")
+        SettingsCell(title: Strings.General.address, value: blog.url)
             .contextMenu {
                 Button(Strings.General.copyAddress) {
                     UIPasteboard.general.url = blog.url.flatMap(URL.init)
@@ -123,14 +121,15 @@ struct SiteSettingsView: View {
 
 private struct SettingsCell: View {
     let title: String
-    let value: String
+    let value: String?
+    var placeholder: String?
 
     var body: some View {
         HStack {
             Text(title)
                 .layoutPriority(1)
             Spacer()
-            Text(value)
+            Text(value ?? (placeholder ?? ""))
                 .foregroundColor(.secondary)
         }
         .lineLimit(1)
