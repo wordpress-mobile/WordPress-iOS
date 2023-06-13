@@ -16,7 +16,8 @@ extension XCTestCase {
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
 
         if crashOnCoreDataConcurrencyIssues {
-            app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
+            // FIXME: Disabled to see if it's the cause of crashes in CI
+//            app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
         }
 
         if removeBeforeLaunching {
