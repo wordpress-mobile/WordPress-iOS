@@ -1,9 +1,9 @@
 import Foundation
 
 extension BlogService {
-    @objc func unscheduleBloggingReminders(for blog: Blog) {
+    @objc func unscheduleBloggingReminders(for blog: Blog, context: NSManagedObjectContext) {
         do {
-            let scheduler = try ReminderScheduleCoordinator()
+            let scheduler = try ReminderScheduleCoordinator(customContext: context)
             scheduler.schedule(.none, for: blog, completion: { _ in })
             // We're currently not propagating success / failure here, as it's
             // it's only used when removing blogs or accounts, and there's

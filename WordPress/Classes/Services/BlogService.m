@@ -377,12 +377,11 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
-    [self unscheduleBloggingRemindersFor:blog];
-
     WPAccount *account = blog.account;
 
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         Blog *blogInContext = [context existingObjectWithID:blog.objectID error:nil];
+        [self unscheduleBloggingRemindersFor:blogInContext context:context];
         [context deleteObject:blogInContext];
     }];
 
@@ -438,7 +437,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     if ([toDelete count] > 0) {
         for (Blog *blog in account.blogs) {
             if ([toDelete containsObject:blog.dotComID]) {
-                [self unscheduleBloggingRemindersFor:blog];
+                [self unscheduleBloggingRemindersFor:blog context:context];
                 // Consider switching this to a call to removeBlog in the future
                 // to consolidate behaviour @frosty
                 [context deleteObject:blog];
