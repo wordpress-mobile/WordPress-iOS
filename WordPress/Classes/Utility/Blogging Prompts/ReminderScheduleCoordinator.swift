@@ -39,6 +39,12 @@ class ReminderScheduleCoordinator {
                   bloggingPromptsServiceFactory: bloggingPromptsServiceFactory)
     }
 
+    convenience init(customContext: NSManagedObjectContext) throws {
+        let contextManager = ContextManager(customContext: customContext)
+        let bloggingPromptsServiceFactory = BloggingPromptsServiceFactory(contextManager: contextManager)
+        try self.init(bloggingPromptsServiceFactory: bloggingPromptsServiceFactory)
+    }
+
     /// Returns the user's reminder schedule for the given `blog`, based on the current reminder type.
     ///
     /// - Parameter blog: The blog associated with the reminders.
