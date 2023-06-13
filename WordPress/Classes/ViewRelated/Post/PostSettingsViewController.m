@@ -567,7 +567,7 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     }
 
-    return cell;
+    return cell ?: [UITableViewCell new];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
