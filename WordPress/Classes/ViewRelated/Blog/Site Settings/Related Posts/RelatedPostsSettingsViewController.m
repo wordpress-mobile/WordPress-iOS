@@ -153,7 +153,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         case RelatedPostsSettingsSectionCount:
         break;
     }
-    return nil;
+    return [UITableViewCell new];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForOptionsRow:(RelatedPostsSettingsOptions)row
