@@ -52,6 +52,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     private let modelName: String
     private let storeURL: URL
     private let persistentContainer: NSPersistentContainer
+    private let customContext: NSManagedObjectContext?
 
     /// A serial queue used to ensure there is only one writing operation at a time.
     ///
@@ -62,11 +63,15 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
     @objc
     public var mainContext: NSManagedObjectContext {
-        persistentContainer.viewContext
+        customContext ?? persistentContainer.viewContext
     }
 
     convenience override init() {
         self.init(modelName: ContextManagerModelNameCurrent, store: Self.localDatabasePath)
+    }
+
+    convenience init(customContext: NSManagedObjectContext?) {
+        self.init(modelName: ContextManagerModelNameCurrent, store: Self.localDatabasePath, customContext: customContext)
     }
 
     /// Create a ContextManager instance with given model name and database location.
@@ -78,7 +83,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     ///         Use ContextManagerModelNameCurrent for current version, or
     ///         "WordPress <version>" for specific version.
     ///   - store: Database location. Use `ContextManager.inMemoryStoreURL` to create an in-memory database.
-    init(modelName: String, store storeURL: URL) {
+    init(modelName: String, store storeURL: URL, customContext: NSManagedObjectContext? = nil) {
         assert(modelName == ContextManagerModelNameCurrent || modelName.hasPrefix("WordPress "))
         assert(storeURL.isFileURL)
 
@@ -88,6 +93,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         self.writerQueue = OperationQueue()
         self.writerQueue.name = "org.wordpress.CoreDataStack.writer"
         self.writerQueue.maxConcurrentOperationCount = 1
+        self.customContext = customContext
 
         super.init()
 
