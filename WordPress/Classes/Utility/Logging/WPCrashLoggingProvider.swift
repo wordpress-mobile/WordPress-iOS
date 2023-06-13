@@ -48,12 +48,11 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     }
 
     var currentUser: TracksUser? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
-            return nil
+        return ContextManager.shared.performQuery { context -> TracksUser? in
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+                return nil
+            }
+            return TracksUser(userID: account.userID.stringValue, email: account.email, username: account.username)
         }
-
-        return TracksUser(userID: account.userID.stringValue, email: account.email, username: account.username)
     }
 }
