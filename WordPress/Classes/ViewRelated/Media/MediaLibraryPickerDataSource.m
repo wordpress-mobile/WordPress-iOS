@@ -69,12 +69,6 @@
     return self;
 }
 
-
-- (instancetype)init
-{
-    return [self initWithBlog:nil];
-}
-
 #pragma mark - WPMediaCollectionDataSource
 
 - (void)searchFor:(NSString *)searchText
