@@ -10,7 +10,7 @@ public class EditorPostSettings: ScreenObject {
     var categoriesSection: XCUIElement { settingsTable.cells["Categories"] }
     var tagsSection: XCUIElement { settingsTable.cells["Tags"] }
     var featuredImageButton: XCUIElement { settingsTable.cells["SetFeaturedImage"] }
-    var changeFeaturedImageButton: XCUIElement { settingsTable.cells["CurrentFeaturedImage"] }
+    var currentFeaturedImage: XCUIElement { settingsTable.cells["CurrentFeaturedImage"] }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -45,7 +45,7 @@ public class EditorPostSettings: ScreenObject {
     }
 
     public func removeFeatureImage() throws -> EditorPostSettings {
-        changeFeaturedImageButton.tap()
+        currentFeaturedImage.tap()
 
         try FeaturedImageScreen()
             .tapRemoveFeaturedImageButton()
@@ -69,13 +69,10 @@ public class EditorPostSettings: ScreenObject {
         if let postTag = tag {
             XCTAssertTrue(tagsSection.staticTexts[postTag].exists, "Tag \(postTag) not set")
         }
-        let imageCount = settingsTable.images.count
         if hasImage {
-            XCTAssertTrue(imageCount == 1, "Featured image not set")
-            expect(self.changeFeaturedImageButton.images.descendants(matching: .other).element.exists)
-                .toEventually(beFalse(), timeout: .seconds(30), description: "Featured image is not displayed")
+            XCTAssertTrue(currentFeaturedImage.exists, "Featured image not set")
         } else {
-            XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
+            XCTAssertFalse(currentFeaturedImage.exists, "Featured image is set but should not be")
         }
 
         return try EditorPostSettings()

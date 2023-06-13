@@ -68,4 +68,18 @@ import WordPressKit
             completion?()
         }, on: .main)
     }
+
+    func getRecentCampaigns(for blog: Blog,
+                            completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
+        guard let siteId = blog.dotComID?.intValue else {
+            DDLogError("Invalid site ID for Blaze")
+            completion(.failure(BlazeServiceError.missingBlogId))
+            return
+        }
+        remote.searchCampaigns(forSiteId: siteId, callback: completion)
+    }
+}
+
+enum BlazeServiceError: Error {
+    case missingBlogId
 }

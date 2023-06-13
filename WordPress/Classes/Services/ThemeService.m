@@ -216,7 +216,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                               NSMutableSet *unsyncedThemes = [NSMutableSet setWithSet:blogInContext.themes];
                                               [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
                                               for (Theme *deleteTheme in unsyncedThemes) {
-                                                  if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                                  if (![blogInContext.currentThemeId isEqualToString:deleteTheme.themeId]) {
                                                       [context deleteObject:deleteTheme];
                                                   }
                                               }
