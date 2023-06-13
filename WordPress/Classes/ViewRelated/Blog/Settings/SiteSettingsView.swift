@@ -50,6 +50,7 @@ struct SiteSettingsView: View {
         Section(header: Text(Strings.Sections.general)) {
             siteTitleRow
             taglineRow
+            SettingsCell(title: Strings.General.address, value: blog.url ?? "")
         }
     }
 
@@ -160,6 +161,7 @@ private extension SiteSettingsView {
             static let taglinePlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
             static let taglineEditorPlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
             static let taglineEditorHint = NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline")
+            static let address = NSLocalizedString("Address", comment: "Label for url blog setting")
         }
     }
 }
