@@ -10,7 +10,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     ///
     @objc var onChange: ((NSNumber) -> Void)?
 
-
+    var hidesNavigationBarDuringPresentation = true
 
     /// Designated Initializer
     ///
@@ -39,8 +39,6 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         tableView.reloadDataPreservingSelection()
         tableView.deselectSelectedRowWithAnimationAfterDelay(true)
     }
-
-
 
     // MARK: - UITableViewDataSource Methods
     open override func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,8 +75,6 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         pressedLanguageRow()
     }
 
-
-
     // MARK: - Private Methods
     fileprivate func configureTableViewCell(_ cell: UITableViewCell) {
         let languageId = blog.settings!.languageID.intValue
@@ -90,21 +86,19 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         let selectedLanguageId = blog.settings?.languageID.intValue
         let selector = LanguageSelectorViewController(selected: selectedLanguageId)
         selector.delegate = self
+        selector.hidesNavigationBarDuringPresentation = hidesNavigationBarDuringPresentation
         selector.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
         navigationController?.pushViewController(selector, animated: true)
     }
 
-
     @objc func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int) {
-        _ = navigationController?.popToViewController(self, animated: true)
+        navigationController?.popViewController(animated: true)
         onChange?(languageId as NSNumber)
     }
 
-
     // MARK: - Private Constants
     fileprivate let reuseIdentifier = "reuseIdentifier"
-    fileprivate let footerText = NSLocalizedString("The language in which this site is primarily written.",
-                                                comment: "Footer Text displayed in Blog Language Settings View")
+    fileprivate let footerText = NSLocalizedString("The language in which this site is primarily written.", comment: "Footer Text displayed in Blog Language Settings View")
 
     // MARK: - Private Properties
     fileprivate var blog: Blog!

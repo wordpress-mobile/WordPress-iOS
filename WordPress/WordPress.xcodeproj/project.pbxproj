@@ -356,8 +356,8 @@
 		0C60DFBE2A38D1C600509C91 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */; };
 		0C60DFC02A38D1E900509C91 /* SettingsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */; };
 		0C60DFC12A38D1E900509C91 /* SettingsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */; };
-		0C60DFC32A38D21900509C91 /* SettingsTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */; };
-		0C60DFC42A38D21900509C91 /* SettingsTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */; };
+		0C60DFC32A38D21900509C91 /* Settings+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC22A38D21900509C91 /* Settings+SwiftUI.swift */; };
+		0C60DFC42A38D21900509C91 /* Settings+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC22A38D21900509C91 /* Settings+SwiftUI.swift */; };
 		0C60DFC62A38DC0500509C91 /* SiteVisibility+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */; };
 		0C60DFC72A38DC0500509C91 /* SiteVisibility+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */; };
 		0CB4056B29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
@@ -6073,7 +6073,7 @@
 		0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Backport.swift"; sourceTree = "<group>"; };
 		0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPicker.swift; sourceTree = "<group>"; };
-		0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextEditView.swift; sourceTree = "<group>"; };
+		0C60DFC22A38D21900509C91 /* Settings+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+SwiftUI.swift"; sourceTree = "<group>"; };
 		0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteVisibility+Extensions.swift"; sourceTree = "<group>"; };
 		0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationService.swift; sourceTree = "<group>"; };
 		0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationServiceTests.swift; sourceTree = "<group>"; };
@@ -10053,7 +10053,7 @@
 				0C60DF7D2A37C90200509C91 /* SiteSettingsViewModel.swift */,
 				0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */,
 				0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */,
-				0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */,
+				0C60DFC22A38D21900509C91 /* Settings+SwiftUI.swift */,
 				0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */,
 			);
 			path = Settings;
@@ -21832,7 +21832,7 @@
 				803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
-				0C60DFC32A38D21900509C91 /* SettingsTextEditView.swift in Sources */,
+				0C60DFC32A38D21900509C91 /* Settings+SwiftUI.swift in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
 				FAFC064E27D2360B002F0483 /* QuickStartCell.swift in Sources */,
 				9A4A8F4B235758EF00088CE4 /* StatsStore+Cache.swift in Sources */,
@@ -24720,7 +24720,7 @@
 				C9F1D4B82706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */,
 				FABB23772602FC2C00C8785C /* MediaImageExporter.swift in Sources */,
 				FABB23782602FC2C00C8785C /* GutenbergViewController+InformativeDialog.swift in Sources */,
-				0C60DFC42A38D21900509C91 /* SettingsTextEditView.swift in Sources */,
+				0C60DFC42A38D21900509C91 /* Settings+SwiftUI.swift in Sources */,
 				3FFDEF8A2918597700B625CE /* MigrationDoneViewController.swift in Sources */,
 				8B55F9DC2614D902007D618E /* CircledIcon.swift in Sources */,
 				FABB23792602FC2C00C8785C /* ChangePasswordViewController.swift in Sources */,

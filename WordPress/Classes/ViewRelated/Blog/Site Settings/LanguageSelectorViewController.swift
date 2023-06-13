@@ -21,6 +21,8 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
     ///
     weak var delegate: LanguageSelectorDelegate?
 
+    var hidesNavigationBarDuringPresentation = true
+
     /// Initializes the language selector, optionally with a selected language.
     ///
     init(selected languageId: Int?) {
@@ -42,6 +44,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
         tableView.tableHeaderView = searchController.searchBar
+        searchController.hidesNavigationBarDuringPresentation = hidesNavigationBarDuringPresentation
         updateViewModel()
     }
 

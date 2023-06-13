@@ -46,6 +46,13 @@ final class SiteSettingsViewModel: ObservableObject {
         trackSettingsChange(fieldName: "privacy")
     }
 
+    func updateLanguage(_ languageID: NSNumber) {
+        guard languageID != blog.settings?.languageID else { return }
+        blog.settings?.languageID = languageID
+        save()
+        trackSettingsChange(fieldName: "language")
+    }
+
     func save() {
         service.updateSettings(for: blog, success: {
             NotificationCenter.default.post(name: .WPBlogSettingsUpdated, object: nil)

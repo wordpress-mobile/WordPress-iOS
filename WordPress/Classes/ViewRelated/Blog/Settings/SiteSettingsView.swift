@@ -52,6 +52,7 @@ struct SiteSettingsView: View {
             addressRow
             if blog.supportsSiteManagementServices() {
                 privacyRow
+                languageRow
             }
         }
     }
@@ -108,6 +109,16 @@ struct SiteSettingsView: View {
         .onChange(perform: viewModel.updateVisibility)
     }
 
+    private var languageRow: some View {
+        withAdminNavigationLink(destination: {
+            LanguagePickerView(blog: blog, onChange: viewModel.updateLanguage)
+                .navigationTitle(Strings.General.language)
+        }, content: {
+            let language = WordPressComLanguageDatabase().nameForLanguageWithId(settings.languageID.intValue)
+            SettingsCell(title: Strings.General.language, value: language)
+        })
+    }
+
     // MARK: - Helpers
 
     @ViewBuilder
@@ -150,6 +161,7 @@ private extension SiteSettingsView {
             static let address = NSLocalizedString("Address", comment: "Label for url blog setting")
             static let copyAddress = NSLocalizedString("siteSettings.general.copyAddress", value: "Copy Address", comment: "Button title to copy site address")
             static let privacy = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
+            static let language = NSLocalizedString("Language", comment: "Label for the privacy setting")
         }
     }
 }
