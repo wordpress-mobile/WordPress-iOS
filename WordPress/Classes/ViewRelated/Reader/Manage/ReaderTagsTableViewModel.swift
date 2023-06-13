@@ -81,10 +81,10 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
 extension ReaderTagsTableViewModel {
     @objc func tappedAccessory(_ sender: UIButton) {
         guard let point = sender.superview?.convert(sender.center, to: tableView),
-            let indexPath = tableView?.indexPathForRow(at: point),
-            let adjustIndexPath = tableViewHandler.adjusted(indexPath: indexPath),
-            let topic = tableViewHandler.resultsController.object(at: adjustIndexPath) as? ReaderTagTopic else {
-                return
+              let indexPath = tableView?.indexPathForRow(at: point),
+              let adjustIndexPath = tableViewHandler.adjusted(indexPath: indexPath),
+              let topic = tableViewHandler.resultsController?.object(at: adjustIndexPath) as? ReaderTagTopic else {
+            return
         }
 
         unfollow(topic)
@@ -127,7 +127,7 @@ extension ReaderTagsTableViewModel {
             loading: NSLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
         )
 
-        let topics = tableViewHandler.resultsController.fetchedObjects as? [ReaderTagTopic] ?? []
+        let topics = tableViewHandler.resultsController?.fetchedObjects as? [ReaderTagTopic] ?? []
 
         let controller = ReaderSelectInterestsViewController(configuration: configuration,
                                                              topics: topics)
@@ -206,7 +206,7 @@ extension ReaderTagsTableViewModel {
     /// - Parameters:
     ///     - tag: The tag to scroll into view.
     private func scrollToTag(_ tag: ReaderTagTopic) {
-        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: tag) else {
+        guard let indexPath = tableViewHandler.resultsController?.indexPath(forObject: tag) else {
             return
         }
         tableView?.flashRowAtIndexPath(tableViewHandler.adjustedToTable(indexPath: indexPath), scrollPosition: .middle, completion: {})

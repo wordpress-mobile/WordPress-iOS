@@ -119,7 +119,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
 
     @objc func suggestionsCount() -> Int {
-        return tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        return tableViewHandler.resultsController?.fetchedObjects?.count ?? 0
     }
 
 
@@ -132,9 +132,9 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
 
     @objc func updatePredicateAndRefresh() {
-        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
+        tableViewHandler.resultsController?.fetchRequest.predicate = predicateForFetchRequest()
         do {
-            try tableViewHandler.resultsController.performFetch()
+            try tableViewHandler.resultsController?.performFetch()
         } catch let error as NSError {
             DDLogError("Error fetching suggestions after updating the fetch reqeust predicate: \(error.localizedDescription)")
         }
@@ -185,7 +185,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
 
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let suggestions = tableViewHandler.resultsController.fetchedObjects as? [ReaderSearchSuggestion] else {
+        guard let suggestions = tableViewHandler.resultsController?.fetchedObjects as? [ReaderSearchSuggestion] else {
             return
         }
         let suggestion = suggestions[indexPath.row]
@@ -208,7 +208,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let suggestion = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSearchSuggestion else {
+        guard let suggestion = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSearchSuggestion else {
             return
         }
         delegate?.searchSuggestionsController(self, selectedItem: suggestion.searchPhrase)
@@ -229,7 +229,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
-        guard let suggestion = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSearchSuggestion else {
+        guard let suggestion = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSearchSuggestion else {
             return
         }
         managedObjectContext().delete(suggestion)

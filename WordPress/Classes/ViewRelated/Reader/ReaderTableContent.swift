@@ -16,9 +16,9 @@ final class ReaderTableContent {
     func updateAndPerformFetchRequest(predicate: NSPredicate) {
         assert(Thread.isMainThread, "Reader Error: updating fetch request on a background thread.")
 
-        tableViewHandler?.resultsController.fetchRequest.predicate = predicate
+        tableViewHandler?.resultsController?.fetchRequest.predicate = predicate
         do {
-            try tableViewHandler?.resultsController.performFetch()
+            try tableViewHandler?.resultsController?.performFetch()
         } catch let error as NSError {
             DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
         }
@@ -29,7 +29,7 @@ final class ReaderTableContent {
     }
 
     var content: [NSFetchRequestResult]? {
-        return tableViewHandler?.resultsController.fetchedObjects
+        return tableViewHandler?.resultsController?.fetchedObjects
     }
 
     var contentCount: Int {
@@ -53,10 +53,10 @@ final class ReaderTableContent {
     }
 
     func indexPath<T: NSFetchRequestResult>(forObject object: T) -> IndexPath? {
-        return tableViewHandler?.resultsController.indexPath(forObject: object)
+        return tableViewHandler?.resultsController?.indexPath(forObject: object)
     }
 
     func object<T: NSFetchRequestResult>(at indexPath: IndexPath) -> T? {
-        return tableViewHandler?.resultsController.object(at: indexPath) as? T
+        return tableViewHandler?.resultsController?.object(at: indexPath) as? T
     }
 }

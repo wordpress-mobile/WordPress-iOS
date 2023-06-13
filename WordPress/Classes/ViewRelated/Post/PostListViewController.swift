@@ -256,7 +256,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return UIView(frame: .zero)
         }
 
-        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
+        let sectionInfo = _tableViewHandler.resultsController?.sections?[section]
 
         if let sectionInfo = sectionInfo {
             headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
@@ -462,7 +462,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested post.
     ///
     fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
-        guard let post = tableViewHandler.resultsController.object(at: indexPath) as? Post else {
+        guard let post = tableViewHandler.resultsController?.object(at: indexPath) as? Post else {
             // Retrieving anything other than a post object means we have an App with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
