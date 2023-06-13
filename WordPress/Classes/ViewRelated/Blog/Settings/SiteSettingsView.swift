@@ -50,7 +50,7 @@ struct SiteSettingsView: View {
         Section(header: Text(Strings.Sections.general)) {
             siteTitleRow
             taglineRow
-            SettingsCell(title: Strings.General.address, value: blog.url ?? "")
+            addressRow
         }
     }
 
@@ -87,6 +87,15 @@ struct SiteSettingsView: View {
                 value: settings.tagline ?? Strings.General.taglinePlaceholder
             )
         })
+    }
+
+    private var addressRow: some View {
+        SettingsCell(title: Strings.General.address, value: blog.url ?? "")
+            .contextMenu {
+                Button(Strings.General.copyAddress) {
+                    UIPasteboard.general.url = blog.url.flatMap(URL.init)
+                }
+            }
     }
 
     // MARK: - Helpers
@@ -162,6 +171,7 @@ private extension SiteSettingsView {
             static let taglineEditorPlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
             static let taglineEditorHint = NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline")
             static let address = NSLocalizedString("Address", comment: "Label for url blog setting")
+            static let copyAddress = NSLocalizedString("siteSettings.general.copyAddress", value: "Copy Address", comment: "Button title to copy site address")
         }
     }
 }
