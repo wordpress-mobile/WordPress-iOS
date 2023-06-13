@@ -43,9 +43,15 @@ class PromptRemindersScheduler {
     ///   - time: The user's preferred time to be notified.
     ///   - completion: Closure called after the process completes.
     func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let context = blog.managedObjectContext else {
+            return
+        }
+
         guard schedule != .none else {
-            // If there's no schedule, then we don't need to request authorization
-            processSchedule(schedule, blog: blog, time: time, completion: completion)
+            context.performAndWait {
+                // If there's no schedule, then we don't need to request authorization
+                processSchedule(schedule, blog: blog, time: time, completion: completion)
+            }
             return
         }
 
@@ -59,7 +65,9 @@ class PromptRemindersScheduler {
                 return
             }
 
-            self.processSchedule(schedule, blog: blog, time: time, completion: completion)
+            context.performAndWait {
+                self.processSchedule(schedule, blog: blog, time: time, completion: completion)
+            }
         }
     }
 
