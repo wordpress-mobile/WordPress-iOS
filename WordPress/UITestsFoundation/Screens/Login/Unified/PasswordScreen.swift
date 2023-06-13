@@ -15,6 +15,8 @@ public class PasswordScreen: ScreenObject {
     public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
         try tryProceed(password: "pw")
 
+        app.dismissSavePasswordPrompt()
+
         return try LoginEpilogueScreen()
     }
 
@@ -48,12 +50,7 @@ public class PasswordScreen: ScreenObject {
         let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
 
-        // The Simulator might ask to save the password which, of course, we don't want to do
-        if app.buttons["Save Password"].waitForExistence(timeout: 5) {
-            // There should be no need to wait for this button to exist since it's part of the same
-            // alert where "Save Password" is.
-            app.buttons["Not Now"].tap()
-        }
+        app.dismissSavePasswordPrompt()
     }
 
     public func verifyLoginError() -> PasswordScreen {
