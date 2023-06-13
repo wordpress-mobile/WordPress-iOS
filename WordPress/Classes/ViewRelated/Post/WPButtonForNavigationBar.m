@@ -71,7 +71,8 @@ static CGFloat kNormalAlpha = 1.0f;
 
 - (void)setupAnimations
 {
-	self.adjustsImageWhenHighlighted = NO;
+// TODO: ???
+//	self.adjustsImageWhenHighlighted = NO;
 	
     [self addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
     [self addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchUpInside];

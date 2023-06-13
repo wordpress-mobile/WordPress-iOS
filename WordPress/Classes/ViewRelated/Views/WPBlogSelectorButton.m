@@ -22,30 +22,32 @@
 
     [button invertLayout];
 
-    BOOL isLayoutLeftToRight = [button userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight;
+//    BOOL isLayoutLeftToRight = [button userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight;
     switch (button.buttonStyle) {
         case WPBlogSelectorButtonTypeSingleLine:
             button.titleLabel.numberOfLines = 1;
             button.titleLabel.textAlignment = NSTextAlignmentNatural;
             button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-            if (isLayoutLeftToRight) {
-                [button setImageEdgeInsets:UIEdgeInsetsMake(0, -4, 0, 0)];
-            } else {
-                [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -4, 0, 0)];
-            }
+// TODO: UIButton.Configuration
+//            if (isLayoutLeftToRight) {
+//                [button setImageEdgeInsets:UIEdgeInsetsMake(0, -4, 0, 0)];
+//            } else {
+//                [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -4, 0, 0)];
+//            }
             break;
         case WPBlogSelectorButtonTypeStacked:
             button.titleLabel.numberOfLines = 2;
             button.titleLabel.textAlignment = NSTextAlignmentNatural;
             button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-            if (isLayoutLeftToRight) {
-                [button setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-                [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -4, 0, -10)];
-            } else {
-                [button setImageEdgeInsets:UIEdgeInsetsMake(0, -4, 0, -10)];
-                [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-            }
+// TODO: ???
+//            if (isLayoutLeftToRight) {
+//                [button setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+//                [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -4, 0, -10)];
+//            } else {
+//                [button setImageEdgeInsets:UIEdgeInsetsMake(0, -4, 0, -10)];
+//                [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+//            }
             break;
     }
     

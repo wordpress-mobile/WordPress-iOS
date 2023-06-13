@@ -1,6 +1,6 @@
 22.7
 -----
-
+* [***] Dropped support for iOS 14. Now supporting iOS 15.0 and above. [#20856]
 
 22.6
 -----
