@@ -179,17 +179,45 @@ class BloggingPromptsService {
 
     // MARK: - Init
 
+    /// Initializes a service for blogging prompts.
+    ///
+    /// - Parameters:
+    ///   - contextManager: The CoreDataStack instance.
+    ///   - remote: When supplied, the service will use the specified remote service.
+    ///     Otherwise, a remote service with the default account's credentials will be used.
+    ///   - blog: When supplied, the service will perform blogging prompts requests for this specified blog.
+    ///     Otherwise, this falls back to the default account's primary blog.
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
-              let siteID = blog?.dotComID ?? account.primaryBlogID else {
+        var remoteInstance = remote
+        var siteID: NSNumber? = nil
+
+        // if a blog exists, then try to use the blog's ID.
+        if let blog,
+           let blogContext = blog.managedObjectContext {
+            blogContext.performAndWait {
+                siteID = blog.dotComID
+            }
+        }
+
+        // fetch the default account and fall back to default values as needed.
+        contextManager.performQuery { mainContext in
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext) else {
+                return
+            }
+            siteID = siteID ?? account.primaryBlogID
+            remoteInstance = remoteInstance ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+        }
+
+        guard let siteID,
+              let remoteInstance else {
             return nil
         }
 
         self.contextManager = contextManager
         self.siteID = siteID
-        self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+        self.remote = remoteInstance
     }
 }
 
