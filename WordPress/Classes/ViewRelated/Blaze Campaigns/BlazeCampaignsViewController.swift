@@ -12,14 +12,31 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         return button
     }()
 
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
+        tableView.dataSource = self
+        tableView.delegate = self
+        return tableView
+    }()
+
     // MARK: - Properties
 
     private var blog: Blog
 
+    private var campaigns: [String] = [] {
+        didSet {
+            tableView.reloadData()
+            updateNoResultsView()
+        }
+    }
+
     private var isLoading: Bool = false {
         didSet {
             if isLoading != oldValue {
-                showNoResultsViewIfNeeded()
+                updateNoResultsView()
             }
         }
     }
@@ -54,6 +71,8 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     private func setupView() {
         view.backgroundColor = .DS.Background.primary
+        view.addSubview(tableView)
+        view.pinSubviewToAllEdges(tableView)
     }
 
     private func setupNavBar() {
@@ -77,19 +96,37 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     }
 }
 
+// MARK: - Table methods
+
+extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return campaigns.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = campaigns[indexPath.row]
+        return cell
+    }
+}
+
 // MARK: - No results
 
 extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
 
-    private func showNoResultsViewIfNeeded() {
+    private func updateNoResultsView() {
         guard !isLoading else {
             showLoadingView()
             return
         }
 
-        // FIXME: if results aren't empty, hide the no results view and return
+        if campaigns.isEmpty {
+            showNoResultsView()
+            return
+        }
 
-        showNoResultsView()
+        hideNoResults()
     }
 
     private func showNoResultsView() {

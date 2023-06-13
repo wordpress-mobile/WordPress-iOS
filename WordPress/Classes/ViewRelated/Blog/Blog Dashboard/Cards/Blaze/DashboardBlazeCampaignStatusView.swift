@@ -95,21 +95,21 @@ extension BlazeCampaign.Status {
     var localizedTitle: String {
         switch self {
         case .scheduled:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Scheduled", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.scheduled", value: "Scheduled", comment: "Short status description")
         case .created:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Created", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.created", value: "Created", comment: "Short status description")
         case .approved:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Approved", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.approved", value: "Approved", comment: "Short status description")
         case .processing:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "In Moderation", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.inmoderation", value: "In Moderation", comment: "Short status description")
         case .rejected:
             return NSLocalizedString("blazeCampaign.status.rejected", value: "Rejected", comment: "Short status description")
         case .active:
             return NSLocalizedString("blazeCampaign.status.active", value: "Active", comment: "Short status description")
         case .canceled:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Cancelled", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.canceled", value: "Canceled", comment: "Short status description")
         case .finished:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Completed", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.completed", value: "Completed", comment: "Short status description")
         case .unknown:
             return "–"
         }
