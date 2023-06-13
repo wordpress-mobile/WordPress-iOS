@@ -160,7 +160,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 #pragma mark - helpers
 
-- (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
+- (nullable id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
         if (blog.wordPressComRestApi) {
             return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
