@@ -1125,7 +1125,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         if (comment && [self isModerationMenuEnabledFor:comment]) {
             // NOTE: Remove when minimum version is bumped to iOS 14.
             [self showMenuSheetFor:comment indexPath:indexPath handler:weakSelf.tableViewHandler sourceView:sourceView];
-        } else {
+        } else if (comment) {
             [self shareComment:comment sourceView:sourceView];
         }
     };
