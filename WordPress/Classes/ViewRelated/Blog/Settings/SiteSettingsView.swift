@@ -18,10 +18,9 @@ struct SiteSettingsView: View {
     }
 
     var body: some View {
-        List {
+        Form {
             sections
         }
-        .listStyle(.insetGrouped)
         .onReceive(viewModel.onDismissableError) {
             SVProgressHUD.showDismissibleError(withStatus: $0)
         }
@@ -51,6 +50,9 @@ struct SiteSettingsView: View {
             siteTitleRow
             taglineRow
             addressRow
+            if blog.supportsSiteManagementServices() {
+                privacyRow
+            }
         }
     }
 
@@ -96,6 +98,14 @@ struct SiteSettingsView: View {
             }
     }
 
+    private var privacyRow: some View {
+        withAdminNavigationLink(destination: {
+            Text("Empty")
+        }, content: {
+            SettingsCell(title: Strings.General.privacy, value: BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog))
+        })
+    }
+
     // MARK: - Helpers
 
     @ViewBuilder
@@ -119,40 +129,6 @@ struct SiteSettingsView: View {
     }
 }
 
-private struct SettingsCell: View {
-    let title: String
-    let value: String?
-    var placeholder: String?
-
-    var body: some View {
-        HStack {
-            Text(title)
-                .layoutPriority(1)
-            Spacer()
-            Text(value ?? (placeholder ?? ""))
-                .foregroundColor(.secondary)
-        }
-        .lineLimit(1)
-    }
-}
-
-private struct SettingsTextEditView: UIViewControllerRepresentable {
-    let value: String?
-    let placeholder: String
-    var hint: String?
-    let onCommit: ((String)) -> Void
-
-    func makeUIViewController(context: Context) -> SettingsTextViewController {
-        let viewController = SettingsTextViewController(text: value ?? "", placeholder: placeholder, hint: hint ?? "")
-        viewController.onValueChanged = onCommit
-        return viewController
-    }
-
-    func updateUIViewController(_ uiViewController: SettingsTextViewController, context: Context) {
-        // Do nothing
-    }
-}
-
 private extension SiteSettingsView {
     enum Strings {
         static let title = NSLocalizedString("siteSettings.title", value: "Settings", comment: "Title for screen that allows configuration of your blog/site settings.")
@@ -171,6 +147,7 @@ private extension SiteSettingsView {
             static let taglineEditorHint = NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline")
             static let address = NSLocalizedString("Address", comment: "Label for url blog setting")
             static let copyAddress = NSLocalizedString("siteSettings.general.copyAddress", value: "Copy Address", comment: "Button title to copy site address")
+            static let privacy = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
         }
     }
 }
