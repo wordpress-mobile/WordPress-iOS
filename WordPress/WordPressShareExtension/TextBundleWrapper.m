@@ -7,6 +7,7 @@
 
 #import "TextBundleWrapper.h"
 #import <CoreServices/CoreServices.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 // Filenames constants
 NSString * const kTextBundleInfoFileName = @"info.json";
@@ -29,7 +30,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 + (BOOL)isTextBundleType:(NSString *)typeName
 {
-    return UTTypeConformsTo((__bridge CFStringRef)typeName, (__bridge CFStringRef)kUTTypeTextBundle);
+    return [[UTType typeWithIdentifier:typeName] conformsToType:[UTType typeWithIdentifier:kUTTypeTextBundle]];
 }
 
 - (instancetype)init
@@ -193,7 +194,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 - (NSString *)textFilenameForType:(NSString *)type
 {
-    NSString *ext = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassFilenameExtension);
+    NSString *ext = [UTType typeWithIdentifier:type].preferredFilenameExtension;
     return [@"text" stringByAppendingPathExtension:ext];
 }
 

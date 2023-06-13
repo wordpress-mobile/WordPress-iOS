@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 import UIKit
 import ZIPFoundation
 import Down
@@ -334,7 +335,7 @@ private extension TypeBasedExtensionContentExtractor {
 
 private struct URLExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = URL
-    let acceptedType = kUTTypeURL as String
+    let acceptedType = UTType.url.identifier
 
     func convert(payload: URL) -> ExtractedItem? {
         guard !payload.isFileURL else {
@@ -499,7 +500,8 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
 private struct ImageExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = AnyObject
-    let acceptedType = kUTTypeImage as String
+    let acceptedType = UTType.image.identifier
+
     func convert(payload: AnyObject) -> ExtractedItem? {
         var returnedItem = ExtractedItem()
 
@@ -527,7 +529,8 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
 
 private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = [String: Any]
-    let acceptedType = kUTTypePropertyList as String
+    let acceptedType = UTType.propertyList.identifier
+
     func convert(payload: [String: Any]) -> ExtractedItem? {
         guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
             return nil
@@ -556,7 +559,7 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
 
 private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = String
-    let acceptedType = kUTTypePlainText as String
+    let acceptedType = UTType.plainText.identifier
 
     func convert(payload: String) -> ExtractedItem? {
         guard !payload.isEmpty else {
