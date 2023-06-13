@@ -40,7 +40,13 @@ final class SiteSettingsViewModel: ObservableObject {
         trackSettingsChange(fieldName: "tagline")
     }
 
-    private func save() {
+    func updateVisibility(_ value: SiteVisibility) {
+        // The value is already updated by the Binding, just need to save
+        save()
+        trackSettingsChange(fieldName: "privacy")
+    }
+
+    func save() {
         service.updateSettings(for: blog, success: {
             NotificationCenter.default.post(name: .WPBlogSettingsUpdated, object: nil)
         }, failure: { [weak self] error in

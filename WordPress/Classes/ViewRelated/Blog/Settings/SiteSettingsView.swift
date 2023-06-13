@@ -99,11 +99,13 @@ struct SiteSettingsView: View {
     }
 
     private var privacyRow: some View {
-        withAdminNavigationLink(destination: {
-            Text("Empty")
-        }, content: {
-            SettingsCell(title: Strings.General.privacy, value: BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog))
-        })
+        SettingsPicker(
+            title: Strings.General.privacy,
+            selection: $blog.siteVisibility,
+            values: SiteVisibility.eligiblePickerValues(for: blog)
+        )
+        .editable(blog.isAdmin)
+        .onChange(perform: viewModel.updateVisibility)
     }
 
     // MARK: - Helpers

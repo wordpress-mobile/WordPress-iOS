@@ -1,10 +1,18 @@
 import SwiftUI
 
-struct SettingsPickerView<T: Hashable>: View {
+struct SettingsPicker<T: Hashable>: View {
     let title: String
-    @Binding var selection: T?
+    @Binding var selection: T
     let values: [SettingsPickerValue<T>]
-    var isEditable = true
+
+    private var onChange: (T) -> Void = { _ in }
+    private var isEditable = true
+
+    init(title: String, selection: Binding<T>, values: [SettingsPickerValue<T>]) {
+        self.title = title
+        self._selection = selection
+        self.values = values
+    }
 
     var body: some View {
         let value = values.first { $0.id == selection }
@@ -13,6 +21,7 @@ struct SettingsPickerView<T: Hashable>: View {
             NavigationLink(destination: {
                 SettingsPickerListView(selection: $selection, values: values)
                     .navigationTitle(title)
+                    .onChange(of: selection, perform: onChange)
             }, label: {
                 cell
             })
@@ -20,10 +29,30 @@ struct SettingsPickerView<T: Hashable>: View {
             cell
         }
     }
+
+    /// Disables editing if set to `false`. By default, the picker is editable.
+    func editable(_ isEditable: Bool) -> Self {
+        var copy = self
+        copy.isEditable = isEditable
+        return copy
+    }
+
+    /// Sets the closure that gets called whenever the selection changes.
+    func onChange(perform closure: @escaping (T) -> Void) -> Self {
+        var copy = self
+        copy.onChange = closure
+        return copy
+    }
 }
 
-struct SettingsPickerListView<T: Hashable>: View {
-    @Binding var selection: T?
+struct SettingsPickerValue<T: Hashable>: Identifiable {
+    let title: String
+    let id: T
+    var hint: String?
+}
+
+private struct SettingsPickerListView<T: Hashable>: View {
+    @Binding var selection: T
     let values: [SettingsPickerValue<T>]
 
     var body: some View {
@@ -40,7 +69,10 @@ struct SettingsPickerListView<T: Hashable>: View {
     }
 
     private func makeRow(for value: SettingsPickerValue<T>) -> some View {
-        Button(action: { selection = value.id }) {
+        Button(action: {
+            guard selection != value.id else { return }
+            selection = value.id
+        }) {
             HStack {
                 Text(value.title)
                 Spacer()
@@ -55,10 +87,4 @@ struct SettingsPickerListView<T: Hashable>: View {
         }
         .buttonStyle(.plain)
     }
-}
-
-struct SettingsPickerValue<T: Hashable>: Identifiable {
-    let title: String
-    let id: T
-    var hint: String?
 }

@@ -354,10 +354,12 @@
 		0C60DF822A37CFED00509C91 /* SwiftUI+Backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */; };
 		0C60DFBD2A38D1C600509C91 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */; };
 		0C60DFBE2A38D1C600509C91 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */; };
-		0C60DFC02A38D1E900509C91 /* SettingsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBF2A38D1E900509C91 /* SettingsPickerView.swift */; };
-		0C60DFC12A38D1E900509C91 /* SettingsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBF2A38D1E900509C91 /* SettingsPickerView.swift */; };
+		0C60DFC02A38D1E900509C91 /* SettingsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */; };
+		0C60DFC12A38D1E900509C91 /* SettingsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */; };
 		0C60DFC32A38D21900509C91 /* SettingsTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */; };
 		0C60DFC42A38D21900509C91 /* SettingsTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */; };
+		0C60DFC62A38DC0500509C91 /* SiteVisibility+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */; };
+		0C60DFC72A38DC0500509C91 /* SiteVisibility+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */; };
 		0CB4056B29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056C29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056E29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */; };
@@ -6070,8 +6072,9 @@
 		0C60DF7D2A37C90200509C91 /* SiteSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSettingsViewModel.swift; sourceTree = "<group>"; };
 		0C60DF802A37CFED00509C91 /* SwiftUI+Backport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Backport.swift"; sourceTree = "<group>"; };
 		0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
-		0C60DFBF2A38D1E900509C91 /* SettingsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPickerView.swift; sourceTree = "<group>"; };
+		0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPicker.swift; sourceTree = "<group>"; };
 		0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextEditView.swift; sourceTree = "<group>"; };
+		0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteVisibility+Extensions.swift"; sourceTree = "<group>"; };
 		0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationService.swift; sourceTree = "<group>"; };
 		0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationServiceTests.swift; sourceTree = "<group>"; };
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
@@ -10049,8 +10052,9 @@
 				0C60DF782A377C3800509C91 /* SiteSettingsView.swift */,
 				0C60DF7D2A37C90200509C91 /* SiteSettingsViewModel.swift */,
 				0C60DFBC2A38D1C600509C91 /* SettingsCell.swift */,
-				0C60DFBF2A38D1E900509C91 /* SettingsPickerView.swift */,
+				0C60DFBF2A38D1E900509C91 /* SettingsPicker.swift */,
 				0C60DFC22A38D21900509C91 /* SettingsTextEditView.swift */,
+				0C60DFC52A38DC0500509C91 /* SiteVisibility+Extensions.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -21154,6 +21158,7 @@
 				803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
 				17C1D67C2670E3DC006C8970 /* SiteIconPickerView.swift in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
+				0C60DFC62A38DC0500509C91 /* SiteVisibility+Extensions.swift in Sources */,
 				FED77258298BC5B300C2346E /* PluginJetpackProxyService.swift in Sources */,
 				FEA7949026DF7F3700CEC520 /* WPStyleGuide+CommentDetail.swift in Sources */,
 				8B074A5027AC3A64003A2EB8 /* BlogDashboardViewModel.swift in Sources */,
@@ -21733,7 +21738,7 @@
 				F93735F122D534FE00A3C312 /* LoggingURLRedactor.swift in Sources */,
 				9874766F219630240080967F /* SiteStatsTableViewCells.swift in Sources */,
 				E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */,
-				0C60DFC02A38D1E900509C91 /* SettingsPickerView.swift in Sources */,
+				0C60DFC02A38D1E900509C91 /* SettingsPicker.swift in Sources */,
 				570BFD8B22823D7B007859A8 /* PostActionSheet.swift in Sources */,
 				E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */,
 				C81CCD7C243BF7A600A83E27 /* TenorPageable.swift in Sources */,
@@ -24017,7 +24022,7 @@
 				FABB217D2602FC2C00C8785C /* WPMediaPicker+MediaPicker.swift in Sources */,
 				805CC0BD29668987002941DC /* JetpackBrandedScreen.swift in Sources */,
 				FABB217E2602FC2C00C8785C /* JetpackInstallError+Blocking.swift in Sources */,
-				0C60DFC12A38D1E900509C91 /* SettingsPickerView.swift in Sources */,
+				0C60DFC12A38D1E900509C91 /* SettingsPicker.swift in Sources */,
 				FABB217F2602FC2C00C8785C /* QuickStartTourState.swift in Sources */,
 				FABB21802602FC2C00C8785C /* ReaderPostCardCell.swift in Sources */,
 				0878580428B4CF950069F96C /* UserPersistentRepositoryUtility.swift in Sources */,
@@ -24530,6 +24535,7 @@
 				FABB22EA2602FC2C00C8785C /* PostCategory.m in Sources */,
 				3F685B6A26D431FA001C6808 /* DomainSuggestionViewControllerWrapper.swift in Sources */,
 				FABB22EB2602FC2C00C8785C /* MediaAssetExporter.swift in Sources */,
+				0C60DFC72A38DC0500509C91 /* SiteVisibility+Extensions.swift in Sources */,
 				FABB22EC2602FC2C00C8785C /* SharingButtonsViewController.swift in Sources */,
 				F4F9D5F2290993D400502576 /* MigrationWelcomeViewModel.swift in Sources */,
 				FABB22ED2602FC2C00C8785C /* EditorFactory.swift in Sources */,

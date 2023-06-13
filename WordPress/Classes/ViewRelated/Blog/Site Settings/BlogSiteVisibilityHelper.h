@@ -9,6 +9,9 @@
 /// @returns The associated titles for the SiteVisibility values specified.
 + (NSArray *)titlesForSiteVisibilityValues:(NSArray *)values;
 
+/// @returns The associated hint for the SiteVisibility value specified.
++ (NSString *)hintTextForSiteVisibility:(SiteVisibility)privacy;
+
 /// @returns The associated hints for the SiteVisibility values specified.
 + (NSArray *)hintsForSiteVisibilityValues:(NSArray *)values;
 
