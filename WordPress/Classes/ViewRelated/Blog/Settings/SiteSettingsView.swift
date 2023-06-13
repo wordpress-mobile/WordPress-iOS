@@ -44,13 +44,16 @@ struct SiteSettingsView: View {
         }
     }
 
+    // MARK: - Sections
+
     private var sections: some View {
         Section(header: Text(Strings.Sections.general)) {
             siteTitleRow
+            taglineRow
         }
     }
 
-    // MARK: - General
+    // MARK: - Sections (General)
 
     private var siteTitleRow: some View {
         withAdminNavigationLink(destination: {
@@ -60,9 +63,29 @@ struct SiteSettingsView: View {
                 onCommit: viewModel.updateSiteTitle
             )
             .navigationTitle(Strings.General.siteTitle)
-        }) {
-            SettingsCell(title: Strings.General.siteTitle, value: settings.name ?? Strings.General.siteTitlePlaceholder)
-        }
+        }, content: {
+            SettingsCell(
+                title: Strings.General.siteTitle,
+                value: settings.name ?? Strings.General.siteTitlePlaceholder
+            )
+        })
+    }
+
+    private var taglineRow: some View {
+        withAdminNavigationLink(destination: {
+            SettingsTextEditView(
+                value: settings.tagline,
+                placeholder: Strings.General.taglineEditorPlaceholder,
+                hint: Strings.General.taglineEditorHint,
+                onCommit: viewModel.updateTagline
+            )
+            .navigationTitle(Strings.General.tagline)
+        }, content: {
+            SettingsCell(
+                title: Strings.General.tagline,
+                value: settings.tagline ?? Strings.General.taglinePlaceholder
+            )
+        })
     }
 
     // MARK: - Helpers
@@ -133,6 +156,10 @@ private extension SiteSettingsView {
         enum General {
             static let siteTitle = NSLocalizedString("siteSettings.general.siteTitle", value: "Site Title", comment: "Label for site title blog setting")
             static let siteTitlePlaceholder = NSLocalizedString("siteSettings.general.siteTitlePlaceholder", value: "A title for the site", comment: "Placeholder text for the title of a site")
+            static let tagline = NSLocalizedString("Tagline", comment: "Label for tagline blog setting")
+            static let taglinePlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+            static let taglineEditorPlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+            static let taglineEditorHint = NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline")
         }
     }
 }

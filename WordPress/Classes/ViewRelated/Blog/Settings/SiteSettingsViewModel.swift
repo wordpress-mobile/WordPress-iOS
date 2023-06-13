@@ -32,6 +32,14 @@ final class SiteSettingsViewModel: ObservableObject {
         trackSettingsChange(fieldName: "site_title")
     }
 
+    func updateTagline(_ value: String) {
+        let tagline = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard tagline != blog.settings?.tagline else { return }
+        blog.settings?.tagline = tagline
+        save()
+        trackSettingsChange(fieldName: "tagline")
+    }
+
     private func save() {
         service.updateSettings(for: blog, success: {
             NotificationCenter.default.post(name: .WPBlogSettingsUpdated, object: nil)
