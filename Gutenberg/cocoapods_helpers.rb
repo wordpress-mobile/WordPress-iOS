@@ -59,7 +59,6 @@ DEPENDENCIES = %w[
   React-bridging
 ].freeze
 
-# rubocop:disable Metrics/AbcSize
 def gutenberg_pod(config: GUTENBERG_CONFIG)
   options = config
 
@@ -75,28 +74,17 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 
     gutenberg_dependencies(options: options)
   elsif options[:tag]
-    options[:git] = "https://github.com/#{GITHUB_ORG}/#{REPO_NAME}.git"
-    options[:submodules] = true
-
-    # This duplication with the branch above will disappear once tags will use pre-built binaries.
-    pod 'Gutenberg', options
-    pod 'RNTAztecView', options
-
-    gutenberg_dependencies(options: options)
+    pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{options[:tag]}.podspec"
   elsif options[:commit]
     pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{options[:commit]}.podspec"
   end
 end
-# rubocop:enable Metrics/AbcSize
 
 def gutenberg_dependencies(options:)
   if options[:path]
     podspec_prefix = options[:path]
-  elsif options[:tag]
-    tag = options[:tag]
-    podspec_prefix = "https://raw.githubusercontent.com/#{GITHUB_ORG}/#{REPO_NAME}/#{tag}"
-  elsif options[:commit]
-    return # when referencing via a commit, we download pre-built frameworks
+  elsif options[:tag] || options[:commit]
+    return # when referencing via a tag or commit, we download pre-built frameworks
   else
     raise "Unexpected Gutenberg dependencies configuration '#{options}'"
   end
