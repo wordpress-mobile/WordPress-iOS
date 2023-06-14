@@ -1,6 +1,6 @@
 22.7
 -----
-
+* [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
 
 22.6
 -----
