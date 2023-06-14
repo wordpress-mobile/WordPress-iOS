@@ -58,3 +58,15 @@ struct TimezoneSelectorView: UIViewControllerRepresentable {
         // Do nothing
     }
 }
+
+struct HomepageSettingsView: UIViewControllerRepresentable {
+    let blog: Blog
+
+    func makeUIViewController(context: Context) -> HomepageSettingsViewController {
+        HomepageSettingsViewController(blog: blog)
+    }
+
+    func updateUIViewController(_ viewController: HomepageSettingsViewController, context: Context) {
+        // Do nothing
+    }
+}

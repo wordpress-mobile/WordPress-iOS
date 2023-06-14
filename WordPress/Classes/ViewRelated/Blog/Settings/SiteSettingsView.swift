@@ -63,7 +63,12 @@ struct SiteSettingsView: View {
     @ViewBuilder
     private var sections: some View {
         generalSection
-        bloggingSection
+        if blog.areBloggingRemindersAllowed() {
+            bloggingSection
+        }
+        if Feature.enabled(.homepageSettings) && blog.supports(.homepageSettings) {
+            homepageSection
+        }
     }
 
     // MARK: - Sections (General)
@@ -154,19 +159,11 @@ struct SiteSettingsView: View {
 
     // MARK: - Section (Blogging)
 
-    @ViewBuilder
     private var bloggingSection: some View {
-        let isShowingReminders = blog.areBloggingRemindersAllowed()
-        if isShowingReminders {
-            Section(header: Text(Strings.Sections.blogging)) {
-                remindersRow
+        Section(header: Text(Strings.Sections.blogging)) {
+            Button(action: openRemindersFlow) {
+                SettingsCell(title: Strings.Blogging.remindersTitle, value: viewModel.remindersValue)
             }
-        }
-    }
-
-    private var remindersRow: some View {
-        Button(action: openRemindersFlow) {
-            SettingsCell(title: Strings.Blogging.remindersTitle, value: viewModel.remindersValue)
         }
     }
 
@@ -174,6 +171,19 @@ struct SiteSettingsView: View {
         guard let viewController = context.viewController else { return }
         BloggingRemindersFlow.present(from: viewController, for: blog, source: .blogSettings) {
             viewModel.didUpdateReminders()
+        }
+    }
+
+    // MARK: - Section (Homepage)
+
+    private var homepageSection: some View {
+        Section(header: Text(Strings.Sections.homepage)) {
+            NavigationLink(destination: {
+                HomepageSettingsView(blog: blog)
+                    .navigationTitle(Strings.Sections.homepage)
+            }, label: {
+                SettingsCell(title: Strings.Homepage.homepage, value: blog.homepageType?.title)
+            })
         }
     }
 
@@ -230,6 +240,10 @@ private extension SiteSettingsView {
 
         enum Blogging {
             static let remindersTitle = NSLocalizedString("siteSettings.blogging.reminders", value: "Reminders", comment: "Label for the blogging reminders setting")
+        }
+
+        enum Homepage {
+            static let homepage = NSLocalizedString("siteSettings.homepageSettings.cellTitle", value: "Homepage Settings", comment: "Label for Homepage Settings site settings section")
         }
     }
 }
