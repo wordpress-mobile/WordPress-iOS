@@ -151,7 +151,6 @@ extension DashboardPostsListCardCell: UITableViewDelegate {
         WPAnalytics.track(.dashboardCardItemTapped,
                           properties: ["type": "post", "sub_type": status.rawValue])
         viewController.presentedPostStatus = viewModel?.currentPostStatus()
-
         PostListEditorPresenter.handle(post: post, in: viewController, entryPoint: .dashboard)
     }
 }
