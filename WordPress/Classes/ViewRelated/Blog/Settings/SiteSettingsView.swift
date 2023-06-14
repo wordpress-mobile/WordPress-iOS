@@ -4,8 +4,11 @@ import Combine
 import SVProgressHUD
 
 final class NewSiteSettingsViewController: UIHostingController<SiteSettingsView> {
+    private let context = SiteSettingsContext()
+
     init(blog: Blog) {
-        super.init(rootView: SiteSettingsView(blog: blog))
+        super.init(rootView: SiteSettingsView(blog: blog, context: context))
+        self.context.viewController = self
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -31,9 +34,12 @@ struct SiteSettingsView: View {
 
     @StateObject private var viewModel: SiteSettingsViewModel
 
-    init(blog: Blog) {
+    private let context: SiteSettingsContext
+
+    init(blog: Blog, context: SiteSettingsContext) {
         self.blog = blog
         self.settings = blog.settings ?? BlogSettings(context: ContextManager.shared.mainContext) // Right-side should never happen
+        self.context = context
         self._viewModel = StateObject(wrappedValue: SiteSettingsViewModel(blog: blog))
     }
 
@@ -54,9 +60,15 @@ struct SiteSettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    // MARK: - Sections
-
+    @ViewBuilder
     private var sections: some View {
+        generalSection
+        bloggingSection
+    }
+
+    // MARK: - Sections (General)
+
+    private var generalSection: some View {
         Section(header: Text(Strings.Sections.general)) {
             siteTitleRow
             taglineRow
@@ -70,8 +82,6 @@ struct SiteSettingsView: View {
             }
         }
     }
-
-    // MARK: - Sections (General)
 
     private var siteTitleRow: some View {
         withAdminNavigationLink(destination: {
@@ -136,9 +146,35 @@ struct SiteSettingsView: View {
     private var timezoneRow: some View {
         withAdminNavigationLink(destination: {
             TimezoneSelectorView(value: viewModel.timezoneValue, onChange: viewModel.updateTimezone)
+                .navigationTitle(Strings.General.timezone)
         }, content: {
             SettingsCell(title: Strings.General.timezone, value: viewModel.timezoneLabel)
         })
+    }
+
+    // MARK: - Section (Blogging)
+
+    @ViewBuilder
+    private var bloggingSection: some View {
+        let isShowingReminders = blog.areBloggingRemindersAllowed()
+        if isShowingReminders {
+            Section(header: Text(Strings.Sections.blogging)) {
+                remindersRow
+            }
+        }
+    }
+
+    private var remindersRow: some View {
+        Button(action: openRemindersFlow) {
+            SettingsCell(title: Strings.Blogging.remindersTitle, value: viewModel.remindersValue)
+        }
+    }
+
+    private func openRemindersFlow() {
+        guard let viewController = context.viewController else { return }
+        BloggingRemindersFlow.present(from: viewController, for: blog, source: .blogSettings) {
+            viewModel.didUpdateReminders()
+        }
     }
 
     // MARK: - Helpers
@@ -156,6 +192,10 @@ struct SiteSettingsView: View {
     }
 }
 
+final class SiteSettingsContext {
+    weak var viewController: UIViewController?
+}
+
 private extension SiteSettingsView {
     enum Strings {
         static let title = NSLocalizedString("siteSettings.title", value: "Settings", comment: "Title for screen that allows configuration of your blog/site settings.")
@@ -163,6 +203,15 @@ private extension SiteSettingsView {
 
         enum Sections {
             static let general = NSLocalizedString("siteSettings.general.title", value: "General", comment: "Title for the general section in site settings screen")
+            static let blogging = NSLocalizedString("siteSettings.blogging.title", value: "Blogging", comment: "Title for the blogging section in site settings screen")
+            static let homepage = NSLocalizedString("siteSettings.homepage.title", value: "Homepage", comment: "Title for the homepage section in site settings screen")
+            static let account = NSLocalizedString("siteSettings.account.title", value: "Account", comment: "Title for the account section in site settings screen")
+            static let editor = NSLocalizedString("siteSettings.editor.title", value: "Editor", comment: "Title for the editor settings section")
+            static let writing = NSLocalizedString("siteSettings.writing.title", value: "Writing", comment: "Title for the writing section in site settings screen")
+            static let traffic = NSLocalizedString("siteSettings.traffic.title", value: "Traffic", comment: "Title for the traffic section in site settings screen")
+            static let jetpack = NSLocalizedString("siteSettings.jetpack.title", value: "Jetpack", comment: "Title for the Jetpack section in site settings screen")
+            static let advanced = NSLocalizedString("siteSettings.advanced.title", value: "Advanced", comment: "Title for the advanced section in site settings screen")
+            static let media = NSLocalizedString("siteSettings.media.title", value: "Media", comment: "Title for the media section in site settings screen")
         }
 
         enum General {
@@ -177,6 +226,10 @@ private extension SiteSettingsView {
             static let privacy = NSLocalizedString("siteSettings.general.privacy", value: "Privacy", comment: "Label for the privacy setting")
             static let language = NSLocalizedString("siteSettings.general.language", value: "Language", comment: "Label for the privacy setting")
             static let timezone = NSLocalizedString("siteSettings.general.timeone", value: "Time Zone", comment: "Label for the timezone setting")
+        }
+
+        enum Blogging {
+            static let remindersTitle = NSLocalizedString("siteSettings.blogging.reminders", value: "Reminders", comment: "Label for the blogging reminders setting")
         }
     }
 }

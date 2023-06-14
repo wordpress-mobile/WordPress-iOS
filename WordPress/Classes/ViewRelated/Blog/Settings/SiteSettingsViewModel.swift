@@ -8,6 +8,7 @@ final class SiteSettingsViewModel: ObservableObject {
     private var timezoneObserver: TimeZoneObserver?
 
     @Published private(set) var timezoneLabel: String?
+    @Published private(set) var remindersValue: String?
 
     let onDismissableError = PassthroughSubject<String, Never>()
 
@@ -16,6 +17,7 @@ final class SiteSettingsViewModel: ObservableObject {
         self.blog = blog
         self.service = service
         self.startTimezoneObserver()
+        self.remindersValue = makeRemindersValue()
     }
 
     // MARK: - Refresh
@@ -69,6 +71,10 @@ final class SiteSettingsViewModel: ObservableObject {
         trackSettingsChange(fieldName: "timezone", value: timezone.value as Any)
     }
 
+    func didUpdateReminders() {
+        remindersValue = makeRemindersValue()
+    }
+
     func save() {
         service.updateSettings(for: blog, success: {
             NotificationCenter.default.post(name: .WPBlogSettingsUpdated, object: nil)
@@ -111,6 +117,17 @@ final class SiteSettingsViewModel: ObservableObject {
     }
 
     // MARK: - Helpers (Misc)
+
+    private func makeRemindersValue() -> String {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
+            return ""
+        }
+        let formatter = BloggingRemindersScheduleFormatter()
+        return formatter.shortScheduleDescription(
+            for: scheduler.schedule(for: blog),
+            time: scheduler.scheduledTime(for: blog).toLocalTime()
+        ).string
+    }
 
     private func trackSettingsChange(fieldName: String, value: Any? = nil) {
         WPAnalytics.trackSettingsChange("site_settings", fieldName: fieldName, value: value)

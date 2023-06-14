@@ -9,6 +9,7 @@ struct SettingsCell: View {
         HStack {
             Text(title)
                 .layoutPriority(1)
+                .foregroundColor(.primary)
             Spacer()
             Text(value ?? (placeholder ?? ""))
                 .foregroundColor(.secondary)
