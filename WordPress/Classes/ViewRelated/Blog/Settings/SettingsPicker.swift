@@ -5,8 +5,6 @@ struct SettingsPicker<T: Hashable>: View {
     @Binding var selection: T
     let values: [SettingsPickerValue<T>]
 
-    private var isEditable = true
-
     init(title: String, selection: Binding<T>, values: [SettingsPickerValue<T>]) {
         self.title = title
         self._selection = selection
@@ -14,25 +12,13 @@ struct SettingsPicker<T: Hashable>: View {
     }
 
     var body: some View {
-        let value = values.first { $0.id == selection }
-        let cell = SettingsCell(title: title, value: value?.title)
-        if isEditable {
-            NavigationLink(destination: {
-                SettingsPickerListView(selection: $selection, values: values)
-                    .navigationTitle(title)
-            }, label: {
-                cell
-            })
-        } else {
-            cell
-        }
-    }
-
-    /// Disables editing if set to `false`. By default, the picker is editable.
-    func editable(_ isEditable: Bool) -> Self {
-        var copy = self
-        copy.isEditable = isEditable
-        return copy
+        NavigationLink(destination: {
+            SettingsPickerListView(selection: $selection, values: values)
+                .navigationTitle(title)
+        }, label: {
+            let value = values.first { $0.id == selection }
+            SettingsCell(title: title, value: value?.title)
+        })
     }
 }
 
