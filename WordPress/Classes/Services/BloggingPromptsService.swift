@@ -36,7 +36,7 @@ class BloggingPromptsService {
     /// Convenience computed variable that returns prompt settings from the local store.
     ///
     var localSettings: BloggingPromptSettings? {
-        loadSettings(context: contextManager.mainContext)
+        loadSettings(context: contextManager.defaultContext)
     }
 
     /// Fetches a number of blogging prompts starting from the specified date.
@@ -125,7 +125,7 @@ class BloggingPromptsService {
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.promptID)) = %@", siteID, NSNumber(value: promptID))
         fetchRequest.fetchLimit = 1
 
-        return (try? self.contextManager.mainContext.fetch(fetchRequest))?.first
+        return (try? self.contextManager.defaultContext.fetch(fetchRequest))?.first
     }
 
     // MARK: - Settings
@@ -141,7 +141,7 @@ class BloggingPromptsService {
             switch result {
             case .success(let remoteSettings):
                 self.saveSettings(remoteSettings) {
-                    let settings = self.loadSettings(context: self.contextManager.mainContext)
+                    let settings = self.loadSettings(context: self.contextManager.defaultContext)
                     success(settings)
                 }
             case .failure(let error):
@@ -168,7 +168,7 @@ class BloggingPromptsService {
                     return
                 }
                 self.saveSettings(updatedSettings) {
-                    let settings = self.loadSettings(context: self.contextManager.mainContext)
+                    let settings = self.loadSettings(context: self.contextManager.defaultContext)
                     success(settings)
                 }
             case .failure(let error):
@@ -182,7 +182,7 @@ class BloggingPromptsService {
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.defaultContext),
               let siteID = blog?.dotComID ?? account.primaryBlogID else {
             return nil
         }
@@ -263,7 +263,7 @@ private extension BloggingPromptsService {
         fetchRequest.fetchLimit = number
         fetchRequest.sortDescriptors = [.init(key: #keyPath(BloggingPrompt.date), ascending: true)]
 
-        return (try? self.contextManager.mainContext.fetch(fetchRequest)) ?? []
+        return (try? self.contextManager.defaultContext.fetch(fetchRequest)) ?? []
     }
 
     /// Find and update existing prompts, or insert new ones if they don't exist.

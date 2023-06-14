@@ -63,7 +63,13 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
     @objc
     public var mainContext: NSManagedObjectContext {
-        customContext ?? persistentContainer.viewContext
+        persistentContainer.viewContext
+    }
+
+    /// Returns the custom injected context if available, otherwise it returns the main context.
+    @objc
+    public var defaultContext: NSManagedObjectContext {
+        customContext ?? mainContext
     }
 
     convenience override init() {
