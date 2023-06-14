@@ -190,24 +190,23 @@ class BloggingPromptsService {
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        var remoteInstance = remote
-        var siteID: NSNumber? = nil
-
-        // if a blog exists, then try to use the blog's ID.
-        if let blog,
-           let blogContext = blog.managedObjectContext {
-            blogContext.performAndWait {
-                siteID = blog.dotComID
+        let blogObjectID =  blog?.objectID
+        let (siteID, remoteInstance) = contextManager.performQuery { mainContext in
+            // if a blog exists, then try to use the blog's ID.
+            var blogInContext: Blog? = nil
+            if let blogObjectID {
+                blogInContext = (try? mainContext.existingObject(with: blogObjectID)) as? Blog
             }
-        }
 
-        // fetch the default account and fall back to default values as needed.
-        contextManager.performQuery { mainContext in
+            // fetch the default account and fall back to default values as needed.
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext) else {
-                return
+                return (blogInContext?.dotComID, remote)
             }
-            siteID = siteID ?? account.primaryBlogID
-            remoteInstance = remoteInstance ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+
+            return (
+                blogInContext?.dotComID ?? account.primaryBlogID,
+                remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+            )
         }
 
         guard let siteID,
