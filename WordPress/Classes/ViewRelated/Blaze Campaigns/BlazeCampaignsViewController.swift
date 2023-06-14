@@ -115,7 +115,7 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
             return UITableViewCell()
         }
 
-        let viewModel = DashboardBlazeCampaignViewModel(campaign: campaign)
+        let viewModel = BlazeCampaignViewModel(campaign: campaign)
         cell.configure(with: viewModel, blog: blog)
         return cell
     }

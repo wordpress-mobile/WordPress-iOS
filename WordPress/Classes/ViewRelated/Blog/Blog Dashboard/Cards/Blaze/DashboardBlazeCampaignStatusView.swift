@@ -20,7 +20,7 @@ final class DashboardBlazeCampaignStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with viewModel: DashboardBlazeCampaignViewStatusViewModel) {
+    func configure(with viewModel: BlazeCampaignStatusViewModel) {
         self.isHidden = viewModel.isHidden
         self.titleLabel.text = viewModel.title.uppercased()
         self.titleLabel.textColor = viewModel.textColor
@@ -37,7 +37,7 @@ private extension DashboardBlazeCampaignStatusView {
     }
 }
 
-struct DashboardBlazeCampaignViewStatusViewModel {
+struct BlazeCampaignStatusViewModel {
     let isHidden: Bool
     let title: String
     let textColor: UIColor

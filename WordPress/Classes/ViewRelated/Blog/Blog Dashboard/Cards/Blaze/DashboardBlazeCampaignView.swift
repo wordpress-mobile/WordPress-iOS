@@ -54,7 +54,7 @@ final class DashboardBlazeCampaignView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with viewModel: DashboardBlazeCampaignViewModel, blog: Blog) {
+    func configure(with viewModel: BlazeCampaignViewModel, blog: Blog) {
         statusView.configure(with: viewModel.status)
 
         titleLabel.text = viewModel.title
@@ -75,7 +75,7 @@ final class DashboardBlazeCampaignView: UIView {
         }
     }
 
-    private func makeStatsViews(for viewModel: DashboardBlazeCampaignViewModel) -> [UIView] {
+    private func makeStatsViews(for viewModel: BlazeCampaignViewModel) -> [UIView] {
         let impressionsView = DashboardSingleStatView(title: Strings.impressions)
         impressionsView.countString = "\(viewModel.impressions)"
 
@@ -97,13 +97,13 @@ private extension DashboardBlazeCampaignView {
     }
 }
 
-struct DashboardBlazeCampaignViewModel {
+struct BlazeCampaignViewModel {
     let title: String
     let imageURL: URL?
     let impressions: Int
     let clicks: Int
     let budget: Int
-    var status: DashboardBlazeCampaignViewStatusViewModel { .init(status: campaign.status) }
+    var status: BlazeCampaignStatusViewModel { .init(status: campaign.status) }
 
     var isShowingStats: Bool {
         switch campaign.status {

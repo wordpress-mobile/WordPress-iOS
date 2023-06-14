@@ -100,7 +100,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
 
     // MARK: - Public
 
-    func configure(with viewModel: DashboardBlazeCampaignViewModel, blog: Blog) {
+    func configure(with viewModel: BlazeCampaignViewModel, blog: Blog) {
         statusView.configure(with: viewModel.status)
 
         titleLabel.text = viewModel.title
@@ -135,7 +135,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         contentView.pinSubviewToAllEdges(mainStackView)
     }
 
-    private func configuresStatsViews(for viewModel: DashboardBlazeCampaignViewModel) {
+    private func configuresStatsViews(for viewModel: BlazeCampaignViewModel) {
 
         var subviews: [UIView] = []
 
