@@ -246,6 +246,8 @@
 		0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2741CE5375F0014AE99 /* MenuItemsVisualOrderingView.m */; };
 		0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2761CE5375F0014AE99 /* MenuItemView.m */; };
 		086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086103951EE09C91004D7C01 /* MediaVideoExporter.swift */; };
+		086C117C2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
+		086C117D2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
 		086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C4D0F1E81F9240011D960 /* Media+Blog.swift */; };
 		086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086E1FDF1BBB35D2002D86CA /* MenusViewController.m */; };
 		086F2481284F52DB00032F39 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088CC593282BEC41007B9421 /* TooltipPresenter.swift */; };
@@ -254,6 +256,8 @@
 		086F2484284F52E100032F39 /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
 		0878580328B4CF950069F96C /* UserPersistentRepositoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */; };
 		0878580428B4CF950069F96C /* UserPersistentRepositoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */; };
+		08799C252A334645005317F7 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08799C242A334645005317F7 /* Spacing.swift */; };
+		08799C262A334645005317F7 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08799C242A334645005317F7 /* Spacing.swift */; };
 		0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0879FC151E9301DD00E1EFC8 /* MediaTests.swift */; };
 		087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */; };
 		0880BADC29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */; };
@@ -5922,10 +5926,12 @@
 		0857C2751CE5375F0014AE99 /* MenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemView.h; sourceTree = "<group>"; };
 		0857C2761CE5375F0014AE99 /* MenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemView.m; sourceTree = "<group>"; };
 		086103951EE09C91004D7C01 /* MediaVideoExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaVideoExporter.swift; sourceTree = "<group>"; };
+		086C117B2A2F6451004A3821 /* CompliancePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopover.swift; sourceTree = "<group>"; };
 		086C4D0F1E81F9240011D960 /* Media+Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media+Blog.swift"; sourceTree = "<group>"; };
 		086E1FDE1BBB35D2002D86CA /* MenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusViewController.h; sourceTree = "<group>"; };
 		086E1FDF1BBB35D2002D86CA /* MenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusViewController.m; sourceTree = "<group>"; };
 		0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentRepositoryUtility.swift; sourceTree = "<group>"; };
+		08799C242A334645005317F7 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		0879FC151E9301DD00E1EFC8 /* MediaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTests.swift; sourceTree = "<group>"; };
 		087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailService.swift; sourceTree = "<group>"; };
 		0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+DesignSystem.swift"; sourceTree = "<group>"; };
@@ -9978,6 +9984,7 @@
 				08EA036829C9B53000B72A87 /* Colors.xcassets */,
 				088D58A429E724F300E6C0F4 /* ColorGallery.swift */,
 				0880BADB29ED6FF3002D3AB0 /* UIColor+DesignSystem.swift */,
+				08799C242A334645005317F7 /* Spacing.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -10062,6 +10069,7 @@
 			isa = PBXGroup;
 			children = (
 				1717139E265FE59700F3A022 /* ButtonStyles.swift */,
+				086C117B2A2F6451004A3821 /* CompliancePopover.swift */,
 			);
 			path = "Reusable SwiftUI Views";
 			sourceTree = "<group>";
@@ -21453,6 +21461,7 @@
 				F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */,
 				D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */,
 				176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */,
+				086C117C2A2F6451004A3821 /* CompliancePopover.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
 				8071390727D039E70012DB21 /* DashboardSingleStatView.swift in Sources */,
 				C81CCD64243AECA100A83E27 /* TenorMediaObject.swift in Sources */,
@@ -22490,6 +22499,7 @@
 				D86572172186C3600023A99C /* WizardDelegate.swift in Sources */,
 				73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */,
 				439F4F3C219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift in Sources */,
+				08799C252A334645005317F7 /* Spacing.swift in Sources */,
 				46F583AD2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */,
 				FAD256932611B01700EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
@@ -24908,6 +24918,7 @@
 				FABB24312602FC2C00C8785C /* BodyContentGroup.swift in Sources */,
 				FABB24322602FC2C00C8785C /* WPStyleGuide+Search.swift in Sources */,
 				FABB24332602FC2C00C8785C /* WindowManager.swift in Sources */,
+				08799C262A334645005317F7 /* Spacing.swift in Sources */,
 				FABB24342602FC2C00C8785C /* NSFileManager+FolderSize.swift in Sources */,
 				FABB24352602FC2C00C8785C /* ErrorStateViewController.swift in Sources */,
 				FABB24362602FC2C00C8785C /* WP3DTouchShortcutCreator.swift in Sources */,
@@ -25039,6 +25050,7 @@
 				FABB248E2602FC2C00C8785C /* AztecAttachmentDelegate.swift in Sources */,
 				FABB248F2602FC2C00C8785C /* Memoize.swift in Sources */,
 				803DE81428FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */,
+				086C117D2A2F6451004A3821 /* CompliancePopover.swift in Sources */,
 				FA98A2512833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */,
 				931F312D2714302A0075433B /* PublicizeServicesState.swift in Sources */,
 				FABB24902602FC2C00C8785C /* StatsPeriodAsyncOperation.swift in Sources */,
