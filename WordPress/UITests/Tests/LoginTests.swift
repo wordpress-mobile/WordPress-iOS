@@ -15,23 +15,23 @@ class LoginTests: XCTestCase {
 
     // Unified email login/out
     func testWPcomLoginLogout() throws {
-        let prologueScreen = try PrologueScreen().selectContinue()
+        try PrologueScreen()
+            .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
             .tabBar.goToMeScreen()
             .logoutToPrologue()
-
-        XCTAssert(prologueScreen.isLoaded)
+            .verifyPrologueScreenLoaded()
     }
 
     /**
      This test opens safari to trigger the mocked magic link redirect
      */
     func testEmailMagicLinkLogin() throws {
-        let welcomeScreen = try WelcomeScreen().selectLogin()
+        try WelcomeScreen()
+            .selectLogin()
             .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
@@ -40,26 +40,23 @@ class LoginTests: XCTestCase {
             .dismissNotificationAlertIfNeeded()
             .tabBar.goToMeScreen()
             .logout()
-
-        XCTAssert(welcomeScreen.isLoaded)
+            .verifyWelcomeScreenLoaded()
     }
 
     // Unified self hosted login/out
     func testSelfHostedLoginLogout() throws {
-        let prologueScreen = try PrologueScreen()
-
-        try prologueScreen
+        try PrologueScreen()
             .selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .removeSelfHostedSite()
-
-        XCTAssert(prologueScreen.isLoaded)
+            .verifyPrologueScreenLoaded()
     }
 
     // Unified WordPress.com email login failure due to incorrect password
     func testWPcomInvalidPassword() throws {
-        _ = try PrologueScreen().selectContinue()
+        try PrologueScreen()
+            .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithInvalidPassword()
             .verifyLoginError()
@@ -68,7 +65,8 @@ class LoginTests: XCTestCase {
     // Self-Hosted after WordPress.com login.
     // Login to a WordPress.com account, open site switcher, then add a self-hosted site.
     func testAddSelfHostedSiteAfterWPcomLogin() throws {
-        try PrologueScreen().selectContinue()
+        try PrologueScreen()
+            .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
@@ -84,7 +82,6 @@ class LoginTests: XCTestCase {
 
             // Login flow returns MySites modal, which needs to be closed.
             .closeModal()
-
-        XCTAssert(MySiteScreen.isLoaded())
+            .verifyMySiteScreenLoaded()
     }
 }

@@ -71,6 +71,7 @@ public class PasswordScreen: ScreenObject {
         app.dismissSavePasswordPrompt()
     }
 
+    @discardableResult
     public func verifyLoginError() -> PasswordScreen {
         let errorLabel = app.cells["Password Error"]
         _ = errorLabel.waitForExistence(timeout: 2)
