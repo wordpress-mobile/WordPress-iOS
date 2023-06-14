@@ -1,9 +1,13 @@
-Vi har lagt till kort till din adminpanel. Kortet Aktivitetslogg visar dina tre senaste aktiviteter och kortet Sidor visar de tre senaste sidorna du har ändrat.
+Om din webbplats använder ett blockbaserat tema kan du nu redigera webbplatsens startsida direkt från listan Sidor. Emoji med upphöjda händer.
 
-Vi har också gjort några viktiga ändringar i blockredigeraren. För att förhindra att appen kraschar går det inte längre att konvertera borttagna och odefinierade återanvändbara block till vanliga block.
+Vi har löst ett problem rörande att ställa in länkar så att de öppnas på en ny flik. When typing text after this link, you can now undo and redo the text without any issues.
 
-Om du trycker på ett inbäddat textblock kan du omedelbart redigera innehållet i blocket – du behöver inte längre trycka dig igenom varje inbäddningsnivå för att komma dit du vill. (Vi blev också trötta i fingrarna.)
+Visible detail settings are now disabled for VideoPress videos that don’t belong to your site.
 
-På tal om återanvändbara block - vi har uppdaterat "Redigering stöds inte"-meddelandet, så att WordPress inte nämns. Vi vet vilken app vi använder, vi lovar.
+Tap-to-edit is now available for all nested block types—no more tapping through every nesting level to reach a specific piece of content.
 
-Slutligen har vi åtgärdat en bugg som gjorde att appen kraschade om du försökte ladda upp media till ett klassiskt block utan att ge WordPress åtkomst till din enhets mediabibliotek. Nu visas istället ett meddelande som ber om mediaåtkomst. Lätt som en plätt.
+Speaking of nesting, we fixed a bug where merging a list item into a paragraph would remove any nested text for that list item.
+
+We were squashing bugs anyway, so we went ahead and fixed a couple in the reader, too. When you filter your followed topics, text in non-latin languages (like Arabic) now displays properly. The Report and Block actions are also back where they belong in the post menu.
+
+Finally, we’ve updated the design of disabled cells so it’s easier to tell when a cell isn’t in use.

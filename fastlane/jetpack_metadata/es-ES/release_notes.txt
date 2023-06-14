@@ -1,9 +1,13 @@
-Hemos añadido tarjetas a tu escritorio. La tarjeta Registro de actividad muestra tus tres actividades más recientes y la tarjeta Páginas, las tres últimas páginas que has modificado.
+Si tu sitio utiliza un tema basado en bloques, ahora puedes editar la página de inicio del sitio directamente desde la Lista de páginas. Emoji de las manos levantadas.
 
-También hemos realizado algunos cambios importantes en el editor de bloques. Para evitar fallos en la aplicación, los bloques reutilizables que se hayan eliminado o que no se hayan definido ya no se podrán convertir en bloques normales.
+Hemos corregido un problema relacionado con la configuración de enlaces para abrir en una pestaña nueva. Al escribir texto después de este enlace, ahora puedes deshacer y rehacer el texto sin ningún problema.
 
-Cuando tocas en un bloque de texto anidado, puedes editar su contenido de forma inmediata. Ya no hay que tocar en todos los niveles de anidado para llegar adonde quieres ir. (A nosotros también se nos estaban cansando los dedos).
+Ahora, los ajustes de detalles visibles están deshabilitados para los videos de VideoPress que no pertenezcan a tu sitio.
 
-Hablando de bloques reutilizables: hemos actualizado el mensaje "Editar (no compatible)" para quitar la mención de WordPress. Prometemos que sabemos qué aplicación estamos usando.
+La opción de tocar para editar ahora está disponible para todos los tipos de bloques anidados. Ya no hay que tocar en todos los niveles de anidado para llegar a un contenido concreto.
 
-Por último, hemos corregido un error por el cual la aplicación fallaba al intentar subir archivos multimedia a un bloque clásico sin permitir a WordPress acceder a la biblioteca de medios del dispositivo. En su lugar, aparecerá un mensaje solicitando el acceso a los archivos multimedia. Pan comido.
+Hablando de anidado, hemos corregido un error por el que la fusión de un elemento de lista en un párrafo quitaba todo el texto anidado de este elemento.
+
+Como estábamos corrigiendo errores, seguimos haciéndolo y también solucionamos un par de ellos en el lector. Al filtrar los temas que sigues, ahora el texto en idiomas no latinos (como el árabe) se ve correctamente. Además, las acciones Denunciar y Bloquear vuelven a estar donde debían en el menú de entradas.
+
+Para terminar, hemos actualizado el diseño de las celdas deshabilitadas, por lo que es más fácil reconocer cuándo una celda no está en uso.

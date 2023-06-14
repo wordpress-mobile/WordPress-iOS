@@ -1,3 +1,17 @@
+22.7
+-----
+
+
+22.6
+-----
+* [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
+* [**] [Jetpack-only] Add a "Personalize Home Tab" button to the bottom of the My Site Dashboard that opens a new screen where you can customize which dashboard cards are visible. You can now also hide any of the dashboard cards directly from My Site Dashboard using the "more" menu. [#20296]
+* [*] [Jetpack-only] Domains selection: Show error message when selecting unsupported domains. [#20786]
+* [***] [Jetpack-only] Plans: Bringing WPCOM plans to Jetpack app. [#20822]
+* [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
+* [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
+* [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
+
 22.5
 -----
 * [*] [Jetpack-only] Reader: Fix the display of the followed topics in the filter sheet when they're written in non-latin languages. [#20702]
@@ -7,6 +21,7 @@
 * [**] Block editor: Fix undo/redo history when inserting a link configured to open in a new tab [https://github.com/WordPress/gutenberg/pull/50460]
 * [**] [Jetpack-only] Block editor: Disable details settings for not belonged VideoPress videos [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5782]
 * [*] Block editor: [List block] Fix an issue when merging a list item into a Paragraph would remove its nested list items [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5785]
+* [**] Block editor: Tapping any type of nested block moves focus to the nested block directly, rather than requiring multiple taps to navigate down each nesting levels. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5781]
 
 22.4
 -----

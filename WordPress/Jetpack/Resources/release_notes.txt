@@ -1,9 +1,8 @@
-We added cards to your dashboard. The Activity Log card shows your three most recent activities, and the Pages card shows the last three pages you modified.
+* [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
+* [**] Add a "Personalize Home Tab" button to the bottom of the My Site Dashboard that opens a new screen where you can customize which dashboard cards are visible. You can now also hide any of the dashboard cards directly from My Site Dashboard using the "more" menu. [#20296]
+* [*] Domains selection: Show error message when selecting unsupported domains. [#20786]
+* [***] Plans: Bringing WPCOM plans to Jetpack app. [#20822]
+* [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
+* [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
+* [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
 
-We also made some important changes in the block editor. To prevent an app crash, deleted and undefined reusable blocks can no longer be converted to regular blocks.
-
-When you tap on a nested text block, you can immediately edit content in that block—no more tapping through every nesting level to get where you want to go. (Our fingers were getting tired, too.)
-
-Speaking of reusable blocks—we updated the “editing not supported” message to remove the mention of WordPress. We know what app we’re using, we promise.
-
-Finally, we fixed a bug where the app would crash if you tried to upload media to a classic block without giving WordPress access to your device’s media library. Instead, you’ll see a prompt asking for media access. Easy peasy, lemon squeezy.

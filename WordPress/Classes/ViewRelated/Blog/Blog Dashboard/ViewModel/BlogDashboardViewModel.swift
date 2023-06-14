@@ -133,6 +133,7 @@ private extension BlogDashboardViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
     }
 
     func updateCurrentCards(cards: [DashboardCardModel]) {
@@ -155,16 +156,7 @@ private extension BlogDashboardViewModel {
 
     func applySnapshot(for cards: [DashboardCardModel]) {
         let snapshot = createSnapshot(from: cards)
-        let scrollView = viewController?.mySiteScrollView
-        let position = scrollView?.contentOffset
-
-        dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
-            guard let scrollView = scrollView, let position = position else {
-                return
-            }
-
-            self?.scroll(scrollView, to: position)
-        }
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
@@ -181,12 +173,6 @@ private extension BlogDashboardViewModel {
         snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
-    }
-
-    func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
-        if position.y > 0 {
-            scrollView.setContentOffset(position, animated: false)
-        }
     }
 
     // In case a draft is saved and the drafts card

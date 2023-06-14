@@ -7,8 +7,8 @@ class ReaderTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        readerScreen = try EditorFlow
+        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try EditorFlow
             .goToMySiteScreen()
             .tabBar.goToReaderScreen()
     }
@@ -22,18 +22,20 @@ class ReaderTests: XCTestCase {
 
     let commentContent = "Test comment."
 
-    func testViewPost() {
-        readerScreen.openLastPost()
-        XCTAssert(readerScreen.postContentEquals(expectedPostContent))
+    func testViewPost() throws {
+        try ReaderScreen()
+            .openLastPost()
+            .verifyPostContentEquals(expectedPostContent)
     }
 
-    func testViewPostInSafari() {
-        readerScreen.openLastPostInSafari()
-        XCTAssert(readerScreen.postContentEquals(expectedPostContent))
+    func testViewPostInSafari() throws {
+        try ReaderScreen()
+            .openLastPostInSafari()
+            .verifyPostContentEquals(expectedPostContent)
     }
 
     func testAddCommentToPost() throws {
-        try readerScreen
+        try ReaderScreen()
             .openLastPostComments()
             .verifyCommentsListEmpty()
             .replyToPost(commentContent)

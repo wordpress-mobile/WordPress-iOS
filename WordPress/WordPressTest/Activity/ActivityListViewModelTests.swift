@@ -133,9 +133,9 @@ class ActivityStoreMock: ActivityStore {
 }
 
 extension Activity {
-    static func mock(isRewindable: Bool = false) throws -> Activity {
+    static func mock(id: String = "1", isRewindable: Bool = false) throws -> Activity {
         let dictionary = [
-            "activity_id": "1",
+            "activity_id": id,
             "summary": "",
             "is_rewindable": isRewindable,
             "rewind_id": "1",

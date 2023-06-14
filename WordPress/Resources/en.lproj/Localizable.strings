@@ -246,6 +246,9 @@
 "%s has URL set" = "%s has URL set";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s link";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s previews not yet available";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -1179,6 +1182,21 @@
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "You have not created any campaigns yet. Click promote to get started.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "You have no campaigns";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Loading campaigns...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Promote";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze Campaigns";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Display your work across millions of sites.";
 
@@ -1209,6 +1227,15 @@
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Blaze this post";
 
+/* Short status description */
+"blazeCampaign.status.active" = "Active";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "Scheduled";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Rejected";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Block copied";
 
@@ -1220,6 +1247,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block editor enabled";
+
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Block grouped";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Block malicious login attempts";
@@ -1239,6 +1269,9 @@
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Block this site";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Block ungrouped";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
@@ -2394,6 +2427,21 @@
 /* Title for the Activity Log dashboard card. */
 "dashboardCard.ActivityLog.title" = "Recent activity";
 
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Clicks";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Create campaign";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Impressions";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze campaign";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "View all campaigns";
+
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Add pages to your site";
 
@@ -2711,6 +2759,12 @@
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Dismiss";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Don't have an account? _Sign up_";
@@ -3584,6 +3638,27 @@
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Get a free domain for the first year, remove ads on your site, and increase your storage.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Hide this";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Free domain with an annual plan";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Done";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "It may take up to 30 minutes for your domain to start working properly";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Your new domain %@ is being set up.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "All ready to go!";
 
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Frequently Asked Questions";
@@ -5596,6 +5671,9 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "No date range selected";
 
+/* No comment provided by engineer. */
+"No description" = "No description";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "No fixed threats";
 
@@ -5739,6 +5817,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "No Title";
+
+/* No comment provided by engineer. */
+"No title" = "No title";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -6135,6 +6216,12 @@ Please install the %3$@ to use the app with this site.";
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promote with Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Your homepage is using a Theme template and will open in the web editor.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Homepage";
+
 /* Comments Paging
    Discussion Settings
    Settings: Comments Paging preferences */
@@ -6223,6 +6310,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Draft posts";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Get to know the app";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Next steps";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Pages";
@@ -6573,6 +6666,9 @@ Please install the %3$@ to use the app with this site.";
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Featured Image Options";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
+
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Powered by Tenor";
 
@@ -6812,6 +6908,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Search";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader Settings";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -7946,6 +8048,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a Quick Start Tour */
 "Social sharing" = "Social sharing";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Increase your traffic by auto-sharing your posts with your friends on social media.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Connect your profiles";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Social media icons";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Not now";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Find out more";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter auto-sharing is no longer available due to Twitter's changes in terms and pricing.";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";

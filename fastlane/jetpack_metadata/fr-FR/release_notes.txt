@@ -1,9 +1,13 @@
-Nous avons ajouté des cartes à votre tableau de bord. La carte Journal d’activités affiche vos trois activités les plus récentes, et la carte Pages affiche les trois dernières pages que vous avez modifiées.
+Si votre site utilise un thème reposant sur des blocs, vous pouvez désormais modifier la page d’accueil de votre site directement à partir de la liste des pages. Émoticône Mains levées.
 
-Nous avons également apporté quelques changements importants à l’éditeur de blocs. Pour empêcher le blocage d’une application, des blocs réutilisables supprimés et non définis ne peuvent plus être convertis en blocs normaux.
+Nous avons résolu un problème concernant l’ouverture des liens dans un nouvel onglet. Lorsque vous saisissez du texte après ce lien, vous pouvez désormais annuler et rétablir le texte sans aucun problème.
 
-Lorsque vous appuyez sur un bloc paragraphe imbriqué, vous pouvez immédiatement modifier le contenu de ce bloc. Il n’est plus nécessaire d’appuyer sur chaque niveau de l’imbrication pour accéder là où vous voulez. (Nos doigts se fatiguaient aussi.)
+Les paramètres de détails visibles sont désormais désactivés pour les vidéos VideoPress qui n’appartiennent pas à votre site.
 
-En parlant des blocs réutilisables, nous avons mis à jour le message relatif à l’édition non prise en charge pour supprimer la mention de WordPress. Nous connaissons l’application que nous utilisons, promis.
+La fonction Appuyer pour modifier est disponible pour tous les types de blocs imbriqués : vous n’avez plus à parcourir tous les niveaux d’imbrication pour atteindre un élément de contenu spécifique.
 
-Enfin, nous avons corrigé un bug dans lequel l’application se bloquait si vous essayiez de charger des médias dans un bloc classique sans accorder à WordPress l’accès à la bibliothèque de médias de votre appareil. Une invite s’affichait plutôt pour vous demander l’accès aux médias. Un jeu d’enfant.
+Nous avons corrigé un problème concernant l’imbrication qui entraînait la suppression de tout texte imbriqué dans un élément de liste lors de sa fusion dans un paragraphe.
+
+Lors de la suppression de bugs, nous avons également résolu quelques problèmes dans le lecteur. Lorsque vous filtrez les sujets que vous suivez, les textes en langues non latines (comme l’arabe) s’affichent désormais correctement. Les actions Rapport et Bloc sont également de nouveau disponibles dans le menu Article.
+
+Enfin, nous avons modifié le design des cellules désactivées pour déterminer plus facilement quand une cellule n’est pas utilisée.

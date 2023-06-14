@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 10:55:27+0000 */
+/* Translation-Revision-Date: 2023-06-05 00:24:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: en_AU */
@@ -941,6 +941,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's Viewer";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Blogging";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -5857,6 +5860,9 @@ translators: Block name. %s: The localized block name */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
 
+/* Menu title to skip today's prompt. */
+"Skip for today" = "Skip for today";
+
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
 
@@ -6796,6 +6802,9 @@ translators: Block name. %s: The localized block name */
 
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Try with the site address";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Turn off prompts";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Turn off site notifications";
@@ -8050,6 +8059,21 @@ translators: Block name. %s: The localized block name */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
 
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Stats & Insights";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Do this later";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Hide this";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Learn more";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Remind me later";
+
 /* Later today */
 "later today" = "later today";
 
@@ -8068,8 +8092,29 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";
 
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Blogging Prompts hidden";
+
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "You're logged in!";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Show prompts";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Reminders";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "Last 7-days";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Previous 7-days";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "Last 7-days";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "Previous 7-days";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "these items will be deleted:";

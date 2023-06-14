@@ -75,13 +75,9 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         }
 
         if FeatureFlag.personalizeHomeTab.enabled {
-            frameView.onEllipsisButtonTap = {
-                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .todaysStats)
-            }
-            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-            frameView.ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: [
-                BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, siteID: blog.dotComID?.intValue ?? 0)
-            ])
+            frameView.addMoreMenu(items: [
+                BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
+            ], card: .todaysStats)
         }
 
         statsStackView?.views = viewModel?.todaysViews

@@ -1,3 +1,9 @@
-Wanneer je op een genest tekstblok tikt, kun je meteen de inhoud van dat blok bewerken, zonder dat je door elk niveau hoeft te klikken om de gewenste plek te bereiken. (Onze vingers werden ook moe.)
+Als je site een thema op blokbasis gebruikt, kan je nu de startpagina van je site direct via de lijst Pagina's bewerken. Emoji juichend omhooggestoken handen.
 
-We hebben een bug opgelost waardoor de app crashte wanneer je probeerde media te uploaden naar een klassiek blok zonder WordPress toegang te verlenen tot de mediabibliotheek van je apparaat. In plaats daarvan krijg je een nu een melding waarin je wordt gevraagd om toegang tot je media te geven. Fluitje van een cent.
+We hebben een probleem opgelost dat zich voordeed bij het openen van links in een nieuw tabblad. Als je na deze link verder schrijft, kan je de geschreven tekst nu zonder problemen ongedaan maken en herstellen.
+
+De functie Tik om te bewerken is nu beschikbaar voor alle geneste bloktypen. Je hoeft dus niet meer door elk niveau heen te bladeren om een bepaald stukje content te bereiken.
+
+Nu we het toch over nesten hebben, we hebben ook een bug verholpen waardoor, bij het samenvoegen van een lijstitem met een alinea, alle geneste tekst van dat lijstitem werd verwijderd.
+
+Ten slotte hebben we het ontwerp van uitgeschakelde cellen aangepast, zodat je makkelijker kan zien wanneer een cel niet wordt gebruikt.

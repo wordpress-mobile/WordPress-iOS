@@ -238,7 +238,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 Blog *blogInContext = (Blog *)[context objectWithID:blogID];
                 [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
-            } completion:nil onQueue:dispatch_get_main_queue()];
+            } completion:success onQueue:dispatch_get_main_queue()];
         };
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {

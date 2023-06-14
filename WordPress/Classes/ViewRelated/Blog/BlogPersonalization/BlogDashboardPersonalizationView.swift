@@ -52,7 +52,7 @@ private extension BlogDashboardPersonalizationView {
 struct BlogDashboardPersonalizationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BlogDashboardPersonalizationView(viewModel: .init(service: .init(repository: UserDefaults.standard, siteID: 1)))
+            BlogDashboardPersonalizationView(viewModel: .init(service: .init(repository: UserDefaults.standard, siteID: 1), quickStartType: .newSite))
         }
     }
 }

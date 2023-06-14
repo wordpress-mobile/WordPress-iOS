@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './Gutenberg/cocoapods_helpers'
+require 'xcodeproj'
 
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
 # For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
@@ -10,12 +11,12 @@ source 'https://cdn.cocoapods.org/'
 
 raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_GEMFILE].any? { |k| ENV.key?(k) }
 
+VERSION_XCCONFIG_PATH = File.join(File.expand_path(__dir__), 'config', 'Common.xcconfig')
+APP_IOS_DEPLOYMENT_TARGET = Gem::Version.new(Xcodeproj::Config.new(VERSION_XCCONFIG_PATH).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
+
+platform :ios, APP_IOS_DEPLOYMENT_TARGET.version
 inhibit_all_warnings!
 use_frameworks!
-
-app_ios_deployment_target = Gem::Version.new('13.0')
-
-platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
@@ -49,7 +50,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 8.2.0-beta.1'
+  pod 'WordPressKit', '~> 8.3-beta'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
@@ -141,7 +142,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.8-beta.1'
+  pod 'WPMediaPicker', '~> 1.8-beta'
   ## while PR is in review:
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
@@ -394,7 +395,7 @@ post_install do |installer|
 
     target.build_configurations.each do |configuration|
       pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= APP_IOS_DEPLOYMENT_TARGET
     end
   end
 

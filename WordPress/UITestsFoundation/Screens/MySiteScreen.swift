@@ -19,7 +19,17 @@ private struct ElementStringIDs {
     static let switchSiteButton = "SwitchSiteButton"
     static let dashboardButton = "Home"
     static let segmentedControlMenuButton = "Menu"
-    static let domainsCardHeaderButton = "Find a custom domain"
+    // "Free To Paid Plans" Card
+    static let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
+    static let freeToPaidPlansCardHeaderButton = "Free domain with an annual plan"
+    // "Pages" Card
+    static let pagesCardId = "dashboard-pages-card-frameview"
+    static let pagesCardHeaderButton = "Pages"
+    static let pagesCardMoreButton = "More"
+    static let pagesCardCreatePageButton = "Create another page"
+    // "Activity Log" Card
+    static let activityLogCardId = "dashboard-activity-log-card-frameview"
+    static let activityLogCardHeaderButton = "Recent activity"
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
@@ -61,15 +71,45 @@ public class MySiteScreen: ScreenObject {
         $0.buttons[ElementStringIDs.segmentedControlMenuButton]
     }
 
-    let domainsCardButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.domainsCardHeaderButton]
+    let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons[ElementStringIDs.freeToPaidPlansCardHeaderButton]
+    }
+
+    let pagesCardGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.pagesCardId]
+    }
+
+    let pagesCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardHeaderButton]
+    }
+
+    let pagesCardMoreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardHeaderButton]
+    }
+
+    let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardMoreButton]
     }
 
     let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells[ElementStringIDs.domainsButton]
     }
 
-    var domainsCardButton: XCUIElement { domainsCardButtonGetter(app) }
+    let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.activityLogCardId]
+    }
+
+    let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[ElementStringIDs.activityLogCardId].buttons[ElementStringIDs.activityLogCardHeaderButton]
+    }
+
+    var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
+    var pagesCard: XCUIElement { pagesCardGetter(app) }
+    var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
+    var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
+    var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
+    var activityLogCard: XCUIElement { activityLogCardGetter(app) }
+    var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -189,24 +229,81 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyDomainsCard() -> Self {
-        let cardText = app.staticTexts["Stake your claim on your corner of the web with a site address that’s easy to find, share and follow."]
-        XCTAssertTrue(domainsCardButton.waitForIsHittable(), "Domains card header was not displayed.")
-        XCTAssertTrue(cardText.waitForIsHittable(), "Domains card text was not displayed.")
+    public func verifyFreeToPaidPlansCard() -> Self {
+        let cardText = app.staticTexts["Get a free domain for the first year, remove ads on your site, and increase your storage."]
+        XCTAssertTrue(freeToPaidPlansCardButton.waitForIsHittable(), "Free to Paid plans card header was not displayed.")
+        XCTAssertTrue(cardText.waitForIsHittable(), "Free to Paid plans card text was not displayed.")
         return self
     }
 
     @discardableResult
-    public func tapDomainsCard() throws -> DomainsSuggestionsScreen {
-        domainsCardButton.tap()
+    public func verifyPagesCard() -> Self {
+        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(), "Pages card: Header not displayed.")
+        XCTAssertTrue(pagesCardMoreButton.waitForIsHittable(), "Pages card: Context menu button not displayed.")
+        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(), "Pages card: \"Create Page\" button not displayed.")
+        return self
+    }
+
+    @discardableResult
+    public func verifyPagesCard(hasPage pageTitle: String) -> Self {
+        XCTAssertTrue(pagesCard.staticTexts[pageTitle].waitForIsHittable(), "Pages card: \"\(pageTitle)\" page not displayed.")
+        return self
+    }
+
+    @discardableResult
+    public func verifyActivityLogCard() -> Self {
+        XCTAssertTrue(activityLogCardHeaderButton.waitForIsHittable(), "Activity Log card: header not displayed.")
+        XCTAssertTrue(activityLogCard.buttons["More"].waitForIsHittable(), "Activity Log card: context menu not displayed.")
+        return self
+    }
+
+    @discardableResult
+    public func verifyActivityLogCard(hasActivityPartial activityTitle: String) -> Self {
+        XCTAssertTrue(
+            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(),
+            "Activity Log card: \"\(activityTitle)\" activity not displayed.")
+        return self
+    }
+
+    @discardableResult
+    public func tapFreeToPaidPlansCard() throws -> DomainsSuggestionsScreen {
+        freeToPaidPlansCardButton.tap()
         return try DomainsSuggestionsScreen()
     }
 
     @discardableResult
-    public func scrollToDomainsCard() throws -> Self {
-        let collectionView = app.collectionViews.firstMatch
-        let cardCell = collectionView.cells.containing(.other, identifier: "dashboard-domains-card-contentview").firstMatch
-        cardCell.scrollIntoView(within: collectionView)
+    public func scrollToFreeToPaidPlansCard() throws -> Self {
+        scrollToCard(withId: ElementStringIDs.freeToPaidPlansCardId)
         return self
+    }
+
+    @discardableResult
+    public func scrollToPagesCard() throws -> Self {
+        scrollToCard(withId: ElementStringIDs.pagesCardId)
+        return self
+    }
+
+    @discardableResult
+    public func tapPagesCardHeader() throws -> PagesScreen {
+        pagesCardHeaderButton.tap()
+        return try PagesScreen()
+    }
+
+    @discardableResult
+    public func scrollToActivityLogCard() throws -> Self {
+        scrollToCard(withId: ElementStringIDs.activityLogCardId)
+        return self
+    }
+
+    @discardableResult
+    public func tapActivityLogCardHeader() throws -> ActivityLogScreen {
+        activityLogCardHeaderButton.tap()
+        return try ActivityLogScreen()
+    }
+
+    func scrollToCard(withId id: String) {
+        let collectionView = app.collectionViews.firstMatch
+        let cardCell = collectionView.cells.containing(.any, identifier: id).firstMatch
+        app.scrollDownToElement(element: cardCell)
     }
 }

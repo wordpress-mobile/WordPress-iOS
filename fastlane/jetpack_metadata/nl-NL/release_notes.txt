@@ -1,9 +1,13 @@
-We hebben kaarten aan je dashboard toegevoegd. De kaart Activiteitenlog toont je de drie meest recente activiteiten, en de kaart Pagina's toont de laatste drie pagina’s die je hebt aangepast.
+Als je site een thema op blokbasis gebruikt, kan je nu de startpagina van je site direct via de lijst Pagina's bewerken. Emoji juichend omhooggestoken handen.
 
-We hebben ook enkele belangrijke wijzigingen aangebracht in de blokeditor. Om het crashen van de app te voorkomen, kunnen verwijderde en ongedefinieerde herbruikbare blokken niet meer worden omgezet naar normale blokken.
+We hebben een probleem opgelost dat zich voordeed bij het openen van links in een nieuw tabblad. Als je na deze link verder schrijft, kan je de geschreven tekst nu zonder problemen ongedaan maken en herstellen.
 
-Wanneer je op een genest tekstblok tikt, kun je meteen de inhoud van dat blok bewerken, zonder dat je door elk niveau hoeft te klikken om de gewenste plek te bereiken. (Onze vingers werden ook moe.)
+Er worden geen instellingen voor zichtbare details meer getoond voor VideoPress-video's die geen eigendom van je site zijn.
 
-Nu we het toch over herbruikbare blokken hebben, we hebben het bericht “bewerken niet ondersteund” geüpdatet om de vermelding van WordPress te verwijderen. Geloof ons, we weten wel welke app we gebruiken.
+De functie Tik om te bewerken is nu beschikbaar voor alle geneste bloktypen. Je hoeft dus niet meer door elk niveau heen te bladeren om een bepaald stukje content te bereiken.
 
-We hebben eindelijk een bug opgelost waardoor de app crashte wanneer je probeerde media te uploaden naar een klassiek blok zonder WordPress toegang te verlenen tot de mediabibliotheek van je apparaat. In plaats daarvan krijg je een nu een melding waarin je wordt gevraagd om toegang tot je media te geven. Fluitje van een cent.
+Nu we het toch over nesten hebben, we hebben een bug verholpen waardoor, bij het samenvoegen van een lijstitem met een alinea, alle geneste tekst van dat lijstitem werd verwijderd.
+
+We hebben ook een paar bugs in de lezer uit de weg geruimd, aangezien we toch bezig waren. Wanneer je jouw gevolgde onderwerpen filtert, wordt tekst van een niet-Latijnse taal (zoals Arabisch) nu wel juist weergegeven. De acties Rapporteren en Blokkeren zijn ook weer terug op hun juiste plek in het berichtmenu.
+
+Ten slotte hebben we het ontwerp van uitgeschakelde cellen aangepast, zodat je makkelijker kan zien wanneer een cel niet wordt gebruikt.

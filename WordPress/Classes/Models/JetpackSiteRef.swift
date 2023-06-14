@@ -16,7 +16,7 @@ struct JetpackSiteRef: Hashable, Codable {
     /// The homeURL string  for a site.
     let homeURL: String
 
-    private var hasBackup = false
+    private(set) var hasBackup = false
     private var hasPaidPlan = false
 
     // Self Hosted Non Jetpack Support

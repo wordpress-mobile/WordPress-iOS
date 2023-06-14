@@ -6,7 +6,6 @@ struct PlansTracker {
     }
 
     private static let positionKey = "position_index"
-    private static let planSelectionTypeKey = "plan_selection_type"
 
     // MARK: - Dashboard Card
 
@@ -30,17 +29,10 @@ struct PlansTracker {
         WPAnalytics.track(.freeToPaidPlansDashboardCardMenuTapped, properties: properties)
     }
 
-    // MARK: - Plan Selection
+    // MARK: - Purchase Result
 
-    static func trackPlanSelectionWebViewViewed(_ type: PlanSelectionType, source: String) {
-        let properties = ["source": source, planSelectionTypeKey: type.rawValue]
-        WPAnalytics.track(.planSelectionWebViewViewed, properties: properties)
-    }
-
-    // MARK: - Checkout
-
-    static func trackCheckoutWebViewViewed(source: String) {
+    static func trackPurchaseResult(source: String) {
         let properties = ["source": source]
-        WPAnalytics.track(.checkoutWebViewViewed, properties: properties)
+        WPAnalytics.track(.domainCreditRedemptionSuccess, withProperties: properties)
     }
 }

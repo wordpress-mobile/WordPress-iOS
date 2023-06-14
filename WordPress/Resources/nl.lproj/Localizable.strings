@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 11:54:09+0000 */
+/* Translation-Revision-Date: 2023-06-08 08:14:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s heeft geen URL ingesteld";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s link";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s voorbeelden nog niet beschikbaar";
@@ -537,7 +540,7 @@ translators: Block name. %s: The localized block name */
 "Add a domain" = "Voeg een domein toe";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Voeg op elk moment een nieuw blok toe, door te tikken op het + pictogram in de gereedschapsbalk links onderaan. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Voeg op elk moment een nieuw blok toe, door te tikken op het + pictogram in de gereedschapsbalk links onderaan.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Voeg een zelf-gehoste site toe";
@@ -697,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "Allow Comments" = "Reacties toestaan";
 
 /* Title for a cell with switch control that allows to enable or disable notifications */
-"Allow Notifications" = "Sta meldingen toe";
+"Allow Notifications" = "Meldingen toestaan";
 
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "Sta WordPress toe meldingen te sturen";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blok-editor ingeschakeld";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Blok gegroepeerd";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokkeer verdachte inlogpogingen";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blokkeer deze site";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Blokgroepering ongedaan gemaakt";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Geblokkeerde site";
@@ -1775,13 +1784,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your notifications" = "Afgerond: controleer je meldingen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site stats" = "Afgerond: Kies je site statistieken";
+"Completed: Check your site stats" = "Afgerond: kies je site statistieken";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site title" = "Afgerond: bekijk je sitetitel";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a theme" = "Afgerond: Kies een thema";
+"Completed: Choose a theme" = "Afgerond: kies een thema";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a unique site icon" = "Afgerond: kies een unieke site pictogram";
@@ -1790,19 +1799,19 @@ translators: Block name. %s: The localized block name */
 "Completed: Connect with other sites" = "Afgerond: maak verbinding met andere sites";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Continue with site setup" = "Afgerond: Ga verder met de site setup";
+"Completed: Continue with site setup" = "Afgerond: ga verder met de site setup";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Create your site" = "Afgerond: Maak je site";
+"Completed: Create your site" = "Afgerond: maak je site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Explore plans" = "Afgerond: Verken abonnementen";
+"Completed: Explore plans" = "Afgerond: bekijk abonnementen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Publish a post" = "Afgerond: Publiceer een bericht";
+"Completed: Publish a post" = "Afgerond: publiceer een bericht";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Afgerond: Beoordeel site pagina's";
+"Completed: Review site pages" = "Afgerond: beoordeel site pagina's";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Social sharing" = "Afgerond: sociaal delen";
@@ -1811,7 +1820,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Upload photos or videos" = "Afgerond: foto’s of video’s uploaden";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: View your site" = "Afgerond: Bekijk je site";
+"Completed: View your site" = "Afgerond: bekijk je site";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configureren";
@@ -2743,6 +2752,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Bewerk video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door %s voor Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door %s voor iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Deze GIF bewerken zal de animatie verwijderen.";
@@ -4233,7 +4248,7 @@ translators: Block name. %s: The localized block name */
 "Load more posts" = "Meer berichten laden";
 
 /* No comment provided by engineer. */
-"Loading" = "Laden";
+"Loading" = "Bezig met laden";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Activiteiten laden...";
@@ -5074,13 +5089,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note:" = "Opmerking:";
 
 /* No comment provided by engineer. */
-"Note: Column layout may vary between themes and screen sizes" = "Opmerking: Kolom lay-out kan verschillen tussen thema's en schermafmetingen";
+"Note: Column layout may vary between themes and screen sizes" = "Opmerking: kolom lay-out kan verschillen tussen thema's en schermafmetingen";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Opmerking: Lay-out kan verschillen tussen thema's en schermgroottes";
+"Note: Layout may vary between themes and screen sizes" = "Opmerking: lay-out kan verschillen tussen thema's en schermgroottes";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Opmerking: Je moet WordPress.com login toestaan om dit blok in de mobiele editor te bewerken.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Opmerking: je moet WordPress.com login toestaan om dit blok in de mobiele editor te bewerken.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Niets gevonden.";
@@ -5769,7 +5784,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Posts and Pages" = "Berichten en pagina's";
 
 /* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Berichten verschijnen op je blogpagina in omgekeerde chronologische volgorde. Het is tijd om je ideeën met de wereld te delen.";
+"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Berichten verschijnen op je blogpagina in omgekeerde chronologische volgorde. Het is tijd om je ideeën met de wereld te delen!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Berichtenpagina";
@@ -6130,7 +6145,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "Favicon verwijderen";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Verwijder als uitgelichte afbeelding ";
+"Remove as Featured Image" = "Verwijder als uitgelichte afbeelding";
 
 /* No comment provided by engineer. */
 "Remove block" = "Verwijder blok";
@@ -6747,7 +6762,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Set Parent" = "Instellen als bovenliggend item";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Instellen als uitgelichte afbeelding ";
+"Set as Featured Image" = "Instellen als uitgelichte afbeelding";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Instellen als homepage";
@@ -6953,7 +6968,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Siri Reset Confirmation" = "Siri voorgestelde opdrachten succesvol gewist";
 
 /* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "Wis Siri voorgestelde opdrachten";
+"Siri Reset Prompt" = "Wis Siri snelkoppeling opdrachten";
 
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
@@ -7352,7 +7367,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
-"Tagline" = "Omschrijving";
+"Tagline" = "Ondertitel";
 
 /* Label for selecting the blogs tags
    Label for Tags
@@ -9677,7 +9692,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.buttonTitle" = "Blaze nu een bericht";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionOne" = "Promoot in een paar minuten elke post of pagina voor slechts enkele euro’s per dag.";
+"blaze.overlay.descriptionOne" = "Promoot in een paar minuten elke bericht of pagina voor slechts enkele euro's per dag.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionThree" = "Volg de prestaties van je campagne en annuleer op elk gewenst moment.";
@@ -9719,7 +9734,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "customizeInsightsCell.dismissButton.accessibilityHint" = "Tik om deze kaart te negeren";
 
 /* Customize Insights button title */
-"customizeInsightsCell.dismissButton.title" = "Afwijzen";
+"customizeInsightsCell.dismissButton.title" = "Negeren";
 
 /* Customize Insights title */
 "customizeInsightsCell.title" = "Je inzichten aanpassen";
@@ -9788,7 +9803,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "debugMenu.section.remoteFeatureFlags" = "Externe functievlaggen";
 
 /* Description for the Domains dashboard card. */
-"domain.dashboard.card.description" = "Eis je eigen hoekje van het internet op met een site-adres dat eenvoudig te vinden, te delen en te volgen is.";
+"domain.dashboard.card.description" = "Eis je eigen hoekje van het internet op met een site adres dat eenvoudig te vinden, te delen en te volgen is.";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
@@ -9849,6 +9864,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "volgen";
 
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Ontvang een gratis domein voor eerste jaar, verwijder advertenties van je website en krijg meer opslagruimte.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Dit verbergen";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Gratis domein bij een jaarabonnement";
+
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Stel je blogging herinneringen in";
 
@@ -9865,7 +9889,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "growAudienceCell.bloggingReminders.details" = "Regelmatig publiceren helpt je een publiek op te bouwen. Herinnering helpen je om op schema te blijven.";
 
 /* Title for button that will dismiss the Grow Your Audience card. */
-"growAudienceCell.dismiss" = "Afwijzen";
+"growAudienceCell.dismiss" = "Negeren";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.actionButton" = "Ontdek blogs om te volgen";
@@ -9997,7 +10021,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.branding.badge_banner.title" = "Aangedreven door Jetpack";
 
 /* Title of the Jetpack powered badge. */
-"jetpack.branding.badge_banner.title.phase2" = "Krijg de Jetpack-app";
+"jetpack.branding.badge_banner.title.phase2" = "Installeer de Jetpack app";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Probeer de Jetpack-app";
@@ -10012,7 +10036,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.early.switch.title" = "Schakel over naar de nieuwe Jetpack-app";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
-"jetpack.fullscreen.overlay.late.switch.title" = "Schakel over naar de Jetpack-app";
+"jetpack.fullscreen.overlay.late.switch.title" = "Schakel over naar de Jetpack app";
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Ga naar jetpack.com voor meer informatie";
@@ -10048,7 +10072,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack-functies zijn verplaatst.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Schakel over naar de Jetpack-app om realtime meldingen te blijven ontvangen op je apparaat.";
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Schakel over naar de Jetpack app om realtime meldingen te blijven ontvangen op je apparaat.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Ontvang meldingen met de Jetpack-app";
@@ -10081,7 +10105,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack biedt statistieken, meldingen en meer om je te helpen de WordPress-site van je dromen te bouwen.\n\nDe WordPress-app ondersteunt het maken van een nieuwe site niet meer.";
 
 /* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
-"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistieken, Reader, Meldingen en andere functies die door Jetpack aangedreven worden, zullen binnenkort uit de WordPress-app worden verwijderd.";
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistieken, Reader, Meldingen en andere functies die door Jetpack aangedreven worden, zullen binnenkort uit de WordPress app worden verwijderd.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Meldingen zullen naar Jetpack worden verplaatst";
@@ -10099,10 +10123,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Doorgaan naar Lezer";
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.selfHosted.subtitle" = "De Jetpack mobiele app is ontworpen om samen met de Jetpack-plugin te werken. Stap nu over om toegang te krijgen tot Statistieken, Lezer, Meldingen en meer.";
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "De Jetpack mobiele app is ontworpen om samen met de Jetpack plugin te werken. Stap nu over om toegang te krijgen tot Statistieken, Reader, Meldingen en meer.";
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
-"jetpack.fullscreen.overlay.selfHosted.title" = "Je site heeft de Jetpack-plugin";
+"jetpack.fullscreen.overlay.selfHosted.title" = "Je site heeft de Jetpack plugin";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "Doorgaan zonder Jetpack";
@@ -10132,7 +10156,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.install.connectUser.stats.description" = "Je moet de Jetpack-plugin koppelen aan je gebruikersaccount om statistieken op je site te kunnen gebruiken.";
 
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
-"jetpack.menuCard.description" = "Statistieken, Lezer, Meldingen en andere functies worden binnenkort verplaatst naar de Jetpack mobiele app.";
+"jetpack.menuCard.description" = "Statistieken, Reader, Meldingen en andere functies worden binnenkort verplaatst naar de Jetpack mobiele app.";
 
 /* Menu item title to hide the card. */
 "jetpack.menuCard.hide" = "Dit verbergen";
@@ -10153,19 +10177,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.plugin.modal.footnote" = "Door Jetpack in te stellen, ga je akkoord met onze %@";
 
 /* Jetpack Plugin Modal primary button title */
-"jetpack.plugin.modal.primary.button.title" = "De volledige plug-in installeren";
+"jetpack.plugin.modal.primary.button.title" = "De volledige plugin installeren";
 
 /* Jetpack Plugin Modal secondary button title */
 "jetpack.plugin.modal.secondary.button.title" = "Neem contact op met de ondersteuning";
 
 /* The 'full Jetpack plugin' string in the subtitle */
-"jetpack.plugin.modal.subtitle.jetpack.plugin" = "volledige Jetpack-plug-in";
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "volledige Jetpack plugin";
 
 /* Jetpack Plugin Modal footnote terms and conditions */
 "jetpack.plugin.modal.terms" = "Algemene voorwaarden";
 
 /* Jetpack Plugin Modal title */
-"jetpack.plugin.modal.title" = "Installeer de volledige Jetpack-plug-in";
+"jetpack.plugin.modal.title" = "Installeer de volledige Jetpack plugin";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Voeg een auteur toe";
@@ -10210,10 +10234,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpackinstallcard.menu.hide" = "Dit verbergen";
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
-"jetpackinstallcard.notice.individual" = "Deze site gebruikt de %1$@-plug-in. Deze ondersteunt nog niet alle functies van de app. Installeer de volledige Jetpack-plug-in.";
+"jetpackinstallcard.notice.individual" = "Deze site gebruikt de %1$@ plugin. Deze ondersteunt nog niet alle functies van de app. Installeer de volledige Jetpack plugin.";
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
-"jetpackinstallcard.notice.multiple" = "Deze site gebruikt individuele Jetpack-plug-ins. Deze ondersteunen nog niet alle functies van de app. Installeer de volledige Jetpack-plug-in.";
+"jetpackinstallcard.notice.multiple" = "Deze site gebruikt individuele Jetpack plugins. Deze ondersteunen nog niet alle functies van de app. Installeer de volledige Jetpack plugin.";
 
 /* Later today */
 "later today" = "later vandaag";
@@ -10234,7 +10258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Het lijkt erop dat je de WordPress-app nog steeds geïnstalleerd hebt.";
+"migration.deleteWordpress.description" = "Het lijkt erop dat je de WordPress app nog steeds geïnstalleerd hebt.";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Duidelijk";
@@ -10243,16 +10267,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "Hulp nodig?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Je hebt de WordPress-app niet meer nodig op je apparaat";
+"migration.deleteWordpress.title" = "Je hebt de WordPress app niet meer nodig op je apparaat";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Afronden";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "We raden je aan om de WordPress-app van je apparaat te verwijderen om gegevensconflicten te vermijden.";
+"migration.done.footer" = "We raden je aan om de WordPress app van je apparaat te verwijderen om gegevens conflicten te vermijden.";
 
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "de WordPress-app verwijderen";
+"migration.done.footer.highlighted" = "de WordPress app verwijderen";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We hebben al je gegevens en instellingen overgedragen. Alles staat precies waar je het gelaten hebt.";
@@ -10261,7 +10285,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.done.title" = "Bedankt dat je bent overgestapt naar Jetpack!";
 
 /* The description in the Load WordPress screen */
-"migration.loadWordpress.description" = "Het lijkt erop dat je de WordPress-app geïnstalleerd hebt.";
+"migration.loadWordpress.description" = "Het lijkt erop dat je de WordPress app geïnstalleerd hebt.";
 
 /* The primary button title in the Load WordPress screen */
 "migration.loadWordpress.primaryButton" = "Open WordPress";
@@ -10312,7 +10336,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.hint" = "Overstappen is gratis en duurt maar een minuut.";
 
 /* Title for a button that prompts users to switch to the Jetpack app. */
-"movedToJetpack.jetpackButtonTitle" = "Schakel over naar de Jetpack-app";
+"movedToJetpack.jetpackButtonTitle" = "Schakel over naar de Jetpack app";
 
 /* Title for a button that displays a blog post in a web view. */
 "movedToJetpack.learnMoreButtonTitle" = "Ga naar jetpack.com voor meer informatie";
@@ -10351,7 +10375,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "my-sites.stats.card.title.hint" = "Statistieken";
 
 /* Dismiss button title. */
-"noResultsViewController.dismissButton" = "Afwijzen";
+"noResultsViewController.dismissButton" = "Negeren";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Negeren";
@@ -10376,6 +10400,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promoten met Blaze";
+
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Jouw homepage gebruikt een themasjabloon en wordt in de webeditor geopend.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Startpagina";
 
 /* No comment provided by engineer. */
 "password" = "wachtwoord";
@@ -10414,7 +10444,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "phone number" = "Telefoonnummer";
 
 /* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Afwijzen";
+"postSettings.featuredImageUploadActionSheet.dismiss" = "Negeren";
 
 /* User action to remove featured media. */
 "postSettings.featuredImageUploadActionSheet.remove" = "Verwijderen";
@@ -10424,6 +10454,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opties uitgelichte afbeelding";
+
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promoten met Blaze";
@@ -10438,13 +10471,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "prompts.notification.removed.title" = "Blogmeldingen zijn verborgen";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
-"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Afwijzen";
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Negeren";
 
 /* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
 "qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Tik op '%@' en ga terug naar je webbrowser om door te gaan.";
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Zoeken";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader-instellingen";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10463,7 +10502,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.backButton.accessibilityLabel" = "Terug";
 
 /* Spoken accessibility label */
-"readerDetail.dismissButton.accessibilityLabel" = "Afwijzen";
+"readerDetail.dismissButton.accessibilityLabel" = "Negeren";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Duidelijk";
@@ -10493,7 +10532,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nieuw";
 
 /* User action to dismiss media options. */
-"shareExtension.editor.attachmentActions.dismiss" = "Afwijzen";
+"shareExtension.editor.attachmentActions.dismiss" = "Negeren";
 
 /* User action to remove media. */
 "shareExtension.editor.attachmentActions.remove" = "Verwijderen";
@@ -10505,7 +10544,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shareModularViewController.retryAlert.accept" = "Opnieuw proberen";
 
 /* Share extension error dialog cancel button label. */
-"shareModularViewController.retryAlert.dismiss" = "Afwijzen";
+"shareModularViewController.retryAlert.dismiss" = "Negeren";
 
 /* Share extension error dialog text. */
 "shareModularViewController.retryAlert.message" = "Oeps, er is iets fout gegaan tijdens het delen. Probeer het opnieuw, het kan een glitch zijn geweest.";
@@ -10530,6 +10569,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Herinneringen";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Meer informatie";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Automatisch delen op Twitter is niet meer beschikbaar omdat Twitter de voorwaarden en prijzen heeft gewijzigd.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Afgelopen 7 dagen";
@@ -10637,7 +10685,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.button.close.title" = "Gereed";
 
 /* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
-"support.button.jetpackMigation.accessibilityHint" = "Tik om de veelgestelde vragen van de Jetpack-app in een externe browser te bezoeken";
+"support.button.jetpackMigation.accessibilityHint" = "Tik om de veelgestelde vragen van de Jetpack app in een externe browser te bezoeken";
 
 /* Option in Support view to visit the Jetpack migration FAQ website. */
 "support.button.jetpackMigration.title" = "Bezoek onze veelgestelde vragen pagina";
@@ -10697,7 +10745,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.sectionFooter.advanced.title" = "Schakel debugging in om aanvullende informatie aan je logboeken toe te volgen. Deze informatie kan je helpen om problemen met de app op te lossen.";
 
 /* WordPress.com sign-out section header title */
-"support.sectionHeader.account.title" = "WordPress.com-account";
+"support.sectionHeader.account.title" = "WordPress.com account";
 
 /* Section header in Support view for advanced information. */
 "support.sectionHeader.advanced.title" = "Geavanceerd";
@@ -10841,25 +10889,25 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
-"wordpress.jetpack.plugin.modal.primary.button.title" = "Schakel over naar de Jetpack-app";
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Schakel over naar de Jetpack app";
 
 /* Jetpack Plugin Modal on WordPress secondary button title */
 "wordpress.jetpack.plugin.modal.secondary.button.title" = "Doorgaan zonder Jetpack";
 
 /* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
-"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ gebruikt individuele Jetpack-plugins, deze worden niet ondersteund door de WordPress-app.";
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ gebruikt individuele Jetpack plugins, deze worden niet ondersteund door de WordPress app.";
 
 /* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
 "wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ gebruikt de %2$@ plugin, die niet wordt ondersteund door de WordPress app.";
 
 /* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
-"wordpress.jetpack.plugin.modal.subtitle.switch" = "Schakel over naar de Jetpack-app waarin we je helpen de volledige Jetpack-plugin te koppelen, zodat je alle functies van de app kunt gebruiken voor deze site.";
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Schakel over naar de Jetpack app waarin we je helpen de volledige Jetpack plugin te koppelen, zodat je alle functies van de app kunt gebruiken voor deze site.";
 
 /* Jetpack Plugin Modal title in WordPress */
-"wordpress.jetpack.plugin.modal.title" = "Helaas, deze site wordt niet ondersteund door de WordPress-app";
+"wordpress.jetpack.plugin.modal.title" = "Helaas, deze site wordt niet ondersteund door de WordPress app";
 
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successCard.description" = "Welkom bij de Jetpack-app. Je kan de WordPress-app verwijderen.";
+"wp.migration.successCard.description" = "Welkom bij de Jetpack app. Je kan de WordPress app verwijderen.";
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Meer informatie";

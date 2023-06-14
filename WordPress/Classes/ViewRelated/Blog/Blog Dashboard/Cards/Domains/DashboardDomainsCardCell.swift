@@ -43,7 +43,8 @@ final class DashboardDomainsCardCell: BaseDashboardDomainsCardCell {
                 title: Strings.title,
                 description: Strings.description,
                 hideThis: Strings.hideThis,
-                source: Strings.source
+                source: Strings.source,
+                accessibilityIdentifier: Strings.accessibilityIdentifier
             ),
             onViewShow: onViewShow,
             onViewTap: onViewTap,
@@ -65,5 +66,6 @@ extension DashboardDomainsCardCell {
                                                 value: "Hide this",
                                                 comment: "Title for a menu action in the context menu on the Jetpack install card.")
         static let source = "domains_dashboard_card"
+        static let accessibilityIdentifier = "dashboard-domains-card-contentview"
     }
 }
