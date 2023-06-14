@@ -44,6 +44,7 @@ class PromptRemindersScheduler {
     ///   - completion: Closure called after the process completes.
     func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let context = blog.managedObjectContext else {
+            completion(.failure(Errors.unknown))
             return
         }
 
