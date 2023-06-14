@@ -168,15 +168,15 @@ private extension SiteSettingsView {
         enum General {
             static let siteTitle = NSLocalizedString("siteSettings.general.siteTitle", value: "Site Title", comment: "Label for site title blog setting")
             static let siteTitlePlaceholder = NSLocalizedString("siteSettings.general.siteTitlePlaceholder", value: "A title for the site", comment: "Placeholder text for the title of a site")
-            static let tagline = NSLocalizedString("Tagline", comment: "Label for tagline blog setting")
-            static let taglinePlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
-            static let taglineEditorPlaceholder = NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
-            static let taglineEditorHint = NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline")
-            static let address = NSLocalizedString("Address", comment: "Label for url blog setting")
+            static let tagline = NSLocalizedString("siteSettings.general.tagline", value: "Tagline", comment: "Label for tagline blog setting")
+            static let taglinePlaceholder = NSLocalizedString("siteSettings.general.taglinePlaceholder", value: "Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+            static let taglineEditorPlaceholder = NSLocalizedString("siteSettings.general.taglineEditorPlaceholder", value: "Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+            static let taglineEditorHint = NSLocalizedString("siteSettings.general.taglineEditorHint", value: "In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline")
+            static let address = NSLocalizedString("siteSettings.general.address", value: "Address", comment: "Label for url blog setting")
             static let copyAddress = NSLocalizedString("siteSettings.general.copyAddress", value: "Copy Address", comment: "Button title to copy site address")
-            static let privacy = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
-            static let language = NSLocalizedString("Language", comment: "Label for the privacy setting")
-            static let timezone = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
+            static let privacy = NSLocalizedString("siteSettings.general.privacy", value: "Privacy", comment: "Label for the privacy setting")
+            static let language = NSLocalizedString("siteSettings.general.language", value: "Language", comment: "Label for the privacy setting")
+            static let timezone = NSLocalizedString("siteSettings.general.timeone", value: "Time Zone", comment: "Label for the timezone setting")
         }
     }
 }
