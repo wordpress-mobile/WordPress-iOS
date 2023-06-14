@@ -2,7 +2,6 @@
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "BlogSiteVisibilityHelper.h"
 #import "CoreDataStack.h"
 #import "NSURL+IDN.h"
 #import "PostCategory.h"

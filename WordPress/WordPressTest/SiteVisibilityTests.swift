@@ -1,0 +1,38 @@
+import XCTest
+import WebKit
+@testable import WordPress
+
+class SiteVisibilityTests: CoreDataTestCase {
+    func testEligibleValuesForJetpackBlog() {
+        // Given
+        let blog = makeJetpackBlog()
+
+        // Then private not eligible
+        XCTAssertEqual(SiteVisibility.eligibleValues(for: blog), [.public, .hidden])
+    }
+
+    func testEligibleValuesForNonJetpackConnectedBlog() {
+        // Given
+        let blog = makeBlog()
+
+        // Then private not eligible
+        XCTAssertEqual(SiteVisibility.eligibleValues(for: blog), [.public, .hidden, .private])
+    }
+
+    // MARK: - Helpers
+
+    func makeBlog() -> Blog {
+        let blog = Blog.createBlankBlog(in: mainContext)
+        blog.isHostedAtWPcom = true
+        return blog
+    }
+
+    func makeJetpackBlog() -> Blog {
+        let blog = self.makeBlog()
+        blog.isHostedAtWPcom = false
+        // UI in the app hides visibility settings entirely for self-hosted non-Jetpack blogs
+        // so for the purposes of these tests we can assume that if a blog is self-hosted
+        // then it's also running Jetpack.
+        return blog
+    }
+}
