@@ -5,6 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CoreDataStack
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, readonly, strong) NSManagedObjectContext *defaultContext;
 - (NSManagedObjectContext *const)newDerivedContext DEPRECATED_MSG_ATTRIBUTE("Use `performAndSave` instead");
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context;
