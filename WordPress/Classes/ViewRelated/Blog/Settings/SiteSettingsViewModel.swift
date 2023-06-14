@@ -8,9 +8,10 @@ final class SiteSettingsViewModel: ObservableObject {
 
     let onDismissableError = PassthroughSubject<String, Never>()
 
-    init(blog: Blog) {
+    init(blog: Blog,
+         service: BlogService = BlogService(coreDataStack: ContextManager.shared)) {
         self.blog = blog
-        self.service = BlogService(coreDataStack: ContextManager.shared)
+        self.service = service
     }
 
     func refresh() async -> Void {
