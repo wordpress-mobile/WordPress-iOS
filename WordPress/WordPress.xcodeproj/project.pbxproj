@@ -3811,6 +3811,8 @@
 		FA347AF226EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */; };
 		FA347AF326EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */; };
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
+		FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */; };
+		FA3A28192A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */; };
 		FA3FBF8B2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */; };
 		FA3FBF8C2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */; };
 		FA3FBF8E2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */; };
@@ -9180,6 +9182,7 @@
 		FA347AEC26EB6E300096604B /* GrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GrowAudienceCell.xib; sourceTree = "<group>"; };
 		FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsGhostGrowAudienceCell.xib; sourceTree = "<group>"; };
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
+		FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignTableViewCell.swift; sourceTree = "<group>"; };
 		FA3FBF8A2A2772340012FC90 /* DashboardActivityLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModel.swift; sourceTree = "<group>"; };
 		FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModelTests.swift; sourceTree = "<group>"; };
 		FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogScreen.swift; sourceTree = "<group>"; };
@@ -17647,6 +17650,7 @@
 			isa = PBXGroup;
 			children = (
 				FA111E372A2F38FC00896FCE /* BlazeCampaignsViewController.swift */,
+				FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */,
 			);
 			path = "Blaze Campaigns";
 			sourceTree = "<group>";
@@ -21379,6 +21383,7 @@
 				91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */,
 				F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */,
 				74989B8C2088E3650054290B /* BlogDetailsViewController+Activity.swift in Sources */,
+				FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				43DDFE8C21715ADD008BE72F /* WPTabBarController+QuickStart.swift in Sources */,
 				74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */,
@@ -25141,6 +25146,7 @@
 				FABB24D72602FC2C00C8785C /* TenorResultsPage.swift in Sources */,
 				FABB24D82602FC2C00C8785C /* ThemeWebNavigationDelegate.swift in Sources */,
 				FABB24D92602FC2C00C8785C /* PluginListCell.swift in Sources */,
+				FA3A28192A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */,
 				C373D6E828045281008F8C26 /* SiteIntentData.swift in Sources */,
 				FABB24DA2602FC2C00C8785C /* HomeWidgetAllTimeData.swift in Sources */,
 				DC3B9B2D27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */,

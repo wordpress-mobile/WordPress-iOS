@@ -16,7 +16,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.separatorStyle = .none
+        tableView.register(BlazeCampaignTableViewCell.self, forCellReuseIdentifier: BlazeCampaignTableViewCell.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
@@ -24,9 +24,9 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Properties
 
-    private var blog: Blog
+    private let blog: Blog
 
-    private var campaigns: [String] = [] {
+    private var campaigns: [BlazeCampaign] = [] {
         didSet {
             tableView.reloadData()
             updateNoResultsView()
@@ -87,7 +87,12 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     private func fetchCampaigns() {
         isLoading = true
 
-        // FIXME: Call BlazeService
+        // FIXME: Fetch campaigns via BlazeService
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.isLoading = false
+            self?.campaigns = mockResponse.campaigns ?? []
+        }
     }
 
     @objc private func plusButtonTapped() {
@@ -105,8 +110,13 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = campaigns[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BlazeCampaignTableViewCell.defaultReuseID) as? BlazeCampaignTableViewCell,
+              let campaign = campaigns[safe: indexPath.row] else {
+            return UITableViewCell()
+        }
+
+        let viewModel = DashboardBlazeCampaignViewModel(campaign: campaign)
+        cell.configure(with: viewModel, blog: blog)
         return cell
     }
 }
@@ -131,15 +141,24 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
 
     private func showNoResultsView() {
         hideNoResults()
-        noResultsViewController.hideImageView()
+        noResultsViewController.hideImageView(true)
         configureAndDisplayNoResults(on: view,
                                      title: Strings.NoResults.emptyTitle,
                                      subtitle: Strings.NoResults.emptySubtitle,
                                      buttonTitle: Strings.promoteButtonTitle)
     }
 
+    private func showErrorView() {
+        hideNoResults()
+        noResultsViewController.hideImageView(true)
+        configureAndDisplayNoResults(on: view,
+                                     title: Strings.NoResults.errorTitle,
+                                     subtitle: Strings.NoResults.errorSubtitle)
+    }
+
     private func showLoadingView() {
         hideNoResults()
+        noResultsViewController.hideImageView(false)
         configureAndDisplayNoResults(on: view,
                                      title: Strings.NoResults.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView())
@@ -162,6 +181,81 @@ private extension BlazeCampaignsViewController {
             static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
             static let emptyTitle = NSLocalizedString("blaze.campaigns.empty.title", value: "You have no campaigns", comment: "Title displayed when there are no Blaze campaigns to display.")
             static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click promote to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
+            static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Blaze campiagns.")
+            static let errorSubtitle = NSLocalizedString("There was an error loading campaigns.", comment: "Text displayed when there is a failure loading Blaze campaigns.")
         }
     }
 }
+
+private let mockResponse: BlazeCampaignsSearchResponse = {
+    let decoder = JSONDecoder()
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    decoder.dateDecodingStrategy = .iso8601
+    return try! decoder.decode(BlazeCampaignsSearchResponse.self, from: """
+    {
+        "totalItems": 3,
+        "campaigns": [
+            {
+                "campaign_id": 26916,
+                "name": "Test Post - don't approve",
+                "start_date": "2023-06-13T00:00:00Z",
+                "end_date": "2023-06-01T19:15:45Z",
+                "status": "finished",
+                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
+                "budget_cents": 500,
+                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
+                "content_config": {
+                    "title": "Test Post - don't approve",
+                    "snippet": "Test Post Empty Empty",
+                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
+                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
+                },
+                "campaign_stats": {
+                    "impressions_total": 1000,
+                    "clicks_total": 235
+                }
+            },
+            {
+                "campaign_id": 1,
+                "name": "Test Post - don't approve",
+                "start_date": "2023-06-13T00:00:00Z",
+                "end_date": "2023-06-01T19:15:45Z",
+                "status": "rejected",
+                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
+                "budget_cents": 5000,
+                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
+                "content_config": {
+                    "title": "Test Post - don't approve",
+                    "snippet": "Test Post Empty Empty",
+                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
+                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
+                },
+                "campaign_stats": {
+                    "impressions_total": 1000,
+                    "clicks_total": 235
+                }
+            },
+            {
+                "campaign_id": 2,
+                "name": "Test Post - don't approve",
+                "start_date": "2023-06-13T00:00:00Z",
+                "end_date": "2023-06-01T19:15:45Z",
+                "status": "active",
+                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
+                "budget_cents": 1000,
+                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
+                "content_config": {
+                    "title": "Test Post - don't approve",
+                    "snippet": "Test Post Empty Empty",
+                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
+                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
+                },
+                "campaign_stats": {
+                    "impressions_total": 5000,
+                    "clicks_total": 1035
+                }
+            }
+        ]
+    }
+    """.data(using: .utf8)!)
+}()
