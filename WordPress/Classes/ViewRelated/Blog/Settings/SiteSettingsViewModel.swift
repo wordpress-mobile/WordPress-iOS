@@ -47,6 +47,6 @@ final class SiteSettingsViewModel: ObservableObject {
 
 private extension SiteSettingsViewModel {
     enum Strings {
-        static let saveFailed = NSLocalizedString("Settings update failed", comment: "Message to show when setting save failed")
+        static let saveFailed = NSLocalizedString("siteSettings.updateFailedMessage", value: "Settings update failed", comment: "Message to show when setting save failed")
     }
 }

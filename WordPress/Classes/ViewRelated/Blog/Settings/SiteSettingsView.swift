@@ -123,16 +123,16 @@ private struct SettingsTextEditView: UIViewControllerRepresentable {
 
 private extension SiteSettingsView {
     enum Strings {
-        static let title = NSLocalizedString("Settings", comment: "Title for screen that allows configuration of your blog/site settings.")
-        static let done = NSLocalizedString("Done", comment: "Label for Done button")
+        static let title = NSLocalizedString("siteSettings.title", value: "Settings", comment: "Title for screen that allows configuration of your blog/site settings.")
+        static let done = NSLocalizedString("siteSettings.done", value: "Done", comment: "Label for Done button")
 
         enum Sections {
-            static let general = NSLocalizedString("General", comment: "Title for the general section in site settings screen")
+            static let general = NSLocalizedString("siteSettings.general.title", value: "General", comment: "Title for the general section in site settings screen")
         }
 
         enum General {
-            static let siteTitle = NSLocalizedString("Site Title", comment: "Label for site title blog setting")
-            static let siteTitlePlaceholder = NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+            static let siteTitle = NSLocalizedString("siteSettings.general.siteTitle", value: "Site Title", comment: "Label for site title blog setting")
+            static let siteTitlePlaceholder = NSLocalizedString("siteSettings.general.siteTitlePlaceholder", value: "A title for the site", comment: "Placeholder text for the title of a site")
         }
     }
 }
