@@ -102,6 +102,7 @@ struct DashboardBlazeCampaignViewModel {
     let imageURL: URL?
     let impressions: Int
     let clicks: Int
+    let budget: Int
     var status: DashboardBlazeCampaignViewStatusViewModel { .init(status: campaign.status) }
 
     var isShowingStats: Bool {
@@ -121,5 +122,6 @@ struct DashboardBlazeCampaignViewModel {
         self.imageURL = campaign.contentConfig?.imageURL.flatMap(URL.init)
         self.impressions = campaign.stats?.impressionsTotal ?? 0
         self.clicks = campaign.stats?.clicksTotal ?? 0
+        self.budget = (campaign.budgetCents ?? 0) / 100
     }
 }
