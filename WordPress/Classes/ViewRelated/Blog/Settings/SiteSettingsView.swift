@@ -54,6 +54,9 @@ struct SiteSettingsView: View {
                 privacyRow
                 languageRow
             }
+            if blog.supports(.wpComRESTAPI) {
+                timezoneRow
+            }
         }
     }
 
@@ -119,6 +122,14 @@ struct SiteSettingsView: View {
         })
     }
 
+    private var timezoneRow: some View {
+        withAdminNavigationLink(destination: {
+            TimezoneSelectorView(value: viewModel.timezoneValue, onChange: viewModel.updateTimezone)
+        }, content: {
+            SettingsCell(title: Strings.General.timezone, value: viewModel.timezoneLabel)
+        })
+    }
+
     // MARK: - Helpers
 
     @ViewBuilder
@@ -162,6 +173,7 @@ private extension SiteSettingsView {
             static let copyAddress = NSLocalizedString("siteSettings.general.copyAddress", value: "Copy Address", comment: "Button title to copy site address")
             static let privacy = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
             static let language = NSLocalizedString("Language", comment: "Label for the privacy setting")
+            static let timezone = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
         }
     }
 }

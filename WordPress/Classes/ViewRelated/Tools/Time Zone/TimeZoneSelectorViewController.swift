@@ -28,6 +28,11 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         return controller
     }()
 
+    var hidesNavigationBarDuringPresentation: Bool {
+        get { searchController.hidesNavigationBarDuringPresentation }
+        set { searchController.hidesNavigationBarDuringPresentation = newValue }
+    }
+
     init(selectedValue: String?, onSelectionChanged: @escaping (WPTimeZone) -> Void) {
         self.onSelectionChanged = onSelectionChanged
         self.viewModel = TimeZoneSelectorViewModel(state: .loading, selectedValue: selectedValue, filter: nil)

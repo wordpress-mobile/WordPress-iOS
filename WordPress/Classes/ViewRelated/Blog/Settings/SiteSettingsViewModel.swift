@@ -5,6 +5,9 @@ import Combine
 final class SiteSettingsViewModel: ObservableObject {
     private let blog: Blog
     private let service: BlogService
+    private var timezoneObserver: TimeZoneObserver?
+
+    @Published private(set) var timezoneLabel: String?
 
     let onDismissableError = PassthroughSubject<String, Never>()
 
@@ -12,7 +15,10 @@ final class SiteSettingsViewModel: ObservableObject {
          service: BlogService = BlogService(coreDataStack: ContextManager.shared)) {
         self.blog = blog
         self.service = service
+        self.startTimezoneObserver()
     }
+
+    // MARK: - Refresh
 
     func refresh() async -> Void {
         await withUnsafeContinuation { continuation in
@@ -24,6 +30,8 @@ final class SiteSettingsViewModel: ObservableObject {
             })
         }
     }
+
+    // MARK: - Update
 
     func updateSiteTitle(_ value: String) {
         guard value != blog.settings?.name else { return }
@@ -53,6 +61,14 @@ final class SiteSettingsViewModel: ObservableObject {
         trackSettingsChange(fieldName: "language")
     }
 
+    func updateTimezone(_ timezone: WPTimeZone) {
+        blog.settings?.gmtOffset = timezone.gmtOffset as NSNumber?
+        blog.settings?.timezoneString = timezone.timezoneString
+        timezoneLabel = makeTimezoneLabel(for: StoreContainer.shared.timezone.state)
+        save()
+        trackSettingsChange(fieldName: "timezone", value: timezone.value as Any)
+    }
+
     func save() {
         service.updateSettings(for: blog, success: {
             NotificationCenter.default.post(name: .WPBlogSettingsUpdated, object: nil)
@@ -61,6 +77,40 @@ final class SiteSettingsViewModel: ObservableObject {
             DDLogError("Error while trying to update BlogSettings: \(error)")
         })
     }
+
+    // MARK: - Helpers (Timezone)
+
+    private func startTimezoneObserver() {
+        self.timezoneObserver = TimeZoneObserver { [weak self] _, newState in
+            guard let self = self else { return }
+            let label = self.makeTimezoneLabel(for: newState)
+            guard label != self.timezoneLabel else { return }
+            self.timezoneLabel = label
+        }
+    }
+
+    private func makeTimezoneLabel(for state: TimeZoneStoreState) -> String? {
+        guard let settings = blog.settings else {
+            return nil
+        }
+        if let timezone = state.findTimezone(gmtOffset: settings.gmtOffset?.floatValue, timezoneString: settings.timezoneString) {
+            return timezone.label
+        } else {
+            return timezoneValue
+        }
+    }
+
+    var timezoneValue: String? {
+        if let timezoneString = blog.settings?.timezoneString?.nonEmptyString() {
+            return timezoneString
+        } else if let gmtOffset = blog.settings?.gmtOffset {
+            return OffsetTimeZone(offset: gmtOffset.floatValue).label
+        } else {
+            return nil
+        }
+    }
+
+    // MARK: - Helpers (Misc)
 
     private func trackSettingsChange(fieldName: String, value: Any? = nil) {
         WPAnalytics.trackSettingsChange("site_settings", fieldName: fieldName, value: value)
