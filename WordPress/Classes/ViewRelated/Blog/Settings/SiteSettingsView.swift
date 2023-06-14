@@ -3,13 +3,33 @@ import SwiftUI
 import Combine
 import SVProgressHUD
 
+final class NewSiteSettingsViewController: UIHostingController<SiteSettingsView> {
+    init(blog: Blog) {
+        super.init(rootView: SiteSettingsView(blog: blog))
+    }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        if presentingViewController != nil {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dimissSelf))
+        }
+    }
+
+    @objc private func dimissSelf() {
+        presentingViewController?.dismiss(animated: true)
+    }
+}
+
 struct SiteSettingsView: View {
     @ObservedObject private var blog: Blog
     @ObservedObject private var settings: BlogSettings
 
     @StateObject private var viewModel: SiteSettingsViewModel
-
-    @SwiftUI.Environment(\.presentationMode) private var presentationMode
 
     init(blog: Blog) {
         self.blog = blog
@@ -32,15 +52,6 @@ struct SiteSettingsView: View {
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbar }
-    }
-
-    private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            if presentationMode.wrappedValue.isPresented {
-                closeButton
-            }
-        }
     }
 
     // MARK: - Sections
@@ -141,14 +152,6 @@ struct SiteSettingsView: View {
             NavigationLink(destination: destination(), label: content)
         } else {
             content()
-        }
-    }
-
-    private var closeButton: some View {
-        Button(action: { presentationMode.wrappedValue.dismiss() }) {
-            Text(Strings.done)
-                .font(.body.weight(.medium))
-                .foregroundColor(Color.primary)
         }
     }
 }
