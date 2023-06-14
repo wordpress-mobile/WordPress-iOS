@@ -63,13 +63,4 @@
     }
 }
 
-+ (NSString *)titleForCurrentSiteVisibilityOfBlog:(Blog *)blog
-{
-    if (!blog.settings.privacy) {
-        return [self titleForSiteVisibility:SiteVisibilityUnknown];
-    }
-    
-    return [self titleForSiteVisibility:[blog.settings.privacy intValue]];
-}
-
 @end

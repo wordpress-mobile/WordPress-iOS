@@ -15,7 +15,4 @@
 /// @returns The associated title for the SiteVisibility value specified.
 + (NSString *)titleForSiteVisibility:(SiteVisibility)privacy;
 
-/// @returns The title for the current visibility of the specified blog.
-+ (NSString *)titleForCurrentSiteVisibilityOfBlog:(Blog *)blog;
-
 @end
