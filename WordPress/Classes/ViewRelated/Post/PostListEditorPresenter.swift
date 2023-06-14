@@ -16,6 +16,20 @@ struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
 
+        // Return early if a post is still uploading when the editor's requested.
+        guard !PostCoordinator.shared.isUploading(post: post) else {
+            let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
+
+            let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+
+            alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+            alertController.presentFromRootViewController()
+
+            return
+        }
+
         // Autosaves are ignored for posts with local changes.
         if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
             let autosaveViewController = autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { loadAutosaveRevision in
