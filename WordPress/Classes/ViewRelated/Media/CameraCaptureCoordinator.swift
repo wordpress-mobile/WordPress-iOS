@@ -1,4 +1,5 @@
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Encapsulates capturing media from a device camera
 final class CameraCaptureCoordinator {
@@ -40,12 +41,12 @@ final class CameraCaptureCoordinator {
         guard let mediaType = mediaInfo[UIImagePickerController.InfoKey.mediaType.rawValue] as? String else { return }
 
         switch mediaType {
-        case String(kUTTypeImage):
+        case UTType.image.identifier:
             if let image = mediaInfo[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage,
                 let metadata = mediaInfo[UIImagePickerController.InfoKey.mediaMetadata.rawValue] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
-        case String(kUTTypeMovie):
+        case UTType.movie.identifier:
             if let mediaURL = mediaInfo[UIImagePickerController.InfoKey.mediaURL.rawValue] as? URL {
                 WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
             }

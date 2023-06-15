@@ -1,5 +1,6 @@
 import UIKit
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 @objc public protocol RichTextViewDataSource {
     @objc optional func textView(_ textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
@@ -163,7 +164,7 @@ import MobileCoreServices
 
         // Allow animatable gifs to be displayed
         if #available(iOS 15.0, *) {
-            NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: kUTTypeGIF as String)
+            NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: UTType.gif.identifier)
         }
     }
 

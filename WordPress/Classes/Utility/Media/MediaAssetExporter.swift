@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 import AVFoundation
 
 /// Media export handling of PHAssets
@@ -145,7 +146,7 @@ class MediaAssetExporter: MediaExporter {
         if allowableFileExtensions.contains(extensionType) {
             return uti
         } else {
-            return kUTTypeJPEG as String
+            return UTType.jpeg.identifier
         }
     }
 
