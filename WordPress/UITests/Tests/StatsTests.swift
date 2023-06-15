@@ -2,8 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class StatsTests: XCTestCase {
-    private var statsScreen: StatsScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
         try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
