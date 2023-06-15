@@ -2,8 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class MainNavigationTests: XCTestCase {
-    private var mySiteScreen: MySiteScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
