@@ -190,7 +190,7 @@ class BloggingPromptsService {
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        let blogObjectID =  blog?.objectID
+        let blogObjectID = blog?.objectID
         let (siteID, remoteInstance) = contextManager.performQuery { mainContext in
             // if a blog exists, then try to use the blog's ID.
             var blogInContext: Blog? = nil
