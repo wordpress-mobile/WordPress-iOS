@@ -50,21 +50,18 @@ public class PasswordScreen: ScreenObject {
         let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
 
-        if continueButton.waitForExistence(timeout: 1) {
-            let timeout: TimeInterval = 60
+        let exists = continueButton.waitForExistence(timeout: 5)
+        if exists {
             let startTime = Date()
+            let timeout: TimeInterval = 60
 
             while continueButton.exists && continueButton.isEnabled == false {
                 if Date().timeIntervalSince(startTime) > timeout {
                     XCTFail("Continue button still disabled!")
-                    break // Exit the loop if the timeout is exceeded
+                    break
                 }
 
-                RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
-
-                if !continueButton.exists {
-                    break // Exit the loop if the condition is no longer met
-                }
+                RunLoop.current.run(until: Date().addingTimeInterval(0.1))
             }
         }
 
