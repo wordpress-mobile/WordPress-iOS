@@ -3,12 +3,22 @@ import XCTest
 
 public class PasswordScreen: ScreenObject {
 
+    private let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.secureTextFields["Password"]
+    }
+
+    private let continueButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Continue Button"]
+    }
+
+    var passwordTextField: XCUIElement { passwordTextFieldGetter(app) }
+    var continueButton: XCUIElement { continueButtonGetter(app) }
+
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            // swiftlint:disable:next opening_brace
-            expectedElementGetters: [ { $0.secureTextFields["Password"] } ],
+            expectedElementGetters: [ passwordTextFieldGetter, continueButtonGetter ],
             app: app,
-            waitTimeout: 10
+            waitTimeout: 7
         )
     }
 
@@ -27,8 +37,6 @@ public class PasswordScreen: ScreenObject {
     }
 
     public func tryProceed(password: String) throws {
-        let passwordTextField = expectedElement
-
         // A hack to make tests pass for RtL languages.
         //
         // An unintended side effect of calling passwordTextField.tap() while testing a RtL language is that the
@@ -47,24 +55,7 @@ public class PasswordScreen: ScreenObject {
         }
 
         passwordTextField.typeText(password)
-        let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
-
-        let exists = continueButton.waitForExistence(timeout: 5)
-        if exists {
-            let startTime = Date()
-            let timeout: TimeInterval = 60
-
-            while continueButton.exists && continueButton.isEnabled == false {
-                if Date().timeIntervalSince(startTime) > timeout {
-                    XCTFail("Continue button still disabled!")
-                    break
-                }
-
-                RunLoop.current.run(until: Date().addingTimeInterval(0.1))
-            }
-        }
-
         app.dismissSavePasswordPrompt()
     }
 
