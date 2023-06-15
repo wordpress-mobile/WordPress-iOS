@@ -54,7 +54,7 @@ final class WPCrashLoggingDataProviderTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeCrashLoggingDataProvider() -> WPCrashLoggingDataProvider {
-        let provider = WPCrashLoggingDataProvider(coreDataStack: makeCoreDataStack())
+        let provider = WPCrashLoggingDataProvider(contextManager: makeCoreDataStack())
         return provider
     }
 

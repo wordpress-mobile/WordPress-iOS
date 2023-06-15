@@ -38,7 +38,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     private let contextManager: ContextManager
 
     init(contextManager: ContextManager = .shared) {
-        self.contextManager = coreDataStack
+        self.contextManager = contextManager
     }
 
     let sentryDSN: String = ApiCredentials.sentryDSN
