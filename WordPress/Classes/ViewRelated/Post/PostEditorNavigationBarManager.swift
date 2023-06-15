@@ -8,7 +8,6 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView)
@@ -43,16 +42,6 @@ class PostEditorNavigationBarManager {
         button.accessibilityIdentifier = "more_post_options"
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
         button.setContentHuggingPriority(.required, for: .horizontal)
-        return button
-    }()
-
-    /// Blog Picker's Button
-    ///
-    lazy var blogPickerButton: WPBlogSelectorButton = {
-        let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
-        button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
 
@@ -135,10 +124,6 @@ class PostEditorNavigationBarManager {
 
     @objc private func moreWasPressed(sender: UIButton) {
         delegate?.navigationBarManager(self, moreWasPressed: sender)
-    }
-
-    @objc private func blogPickerWasPressed(sender: UIButton) {
-        delegate?.navigationBarManager(self, blogPickerWasPressed: sender)
     }
 
     @objc private func publishButtonTapped(sender: UIButton) {
