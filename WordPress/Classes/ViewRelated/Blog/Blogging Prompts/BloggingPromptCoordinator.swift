@@ -112,6 +112,7 @@ private extension BloggingPromptCoordinator {
         guard let service = promptsServiceFactory.makeService(for: blog),
               let settings = service.localSettings,
               let reminderDays = settings.reminderDays,
+              let context = settings.managedObjectContext,
               settings.promptRemindersEnabled else {
             completion()
             return
@@ -125,10 +126,12 @@ private extension BloggingPromptCoordinator {
                 return
             }
 
-            // Reschedule the prompt reminders.
-            let schedule = BloggingRemindersScheduler.Schedule.weekdays(reminderDays.getActiveWeekdays())
-            self.scheduler.schedule(schedule, for: blog, time: settings.reminderTimeDate()) { result in
-                completion()
+            context.performAndWait {
+                // Reschedule the prompt reminders.
+                let schedule = BloggingRemindersScheduler.Schedule.weekdays(reminderDays.getActiveWeekdays())
+                self.scheduler.schedule(schedule, for: blog, time: settings.reminderTimeDate()) { result in
+                    completion()
+                }
             }
         }
     }
