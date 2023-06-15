@@ -1,8 +1,9 @@
-* [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
-* [**] Add a "Personalize Home Tab" button to the bottom of the My Site Dashboard that opens a new screen where you can customize which dashboard cards are visible. You can now also hide any of the dashboard cards directly from My Site Dashboard using the "more" menu. [#20296]
-* [*] Domains selection: Show error message when selecting unsupported domains. [#20786]
-* [***] Plans: Bringing WPCOM plans to Jetpack app. [#20822]
-* [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
-* [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
-* [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
+WordPress.com plans are coming to the Jetpack app. Get the plan that’s right for your publishing needs and manage it in the same place you write all your best words.
 
+There’s a shiny new “Personalize Home Tab” button at the bottom of your site dashboard where you can customize your visible dashboard cards. (Want to hide the cards you don’t need? Just use the “More” menu.)
+
+We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. There’s also a lock icon for disabled cells in the editor so you know when they aren’t in use.
+
+On the “Search domains” screen, you’ll now see an error message if you choose a default domain that isn’t supported by your site. No more forever-spinning progress wheel.
+
+Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)
