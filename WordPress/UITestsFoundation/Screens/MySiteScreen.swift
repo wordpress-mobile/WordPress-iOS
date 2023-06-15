@@ -138,7 +138,7 @@ public class MySiteScreen: ScreenObject {
         return try MySitesScreen()
     }
 
-    public func removeSelfHostedSite() throws -> PrologueScreen {
+    public func removeSelfHostedSite() {
         app.tables[ElementStringIDs.blogTable].swipeUp(velocity: .fast)
         app.cells[ElementStringIDs.removeSiteButton].doubleTap()
 
@@ -150,7 +150,6 @@ public class MySiteScreen: ScreenObject {
         }
 
         removeButton.tap()
-        return try PrologueScreen()
     }
 
     public func goToActivityLog() throws -> ActivityLogScreen {
@@ -226,8 +225,10 @@ public class MySiteScreen: ScreenObject {
         return try PeopleScreen()
     }
 
-    public func verifyMySiteScreenLoaded() {
+    @discardableResult
+    public func verifyMySiteScreenLoaded() -> Self {
         XCTAssertTrue(isLoaded)
+        return self
     }
 
     public static func isLoaded() -> Bool {

@@ -10,7 +10,6 @@ class LoginTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     // Unified email login/out
@@ -50,7 +49,7 @@ class LoginTests: XCTestCase {
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .removeSelfHostedSite()
-            .verifyPrologueScreenLoaded()
+        try PrologueScreen().verifyPrologueScreenLoaded()
     }
 
     // Unified WordPress.com email login failure due to incorrect password
@@ -83,5 +82,6 @@ class LoginTests: XCTestCase {
             // Login flow returns MySites modal, which needs to be closed.
             .closeModal()
             .verifyMySiteScreenLoaded()
+            .removeSelfHostedSite()
     }
 }

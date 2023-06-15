@@ -29,6 +29,7 @@ public class MeTabScreen: ScreenObject {
         return logOutButton.exists
     }
 
+    @discardableResult
     public func logout() throws -> WelcomeScreen {
         app.cells["logOutFromWPcomButton"].tap()
 
