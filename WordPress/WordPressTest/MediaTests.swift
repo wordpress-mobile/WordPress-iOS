@@ -114,4 +114,24 @@ class MediaTests: CoreDataTestCase {
         XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.image.rawValue, MediaType.video.rawValue]), 3)
         XCTAssertEqual(blog.mediaLibraryCount(types: [MediaType.audio.rawValue, MediaType.powerpoint.rawValue]), 9)
     }
+
+    // MARK: - Media Type
+
+    func testMimeType() {
+        // Given
+        let media = newTestMedia()
+        media.filename = "file.png"
+
+        // Then MIME type is derived from the file extension
+        XCTAssertEqual(media.mimeType, "image/png")
+    }
+
+    func testUknownMimeType() {
+        // Given
+        let media = newTestMedia()
+        media.filename = "file.there-goes-nothing"
+
+        // Then
+        XCTAssertEqual(media.mimeType, "application/octet-stream")
+    }
 }

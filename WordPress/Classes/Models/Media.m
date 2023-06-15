@@ -72,22 +72,6 @@
     return extension;
 }
 
-- (NSString *)mimeType
-{
-    NSString *unknown = @"application/octet-stream";
-    NSString *extension = [self fileExtension];
-    if (!extension.length) {
-        return unknown;
-    }
-    NSString *fileUTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
-    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)fileUTI, kUTTagClassMIMEType);
-    if (!mimeType) {
-        return unknown;
-    } else {
-        return mimeType;
-    }
-}
-
 #pragma mark - Media Types
 
 - (MediaType)mediaType

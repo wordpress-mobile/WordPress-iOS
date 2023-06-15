@@ -36,6 +36,18 @@ extension Media {
         return !posts.isEmpty
     }
 
+    // MARK: - Media Type
+
+    /// Returns the MIME type, e.g. "image/png".
+    @objc var mimeType: String? {
+        guard let fileExtension = self.fileExtension(),
+              let type = UTType(filenameExtension: fileExtension),
+              let mimeType = type.preferredMIMEType else {
+            return "application/octet-stream"
+        }
+        return mimeType
+    }
+
     // MARK: - Media Link
 
     var link: String {
