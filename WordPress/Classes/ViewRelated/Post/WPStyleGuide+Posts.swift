@@ -107,26 +107,6 @@ extension WPStyleGuide {
         return [.paragraphStyle: paragraphStyle, .font: font]
     }
 
-    // MARK: - Nav Bar Styles
-
-    static var navigationBarButtonRect = CGRect(x: 0, y: 0, width: 30, height: 30)
-
-    static var spacingBetweenNavbarButtons: CGFloat = 40
-
-    class func buttonForBar(with image: UIImage,
-                            target: Any?, selector: Selector) -> WPButtonForNavigationBar {
-        let button = WPButtonForNavigationBar(frame: navigationBarButtonRect)
-        button.tintColor = .appBarTint
-
-        button.setImage(image, for: .normal)
-        button.addTarget(target, action: selector, for: .touchUpInside)
-        button.removeDefaultLeftSpacing = true
-        button.removeDefaultRightSpacing = true
-        button.rightSpacing = spacingBetweenNavbarButtons / 2
-        button.leftSpacing = spacingBetweenNavbarButtons / 2
-        return button
-    }
-
     // MARK: - Font Styles
 
     static func configureLabelForRegularFontStyle(_ label: UILabel?) {
