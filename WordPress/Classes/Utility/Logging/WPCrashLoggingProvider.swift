@@ -35,6 +35,12 @@ struct WPLoggingStack {
 }
 
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
+    private let contextManager: ContextManager
+
+    init(coreDataStack: ContextManager = .shared) {
+        self.contextManager = coreDataStack
+    }
+
     let sentryDSN: String = ApiCredentials.sentryDSN
 
     var userHasOptedOut: Bool {
@@ -48,7 +54,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     }
 
     var currentUser: TracksUser? {
-        return ContextManager.shared.performQuery { context -> TracksUser? in
+        return contextManager.performQuery { context -> TracksUser? in
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
                 return nil
             }
