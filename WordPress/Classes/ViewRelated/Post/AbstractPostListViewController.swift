@@ -135,7 +135,7 @@ class AbstractPostListViewController: UIViewController,
     fileprivate var searchesSyncing = 0
 
     private var emptyResults: Bool {
-        return tableViewHandler.resultsController.fetchedObjects?.count == 0
+        return tableViewHandler.resultsController?.fetchedObjects?.count == 0
     }
 
     private var atLeastSyncedOnce = false
@@ -452,7 +452,10 @@ class AbstractPostListViewController: UIViewController,
 
         var predicate = predicateForFetchRequest()
         let sortDescriptors = sortDescriptorsForFetchRequest()
-        let fetchRequest = tableViewHandler.resultsController.fetchRequest
+        guard let fetchRequest = tableViewHandler.resultsController?.fetchRequest else {
+            DDLogError("Error getting the fetch request")
+            return
+        }
 
         // Set the predicate based on filtering by the oldestPostDate and not searching.
         let filter = filterSettings.currentPostListFilter()
@@ -479,7 +482,7 @@ class AbstractPostListViewController: UIViewController,
         fetchRequest.sortDescriptors = sortDescriptors
 
         do {
-            try tableViewHandler.resultsController.performFetch()
+            try tableViewHandler.resultsController?.performFetch()
         } catch {
             DDLogError("Error fetching posts after updating the fetch request predicate: \(error)")
         }
@@ -700,7 +703,7 @@ class AbstractPostListViewController: UIViewController,
         options.statuses = filter.statuses.strings
         options.authorID = author
         options.number = numberOfLoadedElement
-        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
+        options.offset = tableViewHandler.resultsController?.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
             ofType: postType,
@@ -954,7 +957,7 @@ class AbstractPostListViewController: UIViewController,
         // Update the fetch request *before* making the service call.
         updateAndPerformFetchRequest()
 
-        let indexPath = tableViewHandler.resultsController.indexPath(forObject: apost)
+        let indexPath = tableViewHandler.resultsController?.indexPath(forObject: apost)
 
         if let indexPath = indexPath {
             tableView.reloadRows(at: [indexPath], with: .fade)
@@ -1159,7 +1162,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - NetworkAwareUI
 
     func contentIsEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
+        return tableViewHandler.resultsController?.isEmpty() ?? true
     }
 
     func noConnectionMessage() -> String {

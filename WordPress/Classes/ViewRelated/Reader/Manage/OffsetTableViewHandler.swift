@@ -5,7 +5,7 @@ class OffsetTableViewHandler: WPTableViewHandler {
         guard let indexPath = adjusted(indexPath: indexPath) else {
             return nil
         }
-        return resultsController.object(at: indexPath)
+        return resultsController?.object(at: indexPath)
     }
 
     func adjusted(indexPath: IndexPath) -> IndexPath? {

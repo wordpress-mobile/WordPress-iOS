@@ -90,7 +90,7 @@
 @interface WPTableViewHandler : NSObject <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong, readonly, nonnull) UITableView *tableView;
-@property (nonatomic, strong, readonly, nonnull) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong, readonly, nullable) NSFetchedResultsController *resultsController;
 @property (nonatomic, weak, nullable) id<WPTableViewHandlerDelegate> delegate;
 @property (nonatomic) BOOL cacheRowHeights;
 @property (nonatomic, readonly) BOOL isScrolling;
