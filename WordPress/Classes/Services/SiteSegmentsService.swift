@@ -52,10 +52,6 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                  shortSubtitle(identifier: 4) ]
     }()
 
-    var mockCount: Int {
-        return mockSiteTypes.count
-    }
-
     private func shortSubtitle(identifier: Int64) -> SiteSegment {
         return SiteSegment(identifier: identifier,
                            title: "Blogger",
