@@ -206,8 +206,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
+        super.viewDidDisappear(animated)
         ReaderTracker.shared.stop(.readerPost)
     }
 
