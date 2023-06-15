@@ -98,10 +98,10 @@ private struct CommentHeaderView: View {
     var body: some View {
         if #available(iOS 15.0, *) {
             // Material ShapeStyles are only available from iOS 15.0.
-            content.background(.thinMaterial)
+            content.background(.ultraThinMaterial)
         } else {
             ZStack {
-                VisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+                VisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
                 content
             }
         }
