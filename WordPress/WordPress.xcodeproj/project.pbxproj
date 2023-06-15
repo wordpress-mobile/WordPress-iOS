@@ -811,6 +811,7 @@
 		3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */; };
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
 		3F685B6A26D431FA001C6808 /* DomainSuggestionViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */; };
+		3F68F4D92A3ACBC600252F03 /* Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F68F4D82A3ACBC600252F03 /* Stub.swift */; };
 		3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
 		3F6A7E92251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift */; };
 		3F6A8CE02A246357009DBC2B /* XCUIApplication+SavePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A8CDF2A246357009DBC2B /* XCUIApplication+SavePassword.swift */; };
@@ -6500,6 +6501,7 @@
 		3F5C86BF25CA197500BABE64 /* WordPressHomeWidgetAllTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetAllTime.swift; sourceTree = "<group>"; };
 		3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetEntry.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
+		3F68F4D82A3ACBC600252F03 /* Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stub.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
 		3F6A7E91251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewCoordinator+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F6A8CDF2A246357009DBC2B /* XCUIApplication+SavePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+SavePassword.swift"; sourceTree = "<group>"; };
@@ -16415,23 +16417,24 @@
 		E131CB5B16CAD638004B0314 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				E180BD4D1FB4681E00D0D781 /* MockCookieJar.swift */,
-				E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */,
-				4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */,
+				0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */,
 				4AFB8FBE2824999400A2F4B2 /* ContextManager+Helpers.swift */,
+				8BE7C84023466927006EDE70 /* I18n.swift */,
+				8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */,
+				E180BD4D1FB4681E00D0D781 /* MockCookieJar.swift */,
+				805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */,
+				E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */,
+				D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */,
+				4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */,
+				805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */,
+				805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */,
+				F4426FD8287F02FD00218003 /* SiteSuggestionsServiceMock.swift */,
+				3F68F4D82A3ACBC600252F03 /* Stub.swift */,
+				F4426FD2287E08C300218003 /* SuggestionServiceMock.swift */,
+				933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */,
 				933D1F451EA64108009FB462 /* TestingAppDelegate.h */,
 				933D1F461EA64108009FB462 /* TestingAppDelegate.m */,
 				933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */,
-				933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */,
-				D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */,
-				8BE7C84023466927006EDE70 /* I18n.swift */,
-				0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */,
-				F4426FD2287E08C300218003 /* SuggestionServiceMock.swift */,
-				F4426FD8287F02FD00218003 /* SiteSuggestionsServiceMock.swift */,
-				8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */,
-				805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */,
-				805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */,
-				805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -23650,6 +23653,7 @@
 				400A2C932217B463000A8A59 /* ReferrerStatsRecordValueTests.swift in Sources */,
 				3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */,
 				8384C64428AAC85F00EABE26 /* KeychainUtilsTests.swift in Sources */,
+				3F68F4D92A3ACBC600252F03 /* Stub.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
 				FEAA6F79298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift in Sources */,
 				08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */,
