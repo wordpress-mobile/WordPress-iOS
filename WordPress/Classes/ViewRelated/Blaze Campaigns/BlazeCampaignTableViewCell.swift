@@ -116,7 +116,8 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
             imageLoader.loadImage(with: imageURL, from: host, preferredSize: preferredSize)
         }
 
-        configuresStatsViews(for: viewModel)
+        configureStatsViews(with: viewModel)
+        configureVoiceOver(with: viewModel)
     }
 
     // MARK: - Helpers
@@ -135,7 +136,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         contentView.pinSubviewToAllEdges(mainStackView)
     }
 
-    private func configuresStatsViews(for viewModel: BlazeCampaignViewModel) {
+    private func configureStatsViews(with viewModel: BlazeCampaignViewModel) {
 
         var subviews: [UIView] = []
 
@@ -154,6 +155,20 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         subviews += [budgetView, UIView()]
 
         statsStackView.addArrangedSubviews(subviews)
+    }
+
+    private func configureVoiceOver(with viewModel: BlazeCampaignViewModel) {
+
+        var statsAccessibilityLabel = ""
+
+        if viewModel.isShowingStats {
+            statsAccessibilityLabel += "\(Strings.impressions) \(viewModel.impressions), \(Strings.clicks) \(viewModel.clicks), "
+        }
+
+        statsAccessibilityLabel += "\(Strings.budget) \(viewModel.budget)"
+
+        statsStackView.isAccessibilityElement = true
+        statsStackView.accessibilityLabel = statsAccessibilityLabel
     }
 }
 
