@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import ImageIO
 
 extension UIImage {
