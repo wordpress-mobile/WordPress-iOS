@@ -29,3 +29,14 @@ class Stub<Value, Error: Swift.Error> {
         }
     }
 }
+
+extension Stub {
+
+    convenience init(valueToReturn: Value) {
+        self.init(stubbedResult: .success(valueToReturn))
+    }
+
+    func stubBehavior() -> Value {
+        try! stubbedResult.get()
+    }
+}
