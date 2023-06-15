@@ -37,7 +37,7 @@ struct WPLoggingStack {
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     private let contextManager: ContextManager
 
-    init(coreDataStack: ContextManager = .shared) {
+    init(contextManager: ContextManager = .shared) {
         self.contextManager = coreDataStack
     }
 
