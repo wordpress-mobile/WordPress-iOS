@@ -5,7 +5,7 @@
 @protocol WPTableViewHandlerDelegate <NSObject>
 
 - (nonnull NSManagedObjectContext *)managedObjectContext;
-- (nonnull NSFetchRequest *)fetchRequest;
+- (nullable NSFetchRequest *)fetchRequest;
 - (void)configureCell:(nonnull UITableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath;
 - (void)tableView:(nonnull UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 

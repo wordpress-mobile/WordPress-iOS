@@ -69,12 +69,6 @@
     return self;
 }
 
-
-- (instancetype)init
-{
-    return [self initWithBlog:nil];
-}
-
 #pragma mark - WPMediaCollectionDataSource
 
 - (void)searchFor:(NSString *)searchText
@@ -301,10 +295,6 @@
 -(void)addMediaFromAssetIdentifier:(NSString *)assetIdentifier
             completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    NSManagedObjectID *objectID = [self.post objectID];
-    if (objectID == nil) {
-        objectID = [self.blog objectID];
-    }
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaImportService *service = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];
