@@ -45,28 +45,35 @@ final class MockSiteSegmentsService: SiteSegmentsService {
         completion(result)
     }
 
-    lazy var mockSiteTypes: [SiteSegment] = {
-        return [ shortSubtitle(identifier: 1),
-                 longSubtitle(identifier: 2),
-                 shortSubtitle(identifier: 3),
-                 shortSubtitle(identifier: 4) ]
-    }()
+    lazy var mockSiteTypes: [SiteSegment] = [
+        .withShortSubtitle(identifier: 1),
+        .withLongSubtitle(identifier: 2),
+        .withShortSubtitle(identifier: 3),
+        .withShortSubtitle(identifier: 4)
+    ]
+}
 
-    private func shortSubtitle(identifier: Int64) -> SiteSegment {
-        return SiteSegment(identifier: identifier,
-                           title: "Blogger",
-                           subtitle: "Publish a collection of posts",
-                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: "#FF0000",
-                           mobile: true)
+extension SiteSegment {
+
+    static func withShortSubtitle(identifier: Int64) -> Self {
+        .init(
+            identifier: identifier,
+            title: "Blogger",
+            subtitle: "Publish a collection of posts",
+            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
+            iconColor: "#FF0000",
+            mobile: true
+        )
     }
 
-    private func longSubtitle(identifier: Int64) -> SiteSegment {
-        return SiteSegment(identifier: identifier,
-                           title: "Professional",
-                           subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
-                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: "#0000FF",
-                           mobile: true)
+    static func withLongSubtitle(identifier: Int64) -> Self {
+        .init(
+            identifier: identifier,
+            title: "Professional",
+            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
+            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
+            iconColor: "#0000FF",
+            mobile: true
+        )
     }
 }
