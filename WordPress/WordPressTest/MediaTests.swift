@@ -126,12 +126,93 @@ class MediaTests: CoreDataTestCase {
         XCTAssertEqual(media.mimeType, "image/png")
     }
 
-    func testUknownMimeType() {
+    func testMimeTypeUnknown() {
         // Given
         let media = newTestMedia()
         media.filename = "file.there-goes-nothing"
 
         // Then
         XCTAssertEqual(media.mimeType, "application/octet-stream")
+    }
+
+    // MARK: - Set Media Type (MIME Type)
+
+    func testSetMediaTypeForMimeTypeImage() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forMimeType: "image/png")
+
+        // Then
+        XCTAssertEqual(media.mediaType, .image)
+    }
+
+    func testSetMediaTypeForMimeTypeVideo() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forMimeType: "video/mp4")
+
+        // Then
+        XCTAssertEqual(media.mediaType, .video)
+    }
+
+    func testSetMediaTypeForMimeTypeVideopress() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forMimeType: "video/videopress")
+
+        // Then Media has special handling for this custom MIME type
+        XCTAssertEqual(media.mediaType, .video)
+    }
+
+    func testSetMediaTypeForMimeTypeUnknown() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forMimeType: "unknown/unknown")
+
+        // Then falls bac
+        XCTAssertEqual(media.mediaType, .document)
+    }
+
+    // MARK: - Set Media Type (File Extension)
+
+    func testSetMediaTypeForPathExtensionPNG() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forFilenameExtension: "png")
+
+        // Then
+        XCTAssertEqual(media.mediaType, .image)
+    }
+
+    func testSetMediaTypeForPathExtensionMP4() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forFilenameExtension: "mp4")
+
+        // Then
+        XCTAssertEqual(media.mediaType, .video)
+    }
+
+    func testSetMediaTypeForPathExtensionUnknown() {
+        // Given
+        let media = newTestMedia()
+
+        // When
+        media.setMediaType(forFilenameExtension: "hello")
+
+        // Then
+        XCTAssertEqual(media.mediaType, .document)
     }
 }

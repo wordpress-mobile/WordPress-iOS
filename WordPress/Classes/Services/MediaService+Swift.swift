@@ -22,9 +22,9 @@ extension MediaService {
             media.filename = remoteMedia.file
         }
         if let mimeType = remoteMedia.mimeType, !mimeType.isEmpty {
-            media.setMediaTypeForMimeType(mimeType)
+            media.setMediaType(forMimeType: mimeType)
         } else if let fileExtension = remoteMedia.extension, !fileExtension.isEmpty {
-            media.setMediaTypeForExtension(fileExtension)
+            media.setMediaType(forFilenameExtension: fileExtension)
         }
         if media.title != remoteMedia.title {
             media.title = remoteMedia.title

@@ -96,47 +96,6 @@
     self.mediaTypeString = [[self class] stringFromMediaType:mediaType];    
 }
 
-- (void)setMediaTypeForExtension:(NSString *)extension
-{
-    CFStringRef fileExt = (__bridge CFStringRef)extension;
-    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
-    [self setMediaTypeForUTI:CFBridgingRelease(fileUTI)];
-}
-
-- (void)setMediaTypeForMimeType:(NSString *)mimeType
-{
-    NSString *filteredMimeType = mimeType;
-    if ( [filteredMimeType isEqual:@"video/videopress"]) {
-        filteredMimeType = @"video/mp4";
-    }
-    CFStringRef fileType = (__bridge CFStringRef)filteredMimeType;
-    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, fileType, nil);
-    [self setMediaTypeForUTI:CFBridgingRelease(fileUTI)];
-}
-
-
-- (void)setMediaTypeForUTI:(NSString *)uti
-{
-    CFStringRef fileUTI = (__bridge CFStringRef _Nonnull)(uti);
-    MediaType type;
-    if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
-        type = MediaTypeImage;
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
-        type = MediaTypeVideo;
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeMovie)) {
-        type = MediaTypeVideo;
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
-        type = MediaTypeVideo;
-    } else if (UTTypeConformsTo(fileUTI, kUTTypePresentation)) {
-        type = MediaTypePowerpoint;
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeAudio)) {
-        type = MediaTypeAudio;
-    } else {
-        type = MediaTypeDocument;
-    }    
-    self.mediaType = type;
-}
-
 #pragma mark - Remote Status
 
 - (MediaRemoteStatus)remoteStatus

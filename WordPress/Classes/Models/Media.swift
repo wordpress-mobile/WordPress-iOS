@@ -1,4 +1,5 @@
 import Foundation
+import UniformTypeIdentifiers
 
 extension Media {
 
@@ -48,6 +49,23 @@ extension Media {
         return mimeType
     }
 
+    func setMediaType(forFilenameExtension filenameExtension: String) {
+        let type = UTType(filenameExtension: filenameExtension)
+        self.mediaType = getMediaType(for: type)
+    }
+
+    func setMediaType(forMimeType mimeType: String) {
+        var mimeType = mimeType
+        if mimeType == "video/videopress" {
+            mimeType = "video/mp4"
+        }
+        self.mediaType = getMediaType(for: UTType(mimeType: mimeType))
+    }
+
+    private func getMediaType(for type: UTType?) -> MediaType {
+        type.map(MediaType.init) ?? .document
+    }
+
     // MARK: - Media Link
 
     var link: String {
@@ -57,6 +75,26 @@ extension Media {
                 return ""
             }
             return "\(siteURL)/?p=\(mediaID)"
+        }
+    }
+}
+
+private extension MediaType {
+    init(type: UTType) {
+        if type.conforms(to: .image) {
+            self = .image
+        } else if type.conforms(to: .video) {
+            self = .video
+        } else if type.conforms(to: .movie) {
+            self = .video
+        } else if type.conforms(to: .mpeg4Movie) {
+            self = .video
+        } else if type.conforms(to: .presentation) {
+            self = .powerpoint
+        } else if type.conforms(to: .audio) {
+            self = .audio
+        } else {
+            self = .document
         }
     }
 }
