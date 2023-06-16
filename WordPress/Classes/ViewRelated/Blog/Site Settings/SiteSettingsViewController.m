@@ -6,7 +6,6 @@
 #import "NSURL+IDN.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "RelatedPostsSettingsViewController.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
