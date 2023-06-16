@@ -103,4 +103,51 @@ class MediaURLExporterTests: XCTestCase {
             XCTAssert(hasLocationData == true, "The exported video's location data was unexpectedly removed.")
         }
     }
+
+    // MARK: - URL Extensions
+
+    func testURLTypeImage() throws {
+        // Given
+        let url = fileURL(forResourceNamed: testDeviceImageName)
+
+        // Then
+        XCTAssertFalse(url.isVideo)
+        XCTAssertTrue(url.isImage)
+        XCTAssertFalse(url.isGif)
+    }
+
+    func testURLTypeGIF() throws {
+        // Given
+        let url = fileURL(forResourceNamed: testGIFName)
+
+        // Then
+        XCTAssertFalse(url.isVideo)
+        XCTAssertTrue(url.isImage)
+        XCTAssertTrue(url.isGif)
+    }
+
+    func testURLTypeVideo() throws {
+        // Given
+        let url = fileURL(forResourceNamed: testDeviceVideoName)
+
+        // Then
+        XCTAssertTrue(url.isVideo)
+        XCTAssertFalse(url.isImage)
+        XCTAssertFalse(url.isGif)
+    }
+
+    func testURLTypeGifFallbackNoContentType() throws {
+        // Given URL with on content
+        let url = URL(fileURLWithPath: "/dev/null/hello.gif")
+
+        // Then the fallback checks the type based on the filename extension
+        XCTAssertFalse(url.isVideo)
+        XCTAssertFalse(url.isImage)
+        XCTAssertTrue(url.isGif)
+    }
+}
+
+private func fileURL(forResourceNamed name: String) -> URL {
+    let path = MediaImageExporterTests.filePathForTestImageNamed(name)
+    return URL(fileURLWithPath: path)
 }
