@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WordPressKit
 
-final class DashboardBlazeCampaignStatusView: UIView {
+final class BlazeCampaignStatusView: UIView {
     let titleLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -30,7 +30,7 @@ final class DashboardBlazeCampaignStatusView: UIView {
     }
 }
 
-private extension DashboardBlazeCampaignStatusView {
+private extension BlazeCampaignStatusView {
     enum Constants {
         static let titleInsets = UIEdgeInsets(top: 4, left: 4, bottom: 3, right: 4)
         static let cornerRadius: CGFloat = 4

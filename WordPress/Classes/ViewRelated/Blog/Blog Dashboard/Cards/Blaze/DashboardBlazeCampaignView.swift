@@ -3,7 +3,7 @@ import UIKit
 import WordPressKit
 
 final class DashboardBlazeCampaignView: UIView {
-    private let statusView = DashboardBlazeCampaignStatusView()
+    private let statusView = BlazeCampaignStatusView()
     private let titleLabel = UILabel()
     private let imageView = CachedAnimatedImageView()
 
