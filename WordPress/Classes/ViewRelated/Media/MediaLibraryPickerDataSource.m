@@ -4,6 +4,7 @@
 #import "Blog.h"
 #import "CoreDataStack.h"
 #import "WordPress-Swift.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface  MediaLibraryPickerDataSource() <NSFetchedResultsControllerDelegate>
 
@@ -237,7 +238,7 @@
             NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];
             NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
             NSError *error;
-            if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
+            if ([image writeToURL:fileURL type:UTTypeJPEG.identifier compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
                 return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
             }
             return nil;
@@ -246,7 +247,7 @@
         NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];        
         NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
         NSError *error;
-        if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
+        if ([image writeToURL:fileURL type:UTTypeJPEG.identifier compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
             [self addMediaFromURL:fileURL completionBlock:completionBlock];
         } else {
             if (completionBlock) {
