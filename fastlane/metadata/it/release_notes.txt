@@ -1,9 +1,0 @@
-Se il sito utilizza un tema basato su blocchi, ora puoi modificare la homepage del tuo sito direttamente dall'Elenco delle pagine. Emoji delle mani alzate.
-
-Abbiamo risolto un problema relativo all'impostazione dei link da aprire in una nuova scheda. Quando digita del testo dopo questo link, ora puoi annullare e reinserire il testo senza problemi.
-
-La funzionalità di modifica tramite tocco è ora disponibile per tutti i tipi di blocchi nidificati: non è più necessario toccare ogni livello di nidificazione per raggiungere un contenuto specifico.
-
-Parlando di nidificazione, abbiamo corretto un bug a causa del quale l'unione di una voce di elenco in un paragrafo rimuoveva qualsiasi testo nidificato per tale voce.
-
-Infine, abbiamo aggiornato il design delle celle disabilitate in modo che sia più facile capire quando una cella non è in uso.
