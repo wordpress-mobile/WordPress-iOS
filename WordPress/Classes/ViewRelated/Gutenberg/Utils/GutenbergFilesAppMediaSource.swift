@@ -65,18 +65,14 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
 
 private extension Gutenberg.MediaType {
     func filterTypesConformingTo(allTypes: [String]) -> [String] {
-        guard let uttype = typeIdentifier else {
+        guard let type = typeIdentifier else {
             return []
         }
-        return getTypesFrom(allTypes, conformingTo: uttype)
+        return getTypesFrom(allTypes, conformingTo: type)
     }
 
-    func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
-        guard let requiredType = UTType(uttype as String) else {
-            return []
-        }
-
-        return allTypes.filter {
+    private func getTypesFrom(_ allTypes: [String], conformingTo requiredType: UTType) -> [String] {
+        allTypes.filter {
             guard let allowedType = UTType($0) else {
                 return false
             }
@@ -90,14 +86,14 @@ private extension Gutenberg.MediaType {
         }
     }
 
-    var typeIdentifier: CFString? {
+    private var typeIdentifier: UTType? {
         switch self {
         case .image:
-            return kUTTypeImage
+            return UTType.image
         case .video:
-            return kUTTypeMovie
+            return UTType.movie
         case .audio:
-            return kUTTypeAudio
+            return UTType.audio
         case .other, .any: // needs to be specified by the blog's allowed types.
             return nil
         }
