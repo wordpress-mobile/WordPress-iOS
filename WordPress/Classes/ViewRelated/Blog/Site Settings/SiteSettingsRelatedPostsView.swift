@@ -73,7 +73,7 @@ struct RelatedPostsSettingsView: View {
                 Image(viewModel.imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(height: 96)
+                    .frame(height: Constants.imageViewHeight)
                     .clipped()
             }
             HStack {
@@ -133,5 +133,9 @@ private extension RelatedPostsSettingsView {
         static let previewsHeader = NSLocalizedString("relatedPostsSettings.previewsHeaders", value: "Preview", comment: "Section title for related posts section preview")
         static let relatedPostsHeader = NSLocalizedString("relatedPostsSettings.relatedPostsHeader", value: "Related Posts", comment: "Label for Related Post header preview")
         static let saveFailed = NSLocalizedString("relatedPostsSettings.settingsUpdateFailed", value: "Settings update failed", comment: "Message to show when setting save failed")
+    }
+
+    enum Constants {
+        static let imageViewHeight: CGFloat = 96
     }
 }
