@@ -9,7 +9,6 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         stackView.spacing = Metrics.mainStackViewSpacing
         stackView.directionalLayoutMargins = Metrics.defaultMainStackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-//        stackView.addBottomBorder(withColor: Colors.separatorColor, leadingMargin: Metrics.defaultMainStackViewLayoutMargins.leading)
         stackView.addArrangedSubviews([headerStackView, detailsOuterStackView])
         return stackView
     }()
@@ -182,10 +181,6 @@ private extension BlazeCampaignTableViewCell {
         static let defaultMainStackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 14, leading: 16, bottom: 14, trailing: 16)
         static let featuredImageSize: CGFloat = 72
         static let featuredImageCornerRadius: CGFloat = 4
-    }
-
-    enum Colors {
-        static let separatorColor: UIColor = .separator
     }
 
     enum Strings {
