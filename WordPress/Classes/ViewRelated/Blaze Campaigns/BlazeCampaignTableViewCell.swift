@@ -109,7 +109,9 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
             imageLoader.loadImage(with: imageURL, from: host, preferredSize: preferredSize)
         }
 
-        configureStatsViews(with: viewModel)
+        statsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        makeStatsViews(with: viewModel).forEach(statsStackView.addArrangedSubview)
+
         configureVoiceOver(with: viewModel)
     }
 
@@ -134,7 +136,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         ])
     }
 
-    private func configureStatsViews(with viewModel: BlazeCampaignViewModel) {
+    private func makeStatsViews(with viewModel: BlazeCampaignViewModel) -> [UIView] {
 
         var subviews: [UIView] = []
 
@@ -152,7 +154,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         budgetView.valueString = "\(viewModel.budget)"
         subviews += [budgetView, UIView()]
 
-        statsStackView.addArrangedSubviews(subviews)
+        return subviews
     }
 
     private func configureVoiceOver(with viewModel: BlazeCampaignViewModel) {
