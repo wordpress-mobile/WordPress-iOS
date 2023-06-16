@@ -350,6 +350,8 @@
 		0C391E612A3002950040EA91 /* DashboardBlazeCampaignStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E602A3002950040EA91 /* DashboardBlazeCampaignStatusView.swift */; };
 		0C391E622A3002950040EA91 /* DashboardBlazeCampaignStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E602A3002950040EA91 /* DashboardBlazeCampaignStatusView.swift */; };
 		0C391E642A312DB20040EA91 /* DashboardBlazeCampaignViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E632A312DB20040EA91 /* DashboardBlazeCampaignViewModelTests.swift */; };
+		0C71959E2A3CDC8B002EA18C /* PostMetaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C71959D2A3CDC8B002EA18C /* PostMetaButton.swift */; };
+		0C71959F2A3CDC8B002EA18C /* PostMetaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C71959D2A3CDC8B002EA18C /* PostMetaButton.swift */; };
 		0CB4056B29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056C29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056E29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */; };
@@ -1347,7 +1349,6 @@
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5DA3EE161925090A00294E0B /* MediaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3EE151925090A00294E0B /* MediaService.m */; };
 		5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5BF3418E32DCF005F11F9 /* Theme.m */; };
-		5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DAFEAB71AF2CA6E00B3E1D7 /* PostMetaButton.m */; };
 		5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */; };
 		5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4683A18A2E718004A89A9 /* LocationService.m */; };
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
@@ -4943,7 +4944,6 @@
 		FABB24582602FC2C00C8785C /* ReaderManageScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52CACC9244FA7AA00661380 /* ReaderManageScenePresenter.swift */; };
 		FABB24592602FC2C00C8785C /* MediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5371621FDFF64F00619A3F /* MediaService.swift */; };
 		FABB245A2602FC2C00C8785C /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403F12215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift */; };
-		FABB245B2602FC2C00C8785C /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DAFEAB71AF2CA6E00B3E1D7 /* PostMetaButton.m */; };
 		FABB245C2602FC2C00C8785C /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
 		FABB245D2602FC2C00C8785C /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		FABB245E2602FC2C00C8785C /* FormattableRangesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E929CD02110D4F200BCAD88 /* FormattableRangesFactory.swift */; };
@@ -6044,6 +6044,7 @@
 		0C391E5D2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignView.swift; sourceTree = "<group>"; };
 		0C391E602A3002950040EA91 /* DashboardBlazeCampaignStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignStatusView.swift; sourceTree = "<group>"; };
 		0C391E632A312DB20040EA91 /* DashboardBlazeCampaignViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignViewModelTests.swift; sourceTree = "<group>"; };
+		0C71959D2A3CDC8B002EA18C /* PostMetaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMetaButton.swift; sourceTree = "<group>"; };
 		0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationService.swift; sourceTree = "<group>"; };
 		0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationServiceTests.swift; sourceTree = "<group>"; };
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
@@ -6968,8 +6969,6 @@
 		5DA5BF3318E32DCF005F11F9 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		5DA5BF3418E32DCF005F11F9 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
 		5DA5BF4B18E331D8005F11F9 /* WordPress 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 16.xcdatamodel"; sourceTree = "<group>"; };
-		5DAFEAB61AF2CA6E00B3E1D7 /* PostMetaButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMetaButton.h; sourceTree = "<group>"; };
-		5DAFEAB71AF2CA6E00B3E1D7 /* PostMetaButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMetaButton.m; sourceTree = "<group>"; };
 		5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPickerView.h; sourceTree = "<group>"; usesTabs = 0; };
 		5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPickerView.m; sourceTree = "<group>"; usesTabs = 0; };
 		5DB4683918A2E718004A89A9 /* LocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationService.h; sourceTree = "<group>"; };
@@ -12390,8 +12389,7 @@
 				5D732F951AE84E3C00CD89E7 /* PostListFooterView.h */,
 				5D732F961AE84E3C00CD89E7 /* PostListFooterView.m */,
 				5D732F981AE84E5400CD89E7 /* PostListFooterView.xib */,
-				5DAFEAB61AF2CA6E00B3E1D7 /* PostMetaButton.h */,
-				5DAFEAB71AF2CA6E00B3E1D7 /* PostMetaButton.m */,
+				0C71959D2A3CDC8B002EA18C /* PostMetaButton.swift */,
 				17F67C55203D81430072001E /* PostCardStatusViewModel.swift */,
 				17A28DC42050404C00EA6D9E /* AuthorFilterButton.swift */,
 				17A28DCA2052FB5D00EA6D9E /* AuthorFilterViewController.swift */,
@@ -21141,6 +21139,7 @@
 				98BFF57E23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */,
 				7E40713A2372AD54003627FA /* GutenbergFilesAppMediaSource.swift in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
+				0C71959E2A3CDC8B002EA18C /* PostMetaButton.swift in Sources */,
 				8B15CDAB27EB89AD00A75749 /* BlogDashboardPostsParser.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				464688D8255C71D200ECA61C /* SiteDesignPreviewViewController.swift in Sources */,
@@ -22055,7 +22054,6 @@
 				F52CACCA244FA7AA00661380 /* ReaderManageScenePresenter.swift in Sources */,
 				FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */,
 				40C403F52215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */,
-				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
 				40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */,
 				FE4DC5A3293A75FC008F322F /* MigrationDeepLinkRouter.swift in Sources */,
 				D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */,
@@ -24913,7 +24911,6 @@
 				FABB24592602FC2C00C8785C /* MediaService.swift in Sources */,
 				839B150C2795DEE0009F5E77 /* UIView+Margins.swift in Sources */,
 				FABB245A2602FC2C00C8785C /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */,
-				FABB245B2602FC2C00C8785C /* PostMetaButton.m in Sources */,
 				FABB245C2602FC2C00C8785C /* PluginStore+Persistence.swift in Sources */,
 				FABB245D2602FC2C00C8785C /* ResultsPage.swift in Sources */,
 				FABB245E2602FC2C00C8785C /* FormattableRangesFactory.swift in Sources */,
@@ -25203,6 +25200,7 @@
 				FABB25262602FC2C00C8785C /* String+RegEx.swift in Sources */,
 				175CC17A27230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */,
 				F1BC842F27035A1800C39993 /* BlogService+Domains.swift in Sources */,
+				0C71959F2A3CDC8B002EA18C /* PostMetaButton.swift in Sources */,
 				FE7FAABF299A998F0032A6F2 /* EventTracker.swift in Sources */,
 				8B33BC9627A0C14C00DB5985 /* BlogDetailsViewController+QuickActions.swift in Sources */,
 				FABB25272602FC2C00C8785C /* UIImage+Exporters.swift in Sources */,
