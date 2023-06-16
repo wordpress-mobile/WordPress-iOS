@@ -21,8 +21,8 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         return stackView
     }()
 
-    private lazy var statusView: DashboardBlazeCampaignStatusView = {
-        let statusView = DashboardBlazeCampaignStatusView()
+    private lazy var statusView: BlazeCampaignStatusView = {
+        let statusView = BlazeCampaignStatusView()
         statusView.translatesAutoresizingMaskIntoConstraints = false
         return statusView
     }()
@@ -68,12 +68,6 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     private lazy var featuredImageView: CachedAnimatedImageView = {
         let imageView = CachedAnimatedImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: Metrics.featuredImageSize),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
-        ])
-
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Metrics.featuredImageCornerRadius
         return imageView
@@ -111,7 +105,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
 
-            let preferredSize = CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height)
+            let preferredSize = CGSize(width: Metrics.featuredImageSize, height: Metrics.featuredImageSize)
             imageLoader.loadImage(with: imageURL, from: host, preferredSize: preferredSize)
         }
 
@@ -133,6 +127,11 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     private func setupViews() {
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
+
+        NSLayoutConstraint.activate([
+            featuredImageView.widthAnchor.constraint(equalToConstant: Metrics.featuredImageSize),
+            featuredImageView.heightAnchor.constraint(equalTo: featuredImageView.widthAnchor)
+        ])
     }
 
     private func configureStatsViews(with viewModel: BlazeCampaignViewModel) {
