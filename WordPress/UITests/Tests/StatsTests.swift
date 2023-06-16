@@ -15,7 +15,6 @@ class StatsTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     let insightsStats: [String] = [
