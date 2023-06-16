@@ -1,5 +1,6 @@
 import MobileCoreServices
 import WPMediaPicker
+import UniformTypeIdentifiers
 
 protocol TenorPickerDelegate: AnyObject {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia])
@@ -41,7 +42,7 @@ final class TenorPicker: NSObject {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
         options.allowMultipleSelection = allowMultipleSelection
         return options

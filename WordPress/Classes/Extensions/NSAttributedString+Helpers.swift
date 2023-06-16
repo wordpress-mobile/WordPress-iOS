@@ -1,5 +1,6 @@
 import UIKit
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 @objc
 public extension NSAttributedString {
@@ -24,7 +25,7 @@ public extension NSAttributedString {
 
         for (value, image) in unwrappedEmbeds {
             let imageAttachment = NSTextAttachment()
-            let gifType = kUTTypeGIF as String
+            let gifType = UTType.gif.identifier
             var displayAnimatedGifs = false
 
             // Check to see if the animated gif view provider is registered
