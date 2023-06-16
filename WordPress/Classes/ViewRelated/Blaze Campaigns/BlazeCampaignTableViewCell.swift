@@ -140,16 +140,16 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
 
         if viewModel.isShowingStats {
             let impressionsView = BlazeCampaignSingleStatView(title: Strings.impressions)
-            impressionsView.countString = "\(viewModel.impressions)"
+            impressionsView.valueString = "\(viewModel.impressions)"
 
             let clicksView = BlazeCampaignSingleStatView(title: Strings.clicks)
-            clicksView.countString = "\(viewModel.clicks)"
+            clicksView.valueString = "\(viewModel.clicks)"
 
             subviews += [impressionsView, clicksView]
         }
 
         let budgetView = BlazeCampaignSingleStatView(title: Strings.budget)
-        budgetView.countString = "\(viewModel.budget)"
+        budgetView.valueString = "\(viewModel.budget)"
         subviews += [budgetView, UIView()]
 
         statsStackView.addArrangedSubviews(subviews)

@@ -4,9 +4,9 @@ final class BlazeCampaignSingleStatView: UIView {
 
     // MARK: Public Variables
 
-    var countString: String? {
+    var valueString: String? {
         didSet {
-            self.numberLabel.text = countString
+            self.numberLabel.text = valueString
         }
     }
 
