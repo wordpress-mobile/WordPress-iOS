@@ -149,6 +149,7 @@ extension SiteSettingsViewController {
     @objc func showRelatedPostsSettings() {
         let view = RelatedPostsSettingsView(blog: blog)
         let host = UIHostingController(rootView: view)
+        host.title = view.title // Make sure title is available before push
         navigationController?.pushViewController(host, animated: true)
     }
 

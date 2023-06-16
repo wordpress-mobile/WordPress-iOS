@@ -7,6 +7,8 @@ struct RelatedPostsSettingsView: View {
     private let blog: Blog
     @ObservedObject private var settings: BlogSettings
 
+    var title: String { Strings.title }
+
     init(blog: Blog) {
         self.blog = blog
         assert(blog.settings != nil, "Settings should never be nil")
