@@ -859,13 +859,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showRelatedPostsSettings
-{
-    RelatedPostsSettingsViewController *relatedPostsViewController = [[RelatedPostsSettingsViewController alloc] initWithBlog:self.blog];
-    
-    [self.navigationController pushViewController:relatedPostsViewController animated:YES];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
 {
     NSInteger writingRow = [self.writingSectionRows[row] integerValue];

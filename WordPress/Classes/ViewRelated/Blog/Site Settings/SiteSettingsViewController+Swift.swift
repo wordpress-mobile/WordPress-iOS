@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import WordPressFlux
+import SwiftUI
 
 // This is just a wrapper for the receipts, since Receipt isn't exposed to Obj-C
 @objc class TimeZoneObserver: NSObject {
@@ -143,6 +144,12 @@ extension SiteSettingsViewController {
     @objc func showSpeedUpYourSiteSettings() {
         let speedUpSiteSettingsViewController = JetpackSpeedUpSiteSettingsViewController(blog: blog)
         navigationController?.pushViewController(speedUpSiteSettingsViewController, animated: true)
+    }
+
+    @objc func showRelatedPostsSettings() {
+        let view = RelatedPostsSettingsView(blog: blog)
+        let host = UIHostingController(rootView: view)
+        navigationController?.pushViewController(host, animated: true)
     }
 
     // MARK: Footers
