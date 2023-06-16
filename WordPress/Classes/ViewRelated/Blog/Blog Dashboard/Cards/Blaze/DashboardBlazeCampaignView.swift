@@ -102,7 +102,7 @@ struct BlazeCampaignViewModel {
     let imageURL: URL?
     let impressions: Int
     let clicks: Int
-    let budget: Int
+    let budget: String
     var status: BlazeCampaignStatusViewModel { .init(status: campaign.status) }
 
     var isShowingStats: Bool {
@@ -116,12 +116,21 @@ struct BlazeCampaignViewModel {
 
     private let campaign: BlazeCampaign
 
+    private let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD"
+        formatter.currencySymbol = "$"
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }()
+
     init(campaign: BlazeCampaign) {
         self.campaign = campaign
         self.title = campaign.name ?? "–"
         self.imageURL = campaign.contentConfig?.imageURL.flatMap(URL.init)
         self.impressions = campaign.stats?.impressionsTotal ?? 0
         self.clicks = campaign.stats?.clicksTotal ?? 0
-        self.budget = (campaign.budgetCents ?? 0) / 100
+        self.budget = currencyFormatter.string(from: ((campaign.budgetCents ?? 0) / 100) as NSNumber) ?? "-"
     }
 }
