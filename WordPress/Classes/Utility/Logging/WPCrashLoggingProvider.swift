@@ -62,3 +62,12 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
         }
     }
 }
+
+extension NSManagedObjectContext {
+
+    func proxy_save() throws {
+        // 1. Log this method call
+        // 2. Check for concurrency violation, otherwise send an error to Sentry
+        try self.save()
+    }
+}

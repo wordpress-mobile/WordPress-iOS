@@ -20,35 +20,18 @@ final class WPCrashLoggingDataProviderTests: XCTestCase {
         XCTAssertEqual(user.email, Constants.defaultAccountEmail)
     }
 
-    func testReadingTrackUserInBackgroundThread() {
-        // Given
-        let expectation = XCTestExpectation(description: "Should return current user")
+    func testReadingTrackUserInBackgroundThread() async {
         let dataProvider = self.makeCrashLoggingDataProvider()
-        let dispatchGroup = DispatchGroup()
-        let numberOfOperations = 1000
-
-        // When
-        for _ in 0..<numberOfOperations {
-            dispatchGroup.enter()
-            DispatchQueue.global().async {
-                defer {
-                    dispatchGroup.leave()
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for _ in 1...1000 {
+                group.addTask {
+                    let user = try XCTUnwrap(dataProvider.currentUser)
+                    XCTAssertEqual(user.userID, "\(Constants.defaultAccountID)")
+                    XCTAssertEqual(user.username, Constants.defaultAccountUsername)
+                    XCTAssertEqual(user.email, Constants.defaultAccountEmail)
                 }
-                guard let user = dataProvider.currentUser else {
-                    XCTFail("Failed to unwrap `dataProvider.currentUser`")
-                    return
-                }
-                XCTAssertEqual(user.userID, "\(Constants.defaultAccountID)")
-                XCTAssertEqual(user.username, Constants.defaultAccountUsername)
-                XCTAssertEqual(user.email, Constants.defaultAccountEmail)
             }
         }
-
-        // Then
-        dispatchGroup.notify(queue: .main) {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 2)
     }
 
     // MARK: - Helpers
