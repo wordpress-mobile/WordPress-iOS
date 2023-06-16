@@ -1,6 +1,7 @@
 22.7
 -----
 * [**] [internal] Make sure a database tidy-up task (null blog property sanitizer) is completed before any other Core Data queries. [#20867]
+* [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
 
 22.6
 -----
