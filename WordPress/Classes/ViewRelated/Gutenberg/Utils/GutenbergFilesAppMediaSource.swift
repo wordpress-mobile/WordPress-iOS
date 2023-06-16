@@ -13,14 +13,14 @@ class GutenbergFilesAppMediaSource: NSObject {
 
     func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerCallback = callback
-        let documentTypes = getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
+        let documentTypes = GutenbergFilesAppMediaSource.getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
         let docPicker = UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
         origin.present(docPicker, animated: true)
     }
 
-    private func getDocumentTypes(filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String]) -> [String] {
+    static func getDocumentTypes(filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String]) -> [String] {
         if filters.contains(.any) {
             return allowedTypesOnBlog
         } else {
@@ -63,7 +63,7 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
     }
 }
 
-extension Gutenberg.MediaType {
+private extension Gutenberg.MediaType {
     func filterTypesConformingTo(allTypes: [String]) -> [String] {
         guard let uttype = typeIdentifier else {
             return []
@@ -71,7 +71,7 @@ extension Gutenberg.MediaType {
         return getTypesFrom(allTypes, conformingTo: uttype)
     }
 
-    private func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
+    func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
         guard let requiredType = UTType(uttype as String) else {
             return []
         }
@@ -90,7 +90,7 @@ extension Gutenberg.MediaType {
         }
     }
 
-    private var typeIdentifier: CFString? {
+    var typeIdentifier: CFString? {
         switch self {
         case .image:
             return kUTTypeImage
