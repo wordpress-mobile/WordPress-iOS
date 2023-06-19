@@ -14,7 +14,8 @@ class LoginTests: XCTestCase {
 
     // Unified email login/out
     func testWPcomLoginLogout() throws {
-        try PrologueScreen().selectContinue()
+        try PrologueScreen()
+            .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
@@ -29,7 +30,8 @@ class LoginTests: XCTestCase {
      This test opens safari to trigger the mocked magic link redirect
      */
     func testEmailMagicLinkLogin() throws {
-        try WelcomeScreen().selectLogin()
+        try WelcomeScreen()
+            .selectLogin()
             .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
@@ -54,7 +56,8 @@ class LoginTests: XCTestCase {
 
     // Unified WordPress.com email login failure due to incorrect password
     func testWPcomInvalidPassword() throws {
-        try PrologueScreen().selectContinue()
+        try PrologueScreen()
+            .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithInvalidPassword()
             .verifyLoginError()
@@ -63,7 +66,8 @@ class LoginTests: XCTestCase {
     // Self-Hosted after WordPress.com login.
     // Login to a WordPress.com account, open site switcher, then add a self-hosted site.
     func testAddSelfHostedSiteAfterWPcomLogin() throws {
-        try PrologueScreen().selectContinue()
+        try PrologueScreen()
+            .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)

@@ -22,6 +22,10 @@ public class PeopleScreen: ScreenObject {
         )
     }
 
+    public func verifyPeopleScreenLoaded() {
+        XCTAssertTrue(isLoaded)
+    }
+
     public static func isLoaded() -> Bool {
         (try? PeopleScreen().isLoaded) ?? false
     }

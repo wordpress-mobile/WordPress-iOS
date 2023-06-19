@@ -5,7 +5,11 @@ class MainNavigationTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
         try TabNavComponent()
             .goToMySiteScreen()
             .goToMenu()
@@ -20,19 +24,17 @@ class MainNavigationTests: XCTestCase {
     //
     // It would be wise to add similar tests for each item in the menu (then remove this comment).
     func testLoadsPeopleScreen() throws {
-        XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
-
         try MySiteScreen()
+            .verifyMySiteScreenLoaded()
             .goToPeople()
-
-        XCTAssertTrue(PeopleScreen.isLoaded(), "PeopleScreen screen isn't loaded.")
+            .verifyPeopleScreenLoaded()
     }
 
    func testTabBarNavigation() throws {
-       XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
-
-       try TabNavComponent().goToReaderScreen()
-       XCTAssert(ReaderScreen.isLoaded(), "Reader screen isn't loaded.")
+       try MySiteScreen()
+           .verifyMySiteScreenLoaded()
+           .tabBar.goToReaderScreen()
+           .verifyReaderScreenLoaded()
 
        // We may get a notifications fancy alert when loading the reader for the first time
        if let alert = try? FancyAlertComponent() {

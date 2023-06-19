@@ -5,7 +5,11 @@ class EditorGutenbergTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
         try EditorFlow
             .goToMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
