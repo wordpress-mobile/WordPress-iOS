@@ -197,7 +197,7 @@ private let mockResponse: BlazeCampaignsSearchResponse = {
         "campaigns": [
             {
                 "campaign_id": 26916,
-                "name": "Test Post - don't approve",
+                "name": "Test Post - don't approve Test Post - don't approve",
                 "start_date": "2023-06-13T00:00:00Z",
                 "end_date": "2023-06-01T19:15:45Z",
                 "status": "finished",

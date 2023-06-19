@@ -50,9 +50,9 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
         label.textColor = .text
         return label
     }()
