@@ -11,7 +11,7 @@
 * [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
 * [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
 * [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
-* [*] Resolve an issue that was causing the app crash when `CrashLogging.logError` is called from a backgroung thread. [#20846]
+* [*] Resolve an issue that was causing the app crash when `CrashLogging.logError` is called from a background thread. [#20846]
 
 22.5
 -----
