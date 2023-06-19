@@ -68,6 +68,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         configureProgressView()
         configureActionBar()
         configureAccessibility()
+        configureActionBarInteraction()
     }
 
     override func awakeFromNib() {
@@ -358,6 +359,22 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         accessibilityLabel = [titleAndDateChunk, authorChunk, stickyChunk, statusChunk, excerptChunk]
             .compactMap { $0 }
             .joined(separator: " ")
+    }
+
+    private func configureActionBarInteraction() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        let isProgressBarVisible = !viewModel.shouldHideProgressView
+
+        if isProgressBarVisible {
+            actionBarView.isUserInteractionEnabled = false
+            actionBarView.alpha = 0.3
+        } else {
+            actionBarView.isUserInteractionEnabled = true
+            actionBarView.alpha = 1.0
+        }
     }
 
     private func setupBorders() {

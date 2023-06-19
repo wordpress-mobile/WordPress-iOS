@@ -3,7 +3,7 @@ import XCTest
 
 @testable import WordPress
 
-class PostCompactCellGhostableTests: XCTestCase {
+class PostCompactCellGhostableTests: CoreDataTestCase {
 
     var postCell: PostCompactCell!
 
@@ -30,7 +30,7 @@ class PostCompactCellGhostableTests: XCTestCase {
     }
 
     func testIsInteractiveAfterAConfigure() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -38,7 +38,7 @@ class PostCompactCellGhostableTests: XCTestCase {
     }
 
     func testShowBadgesLabelAfterConfigure() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -46,7 +46,7 @@ class PostCompactCellGhostableTests: XCTestCase {
     }
 
     func testHideGhostAfterConfigure() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(mainContext).build()
 
         postCell.configure(with: post)
 
@@ -55,11 +55,19 @@ class PostCompactCellGhostableTests: XCTestCase {
     }
 
     func testMenuButtonOpacityAfterConfigure() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(mainContext).with(remoteStatus: .sync).build()
 
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.menuButton.layer.opacity, 1)
+    }
+
+    func testMenuButtonOpacityAfterConfigureWithPushingStatus() {
+        let post = PostBuilder(mainContext).with(remoteStatus: .pushing).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.menuButton.layer.opacity, 0.3)
     }
 
     private func postCellFromNib() -> PostCompactCell {
