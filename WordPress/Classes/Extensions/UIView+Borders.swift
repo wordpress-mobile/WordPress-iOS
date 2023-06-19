@@ -38,6 +38,19 @@ extension UIView {
         return borderView
     }
 
+    @discardableResult
+    func addBottomBorder(withColor bgColor: UIColor, leadingMargin: CGFloat, trailingMargin: CGFloat) -> UIView {
+        let borderView = makeBorderView(withColor: bgColor)
+
+        NSLayoutConstraint.activate([
+            borderView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            borderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leadingMargin),
+            borderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: trailingMargin)
+            ])
+        return borderView
+    }
+
     private func makeBorderView(withColor: UIColor) -> UIView {
         let borderView = UIView()
         borderView.backgroundColor = withColor

@@ -31,9 +31,9 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.alignment = .top
+        stackView.alignment = .center
         stackView.spacing = Metrics.detailsOuterStackViewSpacing
-        stackView.addArrangedSubviews([detailsInnerStackView, featuredImageView])
+        stackView.addArrangedSubviews([detailsInnerStackView, featuredImageView, chevronView])
         return stackView
     }()
 
@@ -70,6 +70,15 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Metrics.featuredImageCornerRadius
+        return imageView
+    }()
+
+    private lazy var chevronView: UIImageView = {
+        let image = UIImage(systemName: "chevron.right")?.imageFlippedForRightToLeftLayoutDirection()
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .separator
+        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return imageView
     }()
 
