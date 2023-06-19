@@ -17,7 +17,6 @@ class EditorAztecTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     // TODO: Re-enable Aztec tests but for editing an existing Aztec post.

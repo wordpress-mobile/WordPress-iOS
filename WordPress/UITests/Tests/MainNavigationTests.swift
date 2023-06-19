@@ -13,7 +13,6 @@ class MainNavigationTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     // We run into an issue where the People screen would crash short after loading.
