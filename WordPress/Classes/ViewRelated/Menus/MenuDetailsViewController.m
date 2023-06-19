@@ -79,7 +79,6 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     [trashButton setImage:[UIImage gridiconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     trashButton.backgroundColor = [UIColor clearColor];
-    trashButton.adjustsImageWhenHighlighted = YES;
     trashButton.accessibilityLabel = NSLocalizedString(@"Delete menu", @"Screen Reader: Button that deletes a menu.");
 }
 
