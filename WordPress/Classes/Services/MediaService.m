@@ -641,7 +641,7 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
-    remoteMedia.mimeType = [media mimeType];
+    remoteMedia.mimeType = media.mimeType;
 	remoteMedia.videopressGUID = media.videopressGUID;
     remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
     remoteMedia.postID = media.postID;
@@ -660,7 +660,7 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
             if ([field isEqualToString: @"fileExtension"]) {
                 updateDict[field] = [media fileExtension] ?: @"unknown";
             } else if ([field isEqualToString: @"mimeType"]) {
-                updateDict[field] = [media mimeType];
+                updateDict[field] = media.mimeType;
             } else {
                 updateDict[field] = value;
             }

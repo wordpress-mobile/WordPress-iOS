@@ -15,7 +15,6 @@ class DashboardTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     func testFreeToPaidCardNavigation() throws {

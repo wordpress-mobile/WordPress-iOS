@@ -10,7 +10,6 @@ class SignupTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     func testEmailSignup() throws {

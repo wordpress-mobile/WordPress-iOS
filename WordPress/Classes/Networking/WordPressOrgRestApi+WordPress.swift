@@ -30,7 +30,7 @@ private func makeCookieNonceAuthenticator(blog: Blog) -> Authenticator? {
 
 private func apiBase(blog: Blog) -> URL? {
     precondition(blog.account == nil, ".com support has not been implemented yet")
-    return try? blog.url(withPath: "wp-json/").asURL()
+    return try? blog.url(withPath: "wp-json/")?.asURL()
 }
 
 extension WordPressOrgRestApi {

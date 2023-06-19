@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-05 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-06-12 20:32:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -4920,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Inget datumintervall är angivet";
 
+/* No comment provided by engineer. */
+"No description" = "Ingen beskrivning";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Inga åtgärdade hot";
 
@@ -5045,6 +5048,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Inga hot hittades";
+
+/* No comment provided by engineer. */
+"No title" = "Ingen rubrik";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -9679,6 +9685,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Avfärda";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Du har inte skapat några kampanjer ännu. Klicka på marknadsför för att komma igång.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Du har inga kampanjer";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Laddar in kampanjer …";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Marknadsför";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze-kampanjer";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Visa ditt arbete på miljontals webbplatser.";
 
@@ -9708,6 +9729,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Marknadsför det här inlägget";
+
+/* Short status description */
+"blazeCampaign.status.active" = "Aktivt";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "Schemalagt";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Avvisad";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Dölj detta";
@@ -9765,6 +9795,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Sidor";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Klick";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Skapa kampanj";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Visningar";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze-kampanj";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Visa alla kampanjer";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Lägg till sidor på din webbplats";
@@ -9841,6 +9886,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per år";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Avfärda";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Domänen du försöker lägga till kan inte köpas i Jetpack-appen just nu.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";
 
@@ -9872,6 +9923,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.shortTitle" = "Gratis domän med ett årligt paket";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Klar";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Det kan ta upp till 30 minuter för din domän att börja fungera ordentligt";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Din nya domän %@ håller på att konfigureras.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Allt är klart att köras!";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Ställ in bloggningspåminnelser";
@@ -10426,6 +10489,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.dashboardCard.draftPosts" = "Utkastinlägg";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Lär känna appen";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Nästa steg";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Sidor";
 
 /* Card title for the pesonalization menu */
@@ -10569,6 +10638,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Påminnelser";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Öka din trafik genom att dela dina inlägg automatiskt med dina vänner på sociala medier.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Anslut dina profiler";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Sociala mediaikoner";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Inte nu";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";

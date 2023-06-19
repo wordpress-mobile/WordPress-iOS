@@ -1,6 +1,7 @@
 import CoreSpotlight
 import Intents
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Custom NSUSerActivity types for the WPiOS. Primarily used for navigation points.
 ///
@@ -95,7 +96,7 @@ extension SearchableActivityConvertable where Self: UIViewController {
         }
 
         if let activityDescription = activityDescription {
-            let contentAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+            let contentAttributeSet = CSSearchableItemAttributeSet(itemContentType: UTType.text.identifier)
             contentAttributeSet.contentDescription = activityDescription
             contentAttributeSet.contentCreationDate = nil // Set this to nil so it doesn't display in spotlight
             activity.contentAttributeSet = contentAttributeSet

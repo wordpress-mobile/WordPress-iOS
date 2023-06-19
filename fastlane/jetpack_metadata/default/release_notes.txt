@@ -1,13 +1,9 @@
-If your site uses a block-based theme, you can now edit your site’s home page directly from the Pages list. Raised hands emoji.
+WordPress.com plans are coming to the Jetpack app. Get the plan that’s right for your publishing needs and manage it in the same place you write all your best words.
 
-We solved an issue around setting links to open in a new tab. When typing text after this link, you can now undo and redo the text without any issues.
+There’s a shiny new “Personalize Home Tab” button at the bottom of your site dashboard where you can customize your visible dashboard cards. (Want to hide the cards you don’t need? Just use the “More” menu.)
 
-Visible detail settings are now disabled for VideoPress videos that don’t belong to your site.
+We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. There’s also a lock icon for disabled cells in the editor so you know when they aren’t in use.
 
-Tap-to-edit is now available for all nested block types—no more tapping through every nesting level to reach a specific piece of content.
+On the “Search domains” screen, you’ll now see an error message if you choose a default domain that isn’t supported by your site. No more forever-spinning progress wheel.
 
-Speaking of nesting, we fixed a bug where merging a list item into a paragraph would remove any nested text for that list item.
-
-We were squashing bugs anyway, so we went ahead and fixed a couple in the reader, too. When you filter your followed topics, text in non-latin languages (like Arabic) now displays properly. The Report and Block actions are also back where they belong in the post menu.
-
-Finally, we’ve updated the design of disabled cells so it’s easier to tell when a cell isn’t in use.
+Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)

@@ -96,7 +96,7 @@
             return NO;
         } else if (![remoteMedia.localURL isEqual:media.absoluteLocalURL]) {
             return NO;
-        } else if (![remoteMedia.mimeType isEqualToString:[media mimeType]]) {
+        } else if (![remoteMedia.mimeType isEqualToString:media.mimeType]) {
             return NO;
         } else if (![remoteMedia.videopressGUID isEqualToString:media.videopressGUID]) {
             return NO;
@@ -152,7 +152,7 @@
             return NO;
         } else if (![remoteMedia.localURL isEqual:media.absoluteLocalURL]) {
             return NO;
-        } else if (![remoteMedia.mimeType isEqualToString:[media mimeType]]) {
+        } else if (![remoteMedia.mimeType isEqualToString:media.mimeType]) {
             return NO;
         } else if (![remoteMedia.videopressGUID isEqualToString:media.videopressGUID]) {
             return NO;
