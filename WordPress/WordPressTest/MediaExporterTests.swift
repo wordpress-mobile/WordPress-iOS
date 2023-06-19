@@ -38,13 +38,6 @@ class MediaExporterTests: XCTestCase {
 
     // MARK: - Helper testing
 
-    func testThatFileExtensionForTypeIsWorking() {
-        // Testing JPEG as a simple test of the implementation.
-        // Maybe expanding the test to all of our supported types would be helpful.
-        let expected = "jpeg"
-        XCTAssert(URL.fileExtensionForUTType(UTType.jpeg.identifier) == expected, "Error: unexpected extension found when converting from UTType")
-    }
-
     func testThatURLFileSizeWorks() {
         guard let mediaPath = OHPathForFile("test-image.jpg", type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test image file")

@@ -107,7 +107,9 @@ class MediaThumbnailExporter: MediaExporter {
         guard let thumbnail = try? thumbnailURL(withIdentifier: identifier) else {
             return nil
         }
-        guard let type = thumbnail.typeIdentifier, UTTypeConformsTo(type as CFString, options.thumbnailImageType as CFString) else {
+        guard let type = thumbnail.typeIdentifier.flatMap(UTType.init),
+              let thumbnailType = UTType(options.thumbnailImageType),
+              type.conforms(to: thumbnailType) else {
             return nil
         }
         return thumbnail
@@ -234,9 +236,11 @@ class MediaThumbnailExporter: MediaExporter {
             filename.append("-\(Int(preferredSize.width))x\(Int(preferredSize.height))")
         }
         // Get a new URL for the file as a thumbnail within the cache.
-        return try mediaFileManager.makeLocalMediaURL(withFilename: filename,
-                                                        fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
-                                                        incremented: false)
+        return try mediaFileManager.makeLocalMediaURL(
+            withFilename: filename,
+            fileExtension: UTType(options.thumbnailImageType)?.preferredFilenameExtension,
+            incremented: false
+        )
     }
 
     /// Renames and moves an exported thumbnail to the expected directory with the expected thumbnail filenaming convention.
