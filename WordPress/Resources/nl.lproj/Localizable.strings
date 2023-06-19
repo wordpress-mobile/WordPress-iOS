@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-08 08:14:08+0000 */
+/* Translation-Revision-Date: 2023-06-14 22:54:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -4920,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Geen datumbereik geselecteerd";
 
+/* No comment provided by engineer. */
+"No description" = "Geen omschrijving";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Geen opgeloste bedreigingen";
 
@@ -9679,6 +9682,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Negeren";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Je hebt nog geen campagnes gemaakt. Klik op promoten om te beginnen.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Je hebt geen campagnes";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Campagnes aan het inladen ...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Promoot";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze campagnes";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Stel je werk tentoon op miljoenen sites.";
 
@@ -9708,6 +9726,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Blaze dit bericht";
+
+/* Short status description */
+"blazeCampaign.status.active" = "Actief";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "Ingepland";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Afgewezen";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Dit verbergen";
@@ -9765,6 +9792,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pagina's";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Kliks";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Campagne aanmaken";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Impressies";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze campagne";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Bekijk alle campagnes";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Voeg pagina's toe aan je site";
@@ -9841,6 +9883,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per jaar";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Negeer";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Sorry, het domein dat je probeert toe te voegen kan op dit moment niet worden gekocht via de Jetpack app.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
 
@@ -9872,6 +9920,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.shortTitle" = "Gratis domein bij een jaarabonnement";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Klaar";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Het kan tot 30 minuten duren voor je domein correct werkt.";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Je nieuwe domein, %@, wordt ingesteld.";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Stel je blogging herinneringen in";
@@ -10426,6 +10483,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.dashboardCard.draftPosts" = "Conceptberichten";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Verken de app";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Volgende stappen";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Pagina's";
 
 /* Card title for the pesonalization menu */
@@ -10569,6 +10632,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Herinneringen";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Krijg meer bezoekers door je berichten automatisch te delen met je vrienden op social media.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Koppel je profielen";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Social media-pictogrammen";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
