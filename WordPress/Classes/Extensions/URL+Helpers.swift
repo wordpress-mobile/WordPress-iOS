@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 extension URL {
 
@@ -92,25 +93,21 @@ extension URL {
         return mimeType
     }
 
-    var isVideo: Bool {
-        guard let uti = typeIdentifier else {
-            return false
-        }
+    private var contentType: UTType? {
+        typeIdentifier.flatMap(UTType.init)
+    }
 
-        return UTTypeConformsTo(uti as CFString, kUTTypeMovie)
+    var isVideo: Bool {
+        contentType?.conforms(to: .movie) ?? false
     }
 
     var isImage: Bool {
-        guard let uti = typeIdentifier else {
-            return false
-        }
-
-        return UTTypeConformsTo(uti as CFString, kUTTypeImage)
+        contentType?.conforms(to: .image) ?? false
     }
 
     var isGif: Bool {
-        if let uti = typeIdentifier {
-            return UTTypeConformsTo(uti as CFString, kUTTypeGIF)
+        if let type = contentType {
+            return type.conforms(to: .gif)
         } else {
             return pathExtension.lowercased() == "gif"
         }

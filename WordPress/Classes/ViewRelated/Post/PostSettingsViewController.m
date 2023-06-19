@@ -13,6 +13,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 #import <Photos/Photos.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
@@ -1248,7 +1249,7 @@ FeaturedImageViewControllerDelegate>
     options.allowMultipleSelection = NO;
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
-    options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
+    options.badgedUTTypes = [NSSet setWithObject:UTTypeGIF.identifier];
     options.preferredStatusBarStyle = [WPStyleGuide preferredStatusBarStyle];
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
 

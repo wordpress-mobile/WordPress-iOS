@@ -437,7 +437,7 @@ extension ImageLoader {
             return
         }
 
-        if let typeIdentifier = asset.utTypeIdentifier(), UTTypeEqual(typeIdentifier as CFString, kUTTypeGIF) {
+        if asset.utTypeIdentifier() == UTType.gif.identifier {
             loadGif(from: asset)
         } else {
             loadImage(from: asset, preferredSize: size)
