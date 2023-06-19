@@ -137,7 +137,7 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     func testURLTypeGifFallbackNoContentType() throws {
-        // Given URL with on content
+        // Given URL with no content
         let url = URL(fileURLWithPath: "/dev/null/hello.gif")
 
         // Then the fallback checks the type based on the filename extension
