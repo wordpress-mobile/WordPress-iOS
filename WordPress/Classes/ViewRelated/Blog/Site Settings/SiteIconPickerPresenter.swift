@@ -3,6 +3,7 @@ import SVProgressHUD
 import WPMediaPicker
 import WordPressShared
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Encapsulates the interactions required to capture a new site icon image, crop it and resize it.
 ///
@@ -35,7 +36,7 @@ class SiteIconPickerPresenter: NSObject {
         options.filter = [.image]
         options.allowMultipleSelection = false
         options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)

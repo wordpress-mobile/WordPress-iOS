@@ -1,6 +1,6 @@
 
 import MobileCoreServices
-
+import UniformTypeIdentifiers
 import Gridicons
 
 // MARK: - Functionality related to sharing a blog via the reader.
@@ -115,6 +115,6 @@ extension ReaderSiteTopic: UIActivityItemSource {
             return ShareBlog.typeIdentifier
         }
 
-        return kUTTypeURL as String
+        return UTType.url.identifier
     }
 }

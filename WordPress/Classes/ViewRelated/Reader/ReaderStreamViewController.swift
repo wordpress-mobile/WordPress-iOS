@@ -1518,7 +1518,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
             if let syncHelper = syncHelper, syncHelper.isSyncing {
                 return
             }

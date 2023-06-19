@@ -125,7 +125,7 @@ static CGFloat const SettingsMinHeight = 82.0f;
     {
         return self.textViewCell;
     }
-    return nil;
+    return [UITableViewCell new];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section

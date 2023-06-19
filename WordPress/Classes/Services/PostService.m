@@ -771,9 +771,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
-        Coordinate *geolocation = nil;
-        NSString *latitudeID = nil;
-        NSString *longitudeID = nil;
         NSString *publicID = nil;
         NSString *publicizeMessage = nil;
         NSString *publicizeMessageID = nil;
@@ -788,9 +785,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 CLLocationCoordinate2D coord;
                 coord.latitude = [latitude doubleValue];
                 coord.longitude = [longitude doubleValue];
-                geolocation = [[Coordinate alloc] initWithCoordinate:coord];
-                latitudeID = [latitudeDictionary stringForKey:@"id"];
-                longitudeID = [longitudeDictionary stringForKey:@"id"];
                 publicID = [geoPublicDictionary stringForKey:@"id"];
             }
             NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];

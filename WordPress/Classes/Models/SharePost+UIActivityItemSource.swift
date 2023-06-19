@@ -1,4 +1,5 @@
 import MobileCoreServices
+import UniformTypeIdentifiers
 import UIKit
 
 extension SharePost: UIActivityItemSource {
@@ -21,13 +22,13 @@ extension SharePost: UIActivityItemSource {
 
     func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
         guard let activityType = activityType else {
-            return kUTTypeURL as String
+            return UTType.url.identifier
         }
         switch activityType {
         case SharePost.activityType:
             return SharePost.typeIdentifier
         default:
-            return kUTTypeURL as String
+            return UTType.url.identifier
         }
     }
 }

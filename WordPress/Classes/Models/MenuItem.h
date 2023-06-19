@@ -86,7 +86,7 @@ extern NSString * const MenuItemLinkTargetBlank;
 /**
  The display label text for a MenuItemType string.
  */
-+ (NSString *)labelForType:(NSString *)itemType blog:(nullable Blog *)blog;
++ (nullable NSString *)labelForType:(NSString *)itemType blog:(nullable Blog *)blog;
 
 /**
  The localized default title text (name) to use with a newly created MenuItem.
