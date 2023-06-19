@@ -1,5 +1,5 @@
-* [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
-* [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
-* [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
-* [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
+We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. Phew.
 
+Locked and loaded—there’s now a lock icon for disabled cells in the block editor so you know when they aren’t in use.
+
+Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)
