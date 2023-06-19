@@ -21,28 +21,6 @@ protocol SiteVerticalsService {
     func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion)
 }
 
-// MARK: - MockSiteVerticalsService
-
-/// Mock implementation of the SiteVerticalsService
-///
-final class MockSiteVerticalsService: SiteVerticalsService {
-    func retrieveVertical(named verticalName: String, completion: @escaping SiteVerticalRequestCompletion) {
-        let vertical = SiteVertical(identifier: "SV 1", title: "Vertical 1", isNew: false)
-        completion(.success(vertical))
-    }
-
-    func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
-        let result = SiteVerticalsResult.success(mockVerticals())
-        completion(result)
-    }
-
-    private func mockVerticals() -> [SiteVertical] {
-        return [ SiteVertical(identifier: "SV 1", title: "Vertical 1", isNew: false),
-                 SiteVertical(identifier: "SV 2", title: "Vertical 2", isNew: false),
-                 SiteVertical(identifier: "SV 3", title: "Landscap", isNew: true) ]
-    }
-}
-
 // MARK: - SiteCreationVerticalsService
 
 /// Retrieves candidate Site Verticals used to create a new site.
