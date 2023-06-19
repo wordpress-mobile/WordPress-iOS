@@ -138,6 +138,9 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     private func setupViews() {
         contentView.addSubview(mainStackView)
         contentView.pinSubviewToAllEdges(mainStackView)
+        mainStackView.addBottomBorder(withColor: .separator,
+                                      leadingMargin: Metrics.defaultMainStackViewLayoutMargins.leading,
+                                      trailingMargin: -Metrics.defaultMainStackViewLayoutMargins.trailing)
 
         NSLayoutConstraint.activate([
             featuredImageView.widthAnchor.constraint(equalToConstant: Metrics.featuredImageSize),

@@ -16,6 +16,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
         tableView.register(BlazeCampaignTableViewCell.self, forCellReuseIdentifier: BlazeCampaignTableViewCell.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
