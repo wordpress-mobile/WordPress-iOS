@@ -23,7 +23,7 @@ class LoginTests: XCTestCase {
             .dismissNotificationAlertIfNeeded()
             .tabBar.goToMeScreen()
             .logoutToPrologue()
-            .verifyPrologueScreenLoaded()
+            .assertScreenIsLoaded()
     }
 
     /**
@@ -40,7 +40,7 @@ class LoginTests: XCTestCase {
             .dismissNotificationAlertIfNeeded()
             .tabBar.goToMeScreen()
             .logout()
-            .verifyWelcomeScreenLoaded()
+            .assertScreenIsLoaded()
     }
 
     // Unified self hosted login/out
@@ -51,7 +51,7 @@ class LoginTests: XCTestCase {
             .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .removeSelfHostedSite()
         try PrologueScreen()
-            .verifyPrologueScreenLoaded()
+            .assertScreenIsLoaded()
     }
 
     // Unified WordPress.com email login failure due to incorrect password
@@ -83,7 +83,7 @@ class LoginTests: XCTestCase {
 
             // Login flow returns MySites modal, which needs to be closed.
             .closeModal()
-            .verifyMySiteScreenLoaded()
+            .assertScreenIsLoaded()
             .removeSelfHostedSite()
     }
 }

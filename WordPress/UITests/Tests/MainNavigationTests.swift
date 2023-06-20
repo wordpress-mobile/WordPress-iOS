@@ -25,16 +25,15 @@ class MainNavigationTests: XCTestCase {
     // It would be wise to add similar tests for each item in the menu (then remove this comment).
     func testLoadsPeopleScreen() throws {
         try MySiteScreen()
-            .verifyMySiteScreenLoaded()
+            .assertScreenIsLoaded()
             .goToPeople()
-            .verifyPeopleScreenLoaded()
+            .assertScreenIsLoaded()
     }
 
    func testTabBarNavigation() throws {
        try MySiteScreen()
-           .verifyMySiteScreenLoaded()
            .tabBar.goToReaderScreen()
-           .verifyReaderScreenLoaded()
+           .assertScreenIsLoaded()
 
        // We may get a notifications fancy alert when loading the reader for the first time
        if let alert = try? FancyAlertComponent() {

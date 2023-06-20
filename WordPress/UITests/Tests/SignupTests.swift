@@ -22,6 +22,6 @@ class SignupTests: XCTestCase {
             .setPassword(WPUITestCredentials.signupPassword)
             .continueWithSignup()
             .dismissNotificationAlertIfNeeded()
-            .verifyMySiteScreenLoaded()
+            .assertScreenIsLoaded()
     }
 }

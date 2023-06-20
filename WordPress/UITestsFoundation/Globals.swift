@@ -101,6 +101,12 @@ extension ScreenObject {
 
         return self
     }
+
+    @discardableResult
+    public func assertScreenIsLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(isLoaded, file: file, line: line)
+        return self
+    }
 }
 
 public enum Apps {

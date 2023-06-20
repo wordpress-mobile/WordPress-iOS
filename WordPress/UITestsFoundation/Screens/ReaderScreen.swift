@@ -74,11 +74,7 @@ public class ReaderScreen: ScreenObject {
         if backButton.isHittable { backButton.tap() }
     }
 
-    public func verifyReaderScreenLoaded() {
-        XCTAssertTrue(isLoaded)
-    }
-
-    public static func isLoaded() -> Bool {
+    public func isLoaded() -> Bool {
         (try? ReaderScreen().isLoaded) ?? false
     }
 

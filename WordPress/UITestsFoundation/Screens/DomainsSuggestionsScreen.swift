@@ -22,12 +22,6 @@ public class DomainsSuggestionsScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyDomainsSuggestionsScreenLoaded() -> Self {
-        XCTAssertTrue(DomainsSuggestionsScreen.isLoaded(), "\"Domains suggestions\" screen isn't loaded.")
-        return self
-    }
-
-    @discardableResult
     public func selectDomain() throws -> Self {
         app.tables["DomainSuggestionsTable"].cells.lastMatch?.tap()
         return self
