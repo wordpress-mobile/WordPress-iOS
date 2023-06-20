@@ -103,9 +103,9 @@ final class BlogBuilder {
         return self
     }
 
-    func isBlazeApproved() -> Self {
-        blog.isBlazeApproved = true
-
+    func canBlaze() -> Self {
+        set(blogOption: "can_blaze", value: true)
+        blog.isAdmin = true
         return self
     }
 
