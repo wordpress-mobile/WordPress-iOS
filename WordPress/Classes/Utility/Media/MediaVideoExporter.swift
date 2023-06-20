@@ -215,13 +215,13 @@ class MediaVideoExporter: MediaExporter {
     ///   exported videos to WordPress, and what WordPress itself supports.
     ///
     fileprivate var supportedExportFileTypes: [String] {
-        let types = [
-            kUTTypeMPEG4,
-            kUTTypeQuickTimeMovie,
-            kUTTypeMPEG,
-            kUTTypeAVIMovie
+        let types: [UTType] = [
+            .mpeg4Movie,
+            .quickTimeMovie,
+            .mpeg,
+            .avi
         ]
-        return types as [String]
+        return types.map(\.identifier)
     }
 }
 

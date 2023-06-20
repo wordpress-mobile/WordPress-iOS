@@ -2,8 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class MainNavigationTests: XCTestCase {
-    private var mySiteScreen: MySiteScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
@@ -15,7 +13,6 @@ class MainNavigationTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     // We run into an issue where the People screen would crash short after loading.

@@ -8,7 +8,6 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView)
@@ -24,14 +23,22 @@ class PostEditorNavigationBarManager {
 
     /// Dismiss Button
     ///
-    lazy var closeButton: WPButtonForNavigationBar = {
-        let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-        cancelButton.setContentHuggingPriority(.required, for: .horizontal)
-        cancelButton.accessibilityIdentifier = "editor-close-button"
-        cancelButton.tintColor = .editorPrimary
-        return cancelButton
+    lazy var closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        if #available(iOS 15, *) {
+            var configuration = UIButton.Configuration.plain()
+            configuration.image = Assets.closeButtonModalImage
+            configuration.contentInsets = Constants.closeButtonInsets
+            button.configuration = configuration
+        } else {
+            button.setImage(Assets.closeButtonModalImage, for: .normal)
+            button.contentEdgeInsets = Constants.closeButtonEdgeInsets
+        }
+        button.addTarget(self, action: #selector(closeWasPressed), for: .touchUpInside)
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.accessibilityIdentifier = "editor-close-button"
+        button.tintColor = .editorPrimary
+        return button
     }()
 
     private lazy var moreButton: UIButton = {
@@ -43,16 +50,6 @@ class PostEditorNavigationBarManager {
         button.accessibilityIdentifier = "more_post_options"
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
         button.setContentHuggingPriority(.required, for: .horizontal)
-        return button
-    }()
-
-    /// Blog Picker's Button
-    ///
-    lazy var blogPickerButton: WPBlogSelectorButton = {
-        let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
-        button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
 
@@ -137,10 +134,6 @@ class PostEditorNavigationBarManager {
         delegate?.navigationBarManager(self, moreWasPressed: sender)
     }
 
-    @objc private func blogPickerWasPressed(sender: UIButton) {
-        delegate?.navigationBarManager(self, blogPickerWasPressed: sender)
-    }
-
     @objc private func publishButtonTapped(sender: UIButton) {
         delegate?.navigationBarManager(self, publishButtonWasPressed: sender)
     }
@@ -184,7 +177,8 @@ class PostEditorNavigationBarManager {
 
 extension PostEditorNavigationBarManager {
     private enum Constants {
-        static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        static let closeButtonInsets = NSDirectionalEdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3)
+        static let closeButtonEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
     }
 
     private enum Fonts {

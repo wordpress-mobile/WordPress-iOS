@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Media export handling of thumbnail images from videos or images.
 ///
@@ -41,7 +42,7 @@ class MediaThumbnailExporter: MediaExporter {
         ///
         /// - Note: Passed on to the MediaImageExporter.Options.exportImageType.
         ///
-        var thumbnailImageType = kUTTypeJPEG as String
+        var thumbnailImageType = UTType.jpeg.identifier
 
         /// Computed preferred size, at scale.
         ///

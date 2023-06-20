@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-30 18:54:31+0000 */
+/* Translation-Revision-Date: 2023-06-13 20:04:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -4920,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Tidak ada rentang tanggal dipilih";
 
+/* No comment provided by engineer. */
+"No description" = "Tanpa deskripsi";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Tidak ada ancaman yang telah diperbaiki";
 
@@ -5045,6 +5048,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Ancaman tidak ditemukan";
+
+/* No comment provided by engineer. */
+"No title" = "Tanpa judul";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -9679,6 +9685,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Tutup";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Anda belum membuat kampanye apa pun. Klik promosikan untuk memulai.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Anda tidak punya kampanye";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Muat kampanye...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Promosikan";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Kampanye Blaze";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Tunjukkan karya Anda di jutaan situs.";
 
@@ -9708,6 +9729,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Promosikan pos ini dengan Blaze";
+
+/* Short status description */
+"blazeCampaign.status.active" = "Aktif";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "Terjadwal";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Ditolak";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Tutup";
@@ -9765,6 +9795,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Halaman";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Klik";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Buat kampanye";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Tayangan";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Kampanye Blaze";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Lihat semua kampanye";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Tambah halaman ke situs Anda";
@@ -9841,6 +9886,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per tahun";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Abaikan";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Maaf, saat ini domain yang Anda coba tambahkan tidak dapat dibeli di aplikasi Jetpack.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ketuk dua kali untuk mengubah unit";
 
@@ -9872,6 +9923,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.shortTitle" = "Domain gratis dengan paket tahunan";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Selesai";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Mungkin diperlukan waktu hingga 30 menit agar domain Anda mulai berfungsi dengan benar";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Domain baru Anda %@ sedang disiapkan.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Semua siap!";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Siapkan pengingat blogging";
@@ -10426,6 +10489,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "personalizeHome.dashboardCard.draftPosts" = "Pos draf";
 
 /* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Kenali aplikasinya";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Langkah berikutnya";
+
+/* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Halaman";
 
 /* Card title for the pesonalization menu */
@@ -10569,6 +10638,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Pengingat";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Tingkatkan lalu lintas Anda dengan membagikan pos Anda secara otomatis kepada teman-teman Anda di media sosial.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Hubungkan profil Anda";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Ikon sosial media";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Jangan sekarang";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";

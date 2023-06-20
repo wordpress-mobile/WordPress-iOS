@@ -2,8 +2,6 @@ import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
-    private var editorScreen: BlockEditorScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
@@ -16,7 +14,6 @@ class EditorGutenbergTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     let title = "Rich post title"

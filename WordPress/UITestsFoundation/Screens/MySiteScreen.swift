@@ -224,6 +224,11 @@ public class MySiteScreen: ScreenObject {
         return try PeopleScreen()
     }
 
+    public func verifyMySiteScreenLoaded() -> Self {
+        XCTAssertTrue(isLoaded)
+        return self
+    }
+
     public static func isLoaded() -> Bool {
         (try? MySiteScreen().isLoaded) ?? false
     }
