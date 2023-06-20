@@ -325,20 +325,6 @@ extension BlogDashboardViewController {
     }
 }
 
-// MARK: - UI Popover Delegate
-
-/// This view controller may host a `DashboardPromptsCardCell` that requires presenting a `MenuSheetViewController`,
-/// a fallback implementation of `UIMenu` for iOS 13. For more details, see the docs on `MenuSheetViewController`.
-///
-/// NOTE: This should be removed once we drop support for iOS 13.
-///
-extension BlogDashboardViewController: UIPopoverPresentationControllerDelegate {
-    // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
-    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
-    }
-}
-
 // MARK: - Helper functions
 
 private extension Collection where Element == DashboardCardModel {
