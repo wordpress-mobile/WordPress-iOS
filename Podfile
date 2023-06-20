@@ -138,7 +138,7 @@ abstract_target 'Apps' do
   # While in PR
   pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: 'task/sentry-stitch-async-code'
   # Local Development
-  # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
+  # pod 'Automattic-Tracks-iOS', path: '../Automattic-Tracks-iOS'
 
   pod 'NSURL+IDN', '~> 0.4'
 
