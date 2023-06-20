@@ -70,7 +70,7 @@ PODS:
   - libwebp/mux (1.2.4):
     - libwebp/demux
   - libwebp/webp (1.2.4)
-  - MediaEditor (1.2.1):
+  - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -559,7 +559,7 @@ DEPENDENCIES:
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.96.1`)
   - JTAppleCalendar (~> 8.0.2)
   - Kanvas (~> 1.4.4)
-  - MediaEditor (~> 1.2.1)
+  - MediaEditor (>= 1.2.2, ~> 1.2)
   - MRProgress (= 0.8.3)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
@@ -825,7 +825,7 @@ SPEC CHECKSUMS:
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
-  MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
+  MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
@@ -900,6 +900,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 8f3801df87501615cc7418c5a128cd9136848813
+PODFILE CHECKSUM: 245b75e4e052be1a0aa04f20f875aeaccefa5336
 
 COCOAPODS: 1.11.3
