@@ -43,6 +43,10 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
 
     let sentryDSN: String = ApiCredentials.sentryDSN
 
+    var swiftAsyncStacktraces: Bool {
+        return true
+    }
+
     var userHasOptedOut: Bool {
         return UserSettings.userHasOptedOutOfCrashLogging
     }
