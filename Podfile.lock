@@ -21,7 +21,7 @@ PODS:
   - AppCenter/Distribute (4.4.1):
     - AppCenter/Core
   - Automattic-Tracks-iOS (2.2.0):
-    - Sentry (~> 8.0)
+    - Sentry (= 8.5.0)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
   - boost (1.76.0)
@@ -490,12 +490,12 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (8.8.0):
-    - Sentry/Core (= 8.8.0)
-    - SentryPrivate (= 8.8.0)
-  - Sentry/Core (8.8.0):
-    - SentryPrivate (= 8.8.0)
-  - SentryPrivate (8.8.0)
+  - Sentry (8.5.0):
+    - Sentry/Core (= 8.5.0)
+    - SentryPrivate (= 8.5.0)
+  - Sentry/Core (8.5.0):
+    - SentryPrivate (= 8.5.0)
+  - SentryPrivate (8.5.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -786,7 +786,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
-    :commit: f5bd4f4cffa5a6687c85b972a8b6ba5f20c959cb
+    :commit: 5db6060bcba4445cc1639e5f60af29e90999cca4
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
@@ -809,7 +809,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
-  Automattic-Tracks-iOS: a1b020ab02f0e5a39c5d4e6870a498273f286158
+  Automattic-Tracks-iOS: cbf13a8021f04f1095273cdcafce2687600e4f5e
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9168d5f3bdb636b9bd861bf9fbe747f77e835065
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
@@ -880,8 +880,8 @@ SPEC CHECKSUMS:
   RNTAztecView: 81c4a49d5482514d90e568cdf37142ad78f7c297
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: 927dfb29d18a14d924229a59cc2ad149f43349f2
-  SentryPrivate: 4350d865f898224ab9fa02b37d6ee7fbb623f47e
+  Sentry: 3be3f42e40e5a552935552e115744d5810a216d9
+  SentryPrivate: 8c9463280e282527f938d1a5d1d60f8e10ff279b
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6

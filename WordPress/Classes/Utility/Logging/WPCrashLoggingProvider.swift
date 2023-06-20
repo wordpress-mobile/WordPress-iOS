@@ -43,7 +43,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
 
     let sentryDSN: String = ApiCredentials.sentryDSN
 
-    var swiftAsyncStacktraces: Bool {
+    var enhancedAsyncStacktraces: Bool {
         return true
     }
 
