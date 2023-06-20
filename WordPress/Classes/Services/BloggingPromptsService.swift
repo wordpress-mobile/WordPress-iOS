@@ -36,7 +36,9 @@ class BloggingPromptsService {
     /// Convenience computed variable that returns prompt settings from the local store.
     ///
     var localSettings: BloggingPromptSettings? {
-        loadSettings(context: contextManager.mainContext)
+        return contextManager.performQuery { mainContext in
+            self.loadSettings(context: mainContext)
+        }
     }
 
     /// Fetches a number of blogging prompts starting from the specified date.
@@ -349,7 +351,7 @@ private extension BloggingPromptsService {
         }, completion: completion, on: .main)
     }
 
-    func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
+    private func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
         let fetchRequest = BloggingPromptSettings.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1
