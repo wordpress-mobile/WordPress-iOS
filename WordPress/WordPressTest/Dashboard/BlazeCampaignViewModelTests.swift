@@ -2,10 +2,10 @@ import XCTest
 
 @testable import WordPress
 
-final class DashboardBlazeCampaignViewModelTests: XCTestCase {
+final class BlazeCampaignViewModelTests: XCTestCase {
     func testViewModel() throws {
         // Given
-        let viewModel = DashboardBlazeCampaignViewModel(campaign: campaign)
+        let viewModel = BlazeCampaignViewModel(campaign: campaign)
 
         // Then campaign is displayed
         XCTAssertEqual(viewModel.title, "Test Post - don't approve")
