@@ -510,6 +510,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 }
 
+- (BOOL)canBlaze
+{
+    return [[self getOptionValue:@"can_blaze"] boolValue] && self.isAdmin;
+}
+
 - (BOOL)supportsFeaturedImages
 {
     id hasSupport = [self getOptionValue:@"post_thumbnail"];

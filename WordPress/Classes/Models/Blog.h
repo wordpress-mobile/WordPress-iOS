@@ -207,6 +207,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
 @property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
+@property (nonatomic, assign, readonly) BOOL canBlaze;
 
 /**
  *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
