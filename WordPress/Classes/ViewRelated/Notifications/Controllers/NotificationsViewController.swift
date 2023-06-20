@@ -429,7 +429,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return
         }
 
-        selectedNotification = note
         showDetails(for: note)
 
         if !splitViewControllerIsHorizontallyCompact {
@@ -769,6 +768,27 @@ extension NotificationsViewController {
         // Ref: https://sentry.io/organizations/a8c/issues/1329631657/
         //
         loadViewIfNeeded()
+
+        // The `selectedNotification` property will be set to `note` later in the `selectRow` functioin call. The reason
+        // we duplicate the assignment here (explicityly before the `markAsRead` function call) is to workaround a crash
+        // caused by recursive `NSManagedObjectContext.save` calls.
+        //
+        // Here is the recursive call chain:
+        // markAsRead(note) -> NSManagedObjectContext.save -> NSFetchedResultControllerDelegate.controllerDidChangeContent
+        // -> tableViewDidChangeContent -> markAsRead(selectedNotification) -> NSManagedObjectContext.save
+        //
+        // If the two Notication instances passed to the two `markAsRead` function calls are the same object, the last `save`
+        // call won't happen because `selectedNotification.read` is already true and `markAsRead(selectedNotification)` does nothing.
+        //
+        // Considering the `selectedNotification` will be set to `note` later, it should be safe to duplicate that assignment
+        // here, just for the sake of breaking the recursive calls.
+        //
+        // The ideal solution would be not updating and saving `Notification.read` property in the main context.
+        // Use `CoreDataStack.performAndSave` to do it in a background context instead. However, based on the comments on
+        // `markAsRead` function call below, it appears we intentionally save the main context to maintain some undocumented
+        // but appears important "side effects". We may need more careful testing around moving the saving operation from
+        // the main context to a background context.
+        selectedNotification = note
 
         /// Note: markAsRead should be the *first* thing we do. This triggers a context save, and may have many side effects that
         /// could affect the OP's that go below!!!.
