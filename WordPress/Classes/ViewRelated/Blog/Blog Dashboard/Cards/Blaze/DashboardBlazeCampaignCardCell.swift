@@ -102,7 +102,7 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
             ])
         ], card: .blaze)
 
-        let viewModel = DashboardBlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
+        let viewModel = BlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
         campaignView.configure(with: viewModel, blog: blog)
     }
 }
