@@ -114,6 +114,8 @@ class MediaURLExporterTests: XCTestCase {
         XCTAssertFalse(url.isVideo)
         XCTAssertTrue(url.isImage)
         XCTAssertFalse(url.isGif)
+        XCTAssertEqual(url.typeIdentifierFileExtension, "jpeg")
+        XCTAssertEqual(url.mimeType, "image/jpeg")
     }
 
     func testURLTypeGIF() throws {
@@ -124,6 +126,8 @@ class MediaURLExporterTests: XCTestCase {
         XCTAssertFalse(url.isVideo)
         XCTAssertTrue(url.isImage)
         XCTAssertTrue(url.isGif)
+        XCTAssertEqual(url.typeIdentifierFileExtension, "gif")
+        XCTAssertEqual(url.mimeType, "image/gif")
     }
 
     func testURLTypeVideo() throws {
@@ -134,6 +138,8 @@ class MediaURLExporterTests: XCTestCase {
         XCTAssertTrue(url.isVideo)
         XCTAssertFalse(url.isImage)
         XCTAssertFalse(url.isGif)
+        XCTAssertEqual(url.typeIdentifierFileExtension, "m4v")
+        XCTAssertEqual(url.mimeType, "video/x-m4v")
     }
 
     func testURLTypeGifFallbackNoContentType() throws {

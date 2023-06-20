@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Media export handling of Videos from PHAssets or AVAssets.
 ///
@@ -119,8 +120,10 @@ class MediaVideoExporter: MediaExporter {
         // Generate a URL for exported video.
         let mediaURL: URL
         do {
-            mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
-                                                                fileExtension: URL.fileExtensionForUTType(outputType))
+            mediaURL = try mediaFileManager.makeLocalMediaURL(
+                withFilename: filename ?? "video",
+                fileExtension: UTType(outputType)?.preferredFilenameExtension
+            )
         } catch {
             onError(exporterErrorWith(error: error))
             return Progress.discreteCompletedProgress()

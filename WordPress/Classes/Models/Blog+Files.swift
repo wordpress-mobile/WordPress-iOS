@@ -25,7 +25,7 @@ extension Blog {
 
         var typeIdentifiers = [String]()
         for pathExtension in allowedFileExtensions {
-            let uti = String.typeIdentifier(for: pathExtension)
+            let uti = UTType(filenameExtension: pathExtension)?.identifier
 
             if let validUTI = uti {
                 typeIdentifiers.append(validUTI)

@@ -1209,9 +1209,8 @@ private extension AztecPostViewController {
     ///
     /// - Parameter documentURL: the document URL to act upon
     func displayInsertionOpensAlertIfNeeded(for documentURL: URL) {
-        let documentType = documentURL.pathExtension
         guard
-            let uti = String.typeIdentifier(for: documentType),
+            let uti = UTType(filenameExtension: documentURL.pathExtension)?.identifier,
             uti == UTType.pdf.identifier || uti == UTType.plainText.identifier
         else {
             insertExternalMediaWithURL(documentURL)
