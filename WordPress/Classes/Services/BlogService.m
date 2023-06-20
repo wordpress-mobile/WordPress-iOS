@@ -195,12 +195,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
     
-    BlazeService *blazeService = [BlazeService createService];
-    dispatch_group_enter(syncGroup);
-    [blazeService getStatusFor:blog completion:^{
-        dispatch_group_leave(syncGroup);
-    }];
-    
     if ([DomainsDashboardCardHelper isFeatureEnabled] || [FreeToPaidPlansDashboardCardHelper isFeatureEnabled]) {
         dispatch_group_enter(syncGroup);
         [self refreshDomainsFor:blog success:^{

@@ -617,7 +617,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureFileDownloadsStats:
             return [self isHostedAtWPcom];
         case BlogFeatureBlaze:
-            return [self isBlazeApproved];
+            return [self canBlaze];
         case BlogFeaturePages:
             return [self isListingPagesAllowed];
     }
