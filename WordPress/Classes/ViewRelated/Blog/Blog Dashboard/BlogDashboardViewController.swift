@@ -79,6 +79,8 @@ final class BlogDashboardViewController: UIViewController {
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
+
+        RootViewCoordinator.sharedPresenter.navigateToPrivacySettings()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

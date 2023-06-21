@@ -30,7 +30,7 @@ extension RootViewPresenter {
     /// Creates a navigation action to navigate to the "App Settings" from the "Me" scene.
     private func navigateToAppSettings() -> ViewControllerNavigationAction {
         return .init { context, completion in
-            let me: MeViewController = try context.presentingViewController()
+            let me: MeViewController = try context.fromViewController()
             CATransaction.perform {
                 me.navigateToAppSettings()
             } completion: {
@@ -42,7 +42,7 @@ extension RootViewPresenter {
     /// Creates a navigation action to navigate to the "Privacy Settings" from the "App Settings" scene.
     private func navigateToPrivacySettings() -> ViewControllerNavigationAction {
         return .init { context, completion in
-            let appSettings: AppSettingsViewController = try context.presentingViewController()
+            let appSettings: AppSettingsViewController = try context.fromViewController()
             appSettings.navigateToPrivacySettings(animated: context.animated) { privacySettings in
                 completion(privacySettings)
             }

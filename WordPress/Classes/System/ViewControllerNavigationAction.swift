@@ -28,28 +28,25 @@ final class ViewControllerNavigationAction {
     }
 
     /// Convenience method to start the navigation flow from the first navigator in the chain.
-    func start(on presentingViewController: UIViewController, animated: Bool = true) {
-        let context = Context(animated: animated, presenter: presentingViewController)
+    func start(on rootViewController: UIViewController, animated: Bool = true) {
+        let context = Context(animated: animated, sourceViewController: rootViewController)
         let navigator = first ?? self
         navigator.perform(with: context)
     }
 
-    /// Performs the navigation action, then calls the next navigation action where the `presenting` param
-    /// is the last presented view controller.
-    ///
-    /// The idea is that the presented view controller of the current navigator is the presenting view controller of the next navigator.
+    /// Performs the navigation action, then calls the next navigation action.
     private func perform(with context: Context) {
         do {
             try self.action(context) { presented in
                 if let next = self.next, let presented {
-                    let context = Context(animated: context.animated, presenter: presented)
+                    let context = Context(animated: context.animated, sourceViewController: presented)
                     next.perform(with: context)
                 } else {
                     self.free()
                 }
             }
         } catch {
-            DDLogError(error.localizedDescription)
+            DDLogError("Failed to perform navigation action with error: \(error.localizedDescription)")
         }
     }
 
@@ -82,13 +79,13 @@ extension ViewControllerNavigationAction {
 
         let animated: Bool
 
-        fileprivate let presenter: UIViewController
+        fileprivate let sourceViewController: UIViewController
 
-        func presentingViewController<T: UIViewController>() throws -> T {
-            guard let presenting = self.presenter as? T else {
+        func fromViewController<T: UIViewController>() throws -> T {
+            guard let sourceVC = self.sourceViewController as? T else {
                 throw NSError(domain: "ViewControllerNavigationActionCastError", code: 1)
             }
-            return presenting
+            return sourceVC
         }
     }
 }
