@@ -8,18 +8,18 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
 
 1. Unified Login and Signup
     - [ ] Login:
-            - [ ] WPCom Account:
-                - [x] Login and Logout using WPCom Account
-                - [x] Login and Logout Self Hosted Site
-                - [x] Invalid Password WPCom Account
-                - [x] Add Self Hosted Site after WPCom Login
-            - [ ] Apple/Google:
-                - [ ] Login using Apple Account
-                - [ ] Login using Google Account
-            - [ ] iCloud Keychain:
-                - [ ] Login using credentials saved in Keychain
-            - [ ] Magic Link:
-                - [ ] Email Magic Link Login
+        - [ ] WPCom Account:
+            - [x] Login and Logout using WPCom Account
+            - [x] Login and Logout Self Hosted Site
+            - [x] Invalid Password WPCom Account
+            - [x] Add Self Hosted Site after WPCom Login
+        - [ ] Apple/Google:
+            - [ ] Login using Apple Account
+            - [ ] Login using Google Account
+        - [ ] iCloud Keychain:
+            - [ ] Login using credentials saved in Keychain
+        - [ ] Magic Link:
+            - [ ] Email Magic Link Login
     - [ ] Sign Up:
         - [ ] Email Sign Up - Create New Site
         - [ ] Email Sign Up - Link to Self-Hosted Site
