@@ -1,6 +1,10 @@
 22.6
 -----
 
+22.5.1
+-----
+
+* [*] Resolve an issue that was causing the app crash when `CrashLogging.logError` is called from a background thread. [#20846]
 
 22.5
 -----
