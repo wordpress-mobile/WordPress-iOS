@@ -1,0 +1,87 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/wpcom/v2/sites/106707880/external-services",
+    "queryParameters": {
+      "locale": {
+          "matches": "(.*)"
+      },
+      "type": {
+          "equalTo": "publicize"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+
+      "services": {
+        "facebook": {
+          "ID": "facebook",
+          "label": "Facebook",
+          "type": "publicize",
+          "description": "Publish your posts to your Facebook timeline or page.",
+          "genericon": {
+            "class": "facebook-alt",
+            "unicode": "\\f203"
+          },
+          "icon": "http://i.wordpress.com/wp-content/admin-plugins/publicize/assets/publicize-fb-2x.png",
+          "connect_URL": "https://public-api.wordpress.com/connect/?action=request&kr_nonce=c98be927cc&nonce=31e8eb987b&for=connect&service=facebook&blog=215224204&kr_blog_nonce=3d5d1f5eff&magic=keyring",
+          "multiple_external_user_ID_support": true,
+          "external_users_only": true,
+          "jetpack_support": true,
+          "jetpack_module_required": "publicize"
+        },
+        "twitter": {
+          "ID": "twitter",
+          "label": "Twitter",
+          "type": "publicize",
+          "description": "Publish your posts to your Twitter account.",
+          "genericon": {
+            "class": "twitter",
+            "unicode": "\\f202"
+          },
+          "icon": "http://i.wordpress.com/wp-content/admin-plugins/publicize/assets/publicize-twitter-2x.png",
+          "connect_URL": "https://public-api.wordpress.com/connect/?action=request&kr_nonce=c98be927cc&nonce=49e6f85e72&for=connect&service=twitter&blog=215224204&kr_blog_nonce=3d5d1f5eff&magic=keyring",
+          "multiple_external_user_ID_support": false,
+          "external_users_only": false,
+          "jetpack_support": true,
+          "jetpack_module_required": "publicize",
+          "status": "unsupported"
+        },
+        "linkedin": {
+          "ID": "linkedin",
+          "label": "LinkedIn",
+          "type": "publicize",
+          "description": "Publish your posts to your LinkedIn profile.",
+          "genericon": {
+            "class": "linkedin",
+            "unicode": "\\f207"
+          },
+          "icon": "http://i.wordpress.com/wp-content/admin-plugins/publicize/assets/publicize-linkedin-2x.png",
+          "connect_URL": "https://public-api.wordpress.com/connect/?action=request&kr_nonce=c98be927cc&nonce=9ed430da6c&for=connect&service=linkedin&blog=215224204&kr_blog_nonce=3d5d1f5eff&magic=keyring",
+          "multiple_external_user_ID_support": false,
+          "external_users_only": false,
+          "jetpack_support": true,
+          "jetpack_module_required": "publicize"
+        },
+        "tumblr": {
+          "ID": "tumblr",
+          "label": "Tumblr",
+          "type": "publicize",
+          "description": "Publish your posts to your Tumblr blog.",
+          "genericon": {
+            "class": "tumblr",
+            "unicode": "\\f214"
+          },
+          "icon": "http://i.wordpress.com/wp-content/admin-plugins/publicize/assets/publicize-tumblr-2x.png",
+          "multiple_external_user_ID_support": true,
+          "external_users_only": false,
+          "connect_URL": "https://public-api.wordpress.com/connect/?action=request&kr_nonce=c98be927cc&nonce=99d8ed4fcc&for=connect&service=tumblr&blog=215224204&kr_blog_nonce=3d5d1f5eff&magic=keyring",
+          "jetpack_support": true,
+          "jetpack_module_required": "publicize"
+        }
+      }
+    }
+  }
+}

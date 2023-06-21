@@ -6,8 +6,8 @@ class StatsTests: XCTestCase {
 
     override func setUpWithError() throws {
         setUpTestSuite()
-        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        statsScreen = try MySiteScreen()
+        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try MySiteScreen()
             .goToMenu()
             .goToStatsScreen()
             .switchTo(mode: .insights)
@@ -49,14 +49,14 @@ class StatsTests: XCTestCase {
         "Visitors,  2017: 465"
     ]
 
-    func testInsightsStatsLoadProperly() {
-        statsScreen
+    func testInsightsStatsLoadProperly() throws {
+        try StatsScreen()
             .switchTo(mode: .insights)
             .assertStatsAreLoaded(insightsStats)
     }
 
-    func testYearsStatsLoadProperly() {
-        statsScreen
+    func testYearsStatsLoadProperly() throws {
+        try StatsScreen()
             .switchTo(mode: .years)
             .assertStatsAreLoaded(yearsStats)
             .assertChartIsLoaded(yearsChartBars)

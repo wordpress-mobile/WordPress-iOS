@@ -31,7 +31,7 @@ public class TabNavComponent: ScreenObject {
                 notificationsTabButtonGetter
             ],
             app: app,
-            waitTimeout: 3
+            waitTimeout: 7
         )
     }
 
@@ -64,6 +64,7 @@ public class TabNavComponent: ScreenObject {
         return try BlockEditorScreen()
     }
 
+    @discardableResult
     public func goToReaderScreen() throws -> ReaderScreen {
         readerTabButton.tap()
         return try ReaderScreen()
