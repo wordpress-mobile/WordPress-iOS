@@ -36,10 +36,6 @@ public class WelcomeScreen: ScreenObject {
         return try WelcomeScreenLoginComponent()
     }
 
-    public func verifyWelcomeScreenLoaded() {
-        XCTAssertTrue(isLoaded)
-    }
-
     static func isLoaded() -> Bool {
         (try? WelcomeScreen().isLoaded) ?? false
     }
