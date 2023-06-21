@@ -1,0 +1,5 @@
+Nous avons résolu un bogue sur les appareils utilisant iOS 16 ou une version ultérieure, où la saisie de texte dans l’éditeur de blocs pendant la dictée entraînait la perte du texte dicté. Ouf !
+
+Cellules verrouillées : l’éditeur de blocs affiche à présent une icône de cadenas pour les cellules désactivées, ce qui vous permet de savoir quand elles ne sont pas utilisées.
+
+Enfin, nous avons mis à jour le texte indicatif pour les vidéos VideoPress qui n’appartiennent pas à votre site. (Pourvu qu’elles ne se sentent pas exclues.)

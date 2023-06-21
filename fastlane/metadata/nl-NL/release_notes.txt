@@ -1,0 +1,5 @@
+We hebben een bug verwijderd in apparaten met iOS 16 of later, waarbij typen in de blokeditor terwijl tegelijkertijd werd gedicteerd ervoor zorgde dat de gedicteerde tekst verloren ging. Gelukkig!
+
+Vergrendeld en geladen. Er is nu een slotpictogram voor uitgeschakelde cellen in de blok editor zodat je weet wanneer deze niet worden gebruikt.
+
+Ten slotte hebben we de vervangende tekst bijgewerkt voor VideoPress-video's die niet bij je site horen. (Hopelijk voelen ze zich niet buitengesloten.)
