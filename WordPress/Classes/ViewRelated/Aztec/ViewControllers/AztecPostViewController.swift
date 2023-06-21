@@ -3549,6 +3549,12 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         closeWasPressed()
     }
 
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+    }
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
         moreWasPressed()
     }
