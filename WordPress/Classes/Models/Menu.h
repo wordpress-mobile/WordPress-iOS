@@ -30,7 +30,7 @@ extern NSInteger const MenuDefaultID;
 + (NSString *)entityName;
 
 + (Menu *)newMenu:(NSManagedObjectContext *)managedObjectContext;
-+ (Menu *)defaultMenuForBlog:(Blog *)blog;
++ (nullable Menu *)defaultMenuForBlog:(Blog *)blog;
 + (Menu *)newDefaultMenu:(NSManagedObjectContext *)managedObjectContext;
 + (NSString *)defaultMenuName;
 

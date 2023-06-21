@@ -153,7 +153,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         case RelatedPostsSettingsSectionCount:
         break;
     }
-    return nil;
+    return [UITableViewCell new];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForOptionsRow:(RelatedPostsSettingsOptions)row
@@ -251,7 +251,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     self.settings.relatedPostsShowHeadline = self.relatedPostsShowHeaderCell.on;
     self.settings.relatedPostsShowThumbnails = self.relatedPostsShowThumbnailsCell.on;
     
-    BlogService *blogService = nil;
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService updateSettingsForBlog:self.blog success:^{
         [self.tableView reloadData];
     } failure:^(NSError * __unused error) {

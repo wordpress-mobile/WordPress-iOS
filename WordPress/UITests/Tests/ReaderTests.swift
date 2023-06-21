@@ -2,12 +2,14 @@ import UITestsFoundation
 import XCTest
 
 class ReaderTests: XCTestCase {
-    private var readerScreen: ReaderScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
         try EditorFlow
             .goToMySiteScreen()
             .tabBar.goToReaderScreen()
@@ -15,7 +17,6 @@ class ReaderTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     let expectedPostContent = "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Proin dictum non ligula aliquam varius. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."

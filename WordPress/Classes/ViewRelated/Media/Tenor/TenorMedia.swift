@@ -1,5 +1,6 @@
 import MobileCoreServices
 import WPMediaPicker
+import UniformTypeIdentifiers
 
 struct TenorImageCollection {
     let largeURL: URL
@@ -89,7 +90,7 @@ extension TenorMedia: WPMediaAsset {
     }
 
     func utTypeIdentifier() -> String? {
-        return String(kUTTypeGIF)
+        return UTType.gif.identifier
     }
 }
 

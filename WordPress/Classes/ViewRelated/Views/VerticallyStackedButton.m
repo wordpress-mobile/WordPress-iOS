@@ -40,8 +40,6 @@ static const CGFloat LabelFontSize = 11.f;
                                                       CGRectGetMaxY(self.imageView.frame) + ImageLabelSeparation,
                                                       titleSize.width,
                                                       titleSize.height));
-    
-    self.contentEdgeInsets = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, 0.0f);
 }
 
 @end

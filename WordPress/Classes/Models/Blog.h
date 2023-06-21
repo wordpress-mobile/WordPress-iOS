@@ -243,7 +243,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
 - (NSString *)loginUrl;
-- (NSString *)urlWithPath:(NSString *)path;
+- (nullable NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;

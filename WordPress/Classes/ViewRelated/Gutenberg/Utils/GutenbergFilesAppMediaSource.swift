@@ -13,14 +13,14 @@ class GutenbergFilesAppMediaSource: NSObject {
 
     func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerCallback = callback
-        let documentTypes = getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
+        let documentTypes = GutenbergFilesAppMediaSource.getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
         let docPicker = UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
         origin.present(docPicker, animated: true)
     }
 
-    private func getDocumentTypes(filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String]) -> [String] {
+    static func getDocumentTypes(filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String]) -> [String] {
         if filters.contains(.any) {
             return allowedTypesOnBlog
         } else {
@@ -63,20 +63,16 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
     }
 }
 
-extension Gutenberg.MediaType {
+private extension Gutenberg.MediaType {
     func filterTypesConformingTo(allTypes: [String]) -> [String] {
-        guard let uttype = typeIdentifier else {
+        guard let type = typeIdentifier else {
             return []
         }
-        return getTypesFrom(allTypes, conformingTo: uttype)
+        return getTypesFrom(allTypes, conformingTo: type)
     }
 
-    private func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
-        guard let requiredType = UTType(uttype as String) else {
-            return []
-        }
-
-        return allTypes.filter {
+    private func getTypesFrom(_ allTypes: [String], conformingTo requiredType: UTType) -> [String] {
+        allTypes.filter {
             guard let allowedType = UTType($0) else {
                 return false
             }
@@ -90,14 +86,14 @@ extension Gutenberg.MediaType {
         }
     }
 
-    private var typeIdentifier: CFString? {
+    private var typeIdentifier: UTType? {
         switch self {
         case .image:
-            return kUTTypeImage
+            return UTType.image
         case .video:
-            return kUTTypeMovie
+            return UTType.movie
         case .audio:
-            return kUTTypeAudio
+            return UTType.audio
         case .other, .any: // needs to be specified by the blog's allowed types.
             return nil
         }

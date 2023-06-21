@@ -383,7 +383,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     // MARK: - UITableViewDelegate Methods
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
+        guard let sectionInfo = tableViewHandler.resultsController?.sections?[section],
               let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView else {
             return nil
         }
@@ -419,7 +419,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
-        guard let note = tableViewHandler.resultsController.managedObject(atUnsafe: indexPath) as? Notification else {
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -440,7 +440,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.object(at: indexPath) as? Notification,
               deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
@@ -467,7 +467,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.object(at: indexPath) as? Notification,
             let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
             deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
@@ -729,7 +729,7 @@ private extension NotificationsViewController {
     }
 
     @objc func dynamicTypeDidChange() {
-        tableViewHandler.resultsController.fetchedObjects?.forEach {
+        tableViewHandler.resultsController?.fetchedObjects?.forEach {
             ($0 as? Notification)?.resetCachedAttributes()
         }
     }
@@ -863,7 +863,7 @@ extension NotificationsViewController {
         }
 
         let noteIndexPath = tableView.indexPathsForVisibleRows?.first { indexPath in
-            return note == tableViewHandler.resultsController.object(at: indexPath) as? Notification
+            return note == tableViewHandler.resultsController?.object(at: indexPath) as? Notification
         }
 
         guard noteIndexPath == nil else {
@@ -961,7 +961,7 @@ private extension NotificationsViewController {
     @objc func removeDeletedNotification(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let deletedCommentID = userInfo[userInfoCommentIdKey] as? Int32,
-              let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+              let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
                   return
               }
 
@@ -995,9 +995,9 @@ private extension NotificationsViewController {
            let selectedNotification = selectedNotification,
            ignoring.contains(selectedNotification) {
 
-            guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification],
+            guard let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification],
                   let nextAvailable = notifications.first(where: { !ignoring.contains($0) }),
-                  let indexPath = tableViewHandler.resultsController.indexPath(forObject: nextAvailable) else {
+                  let indexPath = tableViewHandler.resultsController?.indexPath(forObject: nextAvailable) else {
                       self.selectedNotification = nil
                       return
                   }
@@ -1045,7 +1045,7 @@ private extension NotificationsViewController {
     /// Marks all messages as read under the selected filter.
     ///
     @objc func markAllAsRead() {
-        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
             return
         }
 
@@ -1125,7 +1125,7 @@ private extension NotificationsViewController {
     }
 
     func updateMarkAllAsReadButton() {
-        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
             return
         }
 
@@ -1144,7 +1144,7 @@ private extension NotificationsViewController {
     /// Updates the cached list of unread notifications, and optionally reloads the results controller.
     ///
     func refreshUnreadNotifications(reloadingResultsController: Bool = true) {
-        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
             return
         }
 
@@ -1192,11 +1192,11 @@ private extension NotificationsViewController {
 
     func reloadResultsController() {
         // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
-        let fetchRequest = tableViewHandler.resultsController.fetchRequest
-        fetchRequest.predicate = predicateForFetchRequest()
+        let fetchRequest = tableViewHandler.resultsController?.fetchRequest
+        fetchRequest?.predicate = predicateForFetchRequest()
 
         /// Refetch + Reload
-        _ = try? tableViewHandler.resultsController.performFetch()
+        _ = try? tableViewHandler.resultsController?.performFetch()
 
         reloadTableViewPreservingSelection()
 
@@ -1213,7 +1213,7 @@ private extension NotificationsViewController {
         do {
             let note = try mainContext.existingObject(with: noteObjectID)
 
-            if let indexPath = tableViewHandler.resultsController.indexPath(forObject: note) {
+            if let indexPath = tableViewHandler.resultsController?.indexPath(forObject: note) {
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
         } catch {
@@ -1227,7 +1227,7 @@ private extension NotificationsViewController {
 
         // also ensure that the index path returned from results controller does not have negative row index.
         // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
-        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification),
+        guard let indexPath = tableViewHandler.resultsController?.indexPath(forObject: notification),
               indexPath != tableView.indexPathForSelectedRow,
               0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
                   return
@@ -1277,7 +1277,7 @@ extension NotificationsViewController {
 
 extension NotificationsViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
+        return tableViewHandler.resultsController?.isEmpty() ?? true
     }
 
     func noConnectionMessage() -> String {
@@ -1315,8 +1315,8 @@ extension NotificationsViewController {
         }
 
         // If we don't currently have a selected notification and there is a notification in the list, then select it.
-        if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
-            let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
+        if let firstNotification = tableViewHandler.resultsController?.fetchedObjects?.first as? Notification,
+           let indexPath = tableViewHandler.resultsController?.indexPath(forObject: firstNotification) {
             selectRow(for: firstNotification, animated: false, scrollPosition: .none)
             self.tableView(tableView, didSelectRowAt: indexPath)
             return
@@ -1379,7 +1379,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.object(at: indexPath) as? Notification,
               let cell = cell as? ListTableViewCell else {
             return
         }
@@ -1411,7 +1411,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
     func tableViewWillChangeContent(_ tableView: UITableView) {
         guard shouldCountNotificationsForSecondAlert,
-            let notification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+              let notification = tableViewHandler.resultsController?.fetchedObjects?.first as? Notification,
             let timestamp = notification.timestamp else {
                 timestampBeforeUpdatesForSecondAlert = nil
                 return
@@ -1447,7 +1447,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     private var newNotificationsForSecondAlert: Int {
 
         guard let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
-            let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+              let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
 
             return 0
         }
@@ -1610,7 +1610,7 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayNoResultsView: Bool {
-        return tableViewHandler.resultsController.fetchedObjects?.count == 0 && !shouldDisplayJetpackPrompt
+        return tableViewHandler.resultsController?.fetchedObjects?.count == 0 && !shouldDisplayJetpackPrompt
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {
@@ -1707,7 +1707,7 @@ private extension NotificationsViewController {
     }
 
     func updateLastSeenTime() {
-        guard let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification else {
+        guard let note = tableViewHandler.resultsController?.fetchedObjects?.first as? Notification else {
             return
         }
 
@@ -1732,7 +1732,7 @@ private extension NotificationsViewController {
     }
 
     func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
-        guard let notifications = tableViewHandler?.resultsController.fetchedObjects as? [Notification] else {
+        guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [Notification] else {
             return nil
         }
 

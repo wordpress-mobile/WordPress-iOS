@@ -256,7 +256,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return UIView(frame: .zero)
         }
 
-        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
+        let sectionInfo = _tableViewHandler.resultsController?.sections?[section]
 
         if let sectionInfo = sectionInfo {
             headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
@@ -462,7 +462,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested post.
     ///
     fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
-        guard let post = tableViewHandler.resultsController.object(at: indexPath) as? Post else {
+        guard let post = tableViewHandler.resultsController?.object(at: indexPath) as? Post else {
             // Retrieving anything other than a post object means we have an App with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
@@ -610,10 +610,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
-        guard !PostCoordinator.shared.isUploading(post: post) else {
-            presentAlertForPostBeingUploaded()
-            return
-        }
 
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
@@ -625,16 +621,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         PostListEditorPresenter.handleCopy(post: post, in: self)
-    }
-
-    func presentAlertForPostBeingUploaded() {
-        let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
-
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        alertController.presentFromRootViewController()
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {

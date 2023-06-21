@@ -1185,7 +1185,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                         andRows:thirdSectionRows
                                                                        category:BlogDetailsSectionCategoryMaintenance];
         [sections addObject:section];
-        shouldAddSectionTitle = NO;
     }
 
     // Return

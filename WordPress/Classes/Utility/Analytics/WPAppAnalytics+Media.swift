@@ -21,7 +21,7 @@ public extension WPAppAnalytics {
      */
     @objc class func properties(for media: Media) -> Dictionary<String, Any> {
         var properties = [String: Any]()
-        properties[MediaProperties.mime] = media.mimeType()
+        properties[MediaProperties.mime] = media.mimeType
         if let fileExtension = media.fileExtension(), !fileExtension.isEmpty {
             properties[MediaProperties.fileExtension] = fileExtension
         }

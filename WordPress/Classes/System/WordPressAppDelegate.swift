@@ -140,6 +140,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
+        logoutAtLaunchForUITests(application)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -376,6 +377,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
             application.windows.first?.layer.speed = MAXFLOAT
             application.mainWindow?.layer.speed = MAXFLOAT
+        }
+    }
+
+    private func logoutAtLaunchForUITests(_ application: UIApplication) {
+        if CommandLine.arguments.contains("-logout-at-launch") {
+            AccountHelper.logOutDefaultWordPressComAccount()
         }
     }
 
