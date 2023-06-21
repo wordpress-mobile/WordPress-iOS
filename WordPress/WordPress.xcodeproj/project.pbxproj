@@ -3874,8 +3874,8 @@
 		FA98A2512833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */; };
 		FA98B61629A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */; };
 		FA98B61729A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */; };
-		FA98B61929A3BF050071AAE8 /* BlazeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */; };
-		FA98B61A29A3BF050071AAE8 /* BlazeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */; };
+		FA98B61929A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */; };
+		FA98B61A29A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */; };
 		FA98B61C29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
@@ -9213,7 +9213,7 @@
 		FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistConfigurable.swift; sourceTree = "<group>"; };
 		FA98B61329A39DA80071AAE8 /* WordPress 148.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 148.xcdatamodel"; sourceTree = "<group>"; };
 		FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCell.swift; sourceTree = "<group>"; };
-		FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCardView.swift; sourceTree = "<group>"; };
+		FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazePromoCardView.swift; sourceTree = "<group>"; };
 		FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeHelper.swift; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
 		FAA4013327B52455009E1137 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
@@ -17809,7 +17809,7 @@
 			isa = PBXGroup;
 			children = (
 				FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */,
-				FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */,
+				FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */,
 				0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift */,
 				0C391E5D2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift */,
 				0C391E602A3002950040EA91 /* BlazeCampaignStatusView.swift */,
@@ -21957,7 +21957,7 @@
 				E616E4B31C480896002C024E /* SharingService.swift in Sources */,
 				F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */,
 				FA98A24D2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */,
-				FA98B61929A3BF050071AAE8 /* BlazeCardView.swift in Sources */,
+				FA98B61929A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
 				AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */,
@@ -23990,7 +23990,7 @@
 				FABB21932602FC2C00C8785C /* GutenbergTenorMediaPicker.swift in Sources */,
 				3F8B45A029283D6C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */,
 				F45326D929F6B8A6005F9F31 /* EnhancedSiteCreationAnalyticsEvent.swift in Sources */,
-				FA98B61A29A3BF050071AAE8 /* BlazeCardView.swift in Sources */,
+				FA98B61A29A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
 				FABB21942602FC2C00C8785C /* AztecPostViewController.swift in Sources */,
 				F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */,
 				FE4C46FF27FAE61700285F35 /* DashboardPromptsCardCell.swift in Sources */,
