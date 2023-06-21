@@ -15,7 +15,7 @@ class SiteVisibilityTests: CoreDataTestCase {
         // Given
         let blog = makeBlog()
 
-        // Then private not eligible
+        // Then private is eligible
         XCTAssertEqual(SiteVisibility.eligibleValues(for: blog), [.public, .hidden, .private])
     }
 
