@@ -84,6 +84,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
 
     @objc private func buttonCreateCampaignTapped() {
         guard let presentingViewController, let blog else { return }
+        BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
         BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
