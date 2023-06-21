@@ -18,7 +18,10 @@ class LoginTests: XCTestCase {
             .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
+                    .verifyEpilogueDisplays(
+                username: WPUITestCredentials.testWPcomUsername,
+                siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
+            )
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
             .tabBar.goToMeScreen()
@@ -48,7 +51,10 @@ class LoginTests: XCTestCase {
         try PrologueScreen()
             .selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .proceedWithSelfHosted(
+                username: WPUITestCredentials.selfHostedUsername,
+                password: WPUITestCredentials.selfHostedPassword
+            )
             .removeSelfHostedSite()
         try PrologueScreen()
             .assertScreenIsLoaded()
@@ -70,7 +76,10 @@ class LoginTests: XCTestCase {
             .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .verifyEpilogueDisplays(
+                username: WPUITestCredentials.testWPcomUsername,
+                siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
+            )
             .continueWithSelectedSite() //returns MySite screen
 
             // From here, bring up the sites list and choose to add a new self-hosted site.
@@ -79,7 +88,10 @@ class LoginTests: XCTestCase {
 
             // Then, go through the self-hosted login flow:
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWithSelfHostedSiteAddedFromSitesList(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .proceedWithSelfHostedSiteAddedFromSitesList(
+                username: WPUITestCredentials.selfHostedUsername,
+                password: WPUITestCredentials.selfHostedPassword
+            )
 
             // Login flow returns MySites modal, which needs to be closed.
             .closeModal()

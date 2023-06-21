@@ -18,7 +18,10 @@ class SignupTests: XCTestCase {
             .selectEmailSignup()
             .proceedWith(email: WPUITestCredentials.signupEmail)
             .openMagicSignupLink()
-            .verifyEpilogueContains(username: WPUITestCredentials.signupUsername, displayName: WPUITestCredentials.signupDisplayName)
+            .verifyEpilogueContains(
+                username: WPUITestCredentials.signupUsername,
+                displayName: WPUITestCredentials.signupDisplayName
+            )
             .setPassword(WPUITestCredentials.signupPassword)
             .continueWithSignup()
             .dismissNotificationAlertIfNeeded()
