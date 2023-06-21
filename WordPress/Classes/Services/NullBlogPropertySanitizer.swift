@@ -39,7 +39,7 @@ import Foundation
             PostCategory.entityName()
         ]
 
-        context.perform {
+        let block = {
             entityNamesWithRequiredBlogProperties.forEach { entityName in
                 let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
                 let predicate = NSPredicate(format: "blog == NULL")
@@ -57,6 +57,13 @@ import Foundation
             }
 
             try? self.context.save()
+        }
+
+        // Make sure the "sanitization" work is done before any other Core Data reads or writes.
+        if Thread.isMainThread, context.concurrencyType == .mainQueueConcurrencyType {
+            block()
+        } else {
+            context.perform(block)
         }
     }
 

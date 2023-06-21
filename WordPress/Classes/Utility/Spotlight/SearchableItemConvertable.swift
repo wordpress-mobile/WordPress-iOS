@@ -1,5 +1,6 @@
 import CoreSpotlight
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 @objc enum SearchItemType: Int {
     case abstractPost
@@ -89,7 +90,7 @@ extension SearchableItemConvertable {
             return nil
         }
 
-        let searchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+        let searchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: UTType.text.identifier)
         searchableItemAttributeSet.title = searchTitle
         searchableItemAttributeSet.contentDescription = searchDescription
 

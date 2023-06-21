@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import "WPButtonForNavigationBar.h"
 
 
 NS_ASSUME_NONNULL_BEGIN

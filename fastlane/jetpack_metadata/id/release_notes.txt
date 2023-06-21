@@ -1,9 +1,0 @@
-Kami telah menambahkan kartu ke dasbor Anda. Kartu Log Aktivitas menunjukkan tiga aktivitas terkini Anda, sedangkan kartu Halaman menunjukkan tiga halaman yang terakhir Anda ubah.
-
-Kami juga membuat sejumlah perubahan penting di editor blok. Demi mencegah terjadinya crash pada aplikasi, blok pakai ulang yang dihapus dan tidak ditentukan kini tidak dapat diubah menjadi blok reguler.
-
-Saat Anda mengetuk blok teks bersusun, Anda dapat langsung menyunting konten di blok tersebut—tidak perlu mengetuk di tiap susunan untuk menyunting kontennya. (Jari kami juga capek.)
-
-Mengenai blok pakai ulang—kami telah memperbarui pesan "penyuntingan tidak didukung" sehingga tak lagi menyebutkan nama WordPress. Kami sudah tahu kok, aplikasi apa yang kami gunakan.
-
-Terakhir, kami juga memperbaiki bug yang membuat aplikasi crash saat Anda mengunduh media ke blok klasik tanpa memberi WordPress akses ke pustaka media perangkat. Sekarang, Anda akan melihat prompt yang meminta akses media. Mudah sekali, bukan?

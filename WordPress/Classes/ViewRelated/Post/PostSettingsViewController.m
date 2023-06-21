@@ -13,6 +13,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 #import <Photos/Photos.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
@@ -50,6 +51,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPostCellIdentifier";
+static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
 
 
 @interface PostSettingsViewController () <UITextFieldDelegate,
@@ -140,6 +142,7 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
     [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewStickyPostCellIdentifier];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
@@ -560,12 +563,12 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
-        cell = [self configureShareCellForIndexPath:indexPath];
+        cell = [self showNoConnection] ? [self configureNoConnectionCell] : [self configureShareCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     }
 
-    return cell;
+    return cell ?: [UITableViewCell new];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -614,7 +617,7 @@ FeaturedImageViewControllerDelegate>
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
     }
-    return 0;
+    return [self showNoConnection] ? 1 : 0;
 }
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath
@@ -1246,7 +1249,7 @@ FeaturedImageViewControllerDelegate>
     options.allowMultipleSelection = NO;
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
-    options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
+    options.badgedUTTypes = [NSSet setWithObject:UTTypeGIF.identifier];
     options.preferredStatusBarStyle = [WPStyleGuide preferredStatusBarStyle];
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
 
@@ -1355,6 +1358,17 @@ FeaturedImageViewControllerDelegate>
     } else {
         [picker hideSearchBar];
     }
+}
+
+#pragma mark - Jetpack Social
+
+- (UITableViewCell *)configureNoConnectionCell
+{
+    UIView *noConnectionView = [self createNoConnectionView];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewGenericCellIdentifier];
+    [cell.contentView addSubview:noConnectionView];
+    [cell.contentView pinSubviewToAllEdges:noConnectionView];
+    return cell;
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods

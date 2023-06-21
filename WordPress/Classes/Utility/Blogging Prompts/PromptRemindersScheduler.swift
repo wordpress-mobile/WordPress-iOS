@@ -43,9 +43,16 @@ class PromptRemindersScheduler {
     ///   - time: The user's preferred time to be notified.
     ///   - completion: Closure called after the process completes.
     func schedule(_ schedule: BloggingRemindersScheduler.Schedule, for blog: Blog, time: Date? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let context = blog.managedObjectContext else {
+            completion(.failure(Errors.unknown))
+            return
+        }
+
         guard schedule != .none else {
-            // If there's no schedule, then we don't need to request authorization
-            processSchedule(schedule, blog: blog, time: time, completion: completion)
+            context.performAndWait {
+                // If there's no schedule, then we don't need to request authorization
+                processSchedule(schedule, blog: blog, time: time, completion: completion)
+            }
             return
         }
 
@@ -59,7 +66,9 @@ class PromptRemindersScheduler {
                 return
             }
 
-            self.processSchedule(schedule, blog: blog, time: time, completion: completion)
+            context.performAndWait {
+                self.processSchedule(schedule, blog: blog, time: time, completion: completion)
+            }
         }
     }
 
@@ -149,6 +158,7 @@ private extension PromptRemindersScheduler {
             return
         }
 
+        let title = blog.title
         let reminderTime = Time(from: time) ?? Constants.defaultTime
         let currentDate = currentDateProvider.date()
         promptsService.fetchPrompts(from: currentDate, number: Constants.promptsToFetch) { [weak self] prompts in
@@ -177,7 +187,7 @@ private extension PromptRemindersScheduler {
             var lastScheduledPrompt: BloggingPrompt? = nil
             var notificationIds = [String]()
             promptsToSchedule.forEach { prompt in
-                guard let identifier = self.addLocalNotification(for: prompt, blog: blog, at: reminderTime) else {
+                guard let identifier = self.addLocalNotification(for: prompt, siteID: siteID, siteTitle: title, at: reminderTime) else {
                     return
                 }
                 notificationIds.append(identifier)
@@ -197,7 +207,10 @@ private extension PromptRemindersScheduler {
                 return lastReminderDate
             }()
 
-            if let staticNotificationIds = self.addStaticNotifications(after: lastReminderDate, with: schedule, time: reminderTime, blog: blog) {
+            if let staticNotificationIds = self.addStaticNotifications(after: lastReminderDate,
+                                                                       with: schedule,
+                                                                       time: reminderTime,
+                                                                       siteID: siteID) {
                 notificationIds.append(contentsOf: staticNotificationIds)
             }
 
@@ -224,17 +237,13 @@ private extension PromptRemindersScheduler {
     ///   - blog: The user's blog.
     ///   - time: The preferred reminder time for the notification.
     /// - Returns: String representing the notification identifier.
-    func addLocalNotification(for prompt: BloggingPrompt, blog: Blog, at time: Time) -> String? {
-        guard blog.dotComID != nil else {
-            return nil
-        }
-
+    func addLocalNotification(for prompt: BloggingPrompt, siteID: Int, siteTitle: String? = nil, at time: Time) -> String? {
         let content = UNMutableNotificationContent()
         content.title = Constants.notificationTitle
-        content.subtitle = blog.title ?? String()
+        content.subtitle = siteTitle ?? String()
         content.body = prompt.text
         content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
-        content.userInfo = notificationPayload(for: blog, prompt: prompt)
+        content.userInfo = notificationPayload(for: siteID, prompt: prompt)
 
         guard let reminderDateComponents = reminderDateComponents(for: prompt, at: time) else {
             return nil
@@ -282,12 +291,11 @@ private extension PromptRemindersScheduler {
     func addStaticNotifications(after afterDate: Date,
                                 with schedule: Schedule,
                                 time: Time,
-                                blog: Blog,
+                                siteID: Int,
                                 maxDays: Int = Constants.staticNotificationMaxDays) -> [String]? {
         guard case .weekdays(let weekdays) = schedule,
               maxDays > 0,
-              let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate),
-              blog.dotComID != nil else {
+              let maxDate = Calendar.current.date(byAdding: .day, value: maxDays, to: afterDate) else {
             return nil
         }
 
@@ -297,7 +305,7 @@ private extension PromptRemindersScheduler {
         content.title = Constants.notificationTitle
         content.body = Constants.staticNotificationContent
         content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingPrompt.rawValue
-        content.userInfo = notificationPayload(for: blog)
+        content.userInfo = notificationPayload(for: siteID)
 
         var date = afterDate
         var identifiers = [String]()
@@ -358,11 +366,7 @@ private extension PromptRemindersScheduler {
         return identifier
     }
 
-    func notificationPayload(for blog: Blog, prompt: BloggingPrompt? = nil) -> [AnyHashable: Any] {
-        guard let siteID = blog.dotComID?.intValue else {
-            return [:]
-        }
-
+    func notificationPayload(for siteID: Int, prompt: BloggingPrompt? = nil) -> [AnyHashable: Any] {
         var userInfo: [AnyHashable: Any] = [BloggingPrompt.NotificationKeys.siteID: siteID]
 
         if let prompt = prompt {

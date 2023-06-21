@@ -1,3 +1,0 @@
-Cuando pulsas sobre un bloque de texto anidado, puedes editar inmediatamente el contenido de ese bloque, sin tener que pulsar sobre cada nivel de anidamiento para llegar a donde quieres. (A nosotros también se nos cansaban los dedos).
-
-También hemos corregido un error por el que la aplicación se bloqueaba si intentabas subir contenido multimedia a un bloque clásico sin dar acceso a WordPress a la biblioteca de medios de tu dispositivo. En su lugar, aparecerá un mensaje solicitando acceso a los medios. Muy fácil.

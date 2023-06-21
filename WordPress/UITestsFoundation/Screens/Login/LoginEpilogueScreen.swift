@@ -26,9 +26,7 @@ public class LoginEpilogueScreen: ScreenObject {
             firstSite.tap()
         }
 
-        try dismissQuickStartPromptIfNeeded()
         try dismissOnboardingQuestionsPromptIfNeeded()
-        try dismissFeatureIntroductionIfNeeded()
         return try MySiteScreen()
     }
 

@@ -6,6 +6,7 @@ import UIKit
     case menuItem
     case postsList
     case pagesList
+    case campaignsList
 
     var description: String {
         switch self {
@@ -17,6 +18,8 @@ import UIKit
             return "posts_list"
         case .pagesList:
             return "pages_list"
+        case .campaignsList:
+            return "campaigns_list"
         }
     }
 
@@ -66,10 +69,10 @@ import UIKit
     ///   - delegate: The delegate gets notified of changes happening in the web view. Default value is `nil`
     @objc(presentBlazeWebFlowInViewController:source:blog:postID:delegate:)
     static func presentBlazeWebFlow(in viewController: UIViewController,
-                                 source: BlazeSource,
-                                 blog: Blog,
-                                 postID: NSNumber? = nil,
-                                 delegate: BlazeWebViewControllerDelegate? = nil) {
+                                    source: BlazeSource,
+                                    blog: Blog,
+                                    postID: NSNumber? = nil,
+                                    delegate: BlazeWebViewControllerDelegate? = nil) {
         let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID, delegate: delegate)
         let navigationViewController = UINavigationController(rootViewController: blazeViewController)
         navigationViewController.overrideUserInterfaceStyle = .light
@@ -93,5 +96,16 @@ import UIKit
         let navigationController = UINavigationController(rootViewController: overlayViewController)
         navigationController.modalPresentationStyle = .formSheet
         viewController.present(navigationController, animated: true)
+    }
+
+    /// Used to display the blaze campaigns screen.
+    /// - Parameters:
+    ///   - viewController: The view controller where the screen should be presented in.
+    ///   - blog: `Blog` object representing the site with Blaze campaigns.
+    @objc(presentBlazeCampaignsInViewController:blog:)
+    static func presentBlazeCampaigns(in viewController: UIViewController,
+                                      blog: Blog) {
+        let campaignsViewController = BlazeCampaignsViewController(blog: blog)
+        viewController.navigationController?.pushViewController(campaignsViewController, animated: true)
     }
 }

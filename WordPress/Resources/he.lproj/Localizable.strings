@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 17:54:08+0000 */
+/* Translation-Revision-Date: 2023-06-14 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: he_IL */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "ב-%s לא הוגדרה כתובת URL";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s קישור";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "תצוגות מקדימות של %s עדיין לא זמינות";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "עורך הבלוקים הופעל";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "הבלוק נוסף לקבוצה";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "חסימת ניסיונות התחברות זדוניים";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "לחסום את האתר הזה";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "הבלוק הוסר מהקבוצה";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "אתר חסום";
@@ -4911,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "לא נבחר טווח תאריכים";
 
+/* No comment provided by engineer. */
+"No description" = "ללא תיאור";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "אין איומים שתוקנו";
 
@@ -5036,6 +5048,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "לא נמצאו איומים";
+
+/* No comment provided by engineer. */
+"No title" = "ללא כותרת";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -9670,6 +9685,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "ביטול";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "עדיין לא יצרת קמפיינים. יש ללחוץ על 'לקדם' כדי להתחיל.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "אין לך קמפיינים";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "טוען קמפיינים...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "לקדם";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "קמפיינים של Blaze";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "להציג את העבודה שלך במיליוני אתרים.";
 
@@ -9699,6 +9729,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "להשתמש ב-Blaze בפוסט הזה";
+
+/* Short status description */
+"blazeCampaign.status.active" = "פעיל";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "מתוזמן לפרסום";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "נדחה";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "להסתיר את המידע";
@@ -9756,6 +9795,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "עמודים";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "קליקים";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "ליצור קמפיין";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "צפיות";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "קמפיין של Blaze";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "להציג את כל הקמפיינים";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "להוסיף עמודים לאתר שלך";
@@ -9832,6 +9886,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "לשנה";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "ביטול";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "מצטערים, לא ניתן לרכוש את הדומיין שברצונך להוסיף מהאפליקציה של Jetpack כעת.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
@@ -9854,6 +9914,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "לעקוב";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "באפשרותך לקבל דומיין בחינם לשנה הראשונה, להסיר הצגת פרסומות באתר שלך ולהגדיל את שטח האחסון.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "להסתיר את המידע";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "דומיין בחינם עם תוכנית שנתית";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "הושלם";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "יידרשו עד 30 דקות להתחלת הפעילות התקינה של הדומיין";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "כעת מתבצע תהליך ההגדרה של הדומיין החדש שלך, %@.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "הכול מוכן!";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "להגדיר תזכורת לכתיבת בלוג";
@@ -10383,6 +10464,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "לקדם עם Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "עמוד הבית שלך משתמש בתבנית של ערכת עיצוב והוא ייפתח בעורך הדפדפן.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "עמוד הבית";
+
 /* No comment provided by engineer. */
 "password" = "סיסמה";
 
@@ -10400,6 +10487,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "טיוטות פוסטים";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "היכרות עם האפליקציה";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "לשלבים הבאים";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "עמודים";
@@ -10431,6 +10524,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "אפשרויות לתמונה המרכזית";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "לקדם עם Blaze";
 
@@ -10451,6 +10547,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "התחברת בהצלחה לחשבון!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "חיפוש";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "הגדרות קורא";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10638,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "תזכורות";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "ניתן להגדיל את התעבורה על ידי שיתוף אוטומטי של פוסטים עם חברים ברשתות החברתיות.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "לחבר את הפרופילים שלך";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "סמלי רשתות חברתיות";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "לא עכשיו";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "למידע נוסף";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה עקב השינויים בתנאים ובתמחור של טוויטר.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "שבעת הימים האחרונים";

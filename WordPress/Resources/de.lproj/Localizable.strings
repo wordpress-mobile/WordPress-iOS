@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 15:54:09+0000 */
+/* Translation-Revision-Date: 2023-06-12 08:13:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: de */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "Für %s wurde keine URL festgelegt";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s Link";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s-Vorschauen noch nicht verfügbar";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block-Editor aktiviert";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Block gruppiert";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Böswillige Anmeldeversuche blockieren";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Diese Website blockieren";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Gruppierung des Blocks aufgehoben";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockierte Website";
@@ -4911,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Kein Datumsbereich ausgewählt";
 
+/* No comment provided by engineer. */
+"No description" = "Keine Beschreibung";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Keine behobenen Bedrohungen";
 
@@ -5036,6 +5048,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Keine Bedrohungen gefunden";
+
+/* No comment provided by engineer. */
+"No title" = "Kein Titel";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -9670,6 +9685,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Verwerfen";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Du hast noch keine Kampagnen erstellt. Klicke Bewerben, um damit anzufangen.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Du hast keine Kampagnen";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Kampagnen werden geladen ...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Bewerben";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze-Kampagnen";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Präsentiere deine Werke auf Millionen von Websites.";
 
@@ -9699,6 +9729,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Diesen Beitrag mit Blaze bewerben";
+
+/* Short status description */
+"blazeCampaign.status.active" = "Aktiv";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "Geplant";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Abgelehnt";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Ausblenden";
@@ -9756,6 +9795,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Seiten";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Klicks";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Kampagne erstellen";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Impressionen";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze-Kampagne";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Alle Kampagne anzeigen";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Neue Seiten zu deiner Website hinzufügen";
@@ -9832,6 +9886,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "pro Jahr";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Verwerfen";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Die Domain, die du hinzufügen möchtest, kann derzeit leider nicht über die Jetpack-App erworben werden.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "Zum Wechseln der Einheit zweimal tippen";
 
@@ -9854,6 +9914,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "folgen";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Hol dir eine im ersten Jahr kostenlose Domain, entferne Werbung von deiner Website und erweitere deinen Speicherplatz.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Ausblenden";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Kostenlose Domain zum Jahrestarif";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Fertig";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Es kann bis zu 30 Minuten dauern, bis deine Domain ordnungsgemäß funktioniert";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Deine neue Domain %@ wird eingerichtet.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Alles startbereit!";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Blog-Erinnerungen einrichten";
@@ -10383,6 +10464,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Mit Blaze bewerben";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Deine Startseite verwendet ein Theme-Template und wird im Webeditor geöffnet.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Startseite";
+
 /* No comment provided by engineer. */
 "password" = "Passwort";
 
@@ -10400,6 +10487,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Beitragsentwürfe";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Lerne die App kennen";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Nächste Schritte";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Seiten";
@@ -10431,6 +10524,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Optionen für Beitragsbilder";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Automatisches Teilen auf Twitter nicht mehr verfügbar";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Mit Blaze bewerben";
 
@@ -10451,6 +10547,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du bist angemeldet!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Suche";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader-Einstellungen";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10638,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Erinnerungen";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Erhöhe deine Besucherzahlen, indem du deine Beiträge automatisch mit deinen Freunden auf sozialen Medien teilst.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Verbinde deine Profile";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Icons für soziale Medien";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Jetzt nicht";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Automatisches Teilen auf Twitter nicht mehr verfügbar";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Weitere Informationen";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Automatisches Teilen auf Twitter ist aufgrund von Änderungen an den Nutzungsbedingungen und Preisen von Twitter nicht mehr verfügbar.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Letzte 7 Tage";

@@ -47,6 +47,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         configureStatus()
         configureFeaturedImage()
         configureProgressView()
+        configureMenuInteraction()
     }
 
     @IBAction func more(_ sender: Any) {
@@ -176,6 +177,22 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
                     self?.configure(with: post)
                 }
             }
+        }
+    }
+
+    private func configureMenuInteraction() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        let isProgressBarVisible = !viewModel.shouldHideProgressView
+
+        if isProgressBarVisible {
+            menuButton.isEnabled = false
+            menuButton.alpha = 0.3
+        } else {
+            menuButton.isEnabled = true
+            menuButton.alpha = 1.0
         }
     }
 

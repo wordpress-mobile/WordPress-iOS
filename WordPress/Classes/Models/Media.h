@@ -83,11 +83,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 + (NSString *)stringFromMediaType:(MediaType)mediaType;
 
 - (nullable NSString *)fileExtension;
-- (nullable NSString *)mimeType;
-
-- (void)setMediaTypeForExtension:(NSString *)extension;
-
-- (void)setMediaTypeForMimeType:(NSString *)mimeType;
 
 // CoreData helpers
 

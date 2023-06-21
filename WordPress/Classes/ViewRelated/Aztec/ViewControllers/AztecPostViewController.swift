@@ -12,6 +12,7 @@ import AVKit
 import MobileCoreServices
 import AutomatticTracks
 import MediaEditor
+import UniformTypeIdentifiers
 
 // MARK: - Aztec's Native Editor!
 //
@@ -1208,10 +1209,9 @@ private extension AztecPostViewController {
     ///
     /// - Parameter documentURL: the document URL to act upon
     func displayInsertionOpensAlertIfNeeded(for documentURL: URL) {
-        let documentType = documentURL.pathExtension
         guard
-            let uti = String.typeIdentifier(for: documentType),
-            uti == String(kUTTypePDF) || uti == String(kUTTypePlainText)
+            let uti = UTType(filenameExtension: documentURL.pathExtension)?.identifier,
+            uti == UTType.pdf.identifier || uti == UTType.plainText.identifier
         else {
             insertExternalMediaWithURL(documentURL)
             return
@@ -1234,7 +1234,7 @@ private extension AztecPostViewController {
         let addContentsToPostTitle = NSLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
 
         let addContentsActionHandler: (() -> Void)
-        if uti == String(kUTTypePDF) {
+        if uti == UTType.pdf.identifier {
             addContentsActionHandler = { [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -1915,7 +1915,7 @@ extension AztecPostViewController {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPNavigationMediaPickerViewController()
@@ -1962,7 +1962,7 @@ extension AztecPostViewController {
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPInputMediaPickerViewController(options: options)
@@ -3551,10 +3551,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
         moreWasPressed()
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        blogPickerWasPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {

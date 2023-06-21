@@ -2,13 +2,15 @@ import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
-    private var editorScreen: BlockEditorScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        editorScreen = try EditorFlow
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
+        try EditorFlow
             .goToMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
             .dismissNotificationAlertIfNeeded(.accept)
@@ -16,7 +18,6 @@ class EditorGutenbergTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     let title = "Rich post title"
@@ -24,7 +25,7 @@ class EditorGutenbergTests: XCTestCase {
 
     func testTextPostPublish() throws {
 
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
@@ -38,7 +39,7 @@ class EditorGutenbergTests: XCTestCase {
 
         let category = getCategory()
         let tag = getTag()
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImage()
@@ -55,7 +56,7 @@ class EditorGutenbergTests: XCTestCase {
 
     func testAddRemoveFeaturedImage() throws {
 
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
@@ -70,7 +71,7 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testAddGalleryBlock() throws {
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImageGallery()

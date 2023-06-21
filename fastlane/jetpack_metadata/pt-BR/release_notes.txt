@@ -1,9 +1,0 @@
-Adicionamos cartões ao seu painel. O cartão de Registro de atividades mostra as suas três últimas atividades e o cartão de Páginas, as últimas três páginas que você modificou.
-
-Nós também fizemos algumas alterações importantes no editor de blocos. Para prevenir que o aplicativo trave, os blocos reutilizáveis deletados e indefinidos não podem mais ser convertidos em blocos comuns.
-
-Ao tocar em um bloco de texto aninhado, você pode editar o conteúdo desse bloco na mesma hora, sem precisar tocar em todos os níveis de aninhamento para chegar aonde deseja. (Também estávamos sofrendo com isso)
-
-Ainda sobre os blocos reutilizáveis, atualizamos a mensagem “edição não suportada” para remover a menção ao WordPress. A gente sabe qual é o aplicativo, sério.
-
-Por fim, corrigimos um bug em que o aplicativo travava se você tentasse fazer upload de mídia para um bloco clássico sem dar acesso ao WordPress para a biblioteca de mídia do seu dispositivo. Agora, você verá uma sugestão pedindo permissão para o acesso às mídias. Mamão com açúcar.

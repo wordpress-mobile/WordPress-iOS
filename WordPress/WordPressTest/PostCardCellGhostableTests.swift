@@ -74,11 +74,19 @@ class PostCardCellGhostableTests: CoreDataTestCase {
     }
 
     func testActionBarOpacityAfterConfigure() {
-        let post = PostBuilder(mainContext).build()
+        let post = PostBuilder(mainContext).with(remoteStatus: .sync).build()
         assert(post.managedObjectContext != nil)
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.actionBarView.layer.opacity, 1)
+    }
+
+    func testActionBarOpacityAfterConfigureWithPushingStatus() {
+        let post = PostBuilder(mainContext).with(remoteStatus: .pushing).build()
+        assert(post.managedObjectContext != nil)
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.actionBarView.layer.opacity, 0.3)
     }
 
     func testHideGhostView() {

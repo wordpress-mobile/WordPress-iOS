@@ -31,8 +31,22 @@ final class AuthenticatedImageDownload: AsyncOperation {
                     throw DownloadError.blogNotFound
                 }
 
-                let blog = try context.existingObject(with: self.blogObjectID) as! Blog
-                return MediaHost(with: blog) { error in
+                var blog: Result<Blog, Error> = .failure(DownloadError.blogNotFound)
+                do {
+                    // Catch an Objective-C `NSInvalidArgumentException` exception from `existingObject(with:)`.
+                    // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
+                    try WPException.objcTry {
+                        blog = Result {
+                            try context.existingObject(with: self.blogObjectID) as! Blog
+                        }
+                    }
+                } catch {
+                    // Send Objective-C exceptions to Sentry for further diagnosis.
+                    WordPressAppDelegate.crashLogging?.logError(error)
+                    throw error
+                }
+
+                return try MediaHost(with: blog.get()) { error in
                     // We'll log the error, so we know it's there, but we won't halt execution.
                     WordPressAppDelegate.crashLogging?.logError(error)
                 }

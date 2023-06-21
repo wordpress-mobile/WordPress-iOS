@@ -1,9 +1,9 @@
-We added cards to your dashboard. The Activity Log card shows your three most recent activities, and the Pages card shows the last three pages you modified.
+WordPress.com plans are coming to the Jetpack app. Get the plan that’s right for your publishing needs and manage it in the same place you write all your best words.
 
-We also made some important changes in the block editor. To prevent an app crash, deleted and undefined reusable blocks can no longer be converted to regular blocks.
+There’s a shiny new “Personalize Home Tab” button at the bottom of your site dashboard where you can customize your visible dashboard cards. (Want to hide the cards you don’t need? Just use the “More” menu.)
 
-When you tap on a nested text block, you can immediately edit content in that block—no more tapping through every nesting level to get where you want to go. (Our fingers were getting tired, too.)
+We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. There’s also a lock icon for disabled cells in the editor so you know when they aren’t in use.
 
-Speaking of reusable blocks—we updated the “editing not supported” message to remove the mention of WordPress. We know what app we’re using, we promise.
+On the “Search domains” screen, you’ll now see an error message if you choose a default domain that isn’t supported by your site. No more forever-spinning progress wheel.
 
-Finally, we fixed a bug where the app would crash if you tried to upload media to a classic block without giving WordPress access to your device’s media library. Instead, you’ll see a prompt asking for media access. Easy peasy, lemon squeezy.
+Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)

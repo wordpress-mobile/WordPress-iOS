@@ -161,7 +161,7 @@
     if (!extension.length) {
         return nil;
     }
-    return (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+    return [UTType typeWithFilenameExtension:extension].identifier;
 }
 
 @end

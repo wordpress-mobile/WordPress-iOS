@@ -37,7 +37,6 @@
 #import "MenuItemsViewController.h"
 #import "MenusViewController.h"
 
-#import "NavBarTitleDropdownButton.h"
 #import "NSObject+Helpers.h"
 
 #import "PageListTableViewCell.h"
@@ -98,7 +97,6 @@
 #import "WPAuthTokenIssueSolver.h"
 #import "WPAvatarSource.h"
 #import "WPBlogTableViewCell.h"
-#import "WPBlogSelectorButton.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"

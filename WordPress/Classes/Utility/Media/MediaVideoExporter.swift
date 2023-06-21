@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Media export handling of Videos from PHAssets or AVAssets.
 ///
@@ -119,8 +120,10 @@ class MediaVideoExporter: MediaExporter {
         // Generate a URL for exported video.
         let mediaURL: URL
         do {
-            mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
-                                                                fileExtension: URL.fileExtensionForUTType(outputType))
+            mediaURL = try mediaFileManager.makeLocalMediaURL(
+                withFilename: filename ?? "video",
+                fileExtension: UTType(outputType)?.preferredFilenameExtension
+            )
         } catch {
             onError(exporterErrorWith(error: error))
             return Progress.discreteCompletedProgress()
@@ -215,13 +218,13 @@ class MediaVideoExporter: MediaExporter {
     ///   exported videos to WordPress, and what WordPress itself supports.
     ///
     fileprivate var supportedExportFileTypes: [String] {
-        let types = [
-            kUTTypeMPEG4,
-            kUTTypeQuickTimeMovie,
-            kUTTypeMPEG,
-            kUTTypeAVIMovie
+        let types: [UTType] = [
+            .mpeg4Movie,
+            .quickTimeMovie,
+            .mpeg,
+            .avi
         ]
-        return types as [String]
+        return types.map(\.identifier)
     }
 }
 

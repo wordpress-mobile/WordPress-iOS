@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 15:54:09+0000 */
+/* Translation-Revision-Date: 2023-06-15 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s için ayarlanmış bir URL yok";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s bağlantı";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s önizlemeleri henüz kullanılamıyor";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blok düzenleyici etkinleştirildi";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Blok gruplandı";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Kötü amaçlı oturum açma denemelerini engelle";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Bu siteyi engelle";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Blok gruptan çıkarıldı";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Engellenmiş site";
@@ -4911,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Tarih aralığı seçilmedi";
 
+/* No comment provided by engineer. */
+"No description" = "Açıklama yok";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Hiçbir tehdit düzeltilmedi";
 
@@ -5036,6 +5048,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Hiçbir tehdit bulunamadı";
+
+/* No comment provided by engineer. */
+"No title" = "Başlık yok";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -9670,6 +9685,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Kapat";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Henüz bir kampanya oluşturmadınız. Başlamak için tanıtma seçeneğine tıklayın.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Kampanyanız yok";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Kampanyalar yükleniyor...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Tanıtın";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Kampanyaları Öne Çıkar";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Çalışmalarınızı milyonlarca sitede sergileyin.";
 
@@ -9699,6 +9729,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Bu yazıyı Blazeleyin";
+
+/* Short status description */
+"blazeCampaign.status.active" = "Aktif";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "Zamanlandı";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Reddedildi";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Bunu gizle";
@@ -9756,6 +9795,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Sayfalar";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Tıklamalar";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Kampanya oluştur";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "İzlenimler";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Kampanyayı öne çıkar";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Tüm kampanyaları görüntüle";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Sitenize sayfalar ekleyin";
@@ -9832,6 +9886,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "yıllık";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Kapat";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Maalesef eklemeye çalıştığınız alan adı şu anda Jetpack'ten satın alınamıyor.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
 
@@ -9854,6 +9914,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "takip et";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "İlk yıl için ücretsiz bir alan adı alın, sitenizdeki reklamları kaldırın ve saklama alanınızı arttırın.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Bunu gizle";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Yıllık pakette ücretsiz alan adı";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Bitti";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Alan adınızın düzgün şekilde çalışmaya başlaması 30 dakika kadar sürebilir";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Yeni alan adınız %@ ayarlanıyor.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Her şey hazır!";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Blog hatırlatıcıları ayarlayın";
@@ -10383,6 +10464,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Blaze ile tanıt";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Ana sayfanız, Tema şablonunu kullanıyor ve web düzenleyicisinde açılacak.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Ana sayfa";
+
 /* No comment provided by engineer. */
 "password" = "parola";
 
@@ -10400,6 +10487,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Taslak yazılar";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Uygulamayı tanıyın";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Sonraki adımlar";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Sayfalar";
@@ -10431,6 +10524,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Öne çıkan görsel seçenekleri";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter Otomatik Paylaşım Özelliği Artık Kullanılmıyor";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
 
@@ -10451,6 +10547,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Oturum açtınız!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Arama";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Okuyucu Ayarları";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10638,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Hatırlatıcılar";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Blog gönderilerinizi sosyal medyada otomatik şekilde paylaşarak trafiğinizi artırın.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Profillerinizi bağlayın";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Sosyal medya simgeleri";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Şimdi değil";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter Otomatik Paylaşım Özelliği Artık Kullanılmıyor";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Daha fazla bilgi";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter otomatik paylaşım özelliği, Twitter'ın şartlarındaki ve fiyatlandırmasındaki değişiklikler nedeniyle artık kullanılmıyor.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Son 7 gün";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-18 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-06-14 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s リンク";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%sプレビューはまだご利用いただけません";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "ブロックエディターを有効にしました";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "ブロックがグループ化されました";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "悪意のあるログイン試行をブロックする";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "このサイトをブロック";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "ブロックのグループが解除されました";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "サイトがブロックされました";
@@ -4911,6 +4920,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "期間が選択されていません";
 
+/* No comment provided by engineer. */
+"No description" = "説明はありません";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "修正された脅威はありません";
 
@@ -5036,6 +5048,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "脅威は見つかりませんでした";
+
+/* No comment provided by engineer. */
+"No title" = "タイトルなし";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -9670,6 +9685,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "削除";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "まだキャンペーンを作成していません。 開始するには「宣伝」をクリックしてください。";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "キャンペーンがありません";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "キャンペーンを読み込んでいます…";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "宣伝";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze キャンペーン";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "何百万ものサイトに作品を表示しましょう。";
 
@@ -9699,6 +9729,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "この投稿を目立たせる";
+
+/* Short status description */
+"blazeCampaign.status.active" = "有効";
+
+/* Short status description */
+"blazeCampaign.status.finished" = "予約済み";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "却下";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "非表示";
@@ -9756,6 +9795,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "ページ";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "クリック数";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "キャンペーンを作成";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "インプレッション";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze キャンペーン";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "すべてのキャンペーンを表示";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "サイトにページを追加する";
@@ -9832,6 +9886,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/ 年";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "閉じる";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "追加しようとしているドメインは現在 Jetpack アプリでは購入できません。";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
 
@@ -9854,6 +9914,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "フォロー";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "初年度は無料でドメインを取得でき、サイト上の広告が削除され、ストレージが増えます。";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "年間プランではドメイン名が無料で利用できます";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "完了";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "ドメインが正常に使用可能になるまでに最大で30分かかる場合があります";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "新しいドメイン %@ の設定中です。";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "準備完了 !";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "ブログ投稿のリマインダーを設定";
@@ -10383,6 +10464,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Blaze を使って宣伝";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "ホームページではテーマテンプレートが使用されており、Web エディターで開きます。";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "ホームページ";
+
 /* No comment provided by engineer. */
 "password" = "パスワード";
 
@@ -10400,6 +10487,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "下書きの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "アプリについて知る";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "次のステップ";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "ページ";
@@ -10431,6 +10524,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
 
@@ -10451,6 +10547,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "ログインしました !";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "検索";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader 設定";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10536,6 +10638,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "リマインダー";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "ソーシャルメディアで自分の投稿を友人に自動共有してトラフィックを増やします。";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "プロフィールを接続する";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "ソーシャルメディアアイコン";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "後で";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "さらに詳しく";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去7日間";

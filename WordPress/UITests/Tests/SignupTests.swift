@@ -10,19 +10,21 @@ class SignupTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     func testEmailSignup() throws {
-        let mySiteScreen = try WelcomeScreen().selectSignup()
+        try WelcomeScreen()
+            .selectSignup()
             .selectEmailSignup()
             .proceedWith(email: WPUITestCredentials.signupEmail)
             .openMagicSignupLink()
-            .verifyEpilogueContains(username: WPUITestCredentials.signupUsername, displayName: WPUITestCredentials.signupDisplayName)
+            .verifyEpilogueContains(
+                username: WPUITestCredentials.signupUsername,
+                displayName: WPUITestCredentials.signupDisplayName
+            )
             .setPassword(WPUITestCredentials.signupPassword)
             .continueWithSignup()
             .dismissNotificationAlertIfNeeded()
-
-        XCTAssert(mySiteScreen.isLoaded)
+            .assertScreenIsLoaded()
     }
 }

@@ -6,727 +6,114 @@
   "response": {
     "status": 200,
     "jsonBody": {
+
       "@context": "https://www.w3.org/ns/activitystreams",
       "summary": "Activity log",
       "type": "OrderedCollection",
-      "totalItems": 300,
+      "totalItems": 3,
       "page": 1,
-      "totalPages": 15,
+      "totalPages": 1,
       "itemsPerPage": 20,
-      "id": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/185124945/activity?number=20&page=1",
-      "nextAfter": [
-        1620221875793
-      ],
-      "oldestItemTs": 1604484582203,
-      "first": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/185124945/activity?number=20&page=1",
-      "last": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/185124945/activity?number=20&page=15",
+      "id": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?number=20&page=1",
+      "oldestItemTs": 1654043700542,
+      "first": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?number=20&page=1",
+      "last": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?number=20&page=1",
       "current": {
         "type": "OrderedCollectionPage",
-        "id": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/185124945/activity?number=20&page=1",
-        "prev": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/185124945/activity?number=20&page=0",
-        "next": "{{request.requestLine.baseUrl}}/wpcom/v2/sites/185124945/activity?number=20&page=2",
-        "totalItems": 20,
+        "id": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?number=20&page=1",
+        "prev": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?number=20&page=0",
+        "totalItems": 3,
         "orderedItems": [
           {
-            "summary": "Backup and scan complete",
-            "content": {
-              "text": "4 plugins, 2 themes, 3 uploads, 2 posts"
-            },
-            "name": "rewind__backup_complete_full",
-            "actor": {
-              "type": "Application",
-              "name": "Jetpack"
-            },
-            "type": "Announce",
-            "published": "{{now format='yyyy-MM-dd'}}T{{now format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": true,
-            "rewind_id": "1620282190.798",
-            "gridicon": "cloud",
-            "status": "success",
-            "activity_id": "AXlAWDctEdwdUqNpZHlC",
-            "object": {
-              "type": "Backup",
-              "backup_type": "full",
-              "rewind_id": "1620282190.798",
-              "backup_stats": "{\"themes\":{\"count\":2,\"list\":[\"twentynineteen\",\"twentytwenty\"]},\"plugins\":{\"count\":4,\"list\":[\"akismet\",\"calendar\",\"jetpack\",\"jetpack-threat-tester-master\"]},\"uploads\":{\"count\":3,\"images\":2,\"movies\":0,\"audio\":0,\"archives\":0},\"tables\":{\"wp_calendar\":{\"rows\":0},\"wp_calendar_categories\":{\"rows\":1},\"wp_calendar_config\":{\"rows\":10},\"wp_commentmeta\":{\"rows\":0},\"wp_comments\":{\"rows\":1},\"wp_links\":{\"rows\":0},\"wp_options\":{\"rows\":221},\"wp_postmeta\":{\"rows\":6},\"wp_posts\":{\"rows\":6,\"published\":2},\"wp_term_relationships\":{\"rows\":2},\"wp_term_taxonomy\":{\"rows\":1},\"wp_termmeta\":{\"rows\":0},\"wp_terms\":{\"rows\":1},\"wp_usermeta\":{\"rows\":48},\"wp_users\":{\"rows\":3}},\"prefix\":\"wp_\",\"wp_version\":\"5.7.1\"}",
-              "backup_period": 1620282173
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Threat resolved",
-            "content": {
-              "text": "The threat known as URL_BlockList_1 is no longer present in wp_posts: File is now clean",
-              "ranges": [
-                {
-                  "type": "em",
-                  "indices": [
-                    20,
-                    35
-                  ],
-                  "id": "3",
-                  "parent": null
-                }
-              ]
-            },
-            "name": "rewind__scan_result_fixed",
-            "actor": {
-              "type": "Application",
-              "name": "Jetpack"
-            },
-            "type": "Announce",
-            "published": "{{now format='yyyy-MM-dd'}}T{{now format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620282185.3564",
-            "gridicon": "checkmark",
-            "status": "success",
-            "activity_id": "AXlAWCuCHPpm8Jl5QV_X",
-            "object": {
-              "type": "Security",
-              "file": "wp_posts",
-              "signature": "URL_BlockList_1",
-              "fixed_ts": 1620282185208,
-              "reason": "File is now clean"
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Threat resolved",
-            "content": {
-              "text": "The threat known as EICAR_AV_Test is no longer present in /htdocs/wp-content/uploads/jptt_eicar.php: File is now clean",
-              "ranges": [
-                {
-                  "type": "em",
-                  "indices": [
-                    20,
-                    33
-                  ],
-                  "id": "7",
-                  "parent": null
-                }
-              ]
-            },
-            "name": "rewind__scan_result_fixed",
-            "actor": {
-              "type": "Application",
-              "name": "Jetpack"
-            },
-            "type": "Announce",
-            "published": "{{now format='yyyy-MM-dd'}}T{{now format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620282178.7763",
-            "gridicon": "checkmark",
-            "status": "success",
-            "activity_id": "AXlAWAOxC0Gvh1USAs-0",
-            "object": {
-              "type": "Security",
-              "file": "/htdocs/wp-content/uploads/jptt_eicar.php",
-              "signature": "EICAR_AV_Test",
-              "fixed_ts": 1620282178649,
-              "reason": "File is now clean"
-            },
-            "is_discarded": false
-          },
-          {
             "summary": "Setting changed",
             "content": {
-              "text": "Default post format changed to \"Standard\"",
-              "ranges": [
-                {
-                  "type": "em",
-                  "indices": [
-                    32,
-                    40
-                  ],
-                  "id": "11",
-                  "parent": null
-                }
-              ]
+              "text": "Enabled Jetpack Social for automatic social sharing"
             },
-            "name": "setting__changed_default_post_format",
+            "name": "setting__changed_jetpack_module_publicize",
             "actor": {
               "type": "Person",
-              "name": "emilylaguna",
-              "external_user_id": 2,
-              "wpcom_user_id": 175698209,
+              "name": "demo",
+              "external_user_id": 1,
+              "wpcom_user_id": 195654479,
               "icon": {
                 "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/6d1fe505117c34cd81af4b6572b55f56?s=96&d=mm&r=g",
+                "url": "https://secure.gravatar.com/avatar/eea057209f5e29d6ca4103bc165d645b?s=96&d=mm&r=g",
                 "width": 96,
                 "height": 96
               },
               "role": "administrator"
             },
             "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
+            "published": "2023-04-04T10:33:09.300+00:00",
             "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
+              "jetpack_version": 0,
+              "blog_id": 106707880
             },
-            "is_rewindable": true,
-            "rewind_id": "1620230363.1081",
+            "is_rewindable": false,
+            "rewind_id": "1680604388.4567",
             "gridicon": "cog",
             "status": null,
-            "activity_id": "AXk9QWGUekSREqZdrE0M",
+            "activity_id": "6gjTS4cBfytF4jpL6MFT",
             "is_discarded": false
           },
           {
-            "summary": "Setting changed",
+            "summary": "Site owner connected",
             "content": {
-              "text": "Timezone changed to \"UTC+0\"",
-              "ranges": [
-                {
-                  "type": "em",
-                  "indices": [
-                    21,
-                    26
-                  ],
-                  "id": "15",
-                  "parent": null
-                }
-              ]
+              "text": "The Jetpack connection is now complete. Welcome!"
             },
-            "name": "setting__changed_timezone",
+            "name": "jetpack__site_owner_connected",
             "actor": {
               "type": "Person",
-              "name": "pressable-jetpack-complete",
+              "name": "Kevin Jorge",
               "external_user_id": 1,
-              "wpcom_user_id": 196051067,
+              "wpcom_user_id": 11111111,
               "icon": {
                 "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
+                "url": "https://secure.gravatar.com/avatar/eea057209f5e29d6ca4103bc165d645b?s=96&d=mm&r=g",
                 "width": 96,
                 "height": 96
               },
               "role": "administrator"
             },
             "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
+            "published": "2023-04-04T10:33:05.614+00:00",
             "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
+              "jetpack_version": 0,
+              "blog_id": 106707880
             },
             "is_rewindable": false,
-            "rewind_id": "1620226323.2004",
-            "gridicon": "cog",
-            "status": null,
-            "activity_id": "AXk9A7jxC0Gvh1USarVK",
-            "is_discarded": false
-          },
-          {
-            "summary": "Plugin updated",
-            "content": {
-              "text": "Jetpack by WordPress.com 9.7",
-              "ranges": [
-                {
-                  "type": "plugin",
-                  "indices": [
-                    0,
-                    28
-                  ],
-                  "id": "18",
-                  "parent": null,
-                  "slug": "jetpack",
-                  "version": "9.7",
-                  "site_slug": "pressable-jetpack-complete.mystagingwebsite.com"
-                }
-              ]
-            },
-            "name": "plugin__updated",
-            "actor": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": "administrator"
-            },
-            "type": "Update",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620226323.198",
-            "gridicon": "plugins",
+            "rewind_id": "1680604385.6144",
+            "gridicon": "plans",
             "status": "success",
-            "activity_id": "AXk9A7jxC0Gvh1USarVA",
-            "items": [
-              {
-                "type": "Plugin",
-                "name": "Jetpack by WordPress.com",
-                "object_version": "9.7",
-                "object_slug": "jetpack/jetpack.php",
-                "object_previous_version": "9.6.1"
-              }
-            ],
-            "totalItems": 1,
+            "activity_id": "avfTS4cB98Gh8vy65ZU4",
             "is_discarded": false
           },
           {
-            "summary": "Setting changed",
+            "summary": "Site connected",
             "content": {
-              "text": "Site icon changed (icon.png)",
-              "ranges": [
-                {
-                  "url": "https://wordpress.com/media/185124945/8",
-                  "indices": [
-                    0,
-                    28
-                  ],
-                  "id": 8,
-                  "parent": null,
-                  "type": "a",
-                  "site_id": 185124945,
-                  "section": "media",
-                  "intent": "edit",
-                  "context": "single"
-                }
-              ]
+              "text": "This site is connected to Jetpack."
             },
-            "name": "setting__changed_site_icon",
-            "actor": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": "administrator"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620226281.4911",
-            "gridicon": "cog",
-            "status": null,
-            "activity_id": "AXk9AzWAHPpm8Jl5qY7t",
-            "image": {
-              "available": true,
-              "type": "Image",
-              "name": "Site icon changed (icon.png)",
-              "url": "https://i2.wp.com/pressable-jetpack-complete.mystagingwebsite.com/wp-content/uploads/2021/05/icon.png?ssl=1",
-              "thumbnail_url": "https://i2.wp.com/pressable-jetpack-complete.mystagingwebsite.com/wp-content/uploads/2021/05/icon.png?fit=96%2C96&#038;ssl=1"
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Setting changed",
-            "content": {
-              "text": "Site description was changed from \"Just another WordPress site\" to \"Site with everything enabled\"",
-              "ranges": [
-                {
-                  "type": "em",
-                  "indices": [
-                    35,
-                    62
-                  ],
-                  "id": "23",
-                  "parent": null
-                },
-                {
-                  "type": "em",
-                  "indices": [
-                    68,
-                    96
-                  ],
-                  "id": "26",
-                  "parent": null
-                }
-              ]
-            },
-            "name": "setting__changed_blogdescription",
-            "actor": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": "administrator"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620226281.4705",
-            "gridicon": "cog",
-            "status": null,
-            "activity_id": "AXk9Ay97ekSREqZdnq2n",
-            "is_discarded": false
-          },
-          {
-            "summary": "Setting changed",
-            "content": {
-              "text": "Site title was changed from \"My WordPress Site\" to \"Jetpack - Complete\"",
-              "ranges": [
-                {
-                  "type": "em",
-                  "indices": [
-                    29,
-                    46
-                  ],
-                  "id": "30",
-                  "parent": null
-                },
-                {
-                  "type": "em",
-                  "indices": [
-                    52,
-                    70
-                  ],
-                  "id": "33",
-                  "parent": null
-                }
-              ]
-            },
-            "name": "setting__changed_blogname",
-            "actor": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": "administrator"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": true,
-            "rewind_id": "1620226281.462",
-            "gridicon": "cog",
-            "status": null,
-            "activity_id": "AXk9Ay97ekSREqZdnq2e",
-            "is_discarded": false
-          },
-          {
-            "summary": "Image uploaded",
-            "content": {
-              "text": "icon.png",
-              "ranges": [
-                {
-                  "url": "https://wordpress.com/media/185124945/8",
-                  "indices": [
-                    0,
-                    8
-                  ],
-                  "id": 8,
-                  "parent": null,
-                  "type": "a",
-                  "site_id": 185124945,
-                  "section": "media",
-                  "intent": "edit",
-                  "context": "single"
-                }
-              ]
-            },
-            "name": "attachment__uploaded",
-            "actor": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": "administrator"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": true,
-            "rewind_id": "1620226276.8479",
-            "gridicon": "image",
-            "status": "success",
-            "activity_id": "AXk9AwVyC0Gvh1USao1z",
-            "image": {
-              "available": true,
-              "type": "Image",
-              "name": "icon.png",
-              "url": "https://i2.wp.com/pressable-jetpack-complete.mystagingwebsite.com/wp-content/uploads/2021/05/icon.png?ssl=1",
-              "thumbnail_url": "https://i2.wp.com/pressable-jetpack-complete.mystagingwebsite.com/wp-content/uploads/2021/05/icon.png?fit=96%2C96&#038;ssl=1",
-              "medium_url": "https://i2.wp.com/pressable-jetpack-complete.mystagingwebsite.com/wp-content/uploads/2021/05/icon.png?w=846&#038;ssl=1"
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Login succeeded",
-            "content": {
-              "text": "pressable-jetpack-complete successfully logged in from IP Address 73.159.235.239",
-              "ranges": [
-                {
-                  "url": "https://wordpress.com/people/edit/185124945/pressable-jetpack-complete",
-                  "indices": [
-                    0,
-                    26
-                  ],
-                  "id": 1,
-                  "parent": null,
-                  "type": "a",
-                  "site_id": 185124945,
-                  "section": "user",
-                  "intent": "edit"
-                }
-              ]
-            },
-            "name": "user__login",
-            "actor": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/9eac9665a4c900eeb9ba5ceb211b0f62?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": "administrator"
-            },
-            "type": "Join",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620226253.9047",
-            "gridicon": "lock",
-            "status": null,
-            "activity_id": "AXk9ArAGC0Gvh1USan6F",
-            "object": {
-              "type": "Person",
-              "name": "pressable-jetpack-complete",
-              "external_user_id": 1,
-              "wpcom_user_id": 196051067
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Backup and scan complete",
-            "content": {
-              "text": "4 plugins, 2 themes, 1 upload, 2 posts"
-            },
-            "name": "rewind__backup_complete_full",
+            "name": "jetpack__site_connected",
             "actor": {
               "type": "Application",
               "name": "Jetpack"
             },
             "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
+            "published": "2023-04-04T10:32:54.647+00:00",
             "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": true,
-            "rewind_id": "1620223139.141",
-            "gridicon": "cloud",
-            "status": "success",
-            "activity_id": "AXk80zD9HPpm8Jl5nqOO",
-            "object": {
-              "type": "Backup",
-              "backup_type": "full",
-              "rewind_id": "1620223139.141",
-              "backup_stats": "{\"themes\":{\"count\":2,\"list\":[\"twentynineteen\",\"twentytwenty\"]},\"plugins\":{\"count\":4,\"list\":[\"akismet\",\"calendar\",\"jetpack\",\"jetpack-threat-tester-master\"]},\"uploads\":{\"count\":1,\"images\":0,\"movies\":0,\"audio\":0,\"archives\":0},\"tables\":{\"wp_calendar\":{\"rows\":0},\"wp_calendar_categories\":{\"rows\":1},\"wp_calendar_config\":{\"rows\":10},\"wp_commentmeta\":{\"rows\":0},\"wp_comments\":{\"rows\":1},\"wp_links\":{\"rows\":0},\"wp_options\":{\"rows\":350},\"wp_postmeta\":{\"rows\":2},\"wp_posts\":{\"rows\":4,\"published\":2},\"wp_term_relationships\":{\"rows\":2},\"wp_term_taxonomy\":{\"rows\":1},\"wp_termmeta\":{\"rows\":0},\"wp_terms\":{\"rows\":1},\"wp_usermeta\":{\"rows\":48},\"wp_users\":{\"rows\":3}},\"prefix\":\"wp_\",\"wp_version\":\"5.7.1\"}",
-              "backup_period": 1620223121
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Backup and scan complete",
-            "content": {
-              "text": "4 plugins, 2 themes, 1 upload, 2 posts"
-            },
-            "name": "rewind__backup_complete_full",
-            "actor": {
-              "type": "Application",
-              "name": "Jetpack"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": true,
-            "rewind_id": "1620223112.797",
-            "gridicon": "cloud",
-            "status": "success",
-            "activity_id": "AXk80rw-C0Gvh1USX6QQ",
-            "object": {
-              "type": "Backup",
-              "backup_type": "full",
-              "rewind_id": "1620223112.797",
-              "backup_stats": "{\"themes\":{\"count\":2,\"list\":[\"twentynineteen\",\"twentytwenty\"]},\"plugins\":{\"count\":4,\"list\":[\"akismet\",\"calendar\",\"jetpack\",\"jetpack-threat-tester-master\"]},\"uploads\":{\"count\":1,\"images\":0,\"movies\":0,\"audio\":0,\"archives\":0},\"tables\":{\"wp_calendar\":{\"rows\":0},\"wp_calendar_categories\":{\"rows\":1},\"wp_calendar_config\":{\"rows\":10},\"wp_commentmeta\":{\"rows\":0},\"wp_comments\":{\"rows\":1},\"wp_links\":{\"rows\":0},\"wp_options\":{\"rows\":350},\"wp_postmeta\":{\"rows\":2},\"wp_posts\":{\"rows\":4,\"published\":2},\"wp_term_relationships\":{\"rows\":2},\"wp_term_taxonomy\":{\"rows\":1},\"wp_termmeta\":{\"rows\":0},\"wp_terms\":{\"rows\":1},\"wp_usermeta\":{\"rows\":48},\"wp_users\":{\"rows\":3}},\"prefix\":\"wp_\",\"wp_version\":\"5.7.1\"}",
-              "backup_period": 1620223090
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Threat resolved",
-            "content": {
-              "text": "The extension in /htdocs/wp-content/plugins/calendar/calendar.php is no longer vulnerable: Applied threat fixer"
-            },
-            "name": "rewind__scan_result_fixed",
-            "actor": {
-              "type": "Application",
-              "name": "Jetpack"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
+              "jetpack_version": 0,
+              "blog_id": 106707880
             },
             "is_rewindable": false,
-            "rewind_id": "1620223082.8809",
-            "gridicon": "checkmark",
+            "rewind_id": "1680604374.6466",
+            "gridicon": "plans",
             "status": "success",
-            "activity_id": "AXk80lkJekSREqZdlA-f",
-            "object": {
-              "type": "Security",
-              "file": "/htdocs/wp-content/plugins/calendar/calendar.php",
-              "signature": "Vulnerable.WP.Extension",
-              "fixed_ts": 1620223082559,
-              "reason": "Applied threat fixer"
-            },
-            "is_discarded": false
-          },
-          {
-            "summary": "Plugin updated",
-            "content": {
-              "text": "Calendar 1.3.14",
-              "ranges": [
-                {
-                  "type": "plugin",
-                  "indices": [
-                    0,
-                    15
-                  ],
-                  "id": "44",
-                  "parent": null,
-                  "slug": "calendar",
-                  "version": "1.3.14",
-                  "site_slug": "pressable-jetpack-complete.mystagingwebsite.com"
-                }
-              ]
-            },
-            "name": "plugin__updated",
-            "actor": {
-              "type": "Person",
-              "name": "",
-              "external_user_id": 0,
-              "wpcom_user_id": 0,
-              "icon": {
-                "type": "Image",
-                "url": "https://secure.gravatar.com/avatar/?s=96&d=mm&r=g",
-                "width": 96,
-                "height": 96
-              },
-              "role": ""
-            },
-            "type": "Update",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": false,
-            "rewind_id": "1620223082.5373",
-            "gridicon": "plugins",
-            "status": "success",
-            "activity_id": "AXk87CWqEdwdUqNpxIhq",
-            "items": [
-              {
-                "type": "Plugin",
-                "name": "Calendar",
-                "object_version": "1.3.14",
-                "object_slug": "calendar/calendar.php",
-                "object_previous_version": "1.3.1"
-              }
-            ],
-            "totalItems": 1,
-            "is_discarded": false
-          },
-          {
-            "summary": "Backup and scan complete",
-            "content": {
-              "text": "4 plugins, 2 themes, 1 upload, 2 posts"
-            },
-            "name": "rewind__backup_complete_full",
-            "actor": {
-              "type": "Application",
-              "name": "Jetpack"
-            },
-            "type": "Announce",
-            "published": "{{now offset='-1 days' format='yyyy-MM-dd'}}T{{now offset='-1 days' format='HH:mm:ss.SSSZ'}}",
-            "generator": {
-              "jetpack_version": 9.7,
-              "blog_id": 185124945
-            },
-            "is_rewindable": true,
-            "rewind_id": "1620222944.83",
-            "gridicon": "cloud",
-            "status": "success",
-            "activity_id": "AXk80DZxEdwdUqNpvgLh",
-            "object": {
-              "type": "Backup",
-              "backup_type": "full",
-              "rewind_id": "1620222944.83",
-              "backup_stats": "{\"themes\":{\"count\":2,\"list\":[\"twentynineteen\",\"twentytwenty\"]},\"plugins\":{\"count\":4,\"list\":[\"akismet\",\"calendar\",\"jetpack\",\"jetpack-threat-tester-master\"]},\"uploads\":{\"count\":1,\"images\":0,\"movies\":0,\"audio\":0,\"archives\":0},\"tables\":{\"wp_calendar\":{\"rows\":0},\"wp_calendar_categories\":{\"rows\":1},\"wp_commentmeta\":{\"rows\":0},\"wp_calendar_config\":{\"rows\":10},\"wp_comments\":{\"rows\":1},\"wp_links\":{\"rows\":0},\"wp_options\":{\"rows\":334},\"wp_postmeta\":{\"rows\":2},\"wp_posts\":{\"rows\":4,\"published\":2},\"wp_term_relationships\":{\"rows\":2},\"wp_term_taxonomy\":{\"rows\":1},\"wp_termmeta\":{\"rows\":0},\"wp_terms\":{\"rows\":1},\"wp_usermeta\":{\"rows\":48},\"wp_users\":{\"rows\":3}},\"prefix\":\"wp_\",\"wp_version\":\"5.7.1\"}",
-              "backup_period": 1620222920
-            },
+            "activity_id": "XvfTS4cB98Gh8vy6sI2-",
             "is_discarded": false
           }
         ]
       }
+      
     },
     "headers": {
       "Content-Type": "application/json",

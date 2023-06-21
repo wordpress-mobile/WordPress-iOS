@@ -64,14 +64,20 @@
     button.titleLabel.adjustsFontForContentSizeCategory = YES;
     [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
 
-    UIEdgeInsets inset = button.contentEdgeInsets;
-    inset.left = 6.0;
-    inset.right = inset.left;
-    button.contentEdgeInsets = inset;
+    if (@available(iOS 15, *)) {
+        UIButtonConfiguration *configuration = [UIButtonConfiguration plainButtonConfiguration];
+        configuration.contentInsets = NSDirectionalEdgeInsetsMake(0, 6, 0, 6);
+        button.configuration = configuration;
+    } else {
+        UIEdgeInsets inset = button.contentEdgeInsets;
+        inset.left = 6.0;
+        inset.right = inset.left;
+        button.contentEdgeInsets = inset;
+    }
     button.hidden = YES;
 
     [self.accessoryStackView addArrangedSubview:button];
-    [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [button setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [button setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 
     NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToAnchor:self.accessoryStackView.heightAnchor];

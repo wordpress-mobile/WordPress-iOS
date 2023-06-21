@@ -1,9 +1,0 @@
-Abbiamo aggiunto schede alla tua bacheca. La scheda Log attività mostra le tue tre attività più recenti, mentre la scheda Pagine mostra le ultime tre pagine che hai modificato.
-
-Abbiamo anche apportato alcune importanti modifiche all'editor a blocchi. Per evitare un arresto anomalo dell'app, i blocchi riutilizzabili eliminati e non definiti non possono più essere convertiti in blocchi normali.
-
-Quando tocchi un blocco di testo nidificato, puoi modificare immediatamente il contenuto in quel blocco. Non dovrai più toccare ogni livello di nidificazione per arrivare dove desideri. (Anche noi avevamo le dita stanche.)
-
-A proposito di blocchi riutilizzabili, abbiamo aggiornato il messaggio "Modifica non supportata" per rimuovere la citazione di WordPress. Sappiamo quale app stiamo usando, lo promettiamo.
-
-Infine, abbiamo corretto un bug a causa del quale l'app si arrestava in modo anomalo se provavi a caricare elementi multimediali su un blocco classico senza consentire a WordPress l'accesso alla libreria multimediale del dispositivo. Visualizzerai invece un messaggio che richiede l'accesso agli elementi multimediali. Facile come bere un bicchier d'acqua.
