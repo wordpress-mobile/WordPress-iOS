@@ -87,9 +87,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
         BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
-    // MARK: - BlogDashboardCardConfigurable
-
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?) {
         self.blog = blog
         self.presentingViewController = viewController
 
