@@ -7,20 +7,20 @@ WordPress for iOS has UI acceptance tests for critical user flows through the ap
 The following flows are covered/planned to be covered by UI tests. Tests that are covered will be checked.
 
 1. Unified Login and Signup
-    - Login
-            - WPCom Account
+    - [ ] Login:
+            - [ ] WPCom Account:
                 - [x] Login and Logout using WPCom Account
                 - [x] Login and Logout Self Hosted Site
                 - [x] Invalid Password WPCom Account
                 - [x] Add Self Hosted Site after WPCom Login
-            - Apple/Google
+            - [ ] Apple/Google:
                 - [ ] Login using Apple Account
                 - [ ] Login using Google Account
-            - iCloud Keychain
+            - [ ] iCloud Keychain:
                 - [ ] Login using credentials saved in Keychain
-            - Magic Link
+            - [ ] Magic Link:
                 - [ ] Email Magic Link Login
-    - Sign Up
+    - [ ] Sign Up:
         - [ ] Email Sign Up - Create New Site
         - [ ] Email Sign Up - Link to Self-Hosted Site
 2. NUX
@@ -28,7 +28,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [ ] Create New Site - Follow Quick Start
     - [ ] Set Up Blogging Reminders on First Post
 3. Posting/Editing/Gutenberg
-    - Post
+    - [ ] Post:
         - [x] Publish Text Post
         - [x] Publish Basic Public Post with Category and Tag
         - [x] Add and Remove Featured Image
@@ -36,7 +36,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
         - [ ] Add Image Block
         - [ ] Add Video Block
         - [ ] Create Scheduled Post
-    - Pages
+    - [ ] Pages:
         - [ ] Create Page from Layout
         - [ ] Create Blank Page
 4. Notifications
