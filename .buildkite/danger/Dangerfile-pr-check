@@ -1,0 +1,5 @@
+# When using a Gem, Danger will always try and load 'Dangerfile' (with an optional path, but no different Dangerfile name)
+# When using Github, <path> = path to Dangerfile
+
+danger.import_dangerfile(gem: 'danger-iantest')
+# danger.import_dangerfile(github: 'iangmaia/danger-iantest', path: 'Dangerfile-pr-check')
