@@ -14,6 +14,10 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate var handler: ImmuTableViewHandler!
 
+    // MARK: - Dependencies
+
+    private let privacySettingsAnalyticsTracker = PrivacySettingsAnalyticsTracker()
+
     // MARK: - Initialization
 
     override init(style: UITableView.Style) {
