@@ -3,6 +3,7 @@ AllCops:
     - DerivedData/**/*
     - Pods/**/*
     - vendor/**/*
+    - .buildkite/**/*
   NewCops: enable
 
 Metrics/BlockLength:
