@@ -18,6 +18,14 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
 class ExtendedTouchAreaButton: UIButton {
     private var touchAreaPadding: CGFloat = 24.0
 
+    override var isHighlighted: Bool {
+        didSet {
+            UIView.animate(withDuration: 0.2) {
+                self.alpha = self.isHighlighted ? 0.5 : 1.0
+            }
+        }
+    }
+
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let extendedArea = bounds.insetBy(dx: -touchAreaPadding, dy: -touchAreaPadding)
         return extendedArea.contains(point)
@@ -59,7 +67,7 @@ class PostEditorNavigationBarManager {
     }()
 
     lazy var closeButtonContainer: ExtendedTouchAreaButton = {
-        let button = ExtendedTouchAreaButton(type: .system)
+        let button = ExtendedTouchAreaButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = "editor-close-button"
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close the editor")
