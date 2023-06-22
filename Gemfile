@@ -19,6 +19,9 @@ gem 'rubocop', '~> 1.30'
 gem 'rubocop-rake', '~> 0.6'
 gem 'xcpretty-travis-formatter'
 
+### Danger Plugins
+gem 'danger-iantest', git: 'https://github.com/iangmaia/danger-iantest', branch: 'main'
+
 group :screenshots, optional: true do
   gem 'rmagick', '~> 3.2.0'
 end
