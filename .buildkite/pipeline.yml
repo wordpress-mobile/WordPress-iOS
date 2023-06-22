@@ -113,7 +113,7 @@ steps:
         plugins: *common_plugins
         if: "build.pull_request.id != null"
         agents:
-          queue: "default"
+          queue: "android"
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
         plugins:
