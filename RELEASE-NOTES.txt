@@ -1,5 +1,6 @@
 22.7
 -----
+* [**] [internal] Blaze: Switch to using new canBlaze property to determine Blaze eligiblity. [#20916]
 * [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
 * [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
 * [*] [internal] Posts list: Disable action bar/menu button when a post is being uploaded [#20885]
