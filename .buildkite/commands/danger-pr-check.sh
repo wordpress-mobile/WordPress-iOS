@@ -3,5 +3,5 @@
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- Running Danger"
+echo "--- Running Danger: PR Check"
 bundle exec danger --fail-on-errors=true --dangerfile=.buildkite/danger/Dangerfile-pr-check --danger_id=pr-check
