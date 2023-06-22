@@ -112,6 +112,8 @@ steps:
         command: .buildkite/commands/danger-pr-check.sh
         plugins: *common_plugins
         if: "build.pull_request.id != null"
+        agents:
+          queue: "default"
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
         plugins:
