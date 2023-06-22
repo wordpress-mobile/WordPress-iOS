@@ -786,8 +786,10 @@ extension NotificationsViewController {
         // The ideal solution would be not updating and saving `Notification.read` property in the main context.
         // Use `CoreDataStack.performAndSave` to do it in a background context instead. However, based on the comments on
         // `markAsRead` function call below, it appears we intentionally save the main context to maintain some undocumented
-        // but appears important "side effects". We may need more careful testing around moving the saving operation from
+        // but apperently important "side effects". We may need more careful testing around moving the saving operation from
         // the main context to a background context.
+        //
+        // See also https://github.com/wordpress-mobile/WordPress-iOS/issues/20850
         selectedNotification = note
 
         /// Note: markAsRead should be the *first* thing we do. This triggers a context save, and may have many side effects that
