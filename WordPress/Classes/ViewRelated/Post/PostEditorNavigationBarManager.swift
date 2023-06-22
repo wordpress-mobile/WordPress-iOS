@@ -15,6 +15,15 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView)
 }
 
+class ExtendedTouchAreaButton: UIButton {
+    private var touchAreaPadding: CGFloat = 24.0
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let extendedArea = bounds.insetBy(dx: -touchAreaPadding, dy: -touchAreaPadding)
+        return extendedArea.contains(point)
+    }
+}
+
 // A class to share the navigation bar UI of the Post Editor.
 // Currenly shared between Aztec and Gutenberg
 //
@@ -30,8 +39,8 @@ class PostEditorNavigationBarManager {
         siteIconView.translatesAutoresizingMaskIntoConstraints = false
         siteIconView.imageView.sizeToFit()
 
-        let widthConstraint = siteIconView.widthAnchor.constraint(equalToConstant: 24)
-        let heightConstraint = siteIconView.heightAnchor.constraint(equalToConstant: 24)
+        let widthConstraint = siteIconView.widthAnchor.constraint(equalToConstant: 28)
+        let heightConstraint = siteIconView.heightAnchor.constraint(equalToConstant: 28)
         NSLayoutConstraint.activate([widthConstraint, heightConstraint])
         siteIconView.isUserInteractionEnabled = false
         siteIconView.removeButtonBorder()
@@ -45,11 +54,12 @@ class PostEditorNavigationBarManager {
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -8, bottom: 0, trailing: 0)
+        button.isUserInteractionEnabled = false
         return button
     }()
 
-    lazy var closeButtonContainer: UIButton = {
-        let button = UIButton(type: .system)
+    lazy var closeButtonContainer: ExtendedTouchAreaButton = {
+        let button = ExtendedTouchAreaButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = "editor-close-button"
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close the editor")
@@ -68,7 +78,7 @@ class PostEditorNavigationBarManager {
             siteIconView.centerYAnchor.constraint(equalTo: button.centerYAnchor)
         ])
         button.isUserInteractionEnabled = true
-        button.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
+        button.frame = CGRect(x: 0, y: 0, width: 70, height: 28)
         return button
     }()
 
@@ -154,6 +164,7 @@ class PostEditorNavigationBarManager {
     ///
     internal lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        separator.width = 16
         return separator
     }()
 
