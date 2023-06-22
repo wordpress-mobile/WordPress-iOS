@@ -371,8 +371,8 @@
 		0CB4057A29C8DDEE008EED0A /* BlogDashboardPersonalizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */; };
 		0CB4057D29C8DF83008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
 		0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
-		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift */; };
-		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift */; };
+		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
+		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC772B0728201F5300664C02 /* ViewsVisitorsLineChartCell.swift */; };
@@ -3874,8 +3874,8 @@
 		FA98A2512833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */; };
 		FA98B61629A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */; };
 		FA98B61729A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */; };
-		FA98B61929A3BF050071AAE8 /* BlazeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */; };
-		FA98B61A29A3BF050071AAE8 /* BlazeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */; };
+		FA98B61929A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */; };
+		FA98B61A29A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */; };
 		FA98B61C29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
@@ -6062,7 +6062,7 @@
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
 		0CB4057229C8DD01008EED0A /* BlogDashboardPersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationView.swift; sourceTree = "<group>"; };
 		0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizeCardCell.swift; sourceTree = "<group>"; };
-		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignCardCell.swift; sourceTree = "<group>"; };
+		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		150B6590614A28DF9AD25491 /* Pods-Apps-Jetpack.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		152F25D5C232985E30F56CAC /* Pods-Apps-Jetpack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.debug.xcconfig"; sourceTree = "<group>"; };
@@ -9214,7 +9214,7 @@
 		FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistConfigurable.swift; sourceTree = "<group>"; };
 		FA98B61329A39DA80071AAE8 /* WordPress 148.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 148.xcdatamodel"; sourceTree = "<group>"; };
 		FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCell.swift; sourceTree = "<group>"; };
-		FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCardView.swift; sourceTree = "<group>"; };
+		FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazePromoCardView.swift; sourceTree = "<group>"; };
 		FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeHelper.swift; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
 		FAA4013327B52455009E1137 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
@@ -17810,8 +17810,8 @@
 			isa = PBXGroup;
 			children = (
 				FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */,
-				FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */,
-				0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift */,
+				FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */,
+				0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */,
 				0C391E5D2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift */,
 				0C391E602A3002950040EA91 /* BlazeCampaignStatusView.swift */,
 			);
@@ -21958,7 +21958,7 @@
 				E616E4B31C480896002C024E /* SharingService.swift in Sources */,
 				F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */,
 				FA98A24D2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */,
-				FA98B61929A3BF050071AAE8 /* BlazeCardView.swift in Sources */,
+				FA98B61929A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
 				AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */,
@@ -22567,7 +22567,7 @@
 				329F8E5824DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift in Sources */,
 				5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */,
 				B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */,
-				0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift in Sources */,
+				0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */,
 				FAD7626429F1480E00C09583 /* DashboardActivityLogCardCell+ActivityPresenter.swift in Sources */,
 				24351254264DCA08009BB2B6 /* Secrets.swift in Sources */,
 				03216EC6279946CA00D444CA /* SchedulingDatePickerViewController.swift in Sources */,
@@ -23991,7 +23991,7 @@
 				FABB21932602FC2C00C8785C /* GutenbergTenorMediaPicker.swift in Sources */,
 				3F8B45A029283D6C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */,
 				F45326D929F6B8A6005F9F31 /* EnhancedSiteCreationAnalyticsEvent.swift in Sources */,
-				FA98B61A29A3BF050071AAE8 /* BlazeCardView.swift in Sources */,
+				FA98B61A29A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
 				FABB21942602FC2C00C8785C /* AztecPostViewController.swift in Sources */,
 				F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */,
 				FE4C46FF27FAE61700285F35 /* DashboardPromptsCardCell.swift in Sources */,
@@ -24400,7 +24400,7 @@
 				FABB22C12602FC2C00C8785C /* DomainsService.swift in Sources */,
 				98BAA7C426F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
 				FABB22C22602FC2C00C8785C /* PasswordAlertController.swift in Sources */,
-				0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignCardCell.swift in Sources */,
+				0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */,
 				4A1E77CD2989F2F7006281CC /* WPAccount+DeduplicateBlogs.swift in Sources */,
 				FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */,
 				FABB22C32602FC2C00C8785C /* ReaderTagsFooter.swift in Sources */,

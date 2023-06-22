@@ -1,10 +1,10 @@
 import UIKit
 
-final class BlazeCardView: UIView {
+final class DashboardBlazePromoCardView: UIView {
 
     // MARK: - Properties
 
-    private let viewModel: BlazeCardViewModel
+    private let viewModel: DashboardBlazePromoViewModel
 
     // MARK: - Views
 
@@ -70,7 +70,7 @@ final class BlazeCardView: UIView {
 
     // MARK: - Initializers
 
-    init(_ viewModel: BlazeCardViewModel = BlazeCardViewModel()) {
+    init(_ viewModel: DashboardBlazePromoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
@@ -104,7 +104,7 @@ final class BlazeCardView: UIView {
     }
 }
 
-extension BlazeCardView {
+extension DashboardBlazePromoCardView {
 
     private enum Style {
         static let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
@@ -130,19 +130,26 @@ extension BlazeCardView {
     }
 }
 
-// MARK: - BlazeCardViewModel
+// MARK: - DashboardBlazePromoViewModel
 
-struct BlazeCardViewModel {
+struct DashboardBlazePromoViewModel {
 
     let onViewTap: () -> Void
     let onEllipsisTap: () -> Void
     let onHideThisTap: UIActionHandler
 
-    init(onViewTap: @escaping () -> Void = {},
-         onEllipsisTap: @escaping () -> Void = {},
-         onHideThisTap: @escaping UIActionHandler = { _ in }) {
-        self.onViewTap = onViewTap
-        self.onEllipsisTap = onEllipsisTap
-        self.onHideThisTap = onHideThisTap
+    static func make(with blog: Blog, viewController: BlogDashboardViewController?) -> DashboardBlazePromoViewModel {
+        DashboardBlazePromoViewModel(onViewTap: { [weak viewController] in
+            guard let viewController = viewController else { return }
+            BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
+            BlazeFlowCoordinator.presentBlaze(in: viewController, source: .dashboardCard, blog: blog)
+        }, onEllipsisTap: {
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: .blaze)
+            BlazeEventsTracker.trackContextualMenuAccessed(for: .dashboardCard)
+        }, onHideThisTap: { _ in
+            BlogDashboardAnalytics.trackHideTapped(for: .blaze)
+            BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
+            BlazeHelper.hideBlazeCard(for: blog)
+        })
     }
 }
