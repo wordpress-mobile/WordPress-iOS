@@ -4,7 +4,7 @@ final class DashboardBlazeCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard)
 
-        if RemoteFeature.enabled(.blazeManageCampaigns) {
+        if RemoteFeatureFlag.blazeManageCampaigns.enabled() {
             // Display campaigns
             let cardView = DashboardBlazeCampaignsCardView()
             cardView.configure(blog: blog, viewController: viewController)
