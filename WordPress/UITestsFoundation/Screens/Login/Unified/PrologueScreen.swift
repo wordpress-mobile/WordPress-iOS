@@ -36,10 +36,6 @@ public class PrologueScreen: ScreenObject {
         return try LoginSiteAddressScreen()
     }
 
-    public func verifyPrologueScreenLoaded() {
-        XCTAssertTrue(isLoaded)
-    }
-
     public static func isLoaded(app: XCUIApplication = XCUIApplication()) -> Bool {
         (try? PrologueScreen(app: app).isLoaded) ?? false
     }

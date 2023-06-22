@@ -22,6 +22,6 @@ final class MenuNavigationTests: XCTestCase {
         try MySiteScreen()
             .goToMenu()
             .goToDomainsScreen()
-            .verifyDomainsScreenLoaded()
+            .assertScreenIsLoaded()
     }
 }

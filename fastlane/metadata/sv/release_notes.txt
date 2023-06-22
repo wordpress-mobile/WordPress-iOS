@@ -1,0 +1,5 @@
+Vi har tagit bort en bugg för enheter som kör iOS 16 eller senare, som gjorde att den dikterade texten försvann om man skrev i blockredigeraren under diktering. Skönt.
+
+Klappat och klart – det finns nu en låsikon för inaktiverade celler i blockredigeraren så att du vet när de inte används.
+
+Slutligen har vi uppdaterat platshållartexten för VideoPress-videoklipp som inte tillhör din webbplats. (Förhoppningsvis kommer de inte att känna sig utanför.)

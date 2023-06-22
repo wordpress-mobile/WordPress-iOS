@@ -70,7 +70,7 @@ PODS:
   - libwebp/mux (1.2.4):
     - libwebp/demux
   - libwebp/webp (1.2.4)
-  - MediaEditor (1.2.1):
+  - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -512,7 +512,7 @@ PODS:
     - WordPressKit (~> 8.0-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.4.0-beta.1):
+  - WordPressKit (8.3.0):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -559,7 +559,7 @@ DEPENDENCIES:
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.97.1`)
   - JTAppleCalendar (~> 8.0.2)
   - Kanvas (~> 1.4.4)
-  - MediaEditor (~> 1.2.1)
+  - MediaEditor (>= 1.2.2, ~> 1.2)
   - MRProgress (= 0.8.3)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
@@ -612,7 +612,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 6.1-beta)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/can_blaze`)
+  - WordPressKit (~> 8.3-beta)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `trunk`)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8-beta)
@@ -623,6 +623,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -775,9 +776,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.97.1
-  WordPressKit:
-    :branch: task/can_blaze
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :branch: trunk
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -796,9 +794,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.97.1
-  WordPressKit:
-    :commit: 58597b3917ce2f4d206f50464520913a6391faf3
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :commit: 9a010fdab8d31f9e1fa0511f231e7068ef0170b1
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -830,7 +825,7 @@ SPEC CHECKSUMS:
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
-  MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
+  MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
@@ -890,7 +885,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: b0b900696de5129a215adcd1e9ae6eb89da36ac8
-  WordPressKit: 45b04f55d471f1edde248b84614d3208b9e2e88a
+  WordPressKit: a8bf6dd9a4fbbb3bbfc14b4ac64068e4020c83bd
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 0d40b8d66b6dfdaa2d6a41e3be51249ff5898775
@@ -905,6 +900,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 632b4861755f278b8b6a210481f6fbe8801720ca
+PODFILE CHECKSUM: 3aafe3a791569455de8949833d0cf31de28aee99
 
 COCOAPODS: 1.12.1

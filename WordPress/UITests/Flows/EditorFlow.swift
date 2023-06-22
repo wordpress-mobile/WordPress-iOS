@@ -14,7 +14,7 @@ class EditorFlow {
 
     static func toggleBlockEditor(to state: SiteSettingsScreen.Toggle) throws -> SiteSettingsScreen {
         if !SiteSettingsScreen.isLoaded() {
-            _ = try TabNavComponent()
+            try TabNavComponent()
                 .goToMySiteScreen()
                 .goToSettingsScreen()
         }

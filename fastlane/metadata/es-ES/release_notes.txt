@@ -1,0 +1,5 @@
+Hemos eliminado un error en dispositivos con iOS 16 o posterior, por el que al escribir en el editor de bloques mientras se dictaba se perdía el texto dictado. Uf.
+
+Bloqueado y cargado: ahora hay un icono de bloqueo para las celdas desactivadas en el editor de bloques, para que sepas cuándo no están en uso.
+
+Por último, hemos actualizado el texto del marcador de posición para los vídeos de VideoPress que no pertenecen a tu sitio. (Esperamos que no se sientan excluidos).

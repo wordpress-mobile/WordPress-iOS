@@ -1,0 +1,5 @@
+Wir haben einen Fehler bei Geräten mit iOS 16 oder neuer behoben, aufgrund dessen diktierter Text im Block-Editor beim Schreiben und gleichzeitigem Diktieren verloren gegangen ist. Was ein Glück.
+
+Gesperrt und geladen – es gibt ab sofort ein neues Icon für deaktivierte Zellen im Block-Editor, damit du weißt, wann sie nicht verwendet werden.
+
+Und schließlich haben wir den Platzhaltertext für VideoPress-Videos, die nicht zu deiner Website gehören, aktualisiert. (Hoffentlich fühlen sie sich dadurch nicht ausgeschlossen.)

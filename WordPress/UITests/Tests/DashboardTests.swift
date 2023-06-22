@@ -22,10 +22,10 @@ class DashboardTests: XCTestCase {
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
-            .verifyDomainsSuggestionsScreenLoaded()
+            .assertScreenIsLoaded()
             .selectDomain()
             .goToPlanSelection()
-            .verifyPlanSelectionScreenLoaded()
+            .assertScreenIsLoaded()
     }
 
     func testPagesCardHeaderNavigation() throws {
@@ -36,7 +36,7 @@ class DashboardTests: XCTestCase {
             .verifyPagesCard(hasPage: "Shop")
             .verifyPagesCard(hasPage: "Cart")
             .tapPagesCardHeader()
-            .verifyPagesScreenLoaded()
+            .assertScreenIsLoaded()
             .verifyPagesScreen(hasPage: "Blog")
             .verifyPagesScreen(hasPage: "Shop")
             .verifyPagesScreen(hasPage: "Cart")
@@ -50,7 +50,7 @@ class DashboardTests: XCTestCase {
             .verifyActivityLogCard(hasActivityPartial: "The Jetpack connection")
             .verifyActivityLogCard(hasActivityPartial: "This site is connected to")
             .tapActivityLogCardHeader()
-            .verifyActivityLogScreenLoaded()
+            .assertScreenIsLoaded()
             .verifyActivityLogScreen(hasActivityPartial: "Enabled Jetpack Social")
             .verifyActivityLogScreen(hasActivityPartial: "The Jetpack connection")
             .verifyActivityLogScreen(hasActivityPartial: "This site is connected to")

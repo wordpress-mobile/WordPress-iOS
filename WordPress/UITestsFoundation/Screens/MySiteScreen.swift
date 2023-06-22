@@ -187,6 +187,7 @@ public class MySiteScreen: ScreenObject {
         return try StatsScreen()
     }
 
+    @discardableResult
     public func goToSettingsScreen() throws -> SiteSettingsScreen {
         app.cells[ElementStringIDs.settingsButton].tap()
         return try SiteSettingsScreen()
@@ -222,11 +223,6 @@ public class MySiteScreen: ScreenObject {
     public func goToPeople() throws -> PeopleScreen {
         app.cells[ElementStringIDs.peopleButton].tap()
         return try PeopleScreen()
-    }
-
-    public func verifyMySiteScreenLoaded() -> Self {
-        XCTAssertTrue(isLoaded)
-        return self
     }
 
     public static func isLoaded() -> Bool {

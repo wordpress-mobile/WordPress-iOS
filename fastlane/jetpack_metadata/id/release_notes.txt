@@ -1,0 +1,9 @@
+Paket WordPress.com kini bisa diakses dari aplikasi Jetpack. Temukan paket yang ideal untuk publikasi konten Anda. Kini menulis kalimat penuh inspirasi dan mengelola paket bisa dilakukan di satu tempat.
+
+Tombol baru “Sesuaikan Tab Beranda” ada di bagian bawah dasbor situs yang bisa Anda gunakan untuk mengatur kartu dasbor mana yang akan ditampilkan. (Mau menyembunyikan kartu yang tidak Anda butuhkan? Cukup buka menu “Lainnya”.)
+
+Kami sudah mengatasi bug di perangkat yang menjalankan iOS 16 atau yang lebih baru yang menyebabkan teks hasil dikte hilang saat mengetik di editor blok jika fungsi dikte sedang aktif. Di editor, kini juga terdapat ikon gembok untuk sel nonaktif sehingga sel yang sedang tidak digunakan bisa diketahui.
+
+Kini, pesan error akan ditampilkan di layar “Cari domain” jika domain default yang Anda pilih tidak didukung situs. Tak akan ada lagi indikator progres yang terus berputar.
+
+Terakhir, teks placeholder untuk video VideoPress yang bukan milik situs Anda juga sudah kami perbarui. (Semoga tidak ada yang merasa kehilangan, ya.)

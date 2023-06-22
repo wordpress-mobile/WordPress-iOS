@@ -154,7 +154,7 @@ abstract_target 'Apps' do
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
-  pod 'MediaEditor', '~> 1.2.1'
+  pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
   # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
   # pod 'MediaEditor', path: '../MediaEditor-iOS'
 
