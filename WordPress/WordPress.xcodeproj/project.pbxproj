@@ -11040,11 +11040,11 @@
 		3F29EB6E240420C3005313DE /* App Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F4C1FC612A4480F700AD7CB0 /* Privacy Settings */,
 				F44293D428E3B39400D340AF /* App Icons */,
 				3F29EB6824041F6D005313DE /* About */,
 				FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */,
 				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
-				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
 				F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */,
 				CECEEB542823164800A28ADE /* MediaCacheSettingsViewController.swift */,
 				80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */,
@@ -17413,6 +17413,14 @@
 				F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		F4C1FC612A4480F700AD7CB0 /* Privacy Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
+			);
+			path = "Privacy Settings";
 			sourceTree = "<group>";
 		};
 		F4D829602930E9DD00038726 /* Delete WordPress */ = {
