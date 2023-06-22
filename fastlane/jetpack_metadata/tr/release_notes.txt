@@ -1,0 +1,9 @@
+WordPress.com paketleri Jetpack uygulamasına geliyor. Yayımcılık ihtiyaçlarınıza en uygun paketi alın ve en güzel yazılarınızı yazdığınız aynı yerden yönetin.
+
+Site panonuzun alt kısmında, görünür pano kartlarınızı özelleştirebileceğiniz yepyeni bir "Ana Sayfa Sekmesini Kişiselleştir" düğmesi yer alıyor. (İhtiyacınız olmayan kartları gizlemek ister misiniz? “Daha Fazla” menüsünü kullanabilirsiniz.)
+
+iOS 16 veya üstü yüklü cihazlarda, blok düzenleyicide dikte ile yazarken dikte edilen metnin kaybolmasına neden olan bir hatayı giderdik. Ayrıca, düzenleyicide devre dışı bırakılan hücreler için bir kilit simgesi bulunuyor. Bu simge sayesinde hücrelerin kullanım dışı olduğunu anlayabilirsiniz.
+
+"Alan adı ara" ekranında, artık siteniz tarafından desteklenmeyen bir varsayılan alan adı seçtiğinizde bir hata mesajı göreceksiniz. Durmadan dönen ilerleme çarkı artık yok.
+
+Son olarak, sitenize ait olmayan VideoPress videoları için yer tutucu metnini güncelledik. (Umarız dışlanmış hissetmezler.)

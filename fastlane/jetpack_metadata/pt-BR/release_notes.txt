@@ -1,0 +1,9 @@
+Os planos do WordPress.com estão indo para o aplicativo do Jetpack. Obtenha o plano certo para suas necessidades de publicação e gerencie-o no mesmo lugar em que você cria seu conteúdo.
+
+Há um novo botão "Personalizar guia de página inicial" na parte inferior do painel do site, onde você pode personalizar os cartões visíveis do painel. (Quer ocultar os cartões de que não precisa? Basta usar o menu "Mais".)
+
+Removemos um bug em dispositivos com iOS 16 ou posterior, em que digitar no editor de blocos durante o ditado causava a perda do texto. Há também um ícone de cadeado para células desativadas no editor para que você saiba quando elas não estão em uso.
+
+Na tela "Pesquisar domínios", agora você verá uma mensagem de erro se escolher um domínio padrão que não é compatível com seu site. Sem mais essa de roda de progresso girando para sempre.
+
+Por fim, atualizamos o espaço reservado para os vídeos do VideoPress que não pertencem ao seu site. (Espero que eles não se sintam excluídos.)

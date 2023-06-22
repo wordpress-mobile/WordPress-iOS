@@ -1,0 +1,9 @@
+Die WordPress.com-Tarife gibt es jetzt auch in der Jetpack-App. Hol dir den passenden Tarif für deine Blog-Aktivitäten und verwalte ihn dort, wo du auch deine Inhalte erstellst.
+
+Am Ende deines Website-Dashboards gibt es den brandneuen Button „Startseiten-Tab personalisieren“, mit dem du deine angezeigten Dashboard-Karten anpassen kannst. (Möchtest du die Karten, die du nicht brauchst, ausblenden? Verwende einfach das Menü „Mehr“.)
+
+Wir haben einen Fehler bei Geräten mit iOS 16 oder neuer behoben, aufgrund dessen diktierter Text im Block-Editor beim Schreiben und gleichzeitigem Diktieren verloren gegangen ist. Zudem gibt es im Editor ein Icon für deaktivierte Zellen, damit du weißt, wann sie nicht verwendet werden.
+
+Auf dem Bildschirm „Nach verfügbaren Domains suchen“ wird dir jetzt eine Fehlermeldung angezeigt, wenn du eine Standard-Domain auswählst, die von deiner Website nicht unterstützt wird. Es wird kein sich fortwährend drehendes Fortschrittsrad mehr angezeigt.
+
+Und schließlich haben wir den Platzhaltertext für VideoPress-Videos, die nicht zu deiner Website gehören, aktualisiert. (Hoffentlich fühlen sie sich dadurch nicht ausgeschlossen.)

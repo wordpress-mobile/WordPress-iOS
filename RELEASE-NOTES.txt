@@ -1,7 +1,6 @@
 22.7
 -----
 * [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
-* [**] [internal] Make sure a database tidy-up task (null blog property sanitizer) is completed before any other Core Data queries. [#20867]
 * [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
 * [*] [internal] Posts list: Disable action bar/menu button when a post is being uploaded [#20885]
 
@@ -14,7 +13,11 @@
 * [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
 * [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
 * [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
+
+22.5.1
+-----
 * [*] Resolve an issue that was causing the app crash when `CrashLogging.logError` is called from a background thread. [#20846]
+* [**] [internal] Make sure a database tidy-up task (null blog property sanitizer) is completed before any other Core Data queries. [#20867]
 
 22.5
 -----

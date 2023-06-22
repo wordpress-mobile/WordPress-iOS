@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-13 11:57:04+0000 */
+/* Translation-Revision-Date: 2023-06-21 05:46:57+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: pl */
@@ -2917,6 +2917,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Tylko tekst";
+
+/* No comment provided by engineer. */
+"Text color" = "Kolor tekstu";
 
 /* No comment provided by engineer. */
 "That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Podany adres e-mail został już użyty. Proszę sprawdzić czy dostarczona została wiadomość z możliwością potwierdzenia. Ponowne użycie tego adresu będzie możliwe za kilka dni.";
