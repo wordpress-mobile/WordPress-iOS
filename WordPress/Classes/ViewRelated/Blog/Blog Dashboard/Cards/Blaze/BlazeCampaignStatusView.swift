@@ -43,6 +43,10 @@ struct BlazeCampaignStatusViewModel {
     let textColor: UIColor
     let backgroundColor: UIColor
 
+    init(campaign: BlazeCampaign) {
+        self.init(status: campaign.uiStatus)
+    }
+
     init(status: BlazeCampaign.Status) {
         self.isHidden = status == .unknown
         self.title = status.localizedTitle

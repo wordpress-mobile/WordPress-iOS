@@ -103,7 +103,7 @@ struct BlazeCampaignViewModel {
     let impressions: Int
     let clicks: Int
     let budget: String
-    var status: BlazeCampaignStatusViewModel { .init(status: campaign.status) }
+    var status: BlazeCampaignStatusViewModel { .init(status: campaign) }
 
     var isShowingStats: Bool {
         switch campaign.status {
