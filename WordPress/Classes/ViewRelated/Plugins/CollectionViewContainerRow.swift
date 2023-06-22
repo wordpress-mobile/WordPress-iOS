@@ -219,6 +219,8 @@ class CollectionViewContainerCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         noResultsView?.removeFromView()
         noResultsView = nil
     }

@@ -71,6 +71,8 @@ class UnifiedProloguePageViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         activateConstraints()
     }
 

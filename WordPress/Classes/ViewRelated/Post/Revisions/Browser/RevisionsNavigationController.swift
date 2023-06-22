@@ -6,6 +6,8 @@ class RevisionsNavigationController: UINavigationController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         navigationBar.setBackgroundImage(UIImage(color: .neutral(.shade70)), for: .default)
         navigationBar.shadowImage = UIImage(color: .neutral(.shade60))
     }

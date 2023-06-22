@@ -156,6 +156,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         setupView()
         setupConstraints()
         setupNavigationItem()

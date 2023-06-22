@@ -60,6 +60,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     var router: ActivityContentRouter?
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         setupLabelStyles()
         setupViews()
         setupText()

@@ -42,6 +42,8 @@ final class IntentCell: UITableViewCell, ModelSettableCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         title.text = nil
         emoji.text = nil
     }
