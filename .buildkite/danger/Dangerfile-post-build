@@ -1,3 +1,4 @@
 @iantest_platform = :ios # :ios, :android
+danger.import_dangerfile(gem: 'danger-iantest')
 
 xcode_summary.report '../../build/results/WordPress.xcresult'
