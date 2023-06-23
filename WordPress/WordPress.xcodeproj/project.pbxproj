@@ -3651,8 +3651,6 @@
 		F484D4EB2A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4E92A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift */; };
 		F484D4ED2A32C4520050BE15 /* CATransaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4EC2A32C4520050BE15 /* CATransaction+Extension.swift */; };
 		F484D4EE2A32C4520050BE15 /* CATransaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4EC2A32C4520050BE15 /* CATransaction+Extension.swift */; };
-		F484D4F12A335CFE0050BE15 /* ViewControllerNavigationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4F02A335CFE0050BE15 /* ViewControllerNavigationAction.swift */; };
-		F484D4F22A335CFE0050BE15 /* ViewControllerNavigationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4F02A335CFE0050BE15 /* ViewControllerNavigationAction.swift */; };
 		F48D44B6298992C30051EAA6 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
 		F48D44BA2989A58C0051EAA6 /* ReaderSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */; };
 		F48D44BB2989A9070051EAA6 /* ReaderSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */; };
@@ -9034,7 +9032,6 @@
 		F47E154929E84A9300B6E426 /* DomainPurchasingWebFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainPurchasingWebFlowController.swift; sourceTree = "<group>"; };
 		F484D4E92A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+AppSettingsNavigation.swift"; sourceTree = "<group>"; };
 		F484D4EC2A32C4520050BE15 /* CATransaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Extension.swift"; sourceTree = "<group>"; };
-		F484D4F02A335CFE0050BE15 /* ViewControllerNavigationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerNavigationAction.swift; sourceTree = "<group>"; };
 		F48D44B5298992C30051EAA6 /* BlockedSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedSite.swift; sourceTree = "<group>"; };
 		F48D44B7298993900051EAA6 /* WordPress 147.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 147.xcdatamodel"; sourceTree = "<group>"; };
 		F48D44B92989A58C0051EAA6 /* ReaderSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteService.swift; sourceTree = "<group>"; };
@@ -13113,7 +13110,6 @@
 		803BB97E295957A200B3F6D6 /* Root View */ = {
 			isa = PBXGroup;
 			children = (
-				F484D4F32A335DD30050BE15 /* Utilities */,
 				803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */,
 				803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */,
 				803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */,
@@ -17381,14 +17377,6 @@
 				F41E4E9128F20801001880C6 /* white-on-pink-icon-app-83.5@2x.png */,
 			);
 			path = "white-on-pink";
-			sourceTree = "<group>";
-		};
-		F484D4F32A335DD30050BE15 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				F484D4F02A335CFE0050BE15 /* ViewControllerNavigationAction.swift */,
-			);
-			name = Utilities;
 			sourceTree = "<group>";
 		};
 		F48D44B4298992A90051EAA6 /* Blocking */ = {
@@ -22060,7 +22048,6 @@
 				9872CB30203B8A730066A293 /* SignupEpilogueTableViewController.swift in Sources */,
 				E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */,
 				F532AE1C253E55D40013B42E /* CreateButtonActionSheet.swift in Sources */,
-				F484D4F12A335CFE0050BE15 /* ViewControllerNavigationAction.swift in Sources */,
 				8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */,
@@ -24744,7 +24731,6 @@
 				C7F7ACBE261E4F0600CE547F /* JetpackErrorViewModel.swift in Sources */,
 				FABB23B72602FC2C00C8785C /* Notifiable.swift in Sources */,
 				80EF672627F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */,
-				F484D4F22A335CFE0050BE15 /* ViewControllerNavigationAction.swift in Sources */,
 				FABB23B82602FC2C00C8785C /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				FABB23B92602FC2C00C8785C /* BlogListViewController+SiteCreation.swift in Sources */,
 				FABB23BA2602FC2C00C8785C /* CommentAnalytics.swift in Sources */,
