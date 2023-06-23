@@ -129,7 +129,6 @@ public class BlockEditorScreen: ScreenObject {
         return self
     }
 
-
     /**
     Selects a block based on part of the block label (e.g. partial text in a paragraph block)
      */
@@ -236,7 +235,7 @@ public class BlockEditorScreen: ScreenObject {
     private func addBlock(_ blockLabel: String) {
         addBlockButton.tap()
         let blockButton = app.buttons[blockLabel]
-        if !blockButton.exists { app.scrollDownToElement(element: blockButton) }
+        if !blockButton.isHittable { app.scrollDownToElement(element: blockButton) }
         blockButton.tap()
     }
 
