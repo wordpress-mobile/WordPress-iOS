@@ -2,5 +2,11 @@
 # When using Github, path: = path/to/Dangerfile, branch: "main"
 # When using just a path: alone, it uses the given path/to/Dangerfile
 
+@iantest_platform = :ios # :ios, :android
+
 danger.import_dangerfile(gem: 'danger-iantest')
-# danger.import_dangerfile(github: 'iangmaia/danger-iantest', path: 'Dangerfile-pr-check')
+
+# importing the main Dangerfile from the Gem will bring all plugin instances
+manifest_pr_checker.check_gemfile_lock_updated
+
+message "My danger id `#{@env.danger_id}`"

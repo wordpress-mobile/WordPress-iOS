@@ -1,11 +1,12 @@
 GIT
   remote: https://github.com/iangmaia/danger-iantest
-  revision: b4f899672a1074a1110a15458438e42975a25867
+  revision: 5439b751c5f8c357e535ba2b5f01022292d2a271
   branch: main
   specs:
     danger-iantest (0.0.1)
       danger (~> 9.3)
       danger-plugin-api (~> 1.0.0)
+      danger-swiftlint (~> 0.29)
 
 GEM
   remote: https://rubygems.org/
@@ -114,6 +115,10 @@ GEM
     danger-rubocop (0.11.0)
       danger
       rubocop (~> 1.0)
+    danger-swiftlint (0.33.0)
+      danger
+      rake (> 10)
+      thor (~> 0.19)
     declarative (0.0.20)
     diffy (3.4.2)
     digest-crc (0.6.4)
@@ -349,6 +354,7 @@ GEM
       naturally
     terminal-notifier (2.0.0)
     terminal-table (1.6.0)
+    thor (0.20.3)
     trailblazer-option (0.1.2)
     tty-cursor (0.7.1)
     tty-screen (0.8.1)
