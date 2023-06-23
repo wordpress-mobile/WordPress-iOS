@@ -1,0 +1,3 @@
+@iantest_platform = :ios # :ios, :android
+
+xcode_summary.report 'build/results/WordPress.xcresult'

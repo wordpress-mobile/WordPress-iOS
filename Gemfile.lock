@@ -1,12 +1,13 @@
 GIT
   remote: https://github.com/iangmaia/danger-iantest
-  revision: 5439b751c5f8c357e535ba2b5f01022292d2a271
+  revision: cc7377345d5824e39085ca6d332c7268517d9822
   branch: main
   specs:
     danger-iantest (0.0.1)
       danger (~> 9.3)
-      danger-plugin-api (~> 1.0.0)
+      danger-plugin-api (~> 1.0)
       danger-swiftlint (~> 0.29)
+      danger-xcode_summary (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -119,6 +120,9 @@ GEM
       danger
       rake (> 10)
       thor (~> 0.19)
+    danger-xcode_summary (1.2.0)
+      danger-plugin-api (~> 1.0)
+      xcresult (~> 0.2)
     declarative (0.0.20)
     diffy (3.4.2)
     digest-crc (0.6.4)
@@ -382,6 +386,7 @@ GEM
       rouge (~> 2.0.7)
     xcpretty-travis-formatter (1.0.1)
       xcpretty (~> 0.2, >= 0.0.7)
+    xcresult (0.2.1)
 
 PLATFORMS
   arm64-darwin-22

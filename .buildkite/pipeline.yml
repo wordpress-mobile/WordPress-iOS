@@ -64,6 +64,7 @@ steps:
   # Run Unit Tests
   #################
   - label: "🔬 :wordpress: Unit Tests"
+    key: "unit_tests_wordpress"
     command: ".buildkite/commands/run-unit-tests.sh"
     depends_on: "build_wordpress"
     env: *common_env
@@ -73,6 +74,17 @@ steps:
     notify:
       - github_commit_status:
           context: "Unit Tests"
+
+  #################
+  # Danger Post Build Artifact Highlight
+  #################
+  - label: "☢️ Danger - Post Build"
+    command: .buildkite/commands/danger-post-build.sh
+    depends_on: "unit_tests_wordpress"
+    plugins: *common_plugins
+    if: "build.pull_request.id != null"
+    agents:
+      queue: "android"
 
   #################
   # UI Tests
