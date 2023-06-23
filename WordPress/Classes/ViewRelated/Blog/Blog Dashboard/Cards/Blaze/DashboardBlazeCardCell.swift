@@ -64,9 +64,11 @@ final class DashboardBlazeCardCellViewModel {
 
     init(blog: Blog) {
         self.blog = blog
+
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .blazeCampaignCreated, object: nil)
     }
 
-    func refresh() {
+    @objc func refresh() {
         guard RemoteFeatureFlag.blazeManageCampaigns.enabled() else {
             return // Continue showing the default `Promo` card
         }
