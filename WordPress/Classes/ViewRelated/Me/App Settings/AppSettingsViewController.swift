@@ -140,6 +140,7 @@ class AppSettingsViewController: UITableViewController {
         let destination = PrivacySettingsViewController(style: .insetGrouped)
         CATransaction.perform {
             self.navigationController?.pushViewController(destination, animated: animated)
+            WPAnalytics.track(.privacySettingsOpened)
         } completion: {
             completion?(destination)
         }
@@ -278,7 +279,6 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
-            WPAnalytics.track(.privacySettingsOpened)
             self?.navigateToPrivacySettings(animated: true)
         }
     }
