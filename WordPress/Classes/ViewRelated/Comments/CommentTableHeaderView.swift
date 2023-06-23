@@ -137,7 +137,6 @@ private struct CommentHeaderView: View {
             .foregroundColor(Color(.secondaryLabel))
             .font(.caption.weight(.semibold))
             .imageScale(.large)
-            .padding(.zero)
     }
 }
 
