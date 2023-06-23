@@ -9,3 +9,7 @@ danger.import_dangerfile(gem: 'danger-iantest')
 manifest_pr_checker.check_gemfile_lock_updated
 
 message "Danger ID: `#{@env.danger_id}`"
+
+if status_report[:errors].count.zero? && status_report[:warnings].count.zero?
+  markdown(":white_check_mark: No errors or warnings while checking the PR :thumbsup:")
+end
