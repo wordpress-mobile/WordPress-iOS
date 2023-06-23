@@ -67,6 +67,7 @@ struct DebugFeatureFlagsView: View {
                     Text("Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
                     Text("Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
                     Text("Local Feature Flags").tag(DebugFeatureFlagFilter.local)
+                    Text("Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
                 }.pickerStyle(.inline)
             }
         } else {
@@ -79,6 +80,7 @@ struct DebugFeatureFlagsView: View {
         case .all: return "Feature Flags"
         case .remote: return "Remote Feature Flags"
         case .local: return "Local Feature Flags"
+        case .overriden: return "Overriden Feature Flags"
         }
     }
 }
@@ -96,10 +98,15 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
     // MARK: Remote Feature Flags
 
     func getRemoteFeatureFlags() -> [RemoteFeatureFlag] {
-        guard [.all, .remote].contains(filter) else { return [] }
-        guard !filterTerm.isEmpty else { return allRemoteFlags }
-        return allRemoteFlags.filter {
-            $0.description.localizedCaseInsensitiveContains(filterTerm) ||
+        allRemoteFlags.filter {
+            switch filter {
+            case .all, .remote: return true
+            case .local: return false
+            case .overriden: return isOverriden($0)
+            }
+        }.filter {
+            guard !filterTerm.isEmpty else { return true }
+            return $0.description.localizedCaseInsensitiveContains(filterTerm) ||
             $0.remoteKey.contains(filterTerm)
         }
     }
@@ -124,10 +131,15 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
     // MARK: Local Feature Flags
 
     func getLocalFeatureFlags() -> [FeatureFlag] {
-        guard [.all, .local].contains(filter) else { return [] }
-        guard !filterTerm.isEmpty else { return allLocalFlags }
-        return allLocalFlags.filter {
-            $0.description.localizedCaseInsensitiveContains(filterTerm)
+        allLocalFlags.filter {
+            switch filter {
+            case .all, .local: return true
+            case .remote: return false
+            case .overriden: return isOverriden($0)
+            }
+        }.filter {
+            guard !filterTerm.isEmpty else { return true }
+            return $0.description.localizedCaseInsensitiveContains(filterTerm)
         }
     }
 
@@ -166,6 +178,7 @@ private enum DebugFeatureFlagFilter: Hashable {
     case all
     case remote
     case local
+    case overriden
 }
 
 private extension View {
