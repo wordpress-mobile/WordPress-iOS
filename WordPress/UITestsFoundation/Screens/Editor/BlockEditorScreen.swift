@@ -91,7 +91,7 @@ public class BlockEditorScreen: ScreenObject {
         return self
     }
 
-    public func addVideo() throws -> Self {
+    public func addVideo() -> Self {
         addMediaBlockFromUrl(
             blockType: "Video block",
             UrlPath: videoUrlPath
@@ -100,7 +100,7 @@ public class BlockEditorScreen: ScreenObject {
         return self
     }
 
-    public func addAudio() throws -> Self {
+    public func addAudio() -> Self {
         addMediaBlockFromUrl(
             blockType: "Audio block",
             UrlPath: audioUrlPath
@@ -117,7 +117,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyMediaBlocksDisplayed() throws -> Self {
+    public func verifyMediaBlocksDisplayed() -> Self {
         let imagePredicate = NSPredicate(format: "label CONTAINS[c] 'Image block'")
         let videoPredicate = NSPredicate(format: "label CONTAINS[c] 'Video block'")
         let audioPredicate = NSPredicate(format: "label CONTAINS[c] 'Audio block'")
