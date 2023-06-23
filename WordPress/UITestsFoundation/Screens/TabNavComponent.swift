@@ -73,6 +73,7 @@ public class TabNavComponent: ScreenObject {
 
     public func goToNotificationsScreen() throws -> NotificationsScreen {
         notificationsTabButton.tap()
+        try dismissNotificationAlertIfNeeded()
         return try NotificationsScreen()
     }
 
