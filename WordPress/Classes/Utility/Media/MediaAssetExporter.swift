@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 import AVFoundation
 
 /// Media export handling of PHAssets
@@ -78,7 +79,7 @@ class MediaAssetExporter: MediaExporter {
         if let resource = resources.first {
             resourceAvailableLocally = true
             filename = resource.originalFilename
-            if UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) {
+            if UTType(resource.uniformTypeIdentifier) == .gif {
                 // Since this is a GIF, handle the export in it's own way.
                 return exportGIF(forAsset: asset, resource: resource, onCompletion: onCompletion, onError: onError)
             }
@@ -138,14 +139,13 @@ class MediaAssetExporter: MediaExporter {
 
     func preferedExportTypeFor(uti: String) -> String? {
         guard !self.allowableFileExtensions.isEmpty,
-            let extensionType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?
-            else {
+              let extensionType = UTType(uti)?.preferredFilenameExtension else {
             return nil
         }
         if allowableFileExtensions.contains(extensionType) {
             return uti
         } else {
-            return kUTTypeJPEG as String
+            return UTType.jpeg.identifier
         }
     }
 
@@ -213,7 +213,7 @@ class MediaAssetExporter: MediaExporter {
     ///
     fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
 
-        guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
+        guard UTType(resource.uniformTypeIdentifier) == .gif else {
             onError(exporterErrorWith(error: AssetExportError.expectedPHAssetGIFType))
             return Progress.discreteCompletedProgress()
         }

@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 150
+
+@momozw 2023-06-20
+
+- `Blog`: removed `isBlazeApproved` attribute.
+
 ## WordPress 149
 
 @dvdchr 2023-05-16

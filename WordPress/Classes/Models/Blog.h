@@ -168,7 +168,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 @property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quickStartTypeValue;
-@property (nonatomic, assign, readwrite) BOOL isBlazeApproved;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites
@@ -207,6 +206,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
 @property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
+@property (nonatomic, assign, readonly) BOOL canBlaze;
 
 /**
  *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
@@ -243,7 +243,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
 - (NSString *)loginUrl;
-- (NSString *)urlWithPath:(NSString *)path;
+- (nullable NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;

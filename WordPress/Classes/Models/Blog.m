@@ -87,7 +87,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic capabilities;
 @dynamic quickStartTours;
 @dynamic quickStartTypeValue;
-@dynamic isBlazeApproved;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
@@ -510,6 +509,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 }
 
+- (BOOL)canBlaze
+{
+    return [[self getOptionValue:@"can_blaze"] boolValue] && self.isAdmin;
+}
+
 - (BOOL)supportsFeaturedImages
 {
     id hasSupport = [self getOptionValue:@"post_thumbnail"];
@@ -612,7 +616,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureFileDownloadsStats:
             return [self isHostedAtWPcom];
         case BlogFeatureBlaze:
-            return [self isBlazeApproved];
+            return [self canBlaze];
         case BlogFeaturePages:
             return [self isListingPagesAllowed];
     }

@@ -362,7 +362,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if let text = searchController.searchBar.text,
             text.isEmpty ||
-            tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
             showNoResultsView()
         }
     }

@@ -15,7 +15,6 @@ final class MenuNavigationTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     // This test is JP only.
@@ -23,6 +22,6 @@ final class MenuNavigationTests: XCTestCase {
         try MySiteScreen()
             .goToMenu()
             .goToDomainsScreen()
-            .verifyDomainsScreenLoaded()
+            .assertScreenIsLoaded()
     }
 }

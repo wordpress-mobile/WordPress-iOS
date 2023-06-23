@@ -1,13 +1,9 @@
-Si tu sitio utiliza un tema basado en bloques, ahora puedes editar la página de inicio del sitio directamente desde la Lista de páginas. Emoji de las manos levantadas.
+Los planes de WordPress.com llegan a la aplicación de Jetpack. Consigue el plan que se ajuste a tus necesidades de publicación y gestiónalo desde el mismo sitio donde escribes tus mejores textos.
 
-Hemos corregido un problema relacionado con la configuración de enlaces para abrir en una pestaña nueva. Al escribir texto después de este enlace, ahora puedes deshacer y rehacer el texto sin ningún problema.
+En la parte inferior del escritorio del sitio, verás el botón "Personalizar la pestaña Inicio", con el que podrás personalizar las tarjetas visibles del escritorio. (¿Quieres ocultar las tarjetas que no necesites? Solo tienes que usar el menú "Más").
 
-Ahora, los ajustes de detalles visibles están deshabilitados para los videos de VideoPress que no pertenezcan a tu sitio.
+Hemos corregido un error en los dispositivos con iOS 16 o versiones posteriores que provocaba que, al escribir en el editor de bloques mientras se dictaba, se perdiera el texto dictado. Además, en el editor también aparece el icono de un candado para las celdas deshabilitadas, así sabrás cuándo no están en uso.
 
-La opción de tocar para editar ahora está disponible para todos los tipos de bloques anidados. Ya no hay que tocar en todos los niveles de anidado para llegar a un contenido concreto.
+En la pantalla "Buscar dominios", ahora aparecerá un mensaje de error si eliges un dominio por defecto que no sea compatible con tu sitio. Se acabó eso de ver una rueda de progreso que gira eternamente.
 
-Hablando de anidado, hemos corregido un error por el que la fusión de un elemento de lista en un párrafo quitaba todo el texto anidado de este elemento.
-
-Como estábamos corrigiendo errores, seguimos haciéndolo y también solucionamos un par de ellos en el lector. Al filtrar los temas que sigues, ahora el texto en idiomas no latinos (como el árabe) se ve correctamente. Además, las acciones Denunciar y Bloquear vuelven a estar donde debían en el menú de entradas.
-
-Para terminar, hemos actualizado el diseño de las celdas deshabilitadas, por lo que es más fácil reconocer cuándo una celda no está en uso.
+Para terminar, hemos actualizado el texto del marcador de posición para los videos de VideoPress que no pertenezcan a tu sitio. (Esperamos que no se sientan marginados).

@@ -8,12 +8,14 @@ extension XCTestCase {
         removeBeforeLaunching: Bool = false,
         crashOnCoreDataConcurrencyIssues: Bool = true
     ) {
+        // To ensure that the test starts with a new simulator launch each time
+        app.terminate()
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
+        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing", "-logout-at-launch"]
 
         if crashOnCoreDataConcurrencyIssues {
             app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])

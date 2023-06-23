@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 extension URL {
 
@@ -24,10 +25,7 @@ extension URL {
     }
 
     var typeIdentifierFileExtension: String? {
-        guard let type = typeIdentifier else {
-            return nil
-        }
-        return URL.fileExtensionForUTType(type)
+        contentType?.preferredFilenameExtension
     }
 
     /// Returns a URL with an incremental file name, if a file already exists at the given URL.
@@ -48,16 +46,6 @@ extension URL {
             index += 1
         }
         return url
-    }
-
-    /// The expected file extension string for a given UTType identifier string.
-    ///
-    /// - param type: The UTType identifier string.
-    /// - returns: The expected file extension or nil if unknown.
-    ///
-    static func fileExtensionForUTType(_ type: String) -> String? {
-        let fileExtension = UTTypeCopyPreferredTagWithClass(type as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue()
-        return fileExtension as String?
     }
 
     var pixelSize: CGSize {
@@ -83,34 +71,24 @@ extension URL {
     }
 
     var mimeType: String {
-        guard let uti = typeIdentifier,
-            let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?.takeUnretainedValue() as String?
-            else {
-                return "application/octet-stream"
-        }
+        contentType?.preferredMIMEType ?? "application/octet-stream"
+    }
 
-        return mimeType
+    private var contentType: UTType? {
+        typeIdentifier.flatMap(UTType.init)
     }
 
     var isVideo: Bool {
-        guard let uti = typeIdentifier else {
-            return false
-        }
-
-        return UTTypeConformsTo(uti as CFString, kUTTypeMovie)
+        contentType?.conforms(to: .movie) ?? false
     }
 
     var isImage: Bool {
-        guard let uti = typeIdentifier else {
-            return false
-        }
-
-        return UTTypeConformsTo(uti as CFString, kUTTypeImage)
+        contentType?.conforms(to: .image) ?? false
     }
 
     var isGif: Bool {
-        if let uti = typeIdentifier {
-            return UTTypeConformsTo(uti as CFString, kUTTypeGIF)
+        if let type = contentType {
+            return type.conforms(to: .gif)
         } else {
             return pathExtension.lowercased() == "gif"
         }

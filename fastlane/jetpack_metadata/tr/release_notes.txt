@@ -1,13 +1,9 @@
-Siteniz blok tabanlı bir tema kullanıyorsa sitenizin ana sayfasını artık doğrudan Sayfa listesinden düzenleyebilirsiniz. Eller havaya emojisi.
+WordPress.com paketleri Jetpack uygulamasına geliyor. Yayımcılık ihtiyaçlarınıza en uygun paketi alın ve en güzel yazılarınızı yazdığınız aynı yerden yönetin.
 
-Bağlantıları yeni bir sekmede açılacak şekilde ayarlamayla ilgili bir sorunu çözdük. Bu bağlantıdan sonra metin yazarken artık metni herhangi bir sorun yaşamadan geri alabilir veya yineleyebilirsiniz.
+Site panonuzun alt kısmında, görünür pano kartlarınızı özelleştirebileceğiniz yepyeni bir "Ana Sayfa Sekmesini Kişiselleştir" düğmesi yer alıyor. (İhtiyacınız olmayan kartları gizlemek ister misiniz? “Daha Fazla” menüsünü kullanabilirsiniz.)
 
-Görünür ayrıntı ayarları, sitenize ait olmayan VideoPress videoları için artık devre dışı bırakılmıştır.
+iOS 16 veya üstü yüklü cihazlarda, blok düzenleyicide dikte ile yazarken dikte edilen metnin kaybolmasına neden olan bir hatayı giderdik. Ayrıca, düzenleyicide devre dışı bırakılan hücreler için bir kilit simgesi bulunuyor. Bu simge sayesinde hücrelerin kullanım dışı olduğunu anlayabilirsiniz.
 
-Düzenlemek için dokunun seçeneği, artık tüm iç içe blok türleri için kullanılabiliyor. Artık spesifik bir içerik parçasına ulaşmak için her iç içe seviyeye dokunarak ilerlemeniz gerekmiyor.
+"Alan adı ara" ekranında, artık siteniz tarafından desteklenmeyen bir varsayılan alan adı seçtiğinizde bir hata mesajı göreceksiniz. Durmadan dönen ilerleme çarkı artık yok.
 
-İç içe yerleşimle ilgili olarak, bir liste öğesi bir paragrafla birleştirildiğinde bu liste öğesindeki tüm iç içe metinlerin kaldırılmasına neden olan bir hatayı düzelttik.
-
-Hataları düzeltmeye başlamışken okuyucudaki birkaç hatayı daha ortadan kaldırdık. Takip ettiğiniz konuları filtrelediğinizde, Latin alfabesi kullanmayan dillerde (Arapça gibi) yazılmış metinler artık düzgün şekilde görüntüleniyor. Bildir ve Engelle eylemleri de tekrar gönderi menüsünde ait oldukları yere yerleştirildi.
-
-Son olarak, devre dışı bırakılmış hücrelerin tasarımını güncelledik. Böylece hücrenin kullanımda olmadığını anlamak artık daha kolay.
+Son olarak, sitenize ait olmayan VideoPress videoları için yer tutucu metnini güncelledik. (Umarız dışlanmış hissetmezler.)

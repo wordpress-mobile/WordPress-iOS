@@ -12,7 +12,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case publish
         case close
         case more
-        case switchBlog
         case autoSave
         case continueFromHomepageEditing
     }
@@ -923,8 +922,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 cancelEditing()
             case .more:
                 displayMoreSheet()
-            case .switchBlog:
-                blogPickerWasPressed()
             case .autoSave:
                 break
                 // Inelegant :(
@@ -1342,10 +1339,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
         requestHTML(for: .more)
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        requestHTML(for: .switchBlog)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {

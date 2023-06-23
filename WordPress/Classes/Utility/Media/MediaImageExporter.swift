@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Media export handling of UIImages.
 ///
@@ -109,14 +110,14 @@ class MediaImageExporter: MediaExporter {
         var data: Data?
         var hint: String?
         // If the exportImageType is targeting a PNG, try to init PNG data.
-        if let exportType = options.exportImageType, UTTypeEqual(exportType as CFString, kUTTypePNG) {
+        if let exportType = options.exportImageType, UTType(exportType) == .png {
             data = image.pngData()
-            hint = kUTTypePNG as String
+            hint = UTType.png.identifier
         }
         // If the data failed to init as PNG, or is another type, try and init as JPEG data.
         if data == nil {
             data = image.jpegData(compressionQuality: 1.0)
-            hint = kUTTypeJPEG as String
+            hint = UTType.jpeg.identifier
         }
         // Ensure that we do indeed have image data.
         guard let imageData = data else {
@@ -142,7 +143,7 @@ class MediaImageExporter: MediaExporter {
     ///
     func exportImage(withData data: Data, fileName: String?, typeHint: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
-            let hint = typeHint ?? kUTTypeJPEG as String
+            let hint = typeHint ?? UTType.jpeg.identifier
             let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: hint as CFString]
             guard let source = CGImageSourceCreateWithData(data as CFData, sourceOptions as CFDictionary) else {
                 throw ImageExportError.imageSourceCreationWithDataFailed
@@ -175,7 +176,7 @@ class MediaImageExporter: MediaExporter {
     ///
     func exportImage(atFile url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
-            let identifierHint = url.typeIdentifierFileExtension ?? kUTTypeJPEG as String
+            let identifierHint = url.typeIdentifier ?? UTType.jpeg.identifier
             let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: identifierHint as CFString]
             guard let source = CGImageSourceCreateWithURL(url as CFURL, sourceOptions as CFDictionary)  else {
                 throw ImageExportError.imageSourceCreationWithURLFailed
@@ -207,8 +208,10 @@ class MediaImageExporter: MediaExporter {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
-            let url = try mediaFileManager.makeLocalMediaURL(withFilename: filename,
-                                                               fileExtension: URL.fileExtensionForUTType(type))
+            let url = try mediaFileManager.makeLocalMediaURL(
+                withFilename: filename,
+                fileExtension: UTType(type)?.preferredFilenameExtension
+            )
 
             // Check MediaSettings and configure the image writer as needed.
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)

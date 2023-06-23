@@ -3,10 +3,25 @@ import XCTest
 
 public class PasswordScreen: ScreenObject {
 
+    private let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.secureTextFields["Password"]
+    }
+
+    private let passwordErrorLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Password Error"]
+    }
+
+    private let continueButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Continue Button"]
+    }
+
+    var passwordTextField: XCUIElement { passwordTextFieldGetter(app) }
+    var passwordErrorLabel: XCUIElement { passwordErrorLabelGetter(app) }
+    var continueButton: XCUIElement { continueButtonGetter(app) }
+
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            // swiftlint:disable:next opening_brace
-            expectedElementGetters: [ { $0.secureTextFields["Password"] } ],
+            expectedElementGetters: [ passwordTextFieldGetter, continueButtonGetter ],
             app: app,
             waitTimeout: 10
         )
@@ -20,15 +35,13 @@ public class PasswordScreen: ScreenObject {
         return try LoginEpilogueScreen()
     }
 
-    public func proceedWithInvalidPassword() throws -> PasswordScreen {
+    public func proceedWithInvalidPassword() throws -> Self {
         try tryProceed(password: "invalidPswd")
 
-        return try PasswordScreen()
+        return self
     }
 
     public func tryProceed(password: String) throws {
-        let passwordTextField = expectedElement
-
         // A hack to make tests pass for RtL languages.
         //
         // An unintended side effect of calling passwordTextField.tap() while testing a RtL language is that the
@@ -47,17 +60,13 @@ public class PasswordScreen: ScreenObject {
         }
 
         passwordTextField.typeText(password)
-        let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
-
         app.dismissSavePasswordPrompt()
     }
 
-    public func verifyLoginError() -> PasswordScreen {
-        let errorLabel = app.cells["Password Error"]
-        _ = errorLabel.waitForExistence(timeout: 2)
-
-        XCTAssertTrue(errorLabel.exists)
+    @discardableResult
+    public func verifyLoginError() -> Self {
+        XCTAssertTrue(passwordErrorLabel.waitForExistence(timeout: 3))
         return self
     }
 

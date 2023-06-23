@@ -1,5 +1,5 @@
 import MobileCoreServices
-
+import UniformTypeIdentifiers
 
 // MARK: - Support for Files-based functionality
 
@@ -20,12 +20,12 @@ extension Blog {
                 NB: For self-hosted plans, this collection has been observed to be empty. In that
                 case, we fall back to base [System-Declared Uniform Type Identifiers](https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html).
              */
-            return [String(kUTTypeContent), String(kUTTypeZipArchive)]
+            return [UTType.content.identifier, UTType.zip.identifier]
         }
 
         var typeIdentifiers = [String]()
         for pathExtension in allowedFileExtensions {
-            let uti = String.typeIdentifier(for: pathExtension)
+            let uti = UTType(filenameExtension: pathExtension)?.identifier
 
             if let validUTI = uti {
                 typeIdentifiers.append(validUTI)

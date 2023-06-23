@@ -1,13 +1,9 @@
-Jika situs Anda menggunakan tema berbasis blok, kini Anda dapat menyunting halaman beranda langsung dari daftar Halaman. Emotikon angkat tangan.
+Paket WordPress.com kini bisa diakses dari aplikasi Jetpack. Temukan paket yang ideal untuk publikasi konten Anda. Kini menulis kalimat penuh inspirasi dan mengelola paket bisa dilakukan di satu tempat.
 
-Kami telah mengatasi masalah seputar baris tautan yang akan terbuka di tab baru. Saat mengetik teks biasa di belakang tautan ini, kini Anda bisa urungkan dan ulangi pengetikan teks tanpa masalah.
+Tombol baru “Sesuaikan Tab Beranda” ada di bagian bawah dasbor situs yang bisa Anda gunakan untuk mengatur kartu dasbor mana yang akan ditampilkan. (Mau menyembunyikan kartu yang tidak Anda butuhkan? Cukup buka menu “Lainnya”.)
 
-Pengaturan detail yang tampak telah dinonaktifkan untuk video-video VideoPress yang bukan bagian dari situs Anda.
+Kami sudah mengatasi bug di perangkat yang menjalankan iOS 16 atau yang lebih baru yang menyebabkan teks hasil dikte hilang saat mengetik di editor blok jika fungsi dikte sedang aktif. Di editor, kini juga terdapat ikon gembok untuk sel nonaktif sehingga sel yang sedang tidak digunakan bisa diketahui.
 
-Fitur ketuk untuk menyunting kini tersedia untuk semua jenis blok bertumpuk—tidak perlu lagi mengetuk tiap tingkat dalam tumpukan untuk menuju konten tertentu.
+Kini, pesan error akan ditampilkan di layar “Cari domain” jika domain default yang Anda pilih tidak didukung situs. Tak akan ada lagi indikator progres yang terus berputar.
 
-Masih soal tumpukan, kami juga memperbaiki bug yang menyebabkan terhapusnya teks bertumpuk untuk sebuah item daftar ketika item daftar tersebut digabungkan ke dalam sebuah paragraf.
-
-Nah, selagi membasmi bug ini, kami sekalian mengatasi beberapa bug di pembaca. Saat Anda menyaring topik-topik yang Anda ikuti, teks yang tidak berhuruf latin (misalnya huruf Arab) kini bisa tampil normal. Aksi Laporkan dan Blokir juga kembali ke tempat semula di menu pos.
-
-Terakhir, kami memperbarui desain sel-sel nonaktif, sehingga lebih mudah untuk mengetahui mana saja sel yang tidak digunakan.
+Terakhir, teks placeholder untuk video VideoPress yang bukan milik situs Anda juga sudah kami perbarui. (Semoga tidak ada yang merasa kehilangan, ya.)

@@ -1,13 +1,9 @@
-Als je site een thema op blokbasis gebruikt, kan je nu de startpagina van je site direct via de lijst Pagina's bewerken. Emoji juichend omhooggestoken handen.
+WordPress.com-abonnementen worden toegevoegd aan de Jetpack-app. Krijg het abonnement dat past bij jouw publicatiebehoeften en beheer het op dezelfde plaats als waar je je beste werk schrijft.
 
-We hebben een probleem opgelost dat zich voordeed bij het openen van links in een nieuw tabblad. Als je na deze link verder schrijft, kan je de geschreven tekst nu zonder problemen ongedaan maken en herstellen.
+Er is een mooie, nieuwe knop 'Startpagina personaliseren' onderaan je sitedashboard waar je je zichtbare dashboardkaarten kunt aanpassen. (Wil je de kaarten die je niet nodig hebt verbergen? Gebruik dan gewoon het menu 'Meer'.)
 
-Er worden geen instellingen voor zichtbare details meer getoond voor VideoPress-video's die geen eigendom van je site zijn.
+We hebben een bug verwijderd in apparaten met iOS 16 of later, waarbij typen in de blokeditor terwijl tegelijkertijd werd gedicteerd ervoor zorgde dat de gedicteerde tekst verloren ging. Er is ook een slotpictogram voor uitgeschakelde cellen in de editor zodat je weet wanneer deze niet worden gebruikt.
 
-De functie Tik om te bewerken is nu beschikbaar voor alle geneste bloktypen. Je hoeft dus niet meer door elk niveau heen te bladeren om een bepaald stukje content te bereiken.
+Op het scherm 'Domeinen zoeken' zie je nu een foutmelding als je een standaarddomein kiest dat niet wordt ondersteund door je site. Nooit meer dat eeuwig draaiende voortgangswiel.
 
-Nu we het toch over nesten hebben, we hebben een bug verholpen waardoor, bij het samenvoegen van een lijstitem met een alinea, alle geneste tekst van dat lijstitem werd verwijderd.
-
-We hebben ook een paar bugs in de lezer uit de weg geruimd, aangezien we toch bezig waren. Wanneer je jouw gevolgde onderwerpen filtert, wordt tekst van een niet-Latijnse taal (zoals Arabisch) nu wel juist weergegeven. De acties Rapporteren en Blokkeren zijn ook weer terug op hun juiste plek in het berichtmenu.
-
-Ten slotte hebben we het ontwerp van uitgeschakelde cellen aangepast, zodat je makkelijker kan zien wanneer een cel niet wordt gebruikt.
+Ten slotte hebben we de vervangende tekst bijgewerkt voor VideoPress-video's die niet bij je site horen. (Hopelijk voelen ze zich niet buitengesloten.)
