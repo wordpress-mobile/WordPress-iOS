@@ -81,10 +81,11 @@ steps:
   - label: "☢️ Danger - Post Build"
     command: .buildkite/commands/danger-post-build.sh
     depends_on: "unit_tests_wordpress"
+    env: *common_env
     plugins: *common_plugins
+    artifact_paths:
+      - "build/results/*"
     if: "build.pull_request.id != null"
-    agents:
-      queue: "android"
 
   #################
   # UI Tests
