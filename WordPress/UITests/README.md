@@ -32,8 +32,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
         - [x] Publish Basic Public Post with Category and Tag
         - [x] Add and Remove Featured Image
         - [x] Add Gallery Block
-        - [ ] Add Image Block
-        - [ ] Add Video Block
+        - [x] Add Media Blocks (Image, Video and Audio)
         - [ ] Create Scheduled Post
     - [ ] Pages:
         - [ ] Create Page from Layout

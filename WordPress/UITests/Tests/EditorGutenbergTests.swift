@@ -10,10 +10,9 @@ class EditorGutenbergTests: XCTestCase {
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
-        try EditorFlow
-            .goToMySiteScreen()
-            .tabBar.gotoBlockEditorScreen()
-            .dismissNotificationAlertIfNeeded(.accept)
+
+        try TabNavComponent()
+            .gotoBlockEditorScreen()
     }
 
     override func tearDownWithError() throws {
@@ -76,5 +75,13 @@ class EditorGutenbergTests: XCTestCase {
             .addParagraphBlock(withText: content)
             .addImageGallery()
             .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
+    }
+
+    func testAddMediaBlocks() throws {
+        try BlockEditorScreen()
+            .addImage()
+            .addVideo()
+            .addAudio()
+            .verifyMediaBlocksDisplayed()
     }
 }
