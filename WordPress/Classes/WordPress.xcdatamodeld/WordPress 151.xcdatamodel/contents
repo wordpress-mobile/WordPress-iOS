@@ -666,7 +666,7 @@
         <attribute name="iconURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="PublicizeInfo" representedClassName="PublicizeInfo" syncable="YES" codeGenerationType="class">
+    <entity name="PublicizeInfo" representedClassName=".PublicizeInfo" syncable="YES">
         <attribute name="sharedPostsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="sharesRemaining" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="sharingLimit" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>

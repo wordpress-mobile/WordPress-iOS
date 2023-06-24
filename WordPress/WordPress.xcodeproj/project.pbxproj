@@ -5489,6 +5489,10 @@
 		FE06AC8326C3BD0900B69DE4 /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
 		FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
 		FE18495827F5ACBA00D26879 /* DashboardPromptsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */; };
+		FE1E20152A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20142A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift */; };
+		FE1E20162A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20142A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift */; };
+		FE1E20172A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20132A47042400CE7C90 /* PublicizeInfo+CoreDataClass.swift */; };
+		FE1E20182A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20132A47042400CE7C90 /* PublicizeInfo+CoreDataClass.swift */; };
 		FE23EB4926E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
 		FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
 		FE23EB4B26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
@@ -9290,6 +9294,8 @@
 		FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSource.swift; sourceTree = "<group>"; };
 		FE18495727F5ACBA00D26879 /* DashboardPromptsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPromptsCardCell.swift; sourceTree = "<group>"; };
 		FE1E200F2A45ACE900CE7C90 /* WordPress 151.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 151.xcdatamodel"; sourceTree = "<group>"; };
+		FE1E20132A47042400CE7C90 /* PublicizeInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicizeInfo+CoreDataClass.swift"; path = "/Users/dvdchr/code/github/wpios/WordPress/Classes/Models/PublicizeInfo+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		FE1E20142A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicizeInfo+CoreDataProperties.swift"; path = "/Users/dvdchr/code/github/wpios/WordPress/Classes/Models/PublicizeInfo+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = richCommentTemplate.html; path = Resources/HTML/richCommentTemplate.html; sourceTree = "<group>"; };
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
@@ -10693,6 +10699,8 @@
 				082AB9DC1C4F035E000CA523 /* PostTag.m */,
 				08B6D6F01C8F7DCE0052C52B /* PostType.h */,
 				08B6D6F11C8F7DCE0052C52B /* PostType.m */,
+				FE1E20132A47042400CE7C90 /* PublicizeInfo+CoreDataClass.swift */,
+				FE1E20142A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift */,
 				E6374DBD1C444D8B00F24720 /* PublicizeConnection.swift */,
 				4A1E77C82988997C006281CC /* PublicizeConnection+Creation.swift */,
 				E6374DBE1C444D8B00F24720 /* PublicizeService.swift */,
@@ -21342,6 +21350,7 @@
 				3F8B45A9292C1F2C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */,
 				8B5E1DD827EA5929002EBEE3 /* PostCoordinator+Dashboard.swift in Sources */,
 				98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */,
+				FE1E20152A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift in Sources */,
 				3234BB172530DFCA0068DA40 /* ReaderTableCardCell.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
@@ -21349,6 +21358,7 @@
 				178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */,
 				3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
 				FAB8AB5F25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift in Sources */,
+				FE1E20172A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */,
 				F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */,
 				4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				3F8B45A8292C1F2500730FA4 /* MigrationSuccessCardView.swift in Sources */,
@@ -24855,6 +24865,7 @@
 				C79C307D26EA919F00E88514 /* ReferrerDetailsViewModel.swift in Sources */,
 				8BBC778C27B5531700DBA087 /* BlogDashboardPersistence.swift in Sources */,
 				FABB24172602FC2C00C8785C /* BlogSettings.swift in Sources */,
+				FE1E20162A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift in Sources */,
 				FABB24182602FC2C00C8785C /* WKWebView+UserAgent.swift in Sources */,
 				FABB24192602FC2C00C8785C /* JetpackCapabilitiesService.swift in Sources */,
 				FABB241A2602FC2C00C8785C /* PostToPost30To31.m in Sources */,
@@ -25029,6 +25040,7 @@
 				FABB24942602FC2C00C8785C /* PluginViewController.swift in Sources */,
 				011F52C92A16551A00B04114 /* FreeToPaidPlansCoordinator.swift in Sources */,
 				179A70F12729834B006DAC0A /* Binding+OnChange.swift in Sources */,
+				FE1E20182A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */,
 				17F11EDC268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
 				FABB24952602FC2C00C8785C /* ReaderSiteTopic.swift in Sources */,
 				FABB24962602FC2C00C8785C /* JetpackBackupCompleteViewController.swift in Sources */,
