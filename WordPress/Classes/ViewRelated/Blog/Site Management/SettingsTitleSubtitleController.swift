@@ -115,6 +115,8 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         setupNavigationBar()
         setupTitle()
         setupTable()

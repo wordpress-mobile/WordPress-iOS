@@ -155,6 +155,8 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         SVProgressHUD.dismiss()
     }
 

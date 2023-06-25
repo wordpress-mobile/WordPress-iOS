@@ -82,6 +82,8 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         stopAlertTimer()
     }
 

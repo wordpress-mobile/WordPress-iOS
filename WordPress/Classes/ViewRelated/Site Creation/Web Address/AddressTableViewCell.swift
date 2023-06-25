@@ -269,6 +269,8 @@ extension AddressTableViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         update(with: nil as DomainSuggestion?)
         borders.forEach({ $0.removeFromSuperview() })
         borders = []

@@ -55,6 +55,8 @@ public class GutenbergSuggestionsViewController: UIViewController {
     }
 
     override public func viewDidLoad() {
+        super.viewDidLoad()
+
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
 
@@ -98,6 +100,8 @@ public class GutenbergSuggestionsViewController: UIViewController {
     }
 
     override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         suggestionsView.showSuggestions(forWord: suggestionType.trigger)
     }
 }
