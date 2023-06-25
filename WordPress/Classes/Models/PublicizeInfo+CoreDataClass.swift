@@ -7,7 +7,7 @@ import CoreData
 /// Furthermore, sites eligible for unlimited sharing will still return a `PublicizeInfo` along with its sharing
 /// limitations, but the numbers should be ignored (at least for now).
 ///
-public class PublicizeInfo: NSManagedObject {
+@objc public class PublicizeInfo: NSManagedObject {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PublicizeInfo> {
         return NSFetchRequest<PublicizeInfo>(entityName: "PublicizeInfo")
