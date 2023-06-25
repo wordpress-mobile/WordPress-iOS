@@ -5,7 +5,7 @@
 @protocol WPTableViewHandlerDelegate <NSObject>
 
 - (nonnull NSManagedObjectContext *)managedObjectContext;
-- (nonnull NSFetchRequest *)fetchRequest;
+- (nullable NSFetchRequest *)fetchRequest;
 - (void)configureCell:(nonnull UITableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath;
 - (void)tableView:(nonnull UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
@@ -90,7 +90,7 @@
 @interface WPTableViewHandler : NSObject <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong, readonly, nonnull) UITableView *tableView;
-@property (nonatomic, strong, readonly, nonnull) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong, readonly, nullable) NSFetchedResultsController *resultsController;
 @property (nonatomic, weak, nullable) id<WPTableViewHandlerDelegate> delegate;
 @property (nonatomic) BOOL cacheRowHeights;
 @property (nonatomic, readonly) BOOL isScrolling;

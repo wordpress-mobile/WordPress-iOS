@@ -3,7 +3,7 @@ import UIKit
 import WordPressKit
 
 final class DashboardBlazeCampaignView: UIView {
-    private let statusView = DashboardBlazeCampaignStatusView()
+    private let statusView = BlazeCampaignStatusView()
     private let titleLabel = UILabel()
     private let imageView = CachedAnimatedImageView()
 
@@ -54,7 +54,7 @@ final class DashboardBlazeCampaignView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with viewModel: DashboardBlazeCampaignViewModel, blog: Blog) {
+    func configure(with viewModel: BlazeCampaignViewModel, blog: Blog) {
         statusView.configure(with: viewModel.status)
 
         titleLabel.text = viewModel.title
@@ -75,7 +75,7 @@ final class DashboardBlazeCampaignView: UIView {
         }
     }
 
-    private func makeStatsViews(for viewModel: DashboardBlazeCampaignViewModel) -> [UIView] {
+    private func makeStatsViews(for viewModel: BlazeCampaignViewModel) -> [UIView] {
         let impressionsView = DashboardSingleStatView(title: Strings.impressions)
         impressionsView.countString = "\(viewModel.impressions)"
 
@@ -97,12 +97,13 @@ private extension DashboardBlazeCampaignView {
     }
 }
 
-struct DashboardBlazeCampaignViewModel {
+struct BlazeCampaignViewModel {
     let title: String
     let imageURL: URL?
     let impressions: Int
     let clicks: Int
-    var status: DashboardBlazeCampaignViewStatusViewModel { .init(status: campaign.status) }
+    let budget: String
+    var status: BlazeCampaignStatusViewModel { .init(status: campaign.status) }
 
     var isShowingStats: Bool {
         switch campaign.status {
@@ -115,11 +116,21 @@ struct DashboardBlazeCampaignViewModel {
 
     private let campaign: BlazeCampaign
 
+    private let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD"
+        formatter.currencySymbol = "$"
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }()
+
     init(campaign: BlazeCampaign) {
         self.campaign = campaign
         self.title = campaign.name ?? "–"
         self.imageURL = campaign.contentConfig?.imageURL.flatMap(URL.init)
         self.impressions = campaign.stats?.impressionsTotal ?? 0
         self.clicks = campaign.stats?.clicksTotal ?? 0
+        self.budget = currencyFormatter.string(from: ((campaign.budgetCents ?? 0) / 100) as NSNumber) ?? "-"
     }
 }

@@ -29,7 +29,7 @@ class RevisionsTableViewController: UITableViewController {
     }()
 
     private var sectionCount: Int {
-        return tableViewHandler.resultsController.sections?.count ?? 0
+        return tableViewHandler.resultsController?.sections?.count ?? 0
     }
 
 
@@ -88,7 +88,7 @@ private extension RevisionsTableViewController {
     }
 
     private func getRevision(at indexPath: IndexPath) -> Revision {
-        guard let revision = tableViewHandler.resultsController.object(at: indexPath) as? Revision else {
+        guard let revision = tableViewHandler.resultsController?.object(at: indexPath) as? Revision else {
             preconditionFailure("Expected a Revision object.")
         }
 
@@ -104,7 +104,7 @@ private extension RevisionsTableViewController {
     }
 
     private func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
-        let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
+        let allRevisions = tableViewHandler.resultsController?.fetchedObjects as? [Revision] ?? []
         let selectedRevision = getRevision(at: indexPath)
         let selectedIndex = allRevisions.firstIndex(of: selectedRevision) ?? 0
         return RevisionBrowserState(revisions: allRevisions, currentIndex: selectedIndex) { [weak self] revision in
@@ -221,7 +221,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
+        guard let sectionInfo = tableViewHandler.resultsController?.sections?[section],
             let headerView = Bundle.main.loadNibNamed(PageListSectionHeaderView.classNameWithoutNamespaces(),
                                                       owner: nil,
                                                       options: nil)?.first as? PageListSectionHeaderView else {

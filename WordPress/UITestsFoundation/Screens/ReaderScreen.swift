@@ -21,12 +21,12 @@ public class ReaderScreen: ScreenObject {
         )
     }
 
-    public func openLastPost() throws -> ReaderScreen {
+    public func openLastPost() -> ReaderScreen {
         getLastPost().tap()
         return self
     }
 
-    public func openLastPostInSafari() throws -> ReaderScreen {
+    public func openLastPostInSafari() -> ReaderScreen {
         getLastPost().buttons["More"].tap()
         app.buttons["Visit"].tap()
         return self
@@ -74,7 +74,7 @@ public class ReaderScreen: ScreenObject {
         if backButton.isHittable { backButton.tap() }
     }
 
-    public static func isLoaded() -> Bool {
+    public func isLoaded() -> Bool {
         (try? ReaderScreen().isLoaded) ?? false
     }
 

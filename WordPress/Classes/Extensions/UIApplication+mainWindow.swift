@@ -2,7 +2,13 @@ import UIKit
 
 extension UIApplication {
     @objc var mainWindow: UIWindow? {
-        return windows.filter {$0.isKeyWindow}.first
+        if #available(iOS 15, *) {
+            return connectedScenes
+                .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+                .first
+        } else {
+            return windows.filter { $0.isKeyWindow }.first
+        }
     }
 
     @objc var currentStatusBarFrame: CGRect {

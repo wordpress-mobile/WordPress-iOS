@@ -151,7 +151,7 @@ class PostActionSheetTests: CoreDataTestCase {
         try featureFlags.override(RemoteFeatureFlag.blaze, withValue: true)
 
         let blog = BlogBuilder(mainContext)
-            .isBlazeApproved()
+            .canBlaze()
             .build()
 
         let post = PostBuilder(mainContext, blog: blog)

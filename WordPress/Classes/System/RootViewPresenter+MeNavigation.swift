@@ -6,30 +6,34 @@ extension RootViewPresenter {
     func popMeTabToRoot() {
         getNavigationController()?.popToRootViewController(animated: false)
     }
+
     /// presents the Me scene. If the feature flag is disabled, replaces the previously defined `showMeTab`
-    func showMeScene(animated: Bool = true, completion: (() -> Void)? = nil) {
+    func showMeScene(animated: Bool = true, completion: ((MeViewController?) -> Void)? = nil) {
         let meScenePresenter = getMeScenePresenter()
-        meScenePresenter.present(on: rootViewController, animated: animated, completion: completion)
+        meScenePresenter.present(on: rootViewController, animated: animated) { [weak self] in
+            completion?(self?.getMeViewController())
+        }
     }
+
     /// access to sub levels
     func navigateToAccountSettings() {
-        showMeScene(animated: false) {
+        showMeScene(animated: false) { meViewController in
             self.popMeTabToRoot()
-            self.getMeViewController()?.navigateToAccountSettings()
+            meViewController?.navigateToAccountSettings()
         }
     }
 
     func navigateToAppSettings() {
-        showMeScene() {
+        showMeScene() { meViewController in
             self.popMeTabToRoot()
-            self.getMeViewController()?.navigateToAppSettings()
+            meViewController?.navigateToAppSettings()
         }
     }
 
     func navigateToSupport() {
-        showMeScene() {
+        showMeScene() { meViewController in
             self.popMeTabToRoot()
-            self.getMeViewController()?.navigateToHelpAndSupport()
+            meViewController?.navigateToHelpAndSupport()
         }
     }
 

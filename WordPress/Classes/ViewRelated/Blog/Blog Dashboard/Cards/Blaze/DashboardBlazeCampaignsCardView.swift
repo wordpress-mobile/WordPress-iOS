@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
+final class DashboardBlazeCampaignsCardView: UIView {
     private let frameView = BlogDashboardCardFrameView()
     private let campaignView = DashboardBlazeCampaignView()
 
@@ -41,9 +41,9 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
     // MARK: - View setup
 
     private func setupView() {
-        contentView.addSubview(frameView)
+        addSubview(frameView)
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
+        pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
 
         frameView.add(subview: contentStackView)
         contentStackView.addArrangedSubview({
@@ -84,12 +84,11 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
 
     @objc private func buttonCreateCampaignTapped() {
         guard let presentingViewController, let blog else { return }
+        BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
         BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
-    // MARK: - BlogDashboardCardConfigurable
-
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?) {
         self.blog = blog
         self.presentingViewController = viewController
 
@@ -102,12 +101,12 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
             ])
         ], card: .blaze)
 
-        let viewModel = DashboardBlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
+        let viewModel = BlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
         campaignView.configure(with: viewModel, blog: blog)
     }
 }
 
-private extension DashboardBlazeCampaignCardCell {
+private extension DashboardBlazeCampaignsCardView {
     enum Strings {
         static let cardTitle = NSLocalizedString("dashboardCard.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
         static let viewAllCampaigns = NSLocalizedString("dashboardCard.blazeCampaigns.viewAllCampaigns", value: "View all campaigns", comment: "Title for the View All Campaigns button in the More menu")

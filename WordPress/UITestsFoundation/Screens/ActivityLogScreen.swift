@@ -30,12 +30,6 @@ public class ActivityLogScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyActivityLogScreenLoaded() -> Self {
-        XCTAssertTrue(ActivityLogScreen.isLoaded(), "\"Activity\" screen isn't loaded.")
-        return self
-    }
-
-    @discardableResult
     public func verifyActivityLogScreen(hasActivityPartial activityTitle: String) -> Self {
         XCTAssertTrue(
             app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(),

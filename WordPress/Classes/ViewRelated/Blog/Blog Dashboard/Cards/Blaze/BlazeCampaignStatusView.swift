@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WordPressKit
 
-final class DashboardBlazeCampaignStatusView: UIView {
+final class BlazeCampaignStatusView: UIView {
     let titleLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -20,7 +20,7 @@ final class DashboardBlazeCampaignStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with viewModel: DashboardBlazeCampaignViewStatusViewModel) {
+    func configure(with viewModel: BlazeCampaignStatusViewModel) {
         self.isHidden = viewModel.isHidden
         self.titleLabel.text = viewModel.title.uppercased()
         self.titleLabel.textColor = viewModel.textColor
@@ -30,14 +30,14 @@ final class DashboardBlazeCampaignStatusView: UIView {
     }
 }
 
-private extension DashboardBlazeCampaignStatusView {
+private extension BlazeCampaignStatusView {
     enum Constants {
         static let titleInsets = UIEdgeInsets(top: 4, left: 4, bottom: 3, right: 4)
         static let cornerRadius: CGFloat = 4
     }
 }
 
-struct DashboardBlazeCampaignViewStatusViewModel {
+struct BlazeCampaignStatusViewModel {
     let isHidden: Bool
     let title: String
     let textColor: UIColor
@@ -95,21 +95,21 @@ extension BlazeCampaign.Status {
     var localizedTitle: String {
         switch self {
         case .scheduled:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Scheduled", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.scheduled", value: "Scheduled", comment: "Short status description")
         case .created:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Created", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.created", value: "Created", comment: "Short status description")
         case .approved:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Approved", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.approved", value: "Approved", comment: "Short status description")
         case .processing:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "In Moderation", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.inmoderation", value: "In Moderation", comment: "Short status description")
         case .rejected:
             return NSLocalizedString("blazeCampaign.status.rejected", value: "Rejected", comment: "Short status description")
         case .active:
             return NSLocalizedString("blazeCampaign.status.active", value: "Active", comment: "Short status description")
         case .canceled:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Cancelled", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.canceled", value: "Canceled", comment: "Short status description")
         case .finished:
-            return NSLocalizedString("blazeCampaign.status.finished", value: "Completed", comment: "Short status description")
+            return NSLocalizedString("blazeCampaign.status.completed", value: "Completed", comment: "Short status description")
         case .unknown:
             return "–"
         }

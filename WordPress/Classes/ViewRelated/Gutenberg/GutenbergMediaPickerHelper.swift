@@ -5,6 +5,7 @@ import Photos
 import WordPressShared
 import WPMediaPicker
 import Gutenberg
+import UniformTypeIdentifiers
 
 public typealias GutenbergMediaPickerHelperCallback = ([WPMediaAsset]?) -> Void
 
@@ -249,7 +250,7 @@ fileprivate extension WPMediaPickerOptions {
         filter: WPMediaType = [.image],
         allowCaptureOfMedia: Bool = false,
         showSearchBar: Bool = true,
-        badgedUTTypes: Set<String> = [String(kUTTypeGIF)],
+        badgedUTTypes: Set<String> = [UTType.gif.identifier],
         allowMultipleSelection: Bool = false,
         preferredStatusBarStyle: UIStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
     ) -> WPMediaPickerOptions {
