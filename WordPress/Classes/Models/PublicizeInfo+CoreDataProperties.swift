@@ -3,7 +3,7 @@ import CoreData
 
 extension PublicizeInfo {
     /// The maximum number of Social shares for the associated `blog`.
-    @NSManaged public var sharingLimit: Int64
+    @NSManaged public var shareLimit: Int64
 
     /// The number of Social sharing to be published in the future.
     @NSManaged public var toBePublicizedCount: Int64

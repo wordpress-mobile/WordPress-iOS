@@ -10,7 +10,7 @@ data model as well as any custom migrations.
 - Created a new entity `PublicizeInfo` with:
   - `sharedPostsCount` (required, default `0`, `Int 64`)
   - `sharesRemaining` (required, default `0`, `Int 64`)
-  - `sharingLimit` (required, default `0`, `Int 64`)
+  - `shareLimit` (required, default `0`, `Int 64`)
   - `toBePublicizedCount` (required, default `0`, `Int 64`)
 
 - Created one-to-many relationship between `PublicizeInfo` and `Blog`
