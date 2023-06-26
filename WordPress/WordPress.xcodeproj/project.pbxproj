@@ -1741,6 +1741,8 @@
 		805CC0C2296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
+		806BA1192A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806BA1182A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift */; };
+		806BA11A2A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806BA1182A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
 		806E53E227E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
 		806E53E427E01CFE0064315E /* DashboardStatsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */; };
@@ -7302,6 +7304,7 @@
 		805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNewUsersOverlaySecondaryView.swift; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
+		806BA1182A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignDetailsWebViewModel.swift; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
 		806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModelTests.swift; sourceTree = "<group>"; };
 		8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryUserDefaults.swift; sourceTree = "<group>"; };
@@ -17909,6 +17912,7 @@
 				FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */,
 				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
 				80C523A62995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift */,
+				806BA1182A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift */,
 			);
 			path = Webview;
 			sourceTree = "<group>";
@@ -22038,6 +22042,7 @@
 				8B74A9A8268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */,
 				3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */,
 				7E3E7A6220E44E6A0075D159 /* BodyContentGroup.swift in Sources */,
+				806BA1192A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift in Sources */,
 				FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */,
 				17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */,
 				F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */,
@@ -24713,6 +24718,7 @@
 				8313B9FB2995A03C000AF26E /* JetpackRemoteInstallCardView.swift in Sources */,
 				FABB23962602FC2C00C8785C /* StatsTableFooter.swift in Sources */,
 				FABB23972602FC2C00C8785C /* BlogSyncFacade.m in Sources */,
+				806BA11A2A492A2700052422 /* BlazeCampaignDetailsWebViewModel.swift in Sources */,
 				FABB23982602FC2C00C8785C /* PrepublishingNavigationController.swift in Sources */,
 				8384C64228AAC82600EABE26 /* KeychainUtils.swift in Sources */,
 				FABB23992602FC2C00C8785C /* UINavigationController+KeyboardFix.m in Sources */,
