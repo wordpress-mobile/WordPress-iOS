@@ -156,6 +156,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Cell Lifecycle
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         containerStackView.removeAllSubviews()
     }
 
