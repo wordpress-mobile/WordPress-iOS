@@ -120,6 +120,15 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
         cell.configure(with: viewModel, blog: blog)
         return cell
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let campaign = campaigns[safe: indexPath.row] else {
+            return
+        }
+
+        BlazeFlowCoordinator.presentBlazeCampaignDetails(in: self, source: .campaignsList, blog: blog, campaignID: campaign.campaignID)
+    }
 }
 
 // MARK: - No results

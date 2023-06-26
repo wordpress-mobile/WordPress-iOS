@@ -51,11 +51,10 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Initializers
 
-    init(source: BlazeSource, blog: Blog, postID: NSNumber?, delegate: BlazeWebViewControllerDelegate?) {
+    init(delegate: BlazeWebViewControllerDelegate?) {
         self.delegate = delegate
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
-        viewModel = BlazeCreateCampaignWebViewModel(source: source, blog: blog, postID: postID, view: self)
     }
 
     required init?(coder: NSCoder) {
