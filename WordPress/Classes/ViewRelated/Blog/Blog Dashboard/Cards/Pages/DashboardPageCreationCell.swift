@@ -52,21 +52,14 @@ class DashboardPageCreationCell: UITableViewCell {
         button.addTarget(self, action: #selector(createPageButtonTapped), for: .touchUpInside)
         let font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
 
-        if #available(iOS 15.0, *) {
-            var buttonConfig: UIButton.Configuration = .plain()
-            buttonConfig.contentInsets = Metrics.createPageButtonContentInsets
-            buttonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
-                var outgoing = incoming
-                outgoing.font = font
-                return outgoing
-            })
-            button.configuration = buttonConfig
-        } else {
-            button.titleLabel?.font = font
-            button.setTitleColor(.jetpackGreen, for: .normal)
-            button.contentEdgeInsets = Metrics.createPageButtonContentEdgeInsets
-            button.flipInsetsForRightToLeftLayoutDirection()
-        }
+        var buttonConfig: UIButton.Configuration = .plain()
+        buttonConfig.contentInsets = Metrics.createPageButtonContentInsets
+        buttonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
+            var outgoing = incoming
+            outgoing.font = font
+            return outgoing
+        })
+        button.configuration = buttonConfig
 
         return button
     }()

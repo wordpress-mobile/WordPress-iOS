@@ -65,13 +65,11 @@ extension NSNotification.Name {
 
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
-        if #available (iOS 14.0, *) {
-            cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
-            cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment,
-                                                                                     indexPath: indexPath,
-                                                                                     handler: handler,
-                                                                                     sourceView: cell.accessoryButton) : nil
-        }
+        cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
+        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment,
+                                                                                 indexPath: indexPath,
+                                                                                 handler: handler,
+                                                                                 sourceView: cell.accessoryButton) : nil
 
         cell.configure(with: comment, renderMethod: .richContent) { _ in
             // don't adjust cell height when it's already scrolled out of viewport.
