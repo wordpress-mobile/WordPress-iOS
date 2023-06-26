@@ -18094,8 +18094,6 @@
 				FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */,
 				FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */,
 				FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */,
-				9839CEB926FAA0510097406E /* CommentModerationBar.swift */,
-				98F9FB2D270282C100ADF552 /* CommentModerationBar.xib */,
 				FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */,
 			);
 			name = Detail;

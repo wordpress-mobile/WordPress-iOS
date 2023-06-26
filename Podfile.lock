@@ -490,12 +490,12 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (8.6.0):
-    - Sentry/Core (= 8.6.0)
-    - SentryPrivate (= 8.6.0)
-  - Sentry/Core (8.6.0):
-    - SentryPrivate (= 8.6.0)
-  - SentryPrivate (8.6.0)
+  - Sentry (8.8.0):
+    - Sentry/Core (= 8.8.0)
+    - SentryPrivate (= 8.8.0)
+  - Sentry/Core (8.8.0):
+    - SentryPrivate (= 8.8.0)
+  - SentryPrivate (8.8.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -512,7 +512,7 @@ PODS:
     - WordPressKit (~> 8.0-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.4.0-beta.1):
+  - WordPressKit (8.4.0):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -613,7 +613,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 6.1-beta)
   - WordPressKit (~> 8.4-beta)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `trunk`)
+  - WordPressShared (~> 2.2-beta)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8-beta)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.98.0/third-party-podspecs/Yoga.podspec.json`)
@@ -623,6 +623,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -661,7 +662,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -776,9 +777,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.98.0
-  WordPressShared:
-    :branch: trunk
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.98.0/third-party-podspecs/Yoga.podspec.json
 
@@ -794,9 +792,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.98.0
-  WordPressShared:
-    :commit: 9a010fdab8d31f9e1fa0511f231e7068ef0170b1
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -875,8 +870,8 @@ SPEC CHECKSUMS:
   RNTAztecView: 6362ed78bcf0c68a2a0e25b779a84ad7096c9ecf
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: d80553ff85ea72def75b792aaa5a71c158e51595
-  SentryPrivate: ef1c5b3dfe44ec0c70e2eb343a5be2689164c021
+  Sentry: 927dfb29d18a14d924229a59cc2ad149f43349f2
+  SentryPrivate: 4350d865f898224ab9fa02b37d6ee7fbb623f47e
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -885,7 +880,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: b0b900696de5129a215adcd1e9ae6eb89da36ac8
-  WordPressKit: 45b04f55d471f1edde248b84614d3208b9e2e88a
+  WordPressKit: f445e6fc3c63ddf611513a435408f86fdf3808b3
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 0d40b8d66b6dfdaa2d6a41e3be51249ff5898775
@@ -900,6 +895,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 3f47ee0c345c8439e137d677752d9c4166d2c695
+PODFILE CHECKSUM: 623e3fe64f67d2c0352e26d1ac2bcd58c06b3494
 
 COCOAPODS: 1.12.1
