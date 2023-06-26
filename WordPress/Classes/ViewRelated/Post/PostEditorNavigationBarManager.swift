@@ -72,7 +72,7 @@ class PostEditorNavigationBarManager {
         button.sizeToFit()
         button.isEnabled = delegate?.isPublishButtonEnabled ?? false
         button.setContentHuggingPriority(.required, for: .horizontal)
-        button.tintColor = .editorPrimary
+        button.tintColor = UIColor.black
         return button
     }()
 
