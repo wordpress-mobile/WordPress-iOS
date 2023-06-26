@@ -26,6 +26,10 @@ class AccountBuilder: NSObject {
         return self
     }
 
+    func with(id: Int) -> AccountBuilder {
+        return with(id: Int64(id))
+    }
+
     @objc
     func with(uuid: String) -> AccountBuilder {
         account.uuid = uuid

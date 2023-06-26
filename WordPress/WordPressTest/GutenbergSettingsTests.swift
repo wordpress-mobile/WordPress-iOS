@@ -329,11 +329,11 @@ class GutenbergSettingsTests: CoreDataTestCase {
     }
 
     func setupAccount(withId userId: Int) {
-        let account = ModelTestHelper.insertAccount(context: mainContext)
-        account.authToken = "auth"
-        account.uuid = UUID().uuidString
-        account.userID = NSNumber(value: userId)
-        contextManager.saveContextAndWait(mainContext)
+        let account = AccountBuilder(mainContext)
+            .with(id: Int64(userId))
+            .with(username: "test_user")
+            .with(authToken: "auth")
+            .build()
         AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
     }
 }
