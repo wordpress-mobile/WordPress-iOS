@@ -4,10 +4,7 @@ import CoreData
 class ModelTestHelper: NSObject {
     @objc
     class func insertSelfHostedBlog(context: NSManagedObjectContext) -> Blog {
-        let blog = Blog.init(context: context)
-        blog.url = "http://example.com/"
-        blog.xmlrpc = "http://example.com/xmlrpc.php"
-        return blog
+        return BlogBuilder(context).build()
     }
 
     @objc
