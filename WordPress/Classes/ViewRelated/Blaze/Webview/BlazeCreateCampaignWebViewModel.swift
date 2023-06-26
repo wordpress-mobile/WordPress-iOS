@@ -59,6 +59,10 @@ class BlazeCreateCampaignWebViewModel: BlazeWebViewModel {
 
     // MARK: Public Functions
 
+    var navigationTitle: String {
+        return Strings.navigationTitle
+    }
+
     func startBlazeFlow() {
         guard let initialURL else {
             BlazeEventsTracker.trackBlazeFlowError(for: source, currentStep: currentStep)
@@ -148,6 +152,11 @@ extension BlazeCreateCampaignWebViewModel: WebKitAuthenticatable {
 }
 
 private extension BlazeCreateCampaignWebViewModel {
+    enum Strings {
+        static let navigationTitle = NSLocalizedString("feature.blaze.title",
+                                                       value: "Blaze",
+                                                       comment: "Name of a feature that allows the user to promote their posts.")
+    }
     enum Constants {
         static let baseURLFormat = "https://wordpress.com/advertising/%@"
         static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"

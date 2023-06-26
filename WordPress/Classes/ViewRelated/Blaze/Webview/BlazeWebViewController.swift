@@ -12,6 +12,7 @@ protocol BlazeWebViewModel {
     func isCurrentStepDismissible() -> Bool
     func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy
     var isFlowCompleted: Bool { get }
+    var navigationTitle: String { get }
 }
 
 protocol BlazeWebView {
@@ -95,7 +96,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     }
 
     private func configureNavBar() {
-        title = Strings.navigationTitle
+        title = viewModel?.navigationTitle
         navigationItem.rightBarButtonItem = dismissButton
         configureNavBarAppearance()
         reloadNavBar()
@@ -219,9 +220,6 @@ extension BlazeWebViewController: WKNavigationDelegate {
 
 private extension BlazeWebViewController {
     enum Strings {
-        static let navigationTitle = NSLocalizedString("feature.blaze.title",
-                                                       value: "Blaze",
-                                                       comment: "Name of a feature that allows the user to promote their posts.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel. Action.")
         static let doneButtonTitle = NSLocalizedString("Done", comment: "Done. Action.")
     }

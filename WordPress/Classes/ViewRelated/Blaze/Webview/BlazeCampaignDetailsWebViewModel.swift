@@ -49,6 +49,10 @@ class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
         return true
     }
 
+    var navigationTitle: String {
+        return Strings.navigationTitle
+    }
+
     func startBlazeFlow() {
         guard let initialURL else {
             // TODO: Track Analytics Error Event
@@ -98,6 +102,11 @@ extension BlazeCampaignDetailsWebViewModel: WebKitAuthenticatable {
 }
 
 private extension BlazeCampaignDetailsWebViewModel {
+    enum Strings {
+        static let navigationTitle = NSLocalizedString("feature.blaze.campaignDetails.title",
+                                                       value: "Campaign Details",
+                                                       comment: "Title of screen the displays the details of an advertisement campaign.")
+    }
     enum Constants {
         // TODO: Replace these constants with remote config params
         static let baseURLFormat = "https://wordpress.com/advertising/%@"
