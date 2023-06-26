@@ -9,7 +9,7 @@ final class BlazeCreateCampaignWebViewModelTests: CoreDataTestCase {
     private var externalURLHandler: ExternalURLHandlerMock!
     private var remoteConfigStore = RemoteConfigStoreMock()
     private var blog: Blog!
-    private static let blogURL  = "test.blog.com"
+    private static let blogURL = "test.blog.com"
 
     // MARK: Setup
 
