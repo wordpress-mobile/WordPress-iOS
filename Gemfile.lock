@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/iangmaia/danger-iantest
-  revision: 0325e1480641999793379a4b07f1dc7c647409b9
+  revision: 22d4d8d0681851a44fa29ca752f0cad057c263cb
   branch: main
   specs:
     danger-iantest (0.0.1)
