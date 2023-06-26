@@ -4,9 +4,8 @@ echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products-wordpress.tar
-tar -v -xf build-products-wordpress.tar
-ls -la
+buildkite-agent artifact download WordPress.xcresult.zip ./ --step unit_tests_wordpress
+cd build/results && unzip WordPress.xcresult.zip && cd -
 
 echo "--- Running Danger: PR Check"
 bundle exec danger --fail-on-errors=true --dangerfile=.buildkite/danger/Dangerfile-post-build --danger_id=post-build

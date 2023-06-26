@@ -80,7 +80,7 @@ steps:
   #################
   - label: "☢️ Danger - Post Build"
     command: .buildkite/commands/danger-post-build.sh
-    depends_on: "build_wordpress"
+    depends_on: "unit_tests_wordpress"
     env: *common_env
     plugins: *common_plugins
     artifact_paths:
