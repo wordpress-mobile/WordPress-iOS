@@ -9,11 +9,10 @@ class ModelTestHelper: NSObject {
 
     @objc
     class func insertDotComBlog(context: NSManagedObjectContext) -> Blog {
-        let blog = Blog.init(context: context)
-        blog.url = "https://example.wordpress.com/"
-        blog.xmlrpc = "https://example.wordpress.com/xmlrpc.php"
-        blog.account = insertAccount(context: context)
-        return blog
+        return BlogBuilder(context)
+            .with(url: "https://example.wordpress.com/")
+            .withAnAccount()
+            .build()
     }
 
     @objc
