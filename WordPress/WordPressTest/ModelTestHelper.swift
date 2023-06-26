@@ -17,8 +17,8 @@ class ModelTestHelper: NSObject {
 
     @objc
     class func insertAccount(context: NSManagedObjectContext) -> WPAccount {
-        let account = WPAccount.init(context: context)
-        account.username = "test_user"
-        return account
+        return AccountBuilder(context)
+            .with(username: "test_user") // necessary for some tests to pass
+            .build()
     }
 }
