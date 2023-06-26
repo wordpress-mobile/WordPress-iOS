@@ -5495,6 +5495,7 @@
 		FE1E20182A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20132A47042400CE7C90 /* PublicizeInfo+CoreDataClass.swift */; };
 		FE1E201A2A473E0800CE7C90 /* JetpackSocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20192A473E0800CE7C90 /* JetpackSocialService.swift */; };
 		FE1E201B2A473E0800CE7C90 /* JetpackSocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E20192A473E0800CE7C90 /* JetpackSocialService.swift */; };
+		FE1E201E2A49D59400CE7C90 /* JetpackSocialServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E201D2A49D59400CE7C90 /* JetpackSocialServiceTests.swift */; };
 		FE23EB4926E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
 		FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
 		FE23EB4B26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
@@ -9299,6 +9300,7 @@
 		FE1E20132A47042400CE7C90 /* PublicizeInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicizeInfo+CoreDataClass.swift"; path = "/Users/dvdchr/code/github/wpios/WordPress/Classes/Models/PublicizeInfo+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		FE1E20142A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicizeInfo+CoreDataProperties.swift"; path = "/Users/dvdchr/code/github/wpios/WordPress/Classes/Models/PublicizeInfo+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		FE1E20192A473E0800CE7C90 /* JetpackSocialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialService.swift; sourceTree = "<group>"; };
+		FE1E201D2A49D59400CE7C90 /* JetpackSocialServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialServiceTests.swift; sourceTree = "<group>"; };
 		FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = richCommentTemplate.html; path = Resources/HTML/richCommentTemplate.html; sourceTree = "<group>"; };
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
@@ -15329,6 +15331,7 @@
 				FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */,
 				B5772AC51C9C84900031F97E /* GravatarServiceTests.swift */,
 				8B749E8F25AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift */,
+				FE1E201D2A49D59400CE7C90 /* JetpackSocialServiceTests.swift */,
 				F1BB660B274E704D00A319BE /* LikeUserHelperTests.swift */,
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
 				F11023A0231863CE00C4E84A /* MediaServiceTests.swift */,
@@ -23655,6 +23658,7 @@
 				3F50945F245537A700C4470B /* ReaderTabViewModelTests.swift in Sources */,
 				0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */,
 				D848CBF920FEF82100A9038F /* NotificationsContentFactoryTests.swift in Sources */,
+				FE1E201E2A49D59400CE7C90 /* JetpackSocialServiceTests.swift in Sources */,
 				575802132357C41200E4C63C /* MediaCoordinatorTests.swift in Sources */,
 				F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */,
 				400A2C972217B883000A8A59 /* VisitsSummaryStatsRecordValueTests.swift in Sources */,

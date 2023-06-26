@@ -36,6 +36,7 @@ class JetpackSocialService {
             case .success(let remotePublicizeInfo):
                 self?.coreDataStack.performAndSave({ context -> PublicizeInfo.SharingLimit? in
                     guard let blog = try Blog.lookup(withID: blogID, in: context) else {
+                        // unexpected to fall into this case, since the API should return an error response.
                         throw ServiceError.blogNotFound(id: blogID)
                     }
 
