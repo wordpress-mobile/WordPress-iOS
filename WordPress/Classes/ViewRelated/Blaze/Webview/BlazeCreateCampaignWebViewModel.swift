@@ -1,13 +1,6 @@
 import Foundation
 
-protocol BlazeWebView {
-    func load(request: URLRequest)
-    func reloadNavBar()
-    func dismissView()
-    var cookieJar: CookieJar { get }
-}
-
-class BlazeWebViewModel {
+class BlazeCreateCampaignWebViewModel: BlazeWebViewModel {
 
     // MARK: Public Variables
 
@@ -148,13 +141,13 @@ class BlazeWebViewModel {
     }
 }
 
-extension BlazeWebViewModel: WebKitAuthenticatable {
+extension BlazeCreateCampaignWebViewModel: WebKitAuthenticatable {
     var authenticator: RequestAuthenticator? {
         RequestAuthenticator(blog: blog)
     }
 }
 
-private extension BlazeWebViewModel {
+private extension BlazeCreateCampaignWebViewModel {
     enum Constants {
         static let baseURLFormat = "https://wordpress.com/advertising/%@"
         static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"

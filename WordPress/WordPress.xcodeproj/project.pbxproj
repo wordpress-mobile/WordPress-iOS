@@ -1913,9 +1913,9 @@
 		80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */; };
 		80C523A429959DE000B1C14B /* BlazeWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A329959DE000B1C14B /* BlazeWebViewController.swift */; };
 		80C523A529959DE000B1C14B /* BlazeWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A329959DE000B1C14B /* BlazeWebViewController.swift */; };
-		80C523A72995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */; };
-		80C523A82995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */; };
-		80C523AB29AE6C2200B1C14B /* BlazeWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523AA29AE6C2200B1C14B /* BlazeWebViewModelTests.swift */; };
+		80C523A72995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A62995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift */; };
+		80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A62995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift */; };
+		80C523AB29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523AA29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift */; };
 		80C740FB2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */; };
 		80C740FC2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */; };
 		80D9CFF429DCA53E00FE3400 /* DashboardPagesListCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D9CFF329DCA53E00FE3400 /* DashboardPagesListCardCell.swift */; };
@@ -7325,8 +7325,8 @@
 		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
 		80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsListCardCell.swift; sourceTree = "<group>"; };
 		80C523A329959DE000B1C14B /* BlazeWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewController.swift; sourceTree = "<group>"; };
-		80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewModel.swift; sourceTree = "<group>"; };
-		80C523AA29AE6C2200B1C14B /* BlazeWebViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewModelTests.swift; sourceTree = "<group>"; };
+		80C523A62995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCreateCampaignWebViewModel.swift; sourceTree = "<group>"; };
+		80C523AA29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCreateCampaignWebViewModelTests.swift; sourceTree = "<group>"; };
 		80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostStatsTableViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		80D65C1129CC0813008E69D5 /* JetpackUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JetpackUITests-Info.plist"; sourceTree = "<group>"; };
 		80D9CFF329DCA53E00FE3400 /* DashboardPagesListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPagesListCardCell.swift; sourceTree = "<group>"; };
@@ -13197,7 +13197,7 @@
 		80C523A929AE6BF300B1C14B /* Blaze */ = {
 			isa = PBXGroup;
 			children = (
-				80C523AA29AE6C2200B1C14B /* BlazeWebViewModelTests.swift */,
+				80C523AA29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift */,
 			);
 			path = Blaze;
 			sourceTree = "<group>";
@@ -17908,7 +17908,7 @@
 			children = (
 				FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */,
 				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
-				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
+				80C523A62995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift */,
 			);
 			path = Webview;
 			sourceTree = "<group>";
@@ -18094,8 +18094,6 @@
 				FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */,
 				FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */,
 				FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */,
-				9839CEB926FAA0510097406E /* CommentModerationBar.swift */,
-				98F9FB2D270282C100ADF552 /* CommentModerationBar.xib */,
 				FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */,
 			);
 			name = Detail;
@@ -20910,7 +20908,7 @@
 				F1C197A62670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				17E24F5420FCF1D900BD70A3 /* Routes+MySites.swift in Sources */,
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
-				80C523A72995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */,
+				80C523A72995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
 				1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */,
@@ -23368,7 +23366,7 @@
 				3FDDFE9627C8178C00606933 /* SiteStatsInformationTests.swift in Sources */,
 				74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */,
 				80EF92932810FA5A0064A971 /* QuickStartFactoryTests.swift in Sources */,
-				80C523AB29AE6C2200B1C14B /* BlazeWebViewModelTests.swift in Sources */,
+				80C523AB29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift in Sources */,
 				D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */,
 				9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */,
 				8332DD2829259BEB00802F7D /* DataMigratorTests.swift in Sources */,
@@ -24401,7 +24399,7 @@
 				FABB22B62602FC2C00C8785C /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				011896A329D5AF0700D34BA9 /* BlogDashboardCardConfigurable.swift in Sources */,
 				FABB22B72602FC2C00C8785C /* SettingsListEditorViewController.swift in Sources */,
-				80C523A82995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */,
+				80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */,
 				FABB22B92602FC2C00C8785C /* NoResultsTenorConfiguration.swift in Sources */,

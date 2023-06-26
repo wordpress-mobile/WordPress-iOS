@@ -5,14 +5,33 @@ import WebKit
     func dismissBlazeWebViewController(_ controller: BlazeWebViewController)
 }
 
+protocol BlazeWebViewModel {
+    func startBlazeFlow()
+    func dismissTapped()
+    func webViewDidFail(with error: Error)
+    func isCurrentStepDismissible() -> Bool
+    func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy
+    var isFlowCompleted: Bool { get }
+}
+
+protocol BlazeWebView {
+    func load(request: URLRequest)
+    func reloadNavBar()
+    func dismissView()
+    var cookieJar: CookieJar { get }
+}
+
 class BlazeWebViewController: UIViewController, BlazeWebView {
+
+    // MARK: Public Variables
+
+    var viewModel: BlazeWebViewModel?
 
     // MARK: Private Variables
 
     private weak var delegate: BlazeWebViewControllerDelegate?
 
     private let webView: WKWebView
-    private var viewModel: BlazeWebViewModel?
     private let progressView = WebProgressView()
     private var reachabilityObserver: Any?
     private var currentRequestURL: URL?
@@ -36,7 +55,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         self.delegate = delegate
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
-        viewModel = BlazeWebViewModel(source: source, blog: blog, postID: postID, view: self)
+        viewModel = BlazeCreateCampaignWebViewModel(source: source, blog: blog, postID: postID, view: self)
     }
 
     required init?(coder: NSCoder) {
