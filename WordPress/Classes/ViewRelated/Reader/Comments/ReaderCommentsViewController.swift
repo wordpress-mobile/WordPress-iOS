@@ -97,28 +97,6 @@ extension NSNotification.Name {
         present(activityViewController, animated: true, completion: nil)
     }
 
-    /// Shows a contextual menu through `UIPopoverPresentationController`. This is a fallback implementation for iOS 13, since the menu can't be
-    /// shown programmatically or through a single tap.
-    ///
-    /// NOTE: Remove this once we bump the minimum version to iOS 14.
-    ///
-    func showMenuSheet(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) {
-        let commentMenus = commentMenu(for: comment, indexPath: indexPath, handler: handler, sourceView: sourceView)
-        let menuViewController = MenuSheetViewController(items: commentMenus.map { menuSection in
-            // Convert ReaderCommentMenu to MenuSheetViewController.MenuItem
-            menuSection.map { $0.toMenuItem }
-        })
-
-        menuViewController.modalPresentationStyle = .popover
-        if let popoverPresentationController = menuViewController.popoverPresentationController {
-            popoverPresentationController.delegate = self
-            popoverPresentationController.sourceView = sourceView
-            popoverPresentationController.sourceRect = sourceView?.bounds ?? .null
-        }
-
-        present(menuViewController, animated: true)
-    }
-
     func isModerationMenuEnabled(for comment: Comment) -> Bool {
         return comment.allowsModeration()
     }
@@ -402,20 +380,6 @@ enum ReaderCommentMenu {
                 .edit(let handler),
                 .share(let handler):
             return UIAction(title: title, image: image) { _ in
-                handler()
-            }
-        }
-    }
-
-    /// NOTE: Remove when minimum version is bumped to iOS 14.
-    var toMenuItem: MenuSheetViewController.MenuItem {
-        switch self {
-        case .unapprove(let handler),
-                .spam(let handler),
-                .trash(let handler),
-                .edit(let handler),
-                .share(let handler):
-            return MenuSheetViewController.MenuItem(title: title, image: image) {
                 handler()
             }
         }
