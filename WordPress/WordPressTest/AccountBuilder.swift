@@ -6,10 +6,14 @@ import Foundation
 ///
 @objc
 class AccountBuilder: NSObject {
+
+    private let context: NSManagedObjectContext
     private var account: WPAccount
 
     @objc(initWithContext:)
     init(_ context: NSManagedObjectContext) {
+        self.context = context
+
         account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.uuid = UUID().uuidString
 
