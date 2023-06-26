@@ -115,6 +115,8 @@ class EditPostViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         if !openWithPostPost && !hasShownEditor {
             showEditor()
             hasShownEditor = true

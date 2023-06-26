@@ -57,6 +57,8 @@ class CalendarViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         title = NSLocalizedString("Choose date range", comment: "Title to choose date range in a calendar")
 
         // Configure Calendar

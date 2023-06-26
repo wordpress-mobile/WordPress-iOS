@@ -22,6 +22,8 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
     // MARK: - Configure
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+
         defaultStackViewTopConstraint = stackViewTopConstraint.constant
         defaultStackViewHeightConstraint = stackViewHeightConstraint.constant
     }
