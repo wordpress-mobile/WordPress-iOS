@@ -1,5 +1,6 @@
 22.8
 -----
+* [**] [internal] Make sure synced posts are saved before calling completion block. [#20960]
 
 
 22.7
