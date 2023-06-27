@@ -424,6 +424,11 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     // Nuke dead blogs
     WPAccount *account = [context existingObjectWithID:accountID error:nil];
+    if (account == nil) {
+        DDLogInfo(@"Can't find the account. User may have signed out.");
+        return;
+    }
+
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"blogID"]];
     NSSet *localSet = [account.blogs valueForKey:@"dotComID"];
     NSMutableSet *toDelete = [localSet mutableCopy];
