@@ -5,12 +5,12 @@ final class PrivacySettingsAnalyticsTracker {
     // MARK: - API
 
     func trackPrivacySettingsReportCrashesToggled(enabled: Bool) {
-        let props: Properties = ["enabled": enabled.stringLiteral]
+        let props = ["enabled": enabled.stringLiteral]
         self.track(.privacyChoicesBannerSaveButtonTapped, properties: props)
     }
 
     func trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: Bool) {
-        let props: Properties = ["analytics_enabled": analyticsEnabled.stringLiteral]
+        let props = ["analytics_enabled": analyticsEnabled.stringLiteral]
         self.track(.privacyChoicesBannerSaveButtonTapped, properties: props)
     }
 
