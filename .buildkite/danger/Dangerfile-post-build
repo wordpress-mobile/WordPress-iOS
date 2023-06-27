@@ -2,9 +2,12 @@
 # When using Github, path: = path/to/Dangerfile, branch: "main"
 # When using just a path: alone, it uses the given path/to/Dangerfile
 
-@iantest_platform = :ios # :ios, :android
 danger.import_dangerfile(gem: 'danger-iantest')
 
 xcode_summary.report 'build/results/WordPress.xcresult'
 
 message "Danger ID: `#{@env.danger_id}`"
+
+if status_report[:errors].count.zero? && status_report[:warnings].count.zero?
+  markdown(":white_check_mark: No errors or warnings on post-build :thumbsup:")
+end

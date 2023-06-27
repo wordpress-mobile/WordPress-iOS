@@ -2,7 +2,6 @@
 # When using Github, path: = path/to/Dangerfile, branch: "main"
 # When using just a path: alone, it uses the given path/to/Dangerfile
 
-@iantest_platform = :ios # :ios, :android
 danger.import_dangerfile(gem: 'danger-iantest')
 
 # importing the main Dangerfile from the Gem will bring all plugin instances
