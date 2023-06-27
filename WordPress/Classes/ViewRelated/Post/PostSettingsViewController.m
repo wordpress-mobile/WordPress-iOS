@@ -41,7 +41,9 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
     PostSettingsRowSlug,
-    PostSettingsRowExcerpt
+    PostSettingsRowExcerpt,
+    PostSettingsRowSocialNoConnections,
+    PostSettingsRowSocialRemainingShares
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -359,6 +361,7 @@ FeaturedImageViewControllerDelegate>
 {
     self.passwordTextField.text = self.apost.password;
 
+    [self configureSections];
     [self.tableView reloadData];
 }
 
@@ -393,14 +396,16 @@ FeaturedImageViewControllerDelegate>
 {
     NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
     NSNumber *disabledTwitterSection = @(PostSettingsSectionDisabledTwitter);
+    NSNumber *remainingSharesSection = @(PostSettingsSectionSharesRemaining);
     NSMutableArray *sections = [@[ @(PostSettingsSectionTaxonomy),
-                                  @(PostSettingsSectionMeta),
-                                  @(PostSettingsSectionFormat),
-                                  @(PostSettingsSectionFeaturedImage),
-                                  stickyPostSection,
-                                  @(PostSettingsSectionShare),
-                                  disabledTwitterSection,
-                                  @(PostSettingsSectionMoreOptions) ] mutableCopy];
+                                   @(PostSettingsSectionMeta),
+                                   @(PostSettingsSectionFormat),
+                                   @(PostSettingsSectionFeaturedImage),
+                                   stickyPostSection,
+                                   @(PostSettingsSectionShare),
+                                   disabledTwitterSection,
+                                   remainingSharesSection,
+                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
@@ -410,6 +415,10 @@ FeaturedImageViewControllerDelegate>
 
     if (self.unsupportedConnections.count == 0) {
         [sections removeObject:disabledTwitterSection];
+    }
+
+    if (![self showRemainingShares]) {
+        [sections removeObject:remainingSharesSection];
     }
 
     self.sections = [sections copy];
@@ -428,28 +437,22 @@ FeaturedImageViewControllerDelegate>
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
         return 2;
-
     } else if (sec == PostSettingsSectionMeta) {
         return [self.postMetaSectionRows count];
-
     } else if (sec == PostSettingsSectionFormat) {
         return 1;
-
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
-
     } else if (sec == PostSettingsSectionStickyPost) {
         return 1;
-        
     } else if (sec == PostSettingsSectionShare) {
         return [self numberOfRowsForShareSection];
-
     } else if (sec == PostSettingsSectionDisabledTwitter) {
         return self.unsupportedConnections.count;
-
+    } else if (sec == PostSettingsSectionSharesRemaining) {
+        return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
-
     }
 
     return 0;
@@ -564,6 +567,8 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
         cell = [self showNoConnection] ? [self configureNoConnectionCell] : [self configureShareCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionSharesRemaining) {
+        cell = [self configureRemainingSharesCell];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     }
@@ -1362,12 +1367,27 @@ FeaturedImageViewControllerDelegate>
 
 #pragma mark - Jetpack Social
 
+- (UITableViewCell *)configureGenericCellWith:(UIView *)view {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewGenericCellIdentifier];
+    for (UIView *subview in cell.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
+    [cell.contentView addSubview:view];
+    [cell.contentView pinSubviewToAllEdges:view];
+    return cell;
+}
+
 - (UITableViewCell *)configureNoConnectionCell
 {
-    UIView *noConnectionView = [self createNoConnectionView];
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewGenericCellIdentifier];
-    [cell.contentView addSubview:noConnectionView];
-    [cell.contentView pinSubviewToAllEdges:noConnectionView];
+    UITableViewCell *cell = [self configureGenericCellWith:[self createNoConnectionView]];
+    cell.tag = PostSettingsRowSocialNoConnections;
+    return cell;
+}
+
+- (UITableViewCell *)configureRemainingSharesCell
+{
+    UITableViewCell *cell = [self configureGenericCellWith:[self createRemainingSharesView]];
+    cell.tag = PostSettingsRowSocialRemainingShares;
     return cell;
 }
 

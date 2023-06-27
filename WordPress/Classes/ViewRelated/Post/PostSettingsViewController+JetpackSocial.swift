@@ -1,5 +1,8 @@
+import SwiftUI
 
 extension PostSettingsViewController {
+
+    // MARK: - No connection view
 
     @objc func showNoConnection() -> Bool {
         let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
@@ -27,7 +30,37 @@ extension PostSettingsViewController {
         return viewController.view
     }
 
-    private func hideNoConnectionViewKey() -> String {
+    // MARK: - Remaining shares view
+
+    @objc func showRemainingShares() -> Bool {
+        let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
+        let blogSupportsPublicize = apost.blog.supportsPublicize()
+        let blogHasConnections = publicizeConnections.count > 0
+        // TODO: Check if there's a share limit
+
+        return isJetpackSocialEnabled
+        && blogSupportsPublicize
+        && blogHasConnections
+    }
+
+    @objc func createRemainingSharesView() -> UIView {
+        let viewModel = JetpackSocialRemainingSharesViewModel {
+            // TODO
+            print("Subscribe tap")
+        }
+        let hostController = UIHostingController(rootView: JetpackSocialRemainingSharesView(viewModel: viewModel))
+        hostController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostController.view.backgroundColor = .listForeground
+        return hostController.view
+    }
+
+}
+
+// MARK: - Private methods
+
+private extension PostSettingsViewController {
+
+    func hideNoConnectionViewKey() -> String {
         guard let dotComID = apost.blog.dotComID?.stringValue else {
             return Constants.hideNoConnectionViewKey
         }
@@ -35,17 +68,17 @@ extension PostSettingsViewController {
         return "\(dotComID)-\(Constants.hideNoConnectionViewKey)"
     }
 
-    private func onConnectTap() -> () -> Void {
+    func onConnectTap() -> () -> Void {
         return { [weak self] in
             guard let blog = self?.apost.blog,
-                  let controller = SharingViewController(blog: blog, delegate: self) else {
+                  let controller = SharingViewController(blog: blog, delegate: nil) else {
                 return
             }
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    private func onNotNowTap() -> () -> Void {
+    func onNotNowTap() -> () -> Void {
         return { [weak self] in
             guard let key = self?.hideNoConnectionViewKey() else {
                 return
@@ -55,7 +88,7 @@ extension PostSettingsViewController {
         }
     }
 
-    private func availableServices() -> [PublicizeService] {
+    func availableServices() -> [PublicizeService] {
         let context = apost.managedObjectContext ?? ContextManager.shared.mainContext
         let services = try? PublicizeService.allPublicizeServices(in: context)
         return services ?? []
@@ -63,18 +96,8 @@ extension PostSettingsViewController {
 
     // MARK: - Constants
 
-    private struct Constants {
+    struct Constants {
         static let hideNoConnectionViewKey = "post-settings-social-no-connection-view-hidden"
-    }
-
-}
-
-// MARK: - SharingViewControllerDelegate
-
-extension PostSettingsViewController: SharingViewControllerDelegate {
-
-    public func didChangePublicizeServices() {
-        tableView.reloadData()
     }
 
 }
