@@ -7,7 +7,7 @@ class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
     private let source: BlazeSource
     private let blog: Blog
     private let campaignID: Int
-    private let view: BlazeWebView
+    private weak var view: BlazeWebView?
     private let externalURLHandler: ExternalURLHandler
     private var linkBehavior: LinkBehavior = .all
 
@@ -54,22 +54,23 @@ class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
     }
 
     func startBlazeFlow() {
-        guard let initialURL else {
+        guard let initialURL,
+              let cookieJar = view?.cookieJar else {
             // TODO: Track Analytics Error Event
-            view.dismissView()
+            view?.dismissView()
             return
         }
-        authenticatedRequest(for: initialURL, with: view.cookieJar) { [weak self] (request) in
+        authenticatedRequest(for: initialURL, with: cookieJar) { [weak self] (request) in
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.view.load(request: request)
+            weakSelf.view?.load(request: request)
             // TODO: Track Analytics Event
         }
     }
 
     func dismissTapped() {
-        view.dismissView()
+        view?.dismissView()
         // TODO: Track Analytics Event
     }
 

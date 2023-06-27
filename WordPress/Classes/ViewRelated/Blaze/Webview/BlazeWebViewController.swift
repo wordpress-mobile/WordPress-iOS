@@ -15,7 +15,7 @@ protocol BlazeWebViewModel {
     var navigationTitle: String { get }
 }
 
-protocol BlazeWebView {
+protocol BlazeWebView: NSObjectProtocol {
     func load(request: URLRequest)
     func reloadNavBar()
     func dismissView()
