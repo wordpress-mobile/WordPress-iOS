@@ -83,6 +83,8 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
         case twitter
         case tumblr
         case linkedin
+        case instagram
+        case mastodon
         case unknown
 
         var image: UIImage? {
@@ -95,6 +97,10 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
                 return UIImage(named: "icon-tumblr")
             case .linkedin:
                 return UIImage(named: "icon-linkedin")
+            case .instagram:
+                return UIImage(named: "icon-instagram")
+            case .mastodon:
+                return UIImage(named: "icon-mastodon")
             case .unknown:
                 return UIImage(named: "social-default")?.withRenderingMode(.alwaysTemplate)
             }
