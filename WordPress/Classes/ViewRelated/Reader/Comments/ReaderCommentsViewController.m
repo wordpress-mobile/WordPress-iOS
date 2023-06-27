@@ -1122,10 +1122,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     __weak __typeof(self) weakSelf = self;
 
     cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
-        if (comment && [self isModerationMenuEnabledFor:comment]) {
-            // NOTE: Remove when minimum version is bumped to iOS 14.
-            [self showMenuSheetFor:comment indexPath:indexPath handler:weakSelf.tableViewHandler sourceView:sourceView];
-        } else if (comment) {
+        if (comment) {
             [self shareComment:comment sourceView:sourceView];
         }
     };

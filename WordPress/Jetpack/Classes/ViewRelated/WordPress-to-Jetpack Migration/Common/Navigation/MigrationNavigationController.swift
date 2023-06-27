@@ -52,9 +52,7 @@ class MigrationNavigationController: UINavigationController {
         navigationBar.standardAppearance = standardAppearance
         navigationBar.scrollEdgeAppearance = scrollEdgeAppearance
         navigationBar.compactAppearance = standardAppearance
-        if #available(iOS 15.0, *) {
-            navigationBar.compactScrollEdgeAppearance = scrollEdgeAppearance
-        }
+        navigationBar.compactScrollEdgeAppearance = scrollEdgeAppearance
         navigationBar.isTranslucent = true
         listenForStateChanges()
     }

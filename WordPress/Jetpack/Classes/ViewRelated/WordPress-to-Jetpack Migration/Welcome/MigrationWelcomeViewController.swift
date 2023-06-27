@@ -116,13 +116,7 @@ final class MigrationWelcomeViewController: UIViewController {
         static let tableViewLeadingMargin = CGFloat(30)
 
         /// Used for the `tableHeaderView` layout guide margins.
-        static let tableHeaderViewMargins: NSDirectionalEdgeInsets = {
-            var insets = NSDirectionalEdgeInsets(top: 20, leading: 30, bottom: 30, trailing: 30)
-            if #available(iOS 15, *) {
-                insets.top = 0
-            }
-            return insets
-        }()
+        static let tableHeaderViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 30)
     }
 }
 
