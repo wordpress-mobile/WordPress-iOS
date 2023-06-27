@@ -2,6 +2,12 @@ import WordPressShared
 
 final class PrivacySettingsAnalyticsTracker {
 
+    private let tracker: AnalyticsEventTracking.Type
+
+    init(tracker: AnalyticsEventTracking.Type = WPAnalytics.self) {
+        self.tracker = tracker
+    }
+
     // MARK: - API
 
     func trackPrivacySettingsReportCrashesToggled(enabled: Bool) {
@@ -16,7 +22,7 @@ final class PrivacySettingsAnalyticsTracker {
 
     func track(_ event: PrivacySettingsAnalytics, properties: Properties = [:]) {
         let event = AnalyticsEvent(name: event.rawValue, properties: properties)
-        WPAnalytics.track(event)
+        tracker.track(event)
     }
 
     // MARK: - Types
