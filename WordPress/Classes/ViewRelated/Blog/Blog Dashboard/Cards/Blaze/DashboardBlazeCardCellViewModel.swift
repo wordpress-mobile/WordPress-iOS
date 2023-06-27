@@ -51,20 +51,19 @@ final class DashboardBlazeCardCellViewModel {
     }
 
     private func didRefresh(with result: Result<BlazeCampaignsSearchResponse, Error>) {
-        isRefreshing = false
         if case .success(let response) = result {
-            if let campaign = response.campaigns?.first {
-                self.state = .campaign(BlazeCampaignViewModel(campaign: campaign))
-                if let blogID = blog.dotComID?.intValue {
-                    store.setBlazeCampaign(campaign, forBlogID: blogID)
-                }
+            let campaign = response.campaigns?.first
+            if let blogID = blog.dotComID?.intValue {
+                store.setBlazeCampaign(campaign, forBlogID: blogID)
+            }
+            if let campaign {
+                state = .campaign(BlazeCampaignViewModel(campaign: campaign))
             } else {
-                if let blogID = blog.dotComID?.intValue {
-                    store.setBlazeCampaign(nil, forBlogID: blogID)
-                }
-                self.state = .promo
+                state = .promo
             }
         }
+
+        isRefreshing = false
         onRefresh?(self)
     }
 }
