@@ -1,5 +1,6 @@
 22.8
 -----
+* [**] [internal] Do not save synced blogs if the app has signed out. [#20959]
 
 
 22.7
