@@ -15,9 +15,9 @@ data model as well as any custom migrations.
 
 - Created one-to-many relationship between `PublicizeInfo` and `Blog`
   - `PublicizeInfo`
-    - `blog` (optional, to-many, nullify on delete)
+    - `blog` (optional, to-one, nullify on delete)
   - `Blog`
-    - `publicizeInfo` (required, to-one, cascade on delete)
+    - `publicizeInfo` (optional, to-one, cascade on delete)
 
 ## WordPress 150
 
