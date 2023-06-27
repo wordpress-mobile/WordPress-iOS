@@ -144,7 +144,8 @@ class AppSettingsViewController: UITableViewController {
         let destination = PrivacySettingsViewController(style: .insetGrouped)
         CATransaction.perform {
             self.navigationController?.pushViewController(destination, animated: animated)
-            WPAnalytics.track(.privacySettingsOpened)
+            // FIXME: Commented out to pass the compilation and start adding tests at the PrivacySettingsAnalyticsTracker level
+//            WPAnalytics.track(.privacySettingsOpened)
         } completion: {
             completion?(destination)
         }
