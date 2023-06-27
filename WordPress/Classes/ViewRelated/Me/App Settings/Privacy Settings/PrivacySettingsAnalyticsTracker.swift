@@ -1,4 +1,3 @@
-import Foundation
 import AutomatticTracks
 
 final class PrivacySettingsAnalyticsTracker {
