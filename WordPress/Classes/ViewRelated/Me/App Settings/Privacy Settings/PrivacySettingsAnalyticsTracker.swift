@@ -1,6 +1,13 @@
 import WordPressShared
 
-final class PrivacySettingsAnalyticsTracker {
+protocol PrivacySettingsAnalyticsTracking {
+
+    func trackPrivacySettingsReportCrashesToggled(enabled: Bool)
+
+    func trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: Bool)
+}
+
+final class PrivacySettingsAnalyticsTracker: PrivacySettingsAnalyticsTracking {
 
     private let tracker: AnalyticsEventTracking.Type
 
