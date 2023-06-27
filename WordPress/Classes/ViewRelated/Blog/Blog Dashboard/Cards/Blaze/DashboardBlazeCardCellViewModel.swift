@@ -5,13 +5,22 @@ final class DashboardBlazeCardCellViewModel {
     private(set) var lastestCampaign: BlazeCampaign?
 
     private let blog: Blog
+    private let store: DashboardBlazeStoreProtocol
     private let service = BlazeService()
     private var isRefreshing = false
 
-    var onRefreshNeeded: ((DashboardBlazeCardCellViewModel) -> Void)?
+    var onRefresh: ((DashboardBlazeCardCellViewModel) -> Void)?
 
-    init(blog: Blog) {
+    init(blog: Blog,
+         store: DashboardBlazeStoreProtocol = BlogDashboardPersistence()) {
         self.blog = blog
+        self.store = store
+
+        if RemoteFeatureFlag.blazeManageCampaigns.enabled() {
+            self.lastestCampaign = blog.dotComID.flatMap {
+                store.getBlazeCampaign(forBlogID: $0.intValue)
+            }
+        }
 
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .blazeCampaignCreated, object: nil)
     }
@@ -33,7 +42,15 @@ final class DashboardBlazeCardCellViewModel {
         isRefreshing = false
         if case .success(let response) = result {
             lastestCampaign = response.campaigns?.first
+            if let campaign = response.campaigns?.first, let blogID = blog.dotComID?.intValue {
+                store.storeBlazeCampaign(campaign, forBlogID: blogID)
+            }
         }
-        onRefreshNeeded?(self)
+        onRefresh?(self)
     }
+}
+
+protocol DashboardBlazeStoreProtocol {
+    func getBlazeCampaign(forBlogID blogID: Int) -> BlazeCampaign?
+    func storeBlazeCampaign(_ campaign: BlazeCampaign, forBlogID blogID: Int)
 }

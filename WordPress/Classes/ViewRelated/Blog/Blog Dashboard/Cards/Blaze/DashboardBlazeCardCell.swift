@@ -17,7 +17,7 @@ final class DashboardBlazeCardCell: DashboardCollectionViewCell {
         guard viewModel !== self.viewModel else { return }
         self.viewModel = viewModel
 
-        viewModel.onRefreshNeeded = { [weak self] in
+        viewModel.onRefresh = { [weak self] in
             self?.update(with: $0)
             self?.viewController?.collectionView.collectionViewLayout.invalidateLayout()
         }
