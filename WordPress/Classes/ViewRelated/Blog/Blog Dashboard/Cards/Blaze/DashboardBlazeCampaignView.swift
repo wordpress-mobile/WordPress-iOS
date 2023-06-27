@@ -106,7 +106,7 @@ struct BlazeCampaignViewModel {
     var status: BlazeCampaignStatusViewModel { .init(campaign: campaign) }
 
     var isShowingStats: Bool {
-        switch campaign.status {
+        switch campaign.uiStatus {
         case .created, .processing, .canceled, .approved, .rejected, .scheduled, .unknown:
             return false
         case .active, .finished:
