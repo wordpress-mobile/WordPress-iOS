@@ -1,4 +1,4 @@
-import AutomatticTracks
+import WordPressShared
 
 final class PrivacySettingsAnalyticsTracker {
 
