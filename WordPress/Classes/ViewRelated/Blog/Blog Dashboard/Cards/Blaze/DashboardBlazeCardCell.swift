@@ -27,15 +27,14 @@ final class DashboardBlazeCardCell: DashboardCollectionViewCell {
     private func update(with viewModel: DashboardBlazeCardCellViewModel) {
         guard let blog, let viewController else { return }
 
-        if let campaign = viewModel.lastestCampaign {
-            // Display campaigns
+        switch viewModel.state {
+        case .promo:
+            let cardView = DashboardBlazePromoCardView(.make(with: blog, viewController: viewController))
+            self.setCardView(cardView, subtype: .promo)
+        case .campaign(let campaign):
             let cardView = DashboardBlazeCampaignsCardView()
             cardView.configure(blog: blog, viewController: viewController, campaign: campaign)
             self.setCardView(cardView, subtype: .campaigns)
-        } else {
-            // Display promo
-            let cardView = DashboardBlazePromoCardView(.make(with: blog, viewController: viewController))
-            self.setCardView(cardView, subtype: .promo)
         }
     }
 

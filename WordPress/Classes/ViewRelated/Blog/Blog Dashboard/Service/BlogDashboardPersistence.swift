@@ -40,10 +40,14 @@ extension BlogDashboardPersistence: DashboardBlazeStoreProtocol {
         }
     }
 
-    func storeBlazeCampaign(_ campaign: BlazeCampaign, forBlogID blogID: Int) {
+    func setBlazeCampaign(_ campaign: BlazeCampaign?, forBlogID blogID: Int) {
         do {
             let url = try makeBlazeCampaignURL(for: blogID)
-            try JSONEncoder().encode(campaign).write(to: url)
+            if let campaign {
+                try JSONEncoder().encode(campaign).write(to: url)
+            } else {
+                try? FileManager.default.removeItem(at: url)
+            }
         } catch {
             DDLogError("Failed to store blaze campaign: \(error)")
         }

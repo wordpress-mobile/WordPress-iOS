@@ -88,7 +88,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
         BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, campaign: BlazeCampaign) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, campaign: BlazeCampaignViewModel) {
         self.blog = blog
         self.presentingViewController = viewController
 
@@ -101,8 +101,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
             ])
         ], card: .blaze)
 
-        let viewModel = BlazeCampaignViewModel(campaign: campaign)
-        campaignView.configure(with: viewModel, blog: blog)
+        campaignView.configure(with: campaign, blog: blog)
     }
 }
 

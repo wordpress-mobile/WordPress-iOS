@@ -1,8 +1,11 @@
 import Foundation
 import WordPressKit
 
-@objc final class BlazeService: NSObject {
+protocol BlazeServiceProtocol {
+    func getRecentCampaigns(for blog: Blog, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void)
+}
 
+@objc final class BlazeService: NSObject, BlazeServiceProtocol {
     private let contextManager: CoreDataStackSwift
     private let remote: BlazeServiceRemote
 

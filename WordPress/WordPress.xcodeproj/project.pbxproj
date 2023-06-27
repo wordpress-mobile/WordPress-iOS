@@ -375,6 +375,7 @@
 		0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
 		0CD382842A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
+		0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
@@ -6068,6 +6069,7 @@
 		0CB4057229C8DD01008EED0A /* BlogDashboardPersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationView.swift; sourceTree = "<group>"; };
 		0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizeCardCell.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
+		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		150B6590614A28DF9AD25491 /* Pods-Apps-Jetpack.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -13695,6 +13697,7 @@
 				0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */,
 				011F52C52A15413800B04114 /* FreeToPaidPlansDashboardCardHelperTests.swift */,
 				FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */,
+				0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */,
 				0C391E632A312DB20040EA91 /* BlazeCampaignViewModelTests.swift */,
 			);
 			path = Dashboard;
@@ -23581,6 +23584,7 @@
 				E6843840221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift in Sources */,
 				325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */,
 				805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */,
+				0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */,
 				0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */,
 				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
 				B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */,
