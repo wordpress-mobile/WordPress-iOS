@@ -48,7 +48,7 @@ extension PostSettingsViewController {
             // TODO
             print("Subscribe tap")
         }
-        let hostController = UIHostingController(rootView: JetpackSocialRemainingSharesView(viewModel: viewModel))
+        let hostController = UIHostingController(rootView: JetpackSocialSettingsRemainingSharesView(viewModel: viewModel))
         hostController.view.translatesAutoresizingMaskIntoConstraints = false
         hostController.view.backgroundColor = .listForeground
         return hostController.view

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct JetpackSocialRemainingSharesView: View {
+struct JetpackSocialSettingsRemainingSharesView: View {
 
     let viewModel: JetpackSocialRemainingSharesViewModel
 
@@ -37,16 +37,16 @@ struct JetpackSocialRemainingSharesView: View {
     }
 
     private struct Constants {
-        static let remainingTextFormat = NSLocalizedString("social.remainingshares.text.format",
+        static let remainingTextFormat = NSLocalizedString("postsettings.social.remainingshares.text.format",
                                                            value: "%1$d/%2$d social shares remaining",
                                                            comment: "Beginning text of the remaining social shares a user has left."
                                                            + " %1$d is their current remaining shares. %2$d is their share limit."
                                                            + " This text is combined with ' in the next 30 days' if there is no warning displayed.")
-        static let remainingEndText = NSLocalizedString("social.remainingshares.text.part",
+        static let remainingEndText = NSLocalizedString("postsettings.social.remainingshares.text.part",
                                                         value: " in the next 30 days",
                                                         comment: "The second half of the remaining social shares a user has."
                                                         + " This is only displayed when there is no social limit warning.")
-        static let subscribeText = NSLocalizedString("social.remainingshares.subscribe",
+        static let subscribeText = NSLocalizedString("postsettings.social.remainingshares.subscribe",
                                                      value: "Subscribe now to share more",
                                                      comment: "Title for the button to subscribe to Jetpack Social on the remaining shares view")
     }
