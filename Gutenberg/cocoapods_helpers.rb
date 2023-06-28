@@ -85,13 +85,12 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 end
 
 def gutenberg_dependencies(options:)
-  if options[:path]
-    podspec_prefix = options[:path]
-  elsif options[:tag] || options[:commit]
-    return # when referencing via a tag or commit, we download pre-built frameworks
-  else
-    raise "Unexpected Gutenberg dependencies configuration '#{options}'"
-  end
+  # When referencing via a tag or commit, we download pre-built frameworks.
+  return if options.key?(:tag) || options.key?(:commit)
+
+  podspec_prefix = options[:path]
+
+  raise "Unexpected Gutenberg dependencies configuration '#{options}'" if podspec_prefix.nil?
 
   podspec_prefix += '/third-party-podspecs'
   podspec_extension = 'podspec.json'
