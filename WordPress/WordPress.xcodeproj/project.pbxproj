@@ -342,6 +342,8 @@
 		0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
+		0C0D3B102A4CB4990050A00D /* BlazeCampaignFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0F2A4CB4990050A00D /* BlazeCampaignFooterView.swift */; };
+		0C0D3B112A4CB4990050A00D /* BlazeCampaignFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0F2A4CB4990050A00D /* BlazeCampaignFooterView.swift */; };
 		0C35FFF129CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */; };
 		0C35FFF229CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */; };
 		0C35FFF429CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */; };
@@ -6062,6 +6064,7 @@
 		0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+Comparable.swift"; sourceTree = "<group>"; };
 		0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelMock.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
+		0C0D3B0F2A4CB4990050A00D /* BlazeCampaignFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignFooterView.swift; sourceTree = "<group>"; };
 		0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardHelpers.swift; sourceTree = "<group>"; };
 		0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModelTests.swift; sourceTree = "<group>"; };
 		0C35FFF529CBB5DE00D224EB /* BlogDashboardEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardEmptyStateCell.swift; sourceTree = "<group>"; };
@@ -17667,6 +17670,7 @@
 			isa = PBXGroup;
 			children = (
 				FA111E372A2F38FC00896FCE /* BlazeCampaignsViewController.swift */,
+				0C0D3B0F2A4CB4990050A00D /* BlazeCampaignFooterView.swift */,
 				FA3A28172A38D36900206D74 /* BlazeCampaignTableViewCell.swift */,
 				FA3A281A2A39C8FF00206D74 /* BlazeCampaignSingleStatView.swift */,
 				0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */,
@@ -21271,6 +21275,7 @@
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
 				80A2154629D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */,
 				F4DDE2C229C92F0D00C02A76 /* CrashLogging+Singleton.swift in Sources */,
+				0C0D3B102A4CB4990050A00D /* BlazeCampaignFooterView.swift in Sources */,
 				4629E4212440C5B20002E15C /* GutenbergCoverUploadProcessor.swift in Sources */,
 				F45326D829F6B8A6005F9F31 /* EnhancedSiteCreationAnalyticsEvent.swift in Sources */,
 				FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */,
@@ -25058,6 +25063,7 @@
 				FABB24842602FC2C00C8785C /* SiteStatsTableHeaderView.swift in Sources */,
 				FABB24852602FC2C00C8785C /* MediaSizeSliderCell.swift in Sources */,
 				80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */,
+				0C0D3B112A4CB4990050A00D /* BlazeCampaignFooterView.swift in Sources */,
 				FABB24862602FC2C00C8785C /* NotificationContentRouter.swift in Sources */,
 				178DDD31266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */,
 				FABB24872602FC2C00C8785C /* PageLayoutService.swift in Sources */,

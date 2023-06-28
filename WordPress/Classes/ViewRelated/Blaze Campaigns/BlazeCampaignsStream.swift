@@ -24,7 +24,6 @@ final class BlazeCampaignsStream {
         guard let service = BlazeService() else {
             return assertionFailure("Failed to create BlazeService")
         }
-
         guard !state.isLoading && hasMore else {
             return
         }
@@ -34,17 +33,27 @@ final class BlazeCampaignsStream {
     }
 
     #warning("fix this being called form background")
+
+    var didFail = false
+
     private func load(service: BlazeService, siteID: Int) async {
         state.isLoading = true
+        state.error = nil
         do {
             let response = try await service.recentCampaigns(for: siteID, page: pages.count + 1)
             let campaigns = response.campaigns ?? []
             if #available(iOS 16, *) {
-                try? await Task.sleep(for: .seconds(5))
+                try? await Task.sleep(for: .seconds(4))
             }
-            pages.append(response)
-            state.campaigns += campaigns
-            hasMore = (response.totalPages ?? 0) > pages.count && !campaigns.isEmpty
+            #warning("TEMP")
+            if pages.count == 0 || didFail {
+                pages.append(response)
+                state.campaigns += campaigns
+                hasMore = (response.totalPages ?? 0) > pages.count && !campaigns.isEmpty
+            } else {
+                didFail = true
+                state.error = URLError(.unknown)
+            }
         } catch {
             state.error = error
         }

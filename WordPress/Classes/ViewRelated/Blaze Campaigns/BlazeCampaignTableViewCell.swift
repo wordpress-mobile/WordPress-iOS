@@ -1,3 +1,5 @@
+import UIKit
+
 final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
 
     // MARK: - Views

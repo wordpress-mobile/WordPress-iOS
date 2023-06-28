@@ -13,9 +13,11 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     }()
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        // Using grouped style to disable sticky section footers
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 128
         tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.register(BlazeCampaignTableViewCell.self, forCellReuseIdentifier: BlazeCampaignTableViewCell.defaultReuseID)
@@ -23,6 +25,8 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         tableView.delegate = self
         return tableView
     }()
+
+    private let footerView = BlazeCampaignFooterView()
 
     // MARK: - Properties
 
@@ -43,6 +47,12 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         fatalError("init(coder:) has not been implemented")
     }
 
+    enum Cell {
+        case campaign(BlazeCampaign)
+        case spinner
+        case error
+    }
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -51,6 +61,8 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         setupView()
         setupNavBar()
         setupNoResults()
+
+        footerView.onRetry = { [weak self] in self?.stream.load() }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -63,16 +75,19 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         stream.didChangeState = nil
 
         stream = BlazeCampaignsStream(blog: blog)
-        stream.didChangeState = { [weak self] _ in self?.refreshView() }
+        stream.didChangeState = { [weak self] _ in self?.reloadView() }
         stream.load()
     }
 
-    private func refreshView() {
+    private func reloadView() {
+        reloadStateView()
+        reloadFooterView()
         tableView.reloadData()
+    }
 
+    private func reloadStateView() {
         hideNoResults()
         noResultsViewController.hideImageView(true)
-
         if state.campaigns.isEmpty {
             if state.isLoading {
                 noResultsViewController.hideImageView(false)
@@ -82,8 +97,20 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
             } else {
                 showNoResultsView()
             }
+        }
+    }
+
+    private func reloadFooterView() {
+        if !state.campaigns.isEmpty {
+            if state.isLoading {
+                footerView.state = .loading
+            } else if state.error != nil {
+                footerView.state = .error
+            } else {
+                footerView.state = .empty
+            }
         } else {
-            // Loading next page
+            footerView.state = .empty
         }
     }
 
@@ -130,10 +157,15 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard state.isLoadingMore else { return nil }
-        let indicator = UIActivityIndicatorView(style: .medium)
-        indicator.startAnimating()
-        return indicator
+        footerView
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
+            if state.error == nil {
+                stream.load()
+            }
+        }
     }
 }
 
