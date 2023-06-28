@@ -704,11 +704,11 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         // Call the completion block after context is saved. The callback is called on the context queue because `posts`
         // contains models that are bound to the `self.managedObjectContext` object.
-        [self.managedObjectContext performBlock:^{
-            if (completion) {
+        if (completion) {
+            [self.managedObjectContext performBlock:^{
                 completion(posts);
-            }
-        }];
+            }];
+        }
     } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
 }
 
