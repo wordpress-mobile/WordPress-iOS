@@ -43,6 +43,7 @@ class PostEditorNavigationBarManager {
         button.accessibilityIdentifier = "more_post_options"
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
         button.setContentHuggingPriority(.required, for: .horizontal)
+        button.tintColor = UIColor.black
         return button
     }()
 
@@ -164,7 +165,7 @@ class PostEditorNavigationBarManager {
     }
 
     var rightBarButtonItems: [UIBarButtonItem] {
-        return [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
+        return [publishBarButtonItem, separatorButtonItem, moreBarButtonItem]
     }
 
     func reloadPublishButton() {
