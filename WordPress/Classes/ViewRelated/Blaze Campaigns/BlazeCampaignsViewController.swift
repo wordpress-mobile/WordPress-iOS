@@ -86,14 +86,22 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     }
 
     private func fetchCampaigns() {
+        guard let service = BlazeService() else { return }
+
         isLoading = true
-
-        // FIXME: Fetch campaigns via BlazeService
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            self?.isLoading = false
-            self?.campaigns = mockResponse.campaigns ?? []
+        service.getRecentCampaigns(for: blog) { [weak self] in
+            self?.didFetchCampaigns($0)
         }
+    }
+
+    private func didFetchCampaigns(_ result: Result<BlazeCampaignsSearchResponse, Error>) {
+        switch result {
+        case .success(let response):
+            campaigns = response.campaigns ?? []
+        case .failure:
+            showErrorView()
+        }
+        isLoading = false
     }
 
     @objc private func plusButtonTapped() {
@@ -187,79 +195,3 @@ private extension BlazeCampaignsViewController {
         }
     }
 }
-
-private let mockResponse: BlazeCampaignsSearchResponse = {
-    let decoder = JSONDecoder()
-    decoder.keyDecodingStrategy = .convertFromSnakeCase
-    decoder.dateDecodingStrategy = .iso8601
-    return try! decoder.decode(BlazeCampaignsSearchResponse.self, from: """
-    {
-        "totalItems": 3,
-        "campaigns": [
-            {
-                "campaign_id": 26916,
-                "name": "Test Post - don't approve Test Post - don't approve",
-                "start_date": "2023-06-13T00:00:00Z",
-                "end_date": "2023-06-01T19:15:45Z",
-                "status": "finished",
-                "ui_status": "finished",
-                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
-                "budget_cents": 500,
-                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                "content_config": {
-                    "title": "Test Post - don't approve",
-                    "snippet": "Test Post Empty Empty",
-                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
-                },
-                "campaign_stats": {
-                    "impressions_total": 1000,
-                    "clicks_total": 235
-                }
-            },
-            {
-                "campaign_id": 1,
-                "name": "Test Post - don't approve",
-                "start_date": "2023-06-13T00:00:00Z",
-                "end_date": "2023-06-01T19:15:45Z",
-                "status": "rejected",
-                "ui_status": "rejected",
-                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
-                "budget_cents": 5000,
-                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                "content_config": {
-                    "title": "Test Post - don't approve",
-                    "snippet": "Test Post Empty Empty",
-                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
-                },
-                "campaign_stats": {
-                    "impressions_total": 1000,
-                    "clicks_total": 235
-                }
-            },
-            {
-                "campaign_id": 2,
-                "name": "Test Post - don't approve",
-                "start_date": "2023-06-13T00:00:00Z",
-                "end_date": "2023-06-01T19:15:45Z",
-                "status": "active",
-                "ui_status": "active",
-                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
-                "budget_cents": 1000,
-                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                "content_config": {
-                    "title": "Test Post - don't approve",
-                    "snippet": "Test Post Empty Empty",
-                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
-                },
-                "campaign_stats": {
-                    "impressions_total": 5000,
-                    "clicks_total": 1035
-                }
-            }
-        ]
-    }
-    """.data(using: .utf8)!)
-}()
