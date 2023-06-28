@@ -30,9 +30,6 @@ public class BlockEditorScreen: ScreenObject {
     var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
     var applyButton: XCUIElement { applyButtonGetter(app) }
 
-    var videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-    var audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
@@ -91,19 +88,19 @@ public class BlockEditorScreen: ScreenObject {
         return self
     }
 
-    public func addVideo() -> Self {
+    public func addVideoFromUrl(urlPath: String) -> Self {
         addMediaBlockFromUrl(
             blockType: "Video block",
-            UrlPath: videoUrlPath
+            UrlPath: urlPath
         )
 
         return self
     }
 
-    public func addAudio() -> Self {
+    public func addAudioFromUrl(urlPath: String) -> Self {
         addMediaBlockFromUrl(
             blockType: "Audio block",
-            UrlPath: audioUrlPath
+            UrlPath: urlPath
         )
 
         return self
@@ -118,9 +115,9 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func verifyMediaBlocksDisplayed() -> Self {
-        let imagePredicate = NSPredicate(format: "label CONTAINS[c] 'Image block'")
-        let videoPredicate = NSPredicate(format: "label CONTAINS[c] 'Video block'")
-        let audioPredicate = NSPredicate(format: "label CONTAINS[c] 'Audio block'")
+        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
+        let videoPredicate = NSPredicate(format: "label == 'Video Block. Row 2'")
+        let audioPredicate = NSPredicate(format: "label == 'Audio Block. Row 3'")
 
         XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.exists)
         XCTAssertTrue(app.buttons.containing(videoPredicate).firstMatch.exists)

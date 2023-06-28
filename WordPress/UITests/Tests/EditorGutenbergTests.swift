@@ -21,6 +21,8 @@ class EditorGutenbergTests: XCTestCase {
 
     let title = "Rich post title"
     let content = "Some text, and more text"
+    let videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    let audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
 
     func testTextPostPublish() throws {
 
@@ -80,8 +82,8 @@ class EditorGutenbergTests: XCTestCase {
     func testAddMediaBlocks() throws {
         try BlockEditorScreen()
             .addImage()
-            .addVideo()
-            .addAudio()
+            .addVideoFromUrl(urlPath: videoUrlPath)
+            .addAudioFromUrl(urlPath: audioUrlPath)
             .verifyMediaBlocksDisplayed()
     }
 }
