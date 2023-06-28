@@ -3672,6 +3672,10 @@
 		F49D7BEC29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */; };
 		F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4BECD1C288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
+		F4C1FC632A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1FC622A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift */; };
+		F4C1FC642A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1FC622A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift */; };
+		F4C1FC662A44836300AD7CB0 /* PrivacySettingsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1FC652A44836300AD7CB0 /* PrivacySettingsAnalytics.swift */; };
+		F4C1FC672A44836300AD7CB0 /* PrivacySettingsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1FC652A44836300AD7CB0 /* PrivacySettingsAnalytics.swift */; };
 		F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
 		F4CBE3D6292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */; };
 		F4CBE3D7292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */; };
@@ -9049,6 +9053,8 @@
 		F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEvent.swift; sourceTree = "<group>"; };
 		F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+PopoverAnchor.swift"; sourceTree = "<group>"; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
+		F4C1FC622A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalyticsTracker.swift; sourceTree = "<group>"; };
+		F4C1FC652A44836300AD7CB0 /* PrivacySettingsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalytics.swift; sourceTree = "<group>"; };
 		F4CBE3D329258AD6004FFBB6 /* MeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeaderView.h; sourceTree = "<group>"; };
 		F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewControllerConfiguration.swift; sourceTree = "<group>"; };
 		F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutActionHandler.swift; sourceTree = "<group>"; };
@@ -11040,11 +11046,11 @@
 		3F29EB6E240420C3005313DE /* App Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F4C1FC612A4480F700AD7CB0 /* Privacy Settings */,
 				F44293D428E3B39400D340AF /* App Icons */,
 				3F29EB6824041F6D005313DE /* About */,
 				FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */,
 				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
-				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
 				F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */,
 				CECEEB542823164800A28ADE /* MediaCacheSettingsViewController.swift */,
 				80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */,
@@ -17415,6 +17421,16 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		F4C1FC612A4480F700AD7CB0 /* Privacy Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
+				F4C1FC622A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift */,
+				F4C1FC652A44836300AD7CB0 /* PrivacySettingsAnalytics.swift */,
+			);
+			path = "Privacy Settings";
+			sourceTree = "<group>";
+		};
 		F4D829602930E9DD00038726 /* Delete WordPress */ = {
 			isa = PBXGroup;
 			children = (
@@ -21715,6 +21731,7 @@
 				9A1A67A622B2AD4E00FF8422 /* CountriesMap.swift in Sources */,
 				439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */,
 				40F46B6A22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */,
+				F4C1FC632A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */,
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				46F584822624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */,
 				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
@@ -22626,6 +22643,7 @@
 				E6311C431ECA017E00122529 /* UserProfile.swift in Sources */,
 				B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */,
 				F5AE43E425DD02C1003675F4 /* StoryEditor.swift in Sources */,
+				F4C1FC662A44836300AD7CB0 /* PrivacySettingsAnalytics.swift in Sources */,
 				08A4E129289D202F001D9EC7 /* UserPersistentStore.swift in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				C31852A129670F8100A78BE9 /* JetpackScanViewController+JetpackBannerViewController.swift in Sources */,
@@ -23962,6 +23980,7 @@
 				F195C42C26DFBE21000EC884 /* WeeklyRoundupBackgroundTask.swift in Sources */,
 				FABB21752602FC2C00C8785C /* HeaderContentGroup.swift in Sources */,
 				FABB21762602FC2C00C8785C /* CameraHandler.swift in Sources */,
+				F4C1FC642A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */,
 				FA73D7EA27987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				FABB21772602FC2C00C8785C /* JetpackConnectionViewController.swift in Sources */,
 				803BB97A2959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */,
@@ -24122,6 +24141,7 @@
 				17870A75281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */,
 				FABB21E82602FC2C00C8785C /* FormattableContentRange.swift in Sources */,
 				FABB21E92602FC2C00C8785C /* MenuItemSourceHeaderView.m in Sources */,
+				F4C1FC672A44836300AD7CB0 /* PrivacySettingsAnalytics.swift in Sources */,
 				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
 				FABB21EA2602FC2C00C8785C /* RestoreWarningView.swift in Sources */,
 				17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */,

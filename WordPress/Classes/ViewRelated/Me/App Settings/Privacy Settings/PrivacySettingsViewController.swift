@@ -5,6 +5,12 @@ import AutomatticTracks
 class PrivacySettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
 
+    // MARK: - Dependencies
+
+    private let analyticsTracker = PrivacySettingsAnalyticsTracker()
+
+    // MARK: - Init
+
     override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Privacy Settings", comment: "Privacy Settings Title")
@@ -17,6 +23,8 @@ class PrivacySettingsViewController: UITableViewController {
     required convenience init() {
         self.init(style: .insetGrouped)
     }
+
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,7 +174,7 @@ class PrivacySettingsViewController: UITableViewController {
     func crashReportingChanged(_ enabled: Bool) {
         UserSettings.userHasOptedOutOfCrashLogging = !enabled
 
-        WPAnalytics.track(.privacySettingsReportCrashesToggled, properties: ["enabled": enabled])
+        analyticsTracker.trackPrivacySettingsReportCrashesToggled(enabled: enabled)
 
         WordPressAppDelegate.crashLogging?.setNeedsDataRefresh()
     }
