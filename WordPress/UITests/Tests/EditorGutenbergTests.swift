@@ -10,10 +10,9 @@ class EditorGutenbergTests: XCTestCase {
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
-        try EditorFlow
-            .goToMySiteScreen()
-            .tabBar.gotoBlockEditorScreen()
-            .dismissNotificationAlertIfNeeded(.accept)
+
+        try TabNavComponent()
+            .gotoBlockEditorScreen()
     }
 
     override func tearDownWithError() throws {
@@ -22,6 +21,8 @@ class EditorGutenbergTests: XCTestCase {
 
     let title = "Rich post title"
     let content = "Some text, and more text"
+    let videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    let audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
 
     func testTextPostPublish() throws {
 
@@ -76,5 +77,13 @@ class EditorGutenbergTests: XCTestCase {
             .addParagraphBlock(withText: content)
             .addImageGallery()
             .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
+    }
+
+    func testAddMediaBlocks() throws {
+        try BlockEditorScreen()
+            .addImage()
+            .addVideoFromUrl(urlPath: videoUrlPath)
+            .addAudioFromUrl(urlPath: audioUrlPath)
+            .verifyMediaBlocksDisplayed()
     }
 }
