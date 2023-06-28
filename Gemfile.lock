@@ -1,13 +1,15 @@
 GIT
   remote: https://github.com/iangmaia/danger-iantest
-  revision: 67ea80438925f8ab5eaa6dcc28d6a24cd53d03f7
+  revision: bb8532749add26f3bde9e91f5da16a03c0911d91
   branch: main
   specs:
     danger-iantest (0.0.1)
       danger (~> 9.3)
+      danger-junit (~> 1.0)
       danger-plugin-api (~> 1.0)
       danger-swiftlint (~> 0.29)
       danger-xcode_summary (~> 1.0)
+      rubocop (~> 1.53)
 
 GEM
   remote: https://rubygems.org/
@@ -111,6 +113,9 @@ GEM
       no_proxy_fix
       octokit (~> 5.0)
       terminal-table (>= 1, < 4)
+    danger-junit (1.0.2)
+      danger (> 2.0)
+      ox (~> 2.0)
     danger-plugin-api (1.0.0)
       danger (> 2.0)
     danger-rubocop (0.11.0)
@@ -281,6 +286,7 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
+    language_server-protocol (3.17.0.3)
     memoist (0.16.2)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
@@ -302,6 +308,7 @@ GEM
     options (2.3.2)
     optparse (0.1.1)
     os (1.1.4)
+    ox (2.14.16)
     parallel (1.23.0)
     parser (3.2.2.3)
       ast (~> 2.4.1)
@@ -326,8 +333,9 @@ GEM
     rexml (3.2.5)
     rmagick (3.2.0)
     rouge (2.0.7)
-    rubocop (1.52.1)
+    rubocop (1.53.1)
       json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.2.2.3)
       rainbow (>= 2.2.2, < 4.0)
@@ -394,7 +402,6 @@ PLATFORMS
 DEPENDENCIES
   cocoapods (~> 1.12, >= 1.12.1)
   commonmarker
-  danger (~> 9.3)
   danger-iantest!
   danger-rubocop (~> 0.10)
   dotenv

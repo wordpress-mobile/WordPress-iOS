@@ -4,8 +4,8 @@
 
 danger.import_dangerfile(gem: 'danger-iantest')
 
-# importing the main Dangerfile from the Gem will bring all plugin instances
 manifest_pr_checker.check_gemfile_lock_updated
+iantest_main.run_ios_pr_checks
 
 message "Danger ID: `#{@env.danger_id}`"
 

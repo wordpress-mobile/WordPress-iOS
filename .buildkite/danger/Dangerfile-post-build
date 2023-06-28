@@ -4,10 +4,17 @@
 
 danger.import_dangerfile(gem: 'danger-iantest')
 
-xcode_summary.report 'build/results/WordPress.xcresult'
+# xcode_summary.report 'build/results/WordPress.xcresult'
+junit.parse 'build/results/WordPress.xml'
+# junit.report
+all_test = junit.tests.map(&:attributes)
+slowest_test = all_test.sort_by { |attributes| attributes[:time].to_f }.last
+
+markdown '## Test Results'
+markdown "#{slowest_test[:time]} took #{slowest_test[:time]} seconds"
 
 message "Danger ID: `#{@env.danger_id}`"
 
 if status_report[:errors].count.zero? && status_report[:warnings].count.zero?
-  markdown(":white_check_mark: No errors or warnings on post-build :thumbsup:")
+  markdown("## :white_check_mark: No errors or warnings on post-build :thumbsup:")
 end
