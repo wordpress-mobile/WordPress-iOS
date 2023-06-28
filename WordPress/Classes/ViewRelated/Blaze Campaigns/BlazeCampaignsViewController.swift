@@ -97,7 +97,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc private func plusButtonTapped() {
-        // TODO: Track event
+        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignsList)
         BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
 }
