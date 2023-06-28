@@ -171,6 +171,7 @@
         <attribute name="mobileEditor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="options" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
         <attribute name="organizationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="planActiveFeatures" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]" syncable="YES"/>
         <attribute name="planID" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="planTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postFormats" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>

@@ -164,6 +164,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
 @property (nonatomic, strong, readwrite, nullable) NSString *planTitle;
+@property (nonatomic, strong, readwrite, nullable) NSArray<NSString *> *planActiveFeatures;
 @property (nonatomic, assign, readwrite) BOOL hasPaidPlan;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;

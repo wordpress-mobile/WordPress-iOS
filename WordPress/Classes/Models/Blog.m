@@ -81,6 +81,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic settings;
 @dynamic planID;
 @dynamic planTitle;
+@dynamic planActiveFeatures;
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
