@@ -134,6 +134,18 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    // MARK: - Navigation
+
+    func navigateToPrivacySettings(animated: Bool = true, completion: ((PrivacySettingsViewController) -> Void)? = nil) {
+        let destination = PrivacySettingsViewController(style: .insetGrouped)
+        CATransaction.perform {
+            self.navigationController?.pushViewController(destination, animated: animated)
+            WPAnalytics.track(.privacySettingsOpened)
+        } completion: {
+            completion?(destination)
+        }
+    }
+
     // MARK: - Actions
 
     @objc func imageSizeChanged() -> (Int) -> Void {
@@ -267,10 +279,7 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
-            WPAnalytics.track(.privacySettingsOpened)
-
-            let controller = PrivacySettingsViewController(style: .insetGrouped)
-            self?.navigationController?.pushViewController(controller, animated: true)
+            self?.navigateToPrivacySettings(animated: true)
         }
     }
 

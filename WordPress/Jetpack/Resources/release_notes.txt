@@ -1,9 +1,7 @@
-WordPress.com plans are coming to the Jetpack app. Get the plan that’s right for your publishing needs and manage it in the same place you write all your best words.
+* [**] [internal] Blaze: Switch to using new canBlaze property to determine Blaze eligiblity. [#20916]
+* [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
+* [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
+* [*] [internal] Posts list: Disable action bar/menu button when a post is being uploaded [#20885]
+* [*] Block editor: Image block - Fix issue where in some cases the image doesn't display the right aspect ratio [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5869]
+* [*] Block editor: Fix cursor positioning when dictating text on iOS [https://github.com/WordPress/gutenberg/issues/51227]
 
-There’s a shiny new “Personalize Home Tab” button at the bottom of your site dashboard where you can customize your visible dashboard cards. (Want to hide the cards you don’t need? Just use the “More” menu.)
-
-We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. There’s also a lock icon for disabled cells in the editor so you know when they aren’t in use.
-
-On the “Search domains” screen, you’ll now see an error message if you choose a default domain that isn’t supported by your site. No more forever-spinning progress wheel.
-
-Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)

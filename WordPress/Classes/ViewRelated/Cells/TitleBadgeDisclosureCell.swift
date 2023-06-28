@@ -50,6 +50,8 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         cellTitle.text = ""
         cellBadge.text = ""
     }

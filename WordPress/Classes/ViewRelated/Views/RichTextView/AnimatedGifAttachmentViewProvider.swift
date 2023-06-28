@@ -5,7 +5,6 @@ import UIKit
  * This can be used by using: `NSTextAttachment.registerViewProviderClass`
  *
  */
-@available(iOS 15.0, *)
 class AnimatedGifAttachmentViewProvider: NSTextAttachmentViewProvider {
     deinit {
         guard let animatedImageView = view as? CachedAnimatedImageView else {

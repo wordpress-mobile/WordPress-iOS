@@ -55,8 +55,7 @@ struct DomainsDashboardView: View {
 
     /// Builds the site address section for the given blog
     private func makeSiteAddressSection(blog: Blog) -> some View {
-        Section(header: makeSiteAddressHeader(),
-                footer: Text(TextContent.primarySiteSectionFooter(blog.hasPaidPlan))) {
+        Section(footer: Text(TextContent.primarySiteSectionFooter(blog.hasPaidPlan))) {
             VStack(alignment: .leading) {
                 Text(TextContent.siteAddressTitle)
                 Text(blog.freeSiteAddress)
@@ -127,13 +126,6 @@ struct DomainsDashboardView: View {
         return Text(stringForDomain)
                 .font(.subheadline)
                 .foregroundColor(domain.domain.expirySoon || domain.domain.expired ? Color(UIColor.error) : Color(UIColor.textSubtle))
-    }
-
-    private func makeSiteAddressHeader() -> Divider? {
-        if #available(iOS 15, *) {
-            return nil
-        }
-        return Divider()
     }
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
