@@ -3,7 +3,7 @@ extension PostSettingsViewController {
 
     @objc func showNoConnection() -> Bool {
         let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
-        let isNoConnectionViewHidden = UserPersistentStoreFactory.instance().bool(forKey: Constants.hideNoConnectionViewKey)
+        let isNoConnectionViewHidden = UserPersistentStoreFactory.instance().bool(forKey: hideNoConnectionViewKey())
         let blogSupportsPublicize = apost.blog.supportsPublicize()
         let blogHasNoConnections = publicizeConnections.count == 0
         let blogHasServices = availableServices().count > 0
@@ -27,6 +27,14 @@ extension PostSettingsViewController {
         return viewController.view
     }
 
+    private func hideNoConnectionViewKey() -> String {
+        guard let dotComID = apost.blog.dotComID?.stringValue else {
+            return Constants.hideNoConnectionViewKey
+        }
+
+        return "\(dotComID)-\(Constants.hideNoConnectionViewKey)"
+    }
+
     private func onConnectTap() -> () -> Void {
         return { [weak self] in
             guard let blog = self?.apost.blog,
@@ -39,7 +47,10 @@ extension PostSettingsViewController {
 
     private func onNotNowTap() -> () -> Void {
         return { [weak self] in
-            UserPersistentStoreFactory.instance().set(true, forKey: Constants.hideNoConnectionViewKey)
+            guard let key = self?.hideNoConnectionViewKey() else {
+                return
+            }
+            UserPersistentStoreFactory.instance().set(true, forKey: key)
             self?.tableView.reloadData()
         }
     }
