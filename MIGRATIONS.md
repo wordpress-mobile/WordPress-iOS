@@ -5,6 +5,10 @@ data model as well as any custom migrations.
 
 ## WordPress 151
 
+@dvdchr 2023-06-28
+
+- `Blog`: added `planActiveFeatures` (optional, no default, `Transformable` with type `[String]`)
+
 @dvdchr 2023-06-23
 
 - Created a new entity `PublicizeInfo` with:
