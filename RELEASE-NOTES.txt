@@ -1,6 +1,7 @@
 22.8
 -----
 * [**] [internal] Do not save synced blogs if the app has signed out. [#20959]
+* [**] [internal] Make sure synced posts are saved before calling completion block. [#20960]
 
 
 22.7

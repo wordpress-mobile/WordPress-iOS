@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SiteSuggestion;
 @class PageTemplateCategory;
 @class JetpackFeaturesRemovalCoordinator;
+@class PublicizeInfo;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -180,6 +181,11 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *              and their values.
  */
 @property (nonatomic, strong, readwrite, nullable) BlogSettings *settings;
+
+/**
+ *  @details    Maps to a PublicizeInfo instance, which contains Jetpack Social auto-sharing information.
+ */
+@property (nonatomic, strong, readwrite, nullable) PublicizeInfo *publicizeInfo;
 
 /**
  *  @details    Flags whether the current user is an admin on the blog.

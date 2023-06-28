@@ -8,19 +8,27 @@ public class BlockEditorScreen: ScreenObject {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     }
 
-    var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
-
     let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["add-block-button"] // Uses a testID
+        $0.buttons["add-block-button"]
     }
-
-    var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
 
     let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["more_post_options"]
     }
 
+    let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Insert from URL"]
+    }
+
+    let applyButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Apply"]
+    }
+
+    var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
+    var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
+    var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
+    var applyButton: XCUIElement { applyButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
@@ -76,6 +84,44 @@ public class BlockEditorScreen: ScreenObject {
     public func addImageGallery() throws -> BlockEditorScreen {
         addBlock("Gallery block")
         try addMultipleImages(numberOfImages: 3)
+
+        return self
+    }
+
+    public func addVideoFromUrl(urlPath: String) -> Self {
+        addMediaBlockFromUrl(
+            blockType: "Video block",
+            UrlPath: urlPath
+        )
+
+        return self
+    }
+
+    public func addAudioFromUrl(urlPath: String) -> Self {
+        addMediaBlockFromUrl(
+            blockType: "Audio block",
+            UrlPath: urlPath
+        )
+
+        return self
+    }
+
+    private func addMediaBlockFromUrl(blockType: String, UrlPath: String) {
+        addBlock(blockType)
+        insertFromUrlButton.tap()
+        app.textFields.element.typeText(UrlPath)
+        applyButton.tap()
+    }
+
+    @discardableResult
+    public func verifyMediaBlocksDisplayed() -> Self {
+        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
+        let videoPredicate = NSPredicate(format: "label == 'Video Block. Row 2'")
+        let audioPredicate = NSPredicate(format: "label == 'Audio Block. Row 3'")
+
+        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(videoPredicate).firstMatch.exists)
+        XCTAssertTrue(app.buttons.containing(audioPredicate).firstMatch.exists)
 
         return self
     }
@@ -186,7 +232,7 @@ public class BlockEditorScreen: ScreenObject {
     private func addBlock(_ blockLabel: String) {
         addBlockButton.tap()
         let blockButton = app.buttons[blockLabel]
-        XCTAssertTrue(blockButton.waitForIsHittable(timeout: 3))
+        if !blockButton.isHittable { app.scrollDownToElement(element: blockButton) }
         blockButton.tap()
     }
 

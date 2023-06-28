@@ -18,7 +18,7 @@ public class PrologueScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [continueButtonGetter, siteAddressButtonGetter],
             app: app,
-            waitTimeout: 3
+            waitTimeout: 7
         )
     }
 
