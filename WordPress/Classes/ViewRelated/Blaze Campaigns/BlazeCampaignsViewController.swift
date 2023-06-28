@@ -1,7 +1,7 @@
 import UIKit
+import WordPressKit
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
-
     // MARK: - Views
 
     private lazy var plusButton: UIBarButtonItem = {
@@ -16,6 +16,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.register(BlazeCampaignTableViewCell.self, forCellReuseIdentifier: BlazeCampaignTableViewCell.defaultReuseID)
         tableView.dataSource = self
@@ -25,27 +26,15 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Properties
 
+    private var stream: BlazeCampaignsStream
+    private var state: BlazeCampaignsStream.State { stream.state }
     private let blog: Blog
-
-    private var campaigns: [BlazeCampaign] = [] {
-        didSet {
-            tableView.reloadData()
-            updateNoResultsView()
-        }
-    }
-
-    private var isLoading: Bool = false {
-        didSet {
-            if isLoading != oldValue {
-                updateNoResultsView()
-            }
-        }
-    }
 
     // MARK: - Initializers
 
     init(blog: Blog) {
         self.blog = blog
+        self.stream = BlazeCampaignsStream(blog: blog)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -58,6 +47,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupView()
         setupNavBar()
         setupNoResults()
@@ -65,7 +55,36 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchCampaigns()
+
+        reloadCampaigns()
+    }
+
+    private func reloadCampaigns() {
+        stream.didChangeState = nil
+
+        stream = BlazeCampaignsStream(blog: blog)
+        stream.didChangeState = { [weak self] _ in self?.refreshView() }
+        stream.load()
+    }
+
+    private func refreshView() {
+        tableView.reloadData()
+
+        hideNoResults()
+        noResultsViewController.hideImageView(true)
+
+        if state.campaigns.isEmpty {
+            if state.isLoading {
+                noResultsViewController.hideImageView(false)
+                showLoadingView()
+            } else if state.error != nil {
+                showErrorView()
+            } else {
+                showNoResultsView()
+            }
+        } else {
+            // Loading next page
+        }
     }
 
     // MARK: - Private helpers
@@ -85,25 +104,6 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         noResultsViewController.delegate = self
     }
 
-    private func fetchCampaigns() {
-        guard let service = BlazeService() else { return }
-
-        isLoading = true
-        service.getRecentCampaigns(for: blog) { [weak self] in
-            self?.didFetchCampaigns($0)
-        }
-    }
-
-    private func didFetchCampaigns(_ result: Result<BlazeCampaignsSearchResponse, Error>) {
-        switch result {
-        case .success(let response):
-            campaigns = response.campaigns ?? []
-        case .failure:
-            showErrorView()
-        }
-        isLoading = false
-    }
-
     @objc private func plusButtonTapped() {
         BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignsList)
         BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
@@ -115,12 +115,12 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return campaigns.count
+        state.campaigns.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: BlazeCampaignTableViewCell.defaultReuseID) as? BlazeCampaignTableViewCell,
-              let campaign = campaigns[safe: indexPath.row] else {
+              let campaign = state.campaigns[safe: indexPath.row] else {
             return UITableViewCell()
         }
 
@@ -128,29 +128,20 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
         cell.configure(with: viewModel, blog: blog)
         return cell
     }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard state.isLoadingMore else { return nil }
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.startAnimating()
+        return indicator
+    }
 }
 
 // MARK: - No results
 
 extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
 
-    private func updateNoResultsView() {
-        guard !isLoading else {
-            showLoadingView()
-            return
-        }
-
-        if campaigns.isEmpty {
-            showNoResultsView()
-            return
-        }
-
-        hideNoResults()
-    }
-
     private func showNoResultsView() {
-        hideNoResults()
-        noResultsViewController.hideImageView(true)
         configureAndDisplayNoResults(on: view,
                                      title: Strings.NoResults.emptyTitle,
                                      subtitle: Strings.NoResults.emptySubtitle,
@@ -158,16 +149,12 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
     }
 
     private func showErrorView() {
-        hideNoResults()
-        noResultsViewController.hideImageView(true)
         configureAndDisplayNoResults(on: view,
                                      title: Strings.NoResults.errorTitle,
                                      subtitle: Strings.NoResults.errorSubtitle)
     }
 
     private func showLoadingView() {
-        hideNoResults()
-        noResultsViewController.hideImageView(false)
         configureAndDisplayNoResults(on: view,
                                      title: Strings.NoResults.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView())

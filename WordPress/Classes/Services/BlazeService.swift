@@ -28,6 +28,7 @@ protocol BlazeServiceProtocol {
     // MARK: - Methods
 
     func getRecentCampaigns(for blog: Blog,
+                            page: Int = 1,
                             completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
         guard blog.canBlaze else {
             completion(.failure(BlazeServiceError.notEligibleForBlaze))
@@ -38,7 +39,13 @@ protocol BlazeServiceProtocol {
             completion(.failure(BlazeServiceError.missingBlogId))
             return
         }
-        remote.searchCampaigns(forSiteId: siteId, callback: completion)
+        remote.searchCampaigns(forSiteId: siteId, page: page, callback: completion)
+    }
+
+    func recentCampaigns(for blog: Blog, page: Int) async throws -> BlazeCampaignsSearchResponse {
+        try await withUnsafeThrowingContinuation {
+            getRecentCampaigns(for: blog, page: page, completion: $0.resume)
+        }
     }
 }
 
