@@ -64,6 +64,7 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 
   local_gutenberg_key = 'LOCAL_GUTENBERG'
   local_gutenberg = ENV.fetch(local_gutenberg_key, nil)
+  # We check local_gutenberg first because it should take precedence, being an override set by the user.
   if local_gutenberg
     options = { path: File.exist?(local_gutenberg) ? local_gutenberg : DEFAULT_GUTENBERG_LOCATION }
 
@@ -73,10 +74,13 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
     pod 'RNTAztecView', options
 
     gutenberg_dependencies(options: options)
-  elsif options[:tag]
-    pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{options[:tag]}.podspec"
-  elsif options[:commit]
-    pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{options[:commit]}.podspec"
+  else
+    id = options[:tag] || options[:commit]
+
+    # Notice there's no period at the end of the message as CocoaPods will add it.
+    raise 'Neither tag nor commit to use for Gutenberg found' unless id
+
+    pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{id}.podspec"
   end
 end
 
