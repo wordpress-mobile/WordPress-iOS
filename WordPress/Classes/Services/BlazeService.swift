@@ -43,15 +43,15 @@ import WordPressKit
             return
         }
 
-        remote.getStatus(forSiteId: siteId) { result in
-            switch result {
-            case .success(let approved):
-                self.updateBlogWithID(blog.objectID, isBlazeApproved: approved, completion: completion)
-            case .failure(let error):
-                DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
-                self.updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
-            }
-        }
+//        remote.getStatus(forSiteId: siteId) { result in
+//            switch result {
+//            case .success(let approved):
+//                self.updateBlogWithID(blog.objectID, isBlazeApproved: approved, completion: completion)
+//            case .failure(let error):
+//                DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
+//                self.updateBlogWithID(blog.objectID, isBlazeApproved: false, completion: completion)
+//            }
+//        }
     }
 
     private func updateBlogWithID(_ objectID: NSManagedObjectID,

@@ -14,6 +14,8 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
+    private var complianceCoordinator: CompliancePopoverCoordinator?
+
     lazy var collectionView: DynamicHeightCollectionView = {
         let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +81,9 @@ final class BlogDashboardViewController: UIViewController {
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
+
+        complianceCoordinator = CompliancePopoverCoordinator(viewController: self)
+        complianceCoordinator?.presentIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

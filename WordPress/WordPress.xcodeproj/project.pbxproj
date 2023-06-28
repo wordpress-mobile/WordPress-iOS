@@ -233,6 +233,10 @@
 		0839F88B2993C0C000415038 /* JetpackDefaultOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857BB3F299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift */; };
 		0839F88C2993C1B500415038 /* JetpackPluginOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */; };
 		0839F88D2993C1B600415038 /* JetpackPluginOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */; };
+		083ED8CC2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */; };
+		083ED8CD2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */; };
+		0840513E2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */; };
+		0840513F2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */; };
 		0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
 		084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
@@ -314,6 +318,10 @@
 		08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08DF9C431E8475530058678C /* test-image-portrait.jpg */; };
 		08E39B4528A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
 		08E39B4628A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		08E6E07B2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E6E07A2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift */; };
+		08E6E07C2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E6E07A2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift */; };
+		08E6E07E2A4C405500B807B0 /* CompliancePopoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E6E07D2A4C405500B807B0 /* CompliancePopoverViewModel.swift */; };
+		08E6E07F2A4C405500B807B0 /* CompliancePopoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E6E07D2A4C405500B807B0 /* CompliancePopoverViewModel.swift */; };
 		08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */; };
 		08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */; };
 		08EA036729C9B51200B72A87 /* Color+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EA036629C9B51200B72A87 /* Color+DesignSystem.swift */; };
@@ -5892,6 +5900,8 @@
 		082AB9DB1C4F035E000CA523 /* PostTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTag.h; sourceTree = "<group>"; };
 		082AB9DC1C4F035E000CA523 /* PostTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTag.m; sourceTree = "<group>"; };
 		082D50AE1EF46DB300788719 /* WordPress 61.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 61.xcdatamodel"; sourceTree = "<group>"; };
+		083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceLocationService.swift; sourceTree = "<group>"; };
+		0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverCoordinator.swift; sourceTree = "<group>"; };
 		0845B8C51E833C56001BA771 /* URL+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Helpers.swift"; sourceTree = "<group>"; };
 		08472A1E1C7273FA0040769D /* PostServiceOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostServiceOptions.h; sourceTree = "<group>"; };
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
@@ -5981,6 +5991,8 @@
 		08DF9C431E8475530058678C /* test-image-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image-portrait.jpg"; sourceTree = "<group>"; };
 		08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentStoreFactory.swift; sourceTree = "<group>"; };
 		08E5CAD31E7B3A4500FAC71B /* WordPress 57.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 57.xcdatamodel"; sourceTree = "<group>"; };
+		08E6E07A2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverViewController.swift; sourceTree = "<group>"; };
+		08E6E07D2A4C405500B807B0 /* CompliancePopoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverViewModel.swift; sourceTree = "<group>"; };
 		08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporter.swift; sourceTree = "<group>"; };
 		08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporterTests.swift; sourceTree = "<group>"; };
 		08EA036629C9B51200B72A87 /* Color+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+DesignSystem.swift"; sourceTree = "<group>"; };
@@ -9811,6 +9823,18 @@
 			path = "Feature Highlight";
 			sourceTree = "<group>";
 		};
+		083ED8CA2A4322A7007F89B3 /* EEUUSCompliance */ = {
+			isa = PBXGroup;
+			children = (
+				086C117B2A2F6451004A3821 /* CompliancePopover.swift */,
+				083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */,
+				08E6E07A2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift */,
+				08E6E07D2A4C405500B807B0 /* CompliancePopoverViewModel.swift */,
+				0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */,
+			);
+			path = EEUUSCompliance;
+			sourceTree = "<group>";
+		};
 		084FC3B529913B0A00A17BCF /* JetpackOverlay */ = {
 			isa = PBXGroup;
 			children = (
@@ -10040,7 +10064,6 @@
 			isa = PBXGroup;
 			children = (
 				1717139E265FE59700F3A022 /* ButtonStyles.swift */,
-				086C117B2A2F6451004A3821 /* CompliancePopover.swift */,
 			);
 			path = "Reusable SwiftUI Views";
 			sourceTree = "<group>";
@@ -13417,6 +13440,7 @@
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				F1C740BD26B18DEA005D0809 /* Developer */,
 				173BCE711CEB365400AE8817 /* Domains */,
+				083ED8CA2A4322A7007F89B3 /* EEUUSCompliance */,
 				081E4B4A281BFB520085E89C /* Feature Highlight */,
 				98AA9F1F27EA888C00B3A98C /* Feature Introduction */,
 				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
@@ -20977,6 +21001,7 @@
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */,
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
+				08E6E07E2A4C405500B807B0 /* CompliancePopoverViewModel.swift in Sources */,
 				088D58A529E724F300E6C0F4 /* ColorGallery.swift in Sources */,
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
 				17BD4A0820F76A4700975AC3 /* Routes+Banners.swift in Sources */,
@@ -21760,6 +21785,7 @@
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
 				FAFC064E27D2360B002F0483 /* QuickStartCell.swift in Sources */,
 				9A4A8F4B235758EF00088CE4 /* StatsStore+Cache.swift in Sources */,
+				083ED8CC2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */,
 				BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */,
 				7E3E7A5D20E44DB00075D159 /* BadgeContentStyles.swift in Sources */,
 				5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Pages.m in Sources */,
@@ -22064,6 +22090,7 @@
 				9F74696B209EFD0C0074D52B /* CheckmarkTableViewCell.swift in Sources */,
 				03216ECC27995F3500D444CA /* SchedulingViewControllerPresenter.swift in Sources */,
 				F52CACCA244FA7AA00661380 /* ReaderManageScenePresenter.swift in Sources */,
+				0840513E2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */,
 				FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */,
 				40C403F52215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */,
@@ -22224,6 +22251,7 @@
 				403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */,
 				4A9B81E32921AE03007A05D1 /* ContextManager.swift in Sources */,
 				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
+				08E6E07B2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift in Sources */,
 				80C523A429959DE000B1C14B /* BlazeWebViewController.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
 				C7BB601C2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */,
@@ -24200,6 +24228,7 @@
 				FABB22382602FC2C00C8785C /* EventLoggingDelegate.swift in Sources */,
 				FABB22392602FC2C00C8785C /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB223B2602FC2C00C8785C /* AbstractPost+Searchable.swift in Sources */,
+				08E6E07F2A4C405500B807B0 /* CompliancePopoverViewModel.swift in Sources */,
 				FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				FABB223C2602FC2C00C8785C /* EditCommentViewController.m in Sources */,
 				FABB223D2602FC2C00C8785C /* ThisWeekWidgetStats.swift in Sources */,
@@ -24575,6 +24604,7 @@
 				FABB23462602FC2C00C8785C /* LoadingStatusView.swift in Sources */,
 				FABB23472602FC2C00C8785C /* MenuDetailsViewController.m in Sources */,
 				FABB23482602FC2C00C8785C /* InlineErrorRetryTableViewCell.swift in Sources */,
+				08E6E07C2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift in Sources */,
 				FABB23492602FC2C00C8785C /* MenuItemSourceCell.m in Sources */,
 				FABB234A2602FC2C00C8785C /* BlogDetailsViewController.m in Sources */,
 				FABB234B2602FC2C00C8785C /* UIBarButtonItem+MeBarButton.swift in Sources */,
@@ -24871,6 +24901,7 @@
 				FABB24332602FC2C00C8785C /* WindowManager.swift in Sources */,
 				08799C262A334645005317F7 /* Spacing.swift in Sources */,
 				FABB24342602FC2C00C8785C /* NSFileManager+FolderSize.swift in Sources */,
+				0840513F2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */,
 				FABB24352602FC2C00C8785C /* ErrorStateViewController.swift in Sources */,
 				FABB24362602FC2C00C8785C /* WP3DTouchShortcutCreator.swift in Sources */,
 				FABB24372602FC2C00C8785C /* GIFPlaybackStrategy.swift in Sources */,
@@ -25151,6 +25182,7 @@
 				FABB24FB2602FC2C00C8785C /* ReaderListStreamHeader.swift in Sources */,
 				FABB24FC2602FC2C00C8785C /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				FA4B203929A8C48F0089FE68 /* AbstractPost+Blaze.swift in Sources */,
+				083ED8CD2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */,
 				FABB24FD2602FC2C00C8785C /* StockPhotosDataLoader.swift in Sources */,
 				010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FABB24FE2602FC2C00C8785C /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,

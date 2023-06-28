@@ -1,10 +1,24 @@
 import SwiftUI
 
 struct CompliancePopover: View {
+    var goToSettingsAction: (() -> ())?
+    var saveAction: (() -> ())?
+    var shouldScroll: Bool = false
+
     @State
     private var isAnalyticsOn = true
 
     var body: some View {
+        if shouldScroll {
+            ScrollView(showsIndicators: false) {
+                contentVStack
+            }
+        } else {
+            contentVStack
+        }
+    }
+
+    private var contentVStack: some View {
         VStack(alignment: .leading, spacing: Length.Padding.double) {
             titleText
             subtitleText
@@ -13,6 +27,7 @@ struct CompliancePopover: View {
             buttonsHStack
         }
         .padding(Length.Padding.small)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private var titleText: some View {
@@ -34,7 +49,8 @@ struct CompliancePopover: View {
     }
 
     private var footnote: some View {
-        Text("")
+        Text(Strings.footnote)
+            .font(.body)
             .foregroundColor(.secondary)
     }
 
@@ -46,30 +62,32 @@ struct CompliancePopover: View {
     }
 
     private var settingsButton: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: Length.Padding.single)
-                .stroke(Color.DS.Border.divider, lineWidth: Length.Border.thin)
-            Button(action: {
-                print("Settings tapped")
-            }) {
+        Button(action: {
+            goToSettingsAction?()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: Length.Padding.single)
+                    .stroke(Color.DS.Border.divider, lineWidth: Length.Border.thin)
                 Text(Strings.settingsButtonTitle)
+                    .font(.body)
             }
-            .foregroundColor(Color.DS.Background.brand)
         }
+        .foregroundColor(Color.DS.Background.brand)
         .frame(height: Length.Hitbox.minTapDimension)
     }
 
     private var saveButton: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
-                .fill(Color.DS.Background.brand)
-            Button(action: {
-                print("Save tapped")
-            }) {
+        Button(action: {
+            saveAction?()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
+                    .fill(Color.DS.Background.brand)
                 Text(Strings.saveButtonTitle)
+                    .font(.body)
             }
-            .foregroundColor(.white)
         }
+        .foregroundColor(.white)
         .frame(height: Length.Hitbox.minTapDimension)
     }
 }
