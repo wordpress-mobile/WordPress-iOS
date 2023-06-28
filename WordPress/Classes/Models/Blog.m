@@ -4,7 +4,6 @@
 #import "NSURL+IDN.h"
 #import "CoreDataStack.h"
 #import "Constants.h"
-#import "WordPress-Swift.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 
@@ -91,6 +90,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
 @dynamic pageTemplateCategories;
+@dynamic publicizeInfo;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
