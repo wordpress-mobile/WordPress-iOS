@@ -159,6 +159,8 @@ class BlogJetpackTests: CoreDataTestCase {
 
         // Blog sync makes a series of HTTP requests: the first one fetchs all blogs, followed by a few
         // requests to get blog capabilities (one for each blog).
+        //
+        // See also https://github.com/wordpress-mobile/WordPress-iOS/issues/20964
         HTTPStubs.stubRequest(forEndpoint: "me/sites",
                               withFileAtPath: OHPathForFile("me-sites-with-jetpack.json", Self.self)!)
         HTTPStubs.stubRequests { request in
