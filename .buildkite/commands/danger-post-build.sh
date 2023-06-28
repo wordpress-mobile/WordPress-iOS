@@ -4,7 +4,7 @@ echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 📦 Downloading Build Artifacts"
-buildkite-agent artifact download WordPress.xcresult.zip ./ --step unit_tests_wordpress
+buildkite-agent artifact download build/results/WordPress.xcresult.zip ./ --step unit_tests_wordpress
 cd build/results && unzip WordPress.xcresult.zip && cd -
 
 echo "--- Running Danger: PR Check"
