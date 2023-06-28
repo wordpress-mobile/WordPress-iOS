@@ -1,4 +1,5 @@
 import UIKit
+import SVProgressHUD
 import WordPressKit
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
@@ -20,12 +21,14 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         tableView.estimatedRowHeight = 128
         tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+        tableView.refreshControl = refreshControl
         tableView.register(BlazeCampaignTableViewCell.self, forCellReuseIdentifier: BlazeCampaignTableViewCell.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
     }()
 
+    private let refreshControl = UIRefreshControl()
     private let footerView = BlazeCampaignFooterView()
 
     // MARK: - Properties
@@ -62,22 +65,40 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         setupNavBar()
         setupNoResults()
 
-        footerView.onRetry = { [weak self] in self?.stream.load() }
+        refreshControl.addTarget(self, action: #selector(pullToRefreshInvoked), for: .valueChanged)
+        footerView.onRetry = { [weak self] in self?.loadNextPage() }
+
+        configure(with: stream)
+        loadNextPage()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        reloadCampaigns()
+    private func loadNextPage() {
+        Task {
+            await stream.load()
+        }
     }
 
-    private func reloadCampaigns() {
+    @objc private func pullToRefreshInvoked() {
+        Task {
+            let stream = BlazeCampaignsStream(blog: blog)
+            await stream.load()
+            if let error = stream.state.error {
+                SVProgressHUD.showDismissibleError(withStatus: error.localizedDescription)
+            } else {
+                configure(with: stream)
+            }
+            refreshControl.endRefreshing()
+        }
+    }
+
+    private func configure(with newStream: BlazeCampaignsStream) {
         stream.didChangeState = nil
-
-        stream = BlazeCampaignsStream(blog: blog)
+        stream = newStream
         stream.didChangeState = { [weak self] _ in self?.reloadView() }
-        stream.load()
+        reloadView()
     }
+
+    // MARK: View reload
 
     private func reloadView() {
         reloadStateView()
@@ -163,7 +184,7 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
             if state.error == nil {
-                stream.load()
+                loadNextPage()
             }
         }
     }

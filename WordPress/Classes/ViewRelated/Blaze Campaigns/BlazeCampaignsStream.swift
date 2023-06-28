@@ -17,7 +17,7 @@ final class BlazeCampaignsStream {
         self.blog = blog
     }
 
-    func load() {
+    func load() async {
         guard let siteID = blog.dotComID?.intValue else {
             return assertionFailure("Missing site ID")
         }
@@ -27,9 +27,7 @@ final class BlazeCampaignsStream {
         guard !state.isLoading && hasMore else {
             return
         }
-        Task {
-            await load(service: service, siteID: siteID)
-        }
+        await load(service: service, siteID: siteID)
     }
 
     #warning("fix this being called form background")
