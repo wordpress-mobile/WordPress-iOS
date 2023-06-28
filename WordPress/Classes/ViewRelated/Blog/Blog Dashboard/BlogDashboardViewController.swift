@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable
 
@@ -79,6 +80,10 @@ final class BlogDashboardViewController: UIViewController {
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
+
+        let controller = CompliancePopoverViewController()
+        let destination = BottomSheetViewController(childViewController: controller)
+        destination.show(from: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

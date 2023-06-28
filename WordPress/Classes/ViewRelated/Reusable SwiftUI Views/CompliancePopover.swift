@@ -1,4 +1,6 @@
 import SwiftUI
+import UIKit
+import WordPressUI
 
 struct CompliancePopover: View {
     @State
@@ -13,6 +15,7 @@ struct CompliancePopover: View {
             buttonsHStack
         }
         .padding(Length.Padding.small)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private var titleText: some View {
@@ -116,4 +119,66 @@ private enum Strings {
         value: "Save",
         comment: "Save Button Title for the privacy compliance popover."
     )
+}
+
+// MARK: -
+
+final class CompliancePopoverViewController: UIViewController, DrawerPresentable {
+
+    // MARK: - Views
+
+    private let hostingController: UIViewController = {
+        let controller = UIHostingController(rootView: CompliancePopover())
+        controller.view.translatesAutoresizingMaskIntoConstraints = true
+        return controller
+    }()
+
+    private var contentView: UIView {
+        return hostingController.view
+    }
+
+    // MARK: - Init
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.addContentView()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let targetSize = CGSize(width: view.bounds.width, height: 0)
+        let contentViewSize = contentView.systemLayoutSizeFitting(targetSize)
+        self.contentView.frame = .init(origin: .zero, size: contentViewSize)
+        self.preferredContentSize = contentView.bounds.size
+    }
+
+    private func addContentView() {
+        self.hostingController.willMove(toParent: self)
+        self.addChild(hostingController)
+        self.view.addSubview(contentView)
+        self.hostingController.didMove(toParent: self)
+    }
+
+    // MARK: - DrawerPresentable Conformance
+
+    var collapsedHeight: DrawerHeight {
+        if traitCollection.verticalSizeClass == .compact {
+            return .maxHeight
+        }
+        return .intrinsicHeight
+    }
+
+    var allowsUserTransition: Bool {
+        false
+    }
 }
