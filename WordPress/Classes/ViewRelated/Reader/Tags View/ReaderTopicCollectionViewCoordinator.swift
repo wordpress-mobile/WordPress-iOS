@@ -40,20 +40,11 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
-    let collectionView: UICollectionView
+    unowned let collectionView: UICollectionView
     var topics: [String] {
         didSet {
             reloadData()
         }
-    }
-
-    deinit {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
-            return
-        }
-
-        layout.isExpanded = false
-        layout.invalidateLayout()
     }
 
     init(collectionView: UICollectionView, topics: [String]) {
@@ -63,6 +54,15 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         super.init()
 
         configureCollectionView()
+    }
+
+    func invalidate() {
+        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.isExpanded = false
+        layout.invalidateLayout()
     }
 
     func reloadData() {
