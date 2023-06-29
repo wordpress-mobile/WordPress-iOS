@@ -99,7 +99,7 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
 private final class MockBlazeService: BlazeServiceProtocol {
     var didPerformRequest = false
 
-    func getRecentCampaigns(for blog: Blog, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
+    func getRecentCampaigns(for blog: Blog, page: Int, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
         didPerformRequest = true
         DispatchQueue.main.async {
             completion(Result(catching: getMockResponse))

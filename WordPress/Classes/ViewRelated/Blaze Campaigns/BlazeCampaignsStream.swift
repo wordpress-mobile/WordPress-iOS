@@ -2,12 +2,17 @@ import Foundation
 import SwiftUI
 import WordPressKit
 
-@MainActor
+protocol BlazeCampaignsStreamDelegate: AnyObject {
+    func stream(_ stream: BlazeCampaignsStream, didAppendItemsAt indexPaths: [IndexPath])
+    func streamDidRefreshState(_ stream: BlazeCampaignsStream)
+}
+
 final class BlazeCampaignsStream {
-    private(set) var state = State() {
-        didSet { didChangeState?(state) }
-    }
-    var didChangeState: ((State) -> Void)?
+    weak var delegate: BlazeCampaignsStreamDelegate?
+
+    private(set) var campaigns: [BlazeCampaign] = []
+    private(set) var isLoading = false
+    private(set) var error: Error?
 
     private var pages: [BlazeCampaignsSearchResponse] = []
     private var hasMore = true
@@ -17,51 +22,39 @@ final class BlazeCampaignsStream {
         self.blog = blog
     }
 
-    func load() async {
-        guard let siteID = blog.dotComID?.intValue else {
-            return assertionFailure("Missing site ID")
-        }
+    /// Loads the next page. Does nothing if it's already loading or has no more items to load.
+    func load(_ completion: ((Result<BlazeCampaignsSearchResponse, Error>) -> Void)? = nil) {
         guard let service = BlazeService() else {
             return assertionFailure("Failed to create BlazeService")
         }
-        guard !state.isLoading && hasMore else {
+        guard !isLoading && hasMore else {
             return
         }
-        await load(service: service, siteID: siteID)
-    }
+        isLoading = true
+        error = nil
+        delegate?.streamDidRefreshState(self)
 
-    #warning("fix this being called form background")
-
-    var didFail = false
-
-    private func load(service: BlazeService, siteID: Int) async {
-        state.isLoading = true
-        state.error = nil
-        do {
-            let response = try await service.recentCampaigns(for: siteID, page: pages.count + 1)
-            let campaigns = response.campaigns ?? []
-            if #available(iOS 16, *) {
-                try? await Task.sleep(for: .seconds(4))
-            }
-            #warning("TEMP")
-            if pages.count == 0 || didFail {
-                pages.append(response)
-                state.campaigns += campaigns
-                hasMore = (response.totalPages ?? 0) > pages.count && !campaigns.isEmpty
-            } else {
-                didFail = true
-                state.error = URLError(.unknown)
-            }
-        } catch {
-            state.error = error
+        service.getRecentCampaigns(for: blog, page: pages.count + 1) { [weak self] in
+            self?.didLoad(with: $0)
+            completion?($0)
         }
-        state.isLoading = false
     }
 
-    struct State {
-        var campaigns: [BlazeCampaign] = []
-        var isLoading = false
-        var error: Error?
-        var isLoadingMore: Bool { isLoading && !campaigns.isEmpty }
+    private func didLoad(with result: Result<BlazeCampaignsSearchResponse, Error>) {
+        switch result {
+        case .success(let response):
+            let newCampaigns = response.campaigns ?? []
+            pages.append(response)
+            hasMore = (response.totalPages ?? 0) > pages.count && !newCampaigns.isEmpty
+
+            campaigns += newCampaigns
+            let indexPaths = campaigns.indices.prefix(newCampaigns.count)
+                .map { IndexPath(row: $0, section: 0) }
+            delegate?.stream(self, didAppendItemsAt: indexPaths)
+        case .failure(let error):
+            self.error = error
+        }
+        isLoading = false
+        delegate?.streamDidRefreshState(self)
     }
 }

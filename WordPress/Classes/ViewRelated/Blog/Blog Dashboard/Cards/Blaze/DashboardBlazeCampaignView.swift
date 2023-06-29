@@ -97,40 +97,42 @@ private extension DashboardBlazeCampaignView {
     }
 }
 
-struct BlazeCampaignViewModel {
+struct BlazeCampaignViewModel: Hashable {
     let title: String
     let imageURL: URL?
     let impressions: Int
     let clicks: Int
     let budget: String
-    var status: BlazeCampaignStatusViewModel { .init(campaign: campaign) }
-
-    var isShowingStats: Bool {
-        switch campaign.uiStatus {
-        case .created, .processing, .canceled, .approved, .rejected, .scheduled, .unknown:
-            return false
-        case .active, .finished:
-            return true
-        }
-    }
-
-    private let campaign: BlazeCampaign
-
-    private let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "USD"
-        formatter.currencySymbol = "$"
-        formatter.maximumFractionDigits = 0
-        return formatter
-    }()
+    let isShowingStats: Bool
+    let status: BlazeCampaignStatusViewModel
 
     init(campaign: BlazeCampaign) {
-        self.campaign = campaign
         self.title = campaign.name ?? "–"
         self.imageURL = campaign.contentConfig?.imageURL.flatMap(URL.init)
         self.impressions = campaign.stats?.impressionsTotal ?? 0
         self.clicks = campaign.stats?.clicksTotal ?? 0
         self.budget = currencyFormatter.string(from: ((campaign.budgetCents ?? 0) / 100) as NSNumber) ?? "-"
+        self.isShowingStats = campaign.uiStatus.isShowingStats
+        self.status = BlazeCampaignStatusViewModel(status: campaign.uiStatus)
+    }
+}
+
+private let currencyFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currency
+    formatter.currencyCode = "USD"
+    formatter.currencySymbol = "$"
+    formatter.maximumFractionDigits = 0
+    return formatter
+}()
+
+private extension BlazeCampaign.Status {
+    var isShowingStats: Bool {
+        switch self {
+        case .created, .processing, .canceled, .approved, .rejected, .scheduled, .unknown:
+            return false
+        case .active, .finished:
+            return true
+        }
     }
 }

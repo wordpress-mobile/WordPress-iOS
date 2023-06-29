@@ -37,17 +37,16 @@ private extension BlazeCampaignStatusView {
     }
 }
 
-struct BlazeCampaignStatusViewModel {
+struct BlazeCampaignStatusViewModel: Hashable {
+    private let status: BlazeCampaign.Status
+
     let isHidden: Bool
     let title: String
     let textColor: UIColor
     let backgroundColor: UIColor
 
-    init(campaign: BlazeCampaign) {
-        self.init(status: campaign.uiStatus)
-    }
-
     init(status: BlazeCampaign.Status) {
+        self.status = status
         self.isHidden = status == .unknown
         self.title = status.localizedTitle
 
@@ -92,6 +91,14 @@ struct BlazeCampaignStatusViewModel {
             self.textColor = .label
             self.backgroundColor = .secondarySystemBackground
         }
+    }
+
+    func hash(into hasher: inout Hasher) {
+        status.hash(into: &hasher)
+    }
+
+    static func ==(lhs: BlazeCampaignStatusViewModel, rhs: BlazeCampaignStatusViewModel) -> Bool {
+        lhs.status == rhs.status
     }
 }
 

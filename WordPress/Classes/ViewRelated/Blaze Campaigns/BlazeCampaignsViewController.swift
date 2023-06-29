@@ -2,26 +2,25 @@ import UIKit
 import SVProgressHUD
 import WordPressKit
 
-final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
+final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
 
-    private lazy var plusButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "plus"),
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(plusButtonTapped))
-        return button
-    }()
+    private lazy var plusButton = UIBarButtonItem(
+        image: UIImage(systemName: "plus"),
+        style: .plain,
+        target: self,
+        action: #selector(plusButtonTapped)
+    )
 
     private lazy var tableView: UITableView = {
-        // Using grouped style to disable sticky section footers
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 128
         tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(setNeedsToRefreshCampaigns), for: .valueChanged)
         tableView.register(BlazeCampaignTableViewCell.self, forCellReuseIdentifier: BlazeCampaignTableViewCell.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
@@ -29,12 +28,11 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     }()
 
     private let refreshControl = UIRefreshControl()
-    private let footerView = BlazeCampaignFooterView()
 
     // MARK: - Properties
 
     private var stream: BlazeCampaignsStream
-    private var state: BlazeCampaignsStream.State { stream.state }
+    private var pendingStream: AnyObject?
     private let blog: Blog
 
     // MARK: - Initializers
@@ -50,12 +48,6 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         fatalError("init(coder:) has not been implemented")
     }
 
-    enum Cell {
-        case campaign(BlazeCampaign)
-        case spinner
-        case error
-    }
-
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -65,55 +57,51 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
         setupNavBar()
         setupNoResults()
 
-        refreshControl.addTarget(self, action: #selector(pullToRefreshInvoked), for: .valueChanged)
-        footerView.onRetry = { [weak self] in self?.loadNextPage() }
-
         configure(with: stream)
-        loadNextPage()
+        stream.load()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(setNeedsToRefreshCampaigns), name: .blazeCampaignCreated, object: nil)
     }
 
-    private func loadNextPage() {
-        Task {
-            await stream.load()
-        }
-    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-    @objc private func pullToRefreshInvoked() {
-        Task {
-            let stream = BlazeCampaignsStream(blog: blog)
-            await stream.load()
-            if let error = stream.state.error {
-                SVProgressHUD.showDismissibleError(withStatus: error.localizedDescription)
-            } else {
-                configure(with: stream)
-            }
-            refreshControl.endRefreshing()
-        }
+        tableView.sizeToFitFooterView()
     }
 
     private func configure(with newStream: BlazeCampaignsStream) {
-        stream.didChangeState = nil
-        stream = newStream
-        stream.didChangeState = { [weak self] _ in self?.reloadView() }
+        self.stream = newStream
+        newStream.delegate = self
+        tableView.reloadData()
         reloadView()
     }
 
-    // MARK: View reload
+    // MARK: - BlazeCampaignsStreamDelegate
+
+    func stream(_ stream: BlazeCampaignsStream, didAppendItemsAt indexPaths: [IndexPath]) {
+        UIView.performWithoutAnimation {
+            tableView.insertRows(at: indexPaths, with: .none)
+        }
+    }
+
+    func streamDidRefreshState(_ stream: BlazeCampaignsStream) {
+        reloadView()
+    }
 
     private func reloadView() {
         reloadStateView()
         reloadFooterView()
-        tableView.reloadData()
+        tableView.sizeToFitFooterView()
     }
 
     private func reloadStateView() {
         hideNoResults()
         noResultsViewController.hideImageView(true)
-        if state.campaigns.isEmpty {
-            if state.isLoading {
+        if stream.campaigns.isEmpty {
+            if stream.isLoading {
                 noResultsViewController.hideImageView(false)
                 showLoadingView()
-            } else if state.error != nil {
+            } else if stream.error != nil {
                 showErrorView()
             } else {
                 showNoResultsView()
@@ -122,20 +110,48 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
     }
 
     private func reloadFooterView() {
-        if !state.campaigns.isEmpty {
-            if state.isLoading {
-                footerView.state = .loading
-            } else if state.error != nil {
-                footerView.state = .error
-            } else {
-                footerView.state = .empty
-            }
+        guard !stream.campaigns.isEmpty else {
+            tableView.tableFooterView = nil
+            return
+        }
+        if stream.isLoading {
+            tableView.tableFooterView = PagingFooterView(state: .loading)
+        } else if stream.error != nil {
+            let footerView = PagingFooterView(state: .error)
+            footerView.buttonRetry.addTarget(self, action: #selector(buttonRetryTapped), for: .touchUpInside)
+            tableView.tableFooterView = footerView
         } else {
-            footerView.state = .empty
+            tableView.tableFooterView = nil
         }
     }
 
-    // MARK: - Private helpers
+    // MARK: - Actions
+
+    @objc private func buttonRetryTapped() {
+        stream.load()
+    }
+
+    @objc private func setNeedsToRefreshCampaigns() {
+        guard pendingStream == nil else { return }
+
+        let stream = BlazeCampaignsStream(blog: blog)
+        stream.load { [weak self] in
+            guard let self else { return }
+            switch $0 {
+            case .success:
+                self.configure(with: stream)
+            case .failure(let error):
+                SVProgressHUD.showDismissibleError(withStatus: error.localizedDescription)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+                self.pendingStream = nil
+                self.refreshControl.endRefreshing()
+            }
+        }
+        pendingStream = stream
+    }
+
+    // MARK: - Private
 
     private func setupView() {
         view.backgroundColor = .DS.Background.primary
@@ -163,28 +179,21 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost {
 extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        state.campaigns.count
+        stream.campaigns.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BlazeCampaignTableViewCell.defaultReuseID) as? BlazeCampaignTableViewCell,
-              let campaign = state.campaigns[safe: indexPath.row] else {
-            return UITableViewCell()
-        }
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: BlazeCampaignTableViewCell.defaultReuseID) as! BlazeCampaignTableViewCell
+        let campaign = stream.campaigns[indexPath.row]
         let viewModel = BlazeCampaignViewModel(campaign: campaign)
         cell.configure(with: viewModel, blog: blog)
         return cell
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        footerView
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
-            if state.error == nil {
-                loadNextPage()
+            if stream.error == nil {
+                stream.load()
             }
         }
     }

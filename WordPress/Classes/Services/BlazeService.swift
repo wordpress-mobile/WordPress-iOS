@@ -2,7 +2,7 @@ import Foundation
 import WordPressKit
 
 protocol BlazeServiceProtocol {
-    func getRecentCampaigns(for blog: Blog, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void)
+    func getRecentCampaigns(for blog: Blog, page: Int, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void)
 }
 
 @objc final class BlazeService: NSObject, BlazeServiceProtocol {
@@ -40,12 +40,6 @@ protocol BlazeServiceProtocol {
             return
         }
         remote.searchCampaigns(forSiteId: siteId, page: page, callback: completion)
-    }
-
-    func recentCampaigns(for blog: Blog, page: Int) async throws -> BlazeCampaignsSearchResponse {
-        try await withUnsafeThrowingContinuation {
-            getRecentCampaigns(for: blog, page: page, completion: $0.resume)
-        }
     }
 }
 

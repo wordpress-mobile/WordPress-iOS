@@ -45,7 +45,7 @@ final class DashboardBlazeCardCellViewModel {
         guard !isRefreshing, let service else { return }
         isRefreshing = true
 
-        service.getRecentCampaigns(for: blog) { [weak self] in
+        service.getRecentCampaigns(for: blog, page: 1) { [weak self] in
             self?.didRefresh(with: $0)
         }
     }
