@@ -1,8 +1,11 @@
 import Foundation
 import WordPressKit
 
-@objc final class BlazeService: NSObject {
+protocol BlazeServiceProtocol {
+    func getRecentCampaigns(for blog: Blog, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void)
+}
 
+@objc final class BlazeService: NSObject, BlazeServiceProtocol {
     private let contextManager: CoreDataStackSwift
     private let remote: BlazeServiceRemote
 
@@ -26,6 +29,10 @@ import WordPressKit
 
     func getRecentCampaigns(for blog: Blog,
                             completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
+        guard blog.canBlaze else {
+            completion(.failure(BlazeServiceError.notEligibleForBlaze))
+            return
+        }
         guard let siteId = blog.dotComID?.intValue else {
             DDLogError("Invalid site ID for Blaze")
             completion(.failure(BlazeServiceError.missingBlogId))
@@ -36,5 +43,6 @@ import WordPressKit
 }
 
 enum BlazeServiceError: Error {
+    case notEligibleForBlaze
     case missingBlogId
 }
