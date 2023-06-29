@@ -9,7 +9,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         image: UIImage(systemName: "plus"),
         style: .plain,
         target: self,
-        action: #selector(plusButtonTapped)
+        action: #selector(buttonCreateCampaignTapped)
     )
 
     private lazy var tableView: UITableView = {
@@ -17,7 +17,6 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 128
-        tableView.sectionFooterHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(setNeedsToRefreshCampaigns), for: .valueChanged)
@@ -57,9 +56,10 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         setupNavBar()
         setupNoResults()
 
-        configure(with: stream)
+        stream.delegate = self
         stream.load()
 
+        // Refresh data automatically when new campaign is created
         NotificationCenter.default.addObserver(self, selector: #selector(setNeedsToRefreshCampaigns), name: .blazeCampaignCreated, object: nil)
     }
 
@@ -69,16 +69,10 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         tableView.sizeToFitFooterView()
     }
 
-    private func configure(with newStream: BlazeCampaignsStream) {
-        self.stream = newStream
-        newStream.delegate = self
-        tableView.reloadData()
-        reloadView()
-    }
-
-    // MARK: - BlazeCampaignsStreamDelegate
+    // MARK: - Stream
 
     func stream(_ stream: BlazeCampaignsStream, didAppendItemsAt indexPaths: [IndexPath]) {
+        // Make sure the existing cells are not reloaded to avoid interfering with image loading
         UIView.performWithoutAnimation {
             tableView.insertRows(at: indexPaths, with: .none)
         }
@@ -139,16 +133,24 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
             guard let self else { return }
             switch $0 {
             case .success:
-                self.configure(with: stream)
+                self.stream = stream
+                self.stream.delegate = self
+                self.tableView.reloadData()
+                self.reloadView()
             case .failure(let error):
                 SVProgressHUD.showDismissibleError(withStatus: error.localizedDescription)
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
                 self.pendingStream = nil
                 self.refreshControl.endRefreshing()
             }
         }
         pendingStream = stream
+    }
+
+    @objc private func buttonCreateCampaignTapped() {
+        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignsList)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
 
     // MARK: - Private
@@ -166,11 +168,6 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
     private func setupNoResults() {
         noResultsViewController.delegate = self
-    }
-
-    @objc private func plusButtonTapped() {
-        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignsList)
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
 }
 
@@ -239,8 +236,8 @@ private extension BlazeCampaignsViewController {
             static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
             static let emptyTitle = NSLocalizedString("blaze.campaigns.empty.title", value: "You have no campaigns", comment: "Title displayed when there are no Blaze campaigns to display.")
             static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click promote to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
-            static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Blaze campiagns.")
-            static let errorSubtitle = NSLocalizedString("There was an error loading campaigns.", comment: "Text displayed when there is a failure loading Blaze campaigns.")
+            static let errorTitle = NSLocalizedString("blaze.campaigns.errorTitle", value: "Oops", comment: "Title for the view when there's an error loading Blaze campiagns.")
+            static let errorSubtitle = NSLocalizedString("blaze.campaigns.errorMessage", value: "There was an error loading campaigns.", comment: "Text displayed when there is a failure loading Blaze campaigns.")
         }
     }
 }
