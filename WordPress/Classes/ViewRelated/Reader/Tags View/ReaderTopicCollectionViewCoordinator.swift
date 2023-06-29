@@ -53,7 +53,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
         super.init()
 
-        configureCollectionView()
+        configure(collectionView)
     }
 
     func invalidate() {
@@ -78,7 +78,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         layout.isExpanded = state == .expanded
     }
 
-    private func configureCollectionView() {
+    private func configure(_ collectionView: UICollectionView) {
         collectionView.isAccessibilityElement = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -105,7 +105,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         layout.allowsCentering = false
     }
 
-    private func sizeForCell(title: String) -> CGSize {
+    private func sizeForCell(title: String, of collectionView: UICollectionView)-> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
         ]
@@ -206,7 +206,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return sizeForCell(title: topics[indexPath.row])
+        return sizeForCell(title: topics[indexPath.row], of: collectionView)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -225,6 +225,6 @@ extension ReaderTopicCollectionViewCoordinator: ReaderInterestsCollectionViewFlo
     func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath, remainingItems: Int?) -> CGSize {
 
         let title = string(for: remainingItems)
-        return sizeForCell(title: title)
+        return sizeForCell(title: title, of: collectionView)
     }
 }
