@@ -8,7 +8,7 @@ final class DashboardBlazeCardCellViewModel {
     private let service: BlazeServiceProtocol?
     private let store: DashboardBlazeStoreProtocol
     private var isRefreshing = false
-    private let isBlazeCampaignsFlagEnabled: Bool
+    private let isBlazeCampaignsFlagEnabled: () -> Bool
 
     enum State {
         /// Showing "Promote you content with Blaze" promo card.
@@ -22,13 +22,13 @@ final class DashboardBlazeCardCellViewModel {
     init(blog: Blog,
          service: BlazeServiceProtocol? = BlazeService(),
          store: DashboardBlazeStoreProtocol = BlogDashboardPersistence(),
-         isBlazeCampaignsFlagEnabled: Bool = RemoteFeatureFlag.blazeManageCampaigns.enabled()) {
+         isBlazeCampaignsFlagEnabled: @escaping () -> Bool = { RemoteFeatureFlag.blazeManageCampaigns.enabled() }) {
         self.blog = blog
         self.service = service
         self.store = store
         self.isBlazeCampaignsFlagEnabled = isBlazeCampaignsFlagEnabled
 
-        if isBlazeCampaignsFlagEnabled,
+        if isBlazeCampaignsFlagEnabled(),
            let blogID = blog.dotComID?.intValue,
            let campaign = store.getBlazeCampaign(forBlogID: blogID) {
             self.state = .campaign(BlazeCampaignViewModel(campaign: campaign))
@@ -38,7 +38,7 @@ final class DashboardBlazeCardCellViewModel {
     }
 
     @objc func refresh() {
-        guard isBlazeCampaignsFlagEnabled else {
+        guard isBlazeCampaignsFlagEnabled() else {
             return // Continue showing the default `Promo` card
         }
 
