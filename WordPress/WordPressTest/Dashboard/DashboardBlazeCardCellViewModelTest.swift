@@ -23,7 +23,7 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
             blog: blog,
             service: service,
             store: store,
-            isBlazeCampaignsFlagEnabled: { isBlazeCampaignsFlagEnabled }
+            isBlazeCampaignsFlagEnabled: { [unowned self] in self.isBlazeCampaignsFlagEnabled }
         )
     }
 

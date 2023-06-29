@@ -10,7 +10,6 @@ class LoginFlow {
             .proceedWith(email: email)
             .proceedWithValidPassword()
             .continueWithSelectedSite(title: selectedSiteTitle)
-            .dismissNotificationAlertIfNeeded()
     }
 
     // Login with self-hosted site via Site Address.
@@ -21,7 +20,6 @@ class LoginFlow {
             .proceedWith(siteUrl: siteUrl)
             .proceedWith(username: username, password: password)
             .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
     }
 
     // Login with WP site via Site Address.
@@ -33,7 +31,6 @@ class LoginFlow {
             .proceedWith(email: email)
             .proceedWithValidPassword()
             .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
     }
 
     // Login with self-hosted site via Site Address.
