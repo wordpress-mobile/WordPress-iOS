@@ -40,7 +40,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
-    unowned let collectionView: UICollectionView
+    weak var collectionView: UICollectionView?
     var topics: [String] {
         didSet {
             reloadData()
@@ -57,7 +57,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     func invalidate() {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+        guard let layout = collectionView?.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
         }
 
@@ -66,12 +66,12 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     func reloadData() {
-        collectionView.reloadData()
-        collectionView.invalidateIntrinsicContentSize()
+        collectionView?.reloadData()
+        collectionView?.invalidateIntrinsicContentSize()
     }
 
     func changeState(_ state: ReaderTopicCollectionViewState) {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+        guard let layout = collectionView?.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
         }
 
@@ -193,7 +193,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
     }
 
     @objc func toggleExpanded(_ sender: ReaderInterestsCollectionViewCell) {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+        guard let layout = collectionView?.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
         }
 
