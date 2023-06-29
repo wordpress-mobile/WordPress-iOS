@@ -38,7 +38,7 @@ class DebugMenuViewController: UITableViewController {
 
     private func reloadViewModel() {
         handler.viewModel = ImmuTable(sections: [
-            ImmuTableSection(headerText: "General", rows: generalRows),
+            ImmuTableSection(headerText: Strings.general, rows: generalRows),
             ImmuTableSection(headerText: Strings.tools, rows: toolsRows),
             ImmuTableSection(headerText: Strings.crashLogging, rows: crashLoggingRows),
             ImmuTableSection(headerText: Strings.reader, rows: readerRows),
@@ -49,7 +49,7 @@ class DebugMenuViewController: UITableViewController {
 
     private var generalRows: [ImmuTableRow] {
         [
-            NavigationItemRow(title: "Feature Flags") { [weak self] _ in
+            NavigationItemRow(title: Strings.featureFlags) { [weak self] _ in
                 let vc = UIHostingController(rootView: DebugFeatureFlagsView())
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
@@ -191,8 +191,8 @@ class DebugMenuViewController: UITableViewController {
         static let readerCssTitle = NSLocalizedString("Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
         static let readerURLPlaceholder = NSLocalizedString("Default URL", comment: "Placeholder for the reader CSS URL")
         static let readerURLHint = NSLocalizedString("Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
-        static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title",
-                                                         value: "Remote Config",
-                                                         comment: "Remote Config debug menu title")
+        static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
+        static let general = NSLocalizedString("debugMenu.generalSectionTitle", value: "General", comment: "General section title")
+        static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     }
 }
