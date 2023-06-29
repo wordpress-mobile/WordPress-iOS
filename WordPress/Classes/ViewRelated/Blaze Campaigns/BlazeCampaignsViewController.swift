@@ -1,6 +1,6 @@
 import UIKit
-import SVProgressHUD
 import WordPressKit
+import WordPressFlux
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
@@ -138,7 +138,9 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
                 self.tableView.reloadData()
                 self.reloadView()
             case .failure(let error):
-                SVProgressHUD.showDismissibleError(withStatus: error.localizedDescription)
+                if self.refreshControl.isRefreshing {
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: error.localizedDescription, feedbackType: .error)))
+                }
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
                 self.pendingStream = nil
