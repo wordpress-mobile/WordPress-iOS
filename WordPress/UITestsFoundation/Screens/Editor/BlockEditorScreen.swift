@@ -8,19 +8,13 @@ public class BlockEditorScreen: ScreenObject {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     }
 
-    var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
-
     let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Undo"]
     }
 
-    var undoButton: XCUIElement { undoButtonGetter(app) }
-
     let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Redo"]
     }
-
-    var redoButton: XCUIElement { redoButtonGetter(app) }
 
     let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["add-block-button"]
@@ -39,6 +33,8 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
+    var undoButton: XCUIElement { undoButtonGetter(app) }
+    var redoButton: XCUIElement { redoButtonGetter(app) }
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
