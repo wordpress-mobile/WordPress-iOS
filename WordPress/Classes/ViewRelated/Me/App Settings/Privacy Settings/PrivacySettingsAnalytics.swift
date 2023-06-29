@@ -1,5 +1,3 @@
-import Foundation
-
 enum PrivacySettingsAnalytics: String {
     // Privacy Settings
     case privacySettingsOpened = "privacy_settings_opened"

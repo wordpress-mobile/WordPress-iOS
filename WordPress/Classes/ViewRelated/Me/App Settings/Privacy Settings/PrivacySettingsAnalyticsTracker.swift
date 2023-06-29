@@ -1,23 +1,35 @@
-import Foundation
-import AutomatticTracks
+import WordPressShared
 
-final class PrivacySettingsAnalyticsTracker {
+protocol PrivacySettingsAnalyticsTracking {
+
+    func trackPrivacySettingsReportCrashesToggled(enabled: Bool)
+
+    func trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: Bool)
+}
+
+final class PrivacySettingsAnalyticsTracker: PrivacySettingsAnalyticsTracking {
+
+    private let tracker: AnalyticsEventTracking.Type
+
+    init(tracker: AnalyticsEventTracking.Type = WPAnalytics.self) {
+        self.tracker = tracker
+    }
 
     // MARK: - API
 
     func trackPrivacySettingsReportCrashesToggled(enabled: Bool) {
-        let props: Properties = ["enabled": enabled.stringLiteral]
+        let props = ["enabled": enabled.stringLiteral]
         self.track(.privacyChoicesBannerSaveButtonTapped, properties: props)
     }
 
     func trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: Bool) {
-        let props: Properties = ["analytics_enabled": analyticsEnabled.stringLiteral]
+        let props = ["analytics_enabled": analyticsEnabled.stringLiteral]
         self.track(.privacyChoicesBannerSaveButtonTapped, properties: props)
     }
 
     func track(_ event: PrivacySettingsAnalytics, properties: Properties = [:]) {
         let event = AnalyticsEvent(name: event.rawValue, properties: properties)
-        WPAnalytics.track(event)
+        tracker.track(event)
     }
 
     // MARK: - Types

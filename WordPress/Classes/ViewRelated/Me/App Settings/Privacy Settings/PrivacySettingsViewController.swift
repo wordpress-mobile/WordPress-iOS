@@ -7,13 +7,18 @@ class PrivacySettingsViewController: UITableViewController {
 
     // MARK: - Dependencies
 
-    private let analyticsTracker = PrivacySettingsAnalyticsTracker()
+    private let analyticsTracker: PrivacySettingsAnalyticsTracking
 
     // MARK: - Init
 
-    override init(style: UITableView.Style) {
+    init(style: UITableView.Style, analyticsTracker: PrivacySettingsAnalyticsTracking) {
+        self.analyticsTracker = analyticsTracker
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Privacy Settings", comment: "Privacy Settings Title")
+    }
+
+    override convenience init(style: UITableView.Style) {
+        self.init(style: style, analyticsTracker: PrivacySettingsAnalyticsTracker())
     }
 
     required init?(coder aDecoder: NSCoder) {
