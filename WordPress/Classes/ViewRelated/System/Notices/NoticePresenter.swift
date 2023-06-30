@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import UIKit
 import UserNotifications
 import WordPressFlux
@@ -59,6 +60,8 @@ class NoticePresenter {
     private var currentNoticePresentation: NoticePresentation?
     private var currentKeyboardPresentation: KeyboardPresentation = .notPresent
 
+    private var notificationObservers = Set<AnyCancellable>()
+
     init(store: NoticeStore = StoreContainer.shared.notice,
          animator: NoticeAnimator = NoticeAnimator(duration: Animations.appearanceDuration, springDampening: Animations.appearanceSpringDamping, springVelocity: NoticePresenter.Animations.appearanceSpringVelocity)) {
         self.store = store
@@ -97,54 +100,61 @@ class NoticePresenter {
     // MARK: - Events
 
     private func listenToKeyboardEvents() {
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
-            guard let self = self,
-                let userInfo = notification.userInfo,
-                let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-                let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillShowNotification)
+            .sink { [weak self] (notification) in
+                guard let self = self,
+                    let userInfo = notification.userInfo,
+                    let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+                    let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
+                        return
+                }
+
+                self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
+
+                guard let currentContainer = self.currentNoticePresentation?.containerView else {
                     return
+                }
+
+                UIView.animate(withDuration: durationValue.doubleValue, animations: {
+                    currentContainer.bottomConstraint?.constant = self.onScreenNoticeContainerBottomConstraintConstant
+                    self.view.layoutIfNeeded()
+                })
             }
+            .store(in: &notificationObservers)
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillHideNotification)
+            .sink { [weak self] (notification) in
+                self?.currentKeyboardPresentation = .notPresent
 
-            self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
+                guard let self = self,
+                    let currentContainer = self.currentNoticePresentation?.containerView,
+                    let userInfo = notification.userInfo,
+                    let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
+                        return
+                }
 
-            guard let currentContainer = self.currentNoticePresentation?.containerView else {
-                return
+                UIView.animate(withDuration: durationValue.doubleValue, animations: {
+                    currentContainer.bottomConstraint?.constant = self.onScreenNoticeContainerBottomConstraintConstant
+                    self.view.layoutIfNeeded()
+                })
             }
-
-            UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = self.onScreenNoticeContainerBottomConstraintConstant
-                self.view.layoutIfNeeded()
-            })
-        }
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
-            self?.currentKeyboardPresentation = .notPresent
-
-            guard let self = self,
-                let currentContainer = self.currentNoticePresentation?.containerView,
-                let userInfo = notification.userInfo,
-                let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
-                    return
-            }
-
-            UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = self.onScreenNoticeContainerBottomConstraintConstant
-                self.view.layoutIfNeeded()
-            })
-        }
+            .store(in: &notificationObservers)
     }
 
     /// Adjust the current Notice so it will always be in the correct y-position after the
     /// device is rotated.
     private func listenToOrientationChangeEvents() {
-        let nc = NotificationCenter.default
-        nc.addObserver(forName: NSNotification.Name.WPTabBarHeightChanged, object: nil, queue: nil) { [weak self] _ in
-            guard let self = self,
-                let containerView = self.currentNoticePresentation?.containerView else {
-                    return
-            }
+        NotificationCenter.default.publisher(for: .WPTabBarHeightChanged)
+            .sink { [weak self] _ in
+                guard let self = self,
+                    let containerView = self.currentNoticePresentation?.containerView else {
+                        return
+                }
 
-            containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
-        }
+                containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+            }
+            .store(in: &notificationObservers)
     }
 
     /// Handle all changes in the `NoticeStore`.
