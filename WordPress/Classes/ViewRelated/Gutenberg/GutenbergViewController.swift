@@ -458,14 +458,15 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
 
         // Add bottom border line
-        let borderBottom = CALayer()
         let screenScale = UIScreen.main.scale
         let borderWidth: CGFloat = 1.0 / screenScale
         let borderColor = UIColor(red: 60/255, green: 60/255, blue: 67/255, alpha: 0.36).cgColor
-        borderBottom.borderColor = borderColor
-        borderBottom.borderWidth = borderWidth
+
+        let borderBottom = UIView()
+        borderBottom.backgroundColor = UIColor(cgColor: borderColor)
         borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
-        navigationController?.navigationBar.layer.addSublayer(borderBottom)
+        borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        navigationController?.navigationBar.addSubview(borderBottom)
     }
 
     private func reloadBlogTitleView() {
