@@ -9,11 +9,11 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Undo"]
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
     }
 
     let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Redo"]
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
     }
 
     let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
