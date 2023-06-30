@@ -50,17 +50,16 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 8.3-beta'
-  # pod 'WordPressKit', git:
-  # pod 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'feature/eu-us-compliance-header'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '38325bbe8a73c218bb830f7d7e168ef20512f894'
-  # pod 'WordPressKit', path: '../WordPressKit-iOS'
+    pod 'WordPressKit', '~> 8.5-beta'
+    # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branc    h: ''
+    # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag:     ''
+    # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commi    t: ''
+    # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.4.4'
-  # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', tag: ''
+pod 'Kanvas', '~> 1.4.4'
+# pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', tag: ''
   # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', commit: ''
   # pod 'Kanvas', path: '../Kanvas-iOS'
 end
