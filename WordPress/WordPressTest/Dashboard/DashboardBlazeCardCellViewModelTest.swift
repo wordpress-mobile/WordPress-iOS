@@ -120,12 +120,10 @@ private final class MockDashboardBlazeStore: DashboardBlazeStoreProtocol {
 }
 
 private func getMockResponse() throws -> BlazeCampaignsSearchResponse {
+    let data = try Bundle.test.json(named: "blaze-search-response")
+
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     decoder.dateDecodingStrategy = .iso8601
-
-    let url = try XCTUnwrap(Bundle(for: MockDashboardBlazeStore.self)
-        .url(forResource: "blaze-search-response", withExtension: "json"))
-    let data = try Data(contentsOf: url)
     return try decoder.decode(BlazeCampaignsSearchResponse.self, from: data)
 }

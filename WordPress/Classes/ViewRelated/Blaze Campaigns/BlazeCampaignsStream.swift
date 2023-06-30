@@ -20,8 +20,7 @@ final class BlazeCampaignsStream {
     private let service: BlazeServiceProtocol
     private let blog: Blog
 
-    init(blog: Blog,
-         service: BlazeServiceProtocol = BlazeService()) {
+    init(blog: Blog, service: BlazeServiceProtocol = BlazeService()) {
         self.blog = blog
         self.service = service
     }
@@ -51,7 +50,7 @@ final class BlazeCampaignsStream {
 
             campaigns += newCampaigns
             campaignIDs.formUnion(newCampaigns.map(\.campaignID))
-            let indexPaths = campaigns.indices.prefix(newCampaigns.count)
+            let indexPaths = campaigns.indices.suffix(newCampaigns.count)
                 .map { IndexPath(row: $0, section: 0) }
             delegate?.stream(self, didAppendItemsAt: indexPaths)
         case .failure(let error):
