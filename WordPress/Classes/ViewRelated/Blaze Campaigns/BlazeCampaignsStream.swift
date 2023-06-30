@@ -17,17 +17,17 @@ final class BlazeCampaignsStream {
     private var pages: [BlazeCampaignsSearchResponse] = []
     private var campaignIDs: Set<Int> = []
     private var hasMore = true
+    private let service: BlazeServiceProtocol
     private let blog: Blog
 
-    init(blog: Blog) {
+    init(blog: Blog,
+         service: BlazeServiceProtocol = BlazeService()) {
         self.blog = blog
+        self.service = service
     }
 
     /// Loads the next page. Does nothing if it's already loading or has no more items to load.
     func load(_ completion: ((Result<BlazeCampaignsSearchResponse, Error>) -> Void)? = nil) {
-        guard let service = BlazeService() else {
-            return assertionFailure("Failed to create BlazeService")
-        }
         guard !isLoading && hasMore else {
             return
         }

@@ -5,7 +5,7 @@ final class DashboardBlazeCardCellViewModel {
     private(set) var state: State = .promo
 
     private let blog: Blog
-    private let service: BlazeServiceProtocol?
+    private let service: BlazeServiceProtocol
     private let store: DashboardBlazeStoreProtocol
     private var isRefreshing = false
     private let isBlazeCampaignsFlagEnabled: () -> Bool
@@ -20,7 +20,7 @@ final class DashboardBlazeCardCellViewModel {
     var onRefresh: ((DashboardBlazeCardCellViewModel) -> Void)?
 
     init(blog: Blog,
-         service: BlazeServiceProtocol? = BlazeService(),
+         service: BlazeServiceProtocol = BlazeService(),
          store: DashboardBlazeStoreProtocol = BlogDashboardPersistence(),
          isBlazeCampaignsFlagEnabled: @escaping () -> Bool = { RemoteFeatureFlag.blazeManageCampaigns.enabled() }) {
         self.blog = blog
@@ -42,7 +42,7 @@ final class DashboardBlazeCardCellViewModel {
             return // Continue showing the default `Promo` card
         }
 
-        guard !isRefreshing, let service else { return }
+        guard !isRefreshing else { return }
         isRefreshing = true
 
         service.getRecentCampaigns(for: blog, page: 1) { [weak self] in

@@ -11,14 +11,10 @@ protocol BlazeServiceProtocol {
 
     // MARK: - Init
 
-    required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
+    required init(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BlazeServiceRemote? = nil) {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
-            return nil
-        }
-
         self.contextManager = contextManager
-        self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+        self.remote = remote ?? BlazeServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: contextManager.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2))
     }
 
     @objc class func createService() -> BlazeService? {
