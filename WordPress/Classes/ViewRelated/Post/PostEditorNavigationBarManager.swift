@@ -91,9 +91,10 @@ class PostEditorNavigationBarManager {
     }()
 
     lazy var undoButton: UIButton = {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
         let undoImage = UIImage(named: "editor-undo")
         let button = UIButton(type: .system)
-        button.setImage(undoImage, for: .normal)
+        button.setImage(isRTL ? undoImage?.withHorizontallyFlippedOrientation() : undoImage, for: .normal)
         button.accessibilityIdentifier = "editor-undo-button"
         button.accessibilityLabel = NSLocalizedString("Undo", comment: "Action button to undo last change")
         button.addTarget(self, action: #selector(undoWasPressed), for: .touchUpInside)
@@ -104,9 +105,10 @@ class PostEditorNavigationBarManager {
     }()
 
     lazy var redoButton: UIButton = {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
         let redoImage = UIImage(named: "editor-redo")
         let button = UIButton(type: .system)
-        button.setImage(redoImage, for: .normal)
+        button.setImage(isRTL ? redoImage?.withHorizontallyFlippedOrientation() : redoImage, for: .normal)
         button.accessibilityIdentifier = "editor-redo-button"
         button.accessibilityLabel = NSLocalizedString("Redo", comment: "Action button to redo last change")
         button.addTarget(self, action: #selector(redoWasPressed), for: .touchUpInside)
