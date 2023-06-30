@@ -2,7 +2,7 @@ import UIKit
 
 final class CompliancePopoverCoordinator {
     fileprivate enum Constants {
-        static let hasSavedPrivacyBannerSettingsKey = "hasSavedPrivacyBannerSettings"
+        static let shouldShowCompliancePopup = "shouldShowCompliancePopup"
     }
 
     private let viewController: UIViewController
@@ -21,13 +21,15 @@ final class CompliancePopoverCoordinator {
         complianceService.getIPCountryCode { [weak self] result in
             switch result {
             case .success(let countryCode):
+                guard let self, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                    return
+                }
                 DispatchQueue.main.async {
-                    guard let self, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
-                        return
-                    }
-                    let complianceViewModel = CompliancePopoverViewModel()
+                    let complianceViewModel = CompliancePopoverViewModel(defaults: self.defaults)
+                    complianceViewModel.coordinator = self
                     let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
                     let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
+
                     bottomSheetViewController.show(from: self.viewController)
                 }
             case .failure(let error):
@@ -38,8 +40,17 @@ final class CompliancePopoverCoordinator {
 
     func shouldShowPrivacyBanner(countryCode: String) -> Bool {
         let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        let hasSavedPrivacySettings = defaults.hasSavedPrivacyBannerSettings
-        return isCountryInEU && !hasSavedPrivacySettings
+        return isCountryInEU && !defaults.shouldShowCompliancePopup
+    }
+
+    func navigateToSettings() {
+        viewController.dismiss(animated: true) {
+            RootViewCoordinator.sharedPresenter.navigateToPrivacySettings()
+        }
+    }
+
+    func dismiss() {
+        viewController.dismiss(animated: true)
     }
 }
 
@@ -82,8 +93,12 @@ private extension CompliancePopoverCoordinator {
     ]
 }
 
-private extension UserDefaults {
-    @objc dynamic var hasSavedPrivacyBannerSettings: Bool {
-        bool(forKey: CompliancePopoverCoordinator.Constants.hasSavedPrivacyBannerSettingsKey)
+extension UserDefaults {
+    @objc dynamic var shouldShowCompliancePopup: Bool {
+        get {
+            bool(forKey: CompliancePopoverCoordinator.Constants.shouldShowCompliancePopup)
+        } set {
+            set(newValue, forKey: CompliancePopoverCoordinator.Constants.shouldShowCompliancePopup)
+        }
     }
 }
