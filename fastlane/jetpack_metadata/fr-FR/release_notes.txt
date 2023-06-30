@@ -1,9 +1,0 @@
-Les plans WordPress.com sont à présent disponibles dans l’application Jetpack. Choisissez celui qui correspond à vos besoins de publication et gérez-le depuis l’espace de rédaction de votre blog.
-
-Un tout nouveau bouton « Personnaliser l’onglet d’accueil », situé en bas du tableau de bord de votre site, vous permet de personnaliser les cartes à afficher sur votre tableau de bord. (Vous souhaitez masquer les cartes dont vous n’avez pas besoin ? Utilisez simplement le menu « Plus ».)
-
-Nous avons résolu un bogue sur les appareils utilisant iOS 16 ou une version ultérieure, où la saisie de texte dans l’éditeur de blocs pendant la dictée entraînait la perte du texte dicté. Aussi, l’éditeur affiche à présent une icône de cadenas pour les cellules désactivées, ce qui vous permet de savoir quand elles ne sont pas utilisées.
-
-L’écran « Rechercher des domaines » affiche désormais un message d’erreur lorsque vous choisissez un domaine par défaut qui n’est pas pris en charge par votre site. Vous ne verrez plus la roue de progression tourner indéfiniment.
-
-Enfin, nous avons mis à jour le texte indicatif pour les vidéos VideoPress qui n’appartiennent pas à votre site. (Pourvu qu’elles ne se sentent pas exclues.)
