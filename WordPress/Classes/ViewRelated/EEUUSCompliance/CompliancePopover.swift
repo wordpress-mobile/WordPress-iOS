@@ -5,8 +5,8 @@ struct CompliancePopover: View {
     var saveAction: (() -> ())?
     var shouldScroll: Bool = false
 
-    @State
-    private var isAnalyticsOn = true
+    @StateObject
+    var viewModel: CompliancePopoverViewModel
 
     var body: some View {
         if shouldScroll {
@@ -42,7 +42,7 @@ struct CompliancePopover: View {
     }
 
     private var analyticsToggle: some View {
-        Toggle(Strings.toggleTitle, isOn: $isAnalyticsOn)
+        Toggle(Strings.toggleTitle, isOn: $viewModel.isAnalyticsEnabled)
             .foregroundColor(Color.DS.Foreground.primary)
             .toggleStyle(SwitchToggleStyle(tint: Color.DS.Background.brand))
             .padding(.vertical, Length.Padding.single)
