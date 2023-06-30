@@ -48,6 +48,8 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
         return button
     }()
 
+    fileprivate var quickStartObserver: NSObjectProtocol?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -142,7 +144,7 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
 
             if let info = notification.userInfo,
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
@@ -170,7 +172,10 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+        if let quickStartObserver {
+            NotificationCenter.default.removeObserver(quickStartObserver)
+        }
+        quickStartObserver = nil
     }
 
     private func autoScrollToStatsButton() {

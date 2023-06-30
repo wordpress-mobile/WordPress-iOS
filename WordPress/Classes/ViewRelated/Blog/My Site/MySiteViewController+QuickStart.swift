@@ -1,9 +1,11 @@
 import UIKit
 
+private var observerKey = 0
+
 extension MySiteViewController {
 
     func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
 
             if let info = notification.userInfo,
                let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {

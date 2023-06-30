@@ -10,7 +10,7 @@ extension SitePickerViewController {
     }
 
     func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
                 return
             }
@@ -22,7 +22,10 @@ extension SitePickerViewController {
     }
 
     func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+        if let quickStartObserver {
+            NotificationCenter.default.removeObserver(quickStartObserver)
+        }
+        quickStartObserver = nil
     }
 
     func startAlertTimer() {

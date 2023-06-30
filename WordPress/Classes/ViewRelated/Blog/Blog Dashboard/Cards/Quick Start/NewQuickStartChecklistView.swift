@@ -99,6 +99,8 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
         return imageView
     }()
 
+    fileprivate var quickStartObserver: NSObjectProtocol?
+
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -197,7 +199,7 @@ extension NewQuickStartChecklistView {
     }
 
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
 
             guard let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
@@ -210,7 +212,10 @@ extension NewQuickStartChecklistView {
     }
 
     private func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+        if let quickStartObserver {
+            NotificationCenter.default.removeObserver(quickStartObserver)
+        }
+        quickStartObserver = nil
     }
 
     @objc private func didTap() {
