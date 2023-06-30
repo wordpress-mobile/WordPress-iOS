@@ -96,18 +96,6 @@ private struct CommentHeaderView: View {
     @State var showsDisclosureIndicator = true
 
     var body: some View {
-        if #available(iOS 15.0, *) {
-            // Material ShapeStyles are only available from iOS 15.0.
-            content.background(.ultraThinMaterial)
-        } else {
-            ZStack {
-                VisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
-                content
-            }
-        }
-    }
-
-    var content: some View {
         HStack {
             text
             Spacer()
@@ -115,6 +103,7 @@ private struct CommentHeaderView: View {
                 disclosureIndicator
             }
         }
+        .background(.ultraThinMaterial)
         .padding(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
     }
 
@@ -137,19 +126,5 @@ private struct CommentHeaderView: View {
             .foregroundColor(Color(.secondaryLabel))
             .font(.caption.weight(.semibold))
             .imageScale(.large)
-    }
-}
-
-// MARK: SwiftUI VisualEffect support for iOS 14
-
-private struct VisualEffectView: UIViewRepresentable {
-    var effect: UIVisualEffect
-
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        return UIVisualEffectView()
-    }
-
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        uiView.effect = effect
     }
 }
