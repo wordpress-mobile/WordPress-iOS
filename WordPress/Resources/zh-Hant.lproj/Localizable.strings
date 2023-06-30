@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-14 09:54:07+0000 */
+/* Translation-Revision-Date: 2023-06-27 09:54:30+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -1424,9 +1424,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "變更設定";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "變更網站";
-
 /* Change site icon button */
 "Change Site Icon" = "變更網站圖示";
 
@@ -1601,9 +1598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "選擇你的主題";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "選擇不同網站會遺失對網站特定內容 (例如媒體和類別) 所做的編輯。確定要執行？";
 
 /* Register Domain - Address information field City */
 "City" = "城市";
@@ -3616,8 +3610,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "文章截至目前為止獲得的迴響如下。";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "隱藏";
 
 /* Hides a site from the site picker list
@@ -5236,6 +5229,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5864,8 +5858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "網站主要網址";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "隱私";
 
 /* Title of button that displays the App's privacy policy */
@@ -5886,7 +5879,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "私密";
 
@@ -5922,8 +5914,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "提示";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "公開";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5988,9 +5979,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "推播通知";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "已於「iOS 設定」中關閉推播通知";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "已於「iOS 設定應用程式」中關閉推播通知。切換至「允許通知」，重新開啟此功能。";
@@ -6349,6 +6337,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "返回文章";
+
+/* No comment provided by engineer. */
+"Reusable" = "可重複使用";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "回復待確認的變更";
@@ -7462,9 +7453,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "點選以選擇上個期間";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "點選以選取要發佈文章的目標網誌";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "點選即可切換到其他網站或新增網站";
 
@@ -7776,6 +7764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "載入活動時發生錯誤";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"There was an error loading campaigns." = "載入行銷活動時發生錯誤。";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "載入方案時發生錯誤";
 
@@ -7969,9 +7960,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "若要建立新的 WordPress.com 帳號，請輸入你的電子郵件地址。";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "啟用通知的步驟如下：\n\n1.開啟 **iOS 設定**\n2.點選 **通知**\n3.選取 **WordPress**\n4.開啟 **允許通知**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "若要在手機上獲得來自你 WordPress 網站的實用通知，必須安裝 Jetpack 外掛程式。";
 
@@ -8082,7 +8070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "移至回收桶";
@@ -8409,7 +8396,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "取消隱藏";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "未知";
 
@@ -9589,17 +9575,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "正在還原網站";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "只有你和經核准的使用者可看見你的網站。";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "你的網站空間不足，無法上傳媒體檔案。";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "任何人都可以看見你的網站，而且搜尋引擎可能會將網站加入索引。";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "所有人都能看見你的網站，但你能要求搜尋引擎別將你的網站納入索引範圍。";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "你的網站可能存在風險";
@@ -9731,10 +9708,31 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.active" = "已啟用";
 
 /* Short status description */
-"blazeCampaign.status.finished" = "已排程";
+"blazeCampaign.status.approved" = "已核准";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "已取消";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "已完成";
+
+/* Short status description */
+"blazeCampaign.status.created" = "已建立";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "審核中";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "已拒絕";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "預算";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "點擊數";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "曝光數";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "隱藏此訊息";
@@ -9750,6 +9748,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "留言";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "對以下內容的留言：";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "對以下內容的留言：";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "回覆 %1$@";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "儲存";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "前往「設定」";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "管理隱私權";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "分析";
 
 /* The menu item to select during a guided tour. */
 "connections" = "連線";
@@ -10437,9 +10462,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "關閉";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "有待改善";
 
@@ -10629,6 +10651,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "隱私權";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "所有人都能看見你的網站，但系統會要求搜尋引擎不要將你的網站加入索引。";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "已隱藏";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "只有你和經核准的使用者可看見你的網站。";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "私人";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "任何人都可以看見你的網站，搜尋引擎也可能會將網站加入索引。";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "公開";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "未知";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "未知";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "顯示提示";

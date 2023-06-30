@@ -271,12 +271,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "การรับรองผิดพลาด";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "เปลี่ยนเว็บ";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "การเลือกเว็บอื่นจะเสียการแก้ไขสำหรับเว็บไปเช่นไฟล์สื่อและหมวดหมู่  คุณแน่ใจหรือไม่";
-
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "ล้างค่า log กิจกรรมเก่า";
 
@@ -674,8 +668,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "ช่วยเหลือและสนับสนุน";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "ซ่อน";
 
 /* Hide All */
@@ -1241,8 +1234,7 @@
 "Preview post" = "ดูก่อนเรื่อง";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "ส่วนตัว";
 
 /* Title of button that displays the App's privacy policy */
@@ -1250,15 +1242,13 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "ส่วนตัว";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "การทำต่อจะลบข้อมูล WordPress.com ทั้งหมดออกจาอุปกรณ์  และลบฉบับร่างที่บันทึกในอุปกรณ์ด้วย  แต่คุณไม่ได้เสียอะไรเพราะว่าทั้งหมดถูกบันทึกไปที่บล็อก WordPress.com ของคุณแล้ว";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "สาธารณะ";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -1284,9 +1274,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "ส่งการเตือน";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่า iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
@@ -1670,9 +1657,6 @@
 /* Label for a button to retry loading posts */
 "Tap to retry" = "แตะเพื่อเลิกใหม่";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "แตะเพื่อเลือกว่าบล็อกไหนที่จะทำการส่งข้อความ";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "ลำดับขั้น";
 
@@ -1798,9 +1782,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "จำเป็นต้องใส่หัวข้อสำหรับหมวดหมู่";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "เพื่อเปิดใช้การเตือน:\n\n1. เปิด **การตั้งค่า iOS**\n2. แตะคำว่า **การเตือน**\n3. เลือก **เวิร์ดเพรส**\n4. เปิด **อนุญาตการเตือน**";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -1827,7 +1808,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "ถังขยะ";
@@ -1894,7 +1874,6 @@
 "Unfollowed site" = "เว็บที่เลิกติดตาม";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "ไม่รู้จัก";
 
@@ -2107,15 +2086,6 @@
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "เว็บของคุณ";
-
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "เว็บไซต์ของคุณจะเห็นได้เฉพาะตัวคุณและผู้ใช้ที่คุณอนุมัติ";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "ทุกคนสามารถมองเห็นเว็บของคุณ และเซิร์ชเอนจิ้นอาจจะเก็บข้อมูลเว็บคุณ";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "ทุกคนสามารถมองเห็นเว็บของคุณ แต่ขอให้เซิร์ชเอนจิ้นไม่เก็บข้อมูลเว็บคุณ";
 
 /* Age between dates equaling one day. */
 "a day" = "หนึ่งวัน";
