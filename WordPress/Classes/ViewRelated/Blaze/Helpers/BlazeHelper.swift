@@ -10,7 +10,7 @@ import Foundation
     }
 
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard isBlazeFlagEnabled() && blog.isBlazeApproved else {
+        guard isBlazeFlagEnabled() && blog.canBlaze else {
             return false
         }
         return true

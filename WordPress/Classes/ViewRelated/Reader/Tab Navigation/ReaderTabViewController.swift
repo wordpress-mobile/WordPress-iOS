@@ -172,6 +172,8 @@ extension ReaderTabViewController: UIViewControllerRestoration {
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+
         coder.encode(viewModel.selectedIndex, forKey: ReaderTabViewController.encodedIndexKey)
     }
 

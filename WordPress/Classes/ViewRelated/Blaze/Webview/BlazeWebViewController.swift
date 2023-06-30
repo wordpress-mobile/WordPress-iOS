@@ -90,9 +90,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
-        if #available(iOS 15.0, *) {
-            navigationItem.compactScrollEdgeAppearance = appearance
-        }
+        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     // MARK: Reachability Helpers

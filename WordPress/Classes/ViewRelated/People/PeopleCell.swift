@@ -10,6 +10,8 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet private weak var badgeStackView: UIStackView!
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+
         WPStyleGuide.configureLabel(displayNameLabel, textStyle: .callout)
         WPStyleGuide.configureLabel(usernameLabel, textStyle: .caption2)
     }

@@ -163,9 +163,7 @@ import UniformTypeIdentifiers
         pinSubviewToAllEdges(textView)
 
         // Allow animatable gifs to be displayed
-        if #available(iOS 15.0, *) {
-            NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: UTType.gif.identifier)
-        }
+        NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: UTType.gif.identifier)
     }
 
     fileprivate func renderAttachments() {

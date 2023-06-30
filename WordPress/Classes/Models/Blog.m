@@ -4,7 +4,6 @@
 #import "NSURL+IDN.h"
 #import "CoreDataStack.h"
 #import "Constants.h"
-#import "WordPress-Swift.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 
@@ -82,16 +81,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic settings;
 @dynamic planID;
 @dynamic planTitle;
+@dynamic planActiveFeatures;
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
 @dynamic quickStartTours;
 @dynamic quickStartTypeValue;
-@dynamic isBlazeApproved;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
 @dynamic pageTemplateCategories;
+@dynamic publicizeInfo;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -510,6 +510,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 }
 
+- (BOOL)canBlaze
+{
+    return [[self getOptionValue:@"can_blaze"] boolValue] && self.isAdmin;
+}
+
 - (BOOL)supportsFeaturedImages
 {
     id hasSupport = [self getOptionValue:@"post_thumbnail"];
@@ -612,7 +617,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureFileDownloadsStats:
             return [self isHostedAtWPcom];
         case BlogFeatureBlaze:
-            return [self isBlazeApproved];
+            return [self canBlaze];
         case BlogFeaturePages:
             return [self isListingPagesAllowed];
     }

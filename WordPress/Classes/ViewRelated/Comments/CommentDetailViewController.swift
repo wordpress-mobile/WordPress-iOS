@@ -195,18 +195,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return appearance
     }()
 
-    /// Convenience property that keeps track of whether the content has scrolled.
-    private var isContentScrolled: Bool = false {
-        didSet {
-            if isContentScrolled == oldValue {
-                return
-            }
-
-            // show blurred navigation bar when content is scrolled, or opaque style when the scroll position is at the top.
-            updateNavigationBarAppearance(isBlurred: isContentScrolled)
-        }
-    }
-
     // MARK: Nav Bar Buttons
 
     private(set) lazy var editBarButtonItem: UIBarButtonItem = {
@@ -380,24 +368,9 @@ private extension CommentDetailViewController {
     }
 
     func configureNavigationBar() {
-        if #available(iOS 15, *) {
-            // In iOS 15, to apply visual blur only when content is scrolled, keep the scrollEdgeAppearance unchanged as it applies to ALL navigation bars.
-            navigationItem.standardAppearance = blurredBarAppearance
-        } else {
-            // For iOS 14 and below, scrollEdgeAppearance only affects large title navigation bars. Therefore we need to manually detect if the content
-            // has been scrolled and change the appearance accordingly.
-            updateNavigationBarAppearance()
-        }
-
+        navigationItem.standardAppearance = blurredBarAppearance
         navigationController?.navigationBar.isTranslucent = true
         configureNavBarButton()
-    }
-
-    /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
-    /// but reverts to opaque style when the scroll position is at the top. This method may be called multiple times since it's triggered by the `didSet`
-    /// property observer on the `isContentScrolled` property.
-    func updateNavigationBarAppearance(isBlurred: Bool = false) {
-        navigationItem.standardAppearance = isBlurred ? blurredBarAppearance : opaqueBarAppearance
     }
 
     func configureNavBarButton() {
@@ -1044,17 +1017,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
 
     }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
-        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
-        if #available(iOS 15, *) {
-            return
-        }
-
-        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
-    }
-
 }
 
 // MARK: - Reply Handling

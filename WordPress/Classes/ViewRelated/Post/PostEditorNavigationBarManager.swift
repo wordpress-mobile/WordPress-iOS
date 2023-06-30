@@ -25,15 +25,12 @@ class PostEditorNavigationBarManager {
     ///
     lazy var closeButton: UIButton = {
         let button = UIButton(type: .system)
-        if #available(iOS 15, *) {
-            var configuration = UIButton.Configuration.plain()
-            configuration.image = Assets.closeButtonModalImage
-            configuration.contentInsets = Constants.closeButtonInsets
-            button.configuration = configuration
-        } else {
-            button.setImage(Assets.closeButtonModalImage, for: .normal)
-            button.contentEdgeInsets = Constants.closeButtonEdgeInsets
-        }
+
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = Assets.closeButtonModalImage
+        configuration.contentInsets = Constants.closeButtonInsets
+        button.configuration = configuration
+
         button.addTarget(self, action: #selector(closeWasPressed), for: .touchUpInside)
         button.setContentHuggingPriority(.required, for: .horizontal)
         button.accessibilityIdentifier = "editor-close-button"

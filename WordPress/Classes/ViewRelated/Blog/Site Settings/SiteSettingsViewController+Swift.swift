@@ -1,5 +1,7 @@
 import Foundation
+import SwiftUI
 import WordPressFlux
+import SwiftUI
 
 // This is just a wrapper for the receipts, since Receipt isn't exposed to Obj-C
 @objc class TimeZoneObserver: NSObject {
@@ -15,6 +17,32 @@ import WordPressFlux
 }
 
 extension SiteSettingsViewController {
+    // MARK: - General
+
+    @objc func showPrivacySelector() {
+        struct SiteSettingsPrivacyPicker: View {
+            let blog: Blog
+            @State var selection: SiteVisibility
+            let onChange: (SiteVisibility) -> Void
+
+            var body: some View {
+                SettingsPickerListView(selection: $selection, values: SiteVisibility.eligiblePickerValues(for: blog))
+                    .onChange(of: selection, perform: onChange)
+            }
+        }
+        let view = SiteSettingsPrivacyPicker(blog: blog, selection: blog.siteVisibility) { [weak self] in
+            guard let self = self, self.blog.siteVisibility != $0 else { return }
+            self.blog.siteVisibility = $0
+            self.saveSettings()
+            self.trackSettingsChange(fieldName: "site_settings", value: $0.rawValue)
+        }
+        let viewController = UIHostingController(rootView: view)
+        viewController.title = Strings.privacyTitle
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    // MARK: - Timezone
+
     @objc func observeTimeZoneStore() {
         timeZoneObserver = TimeZoneObserver() { [weak self] (oldState, newState) in
             guard let controller = self else {
@@ -116,6 +144,13 @@ extension SiteSettingsViewController {
     @objc func showSpeedUpYourSiteSettings() {
         let speedUpSiteSettingsViewController = JetpackSpeedUpSiteSettingsViewController(blog: blog)
         navigationController?.pushViewController(speedUpSiteSettingsViewController, animated: true)
+    }
+
+    @objc func showRelatedPostsSettings() {
+        let view = RelatedPostsSettingsView(blog: blog)
+        let host = UIHostingController(rootView: view)
+        host.title = view.title // Make sure title is available before push
+        navigationController?.pushViewController(host, animated: true)
     }
 
     // MARK: Footers
@@ -279,7 +314,7 @@ extension SiteSettingsViewController {
     private func configureCellForPrivacy(_ cell: SettingTableViewCell) {
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
-        cell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
+        cell.textValue = blog.siteVisibility.localizedTitle
     }
 
     private func configureCellForLanguage(_ cell: SettingTableViewCell) {
@@ -375,4 +410,10 @@ extension SiteSettingsViewController {
                                         value: value)
     }
 
+}
+
+private extension SiteSettingsViewController {
+    enum Strings {
+        static let privacyTitle = NSLocalizedString("siteSettings.privacy.title", value: "Privacy", comment: "Title for screen to select the privacy options for a blog")
+    }
 }

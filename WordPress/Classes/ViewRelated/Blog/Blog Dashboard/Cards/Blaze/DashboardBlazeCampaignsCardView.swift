@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
+final class DashboardBlazeCampaignsCardView: UIView {
     private let frameView = BlogDashboardCardFrameView()
     private let campaignView = DashboardBlazeCampaignView()
 
@@ -41,9 +41,9 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
     // MARK: - View setup
 
     private func setupView() {
-        contentView.addSubview(frameView)
+        addSubview(frameView)
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
+        pinSubviewToAllEdges(frameView, priority: UILayoutPriority(999))
 
         frameView.add(subview: contentStackView)
         contentStackView.addArrangedSubview({
@@ -84,12 +84,11 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
 
     @objc private func buttonCreateCampaignTapped() {
         guard let presentingViewController, let blog else { return }
+        BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
         BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
-    // MARK: - BlogDashboardCardConfigurable
-
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, campaign: BlazeCampaignViewModel) {
         self.blog = blog
         self.presentingViewController = viewController
 
@@ -102,12 +101,11 @@ final class DashboardBlazeCampaignCardCell: DashboardCollectionViewCell {
             ])
         ], card: .blaze)
 
-        let viewModel = BlazeCampaignViewModel(campaign: mockResponse.campaigns!.first!)
-        campaignView.configure(with: viewModel, blog: blog)
+        campaignView.configure(with: campaign, blog: blog)
     }
 }
 
-private extension DashboardBlazeCampaignCardCell {
+private extension DashboardBlazeCampaignsCardView {
     enum Strings {
         static let cardTitle = NSLocalizedString("dashboardCard.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
         static let viewAllCampaigns = NSLocalizedString("dashboardCard.blazeCampaigns.viewAllCampaigns", value: "View all campaigns", comment: "Title for the View All Campaigns button in the More menu")
@@ -119,36 +117,3 @@ private extension DashboardBlazeCampaignCardCell {
         static let createCampaignInsets = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
     }
 }
-
-private let mockResponse: BlazeCampaignsSearchResponse = {
-    let decoder = JSONDecoder()
-    decoder.keyDecodingStrategy = .convertFromSnakeCase
-    decoder.dateDecodingStrategy = .iso8601
-    return try! decoder.decode(BlazeCampaignsSearchResponse.self, from: """
-    {
-        "totalItems": 3,
-        "campaigns": [
-            {
-                "campaign_id": 26916,
-                "name": "Test Post - don't approve",
-                "start_date": "2023-06-13T00:00:00Z",
-                "end_date": "2023-06-01T19:15:45Z",
-                "status": "finished",
-                "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
-                "budget_cents": 500,
-                "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                "content_config": {
-                    "title": "Test Post - don't approve",
-                    "snippet": "Test Post Empty Empty",
-                    "clickUrl": "https://alextest9123.wordpress.com/2023/06/01/test-post/",
-                    "imageUrl": "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"
-                },
-                "campaign_stats": {
-                    "impressions_total": 1000,
-                    "clicks_total": 235
-                }
-            }
-        ]
-    }
-    """.data(using: .utf8)!)
-}()

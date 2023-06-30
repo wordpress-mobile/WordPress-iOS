@@ -29,7 +29,6 @@ typedef NS_ENUM(NSInteger, SiteSettingsSection) {
 
 // General Settings: These were made available here to help with the transition to Swift.
 
-- (void)showPrivacySelector;
 - (void)showLanguageSelectorForBlog:(Blog *)blog;
 
 @end

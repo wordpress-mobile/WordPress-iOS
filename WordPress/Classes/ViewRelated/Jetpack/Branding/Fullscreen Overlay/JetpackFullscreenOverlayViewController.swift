@@ -104,9 +104,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
-        if #available(iOS 15.0, *) {
-            navigationItem.compactScrollEdgeAppearance = appearance
-        }
+        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func addCloseButtonIfNeeded() {
@@ -188,33 +186,21 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func setupButtonInsets() {
-        if #available(iOS 15.0, *) {
-            // Continue & Switch Buttons
-            var buttonConfig: UIButton.Configuration = .plain()
-            buttonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
-                var outgoing = incoming
-                outgoing.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-                return outgoing
-            })
-            buttonConfig.contentInsets = Metrics.mainButtonsContentInsets
-            continueButton.configuration = buttonConfig
-            switchButton.configuration = buttonConfig
+        // Continue & Switch Buttons
+        var buttonConfig: UIButton.Configuration = .plain()
+        buttonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
+            var outgoing = incoming
+            outgoing.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+            return outgoing
+        })
+        buttonConfig.contentInsets = Metrics.mainButtonsContentInsets
+        continueButton.configuration = buttonConfig
+        switchButton.configuration = buttonConfig
 
-            // Learn More Button
-            var learnMoreButtonConfig: UIButton.Configuration = .plain()
-            learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
-            learnMoreButton.configuration = learnMoreButtonConfig
-        } else {
-            // Continue Button
-            continueButton.contentEdgeInsets = Metrics.mainButtonsContentEdgeInsets
-
-            // Switch Button
-            switchButton.contentEdgeInsets = Metrics.mainButtonsContentEdgeInsets
-
-            // Learn More Button
-            learnMoreButton.contentEdgeInsets = Metrics.learnMoreButtonContentEdgeInsets
-            learnMoreButton.flipInsetsForRightToLeftLayoutDirection()
-        }
+        // Learn More Button
+        var learnMoreButtonConfig: UIButton.Configuration = .plain()
+        learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
+        learnMoreButton.configuration = learnMoreButtonConfig
     }
 
     private func setupLearnMoreButtonTitle() {
