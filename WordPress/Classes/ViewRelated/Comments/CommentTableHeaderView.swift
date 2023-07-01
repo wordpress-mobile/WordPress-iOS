@@ -103,8 +103,8 @@ private struct CommentHeaderView: View {
                 disclosureIndicator
             }
         }
-        .background(.ultraThinMaterial)
         .padding(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
+        .background(.ultraThinMaterial)
     }
 
     var text: some View {
