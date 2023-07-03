@@ -1,18 +1,40 @@
 import UIKit
+import WordPressKit
 
 final class DashboardBlazeCardCell: DashboardCollectionViewCell {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard)
+    private var blog: Blog?
+    private var viewController: BlogDashboardViewController?
+    private var viewModel: DashboardBlazeCardCellViewModel?
 
-        if RemoteFeatureFlag.blazeManageCampaigns.enabled() {
-            // Display campaigns
-            let cardView = DashboardBlazeCampaignsCardView()
-            cardView.configure(blog: blog, viewController: viewController)
-            setCardView(cardView, subtype: .campaigns)
-        } else {
-            // Display promo
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        self.blog = blog
+        self.viewController = viewController
+
+        BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard)
+    }
+
+    func configure(_ viewModel: DashboardBlazeCardCellViewModel) {
+        guard viewModel !== self.viewModel else { return }
+        self.viewModel = viewModel
+
+        viewModel.onRefresh = { [weak self] in
+            self?.update(with: $0)
+            self?.viewController?.collectionView.collectionViewLayout.invalidateLayout()
+        }
+        update(with: viewModel)
+    }
+
+    private func update(with viewModel: DashboardBlazeCardCellViewModel) {
+        guard let blog, let viewController else { return }
+
+        switch viewModel.state {
+        case .promo:
             let cardView = DashboardBlazePromoCardView(.make(with: blog, viewController: viewController))
-            setCardView(cardView, subtype: .promo)
+            self.setCardView(cardView, subtype: .promo)
+        case .campaign(let campaign):
+            let cardView = DashboardBlazeCampaignsCardView()
+            cardView.configure(blog: blog, viewController: viewController, campaign: campaign)
+            self.setCardView(cardView, subtype: .campaigns)
         }
     }
 

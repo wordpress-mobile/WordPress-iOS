@@ -147,12 +147,16 @@ private extension ReminderScheduleCoordinator {
     }
 
     func reminderType(for blog: Blog) -> ReminderType {
-        if Feature.enabled(.bloggingPrompts),
-           let settings = promptReminderSettings(for: blog),
-           settings.promptRemindersEnabled {
-            return .bloggingPrompts
+        guard Feature.enabled(.bloggingPrompts),
+              let settings = promptReminderSettings(for: blog),
+              let context = settings.managedObjectContext else {
+            return .bloggingReminders
         }
 
-        return .bloggingReminders
+        var reminderType: ReminderType = .bloggingReminders
+        context.performAndWait {
+            reminderType = settings.promptRemindersEnabled ? .bloggingPrompts : .bloggingReminders
+        }
+        return reminderType
     }
 }

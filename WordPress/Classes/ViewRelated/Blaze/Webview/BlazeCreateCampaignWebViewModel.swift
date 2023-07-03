@@ -82,6 +82,7 @@ class BlazeCreateCampaignWebViewModel: BlazeWebViewModel {
     func dismissTapped() {
         view?.dismissView()
         if isFlowCompleted {
+            NotificationCenter.default.post(name: .blazeCampaignCreated, object: nil)
             BlazeEventsTracker.trackBlazeFlowCompleted(for: source, currentStep: currentStep)
         } else {
             BlazeEventsTracker.trackBlazeFlowCanceled(for: source, currentStep: currentStep)
@@ -144,6 +145,10 @@ class BlazeCreateCampaignWebViewModel: BlazeWebViewModel {
             isFlowCompleted = false // reset flag is user start a new ad creation flow inside the web view
         }
     }
+}
+
+extension Foundation.Notification.Name {
+    static let blazeCampaignCreated = Foundation.Notification.Name("BlazeWebFlowBlazeCampaignCreated")
 }
 
 extension BlazeCreateCampaignWebViewModel: WebKitAuthenticatable {

@@ -502,9 +502,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Erro de certificado";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Mudar de site";
-
 /* Change site icon button */
 "Change Site Icon" = "Alterar ícone do site";
 
@@ -1227,8 +1224,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ajuda e suporte";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Invisível";
 
 /* Hide All */
@@ -1863,6 +1859,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -2141,8 +2138,7 @@
 "Primary Site" = "Site principal";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Privacidade";
 
 /* Title of button that displays the App's privacy policy */
@@ -2157,15 +2153,13 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privada";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projectos";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Público";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -2205,9 +2199,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Notificações por push";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Notificações push foram desligadas nas definições do iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Notificações push foram desligadas nas definições do iOS. Toque em \"Permitir notificações\" para voltar a ligar.";
@@ -2730,9 +2721,6 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Toque para cancelar o carregamento.";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Toque para seleccionar em que site publicar";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomia";
 
@@ -2957,7 +2945,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Lixo";
@@ -3076,7 +3063,6 @@
 "Unhide" = "Mostrar";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Desconhecido";
 
@@ -3422,15 +3408,6 @@
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "O seu site está a ser reposto";
-
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "O seu site é visível apenas aos utilizadores que aprovar.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "O seu site é visível a todos, e pode ser indexado pelos motores de busca.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "O seu site é visível a todos, mas pede aos motores de busca para não o indexarem.";
 
 /* Age between dates equaling one day. */
 "a day" = "um dia";

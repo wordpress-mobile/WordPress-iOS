@@ -69,8 +69,8 @@ final class DashboardBlazeCampaignView: UIView {
         }
 
         statsView.isHidden = !viewModel.isShowingStats
-        if viewModel.isShowingStats {
             statsView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        if viewModel.isShowingStats {
             makeStatsViews(for: viewModel).forEach(statsView.addArrangedSubview)
         }
     }
@@ -103,10 +103,10 @@ struct BlazeCampaignViewModel {
     let impressions: Int
     let clicks: Int
     let budget: String
-    var status: BlazeCampaignStatusViewModel { .init(status: campaign.status) }
+    var status: BlazeCampaignStatusViewModel { .init(campaign: campaign) }
 
     var isShowingStats: Bool {
-        switch campaign.status {
+        switch campaign.uiStatus {
         case .created, .processing, .canceled, .approved, .rejected, .scheduled, .unknown:
             return false
         case .active, .finished:

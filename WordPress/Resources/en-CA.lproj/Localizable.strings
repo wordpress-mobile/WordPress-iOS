@@ -1403,9 +1403,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Change Settings";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Change Site";
-
 /* Change site icon button */
 "Change Site Icon" = "Change Site Icon";
 
@@ -1580,9 +1577,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Choose your topics";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?";
 
 /* Register Domain - Address information field City */
 "City" = "City";
@@ -3583,8 +3577,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Here's how the post performed so far.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Hidden";
 
 /* Hides a site from the site picker list
@@ -5185,6 +5178,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5807,8 +5801,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "Primary site address";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Privacy";
 
 /* Title of button that displays the App's privacy policy */
@@ -5826,7 +5819,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Private";
 
@@ -5862,8 +5854,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Prompts";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Public";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5928,9 +5919,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Push Notifications";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Push Notifications have been turned off in iOS Settings";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on.";
@@ -7396,9 +7384,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "Tap to select the previous period";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Tap to select which blog to post to";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
 
@@ -7903,9 +7888,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "To create your new WordPress.com account, please enter your email address.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.";
 
@@ -8016,7 +7998,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Trash";
@@ -8340,7 +8321,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "Unhide";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Unknown";
 
@@ -9511,17 +9491,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Your site is being restored";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Your site is only visible to you and users you approve.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Your site is out of storage space for media uploads.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Your site is visible to everyone, and it may be indexed by search engines.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Your site is visible to everyone, but asks search engines not to index your site.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "Your site may be at risk";
@@ -10040,9 +10011,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Dismiss";
-
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Dismiss";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "of";
