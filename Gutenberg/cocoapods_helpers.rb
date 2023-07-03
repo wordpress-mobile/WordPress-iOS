@@ -6,40 +6,14 @@ require_relative './version'
 
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
 
+LOCAL_GUTENBERG_KEY = 'LOCAL_GUTENBERG'
+
 # Note that the pods in this array might seem unused if you look for
 # `import` statements in this codebase. However, make sure to also check
 # whether they are used in the gutenberg-mobile and Gutenberg projects.
 #
 # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
 DEPENDENCIES = %w[
-  FBLazyVector
-  React
-  ReactCommon
-  RCTRequired
-  RCTTypeSafety
-  React-Core
-  React-CoreModules
-  React-RCTActionSheet
-  React-RCTAnimation
-  React-RCTBlob
-  React-RCTImage
-  React-RCTLinking
-  React-RCTNetwork
-  React-RCTSettings
-  React-RCTText
-  React-RCTVibration
-  React-callinvoker
-  React-cxxreact
-  React-jsinspector
-  React-jsi
-  React-jsiexecutor
-  React-logger
-  React-perflogger
-  React-runtimeexecutor
-  boost
-  Yoga
-  RCT-Folly
-  glog
   react-native-safe-area
   react-native-safe-area-context
   react-native-video
@@ -55,20 +29,19 @@ DEPENDENCIES = %w[
   RNCMaskedView
   RNCClipboard
   RNFastImage
-  React-Codegen
-  React-bridging
+  React-jsc
 ].freeze
 
 def gutenberg_pod(config: GUTENBERG_CONFIG)
   options = config
 
-  local_gutenberg_key = 'LOCAL_GUTENBERG'
-  local_gutenberg = ENV.fetch(local_gutenberg_key, nil)
   # We check local_gutenberg first because it should take precedence, being an override set by the user.
-  if local_gutenberg
-    options = { path: File.exist?(local_gutenberg) ? local_gutenberg : DEFAULT_GUTENBERG_LOCATION }
+  if should_use_local_gutenberg
+    options = { path: local_gutenberg_path }
 
-    raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{local_gutenberg_key} environment variable." unless File.exist?(options[:path])
+    raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(options[:path])
+
+    puts "[Gutenberg] Installing pods using local Gutenberg version from #{local_gutenberg_path}"
 
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
@@ -101,4 +74,40 @@ def gutenberg_dependencies(options:)
   DEPENDENCIES.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
   end
+end
+
+def gutenberg_post_install(installer:)
+  return unless should_use_local_gutenberg
+
+  raise "[Gutenberg] Could not find local Gutenberg at given path #{local_gutenberg_path}" unless File.exist?(local_gutenberg_path)
+
+  react_native_path = File.join(local_gutenberg_path, 'gutenberg', 'node_modules', 'react-native')
+
+  raise "[Gutenberg] Could not find React Native at given path #{react_native_path}" unless File.exist?(react_native_path)
+
+  require_relative File.join(react_native_path, 'scripts', 'react_native_pods')
+
+  puts '[Gutenberg] Running Gunberg post install hook'
+
+  react_native_post_install(installer, react_native_path)
+end
+
+private
+
+def should_use_local_gutenberg
+  value = ENV.fetch(LOCAL_GUTENBERG_KEY, nil)
+
+  return false if value.nil?
+
+  value
+end
+
+def local_gutenberg_path
+  local_gutenberg = ENV.fetch(LOCAL_GUTENBERG_KEY, nil)
+
+  return nil if local_gutenberg.nil?
+
+  return local_gutenberg if File.exist?(local_gutenberg)
+
+  DEFAULT_GUTENBERG_LOCATION
 end
