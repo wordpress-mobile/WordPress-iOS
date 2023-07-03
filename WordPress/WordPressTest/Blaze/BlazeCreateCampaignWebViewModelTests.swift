@@ -374,7 +374,7 @@ final class BlazeCreateCampaignWebViewModelTests: CoreDataTestCase {
     }
 }
 
-private class BlazeWebViewMock: BlazeWebView {
+private class BlazeWebViewMock: NSObject, BlazeWebView {
 
     var loadCalled = false
     var requestLoaded: URLRequest?
