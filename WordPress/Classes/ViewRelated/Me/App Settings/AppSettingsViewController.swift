@@ -14,6 +14,10 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate var handler: ImmuTableViewHandler!
 
+    // MARK: - Dependencies
+
+    private let privacySettingsAnalyticsTracker = PrivacySettingsAnalyticsTracker()
+
     // MARK: - Initialization
 
     override init(style: UITableView.Style) {
@@ -140,7 +144,7 @@ class AppSettingsViewController: UITableViewController {
         let destination = PrivacySettingsViewController(style: .insetGrouped)
         CATransaction.perform {
             self.navigationController?.pushViewController(destination, animated: animated)
-            WPAnalytics.track(.privacySettingsOpened)
+            self.privacySettingsAnalyticsTracker.track(.privacySettingsOpened)
         } completion: {
             completion?(destination)
         }

@@ -283,10 +283,6 @@ import Foundation
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
 
-    // Privacy Settings
-    case privacySettingsOpened
-    case privacySettingsReportCrashesToggled
-
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
@@ -978,12 +974,6 @@ import Foundation
             return "app_settings_clear_siri_suggestions_tapped"
         case .appSettingsOpenDeviceSettingsTapped:
             return "app_settings_open_device_settings_tapped"
-
-        // Privacy Settings
-        case .privacySettingsOpened:
-            return "privacy_settings_opened"
-        case .privacySettingsReportCrashesToggled:
-            return "privacy_settings_report_crashes_toggled"
 
         // Account Close
         case .accountCloseTapped:
