@@ -340,6 +340,8 @@ pre_install do |installer|
 end
 
 post_install do |installer|
+  gutenberg_post_install(installer: installer)
+
   project_root = File.dirname(__FILE__)
 
   ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
