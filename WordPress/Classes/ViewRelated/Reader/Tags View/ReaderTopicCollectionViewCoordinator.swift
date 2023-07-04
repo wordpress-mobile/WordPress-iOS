@@ -41,6 +41,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
     weak var collectionView: UICollectionView?
+
     var topics: [String] {
         didSet {
             reloadData()
