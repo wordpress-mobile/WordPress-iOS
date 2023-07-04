@@ -90,16 +90,17 @@ extension DashboardPostsListCardCell {
 
         switch cardType {
         case .draftPosts:
+            addDraftsContextMenu(card: cardType, blog: blog)
             configureDraftsList(blog: blog)
             status = .draft
         case .scheduledPosts:
+            addScheduledContextMenu(card: cardType, blog: blog)
             configureScheduledList(blog: blog)
             status = .scheduled
         default:
             assertionFailure("Cell used with wrong card type")
             return
         }
-        addContextMenu(card: cardType, blog: blog)
 
         viewModel = PostsCardViewModel(blog: blog, status: status, view: self)
         viewModel?.viewDidLoad()
@@ -107,12 +108,42 @@ extension DashboardPostsListCardCell {
         viewModel?.refresh()
     }
 
-    private func addContextMenu(card: DashboardCard, blog: Blog) {
+    private func addDraftsContextMenu(card: DashboardCard, blog: Blog) {
         guard FeatureFlag.personalizeHomeTab.enabled else { return }
 
         frameView.addMoreMenu(items: [
-            BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+            UIMenu(options: .displayInline, children: [
+                makeDraftsListMenuAction()
+            ]),
+            UIMenu(options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+            ])
         ], card: card)
+    }
+
+    private func addScheduledContextMenu(card: DashboardCard, blog: Blog) {
+        guard FeatureFlag.personalizeHomeTab.enabled else { return }
+
+        frameView.addMoreMenu(items: [
+            UIMenu(options: .displayInline, children: [
+                makeScheduledListMenuAction()
+            ]),
+            UIMenu(options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+            ])
+        ], card: card)
+    }
+
+    private func makeDraftsListMenuAction() -> UIAction {
+        UIAction(title: Strings.viewAllDrafts, image: UIImage(systemName: "square.and.pencil")) { [weak self] _ in
+            self?.presentPostList(with: .draft)
+        }
+    }
+
+    private func makeScheduledListMenuAction() -> UIAction {
+        UIAction(title: Strings.viewAllScheduledPosts, image: UIImage(systemName: "calendar")) { [weak self] _ in
+            self?.presentPostList(with: .scheduled)
+        }
     }
 
     private func configureDraftsList(blog: Blog) {
@@ -186,6 +217,8 @@ private extension DashboardPostsListCardCell {
     private enum Strings {
         static let draftsTitle = NSLocalizedString("my-sites.drafts.card.title", value: "Work on a draft post", comment: "Title for the card displaying draft posts.")
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
+        static let viewAllDrafts = NSLocalizedString("my-sites.drafts.card.viewAllDrafts", value: "View all drafts", comment: "Title for the View all drafts button in the More menu")
+        static let viewAllScheduledPosts = NSLocalizedString("my-sites.scheduled.card.viewAllScheduledPosts", value: "View all scheduled posts", comment: "Title for the View all scheduled drafts button in the More menu")
     }
 
     enum Constants {
