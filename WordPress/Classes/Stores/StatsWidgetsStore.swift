@@ -262,18 +262,20 @@ private extension StatsWidgetsStore {
     }
 
     @objc func handleAccountChangedNotification() {
-        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+        let isLoggedIn = AccountHelper.isLoggedIn
+        let userDefaults = UserDefaults(suiteName: WPAppGroupName)
+        userDefaults?.setValue(isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 
-        if !AccountHelper.isLoggedIn {
-            HomeWidgetTodayData.delete()
-            HomeWidgetThisWeekData.delete()
-            HomeWidgetAllTimeData.delete()
+        guard !isLoggedIn else { return }
 
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
-        }
+        HomeWidgetTodayData.delete()
+        HomeWidgetThisWeekData.delete()
+        HomeWidgetAllTimeData.delete()
+
+        userDefaults?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
     }
 
     /// Observes WPSigninDidFinishNotification and wordpressLoginFinishedJetpackLogin notifications and initializes the widget.
