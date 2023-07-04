@@ -156,21 +156,28 @@ private extension ChangeUsernameViewController {
             textField.placeholder = Constants.Alert.confirm
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification,
                                                    object: textField,
-                                                   queue: .main) {_ in
-                                                    if let text = textField.text,
-                                                        !text.isEmpty,
-                                                        let username = self?.viewModel.selectedUsername,
-                                                        text == username {
-                                                        self?.changeUsernameAction?.isEnabled = true
-                                                        textField.textColor = .success
-                                                        return
-                                                    }
-                                                    self?.changeUsernameAction?.isEnabled = false
-                                                    textField.textColor = .text
+                                                   queue: .main) { [weak self] notification in
+                                                    self?.handleTextDidChangeNotification(notification)
             }
         }
         DDLogInfo("Prompting user for confirmation of change username")
         return alertController
+    }
+
+    @objc func handleTextDidChangeNotification(_ notification: Foundation.Notification) {
+        guard let textField = notification.object as? UITextField else {
+            return
+        }
+
+         if let text = textField.text,
+            !text.isEmpty,
+            text == self.viewModel.selectedUsername {
+             self.changeUsernameAction?.isEnabled = true
+             textField.textColor = .success
+             return
+         }
+         self.changeUsernameAction?.isEnabled = false
+         textField.textColor = .text
     }
 
     enum Constants {
