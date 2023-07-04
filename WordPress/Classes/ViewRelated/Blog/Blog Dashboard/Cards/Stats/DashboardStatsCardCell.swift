@@ -76,7 +76,12 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
 
         if FeatureFlag.personalizeHomeTab.enabled {
             frameView.addMoreMenu(items: [
-                BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
+                UIMenu(options: .displayInline, children: [
+                    makeShowStatsMenuAction(for: blog, in: viewController)
+                ]),
+                UIMenu(options: .displayInline, children: [
+                    BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
+                ])
             ], card: .todaysStats)
         }
 
@@ -93,6 +98,12 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         BlogDashboardAnalytics.shared.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
+    }
+
+    private func makeShowStatsMenuAction(for blog: Blog, in viewController: UIViewController) -> UIAction {
+        UIAction(title: Strings.viewStats, image: UIImage(systemName: "chart.bar.xaxis")) { [weak self] _ in
+            self?.showStats(for: blog, from: viewController)
+        }
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
@@ -135,6 +146,7 @@ private extension DashboardStatsCardCell {
         static let statsTitle = NSLocalizedString("my-sites.stats.card.title", value: "Today's Stats", comment: "Title for the card displaying today's stats.")
         static let nudgeButtonTitle = NSLocalizedString("Interested in building your audience? Check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
         static let nudgeButtonHint = NSLocalizedString("top tips", comment: "The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...'")
+        static let viewStats = NSLocalizedString("dashboardCard.stats.viewStats", value: "View stats", comment: "Title for the View stats button in the More menu")
     }
 
     enum Constants {
