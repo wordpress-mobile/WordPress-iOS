@@ -169,15 +169,9 @@ private extension ChangeUsernameViewController {
             return
         }
 
-         if let text = textField.text,
-            !text.isEmpty,
-            text == self.viewModel.selectedUsername {
-             self.changeUsernameAction?.isEnabled = true
-             textField.textColor = .success
-             return
-         }
-         self.changeUsernameAction?.isEnabled = false
-         textField.textColor = .text
+        let enabled = textField.text?.isEmpty == false && textField.text == self.viewModel.selectedUsername
+        changeUsernameAction?.isEnabled = enabled
+        textField.textColor = enabled ? .success : .text
     }
 
     enum Constants {
