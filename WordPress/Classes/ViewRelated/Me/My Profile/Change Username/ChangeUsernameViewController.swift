@@ -149,8 +149,9 @@ private extension ChangeUsernameViewController {
         alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { _ in
             DDLogInfo("User cancelled alert")
         })
-        changeUsernameAction = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first,
+        changeUsernameAction = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController, weak self] _ in
+            guard let self, let alertController else { return }
+            guard let textField = alertController.textFields?.first,
                 textField.text == self.viewModel.selectedUsername else {
                     DDLogInfo("Username confirmation failed")
                     return
