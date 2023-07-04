@@ -1,3 +1,4 @@
+import Combine
 import WordPressAuthenticator
 
 class ChangeUsernameViewController: SignupUsernameTableViewController {
@@ -16,7 +17,12 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
         return saveItem
     }()
 
-    private weak var confirmationController: UIAlertController?
+    private var confirmationTextObserver: AnyCancellable?
+    private weak var confirmationController: UIAlertController? {
+        didSet {
+            observeConfirmationTextField()
+        }
+    }
 
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
@@ -32,13 +38,6 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
         super.viewDidLoad()
         setupViewModel()
         setupUI()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleTextDidChangeNotification(_:)),
-            name: UITextField.textDidChangeNotification,
-            object: nil
-        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -166,19 +165,35 @@ private extension ChangeUsernameViewController {
         return alertController
     }
 
-    @objc func handleTextDidChangeNotification(_ notification: Foundation.Notification) {
-        guard notification.name == UITextField.textDidChangeNotification,
-              let confirmationController,
-              let textField = notification.object as? UITextField,
-              confirmationController.textFields?.contains(textField) == true
+    func observeConfirmationTextField() {
+        confirmationTextObserver?.cancel()
+        confirmationTextObserver = nil
+
+        guard let confirmationController,
+              let textField = confirmationController.textFields?.first
         else {
-            DDLogInfo("The notification is not sent from the text field within the change username confirmation prompt")
             return
         }
 
         // We need to add another condition to check if the text field is the username confirmation text field, if there
         // are more than one text field in the prompt.
-        precondition(confirmationController.textFields?.count == 1, "There should be only one text field in the prompt")
+        assert(confirmationController.textFields?.count == 1, "There should be only one text field in the prompt")
+
+        confirmationTextObserver = NotificationCenter.default
+            .publisher(for: UITextField.textDidChangeNotification, object: textField)
+            .sink(receiveValue: { [weak self] in
+                self?.handleTextDidChangeNotification($0)
+            })
+    }
+
+    func handleTextDidChangeNotification(_ notification: Foundation.Notification) {
+        guard notification.name == UITextField.textDidChangeNotification,
+              let confirmationController,
+              let textField = notification.object as? UITextField
+        else {
+            DDLogInfo("The notification is not sent from the text field within the change username confirmation prompt")
+            return
+        }
 
         let actions = confirmationController.actions.filter({ $0.title == Constants.Alert.change })
         precondition(actions.count == 1, "More than one 'Change username' action found")
