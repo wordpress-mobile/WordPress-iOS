@@ -17,7 +17,6 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     }()
 
     private weak var confirmationController: UIAlertController?
-    private var changeUsernameAction: UIAlertAction?
 
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
@@ -149,7 +148,7 @@ private extension ChangeUsernameViewController {
         alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { _ in
             DDLogInfo("User cancelled alert")
         })
-        changeUsernameAction = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController, weak self] _ in
+        let action = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController, weak self] _ in
             guard let self, let alertController else { return }
             guard let textField = alertController.textFields?.first,
                 textField.text == self.viewModel.selectedUsername else {
@@ -159,7 +158,7 @@ private extension ChangeUsernameViewController {
             DDLogInfo("User changes username")
             self.changeUsername()
         })
-        changeUsernameAction?.isEnabled = false
+        action.isEnabled = false
         alertController.addTextField { textField in
             textField.placeholder = Constants.Alert.confirm
         }
@@ -180,6 +179,10 @@ private extension ChangeUsernameViewController {
         // We need to add another condition to check if the text field is the username confirmation text field, if there
         // are more than one text field in the prompt.
         precondition(confirmationController.textFields?.count == 1, "There should be only one text field in the prompt")
+
+        let actions = confirmationController.actions.filter({ $0.title == Constants.Alert.change })
+        precondition(actions.count == 1, "More than one 'Change username' action found")
+        let changeUsernameAction = actions.first
 
         let enabled = textField.text?.isEmpty == false && textField.text == self.viewModel.selectedUsername
         changeUsernameAction?.isEnabled = enabled
