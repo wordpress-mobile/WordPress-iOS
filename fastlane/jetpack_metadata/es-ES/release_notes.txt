@@ -1,9 +1,0 @@
-Los planes de WordPress.com llegan a la aplicación de Jetpack. Consigue el plan que se ajuste a tus necesidades de publicación y gestiónalo desde el mismo sitio donde escribes tus mejores textos.
-
-En la parte inferior del escritorio del sitio, verás el botón "Personalizar la pestaña Inicio", con el que podrás personalizar las tarjetas visibles del escritorio. (¿Quieres ocultar las tarjetas que no necesites? Solo tienes que usar el menú "Más").
-
-Hemos corregido un error en los dispositivos con iOS 16 o versiones posteriores que provocaba que, al escribir en el editor de bloques mientras se dictaba, se perdiera el texto dictado. Además, en el editor también aparece el icono de un candado para las celdas deshabilitadas, así sabrás cuándo no están en uso.
-
-En la pantalla "Buscar dominios", ahora aparecerá un mensaje de error si eliges un dominio por defecto que no sea compatible con tu sitio. Se acabó eso de ver una rueda de progreso que gira eternamente.
-
-Para terminar, hemos actualizado el texto del marcador de posición para los videos de VideoPress que no pertenezcan a tu sitio. (Esperamos que no se sientan marginados).

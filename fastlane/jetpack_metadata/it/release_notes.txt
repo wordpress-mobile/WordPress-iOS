@@ -1,9 +1,0 @@
-I piani WordPress.com saranno presto disponibili sull'app Jetpack. Ottieni il piano adatto alle tue esigenze editoriali e gestiscilo nella stessa postazione in cui scrivi tutte le tue più belle parole.
-
-È presente un nuovo fantastico pulsante "Personalizza la scheda Home" nella parte inferiore della bacheca del sito in cui puoi personalizzare le schede della bacheca visibili. (Vuoi nascondere le schede che non ti servono? Basta usare il menu "Altro".)
-
-Abbiamo rimosso un bug nei dispositivi con iOS 16 o versioni successive, per il quale la digitazione nell'editor a blocchi durante la dettatura causava la perdita del testo dettato. È presente anche un'icona di blocco per le celle disattivate nell'editor in modo da sapere quando non sono in uso.
-
-Nella schermata "Cerca domini", ora vedrai un messaggio di errore se scegli un dominio predefinito non supportato dal tuo sito. Niente più indicatore di stato che gira in continuazione.
-
-Infine, abbiamo aggiornato il testo dele segnaposto per i video VideoPress che non appartengono al tuo sito. (Speriamo che non si sentano esclusi.)
