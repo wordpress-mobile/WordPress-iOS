@@ -24,8 +24,12 @@ elif [[ -d $PODS_BUNDLE_ROOT ]]; then
   cp "$PODS_BUNDLE_ROOT/App.js" "$BUNDLE_FILE"
   cp -r "$PODS_BUNDLE_ROOT/assets" "$BUNDLE_ASSETS"
 else
-  echo "error: Could not find Gutenberg bundle in either XCFramework or Pods."
-  exit 1
+  if [[ "$CONFIGURATION" = *Debug* ]]; then
+    echo "warning: Could not find Gutenberg bundle in either XCFramework or Pods. But running in Debug configuration so will assume you are working with a local version of Gutenberg."
+  else
+    echo "error: Could not find Gutenberg bundle in either XCFramework or Pods."
+    exit 1
+  fi
 fi
 
 if [[ "$CONFIGURATION" = *Debug* && ! "$PLATFORM_NAME" == *simulator ]]; then
