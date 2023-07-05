@@ -3,7 +3,7 @@
 * [*] Blogging Reminders: Disabled prompt for self-hosted sites not connected to Jetpack. [#20970]
 * [**] [internal] Do not save synced blogs if the app has signed out. [#20959]
 * [**] [internal] Make sure synced posts are saved before calling completion block. [#20960]
-* [*] [internal] Probably register and unregister some Quick start notification observers. [#20997]
+* [**] [internal] Fix observing Quick Start notifications. [#20997]
 
 
 22.7
