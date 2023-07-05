@@ -197,11 +197,9 @@ extension ContextManager.ContextManagerError: LocalizedError, CustomDebugStringC
 extension CoreDataStack {
     /// Perform a query using the `mainContext` and return the result.
     func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
-        var value: T! = nil
-        self.mainContext.performAndWait {
-            value = block(self.mainContext)
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
         }
-        return value
     }
 
     // MARK: - Database Migration
