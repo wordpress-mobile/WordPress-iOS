@@ -1,9 +1,9 @@
 {
-    "totalItems": 3,
+    "total_pages": 2,
     "campaigns": [
         {
-            "campaign_id": 26916,
-            "name": "Test Post - don't approve",
+            "campaign_id": 1,
+            "name": "Campaign 01",
             "start_date": "2023-06-13T00:00:00Z",
             "end_date": "2023-06-01T19:15:45Z",
             "status": "finished",
