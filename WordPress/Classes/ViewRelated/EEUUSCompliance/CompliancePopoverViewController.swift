@@ -16,6 +16,7 @@ final class CompliancePopoverViewController: UIViewController {
     }
 
     private let viewModel: CompliancePopoverViewModel
+    private var bannerIntrinsicHeight: CGFloat = 0
 
     init(viewModel: CompliancePopoverViewModel) {
         self.viewModel = viewModel
@@ -44,6 +45,11 @@ final class CompliancePopoverViewController: UIViewController {
         let contentViewSize = contentView.systemLayoutSizeFitting(targetSize)
         self.contentView.frame = .init(origin: .zero, size: contentViewSize)
         self.preferredContentSize = contentView.bounds.size
+
+        DispatchQueue.main.async {
+            self.hostingController.rootView.screenHeight = self.view.frame.height
+            self.hostingController.rootView.shouldScroll = (contentViewSize.height + 100) > self.view.frame.height
+        }
     }
 
     private func addContentView() {

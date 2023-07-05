@@ -15,20 +15,25 @@ final class CompliancePopoverViewModel: ObservableObject {
 
     func didTapSettings() {
         coordinator?.navigateToSettings()
-        defaults.shouldShowCompliancePopup = true
+        defaults.shouldShowCompliancePopup = false
     }
 
     func didTapSave() {
         let appAnalytics = WordPressAppDelegate.shared?.analytics
         appAnalytics?.setUserHasOptedOut(!isAnalyticsEnabled)
 
-        let context = ContextManager.shared.mainContext
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
-            return }
+        let account = ContextManager.shared.performQuery { context -> WPAccount? in
+           let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+           return account
+        }
+
+        guard let account else {
+            return
+        }
 
         let change = AccountSettingsChange.tracksOptOut(!isAnalyticsEnabled)
         AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
         coordinator?.dismiss()
-        defaults.shouldShowCompliancePopup = true
+        defaults.shouldShowCompliancePopup = false
     }
 }
