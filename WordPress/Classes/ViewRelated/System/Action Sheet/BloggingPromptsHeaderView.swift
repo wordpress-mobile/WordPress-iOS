@@ -91,15 +91,10 @@ private extension BloggingPromptsHeaderView {
     }
 
     func configureInsets() {
-        if #available(iOS 15.0, *) {
-            var config: UIButton.Configuration = .plain()
-            config.contentInsets = Constants.buttonContentInsets
-            answerPromptButton.configuration = config
-            shareButton.configuration = config
-        } else {
-            answerPromptButton.contentEdgeInsets = Constants.buttonContentEdgeInsets
-            shareButton.contentEdgeInsets = Constants.buttonContentEdgeInsets
-        }
+        var config: UIButton.Configuration = .plain()
+        config.contentInsets = Constants.buttonContentInsets
+        answerPromptButton.configuration = config
+        shareButton.configuration = config
     }
 
     func configure(_ prompt: BloggingPrompt?) {
@@ -143,7 +138,6 @@ private extension BloggingPromptsHeaderView {
         static let promptSpacing: CGFloat = 8.0
         static let answeredViewSpacing: CGFloat = 9.0
         static let answerPromptButtonSpacing: CGFloat = 9.0
-        static let buttonContentEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)
         static let buttonContentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
     }
 

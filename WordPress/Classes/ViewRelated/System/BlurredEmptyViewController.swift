@@ -21,6 +21,8 @@ class BlurredEmptyViewController: UIViewController {
     // MARK: View Lifecycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         view.addSubview(visualEffectView)
         view.pinSubviewToAllEdges(visualEffectView)
     }

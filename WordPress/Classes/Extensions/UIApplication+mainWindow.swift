@@ -2,7 +2,9 @@ import UIKit
 
 extension UIApplication {
     @objc var mainWindow: UIWindow? {
-        return windows.filter {$0.isKeyWindow}.first
+        connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .first
     }
 
     @objc var currentStatusBarFrame: CGRect {

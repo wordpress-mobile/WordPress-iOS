@@ -1,5 +1,6 @@
 import UIKit
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 @objc
 public extension NSAttributedString {
@@ -24,13 +25,8 @@ public extension NSAttributedString {
 
         for (value, image) in unwrappedEmbeds {
             let imageAttachment = NSTextAttachment()
-            let gifType = kUTTypeGIF as String
-            var displayAnimatedGifs = false
-
-            // Check to see if the animated gif view provider is registered
-            if #available(iOS 15.0, *) {
-                displayAnimatedGifs = NSTextAttachment.textAttachmentViewProviderClass(forFileType: gifType) == AnimatedGifAttachmentViewProvider.self
-            }
+            let gifType = UTType.gif.identifier
+            let displayAnimatedGifs = NSTextAttachment.textAttachmentViewProviderClass(forFileType: gifType) == AnimatedGifAttachmentViewProvider.self
 
             // When displaying an animated gif pass the gif data instead of the image
             if

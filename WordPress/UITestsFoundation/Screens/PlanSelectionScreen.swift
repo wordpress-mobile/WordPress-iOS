@@ -17,10 +17,4 @@ public class PlanSelectionScreen: ScreenObject {
     public static func isLoaded() -> Bool {
         (try? PlanSelectionScreen().isLoaded) ?? false
     }
-
-    @discardableResult
-    public func verifyPlanSelectionScreenLoaded() -> Self {
-        XCTAssertTrue(PlanSelectionScreen.isLoaded(), "\"Plan Selection\" screen isn't loaded.")
-        return self
-    }
 }

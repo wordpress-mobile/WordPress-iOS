@@ -211,21 +211,29 @@ extension CoreDataStack {
     func createStoreCopy(to backupLocation: URL) throws {
         try? removeBackupData(from: backupLocation)
         guard let storeCoordinator = mainContext.persistentStoreCoordinator,
-              let store = storeCoordinator.persistentStores.first else {
+              let store = storeCoordinator.persistentStores.first,
+              let currentDatabaseLocation = store.url else {
             throw ContextManager.ContextManagerError.missingCoordinatorOrStore
         }
 
-        let model = storeCoordinator.managedObjectModel
-        let storeCoordinatorCopy = NSPersistentStoreCoordinator(managedObjectModel: model)
-        var storeOptions = store.options
-        storeOptions?[NSReadOnlyPersistentStoreOption] = true
-        let storeCopy = try storeCoordinatorCopy.addPersistentStore(ofType: store.type,
-                                                                    configurationName: store.configurationName,
-                                                                    at: store.url,
-                                                                    options: storeOptions)
-        try storeCoordinatorCopy.migratePersistentStore(storeCopy,
-                                                        to: backupLocation,
-                                                        withType: storeCopy.type)
+        do {
+            try storeCoordinator.replacePersistentStore(at: backupLocation,
+                                                        withPersistentStoreFrom: currentDatabaseLocation,
+                                                        ofType: store.type)
+        } catch {
+            // Fallback to the previous migration method
+            let model = storeCoordinator.managedObjectModel
+            let storeCoordinatorCopy = NSPersistentStoreCoordinator(managedObjectModel: model)
+            var storeOptions = store.options
+            storeOptions?[NSReadOnlyPersistentStoreOption] = true
+            let storeCopy = try storeCoordinatorCopy.addPersistentStore(ofType: store.type,
+                                                                        configurationName: store.configurationName,
+                                                                        at: store.url,
+                                                                        options: storeOptions)
+            try storeCoordinatorCopy.migratePersistentStore(storeCopy,
+                                                            to: backupLocation,
+                                                            withType: storeCopy.type)
+        }
     }
 
     /// Removes any copy of the store from the backup location.
@@ -257,9 +265,7 @@ extension CoreDataStack {
         let (databaseLocation, shmLocation, walLocation) = databaseFiles(for: databaseLocation)
 
         guard let currentDatabaseLocation = store.url,
-              FileManager.default.fileExists(atPath: databaseLocation.path),
-              FileManager.default.fileExists(atPath: shmLocation.path),
-              FileManager.default.fileExists(atPath: walLocation.path)  else {
+              FileManager.default.fileExists(atPath: databaseLocation.path) else {
             throw ContextManager.ContextManagerError.missingDatabase
         }
 

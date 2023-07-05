@@ -1,9 +1,7 @@
-We added cards to your dashboard. The Activity Log card shows your three most recent activities, and the Pages card shows the last three pages you modified.
+* [**] [internal] Blaze: Switch to using new canBlaze property to determine Blaze eligiblity. [#20916]
+* [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
+* [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
+* [*] [internal] Posts list: Disable action bar/menu button when a post is being uploaded [#20885]
+* [*] Block editor: Image block - Fix issue where in some cases the image doesn't display the right aspect ratio [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5869]
+* [*] Block editor: Fix cursor positioning when dictating text on iOS [https://github.com/WordPress/gutenberg/issues/51227]
 
-We also made some important changes in the block editor. To prevent an app crash, deleted and undefined reusable blocks can no longer be converted to regular blocks.
-
-When you tap on a nested text block, you can immediately edit content in that block—no more tapping through every nesting level to get where you want to go. (Our fingers were getting tired, too.)
-
-Speaking of reusable blocks—we updated the “editing not supported” message to remove the mention of WordPress. We know what app we’re using, we promise.
-
-Finally, we fixed a bug where the app would crash if you tried to upload media to a classic block without giving WordPress access to your device’s media library. Instead, you’ll see a prompt asking for media access. Easy peasy, lemon squeezy.

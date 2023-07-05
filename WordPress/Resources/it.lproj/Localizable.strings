@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 12:54:09+0000 */
+/* Translation-Revision-Date: 2023-06-27 16:54:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: it */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s non ha un URL impostato";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "link %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Le anteprime di %s non sono ancora disponibili";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor a blocchi abilitato";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Blocco raggruppato";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blocca i tentativi di accesso dannosi";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blocca questo sito";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Blocco separato";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Sito bloccato";
@@ -1415,9 +1424,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Modifica le impostazioni";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Cambia sito";
-
 /* Change site icon button */
 "Change Site Icon" = "Cambia icona del sito";
 
@@ -1592,9 +1598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Scegli gli argomenti";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Se scegli un sito diverso perderai tutte le modifiche a contenuti specifici per questo sito, come file multimediali e categorie. Confermi?";
 
 /* Register Domain - Address information field City */
 "City" = "Città";
@@ -3610,8 +3613,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Ecco le prestazioni del tuo articolo a oggi.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Nascosto";
 
 /* Hides a site from the site picker list
@@ -4911,6 +4913,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Nessun intervallo di date selezionato";
 
+/* No comment provided by engineer. */
+"No description" = "Nessuna descrizione";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Nessuna minaccia risolta";
 
@@ -5036,6 +5041,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Nessuna minaccia rilevata";
+
+/* No comment provided by engineer. */
+"No title" = "Nessun titolo";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5224,6 +5232,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5852,8 +5861,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "Indirizzo principale del sito";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Privacy";
 
 /* Title of button that displays the App's privacy policy */
@@ -5874,7 +5882,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privato";
 
@@ -5910,8 +5917,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Richieste";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Pubblico";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5976,9 +5982,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Notifiche Push";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Le notifiche push sono state disabilitate nelle Impostasioni iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Le notifiche push sono state disabilitate nelle Impostazioni App iOS. Cambia \"Consenti le notifiche\" per abilitarle nuovamente.";
@@ -6136,7 +6139,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove Site Icon" = "Rimuovi l'icona del sito";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image" = "Rimuovi da immagine in evidenza  ";
+"Remove as Featured Image" = "Rimuovi da immagine in evidenza";
 
 /* No comment provided by engineer. */
 "Remove block" = "Rimuovi il blocco";
@@ -6337,6 +6340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Torna all’articolo";
+
+/* No comment provided by engineer. */
+"Reusable" = "Riutilizzabile";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Annulla modifica in sospeso";
@@ -7450,9 +7456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "Tocca per selezionare il periodo precedente";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Tocca per selezionare il blog su cui pubblicare";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Tocca per passare a un altro sito o aggiungerne uno nuovo";
 
@@ -7573,7 +7576,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Il modo migliore per diventare uno scrittore o una scrittrice migliore è abituarsi a scrivere e condividere questa abitudine con gli altri. È qui che entrano in gioco le Richieste.";
 
 /* No comment provided by engineer. */
-"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Il certificato per questo server non è valido. Continuando, corri il rischio di connetterti ad un server che finge di essere  “%@”, il che potrebbe compromettere la sicurezza di informazioni riservate che ti appartengono.\n\nVuoi accettare comunque il certificato?";
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Il certificato per questo server non è valido. Continuando, corri il rischio di connetterti ad un server che finge di essere “%@”, il che potrebbe compromettere la sicurezza di informazioni riservate che ti appartengono.\n\nVuoi accettare comunque il certificato?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Il contenuto della pagina degli articoli recenti viene generato automaticamente e non può essere modificato.";
@@ -7763,6 +7766,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Si è verificato un errore durante il caricamento delle attività";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"There was an error loading campaigns." = "Si è verificato un errore durante il caricamento delle campagne.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Si è verificato un errore nel caricamento dei piani";
@@ -7957,9 +7963,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Per creare il tuo nuovo account WordPress.com, inserisci il tuo indirizzo email.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Per abilitare le notifiche:\n\n1. Apri le **Impostazioni iOS**\n2. Seleziona **Notifiche**\n3. Selezione **WordPress**\n4. Abilita **Consenti notifiche**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Per ricevere le utili notifiche dal tuo sito WordPress sul tuo telefono, sarà necessario installare il plugin di Jetpack.";
 
@@ -8070,7 +8073,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Elimina";
@@ -8397,7 +8399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "Mostra";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Sconosciuto";
 
@@ -9577,17 +9578,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Il tuo sito è in fase di ripristino";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Il tuo sito è visibile solo a te e agli utenti che approvi.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Il tuo sito non dispone di spazio sufficiente per i caricamenti multimediali.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Il tuo sito è visibile a chiunque e può essere indicizzato dai motori di ricerca.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Il tuo sito è visibile a chiunque, ma chiede ai motori di ricerca di non indicizzarlo.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "Il sito potrebbe essere a rischio";
@@ -9670,6 +9662,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Ignora";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Non hai ancora creato alcuna campagna. Fai clic su Promuovi per iniziare a lavorare.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Non hai campagne";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Caricamento delle campagne in corso...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "Promuovi";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Campagne di Blaze";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Mostra il tuo lavoro su milioni di siti.";
 
@@ -9700,6 +9707,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Diffondi questo articolo";
 
+/* Short status description */
+"blazeCampaign.status.active" = "Attiva";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "Approvata";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "Annullata";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "Completata";
+
+/* Short status description */
+"blazeCampaign.status.created" = "Creata";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "In moderazione";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Rifiutato";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Pianificata";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "Budget";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "Clic";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "Impressioni";
+
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Nascondi";
 
@@ -9714,6 +9754,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "commento";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "Commenti su";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "Commento su";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "Rispondi a %1$@";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "Salva";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "Vai su Impostazioni";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "Gestisci la privacy";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "Analisi";
 
 /* The menu item to select during a guided tour. */
 "connections" = "connessioni";
@@ -9756,6 +9823,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pagine";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Clic";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Crea la campagna";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Impressioni";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Campagna di Blaze";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Visualizza tutte le campagne";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Aggiungi pagine al sito";
@@ -9832,6 +9914,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "all'anno";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Ignora";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Siamo spiacenti, il dominio che stai cercando di aggiungere non può essere acquistato sull'app di Jetpack in questo momento.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "tocca due volte per modificare l'unità";
 
@@ -9854,6 +9942,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "segui";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Ottieni un dominio gratuito per il primo anno, rimuovi gli annunci dal sito e aumenta lo spazio di archiviazione.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Nascondi";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Dominio gratuito con un piano annuale";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Fatto";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Potrebbero essere necessari fino a 30 minuti prima che il dominio inizi a funzionare correttamente";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Il tuo nuovo dominio %@ è in fase di impostazione.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Tutto pronto.";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Imposta promemoria relativi al blog";
@@ -10359,9 +10468,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Ignora";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Ignora";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Potrebbe migliorare";
 
@@ -10383,6 +10489,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promuovi con la Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "La home page utilizza un modello di tema e si aprirà nell'editor web.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Home page";
+
 /* No comment provided by engineer. */
 "password" = "password";
 
@@ -10400,6 +10512,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Articoli bozza";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Conosci l'app";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Passi successivi";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Pagine";
@@ -10431,6 +10549,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opzioni per le immagini in primo piano";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "La condivisione automatica di Twitter non è più disponibile";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promuovi con la Blaze";
 
@@ -10451,6 +10572,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Sei connesso!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Cerca";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Impostazioni Reader";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10531,11 +10658,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "Privacy";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Il tuo sito è visibile a chiunque, ma chiede ai motori di ricerca di non indicizzarlo.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "Nascosto";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "Il tuo sito è visibile solo a te e agli utenti che approvi.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "Privato";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "Il tuo sito è visibile a chiunque e può essere indicizzato dai motori di ricerca.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "Pubblico";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "Sconosciuto";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "Sconosciuto";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Mostra richieste";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Promemoria";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Aumenta il traffico condividendo automaticamente gli articoli con amici sui social media.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "Connetti i tuoi profili";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Icone dei social media";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Non ora";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "La condivisione automatica di Twitter non è più disponibile";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Scopri di più";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "La condivisione automatica di Twitter non è più disponibile a causa delle modifiche ai termini e ai prezzi di Twitter.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Ultimi 7 giorni";

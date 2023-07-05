@@ -8,7 +8,6 @@ class SupportScreenTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     func testSupportForumsCanBeLoadedDuringLogin() throws {

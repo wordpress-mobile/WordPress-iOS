@@ -13,6 +13,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 #import <Photos/Photos.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
@@ -40,7 +41,9 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
     PostSettingsRowSlug,
-    PostSettingsRowExcerpt
+    PostSettingsRowExcerpt,
+    PostSettingsRowSocialNoConnections,
+    PostSettingsRowSocialRemainingShares
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -50,6 +53,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPostCellIdentifier";
+static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
 
 
 @interface PostSettingsViewController () <UITextFieldDelegate,
@@ -140,6 +144,7 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
     [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewStickyPostCellIdentifier];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
@@ -356,6 +361,7 @@ FeaturedImageViewControllerDelegate>
 {
     self.passwordTextField.text = self.apost.password;
 
+    [self configureSections];
     [self.tableView reloadData];
 }
 
@@ -390,14 +396,16 @@ FeaturedImageViewControllerDelegate>
 {
     NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
     NSNumber *disabledTwitterSection = @(PostSettingsSectionDisabledTwitter);
+    NSNumber *remainingSharesSection = @(PostSettingsSectionSharesRemaining);
     NSMutableArray *sections = [@[ @(PostSettingsSectionTaxonomy),
-                                  @(PostSettingsSectionMeta),
-                                  @(PostSettingsSectionFormat),
-                                  @(PostSettingsSectionFeaturedImage),
-                                  stickyPostSection,
-                                  @(PostSettingsSectionShare),
-                                  disabledTwitterSection,
-                                  @(PostSettingsSectionMoreOptions) ] mutableCopy];
+                                   @(PostSettingsSectionMeta),
+                                   @(PostSettingsSectionFormat),
+                                   @(PostSettingsSectionFeaturedImage),
+                                   stickyPostSection,
+                                   @(PostSettingsSectionShare),
+                                   disabledTwitterSection,
+                                   remainingSharesSection,
+                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
@@ -407,6 +415,10 @@ FeaturedImageViewControllerDelegate>
 
     if (self.unsupportedConnections.count == 0) {
         [sections removeObject:disabledTwitterSection];
+    }
+
+    if (![self showRemainingShares]) {
+        [sections removeObject:remainingSharesSection];
     }
 
     self.sections = [sections copy];
@@ -425,28 +437,22 @@ FeaturedImageViewControllerDelegate>
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
         return 2;
-
     } else if (sec == PostSettingsSectionMeta) {
         return [self.postMetaSectionRows count];
-
     } else if (sec == PostSettingsSectionFormat) {
         return 1;
-
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
-
     } else if (sec == PostSettingsSectionStickyPost) {
         return 1;
-        
     } else if (sec == PostSettingsSectionShare) {
         return [self numberOfRowsForShareSection];
-
     } else if (sec == PostSettingsSectionDisabledTwitter) {
         return self.unsupportedConnections.count;
-
+    } else if (sec == PostSettingsSectionSharesRemaining) {
+        return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
-
     }
 
     return 0;
@@ -560,12 +566,14 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
-        cell = [self configureShareCellForIndexPath:indexPath];
+        cell = [self showNoConnection] ? [self configureNoConnectionCell] : [self configureShareCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionSharesRemaining) {
+        cell = [self configureRemainingSharesCell];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     }
 
-    return cell;
+    return cell ?: [UITableViewCell new];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -614,7 +622,7 @@ FeaturedImageViewControllerDelegate>
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
     }
-    return 0;
+    return [self showNoConnection] ? 1 : 0;
 }
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath
@@ -1246,7 +1254,7 @@ FeaturedImageViewControllerDelegate>
     options.allowMultipleSelection = NO;
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
-    options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
+    options.badgedUTTypes = [NSSet setWithObject:UTTypeGIF.identifier];
     options.preferredStatusBarStyle = [WPStyleGuide preferredStatusBarStyle];
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
 
@@ -1355,6 +1363,32 @@ FeaturedImageViewControllerDelegate>
     } else {
         [picker hideSearchBar];
     }
+}
+
+#pragma mark - Jetpack Social
+
+- (UITableViewCell *)configureGenericCellWith:(UIView *)view {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewGenericCellIdentifier];
+    for (UIView *subview in cell.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
+    [cell.contentView addSubview:view];
+    [cell.contentView pinSubviewToAllEdges:view];
+    return cell;
+}
+
+- (UITableViewCell *)configureNoConnectionCell
+{
+    UITableViewCell *cell = [self configureGenericCellWith:[self createNoConnectionView]];
+    cell.tag = PostSettingsRowSocialNoConnections;
+    return cell;
+}
+
+- (UITableViewCell *)configureRemainingSharesCell
+{
+    UITableViewCell *cell = [self configureGenericCellWith:[self createRemainingSharesView]];
+    cell.tag = PostSettingsRowSocialRemainingShares;
+    return cell;
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods

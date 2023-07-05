@@ -7,7 +7,7 @@ class PostListTableViewHandler: WPTableViewHandler {
         return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: BasePost.statusKeyPath, performFetch: false)
     }()
 
-    override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
+    override var resultsController: NSFetchedResultsController<NSFetchRequestResult>? {
         if isSearching {
             return searchResultsController
         }

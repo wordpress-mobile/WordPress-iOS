@@ -36,7 +36,9 @@ class BloggingPromptsService {
     /// Convenience computed variable that returns prompt settings from the local store.
     ///
     var localSettings: BloggingPromptSettings? {
-        loadSettings(context: contextManager.mainContext)
+        return contextManager.performQuery { mainContext in
+            self.loadSettings(context: mainContext)
+        }
     }
 
     /// Fetches a number of blogging prompts starting from the specified date.
@@ -179,17 +181,44 @@ class BloggingPromptsService {
 
     // MARK: - Init
 
+    /// Initializes a service for blogging prompts.
+    ///
+    /// - Parameters:
+    ///   - contextManager: The CoreDataStack instance.
+    ///   - remote: When supplied, the service will use the specified remote service.
+    ///     Otherwise, a remote service with the default account's credentials will be used.
+    ///   - blog: When supplied, the service will perform blogging prompts requests for this specified blog.
+    ///     Otherwise, this falls back to the default account's primary blog.
     required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
-              let siteID = blog?.dotComID ?? account.primaryBlogID else {
+        let blogObjectID = blog?.objectID
+        let (siteID, remoteInstance) = contextManager.performQuery { mainContext in
+            // if a blog exists, then try to use the blog's ID.
+            var blogInContext: Blog? = nil
+            if let blogObjectID {
+                blogInContext = (try? mainContext.existingObject(with: blogObjectID)) as? Blog
+            }
+
+            // fetch the default account and fall back to default values as needed.
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext) else {
+                return (blogInContext?.dotComID, remote)
+            }
+
+            return (
+                blogInContext?.dotComID ?? account.primaryBlogID,
+                remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+            )
+        }
+
+        guard let siteID,
+              let remoteInstance else {
             return nil
         }
 
         self.contextManager = contextManager
         self.siteID = siteID
-        self.remote = remote ?? .init(wordPressComRestApi: account.wordPressComRestV2Api)
+        self.remote = remoteInstance
     }
 }
 
@@ -322,7 +351,7 @@ private extension BloggingPromptsService {
         }, completion: completion, on: .main)
     }
 
-    func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
+    private func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
         let fetchRequest = BloggingPromptSettings.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1

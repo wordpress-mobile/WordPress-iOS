@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-10 10:54:57+0000 */
+/* Translation-Revision-Date: 2023-06-08 09:22:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sq_AL */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s s’ka të caktuar URL";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s lidhje";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Paraparjet %s s’janë ende të mundshme";
@@ -1412,9 +1415,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ndryshoni Rregullimet";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Ndryshoni Sajt";
-
 /* Change site icon button */
 "Change Site Icon" = "Ndryshoni Ikonë Sajti";
 
@@ -1589,9 +1589,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Zgjidhni temat tuaja";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Zgjedhja e një sajti tjetër do të sjellë humbjen e përpunimeve te lëndë specifike e sajtit, të tilla si media dhe kategori. Jeni i sigurt?";
 
 /* Register Domain - Address information field City */
 "City" = "Qytet";
@@ -2732,6 +2729,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Përpunoni video";
 
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for Android" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në %s për Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing reusable blocks is not yet supported on %s for iOS" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në %s për iOS";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij.";
 
@@ -3589,8 +3592,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Ja se si ka ecur postimi deri tani.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Të fshehura";
 
 /* Hides a site from the site picker list
@@ -5200,6 +5202,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5825,8 +5828,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "Adresë parësore sajti";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Privatësi";
 
 /* Title of button that displays the App's privacy policy */
@@ -5847,7 +5849,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
 
@@ -5883,8 +5884,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Cytje";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publik";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5949,9 +5949,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Njoftime Push";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Njoftimet Push janë çaktivizuar te Rregullime iOS-i";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Njoftimet Push janë çaktivizuar te aplikacioni Rregullime iOS-i. Prekni “Lejo Njoftime” që të riaktivizohen.";
@@ -7420,9 +7417,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "Prekeni që të përzgjidhni periudhën e mëparshme";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Prekeni që të përzgjidhni te cili blog të postohet";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Prekeni që të kalohet te një sajt tjetër, ose për të shtuar një sajt të ri";
 
@@ -7927,9 +7921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Që të krijoni llogarinë tuaj të re WordPress.com, ju lutemi, jepni adresën tuaj email.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Që të aktivizohen njoftimet:\n\n1. Hapni **Rregullimet e iOS-it**\n2. Prekni **Njoftime**\n3. Përzgjidhni **WordPress**\n4. Aktivizoni **Lejo Njoftime**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Që të merrni në telefonin tuaj njoftime të dobishme nga sajti juaj WordPress, do t’ju duhet të instaloni shtojcën Jetpack-un.";
 
@@ -8040,7 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Në hedhurina";
@@ -8367,7 +8357,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "Shfshihe";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "E panjohur";
 
@@ -9547,17 +9536,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Sajti juaj po rikthehet";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Sajti juaj është i dukshëm vetëm për ju dhe për përdorues që miratoni.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Sajti juaj s’ka më vend për ngarkime mediash.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Sajti juaj është i dukshëm për këdo dhe mund të indeksohet nga motorë kërkimesh.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Sajti juaj është i dukshëm për këdo, por kërkon që motorët e kërkimeve të mos e indeksojnë.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "Sajti juaj mund të jetë i rrezikuar";
@@ -10307,9 +10287,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";
-
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Hidhe tej";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Mund të përmirësohet";

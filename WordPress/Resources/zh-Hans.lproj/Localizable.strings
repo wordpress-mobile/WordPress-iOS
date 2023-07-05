@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-17 12:54:10+0000 */
+/* Translation-Revision-Date: 2023-06-27 11:54:26+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_CN */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s没有URL集";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s 链接";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s 预览尚不可用";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "已启用区块编辑器";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "已分组区块";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "阻止恶意登录尝试";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "隐藏此站点";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "未分组区块";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "被隐藏的站点";
@@ -1415,9 +1424,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "更改设置";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "更改站点";
-
 /* Change site icon button */
 "Change Site Icon" = "更改站点图标";
 
@@ -1592,9 +1598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "选择您的兴趣";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "选择另一个站点会丢失当前站点的定制内容，例如媒体和目录，你确定吗？";
 
 /* Register Domain - Address information field City */
 "City" = "城市";
@@ -3607,8 +3610,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "以下是该文章到目前为止的效果。";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "隐藏";
 
 /* Hides a site from the site picker list
@@ -4908,6 +4910,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "未选中日期范围";
 
+/* No comment provided by engineer. */
+"No description" = "无描述";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "没有已修复的威胁";
 
@@ -5033,6 +5038,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "未发现威胁";
+
+/* No comment provided by engineer. */
+"No title" = "无标题";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5221,6 +5229,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5849,8 +5858,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "主站点地址";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "隐私";
 
 /* Title of button that displays the App's privacy policy */
@@ -5871,7 +5879,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "私密";
 
@@ -5907,8 +5914,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "提示";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "公开";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5973,9 +5979,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "推送通知";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "推送通知功能已在 iOS 设置中关闭。";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "推送通知功能已在 iOS 设置应用程序中关闭。切换“允许接收通知”以开启此功能。";
@@ -6334,6 +6337,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "返回文章";
+
+/* No comment provided by engineer. */
+"Reusable" = "可重用";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "恢复未审核的更改";
@@ -7447,9 +7453,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "点击选择前一个时段";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "轻点以选择用于发表文章的博客";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "点击切换到另一站点，或添加一个新站点。";
 
@@ -7761,6 +7764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "加载活动时出现错误";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"There was an error loading campaigns." = "加载活动时出错。";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "加载套餐时出错。";
 
@@ -7954,9 +7960,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "要创建新的 WordPress.com 账户，请输入您的电子邮件地址。";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "要启用通知功能，请执行以下操作：\n\n1.打开 **iOS 设置**\n2.轻点**通知**\n3.选择 **WordPress**\n4.打开**允许接收通知**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "为了在您的手机上获取来自您的WordPress网站的通知，您需要首先安装Jetpack插件。";
 
@@ -8067,7 +8070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "移到回收站";
@@ -8394,7 +8396,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "取消隐藏";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "未知";
 
@@ -9574,17 +9575,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "正在恢复您的站点";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "只有您自己和得到您批准的用户能够看到您的站点。";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "您站点的媒体上传存储空间不足。";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "所有人都能看到您的站点，并且您的站点可能被搜索引擎编入索引。";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "您的站点对所有人均可见，但要求搜索引擎不要对您的站点进行索引。";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "您的站点可能存在风险";
@@ -9667,6 +9659,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "忽略";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "您还没有创建任何广告活动。 点击推广开始。";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "您没有广告活动";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "正在加载活动...";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "推广";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "通过 Blaze 推广活动";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "在数以百万计的站点上展示您的作品。";
 
@@ -9697,6 +9704,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "大力宣传此文章";
 
+/* Short status description */
+"blazeCampaign.status.active" = "已启用";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "已获得批准";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "已取消";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "已完成";
+
+/* Short status description */
+"blazeCampaign.status.created" = "已创建";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "审核中";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "已拒绝";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "预算";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "点击次数";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "展示次数";
+
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "隐藏此内容";
 
@@ -9711,6 +9748,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "评论";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "以下内容的评论";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "以下内容的评论";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "回复 %1$@";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "保存";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "转至“设置”";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "管理隐私";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "分析";
 
 /* The menu item to select during a guided tour. */
 "connections" = "连接";
@@ -9753,6 +9817,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "页面";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "点击量";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "创建活动";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "展示次数";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "通过 Blaze 推广活动";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "查看所有活动";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "向您的站点添加页面";
@@ -9829,6 +9908,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/年";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "忽略";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "抱歉，您目前无法在 Jetpack 上购买您要添加的域名。";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
 
@@ -9851,6 +9936,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "关注";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "首年可获得免费域名，删除您站点上的广告并增加存储空间。";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "隐藏此内容";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "年度套餐附免费域名";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "完成";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "您的域名最多可能需要 30 分钟时间才能开始正常运行。";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "您的新域名 %@ 正在设置中。";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "一切准备就绪！";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "设置博客发布提醒";
@@ -10356,9 +10462,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "忽略";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "忽略";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "还可改进";
 
@@ -10380,6 +10483,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "大力宣传并推广";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "您的主页正在使用主题模板，并将在 Web 编辑器中打开。";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "主页";
+
 /* No comment provided by engineer. */
 "password" = "密码";
 
@@ -10397,6 +10506,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "草稿文章";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "了解此应用程序";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "后续步骤";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "页面";
@@ -10428,6 +10543,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "特色图片选项";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "大力宣传并推广";
 
@@ -10448,6 +10566,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "搜索";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "阅读器设置";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10528,11 +10652,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "隐私";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "您的站点对所有人均可见，但要求搜索引擎不要对您的站点进行索引。";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "已隐藏";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "只有您自己和得到您批准的用户能够看到您的站点。";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "私人";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "所有人都能看到您的站点，并且您的站点可能被搜索引擎编入索引。";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "公开";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "未知";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "未知";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "显示提示";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "提醒";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "过在社交媒体上自动与好友分享文章来增加流量。";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "关联您的个人资料";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "社交媒体图标";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "现在不行";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "了解更多";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "由于 Twitter 更改了条款和定价，Twitter 自动共享功能已无法使用。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "过去 7 天";

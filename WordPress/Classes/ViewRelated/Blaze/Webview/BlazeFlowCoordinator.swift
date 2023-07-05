@@ -6,6 +6,7 @@ import UIKit
     case menuItem
     case postsList
     case pagesList
+    case campaignsList
 
     var description: String {
         switch self {
@@ -17,6 +18,8 @@ import UIKit
             return "posts_list"
         case .pagesList:
             return "pages_list"
+        case .campaignsList:
+            return "campaigns_list"
         }
     }
 
@@ -66,11 +69,16 @@ import UIKit
     ///   - delegate: The delegate gets notified of changes happening in the web view. Default value is `nil`
     @objc(presentBlazeWebFlowInViewController:source:blog:postID:delegate:)
     static func presentBlazeWebFlow(in viewController: UIViewController,
-                                 source: BlazeSource,
-                                 blog: Blog,
-                                 postID: NSNumber? = nil,
-                                 delegate: BlazeWebViewControllerDelegate? = nil) {
-        let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID, delegate: delegate)
+                                    source: BlazeSource,
+                                    blog: Blog,
+                                    postID: NSNumber? = nil,
+                                    delegate: BlazeWebViewControllerDelegate? = nil) {
+        let blazeViewController = BlazeWebViewController(delegate: delegate)
+        let viewModel = BlazeCreateCampaignWebViewModel(source: source,
+                                                        blog: blog,
+                                                        postID: postID,
+                                                        view: blazeViewController)
+        blazeViewController.viewModel = viewModel
         let navigationViewController = UINavigationController(rootViewController: blazeViewController)
         navigationViewController.overrideUserInterfaceStyle = .light
         navigationViewController.modalPresentationStyle = .formSheet
@@ -93,5 +101,39 @@ import UIKit
         let navigationController = UINavigationController(rootViewController: overlayViewController)
         navigationController.modalPresentationStyle = .formSheet
         viewController.present(navigationController, animated: true)
+    }
+
+    /// Used to display the blaze campaigns screen.
+    /// - Parameters:
+    ///   - viewController: The view controller where the screen should be presented in.
+    ///   - blog: `Blog` object representing the site with Blaze campaigns.
+    @objc(presentBlazeCampaignsInViewController:blog:)
+    static func presentBlazeCampaigns(in viewController: UIViewController,
+                                      blog: Blog) {
+        let campaignsViewController = BlazeCampaignsViewController(blog: blog)
+        viewController.navigationController?.pushViewController(campaignsViewController, animated: true)
+    }
+
+    /// Used to display the blaze campaign details web view.
+    /// - Parameters:
+    ///   - viewController: The view controller where the web view should be presented in.
+    ///   - source: The source that triggers the display of the blaze web view.
+    ///   - blog: `Blog` object representing the site that is being blazed
+    ///   - campaignID: `Int` representing the ID of the campaign whose details is being accessed.
+    @objc(presentBlazeCampaignDetailsInViewController:source:blog:campaignID:)
+    static func presentBlazeCampaignDetails(in viewController: UIViewController,
+                                            source: BlazeSource,
+                                            blog: Blog,
+                                            campaignID: Int) {
+        let blazeViewController = BlazeWebViewController(delegate: nil)
+        let viewModel = BlazeCampaignDetailsWebViewModel(source: source,
+                                                         blog: blog,
+                                                         campaignID: campaignID,
+                                                         view: blazeViewController)
+        blazeViewController.viewModel = viewModel
+        let navigationViewController = UINavigationController(rootViewController: blazeViewController)
+        navigationViewController.overrideUserInterfaceStyle = .light
+        navigationViewController.modalPresentationStyle = .formSheet
+        viewController.present(navigationViewController, animated: true)
     }
 }

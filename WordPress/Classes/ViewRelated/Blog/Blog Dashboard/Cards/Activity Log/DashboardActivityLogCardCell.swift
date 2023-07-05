@@ -12,6 +12,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     private(set) var blog: Blog?
     private(set) weak var presentingViewController: BlogDashboardViewController?
     private(set) lazy var dataSource = createDataSource()
+    private var viewModel: DashboardActivityLogViewModel?
 
     let store = StoreContainer.shared.activity
 
@@ -21,6 +22,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.setTitle(Strings.title)
+        frameView.accessibilityIdentifier = "dashboard-activity-log-card-frameview"
         return frameView
     }()
 
@@ -71,11 +73,16 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     // MARK: - BlogDashboardCardConfigurable
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        guard let apiResponse else {
+            return
+        }
+
         self.blog = blog
         self.presentingViewController = viewController
+        self.viewModel = DashboardActivityLogViewModel(apiResponse: apiResponse)
 
         tableView.dataSource = dataSource
-        updateDataSource(with: apiResponse?.activity?.value?.current?.orderedItems ?? [])
+        updateDataSource(with: viewModel?.activitiesToDisplay ?? [])
 
         configureHeaderAction(for: blog)
         configureContextMenu(for: blog)
@@ -150,10 +157,7 @@ extension DashboardActivityLogCardCell {
     private func updateDataSource(with activities: [Activity]) {
         var snapshot = Snapshot()
         snapshot.appendSections(ActivityLogSection.allCases)
-
-        let activitiesToDisplay = Array(activities.prefix(Constants.maxActivitiesCount))
-        snapshot.appendItems(activitiesToDisplay, toSection: .activities)
-
+        snapshot.appendItems(activities, toSection: .activities)
         dataSource.apply(snapshot)
     }
 }
@@ -189,7 +193,6 @@ extension DashboardActivityLogCardCell {
 extension DashboardActivityLogCardCell {
 
     private enum Constants {
-        static let maxActivitiesCount = 3
         static let headerTapSource = "activity_card_header"
         static let contextMenuTapSource = "activity_card_context_menu"
     }

@@ -1,9 +1,6 @@
-If your site uses a block-based theme, you can now edit your site’s home page directly from the Pages list. Raised hands emoji.
+We fixed an issue with the home screen’s “Work on a draft post” card. The app will no longer crash when you access drafts while they’re in the middle of uploading.
 
-We solved an issue around setting links to open in a new tab. When typing text after this link, you can now undo and redo the text without any issues.
+We also solved a couple of problems in the block editor.
 
-Tap-to-edit is now available for all nested block types—no more tapping through every nesting level to reach a specific piece of content.
-
-Speaking of nesting, we also fixed a bug where merging a list item into a paragraph would remove any nested text for that list item.
-
-Finally, we’ve updated the design of disabled cells so it’s easier to tell when a cell isn’t in use.
+- Right on—image blocks now display the correct aspect ratio, whether or not the image has a set width and height.
+- When you’re dictating text, the cursor’s position will stay where it’s supposed to—no more jumping around. Keep calm and dictate on.

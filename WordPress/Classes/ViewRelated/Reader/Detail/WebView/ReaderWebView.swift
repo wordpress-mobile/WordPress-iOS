@@ -15,6 +15,8 @@ class ReaderWebView: WKWebView {
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
+        super.awakeFromNib()
+
         isOpaque = false
         backgroundColor = .clear
     }

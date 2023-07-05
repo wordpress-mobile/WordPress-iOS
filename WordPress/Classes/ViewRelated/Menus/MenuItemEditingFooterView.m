@@ -39,7 +39,6 @@
 - (void)setupTrashButton
 {
     UIButton *button = self.trashButton;
-    button.adjustsImageWhenHighlighted = YES;
     [button setTitle:nil forState:UIControlStateNormal];
     button.tintColor = [UIColor murielNeutral30];
     [button setImage:[UIImage gridiconOfType:GridiconTypeTrash] forState:UIControlStateNormal];

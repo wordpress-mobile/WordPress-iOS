@@ -14,6 +14,10 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate var handler: ImmuTableViewHandler!
 
+    // MARK: - Dependencies
+
+    private let privacySettingsAnalyticsTracker = PrivacySettingsAnalyticsTracker()
+
     // MARK: - Initialization
 
     override init(style: UITableView.Style) {
@@ -131,6 +135,18 @@ class AppSettingsViewController: UITableViewController {
         setMediaCacheRowDescription(status: .calculatingSize)
         MediaFileManager.calculateSizeOfMediaDirectories { [weak self] (allocatedSize) in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
+        }
+    }
+
+    // MARK: - Navigation
+
+    func navigateToPrivacySettings(animated: Bool = true, completion: ((PrivacySettingsViewController) -> Void)? = nil) {
+        let destination = PrivacySettingsViewController(style: .insetGrouped)
+        CATransaction.perform {
+            self.navigationController?.pushViewController(destination, animated: animated)
+            self.privacySettingsAnalyticsTracker.track(.privacySettingsOpened)
+        } completion: {
+            completion?(destination)
         }
     }
 
@@ -267,10 +283,7 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
-            WPAnalytics.track(.privacySettingsOpened)
-
-            let controller = PrivacySettingsViewController(style: .insetGrouped)
-            self?.navigationController?.pushViewController(controller, animated: true)
+            self?.navigateToPrivacySettings(animated: true)
         }
     }
 

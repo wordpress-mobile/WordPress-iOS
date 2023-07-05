@@ -701,10 +701,15 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         }
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    if (completion) {
-        completion(posts);
-    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        // Call the completion block after context is saved. The callback is called on the context queue because `posts`
+        // contains models that are bound to the `self.managedObjectContext` object.
+        if (completion) {
+            [self.managedObjectContext performBlock:^{
+                completion(posts);
+            }];
+        }
+    } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
 }
 
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
@@ -771,9 +776,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
-        Coordinate *geolocation = nil;
-        NSString *latitudeID = nil;
-        NSString *longitudeID = nil;
         NSString *publicID = nil;
         NSString *publicizeMessage = nil;
         NSString *publicizeMessageID = nil;
@@ -788,9 +790,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 CLLocationCoordinate2D coord;
                 coord.latitude = [latitude doubleValue];
                 coord.longitude = [longitude doubleValue];
-                geolocation = [[Coordinate alloc] initWithCoordinate:coord];
-                latitudeID = [latitudeDictionary stringForKey:@"id"];
-                longitudeID = [longitudeDictionary stringForKey:@"id"];
                 publicID = [geoPublicDictionary stringForKey:@"id"];
             }
             NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];

@@ -4,6 +4,7 @@
 #import "Blog.h"
 #import "CoreDataStack.h"
 #import "WordPress-Swift.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface  MediaLibraryPickerDataSource() <NSFetchedResultsControllerDelegate>
 
@@ -67,12 +68,6 @@
         _post = post;
     }
     return self;
-}
-
-
-- (instancetype)init
-{
-    return [self initWithBlog:nil];
 }
 
 #pragma mark - WPMediaCollectionDataSource
@@ -243,7 +238,7 @@
             NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];
             NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
             NSError *error;
-            if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
+            if ([image writeToURL:fileURL type:UTTypeJPEG.identifier compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
                 return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
             }
             return nil;
@@ -252,7 +247,7 @@
         NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];        
         NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
         NSError *error;
-        if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
+        if ([image writeToURL:fileURL type:UTTypeJPEG.identifier compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
             [self addMediaFromURL:fileURL completionBlock:completionBlock];
         } else {
             if (completionBlock) {
@@ -301,10 +296,6 @@
 -(void)addMediaFromAssetIdentifier:(NSString *)assetIdentifier
             completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    NSManagedObjectID *objectID = [self.post objectID];
-    if (objectID == nil) {
-        objectID = [self.blog objectID];
-    }
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaImportService *service = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];

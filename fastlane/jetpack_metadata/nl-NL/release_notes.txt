@@ -1,9 +1,0 @@
-We hebben kaarten aan je dashboard toegevoegd. De kaart Activiteitenlog toont je de drie meest recente activiteiten, en de kaart Pagina's toont de laatste drie pagina’s die je hebt aangepast.
-
-We hebben ook enkele belangrijke wijzigingen aangebracht in de blokeditor. Om het crashen van de app te voorkomen, kunnen verwijderde en ongedefinieerde herbruikbare blokken niet meer worden omgezet naar normale blokken.
-
-Wanneer je op een genest tekstblok tikt, kun je meteen de inhoud van dat blok bewerken, zonder dat je door elk niveau hoeft te klikken om de gewenste plek te bereiken. (Onze vingers werden ook moe.)
-
-Nu we het toch over herbruikbare blokken hebben, we hebben het bericht “bewerken niet ondersteund” geüpdatet om de vermelding van WordPress te verwijderen. Geloof ons, we weten wel welke app we gebruiken.
-
-We hebben eindelijk een bug opgelost waardoor de app crashte wanneer je probeerde media te uploaden naar een klassiek blok zonder WordPress toegang te verlenen tot de mediabibliotheek van je apparaat. In plaats daarvan krijg je een nu een melding waarin je wordt gevraagd om toegang tot je media te geven. Fluitje van een cent.

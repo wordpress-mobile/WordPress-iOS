@@ -2,29 +2,31 @@ import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
-    private var editorScreen: BlockEditorScreen!
-
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        editorScreen = try EditorFlow
-            .goToMySiteScreen()
-            .tabBar.gotoBlockEditorScreen()
-            .dismissNotificationAlertIfNeeded(.accept)
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
+
+        try TabNavComponent()
+            .gotoBlockEditorScreen()
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        removeApp()
     }
 
     let title = "Rich post title"
     let content = "Some text, and more text"
+    let videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    let audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
 
     func testTextPostPublish() throws {
 
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
@@ -38,7 +40,7 @@ class EditorGutenbergTests: XCTestCase {
 
         let category = getCategory()
         let tag = getTag()
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImage()
@@ -55,7 +57,7 @@ class EditorGutenbergTests: XCTestCase {
 
     func testAddRemoveFeaturedImage() throws {
 
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
@@ -70,10 +72,18 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testAddGalleryBlock() throws {
-        try editorScreen
+        try BlockEditorScreen()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImageGallery()
             .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
+    }
+
+    func testAddMediaBlocks() throws {
+        try BlockEditorScreen()
+            .addImage()
+            .addVideoFromUrl(urlPath: videoUrlPath)
+            .addAudioFromUrl(urlPath: audioUrlPath)
+            .verifyMediaBlocksDisplayed()
     }
 }

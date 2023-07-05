@@ -195,12 +195,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
     
-    BlazeService *blazeService = [BlazeService createService];
-    dispatch_group_enter(syncGroup);
-    [blazeService getStatusFor:blog completion:^{
-        dispatch_group_leave(syncGroup);
-    }];
-    
     if ([DomainsDashboardCardHelper isFeatureEnabled] || [FreeToPaidPlansDashboardCardHelper isFeatureEnabled]) {
         dispatch_group_enter(syncGroup);
         [self refreshDomainsFor:blog success:^{
@@ -238,7 +232,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 Blog *blogInContext = (Blog *)[context objectWithID:blogID];
                 [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
-            } completion:nil onQueue:dispatch_get_main_queue()];
+            } completion:success onQueue:dispatch_get_main_queue()];
         };
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
@@ -429,7 +423,13 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 - (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccountID:(NSManagedObjectID *)accountID inContext:(NSManagedObjectContext *)context
 {
     // Nuke dead blogs
-    WPAccount *account = [context existingObjectWithID:accountID error:nil];
+    NSError *error = nil;
+    WPAccount *account = [context existingObjectWithID:accountID error:&error];
+    if (account == nil) {
+        DDLogInfo(@"Can't find the account. User may have signed out. Error: %@", error);
+        return;
+    }
+
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"blogID"]];
     NSSet *localSet = [account.blogs valueForKey:@"dotComID"];
     NSMutableSet *toDelete = [localSet mutableCopy];
@@ -505,6 +505,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     blog.options = remoteBlog.options;
     blog.planID = remoteBlog.planID;
     blog.planTitle = remoteBlog.planTitle;
+    blog.planActiveFeatures = remoteBlog.planActiveFeatures;
     blog.hasPaidPlan = remoteBlog.hasPaidPlan;
     blog.quotaSpaceAllowed = remoteBlog.quotaSpaceAllowed;
     blog.quotaSpaceUsed = remoteBlog.quotaSpaceUsed;

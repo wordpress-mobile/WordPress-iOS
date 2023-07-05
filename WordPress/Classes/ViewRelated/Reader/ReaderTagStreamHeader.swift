@@ -41,13 +41,7 @@ import WordPressShared
     }
 
     fileprivate func adjustInsetsForTextDirection() {
-        guard userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
-        followButton.contentEdgeInsets = followButton.contentEdgeInsets.flippedForRightToLeftLayoutDirection()
-        followButton.imageEdgeInsets = followButton.imageEdgeInsets.flippedForRightToLeftLayoutDirection()
-        followButton.titleEdgeInsets = followButton.titleEdgeInsets.flippedForRightToLeftLayoutDirection()
+        followButton.flipInsetsForRightToLeftLayoutDirection()
     }
 
     // MARK: - Actions

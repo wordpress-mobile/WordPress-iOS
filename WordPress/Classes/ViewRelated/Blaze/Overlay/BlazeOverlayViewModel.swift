@@ -18,6 +18,8 @@ struct BlazeOverlayViewModel {
         switch source {
         case .dashboardCard:
             fallthrough
+        case .campaignsList:
+            fallthrough
         case .menuItem:
             return buttonTitleWithIcon(title: Strings.blazeButtonTitle)
         case .postsList:

@@ -2,12 +2,10 @@
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "BlogSiteVisibilityHelper.h"
 #import "CoreDataStack.h"
 #import "NSURL+IDN.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "RelatedPostsSettingsViewController.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
@@ -763,43 +761,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return footerView;
 }
 
-- (void)showPrivacySelector
-{
-    NSArray *values = [BlogSiteVisibilityHelper siteVisibilityValuesForBlog:self.blog];
-    NSArray *titles = [BlogSiteVisibilityHelper titlesForSiteVisibilityValues:values];
-    NSArray *hints  = [BlogSiteVisibilityHelper hintsForSiteVisibilityValues:values];
-   
-    NSNumber *currentPrivacy = @(self.blog.siteVisibility);
-    if (!currentPrivacy) {
-        currentPrivacy = [values firstObject];
-    }
-    
-    NSDictionary *settingsSelectionConfiguration = @{
-                                      SettingsSelectionDefaultValueKey   : [values firstObject],
-                                      SettingsSelectionTitleKey          : NSLocalizedString(@"Privacy", @"Title for screen to select the privacy options for a blog"),
-                                      SettingsSelectionTitlesKey         : titles,
-                                      SettingsSelectionValuesKey         : values,
-                                      SettingsSelectionCurrentValueKey   : currentPrivacy,
-                                      SettingsSelectionHintsKey          : hints
-                                      };
-    
-    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:settingsSelectionConfiguration];
-    __weak __typeof__(self) weakSelf = self;
-    vc.onItemSelected = ^(NSNumber *status) {
-        // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
-        if ([status isKindOfClass:[NSNumber class]]) {
-            SiteVisibility newSiteVisibility = (SiteVisibility)[status integerValue];
-            if (weakSelf.blog.siteVisibility != newSiteVisibility) {
-                weakSelf.blog.siteVisibility = newSiteVisibility;
-                [weakSelf saveSettings];
-                [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"privacy" value:status];
-            }
-        }
-    };
-    
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)showLanguageSelectorForBlog:(Blog *)blog
 {
     NSParameterAssert(blog);
@@ -895,13 +856,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     };
     
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showRelatedPostsSettings
-{
-    RelatedPostsSettingsViewController *relatedPostsViewController = [[RelatedPostsSettingsViewController alloc] initWithBlog:self.blog];
-    
-    [self.navigationController pushViewController:relatedPostsViewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row

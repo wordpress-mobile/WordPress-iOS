@@ -5,14 +5,34 @@ import WebKit
     func dismissBlazeWebViewController(_ controller: BlazeWebViewController)
 }
 
+protocol BlazeWebViewModel {
+    func startBlazeFlow()
+    func dismissTapped()
+    func webViewDidFail(with error: Error)
+    func isCurrentStepDismissible() -> Bool
+    func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy
+    var isFlowCompleted: Bool { get }
+    var navigationTitle: String { get }
+}
+
+protocol BlazeWebView: NSObjectProtocol {
+    func load(request: URLRequest)
+    func reloadNavBar()
+    func dismissView()
+    var cookieJar: CookieJar { get }
+}
+
 class BlazeWebViewController: UIViewController, BlazeWebView {
+
+    // MARK: Public Variables
+
+    var viewModel: BlazeWebViewModel?
 
     // MARK: Private Variables
 
     private weak var delegate: BlazeWebViewControllerDelegate?
 
     private let webView: WKWebView
-    private var viewModel: BlazeWebViewModel?
     private let progressView = WebProgressView()
     private var reachabilityObserver: Any?
     private var currentRequestURL: URL?
@@ -32,11 +52,10 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Initializers
 
-    init(source: BlazeSource, blog: Blog, postID: NSNumber?, delegate: BlazeWebViewControllerDelegate?) {
+    init(delegate: BlazeWebViewControllerDelegate?) {
         self.delegate = delegate
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
-        viewModel = BlazeWebViewModel(source: source, blog: blog, postID: postID, view: self)
     }
 
     required init?(coder: NSCoder) {
@@ -77,7 +96,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     }
 
     private func configureNavBar() {
-        title = Strings.navigationTitle
+        title = viewModel?.navigationTitle
         navigationItem.rightBarButtonItem = dismissButton
         configureNavBarAppearance()
         reloadNavBar()
@@ -90,9 +109,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
-        if #available(iOS 15.0, *) {
-            navigationItem.compactScrollEdgeAppearance = appearance
-        }
+        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     // MARK: Reachability Helpers
@@ -201,9 +218,6 @@ extension BlazeWebViewController: WKNavigationDelegate {
 
 private extension BlazeWebViewController {
     enum Strings {
-        static let navigationTitle = NSLocalizedString("feature.blaze.title",
-                                                       value: "Blaze",
-                                                       comment: "Name of a feature that allows the user to promote their posts.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel. Action.")
         static let doneButtonTitle = NSLocalizedString("Done", comment: "Done. Action.")
     }

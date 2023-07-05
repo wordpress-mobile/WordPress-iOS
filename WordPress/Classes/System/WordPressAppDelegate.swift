@@ -128,18 +128,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ABTest.start()
 
-        if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
-            // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
-            // Please refer to the documentation of the called method to learn the details and know
-            // how to tell if this call can be removed.
-            UITextField.activateWorkaroundForBulgarianKeyboardCrash()
-        }
-
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
+        logoutAtLaunchForUITests(application)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -376,6 +370,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
             application.windows.first?.layer.speed = MAXFLOAT
             application.mainWindow?.layer.speed = MAXFLOAT
+        }
+    }
+
+    private func logoutAtLaunchForUITests(_ application: UIApplication) {
+        if CommandLine.arguments.contains("-logout-at-launch") {
+            AccountHelper.logOutDefaultWordPressComAccount()
         }
     }
 

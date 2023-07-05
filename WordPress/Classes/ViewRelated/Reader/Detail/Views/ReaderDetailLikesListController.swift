@@ -20,6 +20,8 @@ class ReaderDetailLikesListController: UITableViewController, NoResultsViewHost 
 
     // MARK: - View
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         configureViewTitle()
         configureTable()
         WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "like_reader_list"])

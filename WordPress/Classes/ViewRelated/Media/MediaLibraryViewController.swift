@@ -4,6 +4,7 @@ import SVProgressHUD
 import WordPressShared
 import WPMediaPicker
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Displays the user's media library in a grid
 ///
@@ -82,7 +83,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.showActionBar = false
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         return options

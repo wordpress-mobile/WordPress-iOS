@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-18 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-06-27 10:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -264,6 +264,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s リンク";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%sプレビューはまだご利用いただけません";
@@ -1143,6 +1146,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "ブロックエディターを有効にしました";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "ブロックがグループ化されました";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "悪意のあるログイン試行をブロックする";
 
@@ -1157,6 +1163,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "このサイトをブロック";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "ブロックのグループが解除されました";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "サイトがブロックされました";
@@ -1415,9 +1424,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "設定を変更";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "サイトを変更";
-
 /* Change site icon button */
 "Change Site Icon" = "サイトアイコンを変更";
 
@@ -1592,9 +1598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "トピックを選択";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "別のサイトを選択するとサイト特定のコンテンツ (メディア、カテゴリーなど) に関する編集が失われます。変更しますか ?";
 
 /* Register Domain - Address information field City */
 "City" = "市区町村";
@@ -3610,8 +3613,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "投稿のこれまでのパフォーマンスは次のとおりです。";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "非表示";
 
 /* Hides a site from the site picker list
@@ -4911,6 +4913,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "期間が選択されていません";
 
+/* No comment provided by engineer. */
+"No description" = "説明はありません";
+
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "修正された脅威はありません";
 
@@ -5036,6 +5041,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "脅威は見つかりませんでした";
+
+/* No comment provided by engineer. */
+"No title" = "タイトルなし";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5224,6 +5232,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5852,8 +5861,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "主要サイトのアドレス";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "プライバシー";
 
 /* Title of button that displays the App's privacy policy */
@@ -5874,7 +5882,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "プライベート";
 
@@ -5910,8 +5917,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "プロンプト";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "公開";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5976,9 +5982,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "プッシュ通知";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "iOS 設定でプッシュ通知が無効になっています";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "iOS 設定でプッシュ通知が無効になっています。「通知を許可」に切り替えて有効化してください。";
@@ -6337,6 +6340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "投稿へ戻る";
+
+/* No comment provided by engineer. */
+"Reusable" = "再利用可能";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "保留中の変更を元に戻す";
@@ -7450,9 +7456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "タップして前の期間を選択";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "投稿先のブログを選択";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "タップして別のサイトに切り替え、または新しいサイトを追加";
 
@@ -7764,6 +7767,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "アクティビティを読み込み中にエラーが発生しました";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"There was an error loading campaigns." = "キャンペーンの読み込みでエラーが発生しました。";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "プラン読み込みエラー";
 
@@ -7957,9 +7963,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "新しい WordPress.com アカウントを作成するには、メールアドレスを入力してください。";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "通知を有効化するには:\n\n1. **iOS 設定**画面を開く\n2. **通知**をタップ\n3. **WordPress** を選択\n4. **通知を許可**を有効化";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、Jetpack プラグインをインストールする必要があります。";
 
@@ -8070,7 +8073,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "ゴミ箱";
@@ -8397,7 +8399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "表示";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "不明";
 
@@ -9577,17 +9578,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "現在サイトを復元中です";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "サイトはあなたと承認したユーザーのみが表示できます。";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "このサイトにはメディアをアップロードするスペースが足りません。";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "誰でもサイトを閲覧することができ、検索エンジンにインデックスされる可能性があります。";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "誰でもサイトを閲覧可能にし、検索エンジンにはインデックスしないよう要求します。";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "サイトが危険にさらされている可能性があります";
@@ -9670,6 +9662,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "削除";
 
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "まだキャンペーンを作成していません。 開始するには「宣伝」をクリックしてください。";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "キャンペーンがありません";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "キャンペーンを読み込んでいます…";
+
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.promote.button.title" = "宣伝";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze キャンペーン";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "何百万ものサイトに作品を表示しましょう。";
 
@@ -9700,6 +9707,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "この投稿を目立たせる";
 
+/* Short status description */
+"blazeCampaign.status.active" = "有効";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "承認済み";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "キャンセル済み";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "完了";
+
+/* Short status description */
+"blazeCampaign.status.created" = "作成済み";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "モデレーション中";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "却下";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "予算";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "クリック数";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "インプレッション";
+
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "非表示";
 
@@ -9714,6 +9751,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "コメント";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "次の投稿へのコメント:";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "コメントする";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "%1$@ への返信";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "保存";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "「設定」に移動";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "プライバシーを管理";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "アナリティクス";
 
 /* The menu item to select during a guided tour. */
 "connections" = "連携";
@@ -9756,6 +9820,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "ページ";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "クリック数";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "キャンペーンを作成";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "インプレッション";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze キャンペーン";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "すべてのキャンペーンを表示";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "サイトにページを追加する";
@@ -9832,6 +9911,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "\/ 年";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "閉じる";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "追加しようとしているドメインは現在 Jetpack アプリでは購入できません。";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
 
@@ -9854,6 +9939,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "フォロー";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "初年度は無料でドメインを取得でき、サイト上の広告が削除され、ストレージが増えます。";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "年間プランではドメイン名が無料で利用できます";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "完了";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "ドメインが正常に使用可能になるまでに最大で30分かかる場合があります";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "新しいドメイン %@ の設定中です。";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "準備完了 !";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "ブログ投稿のリマインダーを設定";
@@ -10359,9 +10465,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "削除";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "改善してほしい";
 
@@ -10383,6 +10486,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Blaze を使って宣伝";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "ホームページではテーマテンプレートが使用されており、Web エディターで開きます。";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "ホームページ";
+
 /* No comment provided by engineer. */
 "password" = "パスワード";
 
@@ -10400,6 +10509,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "下書きの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "アプリについて知る";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "次のステップ";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "ページ";
@@ -10431,6 +10546,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
 
@@ -10451,6 +10569,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "ログインしました !";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "検索";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader 設定";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -10531,11 +10655,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "プライバシー";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "誰でもサイトを閲覧可能にし、検索エンジンにはインデックスしないよう要求します。";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "非表示";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "サイトはあなたと承認したユーザーのみが表示できます。";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "非公開";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "誰でもサイトを閲覧することができ、検索エンジンにインデックスされる可能性があります。";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "公開";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "不明";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "不明";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "プロンプトを表示";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "リマインダー";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "ソーシャルメディアで自分の投稿を友人に自動共有してトラフィックを増やします。";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connect" = "プロフィールを接続する";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "ソーシャルメディアアイコン";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "後で";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "さらに詳しく";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去7日間";

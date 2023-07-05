@@ -9,7 +9,7 @@ public class ReaderScreen: ScreenObject {
 
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 // swiftlint:skip:next opening_brace
@@ -21,13 +21,15 @@ public class ReaderScreen: ScreenObject {
         )
     }
 
-    public func openLastPost() {
+    public func openLastPost() -> ReaderScreen {
         getLastPost().tap()
+        return self
     }
 
-    public func openLastPostInSafari() {
+    public func openLastPostInSafari() -> ReaderScreen {
         getLastPost().buttons["More"].tap()
         app.buttons["Visit"].tap()
+        return self
     }
 
     public func openLastPostComments() throws -> CommentsScreen {
@@ -53,11 +55,15 @@ public class ReaderScreen: ScreenObject {
         }
     }
 
-    public func postContentEquals(_ expected: String) -> Bool {
+    private func postContentEquals(_ expected: String) -> Bool {
         let equalsPostContent = NSPredicate(format: "label == %@", expected)
         let isPostContentEqual = app.staticTexts.element(matching: equalsPostContent).waitForIsHittable(timeout: 3)
 
         return isPostContentEqual
+    }
+
+    public func verifyPostContentEquals(_ expected: String) {
+        XCTAssertTrue(postContentEquals(expected))
     }
 
     public func dismissPost() {
@@ -68,7 +74,7 @@ public class ReaderScreen: ScreenObject {
         if backButton.isHittable { backButton.tap() }
     }
 
-    public static func isLoaded() -> Bool {
+    public func isLoaded() -> Bool {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
