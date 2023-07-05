@@ -48,8 +48,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
         return button
     }()
 
-    fileprivate var quickStartObserver: NSObjectProtocol?
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -58,10 +56,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
-    }
-
-    deinit {
-        stopObservingQuickStart()
     }
 }
 
@@ -144,38 +138,34 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func startObservingQuickStart() {
-        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
-
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-
-                switch element {
-                case .stats:
-                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-                        return
-                    }
-
-                    self?.autoScrollToStatsButton()
-                case .mediaScreen:
-                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-                        return
-                    }
-
-                    self?.autoScrollToMediaButton()
-                default:
-                    break
-                }
-                self?.statsButton.shouldShowSpotlight = element == .stats
-                self?.mediaButton.shouldShowSpotlight = element == .mediaScreen
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func stopObservingQuickStart() {
-        if let quickStartObserver {
-            NotificationCenter.default.removeObserver(quickStartObserver)
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let info = notification.userInfo,
+              let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement
+        else {
+            return
         }
-        quickStartObserver = nil
+
+        switch element {
+        case .stats:
+            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                return
+            }
+
+            autoScrollToStatsButton()
+        case .mediaScreen:
+            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                return
+            }
+
+            autoScrollToMediaButton()
+        default:
+            break
+        }
+        statsButton.shouldShowSpotlight = element == .stats
+        mediaButton.shouldShowSpotlight = element == .mediaScreen
     }
 
     private func autoScrollToStatsButton() {
