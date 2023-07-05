@@ -14,13 +14,19 @@ final class DashboardBlazeCampaignsCardView: UIView {
     private lazy var createCampaignButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = {
+            var configuration = UIButton.Configuration.plain()
+            configuration.attributedTitle = {
+                var string = AttributedString(Strings.createCampaignButton)
+                string.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
+                string.foregroundColor = UIColor.primary
+                return string
+            }()
+            configuration.contentInsets = Constants.createCampaignInsets
+            return configuration
+        }()
         button.contentHorizontalAlignment = .leading
-        button.setTitle(Strings.createCampaignButton, for: .normal)
         button.addTarget(self, action: #selector(buttonCreateCampaignTapped), for: .touchUpInside)
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitleColor(UIColor.primary, for: .normal)
-        button.contentEdgeInsets = Constants.createCampaignInsets
         return button
     }()
 
@@ -126,6 +132,6 @@ private extension DashboardBlazeCampaignsCardView {
 
     enum Constants {
         static let campaignViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let createCampaignInsets = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+        static let createCampaignInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16)
     }
 }
