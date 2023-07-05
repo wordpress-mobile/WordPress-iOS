@@ -76,7 +76,7 @@ def gutenberg_dependencies(options:)
 
   # Use a custom RNReanimated version while we coordinate a fix upstream
   computed_dependencies.delete('RNReanimated')
-  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'mokagio/fix-custom-node_modules-bypass-multiple-versions-check-2.17.0'
+  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
 
   computed_dependencies.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
