@@ -73,6 +73,8 @@ final class DashboardBlazeCampaignView: UIView {
         if viewModel.isShowingStats {
             makeStatsViews(for: viewModel).forEach(statsView.addArrangedSubview)
         }
+
+        enableVoiceOver(with: viewModel)
     }
 
     private func makeStatsViews(for viewModel: BlazeCampaignViewModel) -> [UIView] {
@@ -83,6 +85,16 @@ final class DashboardBlazeCampaignView: UIView {
         clicksView.countString = "\(viewModel.clicks)"
 
         return [impressionsView, clicksView]
+    }
+
+    private func enableVoiceOver(with viewModel: BlazeCampaignViewModel) {
+        var accessibilityLabel = "\(viewModel.title), \(viewModel.status.title)"
+        if viewModel.isShowingStats {
+            accessibilityLabel += ", \(Strings.impressions) \(viewModel.impressions), \(Strings.clicks) \(viewModel.clicks)"
+        }
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityTraits = .allowsDirectInteraction
     }
 }
 
