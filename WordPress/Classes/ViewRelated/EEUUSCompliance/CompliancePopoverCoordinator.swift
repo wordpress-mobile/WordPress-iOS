@@ -40,7 +40,7 @@ final class CompliancePopoverCoordinator {
 
     func shouldShowPrivacyBanner(countryCode: String) -> Bool {
         let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        return isCountryInEU && !defaults.shouldShowCompliancePopup
+        return isCountryInEU && defaults.shouldShowCompliancePopup
     }
 
     func navigateToSettings() {
