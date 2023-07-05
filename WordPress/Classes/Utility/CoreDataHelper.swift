@@ -369,7 +369,7 @@ extension CoreDataStack {
 /// the context object is, nor the context queue type (the main queue or a background queue). That means the caller
 /// does not have enough information to guarantee safe access to the returned `NSManagedObject` instances.
 ///
-/// The closure passed to the `performQuery` function should use the context to query objects and return none Core Data
+/// The closure passed to the `performQuery` function should use the context to query objects and return non- Core Data
 /// types. Here is an example of how it should be used.
 ///
 /// ```
