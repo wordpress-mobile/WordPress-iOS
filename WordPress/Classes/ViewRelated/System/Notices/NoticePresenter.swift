@@ -102,8 +102,8 @@ class NoticePresenter {
     private func listenToKeyboardEvents() {
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillShowNotification)
-            .sink { [weak self] (notification) in
-                guard let self = self,
+            .sink { [weak self] notification in
+                guard let self,
                     let userInfo = notification.userInfo,
                     let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
                     let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
@@ -122,12 +122,13 @@ class NoticePresenter {
                 })
             }
             .store(in: &notificationObservers)
+
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillHideNotification)
-            .sink { [weak self] (notification) in
+            .sink { [weak self] notification in
                 self?.currentKeyboardPresentation = .notPresent
 
-                guard let self = self,
+                guard let self,
                     let currentContainer = self.currentNoticePresentation?.containerView,
                     let userInfo = notification.userInfo,
                     let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
