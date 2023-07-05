@@ -1,7 +1,6 @@
-* [**] [internal] Blaze: Switch to using new canBlaze property to determine Blaze eligiblity. [#20916]
-* [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
-* [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
-* [*] [internal] Posts list: Disable action bar/menu button when a post is being uploaded [#20885]
-* [*] Block editor: Image block - Fix issue where in some cases the image doesn't display the right aspect ratio [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5869]
-* [*] Block editor: Fix cursor positioning when dictating text on iOS [https://github.com/WordPress/gutenberg/issues/51227]
+We fixed an issue with the home screen’s “Work on a draft post” card. The app will no longer crash when you access drafts while they’re in the middle of uploading.
 
+We also solved a couple of problems in the block editor.
+
+- Right on—image blocks now display the correct aspect ratio, whether or not the image has a set width and height.
+- When you’re dictating text, the cursor’s position will stay where it’s supposed to—no more jumping around. Keep calm and dictate on.

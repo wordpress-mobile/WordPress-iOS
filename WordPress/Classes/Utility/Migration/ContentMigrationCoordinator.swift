@@ -141,15 +141,16 @@ private extension ContentMigrationCoordinator {
             return
         }
 
-        notificationCenter.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged, object: nil, queue: nil) { [weak self] notification in
-            // nil notification object means it's a logout event.
-            guard let self,
-                  notification.object == nil else {
-                return
-            }
+        notificationCenter.addObserver(self, selector: #selector(handleAccountChangedNotification(_:)), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+    }
 
-            self.cleanupExportedDataIfNeeded()
+    @objc private func handleAccountChangedNotification(_ notification: Foundation.Notification) {
+        // nil notification object means it's a logout event.
+        guard notification.object == nil else {
+            return
         }
+
+        self.cleanupExportedDataIfNeeded()
     }
 
     /// A "middleware" logic that attempts to record (or clear) any migration error to the App Group space

@@ -1026,9 +1026,6 @@ translators: Block name. %s: The localized block name */
    Main title */
 "Change Password" = "Endre passord";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Bytte nettsted";
-
 /* Change site icon button */
 "Change Site Icon" = "Endre sideikon";
 
@@ -1122,9 +1119,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Velg dine emner";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Når du velger et annet nettsted vil du miste redigeringene til nettstedsspesifikt innhold som media og kategorier. Er du sikker?";
 
 /* Register Domain - Address information field City */
 "City" = "By\/sted";
@@ -2448,8 +2442,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Her er hvordan innlegget har gjort det så langt.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skjult";
 
 /* Hides a site from the site picker list
@@ -3563,6 +3556,7 @@ translators: Block name. %s: The localized block name */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -4071,8 +4065,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Hovedside";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Personvern";
 
 /* Title of button that displays the App's privacy policy */
@@ -4090,7 +4083,6 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
 
@@ -4112,8 +4104,7 @@ translators: Block name. %s: The localized block name */
 /* Menu item label for linking a project page. */
 "Projects" = "Prosjekter";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Offentlig";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -4172,9 +4163,6 @@ translators: Block name. %s: The localized block name */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Push-varsler";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Pushvarsler har blitt slått av i Innstillinger-appen";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Pushvarsler er skrudd av i Innstillinger-appen. Skru på \"Tillat varslinger\" for å aktivere igjen.";
@@ -5276,9 +5264,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to select the previous period" = "Trykk for å velge forrige periode";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Trykk for å velge hvilke blogger du skal publisere til";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klassifisering";
 
@@ -5630,9 +5615,6 @@ translators: Block name. %s: The localized block name */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "For å opprette en ny WordPress.com-konto, vennligst skriv inn epostadressen din.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "For å aktivere varsler:\n\n1. Åpne **Innstillinger**-appen\n2. Trykk på **Varslinger**\n3. Velg **WordPress**\n4. Skru på **Tillat varslinger**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "For å få hjelpsomme varslinger fra WordPress-siden din på mobilen, må du installere Jetpack-utvidelsen.";
 
@@ -5719,7 +5701,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slett";
@@ -5929,7 +5910,6 @@ translators: Block name. %s: The localized block name */
 "Unhide" = "Slutt å skjule";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Ukjent";
 
@@ -6737,17 +6717,8 @@ translators: Block name. %s: The localized block name */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Nettstedet ditt gjenopprettes";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Siden din er bare synlig for deg og brukere du godkjenner.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Siden din har gått tom for lagringsplass for medieopplastninger.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Siden din er synlig for alle, og kan bli indeksert av søkemotorer.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Siden din er tilgjengelig for alle, men søkemotorer bes om å ikke indeksere siden.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "Ditt nettsted vil straks være klart";

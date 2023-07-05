@@ -5,12 +5,14 @@ struct CheckoutViewModel {
 }
 
 final class CheckoutViewController: WebKitViewController {
+    typealias PurchaseCallback = ((CheckoutViewController) -> Void)
+
     let viewModel: CheckoutViewModel
-    let purchaseCallback: (() -> Void)?
+    let purchaseCallback: PurchaseCallback?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
-    init(viewModel: CheckoutViewModel, purchaseCallback: (() -> Void)?) {
+    init(viewModel: CheckoutViewModel, purchaseCallback: PurchaseCallback?) {
         self.viewModel = viewModel
         self.purchaseCallback = purchaseCallback
 
@@ -40,7 +42,7 @@ final class CheckoutViewController: WebKitViewController {
             }
 
             if newURL.absoluteString.hasPrefix("https://wordpress.com/checkout/thank-you") {
-                self.purchaseCallback?()
+                self.purchaseCallback?(self)
 
                 /// Stay on Checkout page
                 self.webView.goBack()

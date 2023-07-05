@@ -352,8 +352,7 @@
    Open editor help options */
 "Help" = "Pomoć";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skriveno";
 
 /* Example post content used in the login prologue screens. */
@@ -655,12 +654,10 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privatno";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Javno";
 
 /* Button shown when the author is asked for publishing confirmation.
