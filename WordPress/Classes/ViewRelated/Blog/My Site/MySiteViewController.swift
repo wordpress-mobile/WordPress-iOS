@@ -27,8 +27,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    var quickStartObserver: NSObjectProtocol?
-
     private var isShowingDashboard: Bool {
         return segmentedControl.selectedSegmentIndex == Section.dashboard.rawValue
     }

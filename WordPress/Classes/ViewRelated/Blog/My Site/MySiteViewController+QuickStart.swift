@@ -1,32 +1,33 @@
 import UIKit
 
-private var observerKey = 0
-
 extension MySiteViewController {
 
     func startObservingQuickStart() {
-        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
+    }
 
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let info = notification.userInfo,
+              let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement
+        else {
+            return
+        }
 
-                self?.siteMenuSpotlightIsShown = element == .siteMenu
+        siteMenuSpotlightIsShown = element == .siteMenu
 
-                switch element {
-                case .noSuchElement, .newpost:
-                    self?.additionalSafeAreaInsets = .zero
+        switch element {
+        case .noSuchElement, .newpost:
+            additionalSafeAreaInsets = .zero
 
-                case .siteIcon, .siteTitle, .viewSite:
-                    self?.scrollView.scrollToTop(animated: true)
-                    fallthrough
+        case .siteIcon, .siteTitle, .viewSite:
+            scrollView.scrollToTop(animated: true)
+            fallthrough
 
-                case .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications, .mediaScreen:
-                    self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
+        case .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications, .mediaScreen:
+            additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
-                default:
-                    break
-                }
-            }
+        default:
+            break
         }
     }
 
