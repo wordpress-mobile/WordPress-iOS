@@ -678,9 +678,6 @@
    Main title */
 "Change Password" = "Zmeniť heslo";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Zmeniť webovú stránku";
-
 /* Change site icon button */
 "Change Site Icon" = "Zmeniť ikonu webovej stránky";
 
@@ -718,9 +715,6 @@
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Vybrať z Môjho zariadenia";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Ak vyberiete inú stránku, stratíte úpravy konkrétneho obsahu stránky, ako sú médiá a kategórie. Chcete pokračovať?";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Vymazanie vyrovnávacej pamäte zariadenia";
@@ -1659,8 +1653,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Pomoc a podpora";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skrytý";
 
 /* Hides a site from the site picker list
@@ -2543,6 +2536,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -2902,8 +2896,7 @@
 "Primary Site" = "Primárna webová stránka";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Súkromné";
 
 /* Title of button that displays the App's privacy policy */
@@ -2915,7 +2908,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Súkromné";
 
@@ -2928,8 +2920,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Verejné";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -2978,9 +2969,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Zobrazenie upozornení";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Zobrazenie upozornení bolo vypnuté v Nastavenia iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Zobrazovanie upozornení bolo vypnuté v aplikácii Nastavenia iOS. Prepnutím na \"Povoliť uporoznenia\" sa opätovne zapnú upozornenia.";
@@ -3793,9 +3781,6 @@
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Klepnutím zadáte vlastnú hodnotu";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Ťuknutím vyberte, do ktorého blogu chcete prispieť";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonómia";
 
@@ -4101,9 +4086,6 @@
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Prosím zadajte svoju e-mailovú adresu na vytvorenie nového účtu WordPress.com.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Povoliť upozornenia:\n\n1. Otvorte **Nastavenia iOS**\n2. Ťuknite na **Upozornenia**\n3. Vyberte **WordPress**\n4. Zapnite **Povoliť Upozornenia**";
-
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "Chcete ich tu spravovať, nastavte ich aby boli viditeľné.";
 
@@ -4152,7 +4134,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kôš";
@@ -4322,7 +4303,6 @@
 "Unhide" = "Odkryť";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Neznámy";
 
@@ -4883,17 +4863,8 @@
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Vaša webová stránka sa obnovuje";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Vaša webová stránka sa zobrazí iba vám a používateľom, ktorým povolíte prístup.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Na vašej stránke nieje dostatok miesta pre nahratie nových súborov.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Vaša webová stránka sa zobrazí všetkým používateľom a môže byť indexovaná vo vyhľadávacích nástrojoch.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Vaša stránka je viditeľná pre všetkých, ale požiada vyhľadávače, aby vaše stránky indexovali.";
 
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Webová stránka nebude posielať údaje do WordPress.com a Jetpack funkcie prestanú pracovať. Prídete o prístup do webovej stránky cez aplikáciu. Budete ju musieť nanovo pridať s povereniami webovej stránky.";

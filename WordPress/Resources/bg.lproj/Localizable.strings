@@ -442,9 +442,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Грешка със сертификата";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Промяна на сайт";
-
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Промяна на видимостта";
 
@@ -459,9 +456,6 @@
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Изтегляне на покупките...";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "С избор на друг сайт ще изгубите настройките на категории и файлове от този сайт. Сигурни ли сте?";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Изтриване на старата история на активността";
@@ -1110,8 +1104,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Помощ";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Скрит";
 
 /* Hides a site from the site picker list
@@ -1695,6 +1688,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -1931,8 +1925,7 @@
 "Primary Site" = "Основен сайт";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Поверителност";
 
 /* Title of button that displays the App's privacy policy */
@@ -1940,7 +1933,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Лична";
 
@@ -1950,8 +1942,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Проекти";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Публична";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -1988,9 +1979,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Моментни известия";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Известията на устройството са изключени от настройките на iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Известията на устройството бяха изключени от настройките на iOS. Изберете \"Включване на известията\" за да ги включите.";
@@ -2502,9 +2490,6 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Натиснете, за да отмените качването.";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "С тап избирате коя публикация да";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Категоризация";
 
@@ -2695,9 +2680,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Заглавието на категория е задължително";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "За да получавате известия:\n\n1. Отворете **iOS Настройки**\n2. Натиснете на **Известия**\n3. Изберете **WordPress**\n4. Включете **Позволяване на известия**";
-
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "За да ги управлявате тук, направете ги видими.";
 
@@ -2730,7 +2712,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Кошче";
@@ -2809,7 +2790,6 @@
 "Unfollowed site" = "Отабонирахте се за сайта";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Непознат";
 
@@ -3108,17 +3088,8 @@
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Вашите публикации, страници и настройки ще ви бъдат изпратени на %@.";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Сайтът ви е видим само за вас и потребителите, които сте одобрили.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Сайтът ви няма повече пространство за качване на файлове.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Сайтът ви е видим в интернет и позволява на търсачките да индексират съдържанието му.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Сайтът ви е видим в интернет, но не дава търсачките да индексират съдържанието му.";
 
 /* Age between dates equaling one day. */
 "a day" = "1 ден";

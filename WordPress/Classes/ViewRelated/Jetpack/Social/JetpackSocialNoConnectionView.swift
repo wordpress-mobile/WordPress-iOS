@@ -53,6 +53,7 @@ extension JetpackSocialNoConnectionView {
     static func createHostController(with viewModel: JetpackSocialNoConnectionViewModel = JetpackSocialNoConnectionViewModel()) -> UIHostingController<JetpackSocialNoConnectionView> {
         let hostController = UIHostingController(rootView: JetpackSocialNoConnectionView(viewModel: viewModel))
         hostController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostController.view.backgroundColor = .listForeground
         return hostController
     }
 }

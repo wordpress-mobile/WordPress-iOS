@@ -580,9 +580,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Wybierz film";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Wybranie innej witryny spowoduje utratę edytowanych treści takich jak media i kategorie. Czy na pewno to zrobić?";
-
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Klasyczny blog";
 
@@ -1405,8 +1402,7 @@
 /* No comment provided by engineer. */
 "Help icon" = "Ikonka pomocy";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Ukryty";
 
 /* Hides a site from the site picker list
@@ -2024,6 +2020,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -2258,8 +2255,7 @@
 "Previous month" = "Poprzedni miesiąc";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Prywatność";
 
 /* Title of button that displays the App's privacy policy */
@@ -2274,7 +2270,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Prywatny";
 
@@ -2284,8 +2279,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publiczne";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -2900,9 +2894,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for a button to retry loading posts */
 "Tap to retry" = "Dotknij, aby spróbować ponownie";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Dotknij aby wybrać blog na którym chcesz pisać";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Kliknij, aby wyświetlić więcej szczegółów.";
 
@@ -3064,7 +3055,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kosz";
@@ -3501,15 +3491,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Twoja witryna została utworzona!";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Twoja strona jest tylko widoczna dla Ciebie i dla osób którym dałeś takie uprawnienia.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Wszyscy mogą odwiedzić Twoją stronę i może on być znajdowana w wyszukiwarkach internetowych.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Wszyscy mogą odwiedzić Twoją stronę, ale nie jest ona dostępna dla wyszukiwarek internetowych.";
-
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTARZ]";
 
@@ -3838,9 +3819,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odrzuć";
-
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Odrzuć";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "z";

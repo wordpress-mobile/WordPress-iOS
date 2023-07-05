@@ -258,23 +258,24 @@ private extension StatsWidgetsStore {
     /// Observes WPAccountDefaultWordPressComAccountChanged notification and reloads widget data based on the state of account.
     /// The site data is not yet loaded after this notification and widget data cannot be cached for newly signed in account.
     func observeAccountChangesForWidgets() {
-        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
-                                               object: nil,
-                                               queue: nil) { notification in
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAccountChangedNotification), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+    }
 
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+    @objc func handleAccountChangedNotification() {
+        let isLoggedIn = AccountHelper.isLoggedIn
+        let userDefaults = UserDefaults(suiteName: WPAppGroupName)
+        userDefaults?.setValue(isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 
-            if !AccountHelper.isLoggedIn {
-                HomeWidgetTodayData.delete()
-                HomeWidgetThisWeekData.delete()
-                HomeWidgetAllTimeData.delete()
+        guard !isLoggedIn else { return }
 
-                UserDefaults(suiteName: WPAppGroupName)?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
-                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
-                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
-                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
-            }
-        }
+        HomeWidgetTodayData.delete()
+        HomeWidgetThisWeekData.delete()
+        HomeWidgetAllTimeData.delete()
+
+        userDefaults?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
     }
 
     /// Observes WPSigninDidFinishNotification and wordpressLoginFinishedJetpackLogin notifications and initializes the widget.
@@ -286,11 +287,11 @@ private extension StatsWidgetsStore {
 
     /// Observes applicationLaunchCompleted notification and runs migration.
     func observeApplicationLaunched() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.applicationLaunchCompleted,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.handleJetpackWidgetsMigration()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleApplicationLaunchCompleted), name: NSNotification.Name.applicationLaunchCompleted, object: nil)
+    }
+
+    @objc private func handleApplicationLaunchCompleted() {
+        handleJetpackWidgetsMigration()
     }
 
     func observeJetpackFeaturesState() {

@@ -1,5 +1,0 @@
-Abbiamo rimosso un bug nei dispositivi con iOS 16 o versioni successive, per il quale la digitazione nell'editor a blocchi durante la dettatura causava la perdita del testo dettato. Meno male.
-
-Bloccato e caricato: è presente anche un'icona di blocco per le celle disattivate nell'editor a blocchi in modo da sapere quando non sono in uso.
-
-Infine, abbiamo aggiornato il testo dele segnaposto per i video VideoPress che non appartengono al tuo sito. (Speriamo che non si sentano esclusi.)

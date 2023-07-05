@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-14 15:54:28+0000 */
+/* Translation-Revision-Date: 2023-06-27 17:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ru */
@@ -1424,9 +1424,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Изменить настройки";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Сменить сайт";
-
 /* Change site icon button */
 "Change Site Icon" = "Изменить значок сайта";
 
@@ -1601,9 +1598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Выберите ваши интересы";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "В результате выбора другого сайта будут утеряны изменения, внесенные в медиафайлы, рубрики и другое содержимое текущего сайта. Выбрать другой сайт? В результате выбора другого сайта будут утеряны изменения, внесенные в медиафайлы, рубрики и другое содержимое текущего сайта. Выбрать другой сайт?";
 
 /* Register Domain - Address information field City */
 "City" = "Город";
@@ -3619,8 +3613,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Тут информация о том как поживает ваша запись.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Скрыто";
 
 /* Hides a site from the site picker list
@@ -5239,6 +5232,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5867,8 +5861,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "Основной адрес сайта";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Приватность";
 
 /* Title of button that displays the App's privacy policy */
@@ -5889,7 +5882,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Личное";
 
@@ -5925,8 +5917,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Подсказки";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Открыто";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5991,9 +5982,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Мгновенные уведомления";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Всплывающие уведомления отключены в настройках iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Всплывающие уведомления отключены в настройках iOS. Нажмите «Разрешить уведомления», чтобы включить их.";
@@ -6352,6 +6340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Вернуться к записи";
+
+/* No comment provided by engineer. */
+"Reusable" = "Повторно используемый";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Отменить ожидание изменения";
@@ -7465,9 +7456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "Нажмите для выбора предыдущего периода";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Выберите касанием блог, в котором следует сделать запись.";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Нажмите для переключения на другой сайт или для добавления нового сайта";
 
@@ -7779,6 +7767,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Возникла ошибка загрузки канала активности";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"There was an error loading campaigns." = "При загрузке кампаний возникла ошибка.";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "При загрузке тарифных планов произошла ошибка.";
 
@@ -7972,9 +7963,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Для создания новой учетной записи WordPress.com, пожалуйста, введите ваш адрес эл.почты.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Чтобы включить уведомления:\n\n1. Откройте **Настройки iOS**\n2. Щёлкните **Уведомления**\n3. Выберите **WordPress**\n4. Нажмите **Разрешить уведомления**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Для использования уведомлений от WordPress на вашем устройстве вам нужно установить плагин Jetpack.";
 
@@ -8085,7 +8073,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "В корзину";
@@ -8412,7 +8399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "Показать";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Неизвестно";
 
@@ -9592,17 +9578,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Ваш сайт в процессе восстановления";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Ваш сайт виден только вам и выбранным вами пользователям.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "На сайте недостаточно места для загрузки медиафайлов.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Ваш сайт виден всем и может индексироваться поисковыми системами.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Ваш сайт доступен всем посетителям, но для него выбран параметр «Попросить поисковые системы не индексировать сайт».";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "Ваш сайт может быть под угрозой";
@@ -9734,10 +9711,34 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.active" = "Активно";
 
 /* Short status description */
-"blazeCampaign.status.finished" = "Запланировано";
+"blazeCampaign.status.approved" = "Одобрено";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "Отменено";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "Завершено";
+
+/* Short status description */
+"blazeCampaign.status.created" = "Создано";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "На модерации";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Отклонено";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Запланировано";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "Бюджет";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "Нажатий";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "Показов";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Свернуть";
@@ -9753,6 +9754,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "комментарий";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "Комментарии к записи:";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "Комментарий к записи:";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "Ответ пользователю %1$@";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "Сохранить";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "Перейти в «Настройки»";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "Управление конфиденциальностью";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "Аналитика";
 
 /* The menu item to select during a guided tour. */
 "connections" = "подключения";
@@ -10440,9 +10468,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Закрыть";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Закрыть";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Можно улучшить";
 
@@ -10633,6 +10658,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "Конфиденциальность";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Ваш сайт доступен всем посетителям, но для него настроен запрет на индексацию поисковыми системами.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "Скрытый";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "Ваш сайт виден только вам и выбранным вами пользователям.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "Закрытый";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "Ваш сайт виден всем и может индексироваться поисковыми системами.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "Публичный";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "Неизвестно";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "Неизвестно";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Показать подсказки";
 
@@ -10640,7 +10692,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "sitesettings.reminders.title" = "Напоминания";
 
 /* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Увеличьте посещаемость сайта, автоматически публикуя свои записи в социальных сетях";
+"social.noconnection.body" = "Увеличьте посещаемость сайта, автоматически публикуя свои записи в социальных сетях.";
 
 /* Title for the connect button to add social sharing for the Jetpack Social no connection view */
 "social.noconnection.connect" = "Подключить профили";
