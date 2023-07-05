@@ -21,8 +21,6 @@ final class SitePickerViewController: UIViewController {
     let blogService: BlogService
     let mediaService: MediaService
 
-    var quickStartObserver: NSObjectProtocol?
-
     private(set) lazy var blogDetailHeaderView: BlogDetailHeaderView = {
         let headerView = BlogDetailHeaderView(items: [])
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -49,10 +47,6 @@ final class SitePickerViewController: UIViewController {
         setupHeaderView()
         startObservingQuickStart()
         startObservingTitleChanges()
-    }
-
-    deinit {
-        stopObservingQuickStart()
     }
 
     private func setupHeaderView() {
