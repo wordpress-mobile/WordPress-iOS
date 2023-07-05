@@ -49,10 +49,6 @@ final class SitePickerViewController: UIViewController {
         startObservingTitleChanges()
     }
 
-    deinit {
-        stopObservingQuickStart()
-    }
-
     private func setupHeaderView() {
         blogDetailHeaderView.blog = blog
         blogDetailHeaderView.delegate = self
