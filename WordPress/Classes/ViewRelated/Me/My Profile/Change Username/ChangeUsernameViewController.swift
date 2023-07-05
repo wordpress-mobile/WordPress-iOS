@@ -1,3 +1,4 @@
+import Combine
 import WordPressAuthenticator
 
 class ChangeUsernameViewController: SignupUsernameTableViewController {
@@ -15,7 +16,6 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
         }
         return saveItem
     }()
-    private var changeUsernameAction: UIAlertAction?
 
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
@@ -105,7 +105,10 @@ private extension ChangeUsernameViewController {
     }
 
     func save() {
-        present(changeUsernameConfirmationPrompt(), animated: true)
+        let controller = UIAlertController.confirmationPrompt(forSelectedUsername: viewModel.selectedUsername) { [weak self] in
+            self?.changeUsername()
+        }
+        present(controller, animated: true)
     }
 
     func changeUsername() {
@@ -129,50 +132,6 @@ private extension ChangeUsernameViewController {
         }
     }
 
-    func changeUsernameConfirmationPrompt() -> UIAlertController {
-        let alertController = UIAlertController(title: Constants.Alert.title,
-                                                message: "",
-                                                preferredStyle: .alert)
-        alertController.addAttributeMessage(String(format: Constants.Alert.message, viewModel.selectedUsername),
-                                            highlighted: viewModel.selectedUsername)
-        alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { [weak alertController] _ in
-            if let textField = alertController?.textFields?.first {
-                NotificationCenter.default.removeObserver(textField, name: UITextField.textDidChangeNotification, object: nil)
-            }
-            DDLogInfo("User cancelled alert")
-        })
-        changeUsernameAction = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first,
-                textField.text == self.viewModel.selectedUsername else {
-                    DDLogInfo("Username confirmation failed")
-                    return
-            }
-            DDLogInfo("User changes username")
-            NotificationCenter.default.removeObserver(textField, name: UITextField.textDidChangeNotification, object: nil)
-            self.changeUsername()
-        })
-        changeUsernameAction?.isEnabled = false
-        alertController.addTextField { [weak self] textField in
-            textField.placeholder = Constants.Alert.confirm
-            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification,
-                                                   object: textField,
-                                                   queue: .main) {_ in
-                                                    if let text = textField.text,
-                                                        !text.isEmpty,
-                                                        let username = self?.viewModel.selectedUsername,
-                                                        text == username {
-                                                        self?.changeUsernameAction?.isEnabled = true
-                                                        textField.textColor = .success
-                                                        return
-                                                    }
-                                                    self?.changeUsernameAction?.isEnabled = false
-                                                    textField.textColor = .text
-            }
-        }
-        DDLogInfo("Prompting user for confirmation of change username")
-        return alertController
-    }
-
     enum Constants {
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
         static let username = NSLocalizedString("Username", comment: "The header and main title")
@@ -189,7 +148,50 @@ private extension ChangeUsernameViewController {
     }
 }
 
-fileprivate extension UIAlertController {
+private extension UIAlertController {
+    static var cancellableKey = 0
+
+    static func confirmationPrompt(forSelectedUsername selectedUsername: String, confirmed: @escaping () -> Void) -> UIAlertController {
+        typealias Constants = ChangeUsernameViewController.Constants
+        let alertController = UIAlertController(title: Constants.Alert.title, message: "", preferredStyle: .alert)
+        alertController.addAttributeMessage(String(format: Constants.Alert.message, selectedUsername),
+                                            highlighted: selectedUsername)
+        alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { _ in
+            DDLogInfo("User cancelled alert")
+        })
+
+        let action = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
+            guard let alertController else { return }
+            guard let textField = alertController.textFields?.first,
+                textField.text == selectedUsername else {
+                    DDLogInfo("Username confirmation failed")
+                    return
+            }
+            DDLogInfo("User changes username")
+            confirmed()
+        })
+        action.isEnabled = false
+
+        alertController.addTextField { [weak action, unowned alertController] textField in
+            textField.placeholder = Constants.Alert.confirm
+
+            let cancellable = NotificationCenter.default
+                .publisher(for: UITextField.textDidChangeNotification, object: textField)
+                .sink(receiveValue: { [weak action, weak textField] _ in
+                    let enabled = textField?.text?.isEmpty == false && textField?.text == selectedUsername
+                    action?.isEnabled = enabled
+                    textField?.textColor = enabled ? .success : .text
+                })
+            // Bind the subscription with the lifetime of the alert. When the alert instance is released, `cancellable` will be
+            // released too which will automatically unregister the notification observer.
+            objc_setAssociatedObject(alertController, &UIAlertController.cancellableKey, cancellable, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+
+        DDLogInfo("Prompting user for confirmation of change username")
+
+        return alertController
+    }
+
     func addAttributeMessage(_ message: String, highlighted text: String) {
         let paragraph = String(format: message, text)
         let font = WPStyleGuide.fontForTextStyle(.footnote)
