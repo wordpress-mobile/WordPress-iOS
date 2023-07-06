@@ -12,6 +12,13 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         action: #selector(buttonCreateCampaignTapped)
     )
 
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [tableView, promoteButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
+    }()
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -179,8 +186,12 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
     private func setupView() {
         view.backgroundColor = .DS.Background.primary
-        view.addSubview(tableView)
-        view.pinSubviewToAllEdges(tableView)
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+
+        NSLayoutConstraint.activate([
+            promoteButton.heightAnchor.constraint(equalToConstant: Metrics.promoteButtonHeight)
+        ])
     }
 
     private func setupNavBar() {
