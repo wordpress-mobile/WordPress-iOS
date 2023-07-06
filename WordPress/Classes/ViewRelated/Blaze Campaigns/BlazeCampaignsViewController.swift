@@ -1,7 +1,6 @@
 import UIKit
 import WordPressKit
 import WordPressFlux
-import Combine
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
@@ -66,7 +65,6 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
     private var stream: BlazeCampaignsStream
     private var pendingStream: AnyObject?
     private let blog: Blog
-    private let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     // MARK: - Initializers
 
@@ -95,8 +93,6 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
         // Refresh data automatically when new campaign is created
         NotificationCenter.default.addObserver(self, selector: #selector(setNeedsToRefreshCampaigns), name: .blazeCampaignCreated, object: nil)
-
-        scrollViewTranslationPublisher.subscribe(self)
     }
 
     override func viewDidLayoutSubviews() {
@@ -212,6 +208,19 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         noResultsViewController.delegate = self
     }
 
+    private func handlePromoteButtonVisibility(for scrollView: UIScrollView) {
+        let shouldHidePromoteButton = shouldHidePromoteButton(for: scrollView)
+
+        guard promoteButton.isHidden != shouldHidePromoteButton else {
+            return
+        }
+
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
+            self.promoteButton.isHidden = shouldHidePromoteButton
+            self.promoteButton.superview?.layoutIfNeeded()
+        }, completion: nil)
+    }
+
     private func shouldHidePromoteButton(for scrollView: UIScrollView) -> Bool {
 
         /// We default to the superview's (UIStackView) frame height because it's unaffected by the banner's visibility, unlike the UIScrollView's frame.
@@ -262,7 +271,7 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
             }
         }
 
-        scrollViewTranslationPublisher.send(shouldHidePromoteButton(for: scrollView))
+        handlePromoteButtonVisibility(for: scrollView)
     }
 }
 
@@ -292,35 +301,6 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
-}
-
-// MARK: - Show / hide Promote button
-
-extension BlazeCampaignsViewController: Subscriber {
-
-    typealias Input = Bool
-    typealias Failure = Never
-
-    func receive(subscription: Subscription) {
-        subscription.request(.unlimited)
-    }
-
-    func receive(_ input: Bool) -> Subscribers.Demand {
-        let isHidden = input
-
-        guard promoteButton.isHidden != isHidden else {
-            return .unlimited
-        }
-
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
-            self.promoteButton.isHidden = isHidden
-            self.promoteButton.superview?.layoutIfNeeded()
-        }, completion: nil)
-
-        return .unlimited
-    }
-
-    func receive(completion: Subscribers.Completion<Never>) {}
 }
 
 // MARK: - Constants
