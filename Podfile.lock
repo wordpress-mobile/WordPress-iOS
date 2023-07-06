@@ -612,7 +612,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 6.1-beta)
-  - WordPressKit (~> 8.5.0-beta.3)
+  - WordPressKit (~> 8.5-beta.3)
   - WordPressShared (~> 2.2-beta)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8-beta)
@@ -895,6 +895,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 7be6a8ed524025ed4acf2454718cab08a0b9e310
+PODFILE CHECKSUM: 66f009c76957bfeaeeb56fd48cb877edb372951c
 
 COCOAPODS: 1.12.1

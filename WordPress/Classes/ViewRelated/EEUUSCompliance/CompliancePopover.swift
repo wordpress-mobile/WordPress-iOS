@@ -111,10 +111,7 @@ private enum Strings {
 
     static let subtitle = NSLocalizedString(
         "compliance.analytics.popover.subtitle",
-        value: """
-                We process your personal data to optimize our website and
-                marketing activities based on your consent and our legitimate interest.
-                """,
+        value: "We process your personal data to optimize our website and marketing activities based on your consent and our legitimate interest.",
         comment: "Subtitle for the privacy compliance popover."
     )
 
@@ -126,10 +123,7 @@ private enum Strings {
 
     static let footnote = NSLocalizedString(
         "compliance.analytics.popover.footnote",
-        value: """
-                These cookies allow us to optimize performance by collecting
-                information on how users interact with our websites.
-                """,
+        value: "These cookies allow us to optimize performance by collecting information on how users interact with our websites.",
         comment: "Footnote for the privacy compliance popover."
     )
 

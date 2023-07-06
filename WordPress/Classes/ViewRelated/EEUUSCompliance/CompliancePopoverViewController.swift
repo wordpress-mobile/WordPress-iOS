@@ -5,11 +5,7 @@ import WordPressUI
 final class CompliancePopoverViewController: UIViewController {
 
     // MARK: - Views
-    private lazy var hostingController: UIHostingController = {
-        let controller = UIHostingController(rootView: CompliancePopover(viewModel: self.viewModel))
-        controller.view.translatesAutoresizingMaskIntoConstraints = true
-        return controller
-    }()
+    private let hostingController: UIHostingController<CompliancePopover>
 
     private var contentView: UIView {
         return hostingController.view
@@ -20,6 +16,7 @@ final class CompliancePopoverViewController: UIViewController {
 
     init(viewModel: CompliancePopoverViewModel) {
         self.viewModel = viewModel
+        hostingController = UIHostingController(rootView: CompliancePopover(viewModel: self.viewModel))
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -31,6 +28,7 @@ final class CompliancePopoverViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addContentView()
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = true
         hostingController.rootView.goToSettingsAction = {
             self.viewModel.didTapSettings()
         }
@@ -46,10 +44,8 @@ final class CompliancePopoverViewController: UIViewController {
         self.contentView.frame = .init(origin: .zero, size: contentViewSize)
         self.preferredContentSize = contentView.bounds.size
 
-        DispatchQueue.main.async {
-            self.hostingController.rootView.screenHeight = self.view.frame.height
-            self.hostingController.rootView.shouldScroll = (contentViewSize.height + 100) > self.view.frame.height
-        }
+        self.hostingController.rootView.screenHeight = self.view.frame.height
+        self.hostingController.rootView.shouldScroll = (contentViewSize.height + 100) > self.view.frame.height
     }
 
     private func addContentView() {

@@ -1,9 +1,6 @@
 import UIKit
 
 final class CompliancePopoverCoordinator {
-    fileprivate enum Constants {
-        static let shouldShowCompliancePopup = "shouldShowCompliancePopup"
-    }
 
     private let viewController: UIViewController
     private let complianceService = ComplianceLocationService()
@@ -19,28 +16,20 @@ final class CompliancePopoverCoordinator {
             return
         }
         complianceService.getIPCountryCode { [weak self] result in
-            switch result {
-            case .success(let countryCode):
+            if case .success(let countryCode) = result {
                 guard let self, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
                     return
                 }
                 DispatchQueue.main.async {
-                    let complianceViewModel = CompliancePopoverViewModel(defaults: self.defaults)
-                    complianceViewModel.coordinator = self
-                    let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
-                    let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
-
-                    bottomSheetViewController.show(from: self.viewController)
+                    self.presentPopover()
                 }
-            case .failure(let error):
-                ()
             }
         }
     }
 
     func shouldShowPrivacyBanner(countryCode: String) -> Bool {
         let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        return isCountryInEU && defaults.shouldShowCompliancePopup
+        return isCountryInEU && !defaults.didShowCompliancePopup
     }
 
     func navigateToSettings() {
@@ -51,6 +40,15 @@ final class CompliancePopoverCoordinator {
 
     func dismiss() {
         viewController.dismiss(animated: true)
+    }
+
+    private func presentPopover() {
+        let complianceViewModel = CompliancePopoverViewModel(defaults: self.defaults)
+        complianceViewModel.coordinator = self
+        let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
+        let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
+
+        bottomSheetViewController.show(from: self.viewController)
     }
 }
 
@@ -94,11 +92,13 @@ private extension CompliancePopoverCoordinator {
 }
 
 extension UserDefaults {
-    @objc dynamic var shouldShowCompliancePopup: Bool {
+    static let didShowCompliancePopupKey = "didShowCompliancePopup"
+
+    @objc var didShowCompliancePopup: Bool {
         get {
-            bool(forKey: CompliancePopoverCoordinator.Constants.shouldShowCompliancePopup)
+            bool(forKey: Self.didShowCompliancePopupKey)
         } set {
-            set(newValue, forKey: CompliancePopoverCoordinator.Constants.shouldShowCompliancePopup)
+            set(newValue, forKey: Self.didShowCompliancePopupKey)
         }
     }
 }
