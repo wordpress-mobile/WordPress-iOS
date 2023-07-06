@@ -42,6 +42,7 @@ final class CompliancePopoverViewController: UIViewController {
         hostingController.rootView.saveAction = {
             self.viewModel.didTapSave()
         }
+        analyticsTracker.track(.privacyChoicesBannerPresented)
     }
 
     override func viewDidLayoutSubviews() {
