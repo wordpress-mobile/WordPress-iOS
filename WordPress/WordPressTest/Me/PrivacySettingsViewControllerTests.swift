@@ -11,7 +11,7 @@ final class PrivacySettingsViewControllerTests: XCTestCase {
         viewController.crashReportingChanged(true)
 
         expect(spy.trackedEvent).to(equal(.privacySettingsReportCrashesToggled))
-        expect(spy.trackedEventProperties).to(equal(["enabled": "true"]))
+        expect(spy.trackedEventProperties).to(equal(["enabled": true.stringLiteral]))
     }
 }
 

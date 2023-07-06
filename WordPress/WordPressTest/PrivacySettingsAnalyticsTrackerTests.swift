@@ -18,7 +18,7 @@ class PrivacySettingsAnalyticsTrackerTests: XCTestCase {
 
         expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
         expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ event in
-            event.name == PrivacySettingsAnalytics.privacyChoicesBannerSaveButtonTapped.rawValue &&
+            event.name == PrivacySettingsAnalytics.privacySettingsReportCrashesToggled.rawValue &&
             event.properties["enabled"] == true.stringLiteral
         }))
     }
