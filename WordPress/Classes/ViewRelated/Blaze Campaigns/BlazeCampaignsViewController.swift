@@ -1,6 +1,7 @@
 import UIKit
 import WordPressKit
 import WordPressFlux
+import Combine
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
@@ -60,6 +61,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
     private var stream: BlazeCampaignsStream
     private var pendingStream: AnyObject?
     private let blog: Blog
+    private let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     // MARK: - Initializers
 
@@ -88,6 +90,8 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
         // Refresh data automatically when new campaign is created
         NotificationCenter.default.addObserver(self, selector: #selector(setNeedsToRefreshCampaigns), name: .blazeCampaignCreated, object: nil)
+
+        scrollViewTranslationPublisher.subscribe(self)
     }
 
     override func viewDidLayoutSubviews() {
@@ -202,6 +206,24 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
     private func setupNoResults() {
         noResultsViewController.delegate = self
     }
+
+    private func shouldHidePromoteButton(for scrollView: UIScrollView) -> Bool {
+
+        /// We default to the superview's (UIStackView) frame height because it's unaffected by the banner's visibility, unlike the UIScrollView's frame.
+        /// This prevents a looping edge case where hiding the banner causes the content height to be less than the frame height, and vice versa.
+        let frameHeight = scrollView.superview?.frame.height ?? scrollView.frame.height
+        let verticalContentOffset = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
+
+        /// The scrollable content isn't any larger than its frame, so don't hide the banner if the view is bounced.
+        if scrollView.contentSize.height <= frameHeight {
+            return false
+        /// Don't hide the banner until the view has scrolled down some. Currently the height of the banner itself.
+        } else if verticalContentOffset <= Metrics.promoteButtonHeight {
+            return false
+        }
+
+        return true
+    }
 }
 
 // MARK: - Table methods
@@ -220,20 +242,22 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
         return cell
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
-            if stream.error == nil {
-                stream.load()
-            }
-        }
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let campaign = stream.campaigns[safe: indexPath.row] else {
             return
         }
         BlazeFlowCoordinator.presentBlazeCampaignDetails(in: self, source: .campaignsList, blog: blog, campaignID: campaign.campaignID)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
+            if stream.error == nil {
+                stream.load()
+            }
+        }
+
+        scrollViewTranslationPublisher.send(shouldHidePromoteButton(for: scrollView))
     }
 }
 
@@ -263,6 +287,35 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
     }
+}
+
+// MARK: - Show / hide Promote button
+
+extension BlazeCampaignsViewController: Subscriber {
+
+    typealias Input = Bool
+    typealias Failure = Never
+
+    func receive(subscription: Subscription) {
+        subscription.request(.unlimited)
+    }
+
+    func receive(_ input: Bool) -> Subscribers.Demand {
+        let isHidden = input
+
+        guard promoteButton.isHidden != isHidden else {
+            return .unlimited
+        }
+
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
+            self.promoteButton.isHidden = isHidden
+            self.promoteButton.superview?.layoutIfNeeded()
+        }, completion: nil)
+
+        return .unlimited
+    }
+
+    func receive(completion: Subscribers.Completion<Never>) {}
 }
 
 // MARK: - Constants
