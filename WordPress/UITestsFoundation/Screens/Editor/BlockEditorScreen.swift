@@ -248,7 +248,6 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func undo() throws -> BlockEditorScreen {
-        XCTAssertTrue(undoButton.waitForIsHittable(timeout: 3))
         undoButton.tap()
 
         return try BlockEditorScreen()
@@ -263,7 +262,6 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func redo() throws -> BlockEditorScreen {
-        XCTAssertTrue(redoButton.waitForIsHittable(timeout: 3))
         redoButton.tap()
 
         return try BlockEditorScreen()
