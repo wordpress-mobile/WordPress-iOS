@@ -87,25 +87,6 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
         case instagram = "instagram-business"
         case mastodon
         case unknown
-
-        var image: UIImage? {
-            switch self {
-            case .facebook:
-                return UIImage(named: "icon-facebook")
-            case .twitter:
-                return UIImage(named: "icon-twitter")
-            case .tumblr:
-                return UIImage(named: "icon-tumblr")
-            case .linkedin:
-                return UIImage(named: "icon-linkedin")
-            case .instagram:
-                return UIImage(named: "icon-instagram")
-            case .mastodon:
-                return UIImage(named: "icon-mastodon")
-            case .unknown:
-                return UIImage(named: "social-default")?.withRenderingMode(.alwaysTemplate)
-            }
-        }
     }
 
     private func updateIcons(_ services: [PublicizeService]) {
@@ -113,7 +94,7 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
         var downloadTasks: [(url: URL, index: Int)] = []
         for (index, service) in services.enumerated() {
             let serviceType = JetpackSocialService(rawValue: service.serviceID) ?? .unknown
-            let icon = serviceType.image ?? UIImage()
+            let icon = WPStyleGuide.socialIcon(for: service.serviceID as NSString)
             icons.append(icon)
 
             if serviceType == .unknown {
