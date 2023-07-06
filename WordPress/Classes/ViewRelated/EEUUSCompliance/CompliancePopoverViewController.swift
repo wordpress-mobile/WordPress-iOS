@@ -4,6 +4,14 @@ import WordPressUI
 
 final class CompliancePopoverViewController: UIViewController {
 
+    // MARK: - Dependencies
+
+    private let viewModel: CompliancePopoverViewModel
+
+    private var analyticsTracker: PrivacySettingsAnalyticsTracking {
+        return viewModel.analyticsTracker
+    }
+
     // MARK: - Views
     private let hostingController: UIHostingController<CompliancePopover>
 
@@ -11,7 +19,6 @@ final class CompliancePopoverViewController: UIViewController {
         return hostingController.view
     }
 
-    private let viewModel: CompliancePopoverViewModel
     private var bannerIntrinsicHeight: CGFloat = 0
 
     init(viewModel: CompliancePopoverViewModel) {

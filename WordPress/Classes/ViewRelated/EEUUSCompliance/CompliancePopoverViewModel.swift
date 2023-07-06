@@ -5,19 +5,30 @@ import WordPressUI
 final class CompliancePopoverViewModel: ObservableObject {
     @Published
     var isAnalyticsEnabled: Bool = !WPAppAnalytics.userHasOptedOut()
+
+    // MARK: - Dependencies
+
+    let analyticsTracker: PrivacySettingsAnalyticsTracking
+
     var coordinator: CompliancePopoverCoordinatorProtocol?
 
     private let defaults: UserDefaults
     private let contextManager: ContextManager
 
-    init(defaults: UserDefaults, contextManager: ContextManager) {
+    // MARK: - Init
+
+    init(defaults: UserDefaults,
+         contextManager: ContextManager,
+         analyticsTracker: PrivacySettingsAnalyticsTracking = PrivacySettingsAnalyticsTracker()) {
         self.defaults = defaults
+        self.analyticsTracker = analyticsTracker
         self.contextManager = contextManager
     }
 
     func didTapSettings() {
         coordinator?.navigateToSettings()
-        defaults.didShowCompliancePopup = true
+        defaults.didShowCompliancePopup = false
+        analyticsTracker.track(.privacyChoicesBannerSettingsButtonTapped)
     }
 
     func didTapSave() {
@@ -36,6 +47,7 @@ final class CompliancePopoverViewModel: ObservableObject {
         let change = AccountSettingsChange.tracksOptOut(!isAnalyticsEnabled)
         AccountSettingsService(userID: accountID.intValue, api: restAPI).saveChange(change)
         coordinator?.dismiss()
-        defaults.didShowCompliancePopup = true
+        defaults.didShowCompliancePopup = false
+        analyticsTracker.trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: isAnalyticsEnabled)
     }
 }
