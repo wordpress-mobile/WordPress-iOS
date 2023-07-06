@@ -112,7 +112,7 @@ def gutenberg_post_install(installer:)
   #
   #   [!] An error occurred while processing the post-install hook of the Podfile.
   #
-  #   No such file or directory @ rb_sysopen - /Users/gio/Developer/a8c/wpios/Users/gio/Developer/a8c/wpios/Gutenberg/../../gutenberg-mobile/gutenberg/node_modules/react-native/package.json
+  #   No such file or directory @ rb_sysopen - <GUTENBERG_MOBILE_PROJECT_PATH>/gutenberg/node_modules/react-native/package.json
   #
   # To workaround, we make sure the path is relative to Dir.pwd
   react_native_path = Pathname.new(react_native_path).relative_path_from(Dir.pwd)
