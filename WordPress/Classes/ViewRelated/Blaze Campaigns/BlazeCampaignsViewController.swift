@@ -26,6 +26,26 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         return tableView
     }()
 
+    private lazy var promoteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(buttonCreateCampaignTapped), for: .touchUpInside)
+
+        var configuration = UIButton.Configuration.filled()
+        configuration.title = Strings.promoteButtonTitle
+        configuration.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+        configuration.imagePlacement = .leading
+        configuration.imagePadding = 8
+        configuration.baseBackgroundColor = UIColor(
+            light: UIColor(fromHex: 0xFDFDFD),
+            dark: UIColor(fromHex: 0x202020)
+        )
+        configuration.baseForegroundColor = .jetpackGreen
+        button.configuration = configuration
+
+        return button
+    }()
+
     private let refreshControl = UIRefreshControl()
 
     // MARK: - Properties
@@ -237,6 +257,10 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
 // MARK: - Constants
 
 private extension BlazeCampaignsViewController {
+
+    enum Metrics {
+        static let promoteButtonHeight: CGFloat = 55
+    }
 
     enum Strings {
         static let navigationTitle = NSLocalizedString("blaze.campaigns.title", value: "Blaze Campaigns", comment: "Title for the screen that allows users to manage their Blaze campaigns.")
