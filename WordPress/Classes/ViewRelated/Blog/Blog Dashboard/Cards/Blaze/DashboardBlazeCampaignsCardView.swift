@@ -78,8 +78,6 @@ final class DashboardBlazeCampaignsCardView: UIView {
         }
 
         campaignView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(campainViewTapped)))
-        campaignView.isAccessibilityElement = true
-        campaignView.accessibilityTraits = .allowsDirectInteraction
     }
 
     private func showCampaignList() {
