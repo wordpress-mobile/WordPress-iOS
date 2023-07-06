@@ -434,7 +434,7 @@ class AbstractPostListViewController: UIViewController,
         return ContextManager.sharedInstance().mainContext
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()

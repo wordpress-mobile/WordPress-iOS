@@ -176,7 +176,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         request.predicate = predicateForFetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
