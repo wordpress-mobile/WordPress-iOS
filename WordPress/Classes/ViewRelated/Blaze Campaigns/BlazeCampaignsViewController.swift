@@ -41,6 +41,11 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
         var configuration = UIButton.Configuration.filled()
         configuration.title = Strings.promoteButtonTitle
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
+            var outgoing = incoming
+            outgoing.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+            return outgoing
+        })
         configuration.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
         configuration.imagePlacement = .leading
         configuration.imagePadding = 8
