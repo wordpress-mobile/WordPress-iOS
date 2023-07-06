@@ -84,7 +84,7 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
         case twitter
         case tumblr
         case linkedin
-        case instagram
+        case instagram = "instagram-business"
         case mastodon
         case unknown
 
