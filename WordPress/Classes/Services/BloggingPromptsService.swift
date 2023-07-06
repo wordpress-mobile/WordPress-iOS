@@ -3,7 +3,7 @@ import WordPressKit
 
 class BloggingPromptsService {
     private let contextManager: CoreDataStackSwift
-    private let siteID: NSNumber
+    let siteID: NSNumber
     private let remote: BloggingPromptsServiceRemote
     private let calendar: Calendar = .autoupdatingCurrent
     private let maxListPrompts = 11
@@ -31,14 +31,6 @@ class BloggingPromptsService {
     ///
     var localTodaysPrompt: BloggingPrompt? {
         loadPrompts(from: Date(), number: 1).first
-    }
-
-    /// Convenience computed variable that returns prompt settings from the local store.
-    ///
-    var localSettings: BloggingPromptSettings? {
-        return contextManager.performQuery { mainContext in
-            self.loadSettings(context: mainContext)
-        }
     }
 
     /// Fetches a number of blogging prompts starting from the specified date.
