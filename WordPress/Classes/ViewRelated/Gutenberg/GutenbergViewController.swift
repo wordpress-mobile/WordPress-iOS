@@ -455,7 +455,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
-        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
 
         // Add bottom border line
         let screenScale = UIScreen.main.scale
@@ -467,15 +466,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
-    }
-
-    private func reloadBlogTitleView() {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
-
-        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     private func reloadBlogIconView() {
@@ -504,7 +494,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func refreshInterface() {
-        reloadBlogTitleView()
         reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()

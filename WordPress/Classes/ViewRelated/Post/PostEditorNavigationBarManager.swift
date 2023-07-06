@@ -161,13 +161,6 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    /// Preview Generating Button
-    ///
-    private lazy var previewGeneratingView: LoadingStatusView = {
-        let view = LoadingStatusView(title: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
-        return view
-    }()
-
     // MARK: - Bar button items
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
@@ -238,24 +231,20 @@ class PostEditorNavigationBarManager {
         mediaUploadingButton
     }
 
-    var generatingPreviewTitleView: UIView {
-        previewGeneratingView
-    }
-
     var rightBarButtonItems: [UIBarButtonItem] {
         let undoButton = UIBarButtonItem(customView: self.undoButton)
         let redoButton = UIBarButtonItem(customView: self.redoButton)
         return [publishBarButtonItem, separatorButtonItem, moreBarButtonItem, separatorButtonItem, redoButton, separatorButtonItem, undoButton]
     }
 
+    var rightBarButtonItemsAztec: [UIBarButtonItem] {
+        return [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
+    }
+
     func reloadPublishButton() {
         publishButton.setTitle(delegate?.publishButtonText ?? "", for: .normal)
         publishButton.sizeToFit()
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
-    }
-
-    func reloadBlogTitleView(text: String) {
-        blogTitleViewLabel.text = ""
     }
 
     func reloadTitleView(_ view: UIView) {
