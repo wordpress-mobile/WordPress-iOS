@@ -110,14 +110,13 @@ class BloggingRemindersScheduler {
             }
 
             return coreDataStack.performQuery { [blogID = blog.objectID] context in
-                guard let blogInContext = try? context.existingObject(with: blogID) as? Blog,
-                      let settings = try? BloggingPromptSettings.of(blogInContext),
-                      let reminderTimeDate = settings.reminderTimeDate()
-                else {
-                    return defaultTime
+                if let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                   let settings = try? BloggingPromptSettings.of(blogInContext),
+                   settings.promptRemindersEnabled,
+                   let reminderTimeDate = settings.reminderTimeDate() {
+                    return reminderTimeDate
                 }
-
-                return reminderTimeDate
+                return defaultTime
             }
         }
     }
