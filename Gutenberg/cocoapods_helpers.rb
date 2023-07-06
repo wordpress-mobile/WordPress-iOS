@@ -33,32 +33,34 @@ DEPENDENCIES = %w[
 ].freeze
 
 def gutenberg_pod(config: GUTENBERG_CONFIG)
+  # We check local_gutenberg first because it should take precedence, being an override set by the user.
+  return gutenberg_local_pod if should_use_local_gutenberg
+
   options = config
 
-  # We check local_gutenberg first because it should take precedence, being an override set by the user.
-  if should_use_local_gutenberg
-    options = { path: local_gutenberg_path }
+  id = options[:tag] || options[:commit]
 
-    raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(options[:path])
+  # Notice there's no period at the end of the message as CocoaPods will add it.
+  raise 'Neither tag nor commit to use for Gutenberg found' unless id
 
-    puts "[Gutenberg] Installing pods using local Gutenberg version from #{local_gutenberg_path}"
+  pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{id}.podspec"
+end
 
-    react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
+def gutenberg_local_pod
+  options = { path: local_gutenberg_path }
 
-    use_react_native! path: react_native_path
+  raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(options[:path])
 
-    pod 'Gutenberg', options
-    pod 'RNTAztecView', options
+  puts "[Gutenberg] Installing pods using local Gutenberg version from #{local_gutenberg_path}"
 
-    gutenberg_dependencies(options: options)
-  else
-    id = options[:tag] || options[:commit]
+  react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
 
-    # Notice there's no period at the end of the message as CocoaPods will add it.
-    raise 'Neither tag nor commit to use for Gutenberg found' unless id
+  use_react_native! path: react_native_path
 
-    pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{id}.podspec"
-  end
+  pod 'Gutenberg', options
+  pod 'RNTAztecView', options
+
+  gutenberg_dependencies(options: options)
 end
 
 def gutenberg_dependencies(options:)
