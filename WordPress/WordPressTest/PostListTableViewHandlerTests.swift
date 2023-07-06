@@ -22,7 +22,7 @@ class PostListHandlerMock: NSObject, WPTableViewHandlerDelegate {
         return setUpInMemoryManagedObjectContext()
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let a = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Post.self))
         a.sortDescriptors = [NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)]
         return a
