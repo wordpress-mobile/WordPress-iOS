@@ -27,7 +27,7 @@ final class CompliancePopoverViewModel: ObservableObject {
 
     func didTapSettings() {
         coordinator?.navigateToSettings()
-        defaults.didShowCompliancePopup = false
+        defaults.didShowCompliancePopup = true
         analyticsTracker.track(.privacyChoicesBannerSettingsButtonTapped)
     }
 
@@ -47,7 +47,7 @@ final class CompliancePopoverViewModel: ObservableObject {
         let change = AccountSettingsChange.tracksOptOut(!isAnalyticsEnabled)
         AccountSettingsService(userID: accountID.intValue, api: restAPI).saveChange(change)
         coordinator?.dismiss()
-        defaults.didShowCompliancePopup = false
+        defaults.didShowCompliancePopup = true
         analyticsTracker.trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: isAnalyticsEnabled)
     }
 }
