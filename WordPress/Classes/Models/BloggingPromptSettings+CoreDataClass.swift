@@ -7,6 +7,7 @@ public class BloggingPromptSettings: NSManagedObject {
     static func of(_ blog: Blog) throws -> BloggingPromptSettings? {
         guard let context = blog.managedObjectContext else { return nil }
 
+        // This getting site id logic is copied from the BloggingPromptsService initializer.
         let siteID: NSNumber
         if let id = blog.dotComID {
             siteID = id
