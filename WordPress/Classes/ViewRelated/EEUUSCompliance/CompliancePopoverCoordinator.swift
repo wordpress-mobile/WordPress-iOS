@@ -1,7 +1,12 @@
 import UIKit
 
-final class CompliancePopoverCoordinator {
+protocol CompliancePopoverCoordinatorProtocol {
+    func presentIfNeeded()
+    func navigateToSettings()
+    func dismiss()
+}
 
+final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     private let viewController: UIViewController
     private let complianceService = ComplianceLocationService()
     private let defaults: UserDefaults
@@ -27,11 +32,6 @@ final class CompliancePopoverCoordinator {
         }
     }
 
-    func shouldShowPrivacyBanner(countryCode: String) -> Bool {
-        let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
-        return isCountryInEU && !defaults.didShowCompliancePopup
-    }
-
     func navigateToSettings() {
         viewController.dismiss(animated: true) {
             RootViewCoordinator.sharedPresenter.navigateToPrivacySettings()
@@ -42,8 +42,16 @@ final class CompliancePopoverCoordinator {
         viewController.dismiss(animated: true)
     }
 
+    private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
+        let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
+        return isCountryInEU && !defaults.didShowCompliancePopup
+    }
+
     private func presentPopover() {
-        let complianceViewModel = CompliancePopoverViewModel(defaults: self.defaults)
+        let complianceViewModel = CompliancePopoverViewModel(
+            defaults: defaults,
+            contextManager: ContextManager.shared
+        )
         complianceViewModel.coordinator = self
         let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
         let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
