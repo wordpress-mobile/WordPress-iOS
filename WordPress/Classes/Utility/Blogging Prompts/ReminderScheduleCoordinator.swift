@@ -49,13 +49,16 @@ class ReminderScheduleCoordinator {
             return bloggingRemindersScheduler.schedule(for: blog)
 
         case .bloggingPrompts:
-            guard let settings = promptReminderSettings(for: blog),
-                  let reminderDays = settings.reminderDays,
-                  !reminderDays.getActiveWeekdays().isEmpty else {
-                return .none
+            return ContextManager.shared.performQuery { [blogID = blog.objectID] context in
+                if let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                   let settings = try? BloggingPromptSettings.of(blogInContext),
+                   let days = settings.reminderDays?.getActiveWeekdays(),
+                   !days.isEmpty {
+                    return .weekdays(days)
+                } else {
+                    return .none
+                }
             }
-
-            return .weekdays(reminderDays.getActiveWeekdays())
         }
     }
 
@@ -69,12 +72,16 @@ class ReminderScheduleCoordinator {
             return bloggingRemindersScheduler.scheduledTime(for: blog)
 
         case .bloggingPrompts:
-            guard let settings = promptReminderSettings(for: blog),
-                  let dateForTime = settings.reminderTimeDate() else {
-                return Constants.defaultTime
-            }
+            return ContextManager.shared.performQuery { [blogID = blog.objectID] context in
+                guard let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                   let settings = try? BloggingPromptSettings.of(blogInContext),
+                   let dateForTime = settings.reminderTimeDate()
+                else {
+                    return Constants.defaultTime
+                }
 
-            return dateForTime
+                return dateForTime
+            }
         }
     }
 
@@ -138,25 +145,19 @@ private extension ReminderScheduleCoordinator {
         }
     }
 
-    func promptReminderSettings(for blog: Blog) -> BloggingPromptSettings? {
-        guard let service = bloggingPromptsServiceFactory.makeService(for: blog) else {
-            return nil
-        }
-
-        return service.localSettings
-    }
-
     func reminderType(for blog: Blog) -> ReminderType {
-        guard Feature.enabled(.bloggingPrompts),
-              let settings = promptReminderSettings(for: blog),
-              let context = settings.managedObjectContext else {
+        guard Feature.enabled(.bloggingPrompts) else {
             return .bloggingReminders
         }
 
-        var reminderType: ReminderType = .bloggingReminders
-        context.performAndWait {
-            reminderType = settings.promptRemindersEnabled ? .bloggingPrompts : .bloggingReminders
+        return ContextManager.shared.performQuery { [blogID = blog.objectID] context -> ReminderType in
+            guard let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                  let settings = try? BloggingPromptSettings.of(blogInContext)
+            else {
+                return .bloggingReminders
+            }
+
+            return settings.promptRemindersEnabled ? .bloggingPrompts : .bloggingReminders
         }
-        return reminderType
     }
 }
