@@ -29,7 +29,6 @@ DEPENDENCIES = %w[
   RNCMaskedView
   RNCClipboard
   RNFastImage
-  React-jsc
 ].freeze
 
 def gutenberg_pod(config: GUTENBERG_CONFIG)
@@ -68,6 +67,7 @@ def gutenberg_dependencies(options:)
   return if options.key?(:tag) || options.key?(:commit)
 
   podspec_prefix = options[:path]
+  gutenberg_path = options[:path]
 
   raise "Unexpected Gutenberg dependencies configuration '#{options}'" if podspec_prefix.nil?
 
@@ -76,9 +76,17 @@ def gutenberg_dependencies(options:)
 
   computed_dependencies = DEPENDENCIES.dup
 
-  # Use a custom RNReanimated version while we coordinate a fix upstream
-  computed_dependencies.delete('RNReanimated')
-  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
+  react_native_version = react_native_version!(gutenberg_path: gutenberg_path)
+  #  Use different dependencies in RN 0.71+
+  if react_native_version[1] >= 71
+    # RNReanimated needs React-jsc
+    # Reference: https://github.com/WordPress/gutenberg/pull/51386/commits/9538f8eaf73dfacef17382e1ab7feda40231061f
+    computed_dependencies.push('React-jsc')
+
+    # Use a custom RNReanimated version while we coordinate a fix upstream
+    computed_dependencies.delete('RNReanimated')
+    pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
+  end
 
   computed_dependencies.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
@@ -156,4 +164,15 @@ def react_native_path!(gutenberg_path:)
   raise "[Gutenberg] Could not find React Native at given path #{react_native_path}" unless File.exist?(react_native_path)
 
   react_native_path
+end
+
+def react_native_version!(gutenberg_path:)
+  react_native_path = react_native_path!(gutenberg_path: gutenberg_path)
+  package_json_path = File.join(react_native_path, 'package.json')
+  package_json_content = File.read(package_json_path)
+  package_version_match = package_json_content.match(/"version":\s*"(.*?)"/)
+
+  raise "[Gutenberg] Could not find React native version at #{react_native_path}" unless package_version_match
+
+  package_version_match[1].split('.').map(&:to_i)
 end
