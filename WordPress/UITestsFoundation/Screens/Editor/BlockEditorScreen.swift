@@ -254,7 +254,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     @discardableResult
-    public func undoIsDisabled() throws -> BlockEditorScreen {
+    public func verifyUndoIsDisabled() throws -> BlockEditorScreen {
         XCTAssertFalse(undoButton.isEnabled)
 
         return try BlockEditorScreen()
@@ -268,7 +268,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     @discardableResult
-    public func redoIsDisabled() throws -> BlockEditorScreen {
+    public func verifyRedoIsDisabled() throws -> BlockEditorScreen {
         XCTAssertFalse(redoButton.isEnabled)
 
         return try BlockEditorScreen()

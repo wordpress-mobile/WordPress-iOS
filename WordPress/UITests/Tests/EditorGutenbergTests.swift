@@ -58,7 +58,7 @@ class EditorGutenbergTests: XCTestCase {
     func testTextPostUndo() throws {
 
         try BlockEditorScreen()
-            .undoIsDisabled()
+            .verifyUndoIsDisabled()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
@@ -70,7 +70,7 @@ class EditorGutenbergTests: XCTestCase {
     func testTextPostRedo() throws {
 
         try BlockEditorScreen()
-            .redoIsDisabled()
+            .verifyRedoIsDisabled()
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
