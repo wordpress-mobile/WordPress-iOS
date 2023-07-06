@@ -5,6 +5,6 @@ enum PrivacySettingsAnalytics: String {
 
     // Privacy Choices Banner
     case privacyChoicesBannerPresented = "privacy_choices_banner_presented"
-    case prviacyChoicesBannerSettingsButtonTapped = "privacy_choices_banner_settings_button_tapped"
+    case privacyChoicesBannerSettingsButtonTapped = "privacy_choices_banner_settings_button_tapped"
     case privacyChoicesBannerSaveButtonTapped = "privacy_choices_banner_save_button_tapped"
 }
