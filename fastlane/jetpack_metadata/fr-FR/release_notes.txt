@@ -1,0 +1,6 @@
+Nous avons corrigé un problème avec la carte « Travailler sur un brouillon d’article » de l’écran d’accueil. L’application ne rencontre plus d’incident lorsque vous accédez à des brouillons en cours de chargement.
+
+Nous avons également résolu quelques problèmes dans l’éditeur de blocs.
+
+- Les blocs d’images de droite affichent désormais le bon rapport hauteur/largeur, que l’image soit ou non définie en largeur et en hauteur.
+- Lorsque vous dictez du texte, la position du curseur reste à l’endroit prévu, il n’y a plus de sauts. Restez calme et continuez à dicter.
