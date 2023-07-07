@@ -1,9 +1,6 @@
-WordPress.com-abonnementen worden toegevoegd aan de Jetpack-app. Krijg het abonnement dat past bij jouw publicatiebehoeften en beheer het op dezelfde plaats als waar je je beste werk schrijft.
+We hebben een probleem opgelost met de kaart ‘Aan een conceptbericht werken’ op het startscherm. De app crasht niet meer wanneer je concepten opent terwijl ze nog worden geüpload.
 
-Er is een mooie, nieuwe knop 'Startpagina personaliseren' onderaan je sitedashboard waar je je zichtbare dashboardkaarten kunt aanpassen. (Wil je de kaarten die je niet nodig hebt verbergen? Gebruik dan gewoon het menu 'Meer'.)
+We hebben ook een aantal problemen opgelost met de blokeditor.
 
-We hebben een bug verwijderd in apparaten met iOS 16 of later, waarbij typen in de blokeditor terwijl tegelijkertijd werd gedicteerd ervoor zorgde dat de gedicteerde tekst verloren ging. Er is ook een slotpictogram voor uitgeschakelde cellen in de editor zodat je weet wanneer deze niet worden gebruikt.
-
-Op het scherm 'Domeinen zoeken' zie je nu een foutmelding als je een standaarddomein kiest dat niet wordt ondersteund door je site. Nooit meer dat eeuwig draaiende voortgangswiel.
-
-Ten slotte hebben we de vervangende tekst bijgewerkt voor VideoPress-video's die niet bij je site horen. (Hopelijk voelen ze zich niet buitengesloten.)
+- Geweldig, afbeeldingblokken worden nu in de juiste beeldverhouding weergegeven, of er nou wel of niet een breedte en hoogte zijn ingesteld voor het beeld.
+- Wanneer je een tekst dicteert, blijft de cursor waar die zou moeten zijn en springt deze niet meer over het scherm. Blijf kalm en dicteer verder.

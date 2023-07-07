@@ -45,13 +45,14 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v22.6-whats-new"
+msgctxt "v22.7-whats-new"
 msgid ""
-"We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. Phew.\n"
+"We fixed an issue with the home screen’s “Work on a draft post” card. The app will no longer crash when you access drafts while they’re in the middle of uploading.\n"
 "\n"
-"Locked and loaded—there’s now a lock icon for disabled cells in the block editor so you know when they aren’t in use.\n"
+"We also solved a couple of problems in the block editor.\n"
 "\n"
-"Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)\n"
+"- Right on—image blocks now display the correct aspect ratio, whether or not the image has a set width and height.\n"
+"- When you’re dictating text, the cursor’s position will stay where it’s supposed to—no more jumping around. Keep calm and dictate on.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

@@ -19,8 +19,7 @@ public class EditorNoticeComponent: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ noticeTitleGetter, noticeActionGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

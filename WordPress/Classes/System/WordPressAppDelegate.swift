@@ -128,13 +128,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ABTest.start()
 
-        if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
-            // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
-            // Please refer to the documentation of the called method to learn the details and know
-            // how to tell if this call can be removed.
-            UITextField.activateWorkaroundForBulgarianKeyboardCrash()
-        }
-
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)

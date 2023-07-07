@@ -22,8 +22,7 @@ public class EditorPublishEpilogueScreen: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ getDoneButton, getViewButton, publishedPostStatusGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

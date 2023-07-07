@@ -1,9 +1,6 @@
-Los planes de WordPress.com llegan a la aplicación de Jetpack. Consigue el plan que se ajuste a tus necesidades de publicación y gestiónalo desde el mismo sitio donde escribes tus mejores textos.
+Hemos corregido un problema que se producía en la tarjeta “Trabajar en un borrador de entrada” de la pantalla de inicio. La aplicación ya no se bloqueará si accedes a los borradores mientras se cargan.
 
-En la parte inferior del escritorio del sitio, verás el botón "Personalizar la pestaña Inicio", con el que podrás personalizar las tarjetas visibles del escritorio. (¿Quieres ocultar las tarjetas que no necesites? Solo tienes que usar el menú "Más").
+También hemos resuelto un par de problemas en el editor de bloques.
 
-Hemos corregido un error en los dispositivos con iOS 16 o versiones posteriores que provocaba que, al escribir en el editor de bloques mientras se dictaba, se perdiera el texto dictado. Además, en el editor también aparece el icono de un candado para las celdas deshabilitadas, así sabrás cuándo no están en uso.
-
-En la pantalla "Buscar dominios", ahora aparecerá un mensaje de error si eliges un dominio por defecto que no sea compatible con tu sitio. Se acabó eso de ver una rueda de progreso que gira eternamente.
-
-Para terminar, hemos actualizado el texto del marcador de posición para los videos de VideoPress que no pertenezcan a tu sitio. (Esperamos que no se sientan marginados).
+- Ahora, los bloques de imagen muestran la relación de aspecto correcta, tanto si la imagen tiene una anchura y una altura determinadas como si no.
+- Al dictar un texto, la posición del cursor se mantendrá en su sitio y no se producirán saltos. De esta manera, podrás dictar con tranquilidad.

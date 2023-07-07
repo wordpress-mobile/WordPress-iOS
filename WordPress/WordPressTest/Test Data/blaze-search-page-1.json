@@ -1,0 +1,26 @@
+{
+    "total_pages": 2,
+    "campaigns": [
+        {
+            "campaign_id": 1,
+            "name": "Campaign 01",
+            "start_date": "2023-06-13T00:00:00Z",
+            "end_date": "2023-06-01T19:15:45Z",
+            "status": "finished",
+            "ui_status": "finished",
+            "avatar_url": "https://example.com/avatar.jpg",
+            "budget_cents": 500,
+            "target_url": "https://example.com/campaign-01/target-url",
+            "content_config": {
+                "title": "Test Post - don't approve",
+                "snippet": "Test Post Empty Empty",
+                "clickUrl": "https://example.com/campaign-01/click-url",
+                "imageUrl": "https://example.com/campaign-01/image.jpg"
+            },
+            "campaign_stats": {
+                "impressions_total": 1000,
+                "clicks_total": 235
+            }
+        }
+    ]
+}

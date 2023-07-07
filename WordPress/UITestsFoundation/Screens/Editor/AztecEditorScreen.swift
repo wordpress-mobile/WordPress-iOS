@@ -49,8 +49,7 @@ public class AztecEditorScreen: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ textViewGetter(textField) ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
 
         showOptionsStrip()

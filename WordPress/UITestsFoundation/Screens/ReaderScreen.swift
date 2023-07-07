@@ -16,8 +16,7 @@ public class ReaderScreen: ScreenObject {
                 { $0.tables["Reader"] },
                 discoverButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

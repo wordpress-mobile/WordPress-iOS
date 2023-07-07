@@ -1373,7 +1373,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         return ContextManager.sharedInstance().mainContext
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
         request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
         request.predicate = predicateForFetchRequest()
@@ -1817,7 +1817,9 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
 
     private func fetchFirstNotification() -> Notification? {
         let context = managedObjectContext()
-        let fetchRequest = self.fetchRequest()
+        guard let fetchRequest = self.fetchRequest() else {
+            return nil
+        }
         fetchRequest.fetchLimit = 1
 
         if let results = try? context.fetch(fetchRequest) as? [Notification] {

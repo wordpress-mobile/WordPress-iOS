@@ -73,7 +73,12 @@ import UIKit
                                     blog: Blog,
                                     postID: NSNumber? = nil,
                                     delegate: BlazeWebViewControllerDelegate? = nil) {
-        let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID, delegate: delegate)
+        let blazeViewController = BlazeWebViewController(delegate: delegate)
+        let viewModel = BlazeCreateCampaignWebViewModel(source: source,
+                                                        blog: blog,
+                                                        postID: postID,
+                                                        view: blazeViewController)
+        blazeViewController.viewModel = viewModel
         let navigationViewController = UINavigationController(rootViewController: blazeViewController)
         navigationViewController.overrideUserInterfaceStyle = .light
         navigationViewController.modalPresentationStyle = .formSheet
@@ -107,5 +112,28 @@ import UIKit
                                       blog: Blog) {
         let campaignsViewController = BlazeCampaignsViewController(blog: blog)
         viewController.navigationController?.pushViewController(campaignsViewController, animated: true)
+    }
+
+    /// Used to display the blaze campaign details web view.
+    /// - Parameters:
+    ///   - viewController: The view controller where the web view should be presented in.
+    ///   - source: The source that triggers the display of the blaze web view.
+    ///   - blog: `Blog` object representing the site that is being blazed
+    ///   - campaignID: `Int` representing the ID of the campaign whose details is being accessed.
+    @objc(presentBlazeCampaignDetailsInViewController:source:blog:campaignID:)
+    static func presentBlazeCampaignDetails(in viewController: UIViewController,
+                                            source: BlazeSource,
+                                            blog: Blog,
+                                            campaignID: Int) {
+        let blazeViewController = BlazeWebViewController(delegate: nil)
+        let viewModel = BlazeCampaignDetailsWebViewModel(source: source,
+                                                         blog: blog,
+                                                         campaignID: campaignID,
+                                                         view: blazeViewController)
+        blazeViewController.viewModel = viewModel
+        let navigationViewController = UINavigationController(rootViewController: blazeViewController)
+        navigationViewController.overrideUserInterfaceStyle = .light
+        navigationViewController.modalPresentationStyle = .formSheet
+        viewController.present(navigationViewController, animated: true)
     }
 }

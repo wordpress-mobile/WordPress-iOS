@@ -9,8 +9,7 @@ public class MediaPickerAlbumScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [mediaCollectionGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

@@ -1,5 +1,6 @@
-Abbiamo rimosso un bug nei dispositivi con iOS 16 o versioni successive, per il quale la digitazione nell'editor a blocchi durante la dettatura causava la perdita del testo dettato. Meno male.
+Abbiamo risolto un problema con la scheda "Lavora su un articolo bozza" nella schermata iniziale. L'app non si arresta più in modo anomalo quando si accede alle bozze mentre sono in fase di caricamento.
 
-Bloccato e caricato: è presente anche un'icona di blocco per le celle disattivate nell'editor a blocchi in modo da sapere quando non sono in uso.
+Abbiamo anche risolto un paio di problemi nell'editor a blocchi.
 
-Infine, abbiamo aggiornato il testo dele segnaposto per i video VideoPress che non appartengono al tuo sito. (Speriamo che non si sentano esclusi.)
+- Miglioramento immediato: i blocchi di immagini ora mostrano le proporzioni corrette, indipendentemente dal fatto che l'immagine abbia o meno larghezza e altezza impostate.
+- Durante la dettatura di un testo, la posizione del cursore rimarrà dove deve, non dovrai muoverti nel testo. Calma e inizia a dettare.

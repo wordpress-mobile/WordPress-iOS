@@ -30,8 +30,7 @@ public class TabNavComponent: ScreenObject {
                 readerTabButtonGetter,
                 notificationsTabButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

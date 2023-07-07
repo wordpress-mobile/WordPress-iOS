@@ -1,9 +1,6 @@
-WordPress.com plans are coming to the Jetpack app. Get the plan that’s right for your publishing needs and manage it in the same place you write all your best words.
+We fixed an issue with the home screen’s “Work on a draft post” card. The app will no longer crash when you access drafts while they’re in the middle of uploading.
 
-There’s a shiny new “Personalize Home Tab” button at the bottom of your site dashboard where you can customize your visible dashboard cards. (Want to hide the cards you don’t need? Just use the “More” menu.)
+We also solved a couple of problems in the block editor.
 
-We removed a bug in devices running iOS 16 or later, where typing in the block editor while dictating caused the dictated text to be lost. There’s also a lock icon for disabled cells in the editor so you know when they aren’t in use.
-
-On the “Search domains” screen, you’ll now see an error message if you choose a default domain that isn’t supported by your site. No more forever-spinning progress wheel.
-
-Finally, we updated the placeholder text for VideoPress videos that don’t belong to your site. (Hopefully they don’t feel left out.)
+- Right on—image blocks now display the correct aspect ratio, whether or not the image has a set width and height.
+- When you’re dictating text, the cursor’s position will stay where it’s supposed to—no more jumping around. Keep calm and dictate on.

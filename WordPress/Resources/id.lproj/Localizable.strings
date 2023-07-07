@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-13 20:04:31+0000 */
+/* Translation-Revision-Date: 2023-06-30 15:06:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -1424,9 +1424,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ubah Pengaturan";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Ganti Situs";
-
 /* Change site icon button */
 "Change Site Icon" = "Ubah Ikon Situs";
 
@@ -1601,9 +1598,6 @@ translators: Block name. %s: The localized block name */
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Pilih topik Anda";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Suntingan per situs, seperti suntingan media dan kategori, akan hilang jika Anda pindah ke situs yang lain. Apakah Anda yakin?";
 
 /* Register Domain - Address information field City */
 "City" = "Kota";
@@ -3619,8 +3613,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Berikut ini performa pos sejauh ini.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Tersembunyi";
 
 /* Hides a site from the site picker list
@@ -5239,6 +5232,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5867,8 +5861,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "Alamat situs utama";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Privasi";
 
 /* Title of button that displays the App's privacy policy */
@@ -5889,7 +5882,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
 
@@ -5925,8 +5917,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Prompt";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publik";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5991,9 +5982,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Notifikasi Otomatis";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Pemberitahuan push telah dinonaktifkan di Pengaturan iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Pemberitahuan push telah dinonaktifkan di Aplikasi Pengaturan iOS. Alihkan \"Izinkan Pemberitahuan\" untuk mengaktifkannya kembali.";
@@ -6352,6 +6340,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Kembali ke pos";
+
+/* No comment provided by engineer. */
+"Reusable" = "Pakai ulang";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Kembalikan Perubahan Tertunda";
@@ -7465,9 +7456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "Ketuk untuk memilih periode sebelumnya";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Tekan untuk memilih blog yang akan diposting";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Ketuk untuk beralih ke situs lain, atau menambahkan situs baru";
 
@@ -7779,6 +7767,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Ada error saat memuat aktivitas";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"There was an error loading campaigns." = "Terjadi error saat memuat kampanye.";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Ada masalah memuat paket";
 
@@ -7972,9 +7963,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Untuk membuat akun WordPress.com Anda yang baru, masukkan alamat email Anda.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Mengaktifkan pemberitahuan:\n\n1. Buka **Pengaturan iOS**\n2. Ketuk **Pemberitahuan**\n3. Pilih **WordPress**\n4. Aktifkan **Izinkan Pemberitahuan**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Untuk mendapatkan pemberitahuan yang informatif dari situs WordPress di ponsel, Anda perlu menginstal plugin Jetpack.";
 
@@ -8085,7 +8073,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Buang";
@@ -8412,7 +8399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "Tampilkan";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Tidak diketahui";
 
@@ -9592,17 +9578,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Situs Anda sedang dipulihkan";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Situs Anda hanya dapat dilihat oleh Anda dan pengguna yang Anda setujui.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Situs Anda kehabisan ruang penyimpanan untuk unggahan media.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Situs Anda dapat dilihat oleh semua orang, dan mungkin diindeks berdasarkan mesin pencarian.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Situs Anda dapat dilihat oleh semua orang, tetapi meminta mesin pencari untuk tidak mengindeks situs Anda.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "Situs Anda mungkin berada dalam risiko";
@@ -9734,10 +9711,34 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.active" = "Aktif";
 
 /* Short status description */
-"blazeCampaign.status.finished" = "Terjadwal";
+"blazeCampaign.status.approved" = "Disetujui";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "Dibatalkan";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "Selesai";
+
+/* Short status description */
+"blazeCampaign.status.created" = "Dibuat";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "Dalam Moderasi";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Ditolak";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Terjadwal";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "Anggaran:";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "Klik";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "Tayangan";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Tutup";
@@ -9753,6 +9754,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "komentar";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "Komentar untuk";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "Komentar untuk";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "Balasan untuk %1$@";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "Simpan";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "Buka Pengaturan";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "Kelola privasi";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "Analitik";
 
 /* The menu item to select during a guided tour. */
 "connections" = "sambungan";
@@ -10440,9 +10468,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Tutup";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Dapat disempurnakan";
 
@@ -10632,6 +10657,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "NamaSitusAnda.com";
+
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "Privasi";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Situs Anda dapat dilihat oleh semua orang, tetapi Anda meminta mesin pencari untuk tidak mengindeks situs Anda.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "Tersembunyi";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "Situs Anda hanya dapat dilihat oleh Anda dan pengguna yang Anda setujui.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "Pribadi";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "Situs Anda dapat dilihat oleh semua orang dan dapat diindeks oleh mesin pencarian.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "Publik";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "Tidak diketahui";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "Tidak diketahui";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Tampilkan prompt";

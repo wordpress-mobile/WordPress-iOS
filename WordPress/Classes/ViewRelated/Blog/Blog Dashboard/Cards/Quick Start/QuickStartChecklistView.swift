@@ -80,10 +80,6 @@ final class QuickStartChecklistView: UIView, QuickStartChecklistConfigurable {
         fatalError("Not implemented")
     }
 
-    deinit {
-        stopObservingQuickStart()
-    }
-
     func configure(collection: QuickStartToursCollection, blog: Blog) {
         self.tours = collection.tours
         self.blog = blog
@@ -134,20 +130,18 @@ extension QuickStartChecklistView {
     }
 
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
-
-            guard let userInfo = notification.userInfo,
-                let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
-                element == .tourCompleted else {
-                    return
-            }
-
-            self?.updateViews()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+            let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
+            element == .tourCompleted
+        else {
+            return
+        }
+
+        updateViews()
     }
 
     @objc private func didTap() {

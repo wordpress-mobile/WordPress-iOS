@@ -231,7 +231,7 @@ class LikesListController: NSObject {
         case .post(let postID):
             likingUsers = postService.likeUsersFor(postID: postID, siteID: siteID)
         case .comment(let commentID):
-            likingUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID)
+            likingUsers = LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, in: ContextManager.shared.mainContext)
         }
     }
 
@@ -283,7 +283,7 @@ class LikesListController: NSObject {
         case .post(let postID):
             fetchedUsers = postService.likeUsersFor(postID: postID, siteID: siteID, after: modifiedDate)
         case .comment(let commentID):
-            fetchedUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID, after: modifiedDate)
+            fetchedUsers = LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, after: modifiedDate, in: ContextManager.shared.mainContext)
         }
 
         excludeUserIDs = fetchedUsers.map { NSNumber(value: $0.userID) }

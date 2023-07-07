@@ -14,18 +14,25 @@ final class DashboardBlazeCampaignsCardView: UIView {
     private lazy var createCampaignButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = {
+            var configuration = UIButton.Configuration.plain()
+            configuration.attributedTitle = {
+                var string = AttributedString(Strings.createCampaignButton)
+                string.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
+                string.foregroundColor = UIColor.primary
+                return string
+            }()
+            configuration.contentInsets = Constants.createCampaignInsets
+            return configuration
+        }()
         button.contentHorizontalAlignment = .leading
-        button.setTitle(Strings.createCampaignButton, for: .normal)
         button.addTarget(self, action: #selector(buttonCreateCampaignTapped), for: .touchUpInside)
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitleColor(UIColor.primary, for: .normal)
-        button.contentEdgeInsets = Constants.createCampaignInsets
         return button
     }()
 
     private var blog: Blog?
     private weak var presentingViewController: BlogDashboardViewController?
+    private var campaign: BlazeCampaign?
 
     // MARK: - Initializers
 
@@ -69,6 +76,8 @@ final class DashboardBlazeCampaignsCardView: UIView {
         frameView.onHeaderTap = { [weak self] in
             self?.showCampaignList()
         }
+
+        campaignView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(campainViewTapped)))
     }
 
     private func showCampaignList() {
@@ -82,15 +91,21 @@ final class DashboardBlazeCampaignsCardView: UIView {
         }
     }
 
+    @objc private func campainViewTapped() {
+        guard let presentingViewController, let blog, let campaign else { return }
+        BlazeFlowCoordinator.presentBlazeCampaignDetails(in: presentingViewController, source: .dashboardCard, blog: blog, campaignID: campaign.campaignID)
+    }
+
     @objc private func buttonCreateCampaignTapped() {
         guard let presentingViewController, let blog else { return }
         BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
         BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, campaign: BlazeCampaignViewModel) {
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, campaign: BlazeCampaign) {
         self.blog = blog
         self.presentingViewController = viewController
+        self.campaign = campaign
 
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [
@@ -101,7 +116,8 @@ final class DashboardBlazeCampaignsCardView: UIView {
             ])
         ], card: .blaze)
 
-        campaignView.configure(with: campaign, blog: blog)
+        let viewModel = BlazeCampaignViewModel(campaign: campaign)
+        campaignView.configure(with: viewModel, blog: blog)
     }
 }
 
@@ -114,6 +130,6 @@ private extension DashboardBlazeCampaignsCardView {
 
     enum Constants {
         static let campaignViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let createCampaignInsets = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+        static let createCampaignInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16)
     }
 }

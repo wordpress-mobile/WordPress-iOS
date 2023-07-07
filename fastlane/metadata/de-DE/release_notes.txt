@@ -1,5 +1,6 @@
-Wir haben einen Fehler bei Geräten mit iOS 16 oder neuer behoben, aufgrund dessen diktierter Text im Block-Editor beim Schreiben und gleichzeitigem Diktieren verloren gegangen ist. Was ein Glück.
+Wir haben ein Problem mit der Karte „An einem Beitragsentwurf arbeiten“ der Startseite behoben. Die App stürzt nun nicht mehr ab, wenn du auf Entwürfe zugreifst, während sie hochgeladen werden.
 
-Gesperrt und geladen – es gibt ab sofort ein neues Icon für deaktivierte Zellen im Block-Editor, damit du weißt, wann sie nicht verwendet werden.
+Außerdem haben wir einige Probleme im Block-Editor behoben.
 
-Und schließlich haben wir den Platzhaltertext für VideoPress-Videos, die nicht zu deiner Website gehören, aktualisiert. (Hoffentlich fühlen sie sich dadurch nicht ausgeschlossen.)
+- Bei Bildblöcken wird jetzt das richtige Bildformat angezeigt, egal ob Höhe und Breite des Bildes definiert sind oder nicht.
+- Beim Diktieren bleibt der Cursor an der gewünschten Stelle und springt nicht mehr herum. So kannst du ganz in Ruhe weiterdiktieren.

@@ -3,7 +3,7 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 
-protocol DomainSuggestionsTableViewControllerDelegate {
+protocol DomainSuggestionsTableViewControllerDelegate: AnyObject {
     func domainSelected(_ domain: FullyQuotedDomainSuggestion)
     func newSearchStarted()
 }
@@ -30,7 +30,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
     var blog: Blog?
     var siteName: String?
-    var delegate: DomainSuggestionsTableViewControllerDelegate?
+    weak var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
     var domainSelectionType: DomainSelectionType?
     var freeSiteAddress: String = ""

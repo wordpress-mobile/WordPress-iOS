@@ -294,7 +294,7 @@ class GutenbergSettingsTests: CoreDataTestCase {
         blog.mobileEditor = editor
 
         if gutenbergEnabledFlag != nil {
-            let perSiteEnabledKey = GutenbergSettings.Key.enabledOnce(for: blog)
+            let perSiteEnabledKey = GutenbergSettings.Key.enabledOnce(forBlogURL: blog.url)
             database.set(true, forKey: perSiteEnabledKey)
         }
     }
@@ -308,7 +308,7 @@ class GutenbergSettingsTests: CoreDataTestCase {
 
         settings.performGutenbergPhase2MigrationIfNeeded()
 
-        XCTAssertTrue(database.bool(forKey: GutenbergSettings.Key.showPhase2Dialog(for: blog)))
+        XCTAssertTrue(database.bool(forKey: GutenbergSettings.Key.showPhase2Dialog(forBlogURL: blog.url)))
         XCTAssertTrue(GutenbergRollout(database: database).isUserInRolloutGroup)
     }
 
