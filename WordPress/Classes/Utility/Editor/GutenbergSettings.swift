@@ -4,19 +4,19 @@ class GutenbergSettings {
     // MARK: - Enabled Editors Keys
     enum Key {
         static let appWideEnabled = "kUserDefaultsGutenbergEditorEnabled"
-        static func enabledOnce(for blog: Blog) -> String {
-            let url = urlStringFrom(blog)
+        static func enabledOnce(forBlogURL url: String?) -> String {
+            let url = urlString(fromBlogURL: url)
             return "com.wordpress.gutenberg-autoenabled-" + url
         }
-        static func showPhase2Dialog(for blog: Blog) -> String {
-            let url = urlStringFrom(blog)
+        static func showPhase2Dialog(forBlogURL url: String?) -> String {
+            let url = urlString(fromBlogURL: url)
             return "kShowGutenbergPhase2Dialog-" + url
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
-        private static func urlStringFrom(_ blog: Blog) -> String {
-            return (blog.url ?? "")
+        private static func urlString(fromBlogURL url: String?) -> String {
+            return (url ?? "")
             // New sites will add a slash at the end of URL.
             // This is removed when the URL is refreshed from remote.
             // Removing trailing '/' in case there is one for consistency.
@@ -61,7 +61,7 @@ class GutenbergSettings {
         softSetGutenbergEnabled(isEnabled, for: blog, source: source)
 
         if isEnabled {
-            database.set(true, forKey: Key.enabledOnce(for: blog))
+            database.set(true, forKey: Key.enabledOnce(forBlogURL: blog.url))
         }
     }
 
@@ -86,7 +86,7 @@ class GutenbergSettings {
         allBlogs.forEach { blog in
             if blog.editor == .aztec {
                 setShowPhase2Dialog(true, for: blog)
-                database.set(true, forKey: Key.enabledOnce(for: blog))
+                database.set(true, forKey: Key.enabledOnce(forBlogURL: blog.url))
             }
         }
         let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
@@ -96,11 +96,11 @@ class GutenbergSettings {
     }
 
     func shouldPresentInformativeDialog(for blog: Blog) -> Bool {
-        return database.bool(forKey: Key.showPhase2Dialog(for: blog))
+        return database.bool(forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
     }
 
     func setShowPhase2Dialog(_ showDialog: Bool, for blog: Blog) {
-        database.set(showDialog, forKey: Key.showPhase2Dialog(for: blog))
+        database.set(showDialog, forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
     }
 
     /// Sets gutenberg enabled without registering the enabled action ("enabledOnce")
@@ -153,7 +153,7 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return database.object(forKey: Key.enabledOnce(for: blog)) != nil
+        return database.object(forKey: Key.enabledOnce(forBlogURL: blog.url)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
@@ -162,7 +162,7 @@ class GutenbergSettings {
     }
 
     func willShowDialog(for blog: Blog) {
-        database.set(true, forKey: Key.enabledOnce(for: blog))
+        database.set(true, forKey: Key.enabledOnce(forBlogURL: blog.url))
     }
 
     /// True if it should show the tooltip for the focal point picker
@@ -208,7 +208,7 @@ class GutenbergSettings {
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
-        database.set(true, forKey: Key.enabledOnce(for: blog))
+        database.set(true, forKey: Key.enabledOnce(forBlogURL: blog.url))
         return .gutenberg
     }
 }
