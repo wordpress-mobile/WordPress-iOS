@@ -1,4 +1,5 @@
 import SwiftUI
+import AutomatticTracks
 
 extension PostSettingsViewController {
 
@@ -49,6 +50,8 @@ extension PostSettingsViewController {
             // This scenario *shouldn't* happen since we check that the publicize info is not nil before
             // showing this view
             assertionFailure("No sharing limit on the blog")
+            let error = JetpackSocialError.missingSharingLimit
+            CrashLogging.main.logError(error, userInfo: ["source": "post_settings"])
             return UIView()
         }
 
