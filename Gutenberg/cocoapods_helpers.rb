@@ -108,7 +108,7 @@ def gutenberg_post_install(installer:)
 
   react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
 
-  puts "[Gutenberg] Running Gunberg post install hook (RN path: #{react_native_path})"
+  puts "[Gutenberg] Running Gutenberg post install hook (RN path: #{react_native_path})"
 
   # It seems like React Native prepends $PWD to the path internally in the post install hook.
   # When using an absolute path, we get this error, notice the duplicated "/Users/gio/Developer/a8c/wpios":
