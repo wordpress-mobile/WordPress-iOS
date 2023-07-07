@@ -95,7 +95,7 @@ class LikeUserHelperTests: CoreDataTestCase {
             let user = RemoteLikeUser(dictionary: dict, commentID: commentID, siteID: siteID)
             _ = LikeUserHelper.createOrUpdateFrom(remoteUser: user, context: mainContext)
         }
-        // Insert likes with an older data
+        // Insert likes with an older date
         for _ in 1...5 {
             let dict = createTestRemoteUserDictionary(withPreferredBlog: false, year: 1990)
             let user = RemoteLikeUser(dictionary: dict, commentID: commentID, siteID: siteID)
