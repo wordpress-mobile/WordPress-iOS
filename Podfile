@@ -317,9 +317,6 @@ end
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
 shared_targets = ['WordPressFlux']
 pre_install do |installer|
-  # Note that this call is unrelated to the static vs dynamic framework shenanigan below
-  gutenberg_pre_install
-
   static = []
   dynamic = []
   installer.pod_targets.each do |pod|

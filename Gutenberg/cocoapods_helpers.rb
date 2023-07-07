@@ -85,27 +85,20 @@ def gutenberg_dependencies(options:)
 
     # Use a custom RNReanimated version while we coordinate a fix upstream
     computed_dependencies.delete('RNReanimated')
+
+    # This is required to workaround an issue with RNReanimated after upgrading to version 2.17.0
+    rn_node_modules = File.join(gutenberg_path, '..', 'gutenberg', 'node_modules')
+    raise "Could not find node modules at given path #{rn_node_modules}" unless File.exist? rn_node_modules
+    
+    ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
+    puts "[Gutenberg] Set REACT_NATIVE_NODE_MODULES_DIR env var for RNReanimated to #{rn_node_modules}"
+
     pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
   end
 
   computed_dependencies.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
   end
-end
-
-def gutenberg_pre_install
-  return unless should_use_local_gutenberg
-
-  raise "[Gutenberg] Could not find local Gutenberg at given path #{local_gutenberg_path}" unless File.exist?(local_gutenberg_path)
-
-  # This is required to workaround an issue with RNReanimated after upgrading to version 2.17.0
-  rn_node_modules = File.join(local_gutenberg_path, 'node_modules')
-
-  raise "Could not find node modules at given path #{rn_node_modules}" unless File.exist? rn_node_modules
-
-  ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
-
-  puts "[Gutenberg] Set REACT_NATIVE_NODE_MODULES_DIR env var for RNReanimated to #{rn_node_modules}"
 end
 
 def gutenberg_post_install(installer:)
