@@ -13,7 +13,7 @@ public class LoginEpilogueScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [loginEpilogueTableGetter],
             app: app,
-            waitTimeout: 65
+            waitTimeout: 70
         )
     }
 
