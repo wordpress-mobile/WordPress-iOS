@@ -82,12 +82,16 @@ class GutenbergSettings {
     }
 
     private func setGutenbergEnabledForAllSites() {
-        let allBlogs = coreDataStack.performQuery({ (try? BlogQuery().blogs(in: $0)) ?? [] })
-        allBlogs.forEach { blog in
-            if blog.editor == .aztec {
-                setShowPhase2Dialog(true, for: blog)
-                database.set(true, forKey: Key.enabledOnce(forBlogURL: blog.url))
-            }
+        let blogURLs: [String?] = coreDataStack.performQuery { context in
+            guard let blogs = try? BlogQuery().blogs(in: context) else { return [] }
+
+            return blogs
+                .filter { $0.editor == .aztec }
+                .map { $0.url }
+        }
+        blogURLs.forEach { blogURL in
+            setShowPhase2Dialog(true, forBlogURL: blogURL)
+            database.set(true, forKey: Key.enabledOnce(forBlogURL: blogURL))
         }
         let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
         editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
@@ -101,6 +105,10 @@ class GutenbergSettings {
 
     func setShowPhase2Dialog(_ showDialog: Bool, for blog: Blog) {
         database.set(showDialog, forKey: Key.showPhase2Dialog(forBlogURL: blog.url))
+    }
+
+    func setShowPhase2Dialog(_ showDialog: Bool, forBlogURL url: String?) {
+        database.set(showDialog, forKey: Key.showPhase2Dialog(forBlogURL: url))
     }
 
     /// Sets gutenberg enabled without registering the enabled action ("enabledOnce")
