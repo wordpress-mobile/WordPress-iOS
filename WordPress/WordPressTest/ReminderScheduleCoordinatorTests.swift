@@ -23,10 +23,12 @@ class ReminderScheduleCoordinatorTests: CoreDataTestCase {
         mockBloggingScheduler.behavior = behaviorForBloggingScheduler()
         mockPromptScheduler = MockPromptRemindersScheduler()
         mockPromptScheduler.behavior = behaviorForPromptScheduler()
-        coordinator = ReminderScheduleCoordinator(bloggingRemindersScheduler: mockBloggingScheduler,
-                                                  promptRemindersScheduler: mockPromptScheduler,
-                                                  bloggingPromptsServiceFactory: bloggingPromptsServiceFactory)
-
+        coordinator = ReminderScheduleCoordinator(
+            bloggingRemindersScheduler: mockBloggingScheduler,
+            promptRemindersScheduler: mockPromptScheduler,
+            bloggingPromptsServiceFactory: bloggingPromptsServiceFactory,
+            coreDataStack: contextManager
+        )
         super.setUp()
     }
 
