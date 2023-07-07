@@ -44,9 +44,17 @@ extension PostSettingsViewController {
     }
 
     @objc func createRemainingSharesView() -> UIView {
-        let viewModel = JetpackSocialRemainingSharesViewModel {
-            // TODO
-            print("Subscribe tap")
+        let viewModel = JetpackSocialRemainingSharesViewModel { [weak self] in
+            guard let blog = self?.apost.blog,
+                  let hostname = blog.hostname,
+                  let url = URL(string: "https://wordpress.com/checkout/\(hostname)/jetpack_social_basic_yearly") else {
+                return
+            }
+            let webViewController = WebViewControllerFactory.controller(url: url,
+                                                                        blog: blog,
+                                                                        source: "post_settings_remaining_shares_subscribe_now")
+            let navigationController = UINavigationController(rootViewController: webViewController)
+            self?.present(navigationController, animated: true)
         }
         let hostController = UIHostingController(rootView: JetpackSocialSettingsRemainingSharesView(viewModel: viewModel))
         hostController.view.translatesAutoresizingMaskIntoConstraints = false
