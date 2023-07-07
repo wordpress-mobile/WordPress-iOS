@@ -36,17 +36,13 @@ extension PostSettingsViewController {
         let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
         let blogSupportsPublicize = apost.blog.supportsPublicize()
         let blogHasConnections = publicizeConnections.count > 0
-        let isSocialSharingLimited = apost.blog.isSocialSharingLimited
-        let blogHasPublicizeInfo = apost.blog.publicizeInfo != nil
+        let blogHasSharingLimit = apost.blog.sharingLimit != nil
 
         return isJetpackSocialEnabled
         && blogSupportsPublicize
         && blogHasConnections
-        && isSocialSharingLimited
-        && blogHasPublicizeInfo
+        && blogHasSharingLimit
     }
-
-
 
     @objc func createRemainingSharesView() -> UIView {
         guard let sharingLimit = apost.blog.sharingLimit else {
