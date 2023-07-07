@@ -17,8 +17,7 @@ public class PeopleScreen: ScreenObject {
                 filterButtonGetter("followers"),
                 filterButtonGetter("email")
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

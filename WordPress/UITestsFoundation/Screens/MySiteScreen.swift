@@ -128,8 +128,7 @@ public class MySiteScreen: ScreenObject {
                 mediaButtonGetter,
                 createButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
