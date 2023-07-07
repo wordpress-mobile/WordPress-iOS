@@ -3,15 +3,21 @@ import XCTest
 
 class LikeUserHelperTests: CoreDataTestCase {
 
-    func createTestRemoteUserDictionary(withPreferredBlog hasPreferredBlog: Bool) -> [String: Any] {
+    var siteID: NSNumber = 20
+
+    func createTestRemoteUserDictionary(
+        withPreferredBlog hasPreferredBlog: Bool,
+        siteID: Int? = nil,
+        year: Int = 2021
+    ) -> [String: Any] {
         var remoteUserDictionary: [String: Any] = [
-            "ID": 15,
+            "ID": Int.random(in: 0...Int.max),
             "login": "testlogin",
             "name": "testname",
-            "site_ID": 20,
+            "site_ID": siteID ?? self.siteID.intValue,
             "avatar_URL": "wordpress.org/test2",
             "bio": "testbio",
-            "date_liked": "2021-11-24T04:02:42+0000",
+            "date_liked": "\(year)-11-24T04:02:42+0000",
         ]
 
         if hasPreferredBlog {
@@ -76,5 +82,39 @@ class LikeUserHelperTests: CoreDataTestCase {
         }, on: .main)
 
         waitForExpectations(timeout: 5)
+    }
+
+    func testFetchingLikedUser() {
+        XCTAssertEqual(mainContext.countObjects(ofType: LikeUser.self), 0)
+
+        let commentID: NSNumber = 1
+        let otherCommentID: NSNumber = 2
+        // Insert likes with a recent date
+        for _ in 1...10 {
+            let dict = createTestRemoteUserDictionary(withPreferredBlog: false, year: 2010)
+            let user = RemoteLikeUser(dictionary: dict, commentID: commentID, siteID: siteID)
+            _ = LikeUserHelper.createOrUpdateFrom(remoteUser: user, context: mainContext)
+        }
+        // Insert likes with an older data
+        for _ in 1...5 {
+            let dict = createTestRemoteUserDictionary(withPreferredBlog: false, year: 1990)
+            let user = RemoteLikeUser(dictionary: dict, commentID: commentID, siteID: siteID)
+            _ = LikeUserHelper.createOrUpdateFrom(remoteUser: user, context: mainContext)
+        }
+        // Insert likes on another comment
+        for _ in 1...3 {
+            let dict = createTestRemoteUserDictionary(withPreferredBlog: false)
+            let user = RemoteLikeUser(dictionary: dict, commentID: otherCommentID, siteID: siteID)
+            _ = LikeUserHelper.createOrUpdateFrom(remoteUser: user, context: mainContext)
+        }
+
+        // There are 18 like saved in the database in total
+        XCTAssertEqual(mainContext.countObjects(ofType: LikeUser.self), 18)
+
+        // There are 15 likes on the comment with `commentID`
+        XCTAssertEqual(LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, in: mainContext).count, 15)
+
+        // There are 10 likes since 2001
+        XCTAssertEqual(LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, after: Date(timeIntervalSinceReferenceDate: 0), in: mainContext).count, 10)
     }
 }
