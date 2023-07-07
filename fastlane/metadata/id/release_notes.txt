@@ -1,0 +1,6 @@
+Kami sudah membereskan masalah kartu “Buat draft pos” di layar beranda. Aplikasi kini tidak akan mengalami crash lagi ketika Anda mengakses draft saat sedang diunggah.
+
+Kami juga telah mengatasi beberapa masalah di editor blok.
+
+- Betul sekali. Blok gambar kini menampilkan rasio aspek yang tepat, terlepas dari apakah lebar dan tinggi gambar sudah ditentukan.
+- Ketika Anda mendiktekan teks, kursor tetap berada di posisinya dan tidak lagi melompat-lompat. Tetaplah tenang dan teruslah mendikte.
