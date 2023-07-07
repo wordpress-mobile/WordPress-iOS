@@ -39,6 +39,34 @@ import CoreData
         return try? context.fetch(request).first
     }
 
+    /**
+     Fetches a list of users from Core Data that liked the comment with the given IDs.
+
+     @param commentID   The ID of the comment to fetch likes for.
+     @param siteID      The ID of the site that contains the post.
+     @param after       Filter results to likes after this Date. Optional.
+     */
+    class func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date? = nil, in context: NSManagedObjectContext) -> [LikeUser] {
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+
+        request.predicate = {
+            if let after = after {
+                // The date comparison is 'less than' because Likes are in descending order.
+                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
+            }
+
+            return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+        }()
+
+        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
+
+        if let users = try? context.fetch(request) {
+            return users
+        }
+
+        return [LikeUser]()
+    }
+
     private class func updatePreferredBlog(for user: LikeUser, with remoteUser: RemoteLikeUser, context: NSManagedObjectContext) {
         guard let remotePreferredBlog = remoteUser.preferredBlog else {
             if let existingPreferredBlog = user.preferredBlog {
@@ -58,14 +86,8 @@ import CoreData
         preferredBlog.user = user
     }
 
-    class func purgeStaleLikes() {
-        ContextManager.shared.performAndSave {
-            purgeStaleLikes(fromContext: $0)
-        }
-    }
-
     // Delete all LikeUsers that were last fetched at least 7 days ago.
-    private class func purgeStaleLikes(fromContext context: NSManagedObjectContext) {
+    class func purgeStaleLikes(fromContext context: NSManagedObjectContext) {
         guard let staleDate = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
             DDLogError("Error creating date to purge stale Likes.")
             return
