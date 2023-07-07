@@ -12,8 +12,7 @@ public class DomainsSuggestionsScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ siteDomainsNavbarHeaderGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

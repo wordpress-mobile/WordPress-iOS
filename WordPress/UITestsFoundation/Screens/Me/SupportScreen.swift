@@ -39,8 +39,7 @@ public class SupportScreen: ScreenObject {
                 { $0.cells["activity-logs-button"] }
                 // swiftlint:enable opening_brace
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

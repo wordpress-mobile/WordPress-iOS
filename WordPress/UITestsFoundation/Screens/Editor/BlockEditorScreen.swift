@@ -36,8 +36,7 @@ public class BlockEditorScreen: ScreenObject {
         // expect to encase the screen.
         try super.init(
             expectedElementGetters: [ editorCloseButtonGetter, addBlockButtonGetter ],
-            app: app,
-            waitTimeout: 10
+            app: app
         )
     }
 

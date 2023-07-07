@@ -18,8 +18,7 @@ public class ActionSheetComponent: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [Self.getBlogPostButton, Self.getSitePageButton],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

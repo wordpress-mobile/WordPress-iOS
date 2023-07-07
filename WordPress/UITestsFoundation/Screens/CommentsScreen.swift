@@ -29,8 +29,7 @@ public class CommentsScreen: ScreenObject {
                 navigationBarTitleGetter,
                 replyFieldGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
