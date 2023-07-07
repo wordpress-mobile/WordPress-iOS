@@ -114,7 +114,8 @@ class LikeUserHelperTests: CoreDataTestCase {
         // There are 15 likes on the comment with `commentID`
         XCTAssertEqual(LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, in: mainContext).count, 15)
 
-        // There are 10 likes since 2001
-        XCTAssertEqual(LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, after: Date(timeIntervalSinceReferenceDate: 0), in: mainContext).count, 10)
+        // There are 10 likes since 2001 and 5 likes before.
+        // How the `after` argument should behave might be confusing. See https://github.com/wordpress-mobile/WordPress-iOS/pull/21028#issuecomment-1624661943
+        XCTAssertEqual(LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, after: Date(timeIntervalSinceReferenceDate: 0), in: mainContext).count, 5)
     }
 }
