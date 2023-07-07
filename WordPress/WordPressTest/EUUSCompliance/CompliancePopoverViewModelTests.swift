@@ -20,19 +20,15 @@ final class CompliancePopoverViewModelTests: CoreDataTestCase {
         testDefaults?.removeObject(forKey: UserDefaults.didShowCompliancePopupKey)
     }
 
-    func testDidTapSettingsUpdatesDefaults() {
-        guard let defaults = try? XCTUnwrap(testDefaults) else {
-            return
-        }
+    func testDidTapSettingsUpdatesDefaults() throws {
+        let defaults = try XCTUnwrap(testDefaults)
         let sut = CompliancePopoverViewModel(defaults: defaults, contextManager: contextManager)
         sut.didTapSettings()
         XCTAssert(defaults.didShowCompliancePopup)
     }
 
-    func testDidTapSettingsInvokesCoordinatorNavigation() {
-        guard let defaults = try? XCTUnwrap(testDefaults) else {
-            return
-        }
+    func testDidTapSettingsInvokesCoordinatorNavigation() throws {
+        let defaults = try XCTUnwrap(testDefaults)
         let mockCoordinator = MockCompliancePopoverCoordinator()
         let sut = CompliancePopoverViewModel(defaults: defaults, contextManager: contextManager)
         sut.coordinator = mockCoordinator
@@ -40,14 +36,13 @@ final class CompliancePopoverViewModelTests: CoreDataTestCase {
         XCTAssertEqual(mockCoordinator.navigateToSettingsCallCount, 1)
     }
 
-    func testDidTapSaveInvokesDismissWhenAccountIDExists() {
-        guard let defaults = try? XCTUnwrap(testDefaults) else {
-            return
-        }
+    func testDidTapSaveInvokesDismissWhenAccountIDExists() throws {
+        let defaults = try XCTUnwrap(testDefaults)
         let mockCoordinator = MockCompliancePopoverCoordinator()
+        UserSettings.defaultDotComUUID = account().uuid
         let sut = CompliancePopoverViewModel(
             defaults: defaults,
-            contextManager: makeCoreDataStack()
+            contextManager: contextManager
         )
         sut.coordinator = mockCoordinator
         sut.didTapSave()
@@ -55,23 +50,20 @@ final class CompliancePopoverViewModelTests: CoreDataTestCase {
         XCTAssert(defaults.didShowCompliancePopup)
     }
 
-    private func makeCoreDataStack() -> ContextManager {
-        let contextManager = ContextManager.forTesting()
-        let account = AccountBuilder(contextManager)
+    private func account() -> WPAccount {
+        return AccountBuilder(contextManager)
             .with(id: 1229)
             .with(username: "foobar")
             .with(email: "foo@automattic.com")
             .with(authToken: "9384rj398t34j98")
             .build()
-        UserSettings.defaultDotComUUID = account.uuid
-        return contextManager
     }
 }
 
 private class MockCompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
-    var navigateToSettingsCallCount = 0
-    var presentIfNeededCallCount = 0
-    var dismissCallCount = 0
+    private(set) var navigateToSettingsCallCount = 0
+    private(set) var presentIfNeededCallCount = 0
+    private(set) var dismissCallCount = 0
 
     func presentIfNeeded() {
         presentIfNeededCallCount += 1

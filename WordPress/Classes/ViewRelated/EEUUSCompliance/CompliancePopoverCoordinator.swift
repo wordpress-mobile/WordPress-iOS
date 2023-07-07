@@ -102,7 +102,7 @@ private extension CompliancePopoverCoordinator {
 extension UserDefaults {
     static let didShowCompliancePopupKey = "didShowCompliancePopup"
 
-    @objc var didShowCompliancePopup: Bool {
+    var didShowCompliancePopup: Bool {
         get {
             bool(forKey: Self.didShowCompliancePopupKey)
         } set {

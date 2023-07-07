@@ -25,7 +25,7 @@ final class CompliancePopoverViewModel: ObservableObject {
         appAnalytics?.setUserHasOptedOut(!isAnalyticsEnabled)
 
         let (accountID, restAPI) = contextManager.performQuery { context -> (NSNumber?, WordPressComRestApi?) in
-           let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
             return (account?.userID, account?.wordPressComRestApi)
         }
 
