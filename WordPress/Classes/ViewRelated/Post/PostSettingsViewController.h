@@ -17,4 +17,6 @@
 
 @property (nonatomic, weak, nullable) id<FeaturedImageDelegate> featuredImageDelegate;
 
+- (void)reloadData;
+
 @end

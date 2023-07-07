@@ -29,6 +29,7 @@ private let campaign: BlazeCampaign = {
         "start_date": "2023-06-13T00:00:00Z",
         "end_date": "2023-06-01T19:15:45Z",
         "status": "finished",
+        "ui_status": "finished",
         "avatar_url": "https://0.gravatar.com/avatar/614d27bcc21db12e7c49b516b4750387?s=96&amp;d=identicon&amp;r=G",
         "budget_cents": 500,
         "target_url": "https://alextest9123.wordpress.com/2023/06/01/test-post/",

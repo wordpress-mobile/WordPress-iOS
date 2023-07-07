@@ -18,9 +18,7 @@ class PeopleServiceTests: CoreDataTestCase {
         }
 
         contextManager.performAndSave { context in
-            let account = WPAccount(context: context)
-            account.username = "username"
-            account.authToken = "token"
+            let account = WPAccount.fixture(context: context)
 
             let blog = Blog(context: context)
             blog.dotComID = NSNumber(value: self.siteID)

@@ -57,10 +57,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-
-    deinit {
-        stopObservingQuickStart()
-    }
 }
 
 // MARK: - Button Actions
@@ -142,35 +138,34 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
-
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-
-                switch element {
-                case .stats:
-                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-                        return
-                    }
-
-                    self?.autoScrollToStatsButton()
-                case .mediaScreen:
-                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-                        return
-                    }
-
-                    self?.autoScrollToMediaButton()
-                default:
-                    break
-                }
-                self?.statsButton.shouldShowSpotlight = element == .stats
-                self?.mediaButton.shouldShowSpotlight = element == .mediaScreen
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let info = notification.userInfo,
+              let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement
+        else {
+            return
+        }
+
+        switch element {
+        case .stats:
+            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                return
+            }
+
+            autoScrollToStatsButton()
+        case .mediaScreen:
+            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                return
+            }
+
+            autoScrollToMediaButton()
+        default:
+            break
+        }
+        statsButton.shouldShowSpotlight = element == .stats
+        mediaButton.shouldShowSpotlight = element == .mediaScreen
     }
 
     private func autoScrollToStatsButton() {

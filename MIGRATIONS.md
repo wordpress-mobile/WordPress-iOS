@@ -3,6 +3,26 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 151
+
+@dvdchr 2023-06-28
+
+- `Blog`: added `planActiveFeatures` (optional, no default, `Transformable` with type `[String]`)
+
+@dvdchr 2023-06-23
+
+- Created a new entity `PublicizeInfo` with:
+  - `sharedPostsCount` (required, default `0`, `Int 64`)
+  - `sharesRemaining` (required, default `0`, `Int 64`)
+  - `shareLimit` (required, default `0`, `Int 64`)
+  - `toBePublicizedCount` (required, default `0`, `Int 64`)
+
+- Created one-to-many relationship between `PublicizeInfo` and `Blog`
+  - `PublicizeInfo`
+    - `blog` (optional, to-one, nullify on delete)
+  - `Blog`
+    - `publicizeInfo` (optional, to-one, cascade on delete)
+
 ## WordPress 150
 
 @momozw 2023-06-20

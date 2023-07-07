@@ -1,13 +1,6 @@
 import Foundation
 
-protocol BlazeWebView {
-    func load(request: URLRequest)
-    func reloadNavBar()
-    func dismissView()
-    var cookieJar: CookieJar { get }
-}
-
-class BlazeWebViewModel {
+class BlazeCreateCampaignWebViewModel: BlazeWebViewModel {
 
     // MARK: Public Variables
 
@@ -19,7 +12,7 @@ class BlazeWebViewModel {
     private let source: BlazeSource
     private let blog: Blog
     private let postID: NSNumber?
-    private let view: BlazeWebView
+    private weak var view: BlazeWebView?
     private let remoteConfigStore: RemoteConfigStore
     private let externalURLHandler: ExternalURLHandler
     private var linkBehavior: LinkBehavior = .all
@@ -66,24 +59,30 @@ class BlazeWebViewModel {
 
     // MARK: Public Functions
 
+    var navigationTitle: String {
+        return Strings.navigationTitle
+    }
+
     func startBlazeFlow() {
-        guard let initialURL else {
+        guard let initialURL,
+              let cookieJar = view?.cookieJar else {
             BlazeEventsTracker.trackBlazeFlowError(for: source, currentStep: currentStep)
-            view.dismissView()
+            view?.dismissView()
             return
         }
-        authenticatedRequest(for: initialURL, with: view.cookieJar) { [weak self] (request) in
+        authenticatedRequest(for: initialURL, with: cookieJar) { [weak self] (request) in
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.view.load(request: request)
+            weakSelf.view?.load(request: request)
             BlazeEventsTracker.trackBlazeFlowStarted(for: weakSelf.source)
         }
     }
 
     func dismissTapped() {
-        view.dismissView()
+        view?.dismissView()
         if isFlowCompleted {
+            NotificationCenter.default.post(name: .blazeCampaignCreated, object: nil)
             BlazeEventsTracker.trackBlazeFlowCompleted(for: source, currentStep: currentStep)
         } else {
             BlazeEventsTracker.trackBlazeFlowCanceled(for: source, currentStep: currentStep)
@@ -93,7 +92,7 @@ class BlazeWebViewModel {
     func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy {
         currentStep = extractCurrentStep(from: request) ?? currentStep
         updateIsFlowCompleted()
-        view.reloadNavBar()
+        view?.reloadNavBar()
         return linkBehavior.handle(request: request, with: type, externalURLHandler: externalURLHandler)
     }
 
@@ -148,13 +147,22 @@ class BlazeWebViewModel {
     }
 }
 
-extension BlazeWebViewModel: WebKitAuthenticatable {
+extension Foundation.Notification.Name {
+    static let blazeCampaignCreated = Foundation.Notification.Name("BlazeWebFlowBlazeCampaignCreated")
+}
+
+extension BlazeCreateCampaignWebViewModel: WebKitAuthenticatable {
     var authenticator: RequestAuthenticator? {
         RequestAuthenticator(blog: blog)
     }
 }
 
-private extension BlazeWebViewModel {
+private extension BlazeCreateCampaignWebViewModel {
+    enum Strings {
+        static let navigationTitle = NSLocalizedString("feature.blaze.title",
+                                                       value: "Blaze",
+                                                       comment: "Name of a feature that allows the user to promote their posts.")
+    }
     enum Constants {
         static let baseURLFormat = "https://wordpress.com/advertising/%@"
         static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"

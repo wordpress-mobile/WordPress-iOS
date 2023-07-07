@@ -12,23 +12,11 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.setTitle(Strings.cardFrameTitle)
 
-        // NOTE: Remove the logic when support for iOS 14 is dropped
-        if #available (iOS 15.0, *) {
-            // assign an empty closure so the button appears.
-            frameView.onEllipsisButtonTap = {
-                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .prompts)
-            }
-            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-            frameView.ellipsisButton.menu = contextMenu
-        } else {
-            // Show a fallback implementation using `MenuSheetViewController`.
-            // iOS 13 doesn't support showing UIMenu programmatically.
-            // iOS 14 doesn't support `UIDeferredMenuElement.uncached`.
-            frameView.onEllipsisButtonTap = { [weak self] in
-                BlogDashboardAnalytics.trackContextualMenuAccessed(for: .prompts)
-                self?.showMenuSheet()
-            }
+        frameView.onEllipsisButtonTap = {
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: .prompts)
         }
+        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        frameView.ellipsisButton.menu = contextMenu
 
         return frameView
     }()
@@ -313,7 +301,6 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return [defaultItems, [.learnMore(learnMoreTapped)]]
     }
 
-    @available(iOS 15.0, *)
     private var contextMenu: UIMenu {
         return .init(title: String(), options: .displayInline, children: contextMenuItems.map { menuSection in
             UIMenu(title: String(), options: .displayInline, children: [
@@ -526,27 +513,6 @@ private extension DashboardPromptsCardCell {
         BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
     }
 
-    // Fallback context menu implementation for iOS 13.
-    func showMenuSheet() {
-        guard let presenterViewController = presenterViewController else {
-            return
-        }
-        WPAnalytics.track(.promptsDashboardCardMenu)
-
-        let menuViewController = MenuSheetViewController(items: contextMenuItems.map { menuSection in
-            menuSection.map { $0.toMenuSheetItem }
-        })
-
-        menuViewController.modalPresentationStyle = .popover
-        if let popoverPresentationController = menuViewController.popoverPresentationController {
-            popoverPresentationController.delegate = presenterViewController
-            popoverPresentationController.sourceView = cardFrameView.ellipsisButton
-            popoverPresentationController.sourceRect = cardFrameView.ellipsisButton.bounds
-        }
-
-        presenterViewController.present(menuViewController, animated: true)
-    }
-
     // MARK: Constants
 
     struct Strings {
@@ -646,21 +612,6 @@ private extension DashboardPromptsCardCell {
                 return UIAction(title: title, image: image, attributes: menuAttributes) { _ in
                     handler()
                 }
-            }
-        }
-
-        var toMenuSheetItem: MenuSheetViewController.MenuItem {
-            switch self {
-            case .viewMore(let handler),
-                 .skip(let handler),
-                 .remove(let handler),
-                 .learnMore(let handler):
-                return MenuSheetViewController.MenuItem(
-                        title: title,
-                        image: image,
-                        destructive: menuAttributes.contains(.destructive),
-                        handler: handler
-                )
             }
         }
     }

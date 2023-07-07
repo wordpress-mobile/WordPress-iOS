@@ -159,30 +159,27 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
+    }
 
-            guard let self = self else {
-                return
-            }
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        if let info = notification.userInfo,
+           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-
-                switch element {
-                case .setupQuickStart:
-                    self.loadCardsFromCache()
-                    self.displayQuickStart()
-                case .updateQuickStart:
-                    self.loadCardsFromCache()
-                case .stats, .mediaScreen:
-                    if self.embeddedInScrollView {
-                        self.mySiteScrollView?.scrollToTop(animated: true)
-                    } else {
-                        self.collectionView.scrollToTop(animated: true)
-                    }
-                default:
-                    break
+            switch element {
+            case .setupQuickStart:
+                self.loadCardsFromCache()
+                self.displayQuickStart()
+            case .updateQuickStart:
+                self.loadCardsFromCache()
+            case .stats, .mediaScreen:
+                if self.embeddedInScrollView {
+                    self.mySiteScrollView?.scrollToTop(animated: true)
+                } else {
+                    self.collectionView.scrollToTop(animated: true)
                 }
+            default:
+                break
             }
         }
     }
@@ -240,7 +237,7 @@ extension BlogDashboardViewController {
         let isQuickActionSection = viewModel.isQuickActionsSection(sectionIndex)
         let isMigrationSuccessCardSection = viewModel.isMigrationSuccessCardSection(sectionIndex)
         let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
-        let bottomInset = isQuickActionSection || isMigrationSuccessCardSection ? 0 : Constants.verticalSectionInset
+        let bottomInset = isQuickActionSection || isMigrationSuccessCardSection ? 0 : Constants.bottomSectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,
@@ -323,21 +320,11 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
+        static var bottomSectionInset: CGFloat {
+            // Make room for FAB on iPhone
+            WPDeviceIdentification.isiPad() ? verticalSectionInset : 86
+        }
         static let cellSpacing: CGFloat = 20
-    }
-}
-
-// MARK: - UI Popover Delegate
-
-/// This view controller may host a `DashboardPromptsCardCell` that requires presenting a `MenuSheetViewController`,
-/// a fallback implementation of `UIMenu` for iOS 13. For more details, see the docs on `MenuSheetViewController`.
-///
-/// NOTE: This should be removed once we drop support for iOS 13.
-///
-extension BlogDashboardViewController: UIPopoverPresentationControllerDelegate {
-    // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
-    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
     }
 }
 

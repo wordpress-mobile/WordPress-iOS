@@ -43,6 +43,10 @@ struct BlazeCampaignStatusViewModel {
     let textColor: UIColor
     let backgroundColor: UIColor
 
+    init(campaign: BlazeCampaign) {
+        self.init(status: campaign.uiStatus)
+    }
+
     init(status: BlazeCampaign.Status) {
         self.isHidden = status == .unknown
         self.title = status.localizedTitle
@@ -94,14 +98,17 @@ struct BlazeCampaignStatusViewModel {
 extension BlazeCampaign.Status {
     var localizedTitle: String {
         switch self {
+        case .created:
+            // There is no dedicated status for `In Moderation` on the backend.
+            // The app assumes that the campaign goes into moderation after creation.
+            return NSLocalizedString("blazeCampaign.status.inmoderation", value: "In Moderation", comment: "Short status description")
         case .scheduled:
             return NSLocalizedString("blazeCampaign.status.scheduled", value: "Scheduled", comment: "Short status description")
-        case .created:
-            return NSLocalizedString("blazeCampaign.status.created", value: "Created", comment: "Short status description")
         case .approved:
             return NSLocalizedString("blazeCampaign.status.approved", value: "Approved", comment: "Short status description")
         case .processing:
-            return NSLocalizedString("blazeCampaign.status.inmoderation", value: "In Moderation", comment: "Short status description")
+            // Should never be returned by `ui_status`.
+            return NSLocalizedString("blazeCampaign.status.processing", value: "Processing", comment: "Short status description")
         case .rejected:
             return NSLocalizedString("blazeCampaign.status.rejected", value: "Rejected", comment: "Short status description")
         case .active:

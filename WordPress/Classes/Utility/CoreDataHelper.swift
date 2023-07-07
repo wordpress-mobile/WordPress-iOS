@@ -196,12 +196,12 @@ extension ContextManager.ContextManagerError: LocalizedError, CustomDebugStringC
 
 extension CoreDataStack {
     /// Perform a query using the `mainContext` and return the result.
+    ///
+    /// - Warning: Do not return `NSManagedObject` instances from the closure.
     func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
-        var value: T! = nil
-        self.mainContext.performAndWait {
-            value = block(self.mainContext)
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
         }
-        return value
     }
 
     // MARK: - Database Migration
@@ -211,21 +211,29 @@ extension CoreDataStack {
     func createStoreCopy(to backupLocation: URL) throws {
         try? removeBackupData(from: backupLocation)
         guard let storeCoordinator = mainContext.persistentStoreCoordinator,
-              let store = storeCoordinator.persistentStores.first else {
+              let store = storeCoordinator.persistentStores.first,
+              let currentDatabaseLocation = store.url else {
             throw ContextManager.ContextManagerError.missingCoordinatorOrStore
         }
 
-        let model = storeCoordinator.managedObjectModel
-        let storeCoordinatorCopy = NSPersistentStoreCoordinator(managedObjectModel: model)
-        var storeOptions = store.options
-        storeOptions?[NSReadOnlyPersistentStoreOption] = true
-        let storeCopy = try storeCoordinatorCopy.addPersistentStore(ofType: store.type,
-                                                                    configurationName: store.configurationName,
-                                                                    at: store.url,
-                                                                    options: storeOptions)
-        try storeCoordinatorCopy.migratePersistentStore(storeCopy,
-                                                        to: backupLocation,
-                                                        withType: storeCopy.type)
+        do {
+            try storeCoordinator.replacePersistentStore(at: backupLocation,
+                                                        withPersistentStoreFrom: currentDatabaseLocation,
+                                                        ofType: store.type)
+        } catch {
+            // Fallback to the previous migration method
+            let model = storeCoordinator.managedObjectModel
+            let storeCoordinatorCopy = NSPersistentStoreCoordinator(managedObjectModel: model)
+            var storeOptions = store.options
+            storeOptions?[NSReadOnlyPersistentStoreOption] = true
+            let storeCopy = try storeCoordinatorCopy.addPersistentStore(ofType: store.type,
+                                                                        configurationName: store.configurationName,
+                                                                        at: store.url,
+                                                                        options: storeOptions)
+            try storeCoordinatorCopy.migratePersistentStore(storeCopy,
+                                                            to: backupLocation,
+                                                            withType: storeCopy.type)
+        }
     }
 
     /// Removes any copy of the store from the backup location.
@@ -257,9 +265,7 @@ extension CoreDataStack {
         let (databaseLocation, shmLocation, walLocation) = databaseFiles(for: databaseLocation)
 
         guard let currentDatabaseLocation = store.url,
-              FileManager.default.fileExists(atPath: databaseLocation.path),
-              FileManager.default.fileExists(atPath: shmLocation.path),
-              FileManager.default.fileExists(atPath: walLocation.path)  else {
+              FileManager.default.fileExists(atPath: databaseLocation.path) else {
             throw ContextManager.ContextManagerError.missingDatabase
         }
 
@@ -352,5 +358,71 @@ extension CoreDataStack {
             return
         }
         try ContextManager.migrateDataModelsIfNecessary(storeURL: databaseLocation, objectModel: objectModel)
+    }
+}
+
+/// This extension declares many `performQuery` usages that may introduce Core Data concurrency issues.
+///
+/// The context object used by the `performQuery` function is opaque to the caller. The caller should not assume what
+/// the context object is, nor the context queue type (the main queue or a background queue). That means the caller
+/// does not have enough information to guarantee safe access to the returned `NSManagedObject` instances.
+///
+/// The closure passed to the `performQuery` function should use the context to query objects and return non- Core Data
+/// types. Here is an example of how it should be used.
+///
+/// ```
+/// // Wrong:
+/// let account = coreDataStack.performQuery { context in
+///     return Account.lookUp(in: context)
+/// }
+/// let name = account.username
+///
+/// // Right:
+/// let name = coreDataStack.performQuery { context in
+///     let account = Account.lookUp(in: context)
+///     return account.username
+/// }
+/// ```
+extension CoreDataStack {
+    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T where T: NSManagedObject {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
+    }
+
+    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T?) -> T? where T: NSManagedObject {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
+    }
+
+    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T where T: Sequence, T.Element: NSManagedObject {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
+    }
+
+    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T?) -> T? where T: Sequence, T.Element: NSManagedObject {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
+    }
+
+    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
+    func performQuery<T, E>(_ block: @escaping (NSManagedObjectContext) -> Result<T, E>) -> Result<T, E> where T: NSManagedObject, E: Error {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
+    }
+
+    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
+    func performQuery<T, E>(_ block: @escaping (NSManagedObjectContext) -> Result<T, E>?) -> Result<T, E>? where T: NSManagedObject, E: Error {
+        mainContext.performAndWait { [mainContext] in
+            block(mainContext)
+        }
     }
 }

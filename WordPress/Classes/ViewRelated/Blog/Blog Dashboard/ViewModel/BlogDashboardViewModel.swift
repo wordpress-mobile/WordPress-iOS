@@ -67,6 +67,7 @@ class BlogDashboardViewModel {
                     cellConfigurable.row = indexPath.row
                     cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse)
                 }
+                (cell as? DashboardBlazeCardCell)?.configure(blazeViewModel)
                 return cell
             case .migrationSuccess:
                 let cellType = DashboardMigrationSuccessCell.self
@@ -74,14 +75,16 @@ class BlogDashboardViewModel {
                 cell?.configure(with: viewController)
                 return cell
             }
-
         }
     }()
+
+    private let blazeViewModel: DashboardBlazeCardCellViewModel
 
     init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
+        self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
         registerNotifications()
     }
 
@@ -105,6 +108,8 @@ class BlogDashboardViewModel {
 
             completion?(cards)
         })
+
+        blazeViewModel.refresh()
     }
 
     @objc func loadCardsFromCache() {

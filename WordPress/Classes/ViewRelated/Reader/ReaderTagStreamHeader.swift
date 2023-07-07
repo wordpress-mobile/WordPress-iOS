@@ -5,7 +5,7 @@ import WordPressShared
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var followButton: UIButton!
 
-    open var delegate: ReaderStreamHeaderDelegate?
+    open weak var delegate: ReaderStreamHeaderDelegate?
 
     // MARK: - Lifecycle Methods
     open override func awakeFromNib() {
