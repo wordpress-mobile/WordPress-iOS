@@ -42,6 +42,10 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
         super.init(nibName: nil, bundle: nil)
     }
 
+    @objc class func make(blog: Blog) -> BlazeCampaignsViewController {
+        BlazeCampaignsViewController(blog: blog)
+    }
+
     required init?(coder: NSCoder) {
         // This VC is designed to be initialized programmatically.
         fatalError("init(coder:) has not been implemented")
