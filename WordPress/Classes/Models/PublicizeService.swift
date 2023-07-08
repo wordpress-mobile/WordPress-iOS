@@ -24,3 +24,29 @@ open class PublicizeService: NSManagedObject {
         status == Self.defaultStatus
     }
 }
+
+// MARK: - Convenience Methods
+
+extension PublicizeService {
+
+    /// A convenient value-type representation for the destination sharing service.
+    enum ServiceName: String {
+        case facebook
+        case twitter
+        case tumblr
+        case linkedin
+        case instagram = "instagram-business"
+        case mastodon
+        case unknown
+
+        /// Returns an image of the social network's icon.
+        /// If the icon is not available locally,
+        var iconImage: UIImage {
+            WPStyleGuide.socialIcon(for: rawValue as NSString)
+        }
+    }
+
+    var name: ServiceName {
+        .init(rawValue: serviceID) ?? .unknown
+    }
+}
