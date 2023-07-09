@@ -5611,6 +5611,8 @@
 		FEDA1AD9269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDA8D9C2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */; };
 		FEDA8D9D2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */; };
+		FEDA8D9F2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */; };
+		FEDA8DA02A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */; };
 		FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEDDD47026A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEE48EFC2A4C8312008A48E0 /* Blog+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */; };
@@ -9411,6 +9413,7 @@
 		FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginJetpackProxyService.swift; sourceTree = "<group>"; };
 		FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Comments.swift"; sourceTree = "<group>"; };
 		FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrepublishingViewController+JetpackSocial.swift"; sourceTree = "<group>"; };
+		FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingAutoSharingView.swift; sourceTree = "<group>"; };
 		FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Notifications.swift"; sourceTree = "<group>"; };
 		FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+JetpackSocial.swift"; sourceTree = "<group>"; };
 		FEE48EFE2A4C9855008A48E0 /* Blog+PublicizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+PublicizeTests.swift"; sourceTree = "<group>"; };
@@ -14807,6 +14810,7 @@
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
 				8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */,
 				FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */,
+				FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */,
 				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
 				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
 				C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */,
@@ -20989,6 +20993,7 @@
 				C395FB262821FE7B00AE7C11 /* RemoteSiteDesign+Thumbnail.swift in Sources */,
 				9A73B7152362FBAE004624A8 /* SiteStatsViewModel+AsyncBlock.swift in Sources */,
 				74AF4D7C1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
+				FEDA8D9F2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */,
 				0857BB40299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
@@ -25101,6 +25106,7 @@
 				FABB24602602FC2C00C8785C /* BlogDetailsViewController+DomainCredit.swift in Sources */,
 				17C1D67D2670E3DC006C8970 /* SiteIconPickerView.swift in Sources */,
 				8BAC9D9F27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift in Sources */,
+				FEDA8DA02A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */,
 				80EF9287280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */,
 				FABB24612602FC2C00C8785C /* KeyringAccountHelper.swift in Sources */,
 				FABB24622602FC2C00C8785C /* ManagedAccountSettings+CoreDataProperties.swift in Sources */,

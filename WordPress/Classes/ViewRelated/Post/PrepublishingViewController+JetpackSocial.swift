@@ -16,7 +16,7 @@ extension PrepublishingViewController {
         // - Show the PrepublishingAutoSharingView.
         // - Show the NoConnectionView if user has 0 connections.
         // - Properly configure the view models.
-        let autoSharingView = UIView()
+        let autoSharingView = UIView.embedSwiftUIView(PrepublishingAutoSharingView())
         cell.contentView.addSubview(autoSharingView)
         cell.pinSubviewToAllEdges(autoSharingView)
     }
