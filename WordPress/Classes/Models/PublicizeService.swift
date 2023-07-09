@@ -39,9 +39,8 @@ extension PublicizeService {
         case mastodon
         case unknown
 
-        /// Returns an image of the social network's icon.
-        /// If the icon is not available locally,
-        var iconImage: UIImage {
+        /// Returns the local image for the icon representing the social network.
+        var localIconImage: UIImage {
             WPStyleGuide.socialIcon(for: rawValue as NSString)
         }
     }
