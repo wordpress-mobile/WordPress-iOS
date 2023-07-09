@@ -1,7 +1,7 @@
 import UIKit
 import AutomatticTracks
 
-protocol ReaderDetailHeaderViewDelegate {
+protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
@@ -43,7 +43,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     /// Any interaction with the header is sent to the delegate
     ///
-    var delegate: ReaderDetailHeaderViewDelegate?
+    weak var delegate: ReaderDetailHeaderViewDelegate?
 
     func configure(for post: ReaderPost) {
         self.post = post
