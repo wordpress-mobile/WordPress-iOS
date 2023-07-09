@@ -13,11 +13,18 @@ extension PrepublishingViewController {
 
     func configureSocialCell(_ cell: UITableViewCell) {
         // TODO:
-        // - Show the PrepublishingAutoSharingView.
         // - Show the NoConnectionView if user has 0 connections.
-        // - Properly configure the view models.
+        // - Properly create and configure the view models.
         let autoSharingView = UIView.embedSwiftUIView(PrepublishingAutoSharingView())
         cell.contentView.addSubview(autoSharingView)
-        cell.pinSubviewToAllEdges(autoSharingView)
+
+        // Pin constraints to the cell's layoutMarginsGuide so that the content is properly aligned.
+        NSLayoutConstraint.activate([
+            autoSharingView.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
+            autoSharingView.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor),
+            autoSharingView.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor),
+            autoSharingView.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor)
+        ])
+        cell.accessoryType = .disclosureIndicator
     }
 }
