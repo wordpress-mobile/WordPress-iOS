@@ -8,10 +8,9 @@ final class CompliancePopoverViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
-    let analyticsTracker: PrivacySettingsAnalyticsTracking
-
     var coordinator: CompliancePopoverCoordinatorProtocol?
 
+    private let analyticsTracker: PrivacySettingsAnalyticsTracking
     private let defaults: UserDefaults
     private let contextManager: ContextManager
 
@@ -23,6 +22,12 @@ final class CompliancePopoverViewModel: ObservableObject {
         self.defaults = defaults
         self.analyticsTracker = analyticsTracker
         self.contextManager = contextManager
+    }
+
+    // MARK: - API
+
+    func didDisplayPopover() {
+        analyticsTracker.track(.privacyChoicesBannerPresented)
     }
 
     func didTapSettings() {

@@ -8,10 +8,6 @@ final class CompliancePopoverViewController: UIViewController {
 
     private let viewModel: CompliancePopoverViewModel
 
-    private var analyticsTracker: PrivacySettingsAnalyticsTracking {
-        return viewModel.analyticsTracker
-    }
-
     // MARK: - Views
     private let hostingController: UIHostingController<CompliancePopover>
 
@@ -42,7 +38,7 @@ final class CompliancePopoverViewController: UIViewController {
         hostingController.rootView.saveAction = {
             self.viewModel.didTapSave()
         }
-        analyticsTracker.track(.privacyChoicesBannerPresented)
+        viewModel.didDisplayPopover()
     }
 
     override func viewDidLayoutSubviews() {
