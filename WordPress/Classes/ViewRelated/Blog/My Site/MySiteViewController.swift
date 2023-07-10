@@ -145,7 +145,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             blogDetailsViewController?.presentationDelegate = self
         }
     }
-    private(set) var blogDashboardViewController: BlogDashboardViewController?
+    private var blogDashboardViewController: BlogDashboardViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
