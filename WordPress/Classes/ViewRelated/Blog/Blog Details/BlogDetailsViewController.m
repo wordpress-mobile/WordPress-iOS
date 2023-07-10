@@ -805,7 +805,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                             callback:^{
         [weakSelf showBlaze];
     }];
-    blazeRow.showsSelectionState = NO;
+    blazeRow.showsSelectionState = [RemoteFeature enabled:RemoteFeatureFlagBlazeManageCampaigns];
     return blazeRow;
 }
 
@@ -1984,11 +1984,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showBlaze
 {
     [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
-    
-    [BlazeFlowCoordinator presentBlazeInViewController:self
-                                                source:BlazeSourceMenuItem
-                                                  blog:self.blog
-                                                  post:nil];
+
+    if ([RemoteFeature enabled:RemoteFeatureFlagBlazeManageCampaigns]) {
+        BlazeCampaignsViewController *controller = [BlazeCampaignsViewController makeWithBlog:self.blog];
+        [self.presentationDelegate presentBlogDetailsViewController:controller];
+    } else {
+        [BlazeFlowCoordinator presentBlazeInViewController:self
+                                                    source:BlazeSourceMenuItem
+                                                      blog:self.blog
+                                                      post:nil];
+    }
 }
 
 - (void)showScan
