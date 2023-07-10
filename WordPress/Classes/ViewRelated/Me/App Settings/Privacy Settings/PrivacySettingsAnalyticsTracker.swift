@@ -2,6 +2,8 @@ import WordPressShared
 
 protocol PrivacySettingsAnalyticsTracking {
 
+    func trackPrivacySettingsAnalyticsTrackingToggled(enabled: Bool)
+
     func trackPrivacySettingsReportCrashesToggled(enabled: Bool)
 
     func trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: Bool)
@@ -10,6 +12,11 @@ protocol PrivacySettingsAnalyticsTracking {
 }
 
 extension PrivacySettingsAnalyticsTracking {
+
+    func trackPrivacySettingsAnalyticsTrackingToggled(enabled: Bool) {
+        let props = ["enabled": enabled.stringLiteral]
+        self.track(.privacySettingsAnalyticsTrackingToggled, properties: props)
+    }
 
     func trackPrivacySettingsReportCrashesToggled(enabled: Bool) {
         let props = ["enabled": enabled.stringLiteral]
