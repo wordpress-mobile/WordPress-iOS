@@ -513,10 +513,14 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         detailsViewController.dataSource = self
         detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
-        detailsViewController.onDeletionRequestCallback = { request in
+        detailsViewController.onDeletionRequestCallback = { [weak self] request in
+            guard let self else { return }
+
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
-        detailsViewController.onSelectedNoteChange = { note in
+        detailsViewController.onSelectedNoteChange = { [weak self] note in
+            guard let self else { return }
+
             self.selectRow(for: note)
         }
     }
@@ -752,7 +756,9 @@ extension NotificationsViewController {
             return
         }
 
-        syncNotification(with: noteId, timeout: Syncing.pushMaxWait) { note in
+        syncNotification(with: noteId, timeout: Syncing.pushMaxWait) { [weak self] note in
+            guard let self else { return }
+
             self.showDetails(for: note)
         }
     }
@@ -941,7 +947,9 @@ private extension NotificationsViewController {
         reloadResultsController()
 
         // Hit the Deletion Action
-        request.action { success in
+        request.action { [weak self] success in
+            guard let self else { return }
+
             self.notificationDeletionRequests.removeValue(forKey: noteObjectID)
             self.notificationIdsBeingDeleted.remove(noteObjectID)
 
