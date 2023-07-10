@@ -58,7 +58,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         if XCUIDevice.isPad {
             let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
-                .switchToSite(withTitle: "yourjetpack.blog")
+                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
                 .gotoPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
