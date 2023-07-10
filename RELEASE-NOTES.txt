@@ -1,3 +1,7 @@
+22.9
+-----
+* [**] [internal] Fix a few potential Core Data issues in Blogging Prompts & Reminders. [#21016]
+
 22.8
 -----
 * [*] Blogging Reminders: Disabled prompt for self-hosted sites not connected to Jetpack. [#20970]
@@ -5,7 +9,6 @@
 * [**] [internal] Make sure synced posts are saved before calling completion block. [#20960]
 * [**] [internal] Fix observing Quick Start notifications. [#20997]
 * [**] [internal] Fixed an issue that was causing a memory leak in the domain selection flow. [#20813]
-* [**] [internal] Fix a few potential Core Data issues in Blogging Prompts & Reminders. [#21016]
 * [*] [Jetpack-only] Block editor: Rename "Reusable blocks" to "Synced patterns", aligning with the web editor. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5885]
 * [**] [internal] Block editor: Fix a crash related to Reanimated when closing the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5938]
 
