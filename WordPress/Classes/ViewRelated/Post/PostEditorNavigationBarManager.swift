@@ -61,7 +61,7 @@ class PostEditorNavigationBarManager {
         button.setImage(closeImage, for: .normal)
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -8, bottom: 0, trailing: 0)
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         button.isUserInteractionEnabled = false
         return button
     }()
@@ -79,7 +79,7 @@ class PostEditorNavigationBarManager {
         button.addSubview(siteIconView)
 
         NSLayoutConstraint.activate([
-            closeButton.leadingAnchor.constraint(equalTo: button.leadingAnchor),
+            closeButton.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -8),
             closeButton.centerYAnchor.constraint(equalTo: button.centerYAnchor),
             siteIconView.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor, constant: 0),
             siteIconView.trailingAnchor.constraint(equalTo: button.trailingAnchor),
