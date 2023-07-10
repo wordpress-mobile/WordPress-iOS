@@ -136,7 +136,10 @@ public class EditorPostSettings: ScreenObject {
 
         let currentHour = app.pickerWheels.firstMatch.value as? String
         let currentHourValue = Int(currentHour?.components(separatedBy: " ").first ?? "") ?? 0
-        let newHourValue = currentHourValue + 2
+        var newHourValue = currentHourValue + 2
+
+        // To handle hour as it is displayed in 12-hour format not 24-hour
+        if newHourValue > 12 { newHourValue = newHourValue - 12}
 
         app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "\(newHourValue)")
 
