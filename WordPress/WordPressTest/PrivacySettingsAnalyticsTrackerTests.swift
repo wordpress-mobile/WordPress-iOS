@@ -12,6 +12,22 @@ class PrivacySettingsAnalyticsTrackerTests: XCTestCase {
     }
 
     /// Tests that the event `trackPrivacyChoicesBannerSaveButtonTapped` is tracked with the correct properties.
+    func test_privacySettingsAnalyticsTrackingToggled_enabled() {
+        // Given
+        let tracker = PrivacySettingsAnalyticsTracker(tracker: AnalyticsEventTrackingSpy.self)
+
+        // When
+        tracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: true)
+
+        // Then
+        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
+        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ event in
+            event.name == PrivacySettingsAnalytics.privacySettingsAnalyticsTrackingToggled.rawValue &&
+            event.properties == ["enabled": true.stringLiteral]
+        }))
+    }
+
+    /// Tests that the event `trackPrivacyChoicesBannerSaveButtonTapped` is tracked with the correct properties.
     func test_trackPrivacyChoicesBannerSaveButtonTapped_analyticsEnabled() {
         // Given
         let tracker = PrivacySettingsAnalyticsTracker(tracker: AnalyticsEventTrackingSpy.self)
