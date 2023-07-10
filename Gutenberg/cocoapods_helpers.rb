@@ -77,28 +77,30 @@ def gutenberg_dependencies(options:)
   computed_dependencies = DEPENDENCIES.dup
 
   react_native_version = react_native_version!(gutenberg_path: gutenberg_path)
-  #  Use different dependencies in RN 0.71+
-  if react_native_version[1] >= 71
-    # RNReanimated needs React-jsc
-    # Reference: https://github.com/WordPress/gutenberg/pull/51386/commits/9538f8eaf73dfacef17382e1ab7feda40231061f
-    computed_dependencies.push('React-jsc')
-
-    # Use a custom RNReanimated version while we coordinate a fix upstream
-    computed_dependencies.delete('RNReanimated')
-
-    # This is required to workaround an issue with RNReanimated after upgrading to version 2.17.0
-    rn_node_modules = File.join(gutenberg_path, '..', 'gutenberg', 'node_modules')
-    raise "Could not find node modules at given path #{rn_node_modules}" unless File.exist? rn_node_modules
-    
-    ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
-    puts "[Gutenberg] Set REACT_NATIVE_NODE_MODULES_DIR env var for RNReanimated to #{rn_node_modules}"
-
-    pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
-  end
+  # We need to apply a workaround for the RNReanimated library when using React Native 0.71+.
+  apply_rnreanimated_workaround!(dependencies: computed_dependencies, gutenberg_path: gutenberg_path) unless react_native_version[1] < 71
 
   computed_dependencies.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
   end
+end
+
+def apply_rnreanimated_workaround!(dependencies:, gutenberg_path:)
+  # RNReanimated needs React-jsc
+  # Reference: https://github.com/WordPress/gutenberg/pull/51386/commits/9538f8eaf73dfacef17382e1ab7feda40231061f
+  dependencies.push('React-jsc')
+
+  # Use a custom RNReanimated version while we coordinate a fix upstream
+  dependencies.delete('RNReanimated')
+
+  # This is required to workaround an issue with RNReanimated after upgrading to version 2.17.0
+  rn_node_modules = File.join(gutenberg_path, '..', 'gutenberg', 'node_modules')
+  raise "Could not find node modules at given path #{rn_node_modules}" unless File.exist? rn_node_modules
+
+  ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
+  puts "[Gutenberg] Set REACT_NATIVE_NODE_MODULES_DIR env var for RNReanimated to #{rn_node_modules}"
+
+  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
 end
 
 def gutenberg_post_install(installer:)
