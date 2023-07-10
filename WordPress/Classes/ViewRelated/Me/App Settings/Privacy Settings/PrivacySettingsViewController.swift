@@ -134,8 +134,25 @@ class PrivacySettingsViewController: UITableViewController {
     }
 
     func usageTrackingChanged(_ enabled: Bool) {
-        let appAnalytics = WordPressAppDelegate.shared?.analytics
-        appAnalytics?.setUserHasOptedOut(!enabled)
+        // - If analytics tracking was enabled, then track the event before it is disabled.
+        // - If analytics tracking was disabled, then track the event when it is enabled
+        let performUpdateWithAnalyticsTracking: (() -> Void) -> Void = { [weak self] block in
+            guard let self else {
+                return
+            }
+            if !WPAppAnalytics.userHasOptedOut() {
+                self.analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
+            }
+            block()
+            if enabled {
+                self.analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
+            }
+        }
+
+        performUpdateWithAnalyticsTracking {
+            let appAnalytics = WordPressAppDelegate.shared?.analytics
+            appAnalytics?.setUserHasOptedOut(!enabled)
+        }
 
         let result = ContextManager.shared.performQuery { context -> (NSNumber, WordPressComRestApi)? in
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
