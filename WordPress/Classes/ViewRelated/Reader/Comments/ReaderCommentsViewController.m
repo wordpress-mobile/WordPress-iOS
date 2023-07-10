@@ -1123,7 +1123,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
         if (comment) {
-            [self shareComment:comment sourceView:sourceView];
+            [weakSelf shareComment:comment sourceView:sourceView];
         }
     };
 
