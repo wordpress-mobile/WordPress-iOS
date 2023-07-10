@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/rest/v1.2/sites/181977606/posts",
+    "urlPattern": "/rest/v1.2/sites/181977606/posts",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -44,8 +44,8 @@
             "profile_URL": "https://en.gravatar.com/appstorescreens",
             "site_ID": 181977606
           },
-          "date": "{{now offset='+2 days'}}",
-          "modified": "2020-10-05T15:04:51+00:00",
+          "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now offset='+2 hours' format=customformat}}",
+          "modified": "{{now offset='+2 hours' format=customformat}}",
           "title": "Lemon Cheesecake Tartlets",
           "URL": "https://weekendbakesblog.wordpress.com/easy-blueberry-muffins/",
           "short_URL": "https://wp.me/pcjyGG-e",
