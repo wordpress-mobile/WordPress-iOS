@@ -49,7 +49,7 @@ class BlogDashboardViewModel {
             return nil
         }
 
-        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, item in
+        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self, unowned viewController] collectionView, indexPath, item in
 
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
