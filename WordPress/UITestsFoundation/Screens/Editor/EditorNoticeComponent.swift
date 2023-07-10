@@ -23,6 +23,7 @@ public class EditorNoticeComponent: ScreenObject {
         )
     }
 
+    @discardableResult
     public func viewPublishedPost(withTitle postTitle: String) throws -> EditorPublishEpilogueScreen {
         // The publish notice has a joined accessibility label equal to: title + message
         // (the postTitle). It does not seem possible to target the specific postTitle label

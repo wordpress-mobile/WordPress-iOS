@@ -38,7 +38,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let postList = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
-            .gotoPostsScreen()
+            .goToPostsScreen()
             .showOnly(.drafts)
 
         let postEditorScreenshot = try postList.selectPost(withSlug: "our-services")
@@ -58,8 +58,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         if XCUIDevice.isPad {
             let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
-                .switchToSite(withTitle: "yourjetpack.blog")
-                .gotoPostsScreen()
+                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
+                .goToPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
             try BlockEditorScreen().selectBlock(containingText: "Ingredients")

@@ -12,7 +12,7 @@ class EditorGutenbergTests: XCTestCase {
         )
 
         try TabNavComponent()
-            .gotoBlockEditorScreen()
+            .goToBlockEditorScreen()
     }
 
     override func tearDownWithError() throws {
@@ -49,7 +49,7 @@ class EditorGutenbergTests: XCTestCase {
             .selectCategory(name: category)
             .addTag(name: tag)
             .closePostSettings()
-        try BlockEditorScreen().publish()
+            .publish()
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
