@@ -137,13 +137,19 @@ class PrivacySettingsViewController: UITableViewController {
         let appAnalytics = WordPressAppDelegate.shared?.analytics
         appAnalytics?.setUserHasOptedOut(!enabled)
 
-        let context = ContextManager.shared.mainContext
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
-            return
+        let result = ContextManager.shared.performQuery { context -> (NSNumber, WordPressComRestApi)? in
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+                  let wordPressComRestApi = account.wordPressComRestApi
+            else {
+                return nil
+            }
+            return (account.userID, wordPressComRestApi)
         }
 
-        let change = AccountSettingsChange.tracksOptOut(!enabled)
-        AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
+        if let (accountID, wordPressComRestApi) = result {
+            let change = AccountSettingsChange.tracksOptOut(!enabled)
+            AccountSettingsService(userID: accountID.intValue, api: wordPressComRestApi).saveChange(change)
+        }
     }
 
     func openCookiePolicy() -> ImmuTableAction {
