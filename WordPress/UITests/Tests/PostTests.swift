@@ -3,7 +3,9 @@ import XCTest
 
 class PostTests: XCTestCase {
     override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite()
+
         try LoginFlow.login(
             siteUrl: WPUITestCredentials.testWPcomSiteAddress,
             email: WPUITestCredentials.testWPcomUserEmail,
@@ -16,6 +18,7 @@ class PostTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
         takeScreenshotOfFailedTest()
     }
 
