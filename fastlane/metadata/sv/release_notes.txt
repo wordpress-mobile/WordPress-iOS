@@ -1,0 +1,6 @@
+Vi har åtgärdat ett problem med startskärmskortet "Arbeta med ett inläggsutkast". Appen kommer inte längre att krascha om du öppnar utkast medan de fortfarande håller på att laddas upp.
+
+Vi har även löst ett antal problem i blockredigeraren.
+
+- Fixat – bildblock visas nu med rätt bildförhållande, oavsett om bilden har en angiven bredd och höjd eller inte.
+- När du dikterar text kommer markörens position att förbli där den ska vara – inget mer omkringhoppande. Ta det lugnt och diktera vidare.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-27 09:54:29+0000 */
+/* Translation-Revision-Date: 2023-06-30 15:06:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -9727,6 +9727,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Ditolak";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Terjadwal";
 
 /* Title for budget stats view */
 "blazeCampaigns.budget" = "Anggaran:";

@@ -22,8 +22,7 @@ public class PasswordScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ passwordTextFieldGetter, continueButtonGetter ],
-            app: app,
-            waitTimeout: 10
+            app: app
         )
     }
 

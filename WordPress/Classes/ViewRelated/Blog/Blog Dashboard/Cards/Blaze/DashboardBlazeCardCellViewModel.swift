@@ -4,7 +4,7 @@ import WordPressKit
 final class DashboardBlazeCardCellViewModel {
     private(set) var state: State = .promo
 
-    private let blog: Blog
+    private var blog: Blog
     private let service: BlazeServiceProtocol
     private let store: DashboardBlazeStoreProtocol
     private var isRefreshing = false
@@ -14,7 +14,7 @@ final class DashboardBlazeCardCellViewModel {
         /// Showing "Promote you content with Blaze" promo card.
         case promo
         /// Showing the latest Blaze campaign.
-        case campaign(BlazeCampaignViewModel)
+        case campaign(BlazeCampaign)
     }
 
     var onRefresh: ((DashboardBlazeCardCellViewModel) -> Void)?
@@ -31,7 +31,7 @@ final class DashboardBlazeCardCellViewModel {
         if isBlazeCampaignsFlagEnabled(),
            let blogID = blog.dotComID?.intValue,
            let campaign = store.getBlazeCampaign(forBlogID: blogID) {
-            self.state = .campaign(BlazeCampaignViewModel(campaign: campaign))
+            self.state = .campaign(campaign)
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .blazeCampaignCreated, object: nil)
@@ -57,7 +57,7 @@ final class DashboardBlazeCardCellViewModel {
                 store.setBlazeCampaign(campaign, forBlogID: blogID)
             }
             if let campaign {
-                state = .campaign(BlazeCampaignViewModel(campaign: campaign))
+                state = .campaign(campaign)
             } else {
                 state = .promo
             }

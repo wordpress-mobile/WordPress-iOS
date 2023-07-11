@@ -27,4 +27,18 @@ extension PublicizeService {
         request.sortDescriptors = [sortDescriptor]
         return try context.fetch(request)
     }
+
+    /// Returns an array of all cached `PublicizeService` objects that are supported by Jetpack Social.
+    ///
+    /// Note that services without a `status` field from the remote will be marked as supported by default.
+    ///
+    /// - Parameter context: The managed object context.
+    /// - Returns: An array of `PublicizeService`. The array is empty if no objects are cached.
+    static func allSupportedServices(in context: NSManagedObjectContext) throws -> [PublicizeService] {
+        let request = NSFetchRequest<PublicizeService>(entityName: PublicizeService.classNameWithoutNamespaces())
+        let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
+        request.predicate = NSPredicate(format: "status == %@", Self.defaultStatus)
+        request.sortDescriptors = [sortDescriptor]
+        return try context.fetch(request)
+    }
 }

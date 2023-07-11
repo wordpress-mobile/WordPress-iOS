@@ -11,8 +11,7 @@ public class FeatureIntroductionScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [closeButtonGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

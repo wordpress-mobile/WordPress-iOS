@@ -9,8 +9,7 @@ public class TagsComponent: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ { $0.textViews["add-tags"] } ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

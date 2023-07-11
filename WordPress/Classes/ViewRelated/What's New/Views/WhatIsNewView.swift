@@ -61,9 +61,14 @@ class WhatIsNewView: UIView {
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.contentEdgeInsets = UIEdgeInsets(top: self.appearance.backButtonInset, left: self.appearance.backButtonInset, bottom: 0, right: 0)
-        button.setImage(UIImage.gridicon(.arrowLeft), for: .normal)
+        button.configuration = {
+            var configuration = UIButton.Configuration.plain()
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: self.appearance.backButtonInset, leading: self.appearance.backButtonInset, bottom: 0, trailing: 0)
+            configuration.image = UIImage.gridicon(.arrowLeft)
+            return configuration
+        }()
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        button.semanticContentAttribute = .forceLeftToRight
         button.accessibilityLabel = NSLocalizedString("Back", comment: "Dismiss view")
         button.tintColor = self.appearance.backButtonTintColor
         return button

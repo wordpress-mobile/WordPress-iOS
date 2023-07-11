@@ -13,8 +13,7 @@ public class PostsScreen: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ { $0.tables["PostsTable"] } ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
         showOnly(.published)
     }

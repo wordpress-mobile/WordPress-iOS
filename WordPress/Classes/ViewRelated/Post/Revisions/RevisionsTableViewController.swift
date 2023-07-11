@@ -173,7 +173,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         return ContextManager.sharedInstance().mainContext
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         guard let postId = post?.postID, let siteId = post?.blog.dotComID else {
             preconditionFailure("Expected a postId or a siteId")
         }

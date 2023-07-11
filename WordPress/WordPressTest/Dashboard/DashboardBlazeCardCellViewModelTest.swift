@@ -51,8 +51,8 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         switch sut.state {
         case .promo:
             XCTFail("The card should display the latest campaign")
-        case .campaign(let viewModel):
-            XCTAssertEqual(viewModel.title, "Test Post - don't approve")
+        case .campaign(let campaign):
+            XCTAssertEqual(campaign.name, "Test Post - don't approve")
         }
     }
 
@@ -70,8 +70,8 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         switch sut.state {
         case .promo:
             XCTFail("The card should display the latest campaign")
-        case .campaign(let viewModel):
-            XCTAssertEqual(viewModel.title, "Test Post - don't approve")
+        case .campaign(let campaign):
+            XCTAssertEqual(campaign.name, "Test Post - don't approve")
         }
     }
 

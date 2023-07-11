@@ -20,8 +20,7 @@ public class ActivityLogScreen: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ dateRangeButtonGetter, activityTypeButtonGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

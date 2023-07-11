@@ -27,7 +27,7 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
         return context
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         return ReaderTagTopic.tagsFetchRequest
     }
 

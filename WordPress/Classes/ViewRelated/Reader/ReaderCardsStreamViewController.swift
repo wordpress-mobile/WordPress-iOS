@@ -175,7 +175,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     // MARK: - TableViewHandler
 
-    override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest(ascending: true)
         return fetchRequest

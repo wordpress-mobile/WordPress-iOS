@@ -359,7 +359,7 @@
           "ID": 181977606,
           "description": "Site with everything enabled",
           "name": "Weekend Bakes",
-          "URL": "yourjetpack.blog",
+          "URL": "weekendbakesblog.wordpress.com",
           "user_can_manage": false,
           "capabilities": {
             "edit_pages": true,

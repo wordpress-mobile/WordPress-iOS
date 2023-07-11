@@ -7,7 +7,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     private(set) var totalComments = 0
     private var post: ReaderPost?
-    private var presentingViewController: UIViewController?
+    private weak var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
     var followButtonTappedClosure: (() ->Void)?
