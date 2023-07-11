@@ -45,6 +45,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
+
+    // swiftlint:disable:next weak_delegate
     private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
 
     /// The table view that displays Related Posts

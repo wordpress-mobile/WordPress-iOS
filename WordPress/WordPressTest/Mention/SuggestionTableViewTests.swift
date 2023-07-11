@@ -6,6 +6,7 @@ import XCTest
 final class SuggestionTableViewTests: CoreDataTestCase {
 
     private var view: SuggestionsTableView!
+    // swiftlint:disable:next weak_delegate
     private var delegate: SuggestionsTableViewDelegateMock!
     private var viewModel: SuggestionsListViewModelType {
         return view.viewModel
