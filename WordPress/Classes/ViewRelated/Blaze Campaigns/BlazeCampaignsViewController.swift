@@ -155,8 +155,8 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
     }
 
     @objc private func buttonCreateCampaignTapped() {
-        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignsList)
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
+        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignList)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignList, blog: blog)
     }
 
     // MARK: - Private
@@ -206,7 +206,7 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
         guard let campaign = stream.campaigns[safe: indexPath.row] else {
             return
         }
-        BlazeFlowCoordinator.presentBlazeCampaignDetails(in: self, source: .campaignsList, blog: blog, campaignID: campaign.campaignID)
+        BlazeFlowCoordinator.presentBlazeCampaignDetails(in: self, source: .campaignList, blog: blog, campaignID: campaign.campaignID)
     }
 }
 
@@ -234,7 +234,7 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
     }
 
     func actionButtonPressed() {
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignList, blog: blog)
     }
 }
 
