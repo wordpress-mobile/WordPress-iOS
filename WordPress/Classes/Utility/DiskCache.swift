@@ -3,36 +3,18 @@ import CryptoKit
 
 /// An LRU disk cache that stores data in files on disk.
 ///
-/// ``DataCache`` uses LRU cleanup policy (least recently used items are removed
+/// ``DiskCache`` uses LRU cleanup policy (least recently used items are removed
 /// first). The elements stored in the cache are automatically discarded if
 /// either *cost* or *count* limit is reached. The sweeps are performed periodically.
 ///
-/// DataCache always writes and removes data asynchronously. It also allows for
-/// reading and writing data in parallel. This is implemented using a "staging"
-/// area which stores changes until they are flushed to disk:
-///
-/// ```swift
-/// // Schedules data to be written asynchronously and returns immediately
-/// cache[key] = data
-///
-/// // The data is returned from the staging area
-/// let data = cache[key]
-///
-/// // Schedules data to be removed asynchronously and returns immediately
-/// cache[key] = nil
-///
-/// // Data is nil
-/// let data = cache[key]
-/// ```
-///
-/// - important: It's possible to have more than one instance of ``DataCache`` with
+/// - important: It's possible to have more than one instance of ``DiskCache`` with
 /// the same path but it is not recommended.
 public actor DiskCache {
     /// The path for the directory managed by the cache.
-    public let rootURL: URL
+    public nonisolated let rootURL: URL
 
     /// The cache configuration.
-    public var configuration: Configuration
+    public nonisolated let configuration: Configuration
 
     public struct Configuration {
         /// Size limit in bytes. `100 Mb` by default.
@@ -81,8 +63,8 @@ public actor DiskCache {
         return cachesURL
     }
 
-    /// Creates a cache instance with a given root URL..
-    public init(url: URL, configuration: Configuration) {
+    /// Creates a cache instance with a given root URL.
+    public init(url: URL, configuration: Configuration = .init()) {
         self.rootURL = url
         self.configuration = configuration
 
@@ -93,58 +75,26 @@ public actor DiskCache {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + configuration.initialSweepDelay) { [weak self] in
             Task {
-                await self?.performAndScheduleSweep()
+                await self?.performAndScheduleNextSweep()
             }
         }
     }
 
     // MARK: Accessing Cached Data
 
-    /// Accesses the data associated with the given key for reading and writing.
-    ///
-    /// When you assign a new data for a key and the key already exists, the cache
-    /// overwrites the existing data.
-    ///
-    /// When assigning or removing data, the subscript adds a requested operation
-    /// in a staging area and returns immediately. The staging area allows for
-    /// reading and writing data in parallel.
-    ///
-    /// ```swift
-    /// // Schedules data to be written asynchronously and returns immediately
-    /// cache[key] = data
-    ///
-    /// // The data is returned from the staging area
-    /// let data = cache[key]
-    ///
-    /// // Schedules data to be removed asynchronously and returns immediately
-    /// cache[key] = nil
-    ///
-    /// // Data is nil
-    /// let data = cache[key]
-    /// ```
-    public subscript(key: String) -> Data? {
-        get {
-            guard let url = fileURL(for: key) else { return nil }
-            return try? Data(contentsOf: url)
-        }
-        set {
-            guard let url = fileURL(for: key) else { return }
-            if let data = newValue {
-                do {
-                    try data.write(to: url)
-                } catch let error as NSError {
-                    guard error.code == CocoaError.fileNoSuchFile.rawValue && error.domain == CocoaError.errorDomain else { return }
-                    try? FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
-                    try? data.write(to: url) // re-create a directory and try again
-                }
-            } else {
-                try? FileManager.default.removeItem(at: url)
-            }
-        }
+    public func getData(forKey key: String) -> Data? {
+        perform { $0.getData(forKey: key) }
     }
 
-    /// Removes all items. The method returns instantly, the data is removed
-    /// asynchronously.
+    public func setData(_ data: Data, forKey key: String) {
+        perform { $0.setData(data, forKey: key) }
+    }
+
+    public func removeData(forKey key: String) {
+        perform { $0.removeData(forKey: key) }
+    }
+
+    /// Removes all cached entries.
     public func removeAll() {
         do {
             try FileManager.default.removeItem(at: rootURL)
@@ -154,19 +104,66 @@ public actor DiskCache {
         }
     }
 
-    /// Returns `url` for the given cache key.
-    public func fileURL(for key: String) -> URL? {
-        guard let filename = key.sha1 else { return nil }
-        return rootURL.appendingPathComponent(filename, isDirectory: false)
+    /// Allows you to batch multiple cache operations.
+    public func perform<T>(_ closure: (inout NonisolatedCache) -> T) -> T {
+        var cache = NonisolatedCache(rootURL: rootURL)
+        return closure(&cache)
+    }
+
+    /// Returns the URL for the given cache key.
+    public nonisolated func fileURL(for key: String) -> URL? {
+        NonisolatedCache(rootURL: rootURL).fileURL(for: key)
+    }
+
+    public struct NonisolatedCache {
+        public let rootURL: URL
+
+        public subscript(key: String) -> Data? {
+            get { getData(forKey: key) }
+            set {
+                if let data = newValue {
+                    setData(data, forKey: key)
+                } else {
+                    removeData(forKey: key)
+                }
+            }
+        }
+
+        public func getData(forKey key: String) -> Data? {
+            guard let url = fileURL(for: key) else { return nil }
+            return try? Data(contentsOf: url)
+        }
+
+        public func setData(_ data: Data, forKey key: String) {
+            guard let url = fileURL(for: key) else { return }
+            do {
+                try data.write(to: url)
+            } catch let error as NSError {
+                guard error.code == CocoaError.fileNoSuchFile.rawValue && error.domain == CocoaError.errorDomain else { return }
+                try? FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
+                try? data.write(to: url) // re-create a directory and try again
+            }
+        }
+
+        public func removeData(forKey key: String) {
+            guard let url = fileURL(for: key) else { return }
+            try? FileManager.default.removeItem(at: url)
+        }
+
+        /// Returns `url` for the given cache key.
+        public func fileURL(for key: String) -> URL? {
+            guard let filename = key.sha1 else { return nil }
+            return rootURL.appendingPathComponent(filename, isDirectory: false)
+        }
     }
 
     // MARK: Sweep
 
-    private func performAndScheduleSweep() {
+    private func performAndScheduleNextSweep() {
         sweep()
         DispatchQueue.main.asyncAfter(deadline: .now() + configuration.sweepInterval) { [weak self] in
             Task {
-                await self?.performAndScheduleSweep()
+                await self?.performAndScheduleNextSweep()
             }
         }
     }
