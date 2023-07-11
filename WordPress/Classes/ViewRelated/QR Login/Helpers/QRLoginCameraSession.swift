@@ -23,7 +23,7 @@ class QRLoginCameraSession: NSObject, QRCodeScanningSession {
         return AVCaptureVideoPreviewLayer(session: session)
     }
 
-    var scanningDelegate: QRCodeScanningDelegate?
+    weak var scanningDelegate: QRCodeScanningDelegate?
 
     func configure() {
         configureCamera()
