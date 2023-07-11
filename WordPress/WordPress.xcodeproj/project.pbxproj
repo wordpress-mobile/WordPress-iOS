@@ -373,6 +373,8 @@
 		0C896DE42A3A7BDC00D7D4E7 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C896DDF2A3A763400D7D4E7 /* SettingsCell.swift */; };
 		0C896DE52A3A7C1F00D7D4E7 /* SiteVisibility+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C896DE12A3A767200D7D4E7 /* SiteVisibility+Extensions.swift */; };
 		0C896DE72A3A832B00D7D4E7 /* SiteVisibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C896DE62A3A832B00D7D4E7 /* SiteVisibilityTests.swift */; };
+		0C95B4812A5DBAB4003DD44B /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C95B4802A5DBAB4003DD44B /* DiskCache.swift */; };
+		0C95B4822A5DBAB4003DD44B /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C95B4802A5DBAB4003DD44B /* DiskCache.swift */; };
 		0CB4056B29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056C29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056E29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */; };
@@ -6111,6 +6113,7 @@
 		0C896DDF2A3A763400D7D4E7 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		0C896DE12A3A767200D7D4E7 /* SiteVisibility+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteVisibility+Extensions.swift"; sourceTree = "<group>"; };
 		0C896DE62A3A832B00D7D4E7 /* SiteVisibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVisibilityTests.swift; sourceTree = "<group>"; };
+		0C95B4802A5DBAB4003DD44B /* DiskCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskCache.swift; sourceTree = "<group>"; };
 		0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationService.swift; sourceTree = "<group>"; };
 		0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationServiceTests.swift; sourceTree = "<group>"; };
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
@@ -10534,7 +10537,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -13597,6 +13600,7 @@
 				74729CA12056F9DB00D1394D /* Spotlight */,
 				B526DC241B1E473B002A8C5F /* WebViewController */,
 				E1BEEC621C4E35A8000B4FA0 /* Animator.swift */,
+				0C95B4802A5DBAB4003DD44B /* DiskCache.swift */,
 				3FB1929426C79EC6000F5AA3 /* Date+TimeStrings.swift */,
 				E14BCABA1E0BC817002E0603 /* Delay.swift */,
 				40D78238206ABD970015A3A1 /* Scheduler.swift */,
@@ -18890,14 +18894,14 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -20653,11 +20657,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -20872,13 +20876,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -22083,6 +22087,7 @@
 				173B215527875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */,
 				02BF30532271D7F000616558 /* DomainCreditRedemptionSuccessViewController.swift in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
+				0C95B4812A5DBAB4003DD44B /* DiskCache.swift in Sources */,
 				B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */,
 				E1E49CE41C4902EE002393A4 /* ImmuTableViewController.swift in Sources */,
 				D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */,
@@ -24955,6 +24960,7 @@
 				FABB23E22602FC2C00C8785C /* SiteSuggestionService.swift in Sources */,
 				FABB23E32602FC2C00C8785C /* NotificationsViewController+PushPrimer.swift in Sources */,
 				FABB23E42602FC2C00C8785C /* ReaderPostService.m in Sources */,
+				0C95B4822A5DBAB4003DD44B /* DiskCache.swift in Sources */,
 				FABB23E52602FC2C00C8785C /* EditorMediaUtility.swift in Sources */,
 				FABB23E62602FC2C00C8785C /* ShareMediaFileManager.swift in Sources */,
 				FABB23E82602FC2C00C8785C /* ReaderCoordinator.swift in Sources */,
@@ -30709,7 +30715,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30790,12 +30796,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
