@@ -133,27 +133,29 @@ class PrivacySettingsViewController: UITableViewController {
         ])
     }
 
-    func usageTrackingChanged(_ enabled: Bool) {
-        // - If analytics tracking was enabled, then track the event before it is disabled.
-        // - If analytics tracking was disabled, then track the event when it is enabled
-        let performUpdateWithAnalyticsTracking: (() -> Void) -> Void = { [weak self] block in
-            guard let self else {
-                return
-            }
-            if !WPAppAnalytics.userHasOptedOut() {
-                self.analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
-            }
-            block()
-            if enabled {
-                self.analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
-            }
-        }
+    /// A method that reacts to changes in the user's analytics tracking preference.
+    ///
+    /// This method is invoked when a user enables or disables analytics tracking in their privacy settings. Its purpose is to update the user's preference locally and remotely, and to track the event if possible.
+    ///
+    /// - If the user is enabling tracking, this method first turns tracking on, then sends an event to the analytics tracker. This ensures that the event of enabling tracking is tracked.
+    /// - If the user is disabling tracking, the event is sent to the analytics tracker before tracking is turned off. This ensures that the event of disabling tracking is tracked before tracking is fully turned off.
+    ///
+    /// - Parameters:
+    ///     - enabled: A boolean that indicates the user's preference. If `true`, analytics tracking is enabled. If `false`, analytics tracking is disabled.
+    ///
+    private func usageTrackingChanged(_ enabled: Bool) {
+        analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
+        updateUserHasOptedOut(enabled)
+        analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
+        persistTrackingUpdateRemotely(enabled)
+    }
 
-        performUpdateWithAnalyticsTracking {
-            let appAnalytics = WordPressAppDelegate.shared?.analytics
-            appAnalytics?.setUserHasOptedOut(!enabled)
-        }
+    private func updateUserHasOptedOut(_ enabled: Bool) {
+        let appAnalytics = WordPressAppDelegate.shared?.analytics
+        appAnalytics?.setUserHasOptedOut(!enabled)
+    }
 
+    private func persistTrackingUpdateRemotely(_ enabled: Bool) {
         let result = ContextManager.shared.performQuery { context -> (NSNumber, WordPressComRestApi)? in
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
                   let wordPressComRestApi = account.wordPressComRestApi
