@@ -185,13 +185,13 @@ public class BlockEditorScreen: ScreenObject {
         let postButton = app.buttons[action]
         let postNowButton = app.buttons["\(action) Now"]
         var tries = 0
-        // This loop to check for Publish Now Button is an attempt to confirm that the publishButton.tap() call took effect.
+        // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
         // The tests would fail sometimes in the pipeline with no apparent reason.
         repeat {
             postButton.tap()
             tries += 1
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
-        try confirmPublish(button: postNowButton)
+        try confirmPost(button: postNowButton)
 
         let actionInNotice: String
 
@@ -295,7 +295,7 @@ public class BlockEditorScreen: ScreenObject {
                     .selectAlbum(atIndex: 0)
     }
 
-    private func confirmPublish(button: XCUIElement) throws {
+    private func confirmPost(button: XCUIElement) throws {
         if FancyAlertComponent.isLoaded() {
             try FancyAlertComponent().acceptAlert()
         } else {

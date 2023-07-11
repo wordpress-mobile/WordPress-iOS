@@ -82,13 +82,6 @@ public class PostsScreen: ScreenObject {
         return EditorScreen()
     }
 
-    public func goToScheduledPost() -> Self {
-        scheduledButton.tap()
-        createPostButton.tap()
-
-        return self
-    }
-
     /// If there are two versions of a local post, the app will ask which version we want to use when editing.
     /// We always want to use the local version (which is currently the first option)
     private func dismissAutosaveDialogIfNeeded() {
