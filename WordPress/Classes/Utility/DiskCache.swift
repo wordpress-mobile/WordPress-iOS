@@ -82,18 +82,50 @@ public actor DiskCache {
 
     // MARK: Codable
 
-    public func getValue<T: Decodable>(_ type: T.Type, forKey key: String, decoder: JSONDecoder = JSONDecoder()) async -> T? {
+    public func getValue<T: Decodable>(
+        _ type: T.Type,
+        forKey key: String,
+        decoder: JSONDecoder = JSONDecoder()
+    ) async -> T? {
         guard let data = getData(forKey: key) else { return nil }
         return try? decoder.decode(type, from: data)
     }
 
-    public func setValue<T: Encodable>(_ value: T, forKey key: String, encoder: JSONEncoder = JSONEncoder()) async {
+    public func setValue<T: Encodable>(
+        _ value: T,
+        forKey key: String,
+        encoder: JSONEncoder = JSONEncoder()
+    ) async {
         guard let data = try? encoder.encode(value) else { return }
         setData(data, forKey: key)
     }
 
     public func removeValue(forKey key: String) {
         removeData(forKey: key)
+    }
+
+    // MARK: Codable (Closures)
+
+    public nonisolated func getValue<T: Decodable>(
+        _ type: T.Type,
+        forKey key: String,
+        decoder: JSONDecoder = JSONDecoder(),
+        _ completion: @escaping (T?) -> Void
+    ) {
+        Task {
+            let value = await getValue(type, forKey: key, decoder: decoder)
+            completion(value)
+        }
+    }
+
+    public nonisolated func setValue<T: Encodable>(
+        _ value: T,
+        forKey key: String,
+        encoder: JSONEncoder = JSONEncoder()
+    ) {
+        Task {
+            await setValue(value, forKey: key, encoder: encoder)
+        }
     }
 
     // MARK: Accessing Cached Data

@@ -107,16 +107,38 @@ class DiskCacheTests: XCTestCase {
     // MARK: Codable
 
     func testStoreCodable() async {
+        // Given
         struct Payload: Codable {
             let value: String
         }
 
-        // Given
         let payload = Payload(value: "test")
 
         // When
         await cache.setValue(payload, forKey: "key")
         let cachedPayload = await cache.getValue(Payload.self, forKey: "key")
+
+        // Then
+        XCTAssertEqual(cachedPayload?.value, "test")
+    }
+
+    func testStoreCodableWithClosures() {
+        // Given
+        struct Payload: Codable {
+            let value: String
+        }
+
+        let payload = Payload(value: "test")
+
+        // When
+        cache.setValue(payload, forKey: "key")
+        let expectation = self.expectation(description: "payload")
+        var cachedPayload: Payload?
+        cache.getValue(Payload.self, forKey: "key") {
+            expectation.fulfill()
+            cachedPayload = $0
+        }
+        wait(for: [expectation], timeout: 1)
 
         // Then
         XCTAssertEqual(cachedPayload?.value, "test")
