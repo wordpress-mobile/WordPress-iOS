@@ -16,7 +16,7 @@ struct PrepublishingAutoSharingView: View {
 
     private var textStack: some View {
         VStack(alignment: .leading, spacing: .zero) {
-            Text(String(format: Constants.primaryLabelActiveConnectionsFormat, 3))
+            Text(model.labelText)
                 .font(.body)
                 .foregroundColor(Color(.label))
             if let sharingLimit = model.sharingLimit {
@@ -65,19 +65,6 @@ private extension PrepublishingAutoSharingView {
         static let disabledSocialIconOpacity: CGFloat = 0.36
         static let warningColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade50))
 
-        static let primaryLabelActiveConnectionsFormat = NSLocalizedString(
-            "prepublishing.social.text.activeConnections",
-            value: "Sharing to %1$d accounts",
-            comment: """
-                The primary label for the auto-sharing row on the pre-publishing sheet.
-                Indicates the number of social accounts that will be auto-sharing the blog post.
-                %1$d is a placeholder for the number of social network accounts that will be auto-shared.
-                Example: Sharing to 3 accounts
-                """
-        )
-
-        // TODO: More text variations.
-
         static let remainingSharesTextFormat = NSLocalizedString(
             "prepublishing.social.remainingShares",
             value: "%1$d/%2$d social shares remaining",
@@ -121,4 +108,80 @@ struct PrepublishingAutoSharingViewModel {
         }
         return enabledConnectionsCount > remaining
     }
+
+    var labelText: String {
+        switch (enabledConnectionsCount, connections.count) {
+        case (let enabled, _) where enabled == 0:
+            // not sharing to any social media
+            return Strings.notSharingText
+
+        case (let enabled, let total) where enabled == total && total == 1:
+            // sharing to the one and only connection
+            guard let account = connections.first?.account else {
+                return String()
+            }
+            return String(format: Strings.singleConnectionTextFormat, account)
+
+        case (let enabled, let total) where enabled == total && total > 1:
+            // sharing to all connections
+            return String(format: Strings.multipleConnectionsTextFormat, enabled)
+
+        case (let enabled, let total) where enabled < total && total > 1:
+            // sharing to some connections
+            return String(format: Strings.partialConnectionsTextFormat, enabled, total)
+
+        default:
+            return String()
+        }
+    }
+}
+
+private extension PrepublishingAutoSharingViewModel {
+
+    enum Strings {
+        static let notSharingText = NSLocalizedString(
+            "prepublishing.social.label.notSharing",
+            value: "Not sharing to social",
+            comment: """
+                The primary label for the auto-sharing row on the pre-publishing sheet.
+                Indicates the blog post will not be shared to any social accounts.
+                """
+        )
+
+        static let singleConnectionTextFormat = NSLocalizedString(
+            "prepublishing.social.label.singleConnection",
+            value: "Sharing to %1$@",
+            comment: """
+                The primary label for the auto-sharing row on the pre-publishing sheet.
+                Indicates the blog post will be shared to a social media account.
+                %1$@ is a placeholder for the account name.
+                Example: Sharing to @wordpress
+                """
+        )
+
+        static let multipleConnectionsTextFormat = NSLocalizedString(
+            "prepublishing.social.label.multipleConnections",
+            value: "Sharing to %1$d accounts",
+            comment: """
+                The primary label for the auto-sharing row on the pre-publishing sheet.
+                Indicates the number of social accounts that will be sharing the blog post.
+                %1$d is a placeholder for the number of social network accounts that will be auto-shared.
+                Example: Sharing to 3 accounts
+                """
+        )
+
+        static let partialConnectionsTextFormat = NSLocalizedString(
+            "prepublishing.social.label.partialConnections",
+            value: "Sharing to %1$d of %2$d accounts",
+            comment: """
+                The primary label for the auto-sharing row on the pre-publishing sheet.
+                Indicates the number of social accounts that will be sharing the blog post.
+                This string is displayed when some of the social accounts are turned off for auto-sharing.
+                %1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+                %2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+                Example: Sharing to 2 of 3 accounts
+                """
+        )
+    }
+
 }
