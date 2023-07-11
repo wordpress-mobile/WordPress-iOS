@@ -20,6 +20,22 @@ final class CompliancePopoverViewModelTests: CoreDataTestCase {
         testDefaults?.removeObject(forKey: UserDefaults.didShowCompliancePopupKey)
     }
 
+    /// Tests the tracking of the 'privacyChoicesBannerPresented' event when the privacy popover is displayed.
+    /// It also validates that no additional event properties are being tracked.
+    func testDidDisplayPopover() throws {
+        // Given
+        let defaults = try XCTUnwrap(testDefaults)
+        let tracker = PrivacySettingsAnalyticsTrackerSpy()
+        let sut = CompliancePopoverViewModel(defaults: defaults, contextManager: contextManager, analyticsTracker: tracker)
+
+        // When
+        sut.didDisplayPopover()
+
+        // Then
+        XCTAssertEqual(tracker.trackedEvent, .privacyChoicesBannerPresented)
+        XCTAssertEqual(tracker.trackedEventProperties, [:])
+    }
+
     func testDidTapSettingsUpdatesDefaults() throws {
         let defaults = try XCTUnwrap(testDefaults)
         let sut = CompliancePopoverViewModel(defaults: defaults, contextManager: contextManager)
