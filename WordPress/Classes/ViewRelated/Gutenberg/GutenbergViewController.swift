@@ -338,6 +338,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         self.navigationBarManager.delegate = self
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {

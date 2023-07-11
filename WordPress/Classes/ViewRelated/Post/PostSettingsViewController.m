@@ -78,6 +78,7 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *enabledConnections;
 
 @property (nonatomic, strong) NoResultsViewController *noResultsView;
 @property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
@@ -112,6 +113,7 @@ FeaturedImageViewControllerDelegate>
     if (self) {
         self.apost = aPost;
         self.unsupportedConnections = @[];
+        self.enabledConnections = [NSMutableArray array];
     }
     return self;
 }
@@ -255,6 +257,11 @@ FeaturedImageViewControllerDelegate>
         }
 
         [supportedConnections addObject:connection];
+
+        if (![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID]
+            && ![self.enabledConnections containsObject:connection.keyringConnectionID]) {
+            [self.enabledConnections addObject:connection.keyringConnectionID];
+        }
     }
 
     self.publicizeConnections = supportedConnections;
@@ -927,13 +934,19 @@ FeaturedImageViewControllerDelegate>
 - (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    BOOL canEditSharing = [self.post canEditPublicizeSettings];
+    BOOL canEditSharing = [self userCanEditSharing];
     NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
     NSArray<PublicizeConnection *> *connections = sec == PostSettingsSectionShare ? self.publicizeConnections : self.unsupportedConnections;
 
     if (indexPath.row < connections.count) {
+        PublicizeConnection *connection = connections[indexPath.row];
+        if ([Feature enabled:FeatureFlagJetpackSocial]) {
+            BOOL hasRemainingShares = self.enabledConnections.count < [self remainingSocialShares];
+            BOOL isSwitchOn = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
+            canEditSharing = canEditSharing && (hasRemainingShares || isSwitchOn);
+        }
         cell = [self configureSocialCellForIndexPath:indexPath
-                                          connection:connections[indexPath.row]
+                                          connection:connection
                                       canEditSharing:canEditSharing
                                              section:sec];
     } else {
@@ -1170,8 +1183,18 @@ FeaturedImageViewControllerDelegate>
             [cellSwitch setOn:!cellSwitch.on animated:YES];
             if (cellSwitch.on) {
                 [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+
+                if ([Feature enabled:FeatureFlagJetpackSocial]) {
+                    [self.enabledConnections addObject:connection.keyringConnectionID];
+                    [self reloadSocialSectionComparingValue:[self remainingSocialShares]];
+                }
             } else {
                 [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+
+                if ([Feature enabled:FeatureFlagJetpackSocial]) {
+                    [self.enabledConnections removeObject:connection.keyringConnectionID];
+                    [self reloadSocialSectionComparingValue:[self remainingSocialShares] - 1];
+                }
             }
         }
     }
@@ -1412,6 +1435,15 @@ FeaturedImageViewControllerDelegate>
     UITableViewCell *cell = [self configureGenericCellWith:[self createRemainingSharesView]];
     cell.tag = PostSettingsRowSocialRemainingShares;
     return cell;
+}
+
+- (void)reloadSocialSectionComparingValue:(NSUInteger)value
+{
+    if (self.enabledConnections.count == value) {
+        NSUInteger sharingSection = [self.sections indexOfObject:@(PostSettingsSectionShare)];
+        NSIndexSet *sharingSectionSet = [NSIndexSet indexSetWithIndex:sharingSection];
+        [self.tableView reloadSections:sharingSectionSet withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods
