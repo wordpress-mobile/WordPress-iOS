@@ -73,7 +73,7 @@ final class BlazeCampaignDetailsWebViewModelTests: CoreDataTestCase {
 
         // Then
         XCTAssertTrue(view.loadCalled)
-        XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com/campaigns/0?source=campaigns_list")
+        XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com/campaigns/0?source=campaign_list")
     }
 }
 
