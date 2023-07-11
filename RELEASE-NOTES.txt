@@ -1,3 +1,7 @@
+22.9
+-----
+* [*] Fix a memory leak caused by the theme customization web view. [#21051]
+
 22.8
 -----
 * [*] Blogging Reminders: Disabled prompt for self-hosted sites not connected to Jetpack. [#20970]
