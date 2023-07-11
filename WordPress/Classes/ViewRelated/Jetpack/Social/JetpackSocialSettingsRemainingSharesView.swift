@@ -59,9 +59,9 @@ struct JetpackSocialRemainingSharesViewModel {
     let displayWarning: Bool
     let onSubscribeTap: () -> Void
 
-    init(remaining: Int = 27,
-         limit: Int = 30,
-         displayWarning: Bool = false,
+    init(remaining: Int,
+         limit: Int,
+         displayWarning: Bool,
          onSubscribeTap: @escaping () -> Void) {
         self.remaining = remaining
         self.limit = limit
