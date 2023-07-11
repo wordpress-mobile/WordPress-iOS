@@ -1,33 +1,40 @@
 import XCTest
-import Nimble
 
 @testable import WordPress
 
 final class CompliancePopoverViewControllerTests: CoreDataTestCase {
 
-    /// Tests that the event `privacyChoicesBannerPresented` is tracked.
-    func testTrackPrivacyChoicesBannerPresented() throws {
+    /// Tests that the method `viewModel.didDisplayPopover` is called on `viewDidLoad`.
+    func testViewModelDidDisplayPopoverCalled() throws {
         // Given
-        let tracker = PrivacySettingsAnalyticsTrackerSpy()
-        let viewModel = try makeCompliancePopoverViewModelMock(tracker: tracker)
+        let viewModel = try makeCompliancePopoverViewModelSpy()
         let controller = CompliancePopoverViewController(viewModel: viewModel)
 
         // When
         controller.loadViewIfNeeded()
 
         // Then
-        expect(tracker.trackedEvent).to(equal(.privacyChoicesBannerPresented))
-        expect(tracker.trackedEventProperties).to(beEmpty())
+        XCTAssertTrue(viewModel.didDisplayPopoverCalled)
     }
 
 }
 
-// MARK: - Mocks
+// MARK: - Test Doubles
 
-extension CompliancePopoverViewControllerTests {
+private final class CompliancePopoverViewModelSpy: CompliancePopoverViewModel {
 
-    func makeCompliancePopoverViewModelMock(tracker: PrivacySettingsAnalyticsTracking) throws -> CompliancePopoverViewModel {
+    private(set) var didDisplayPopoverCalled = false
+
+    override func didDisplayPopover() {
+        self.didDisplayPopoverCalled = true
+    }
+}
+
+fileprivate extension CompliancePopoverViewControllerTests {
+
+    func makeCompliancePopoverViewModelSpy() throws -> CompliancePopoverViewModelSpy {
+        let tracker = PrivacySettingsAnalyticsTrackerSpy()
         let defaults = try XCTUnwrap(UserDefaults(suiteName: "compliance-popover-mock"))
-        return .init(defaults: defaults, contextManager: contextManager, analyticsTracker: tracker)
+        return CompliancePopoverViewModelSpy(defaults: defaults, contextManager: contextManager, analyticsTracker: tracker)
     }
 }
