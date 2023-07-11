@@ -65,6 +65,22 @@ import Foundation
         WPAnalytics.track(.blazeCampaignListOpened, properties: analyticsProperties(for: source))
     }
 
+    // MARK: - Campaign details
+
+    static func trackCampaignDetailsOpened(for source: BlazeSource) {
+        WPAnalytics.track(.blazeCampaignDetailsOpened, properties: analyticsProperties(for: source))
+    }
+
+    static func trackCampaignDetailsError(for source: BlazeSource) {
+        WPAnalytics.track(.blazeCampaignDetailsError, properties: analyticsProperties(for: source))
+    }
+
+    static func trackCampaignDetailsDismissed(for source: BlazeSource) {
+        WPAnalytics.track(.blazeCampaignDetailsDismissed, properties: analyticsProperties(for: source))
+    }
+
+    // MARK: - Helpers
+
     private static func analyticsProperties(for source: BlazeSource) -> [String: String] {
         return [WPAppAnalyticsKeySource: source.description]
     }
