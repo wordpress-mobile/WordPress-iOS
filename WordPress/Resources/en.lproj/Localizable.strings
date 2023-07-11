@@ -1971,8 +1971,7 @@ Example: Reply to Pamela Nguyen */
 "Completed: View your site" = "Completed: View your site";
 
 /* Footnote for the privacy compliance popover. */
-"compliance.analytics.popover.footnote" = "These cookies allow us to optimize performance by collecting
-information on how users interact with our websites.";
+"compliance.analytics.popover.footnote" = "These cookies allow us to optimize performance by collecting information on how users interact with our websites.";
 
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Save";
@@ -1981,8 +1980,7 @@ information on how users interact with our websites.";
 "compliance.analytics.popover.settings.button" = "Go to Settings";
 
 /* Subtitle for the privacy compliance popover. */
-"compliance.analytics.popover.subtitle" = "We process your personal data to optimize our website and
-marketing activities based on your consent and our legitimate interest.";
+"compliance.analytics.popover.subtitle" = "We process your personal data to optimize our website and marketing activities based on your consent and our legitimate interest.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Manage privacy";
