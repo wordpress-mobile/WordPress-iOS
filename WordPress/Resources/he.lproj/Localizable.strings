@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "הבלוק %s. בלוק זה כולל תוכן לא חוקי";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "התוכן של %s הומר לבלוק רגיל";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "התוכן של %s הומר לבלוקים רגילים";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s תצוגות מקדימות של בלוק ההטמעה יהיו זמינות בקרוב";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "טקסט חלופי";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "לחלופין, ניתן לנתק ולערוך את הבלוקים האלה בנפרד על ידי הקשת הטקסט \"המרה לבלוקים רגילים\".";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "לחלופין, ניתן לנתק ולערוך את הבלוק הזה בנפרד על ידי הקשה על 'המרה לבלוק רגיל'.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "לחלופין, ניתן להזין את הסיסמה של החשבון.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "כמות הצפיות הגבוהה בכל הזמנים";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "עדכון גדול לאייפון\/אייפד זמין עכשיו";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "נוצר עמוד ריק";
@@ -2746,12 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "לערוך וידאו";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-%s למערכת Android";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "עריכת בלוקים לשימוש חוזר עדיין אינה נתמכת ב-%s למערכת iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "עריכה קובץ ה-GIF תסיר את ההנפשה שלו.";
@@ -5232,7 +5211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "מכין...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6063,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "להכניס קצת עניין בדיון: כתיבת פוסט חדש.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "באותו נושא";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "פוסטים קשורים מציגים תוכן רלוונטי מהאתר שלך, מתחת לפוסטים שלך";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "אני רוצה לקבל תזכורת";
@@ -6340,9 +6312,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "חזרה לפוסט";
-
-/* No comment provided by engineer. */
-"Reusable" = "לשימוש חוזר";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "החזר שינוי בהמתנה למצב קודם";
@@ -6864,12 +6833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "שגיאה בשיתוף";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "הצגת כותרת";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "הצג תמונות";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "הצגת כפתור 'לייק'";
 
@@ -6878,9 +6841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "הצגת לחצן פרסום מחדש בבלוג";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "הצג תכנים באותו נושא";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "הראו לי את האפשרויות הקיימות";
@@ -7560,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "בכתובת האינטרנט חסר מארח חוקי.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "אפליקציית WordPress ל-Android עברה 'מתיחת פנים' רצינית";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "המעריצים הכי נאמנים בעולם";
 
@@ -7766,9 +7723,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "אירעה שגיאה בטעינת הפעילויות";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "אירעה שגיאה בטעינת הקמפיינים.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "אירעה שגיאה בעת טעינת התוכניות";
@@ -8497,9 +8451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "מעדכן...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "המלצת שדרוג: VideoPress לחתונות";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "יש לשדרג את התוכנית שלך כדי להעלות אודיו";
@@ -9720,9 +9671,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "הושלם";
 
 /* Short status description */
-"blazeCampaign.status.created" = "נוצר";
-
-/* Short status description */
 "blazeCampaign.status.inmoderation" = "בתהליך אישור";
 
 /* Short status description */
@@ -10026,15 +9974,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "תמונה";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "תחת 'אפליקציות'";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "תחת 'נייד'";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "תחת 'שדרוג'";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
@@ -10453,14 +10392,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "לערוך פוסט טיוטה";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "לכתוב טיוטה לפוסט";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "הנתונים הסטטיסטיים של היום";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "נתונים סטטיסטיים";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "ביטול";

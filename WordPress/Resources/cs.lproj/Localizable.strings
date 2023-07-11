@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Tento blok má neplatný obsah";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s převedeno na běžný blok";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s převeden na běžné bloky";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s náhledy bloků pro vložení budou brzy k dispozici";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternativní text";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativně můžete tyto bloky oddělit a upravit samostatně klepnutím na „Převést na běžné bloky“.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Případně můžete tento blok odpojit a upravit samostatně klepnutím na „Převést na běžný blok“.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Případně můžete zadat heslo pro tento účet.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Nejlepší pohledy ze všech";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Velký iPhone\/iPad dostává nyní aktualizaci";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Prázdná stránka vytvořena";
@@ -2722,12 +2707,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Upravit video";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "Úpravy opakovaně použitelných bloků zatím nejsou na %s pro Android podporovány";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "Úpravy opakovaně použitelných bloků zatím nejsou na %s pro iOS podporovány";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Úpravou tohoto GIF odstraníte jeho animaci.";
@@ -5193,7 +5172,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5772,7 +5750,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Přípravuji...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6038,13 +6015,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Obnovte konverzaci: napište nový příspěvek";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Související příspěvky";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Podobné příspěvky zobrazí relevantní obsah vašeho webu, přímo pod příspěvky.";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Připomeň mi";
@@ -6807,12 +6779,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Chyba sdílení";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Zobrazit hlavičku";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Zobrazit obrázky";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Zobrazit tlačítka to se mi líbí";
 
@@ -6821,9 +6787,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Ukázat reblog tlačítko";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Zobrazit podobné příspěvky";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Ukaž mi to";
@@ -7502,9 +7465,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Chybí adresa URL u hostitele.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Aplikace WordPress pro Android má vylepšený vzhled";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Nejlepší fanoušci světa";
@@ -8431,9 +8391,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Aktualizování...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Zaměření upgradu: VideoPress pro svatby";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgradujte svůj plán na nahrávání zvuku";
@@ -9721,15 +9678,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on image media items. */
 "image" = "obrázky";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "v \"Aplikaci\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "v \"Mobilu\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "v \"aktualizaci\"";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Pořizovat fotky a videa a umožnit použití ve vašich příspěvcích. ";
 
@@ -10054,14 +10002,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Práce na konceptu příspěvku";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "koncept příspěvku";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Dnešní statistika";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Statistiky";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odmítnout";

@@ -286,9 +286,6 @@
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Vertu fyrst(ur) til þess að rita athugasemd.";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Stór iPhone\/iPad uppfærsla nú í boði";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Tilvitnun";
@@ -1623,7 +1620,6 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -1835,7 +1831,6 @@
 "Preparing..." = "Undirbý…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -1957,13 +1952,8 @@
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Komdu umræðum aftur af stað: skrifaðu nýja færslu.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Tengdar greinar";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Tengdar færslur birta viðeigandi efni af vefnum þínum fyrir neðan færslurna þínar";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -2207,12 +2197,6 @@
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Deilihnappar";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Birta haus";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Birta myndir";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Birta hnapp til að líka við";
 
@@ -2221,9 +2205,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Birta hnapp til að endurbirta";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Birta tengdar færslur";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Birta þemu:";
@@ -2455,9 +2436,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Vefslóðina vantar gilt nafn þjóns.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "WordPress forritið fyrir Android fær stóra andlitslyftingu";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Forritið gat ekki skilið svarið frá netþjóninum. Vinsamlegast yfirfarið stillingar á vefnum þínum.";
@@ -2778,9 +2756,6 @@
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Uppfæri...";
 
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Uppfræsla: VideoPress fyrir brúðkaup";
-
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Halaðu upp skrá";
 
@@ -3053,15 +3028,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (vefslóð)";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "í \"forritum\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "í \"farsíma\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "í \"uppfærslu\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
