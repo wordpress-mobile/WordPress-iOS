@@ -10,8 +10,6 @@ class MainNavigationTests: XCTestCase {
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
-        try TabNavComponent()
-            .goToMySiteScreen()
             .goToMenu()
     }
 
