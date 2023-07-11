@@ -1,10 +1,34 @@
 import SwiftUI
 
 struct CompliancePopover: View {
-    @State
-    private var isAnalyticsOn = true
+    private enum Constants {
+        static let verticalScrollBuffer = Length.Padding.large
+    }
+
+    var goToSettingsAction: (() -> ())?
+    var saveAction: (() -> ())?
+    var shouldScroll: Bool = false
+    var screenHeight: CGFloat = 0
+
+    @StateObject
+    var viewModel: CompliancePopoverViewModel
 
     var body: some View {
+        if shouldScroll {
+            GeometryReader { reader in
+                ScrollView(showsIndicators: false) {
+                    contentVStack
+                    // Fixes the issue of scroll view content size not sizing properly.
+                    // Without this, on large dynamic fonts, the view is not properly scrollable.
+                    Spacer().frame(height: reader.size.height - screenHeight + Constants.verticalScrollBuffer)
+                }
+            }
+        } else {
+            contentVStack
+        }
+    }
+
+    private var contentVStack: some View {
         VStack(alignment: .leading, spacing: Length.Padding.double) {
             titleText
             subtitleText
@@ -13,6 +37,7 @@ struct CompliancePopover: View {
             buttonsHStack
         }
         .padding(Length.Padding.small)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private var titleText: some View {
@@ -27,14 +52,15 @@ struct CompliancePopover: View {
     }
 
     private var analyticsToggle: some View {
-        Toggle(Strings.toggleTitle, isOn: $isAnalyticsOn)
+        Toggle(Strings.toggleTitle, isOn: $viewModel.isAnalyticsEnabled)
             .foregroundColor(Color.DS.Foreground.primary)
             .toggleStyle(SwitchToggleStyle(tint: Color.DS.Background.brand))
             .padding(.vertical, Length.Padding.single)
     }
 
     private var footnote: some View {
-        Text("")
+        Text(Strings.footnote)
+            .font(.body)
             .foregroundColor(.secondary)
     }
 
@@ -46,30 +72,32 @@ struct CompliancePopover: View {
     }
 
     private var settingsButton: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: Length.Padding.single)
-                .stroke(Color.DS.Border.divider, lineWidth: Length.Border.thin)
-            Button(action: {
-                print("Settings tapped")
-            }) {
+        Button(action: {
+            goToSettingsAction?()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: Length.Padding.single)
+                    .stroke(Color.DS.Border.divider, lineWidth: Length.Border.thin)
                 Text(Strings.settingsButtonTitle)
+                    .font(.body)
             }
-            .foregroundColor(Color.DS.Background.brand)
         }
+        .foregroundColor(Color.DS.Background.brand)
         .frame(height: Length.Hitbox.minTapDimension)
     }
 
     private var saveButton: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
-                .fill(Color.DS.Background.brand)
-            Button(action: {
-                print("Save tapped")
-            }) {
+        Button(action: {
+            saveAction?()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: Length.Radius.minHeightButton)
+                    .fill(Color.DS.Background.brand)
                 Text(Strings.saveButtonTitle)
+                    .font(.body)
             }
-            .foregroundColor(.white)
         }
+        .foregroundColor(.white)
         .frame(height: Length.Hitbox.minTapDimension)
     }
 }
@@ -83,10 +111,7 @@ private enum Strings {
 
     static let subtitle = NSLocalizedString(
         "compliance.analytics.popover.subtitle",
-        value: """
-                We process your personal data to optimize our website and
-                marketing activities based on your consent and our legitimate interest.
-                """,
+        value: "We process your personal data to optimize our website and marketing activities based on your consent and our legitimate interest.",
         comment: "Subtitle for the privacy compliance popover."
     )
 
@@ -98,10 +123,7 @@ private enum Strings {
 
     static let footnote = NSLocalizedString(
         "compliance.analytics.popover.footnote",
-        value: """
-                These cookies allow us to optimize performance by collecting
-                information on how users interact with our websites.
-                """,
+        value: "These cookies allow us to optimize performance by collecting information on how users interact with our websites.",
         comment: "Footnote for the privacy compliance popover."
     )
 
