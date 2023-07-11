@@ -12,8 +12,8 @@ import UniformTypeIdentifiers
 
 
 @objc open class RichTextView: UIView, UITextViewDelegate {
-    @objc open var dataSource: RichTextViewDataSource?
-    @objc open var delegate: RichTextViewDelegate?
+    @objc open weak var dataSource: RichTextViewDataSource?
+    @objc open weak var delegate: RichTextViewDelegate?
 
 
     // MARK: - Initializers
