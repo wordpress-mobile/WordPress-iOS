@@ -296,6 +296,12 @@ extension UIColor {
     static var prologueBackground: UIColor {
         return UIColor(light: muriel(color: MurielColor(name: .blue, shade: .shade0)), dark: .systemBackground)
     }
+
+    // MARK: - Editor
+
+    static var editorActionText: UIColor {
+        return UIColor(light: .black, dark: .white)
+    }
 }
 
 @objc

@@ -8,6 +8,14 @@ public class BlockEditorScreen: ScreenObject {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     }
 
+    let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
+    }
+
+    let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
+    }
+
     let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["add-block-button"]
     }
@@ -25,6 +33,8 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
+    var undoButton: XCUIElement { undoButtonGetter(app) }
+    var redoButton: XCUIElement { redoButtonGetter(app) }
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
@@ -35,7 +45,7 @@ public class BlockEditorScreen: ScreenObject {
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ editorCloseButtonGetter, addBlockButtonGetter ],
+            expectedElementGetters: [ editorCloseButtonGetter, undoButtonGetter, redoButtonGetter, addBlockButtonGetter ],
             app: app
         )
     }
@@ -233,6 +243,34 @@ public class BlockEditorScreen: ScreenObject {
         let blockButton = app.buttons[blockLabel]
         if !blockButton.isHittable { app.scrollDownToElement(element: blockButton) }
         blockButton.tap()
+    }
+
+    @discardableResult
+    public func undo() throws -> BlockEditorScreen {
+        undoButton.tap()
+
+        return try BlockEditorScreen()
+    }
+
+    @discardableResult
+    public func verifyUndoIsDisabled() throws -> BlockEditorScreen {
+        XCTAssertFalse(undoButton.isEnabled)
+
+        return try BlockEditorScreen()
+    }
+
+    @discardableResult
+    public func redo() throws -> BlockEditorScreen {
+        redoButton.tap()
+
+        return try BlockEditorScreen()
+    }
+
+    @discardableResult
+    public func verifyRedoIsDisabled() throws -> BlockEditorScreen {
+        XCTAssertFalse(redoButton.isEnabled)
+
+        return try BlockEditorScreen()
     }
 
     /// Some tests might fail during the block picking flow. In such cases, we need to dismiss the

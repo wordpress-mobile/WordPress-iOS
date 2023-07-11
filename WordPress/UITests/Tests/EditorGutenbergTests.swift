@@ -55,6 +55,22 @@ class EditorGutenbergTests: XCTestCase {
             .done()
     }
 
+    func testUndoRedo() throws {
+
+        try BlockEditorScreen()
+            .verifyUndoIsDisabled()
+            .verifyRedoIsDisabled()
+            .enterTextInTitle(text: title)
+            .addParagraphBlock(withText: content)
+            .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
+            .undo()
+            .undo()
+            .verifyContentStructure(blocks: 0, words: 0, characters: 0)
+            .redo()
+            .redo()
+            .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
+    }
+
     func testAddRemoveFeaturedImage() throws {
 
         try BlockEditorScreen()
