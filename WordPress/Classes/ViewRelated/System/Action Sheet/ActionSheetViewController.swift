@@ -33,8 +33,8 @@ class ActionSheetViewController: UIViewController {
 
         enum Button {
             static let height: CGFloat = 54
-            static let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 35)
-            static let titleInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+            static let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 35)
+            static let imagePadding: CGFloat = 16
             static let imageTintColor: UIColor = .neutral(.shade30)
             static let font: UIFont = .preferredFont(forTextStyle: .callout)
             static let textColor: UIColor = .text
@@ -147,27 +147,32 @@ class ActionSheetViewController: UIViewController {
         updateScrollViewHeight()
     }
 
-    private func createButton(_ handler: @escaping () -> Void) -> UIButton {
-        let button = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in handler() }))
-        button.titleLabel?.font = Constants.Button.font
-        button.setTitleColor(Constants.Button.textColor, for: .normal)
-        button.imageView?.tintColor = Constants.Button.imageTintColor
-        button.setBackgroundImage(UIImage(color: .divider), for: .highlighted)
-        button.titleEdgeInsets = Constants.Button.titleInsets
-        button.naturalContentHorizontalAlignment = .leading
-        button.contentEdgeInsets = Constants.Button.contentInsets
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.flipInsetsForRightToLeftLayoutDirection()
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        return button
-    }
-
     private func button(_ info: ActionSheetButton) -> UIButton {
-        let button = createButton(info.action)
+        let button = UIButton(type: .system, primaryAction: UIAction(handler: { _ in info.action() }))
 
-        button.setTitle(info.title, for: .normal)
-        button.setImage(info.image, for: .normal)
+        button.configuration = {
+            var configuration = UIButton.Configuration.plain()
+            configuration.attributedTitle = {
+                var string = AttributedString(info.title)
+                string.font = Constants.Button.font
+                string.foregroundColor = Constants.Button.textColor
+                return string
+            }()
+            configuration.image = info.image
+            configuration.imageColorTransformer = UIConfigurationColorTransformer { _ in
+                Constants.Button.imageTintColor
+            }
+            configuration.imagePadding = Constants.Button.imagePadding
+            configuration.contentInsets = Constants.Button.contentInsets
+            configuration.background.cornerRadius = 0
+            return configuration
+        }()
+        button.configurationUpdateHandler = { button in
+            button.configuration?.background.backgroundColor = button.isHighlighted ? .divider : .clear
+        }
+        button.contentHorizontalAlignment = .leading
         button.accessibilityIdentifier = info.identifier
+        button.translatesAutoresizingMaskIntoConstraints = false
 
         if let badge = info.badge {
             button.addSubview(badge)

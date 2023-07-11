@@ -4,7 +4,7 @@ import WordPressKit
 final class DashboardBlazeCardCellViewModel {
     private(set) var state: State = .promo
 
-    private let blog: Blog
+    private var blog: Blog
     private let service: BlazeServiceProtocol
     private let store: DashboardBlazeStoreProtocol
     private var isRefreshing = false

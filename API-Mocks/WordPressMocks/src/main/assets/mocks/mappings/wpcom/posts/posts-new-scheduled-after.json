@@ -1,7 +1,7 @@
 {
     "request": {
       "method": "POST",
-      "urlPattern": "/rest/v1.2/sites/106707880/posts/5?($|\\?.*)",
+      "urlPattern": "/rest/v1.2/sites/181977606/posts/15?($|\\?.*)",
       "queryParameters": {
         "context": {
           "equalTo": "edit"
@@ -10,10 +10,9 @@
     },
     "response": {
       "status": 200,
-      "fixedDelayMilliseconds": 1000,
       "jsonBody": {
-        "ID": 5,
-        "site_ID": 106707880,
+        "ID": 15,
+        "site_ID": 181977606,
         "author": {
           "ID": 152748359,
           "login": "e2eflowtestingmobile",
@@ -27,8 +26,8 @@
           "profile_URL": "http://en.gravatar.com/e2eflowtestingmobile",
           "site_ID": 1
         },
-        "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
-        "modified": "{{now format=customformat}}",
+        "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now offset='+2 hours' format=customformat}}",
+        "modified": "{{now offset='+2 hours' format=customformat}}",
         "title": "{{jsonPath request.body '$.title'}}",
         "URL": "https://lowtestingmobile.wordpress.com/2019/03/12/title-33/",
         "short_URL": "https://e/paIC9Y-1r",
@@ -36,7 +35,7 @@
         "excerpt": "",
         "slug": "title-33",
         "guid": "https://infocusphotographers.com/2019/03/12/title-33/",
-        "status": "publish",
+        "status": "future",
         "sticky": false,
         "password": "",
         "parent": false,
@@ -75,9 +74,9 @@
               "parent": 0,
               "meta": {
                 "links": {
-                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
-                  "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
-                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:uncategorized",
+                  "help": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/categories/slug:uncategorized/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
                 }
               }
             }
@@ -101,9 +100,9 @@
             "parent": 0,
             "meta": {
               "links": {
-                "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
-                "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
-                "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
+                "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:uncategorized",
+                "help": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/categories/slug:uncategorized/help",
+                "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
               }
             }
           }
@@ -120,11 +119,11 @@
         ],
         "meta": {
           "links": {
-            "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5",
-            "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/5/help",
-            "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
-            "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/replies/",
-            "likes": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/likes/"
+            "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/5",
+            "help": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/posts/5/help",
+            "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606",
+            "replies": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/5/replies/",
+            "likes": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/5/likes/"
           }
         },
         "capabilities": {
@@ -141,6 +140,6 @@
         "Cache-Control": "no-cache, must-revalidate, max-age=0"
       }
     },
-    "scenarioName": "new-post",
-    "newScenarioState": "Post Published"
+    "scenarioName": "new-scheduled-post",
+    "requiredScenarioState": "Scheduled Post Published"
   }

@@ -1,4 +1,5 @@
 import SwiftUI
+import AutomatticTracks
 
 extension PostSettingsViewController {
 
@@ -36,18 +37,29 @@ extension PostSettingsViewController {
         let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
         let blogSupportsPublicize = apost.blog.supportsPublicize()
         let blogHasConnections = publicizeConnections.count > 0
-        // TODO: Check if there's a share limit
+        let blogHasSharingLimit = apost.blog.sharingLimit != nil
 
         return isJetpackSocialEnabled
         && blogSupportsPublicize
         && blogHasConnections
+        && blogHasSharingLimit
     }
 
     @objc func createRemainingSharesView() -> UIView {
-        let viewModel = JetpackSocialRemainingSharesViewModel {
-            // TODO
-            print("Subscribe tap")
+        guard let sharingLimit = apost.blog.sharingLimit else {
+            // This scenario *shouldn't* happen since we check that the publicize info is not nil before
+            // showing this view
+            assertionFailure("No sharing limit on the blog")
+            let error = JetpackSocialError.missingSharingLimit
+            CrashLogging.main.logError(error, userInfo: ["source": "post_settings"])
+            return UIView()
         }
+
+        let shouldDisplayWarning = publicizeConnections.count > sharingLimit.remaining
+        let viewModel = JetpackSocialRemainingSharesViewModel(remaining: sharingLimit.remaining,
+                                                              limit: sharingLimit.limit,
+                                                              displayWarning: shouldDisplayWarning,
+                                                              onSubscribeTap: onSubscribeTap())
         let hostController = UIHostingController(rootView: JetpackSocialSettingsRemainingSharesView(viewModel: viewModel))
         hostController.view.translatesAutoresizingMaskIntoConstraints = false
         hostController.view.backgroundColor = .listForeground
@@ -85,6 +97,21 @@ private extension PostSettingsViewController {
             }
             UserPersistentStoreFactory.instance().set(true, forKey: key)
             self?.tableView.reloadData()
+        }
+    }
+
+    func onSubscribeTap() -> () -> Void {
+        return { [weak self] in
+            guard let blog = self?.apost.blog,
+                  let hostname = blog.hostname,
+                  let url = URL(string: "https://wordpress.com/checkout/\(hostname)/jetpack_social_basic_yearly") else {
+                return
+            }
+            let webViewController = WebViewControllerFactory.controller(url: url,
+                                                                        blog: blog,
+                                                                        source: "post_settings_remaining_shares_subscribe_now")
+            let navigationController = UINavigationController(rootViewController: webViewController)
+            self?.present(navigationController, animated: true)
         }
     }
 

@@ -387,6 +387,8 @@
 		0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
+		0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
+		0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC772B0728201F5300664C02 /* ViewsVisitorsLineChartCell.swift */; };
@@ -803,7 +805,6 @@
 		3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */; };
 		3F435220289B2B2B00CE19ED /* JetpackBrandingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */; };
 		3F435221289B2B5100CE19ED /* JetpackOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */; };
-		3F435222289B2B5A00CE19ED /* JetpackOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4370402893207C00475B6E /* JetpackOverlayView.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
 		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
 		3F43603323F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */; };
@@ -2107,6 +2108,8 @@
 		83C972E1281C45AB0049E1FE /* Post+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C972DF281C45AB0049E1FE /* Post+BloggingPrompts.swift */; };
 		83DC5C462A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC5C452A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift */; };
 		83DC5C472A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC5C452A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift */; };
+		83E1E5592A58B5C2000B576F /* JetpackSocialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */; };
+		83E1E55A2A58B5C2000B576F /* JetpackSocialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */; };
 		83EF3D7B2937D703000AF9BF /* SharedDataIssueSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */; };
 		83EF3D7F2937F08C000AF9BF /* SharedDataIssueSolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF3D7C2937E969000AF9BF /* SharedDataIssueSolverTests.swift */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
@@ -5609,6 +5612,10 @@
 		FED77259298BC5B300C2346E /* PluginJetpackProxyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */; };
 		FEDA1AD8269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDA1AD9269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
+		FEDA8D9C2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */; };
+		FEDA8D9D2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */; };
+		FEDA8D9F2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */; };
+		FEDA8DA02A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */; };
 		FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEDDD47026A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEE48EFC2A4C8312008A48E0 /* Blog+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */; };
@@ -6112,6 +6119,7 @@
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
+		0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFeatureFlagsView.swift; sourceTree = "<group>"; };
 		131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		150B6590614A28DF9AD25491 /* Pods-Apps-Jetpack.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		152F25D5C232985E30F56CAC /* Pods-Apps-Jetpack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.debug.xcconfig"; sourceTree = "<group>"; };
@@ -7479,6 +7487,7 @@
 		83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsAttribution.swift; sourceTree = "<group>"; };
 		83C972DF281C45AB0049E1FE /* Post+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post+BloggingPrompts.swift"; sourceTree = "<group>"; };
 		83DC5C452A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialSettingsRemainingSharesView.swift; sourceTree = "<group>"; };
+		83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialError.swift; sourceTree = "<group>"; };
 		83EF3D7C2937E969000AF9BF /* SharedDataIssueSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataIssueSolverTests.swift; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		83F3E2D211276371004CD686 /* CoreLocation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -9408,6 +9417,8 @@
 		FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataIssueSolver.swift; sourceTree = "<group>"; };
 		FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginJetpackProxyService.swift; sourceTree = "<group>"; };
 		FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Comments.swift"; sourceTree = "<group>"; };
+		FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrepublishingViewController+JetpackSocial.swift"; sourceTree = "<group>"; };
+		FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingAutoSharingView.swift; sourceTree = "<group>"; };
 		FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Notifications.swift"; sourceTree = "<group>"; };
 		FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+JetpackSocial.swift"; sourceTree = "<group>"; };
 		FEE48EFE2A4C9855008A48E0 /* Blog+PublicizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+PublicizeTests.swift"; sourceTree = "<group>"; };
@@ -11121,6 +11132,7 @@
 				3F29EB6824041F6D005313DE /* About */,
 				FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */,
 				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
+				0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */,
 				F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */,
 				CECEEB542823164800A28ADE /* MediaCacheSettingsViewController.swift */,
 				80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */,
@@ -13386,9 +13398,10 @@
 		8332DD2229259ABA00802F7D /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				8332DD2329259AE300802F7D /* DataMigrator.swift */,
-				FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */,
 				F4DD58312A095210009A772D /* DataMigrationError.swift */,
+				8332DD2329259AE300802F7D /* DataMigrator.swift */,
+				83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */,
+				FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -14803,6 +14816,8 @@
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
 				8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */,
+				FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */,
+				FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */,
 				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
 				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
 				C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */,
@@ -20985,6 +21000,7 @@
 				C395FB262821FE7B00AE7C11 /* RemoteSiteDesign+Thumbnail.swift in Sources */,
 				9A73B7152362FBAE004624A8 /* SiteStatsViewModel+AsyncBlock.swift in Sources */,
 				74AF4D7C1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
+				FEDA8D9F2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */,
 				0857BB40299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
@@ -21691,6 +21707,7 @@
 				E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */,
 				08A250FC28D9F0E200F50420 /* CommentDetailInfoViewModel.swift in Sources */,
 				08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */,
+				0CED95602A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */,
 				FA73D7D6278D9E5D00DF24B3 /* BlogDashboardViewController.swift in Sources */,
 				4349B0AF218A477F0034118A /* RevisionsTableViewCell.swift in Sources */,
 				738B9A5921B85CF20005062B /* KeyboardInfo.swift in Sources */,
@@ -22076,6 +22093,7 @@
 				F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */,
 				FA98A24D2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */,
 				FA98B61929A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
+				FEDA8D9C2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift in Sources */,
 				AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */,
@@ -22481,6 +22499,7 @@
 				D80BC7A22074739400614A59 /* MediaLibraryStrings.swift in Sources */,
 				9A09F915230C3E9700F42AB7 /* StoreFetchingStatus.swift in Sources */,
 				F582060223A85495005159A9 /* SiteDateFormatters.swift in Sources */,
+				83E1E5592A58B5C2000B576F /* JetpackSocialError.swift in Sources */,
 				F504D44825D717F600A2764C /* PostEditor.swift in Sources */,
 				837B49D7283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift in Sources */,
 				98BC522A27F6259700D6E8C2 /* BloggingPromptsFeatureDescriptionView.swift in Sources */,
@@ -23958,6 +23977,7 @@
 				011F52BE2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */,
 				FABB211B2602FC2C00C8785C /* CredentialsService.swift in Sources */,
 				3F5AAC242877791900AEF5DD /* JetpackButton.swift in Sources */,
+				83E1E55A2A58B5C2000B576F /* JetpackSocialError.swift in Sources */,
 				FABB211C2602FC2C00C8785C /* EncryptedLogTableViewController.swift in Sources */,
 				FABB211D2602FC2C00C8785C /* ActivityDateFormatting.swift in Sources */,
 				FABB211E2602FC2C00C8785C /* UIView+Subviews.m in Sources */,
@@ -24691,6 +24711,7 @@
 				FABB23282602FC2C00C8785C /* LoggingURLRedactor.swift in Sources */,
 				FABB23292602FC2C00C8785C /* SiteStatsTableViewCells.swift in Sources */,
 				FABB232A2602FC2C00C8785C /* SharingButton.swift in Sources */,
+				0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */,
 				FABB232B2602FC2C00C8785C /* PostActionSheet.swift in Sources */,
 				FABB232C2602FC2C00C8785C /* PublicizeConnection.swift in Sources */,
 				FABB232D2602FC2C00C8785C /* TenorPageable.swift in Sources */,
@@ -25096,6 +25117,7 @@
 				FABB24602602FC2C00C8785C /* BlogDetailsViewController+DomainCredit.swift in Sources */,
 				17C1D67D2670E3DC006C8970 /* SiteIconPickerView.swift in Sources */,
 				8BAC9D9F27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift in Sources */,
+				FEDA8DA02A5B1B1B0081314F /* PrepublishingAutoSharingView.swift in Sources */,
 				80EF9287280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */,
 				FABB24612602FC2C00C8785C /* KeyringAccountHelper.swift in Sources */,
 				FABB24622602FC2C00C8785C /* ManagedAccountSettings+CoreDataProperties.swift in Sources */,
@@ -25225,6 +25247,7 @@
 				F4D9188729D78C9100974A71 /* BlogDetailsViewController+Strings.swift in Sources */,
 				FABB24B82602FC2C00C8785C /* DynamicHeightCollectionView.swift in Sources */,
 				FABB24B92602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
+				FEDA8D9D2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift in Sources */,
 				FABB24BA2602FC2C00C8785C /* TenorGIF.swift in Sources */,
 				FABB24BB2602FC2C00C8785C /* ThemeBrowserViewController.swift in Sources */,
 				FA73D7ED27987E4500DF24B3 /* SitePickerViewController+QuickStart.swift in Sources */,
@@ -25279,7 +25302,6 @@
 				8313B9EF298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift in Sources */,
 				982DA9A8263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
 				FABB24E12602FC2C00C8785C /* MediaLibraryPicker.swift in Sources */,
-				3F435222289B2B5A00CE19ED /* JetpackOverlayView.swift in Sources */,
 				46F583D52624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */,
 				FABB24E22602FC2C00C8785C /* SharingAccountViewController.swift in Sources */,
 				FABB24E32602FC2C00C8785C /* TodayExtensionService.m in Sources */,

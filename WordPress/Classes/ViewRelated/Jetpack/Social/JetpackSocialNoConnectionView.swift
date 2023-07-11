@@ -79,44 +79,14 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
         updateIcons(services)
     }
 
-    enum JetpackSocialService: String {
-        case facebook
-        case twitter
-        case tumblr
-        case linkedin
-        case instagram
-        case mastodon
-        case unknown
-
-        var image: UIImage? {
-            switch self {
-            case .facebook:
-                return UIImage(named: "icon-facebook")
-            case .twitter:
-                return UIImage(named: "icon-twitter")
-            case .tumblr:
-                return UIImage(named: "icon-tumblr")
-            case .linkedin:
-                return UIImage(named: "icon-linkedin")
-            case .instagram:
-                return UIImage(named: "icon-instagram")
-            case .mastodon:
-                return UIImage(named: "icon-mastodon")
-            case .unknown:
-                return UIImage(named: "social-default")?.withRenderingMode(.alwaysTemplate)
-            }
-        }
-    }
-
     private func updateIcons(_ services: [PublicizeService]) {
         var icons: [UIImage] = []
         var downloadTasks: [(url: URL, index: Int)] = []
         for (index, service) in services.enumerated() {
-            let serviceType = JetpackSocialService(rawValue: service.serviceID) ?? .unknown
-            let icon = serviceType.image ?? UIImage()
+            let icon = WPStyleGuide.socialIcon(for: service.serviceID as NSString)
             icons.append(icon)
 
-            if serviceType == .unknown {
+            if service.name == .unknown {
                 guard let iconUrl = URL(string: service.icon) else {
                     continue
                 }

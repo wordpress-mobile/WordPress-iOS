@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ReaderDetailLikesViewDelegate {
+protocol ReaderDetailLikesViewDelegate: AnyObject {
     func didTapLikesView()
 }
 
@@ -13,7 +13,7 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     @IBOutlet private weak var selfAvatarImageView: CircularImageView!
 
     static let maxAvatarsDisplayed = 5
-    var delegate: ReaderDetailLikesViewDelegate?
+    weak var delegate: ReaderDetailLikesViewDelegate?
 
     /// Stores the number of total likes _without_ adding the like from self.
     private var totalLikes: Int = 0

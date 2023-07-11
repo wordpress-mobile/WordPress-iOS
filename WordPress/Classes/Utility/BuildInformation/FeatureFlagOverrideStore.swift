@@ -45,6 +45,10 @@ struct FeatureFlagOverrideStore {
         }
     }
 
+    func removeOverride(for featureFlag: OverridableFlag) {
+        store.removeObject(forKey: key(for: featureFlag))
+    }
+
     /// - returns: The overridden value for the specified feature flag, if one exists.
     /// If no override exists, returns `nil`.
     ///
