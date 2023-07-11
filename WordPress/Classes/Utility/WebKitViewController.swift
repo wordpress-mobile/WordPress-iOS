@@ -82,7 +82,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     @objc let url: URL?
     @objc let authenticator: RequestAuthenticator?
-    @objc let navigationDelegate: WebNavigationDelegate?
+    @objc weak var navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var customTitle: String?
