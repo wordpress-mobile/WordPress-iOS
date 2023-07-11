@@ -1,6 +1,6 @@
 22.9
 -----
-* [*] Fix memory leaks in setting up Jetpack connection.
+* [*] Fix memory leaks in setting up Jetpack connection. [#21052]
 
 22.8
 -----
