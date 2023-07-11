@@ -1,3 +1,7 @@
+22.9
+-----
+* [*] Fix memory leaks in setting up Jetpack connection.
+
 22.8
 -----
 * [*] Blogging Reminders: Disabled prompt for self-hosted sites not connected to Jetpack. [#20970]
