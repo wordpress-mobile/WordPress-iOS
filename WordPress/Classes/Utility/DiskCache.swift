@@ -80,18 +80,43 @@ public actor DiskCache {
         }
     }
 
+    // MARK: Codable
+
+    public func getValue<T: Decodable>(_ type: T.Type, forKey key: String, decoder: JSONDecoder = JSONDecoder()) async -> T? {
+        guard let data = getData(forKey: key) else { return nil }
+        return try? decoder.decode(type, from: data)
+    }
+
+    public func setValue<T: Encodable>(_ value: T, forKey key: String, encoder: JSONEncoder = JSONEncoder()) async {
+        guard let data = try? encoder.encode(value) else { return }
+        setData(data, forKey: key)
+    }
+
+    public func removeValue(forKey key: String) {
+        removeData(forKey: key)
+    }
+
     // MARK: Accessing Cached Data
 
     public func getData(forKey key: String) -> Data? {
-        perform { $0.getData(forKey: key) }
+        guard let url = fileURL(for: key) else { return nil }
+        return try? Data(contentsOf: url)
     }
 
     public func setData(_ data: Data, forKey key: String) {
-        perform { $0.setData(data, forKey: key) }
+        guard let url = fileURL(for: key) else { return }
+        do {
+            try data.write(to: url)
+        } catch let error as NSError {
+            guard error.code == CocoaError.fileNoSuchFile.rawValue && error.domain == CocoaError.errorDomain else { return }
+            try? FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
+            try? data.write(to: url) // re-create a directory and try again
+        }
     }
 
     public func removeData(forKey key: String) {
-        perform { $0.removeData(forKey: key) }
+        guard let url = fileURL(for: key) else { return }
+        try? FileManager.default.removeItem(at: url)
     }
 
     /// Removes all cached entries.
@@ -104,57 +129,10 @@ public actor DiskCache {
         }
     }
 
-    /// Allows you to batch multiple cache operations.
-    public func perform<T>(_ closure: (inout NonisolatedCache) -> T) -> T {
-        var cache = NonisolatedCache(rootURL: rootURL)
-        return closure(&cache)
-    }
-
     /// Returns the URL for the given cache key.
     public nonisolated func fileURL(for key: String) -> URL? {
-        NonisolatedCache(rootURL: rootURL).fileURL(for: key)
-    }
-
-    public struct NonisolatedCache {
-        public let rootURL: URL
-
-        public subscript(key: String) -> Data? {
-            get { getData(forKey: key) }
-            set {
-                if let data = newValue {
-                    setData(data, forKey: key)
-                } else {
-                    removeData(forKey: key)
-                }
-            }
-        }
-
-        public func getData(forKey key: String) -> Data? {
-            guard let url = fileURL(for: key) else { return nil }
-            return try? Data(contentsOf: url)
-        }
-
-        public func setData(_ data: Data, forKey key: String) {
-            guard let url = fileURL(for: key) else { return }
-            do {
-                try data.write(to: url)
-            } catch let error as NSError {
-                guard error.code == CocoaError.fileNoSuchFile.rawValue && error.domain == CocoaError.errorDomain else { return }
-                try? FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
-                try? data.write(to: url) // re-create a directory and try again
-            }
-        }
-
-        public func removeData(forKey key: String) {
-            guard let url = fileURL(for: key) else { return }
-            try? FileManager.default.removeItem(at: url)
-        }
-
-        /// Returns `url` for the given cache key.
-        public func fileURL(for key: String) -> URL? {
-            guard let filename = key.sha1 else { return nil }
-            return rootURL.appendingPathComponent(filename, isDirectory: false)
-        }
+        guard let filename = key.sha1 else { return nil }
+        return rootURL.appendingPathComponent(filename, isDirectory: false)
     }
 
     // MARK: Sweep

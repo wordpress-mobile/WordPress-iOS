@@ -104,27 +104,43 @@ class DiskCacheTests: XCTestCase {
         XCTAssertNil(otherData)
     }
 
-   // MARK: Sweep
+    // MARK: Codable
 
-   func testSweep() async {
-       // GIVEN
-       let mb = 1024 * 1024 // allocated size is usually about 4 KB on APFS, so use 1 MB just to be sure
-       cache = DiskCache(url: cache.rootURL, configuration: .init(sizeLimit: mb * 3))
+    func testStoreCodable() async {
+        struct Payload: Codable {
+            let value: String
+        }
 
-       await cache.perform {
-           $0["key1"] = Data(repeating: 1, count: mb)
-           $0["key2"] = Data(repeating: 1, count: mb)
-           $0["key3"] = Data(repeating: 1, count: mb)
-           $0["key4"] = Data(repeating: 1, count: mb)
-       }
+        // Given
+        let payload = Payload(value: "test")
 
-       // WHEN
-       await cache.sweep()
+        // When
+        await cache.setValue(payload, forKey: "key")
+        let cachedPayload = await cache.getValue(Payload.self, forKey: "key")
 
-       // THEN
-       let totalSize = await cache.totalSize
-       XCTAssertEqual(totalSize, mb * 2)
-   }
+        // Then
+        XCTAssertEqual(cachedPayload?.value, "test")
+    }
+
+    // MARK: Sweep
+
+    func testSweep() async {
+        // GIVEN
+        let mb = 1024 * 1024 // allocated size is usually about 4 KB on APFS, so use 1 MB just to be sure
+        cache = DiskCache(url: cache.rootURL, configuration: .init(sizeLimit: mb * 3))
+
+        await cache.setData(Data(repeating: 1, count: mb), forKey: "key1")
+        await cache.setData(Data(repeating: 1, count: mb), forKey: "key2")
+        await cache.setData(Data(repeating: 1, count: mb), forKey: "key3")
+        await cache.setData(Data(repeating: 1, count: mb), forKey: "key4")
+
+        // WHEN
+        await cache.sweep()
+
+        // THEN
+        let totalSize = await cache.totalSize
+        XCTAssertEqual(totalSize, mb * 2)
+    }
 
     // MARK: Inspection
 
