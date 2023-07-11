@@ -5,8 +5,8 @@ import WordPressFlux
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
 
-    private lazy var plusButton = UIBarButtonItem(
-        image: UIImage(systemName: "plus"),
+    private lazy var createButton = UIBarButtonItem(
+        title: Strings.createButtonTitle,
         style: .plain,
         target: self,
         action: #selector(buttonCreateCampaignTapped)
@@ -169,7 +169,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
     private func setupNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = plusButton
+        navigationItem.rightBarButtonItem = createButton
     }
 
     private func setupNoResults() {
@@ -245,6 +245,7 @@ private extension BlazeCampaignsViewController {
     enum Strings {
         static let navigationTitle = NSLocalizedString("blaze.campaigns.title", value: "Blaze Campaigns", comment: "Title for the screen that allows users to manage their Blaze campaigns.")
         static let promoteButtonTitle = NSLocalizedString("blaze.campaigns.promote.button.title", value: "Promote", comment: "Button title for the button that shows the Blaze flow when tapped.")
+        static let createButtonTitle = NSLocalizedString("blaze.campaigns.create.button.title", value: "Create", comment: "Button title for the button that shows the Blaze flow when tapped.")
 
         enum NoResults {
             static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
