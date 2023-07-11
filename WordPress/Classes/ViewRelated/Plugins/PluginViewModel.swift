@@ -540,7 +540,7 @@ class PluginViewModel: Observable {
             return
         }
 
-        let controller = RegisterDomainSuggestionsViewController.instance(site: blog, domainPurchasedCallback: { [weak self] domain in
+        let controller = RegisterDomainSuggestionsViewController.instance(site: blog, domainPurchasedCallback: { [weak self] _, domain in
 
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {

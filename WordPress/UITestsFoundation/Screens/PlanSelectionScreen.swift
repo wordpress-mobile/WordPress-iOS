@@ -9,8 +9,7 @@ public class PlanSelectionScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ webViewGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

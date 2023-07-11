@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-26 13:11:37+0000 */
+/* Translation-Revision-Date: 2023-07-02 16:09:18+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -2314,7 +2314,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
-"Default Post Format" = "Format articol implicit";
+"Default Post Format" = "Format implicit pentru articole";
 
 /* Placeholder for the reader CSS URL */
 "Default URL" = "URL implicit";

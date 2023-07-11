@@ -37,8 +37,10 @@ struct PlanSelectionViewModel {
 }
 
 final class PlanSelectionViewController: WebKitViewController {
+    typealias PlanSelectionCallback = (PlanSelectionViewController, URL) -> Void
+
     let viewModel: PlanSelectionViewModel
-    var planSelectedCallback: ((URL) -> Void)?
+    var planSelectedCallback: PlanSelectionCallback?
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
@@ -65,7 +67,7 @@ final class PlanSelectionViewController: WebKitViewController {
             }
 
             if self.viewModel.isPlanSelected(newURL) {
-                self.planSelectedCallback?(newURL)
+                self.planSelectedCallback?(self, newURL)
 
                 /// Stay on Plan Selection page
                 self.webView.goBack()

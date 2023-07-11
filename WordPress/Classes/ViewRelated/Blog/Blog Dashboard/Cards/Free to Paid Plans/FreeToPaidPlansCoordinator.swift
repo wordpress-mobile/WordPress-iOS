@@ -13,9 +13,7 @@ import SwiftUI
             includeSupportButton: false
         )
 
-        let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
-
-        let purchaseCallback = { (domainName: String) in
+        let purchaseCallback = { (checkoutViewController: CheckoutViewController, domainName: String) in
 
             let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.syncBlogAndAllMetadata(blog) { }
@@ -25,32 +23,33 @@ import SwiftUI
                 dashboardViewController.reloadCardsLocally()
             }
             let viewController = UIHostingController(rootView: resultView)
-            navigationController.setNavigationBarHidden(true, animated: false)
-            navigationController.pushViewController(viewController, animated: true)
+            checkoutViewController.navigationController?.setNavigationBarHidden(true, animated: false)
+            checkoutViewController.navigationController?.pushViewController(viewController, animated: true)
 
             PlansTracker.trackPurchaseResult(source: "plan_selection")
         }
 
-        let planSelected = { (domainName: String, checkoutURL: URL) in
+        let planSelected = { (planSelectionViewController: PlanSelectionViewController, domainName: String, checkoutURL: URL) in
             let viewModel = CheckoutViewModel(url: checkoutURL)
-            let checkoutViewController = CheckoutViewController(viewModel: viewModel, purchaseCallback: {
-                purchaseCallback(domainName)
+            let checkoutViewController = CheckoutViewController(viewModel: viewModel, purchaseCallback: { checkoutViewController in
+                purchaseCallback(checkoutViewController, domainName)
             })
             checkoutViewController.configureSandboxStore {
-                navigationController.pushViewController(checkoutViewController, animated: true)
+                planSelectionViewController.navigationController?.pushViewController(checkoutViewController, animated: true)
             }
         }
 
-        let domainAddedToCart = { (domainName: String) in
+        let domainAddedToCart = { (domainViewController: RegisterDomainSuggestionsViewController, domainName: String) in
             guard let viewModel = PlanSelectionViewModel(blog: blog) else { return }
             let planSelectionViewController = PlanSelectionViewController(viewModel: viewModel)
-            planSelectionViewController.planSelectedCallback = { checkoutURL in
-                planSelected(domainName, checkoutURL)
+            planSelectionViewController.planSelectedCallback = { planSelectionViewController, checkoutURL in
+                planSelected(planSelectionViewController, domainName, checkoutURL)
             }
-            navigationController.pushViewController(planSelectionViewController, animated: true)
+            domainViewController.navigationController?.pushViewController(planSelectionViewController, animated: true)
         }
         domainSuggestionsViewController.domainAddedToCartCallback = domainAddedToCart
 
+        let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         dashboardViewController.present(navigationController, animated: true)
     }
 }

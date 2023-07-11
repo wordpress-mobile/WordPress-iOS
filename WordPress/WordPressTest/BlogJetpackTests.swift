@@ -151,6 +151,45 @@ class BlogJetpackTests: CoreDataTestCase {
         XCTAssertEqual(2, Blog.count(in: mainContext))
     }
 
+    /// Verify an account's blogs won't be saved if the account is deleted during a blog sync.
+    func testSyncBlogsAndSignOut() throws {
+        let wpComAccount = try createOrUpdateAccount(username: "user", authToken: "token")
+        XCTAssertEqual(Blog.count(in: mainContext), 0)
+        var deleted = false
+
+        // Blog sync makes a series of HTTP requests: the first one fetchs all blogs, followed by a few
+        // requests to get blog capabilities (one for each blog).
+        //
+        // See also https://github.com/wordpress-mobile/WordPress-iOS/issues/20964
+        HTTPStubs.stubRequest(forEndpoint: "me/sites",
+                              withFileAtPath: OHPathForFile("me-sites-with-jetpack.json", Self.self)!)
+        HTTPStubs.stubRequests { request in
+            (request.url?.path.matches(regex: "sites/\\d+/rewind/capabilities").count ?? 0) > 0
+        } withStubResponse: { _ in
+            // We can't delete the `Account` instance until the first API request completes. Because the URLSession instance
+            // used in the `me/sites` API request will be invalidated upon account deletion (see `WPAccount.prepareForDeletion` method).
+            self.mainContext.performAndWait {
+                // Delete the account to simulate user signing out of the app.
+                guard !deleted else { return }
+                self.mainContext.delete(wpComAccount)
+                try! self.mainContext.save()
+                deleted = true
+            }
+            return HTTPStubsResponse(jsonObject: [String: Int](), statusCode: 200, headers: nil)
+        }
+
+        let syncExpectation = expectation(description: "Blogs sync")
+        blogService.syncBlogs(for: wpComAccount) {
+            syncExpectation.fulfill()
+        } failure: { error in
+            XCTFail("Sync blogs shouldn't fail: \(error)")
+        }
+
+        // No blogs should be saved after the sync blogs operation finishes.
+        wait(for: [syncExpectation], timeout: 1.0)
+        XCTAssertEqual(Blog.count(in: mainContext), 0)
+    }
+
     // MARK: Jetpack Individual Plugins
 
     func testJetpackIsConnectedWithoutFullPluginGivenIndividualPluginOnlyReturnsTrue() {

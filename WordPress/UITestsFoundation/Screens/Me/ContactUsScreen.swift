@@ -34,8 +34,7 @@ public class ContactUsScreen: ScreenObject {
                 closeButtonGetter,
                 attachButtonGetter,
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

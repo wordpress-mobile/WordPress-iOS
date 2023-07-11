@@ -30,8 +30,7 @@ public class TabNavComponent: ScreenObject {
                 readerTabButtonGetter,
                 notificationsTabButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
@@ -56,10 +55,11 @@ public class TabNavComponent: ScreenObject {
         return try AztecEditorScreen(mode: .rich)
     }
 
+    @discardableResult
     public func gotoBlockEditorScreen() throws -> BlockEditorScreen {
-        let mySite = try goToMySiteScreen()
-        let actionSheet = try mySite.goToCreateSheet()
-        actionSheet.goToBlogPost()
+        try goToMySiteScreen()
+            .goToCreateSheet()
+            .goToBlogPost()
 
         return try BlockEditorScreen()
     }

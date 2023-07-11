@@ -69,10 +69,12 @@ final class DashboardBlazeCampaignView: UIView {
         }
 
         statsView.isHidden = !viewModel.isShowingStats
-        if viewModel.isShowingStats {
             statsView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        if viewModel.isShowingStats {
             makeStatsViews(for: viewModel).forEach(statsView.addArrangedSubview)
         }
+
+        enableVoiceOver(with: viewModel)
     }
 
     private func makeStatsViews(for viewModel: BlazeCampaignViewModel) -> [UIView] {
@@ -83,6 +85,16 @@ final class DashboardBlazeCampaignView: UIView {
         clicksView.countString = "\(viewModel.clicks)"
 
         return [impressionsView, clicksView]
+    }
+
+    private func enableVoiceOver(with viewModel: BlazeCampaignViewModel) {
+        var accessibilityLabel = "\(viewModel.title), \(viewModel.status.title)"
+        if viewModel.isShowingStats {
+            accessibilityLabel += ", \(Strings.impressions) \(viewModel.impressions), \(Strings.clicks) \(viewModel.clicks)"
+        }
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityTraits = .allowsDirectInteraction
     }
 }
 
@@ -103,10 +115,10 @@ struct BlazeCampaignViewModel {
     let impressions: Int
     let clicks: Int
     let budget: String
-    var status: BlazeCampaignStatusViewModel { .init(status: campaign.status) }
+    var status: BlazeCampaignStatusViewModel { .init(campaign: campaign) }
 
     var isShowingStats: Bool {
-        switch campaign.status {
+        switch campaign.uiStatus {
         case .created, .processing, .canceled, .approved, .rejected, .scheduled, .unknown:
             return false
         case .active, .finished:

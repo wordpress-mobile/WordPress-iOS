@@ -26,12 +26,7 @@ public extension NSAttributedString {
         for (value, image) in unwrappedEmbeds {
             let imageAttachment = NSTextAttachment()
             let gifType = UTType.gif.identifier
-            var displayAnimatedGifs = false
-
-            // Check to see if the animated gif view provider is registered
-            if #available(iOS 15.0, *) {
-                displayAnimatedGifs = NSTextAttachment.textAttachmentViewProviderClass(forFileType: gifType) == AnimatedGifAttachmentViewProvider.self
-            }
+            let displayAnimatedGifs = NSTextAttachment.textAttachmentViewProviderClass(forFileType: gifType) == AnimatedGifAttachmentViewProvider.self
 
             // When displaying an animated gif pass the gif data instead of the image
             if

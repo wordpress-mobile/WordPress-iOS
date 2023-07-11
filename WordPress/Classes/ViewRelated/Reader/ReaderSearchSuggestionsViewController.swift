@@ -5,7 +5,7 @@ import WordPressShared
 /// Defines methods that a delegate should implement for clearing suggestions
 /// and for responding to a selected suggestion.
 ///
-protocol ReaderSearchSuggestionsDelegate {
+protocol ReaderSearchSuggestionsDelegate: AnyObject {
     func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String)
 }
 
@@ -28,7 +28,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 
     @objc var tableViewHandler: WPTableViewHandler!
-    var delegate: ReaderSearchSuggestionsDelegate?
+    weak var delegate: ReaderSearchSuggestionsDelegate?
     @objc let cellIdentifier = "CellIdentifier"
     @objc let rowAndButtonHeight = CGFloat(44.0)
 
@@ -176,7 +176,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         request.predicate = predicateForFetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]

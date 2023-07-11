@@ -48,4 +48,31 @@ extension UITableView {
             self.tableHeaderView = tableHeaderView
         }
     }
+
+    /// Resizes the `tableFooterView` to fit its content.
+    ///
+    /// The `tableFooterView` doesn't adjust its size automatically like a `UITableViewCell`, so this method
+    /// should be called whenever the `tableView`'s bounds changes or when the `tableFooterView` content changes.
+    ///
+    /// This method should typically be called in `UIViewController.viewDidLayoutSubviews`.
+    ///
+    /// Source: https://gist.github.com/smileyborg/50de5da1c921b73bbccf7f76b3694f6a
+    ///
+    func sizeToFitFooterView() {
+        guard let tableFooterView else {
+            return
+        }
+        let fittingSize = CGSize(width: bounds.width - (safeAreaInsets.left + safeAreaInsets.right), height: 0)
+        let size = tableFooterView.systemLayoutSizeFitting(
+            fittingSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        let newFrame = CGRect(origin: .zero, size: size)
+        if tableFooterView.frame.height != newFrame.height {
+            tableFooterView.frame = newFrame
+            self.tableFooterView = tableFooterView
+        }
+    }
+
 }

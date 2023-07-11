@@ -15,8 +15,7 @@ public class DomainsScreen: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ siteDomainsNavbarHeaderGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

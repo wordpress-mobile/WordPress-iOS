@@ -69,6 +69,14 @@ extension WPStyleGuide {
         return image!.withRenderingMode(.alwaysTemplate)
     }
 
+    @objc public class func socialIcon(for service: NSString) -> UIImage {
+        guard FeatureFlag.jetpackSocial.enabled else {
+            return iconForService(service)
+        }
+
+        return UIImage(named: "icon-\(service)") ?? iconForService(service)
+    }
+
 
     /// Get's the tint color to use for the specified service when it is connected.
     ///

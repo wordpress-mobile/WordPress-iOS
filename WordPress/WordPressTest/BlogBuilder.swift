@@ -40,6 +40,11 @@ final class BlogBuilder {
         return self
     }
 
+    func with(planActiveFeatures: [String]) -> Self {
+        blog.planActiveFeatures = planActiveFeatures
+        return self
+    }
+
     func withJetpack(version: String? = nil, username: String? = nil, email: String? = nil) -> Self {
         set(blogOption: "jetpack_client_id", value: 1)
         set(blogOption: "jetpack_version", value: version as Any)
