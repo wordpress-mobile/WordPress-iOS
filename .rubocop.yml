@@ -1,3 +1,6 @@
+rubocop_version: 1.30
+rubocop_rake_version: 0.6
+
 AllCops:
   Exclude:
     - DerivedData/**/*
