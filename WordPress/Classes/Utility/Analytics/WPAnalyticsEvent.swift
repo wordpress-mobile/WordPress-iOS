@@ -462,6 +462,7 @@ import Foundation
     case blazeFlowCanceled
     case blazeFlowCompleted
     case blazeFlowError
+    case blazeCampaignListOpened
 
     // Moved to Jetpack static screen
     case removeStaticPosterDisplayed
@@ -1292,6 +1293,8 @@ import Foundation
             return "blaze_flow_completed"
         case .blazeFlowError:
             return "blaze_flow_error"
+        case .blazeCampaignListOpened:
+            return "blaze_campaign_list_opened"
 
         // Moved to Jetpack static screen
         case .removeStaticPosterDisplayed:

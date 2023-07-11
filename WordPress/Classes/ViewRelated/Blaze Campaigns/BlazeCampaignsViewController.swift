@@ -32,18 +32,20 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
     private var stream: BlazeCampaignsStream
     private var pendingStream: AnyObject?
+    private let source: BlazeSource
     private let blog: Blog
 
     // MARK: - Initializers
 
-    init(blog: Blog) {
+    init(source: BlazeSource, blog: Blog) {
+        self.source = source
         self.blog = blog
         self.stream = BlazeCampaignsStream(blog: blog)
         super.init(nibName: nil, bundle: nil)
     }
 
-    @objc class func make(blog: Blog) -> BlazeCampaignsViewController {
-        BlazeCampaignsViewController(blog: blog)
+    @objc class func makeWithSource(_ source: BlazeSource, blog: Blog) -> BlazeCampaignsViewController {
+        BlazeCampaignsViewController(source: source, blog: blog)
     }
 
     required init?(coder: NSCoder) {
@@ -65,6 +67,11 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
         // Refresh data automatically when new campaign is created
         NotificationCenter.default.addObserver(self, selector: #selector(setNeedsToRefreshCampaigns), name: .blazeCampaignCreated, object: nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        BlazeEventsTracker.trackCampaignListOpened(for: source)
     }
 
     override func viewDidLayoutSubviews() {

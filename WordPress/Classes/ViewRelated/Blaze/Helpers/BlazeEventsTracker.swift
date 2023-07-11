@@ -13,6 +13,8 @@ import Foundation
         WPAnalytics.track(.blazeEntryPointTapped, properties: analyticsProperties(for: source))
     }
 
+    // MARK: - Dashboard card
+
     static func trackContextualMenuAccessed(for source: BlazeSource) {
         WPAnalytics.track(.blazeContextualMenuAccessed, properties: analyticsProperties(for: source))
     }
@@ -20,6 +22,8 @@ import Foundation
     static func trackHideThisTapped(for source: BlazeSource) {
         WPAnalytics.track(.blazeCardHidden, properties: analyticsProperties(for: source))
     }
+
+    // MARK: - Overlay
 
     static func trackOverlayDisplayed(for source: BlazeSource) {
         WPAnalytics.track(.blazeOverlayDisplayed, properties: analyticsProperties(for: source))
@@ -32,6 +36,8 @@ import Foundation
     static func trackOverlayDismissed(for source: BlazeSource) {
         WPAnalytics.track(.blazeOverlayDismissed, properties: analyticsProperties(for: source))
     }
+
+    // MARK: - Blaze webview flow
 
     static func trackBlazeFlowStarted(for source: BlazeSource) {
         WPAnalytics.track(.blazeFlowStarted, properties: analyticsProperties(for: source))
@@ -51,6 +57,12 @@ import Foundation
             properties[Self.errorPropertyKey] = error.localizedDescription
         }
         WPAnalytics.track(.blazeFlowError, properties: properties)
+    }
+
+    // MARK: - Campaign list
+
+    static func trackCampaignListOpened(for source: BlazeSource) {
+        WPAnalytics.track(.blazeCampaignListOpened, properties: analyticsProperties(for: source))
     }
 
     private static func analyticsProperties(for source: BlazeSource) -> [String: String] {

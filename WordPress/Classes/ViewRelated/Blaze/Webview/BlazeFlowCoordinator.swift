@@ -107,10 +107,11 @@ import UIKit
     /// - Parameters:
     ///   - viewController: The view controller where the screen should be presented in.
     ///   - blog: `Blog` object representing the site with Blaze campaigns.
-    @objc(presentBlazeCampaignsInViewController:blog:)
+    @objc(presentBlazeCampaignsInViewController:source:blog:)
     static func presentBlazeCampaigns(in viewController: UIViewController,
+                                      source: BlazeSource,
                                       blog: Blog) {
-        let campaignsViewController = BlazeCampaignsViewController(blog: blog)
+        let campaignsViewController = BlazeCampaignsViewController(source: source, blog: blog)
         viewController.navigationController?.pushViewController(campaignsViewController, animated: true)
     }
 
