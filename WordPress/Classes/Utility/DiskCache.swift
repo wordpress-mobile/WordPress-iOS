@@ -18,6 +18,7 @@ final class DiskCache {
 
     private let rootURL: URL
     private let sizeLimit: Int
+    private let sweepInterval: TimeInterval = 86400 // Around 1 day
 
     private let queue = DispatchQueue(label: "org.wordpress.diskCache")
 
@@ -36,14 +37,18 @@ final class DiskCache {
         } catch {
             DDLogError("Failed to creates cache root directory at: \(url) with error: \(error)")
         }
-        queue.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
-            self?.performAndScheduleNextSweep()
-        }
+
+        performSweepIfNeeded()
+    }
+
+    /// Returns the total number of cached entities by enumerating the files.
+    func getTotalCount() throws -> Int {
+        try contents().count
     }
 
     // MARK: - Codable
 
-    public func getValue<T: Decodable>(
+    func getValue<T: Decodable>(
         _ type: T.Type,
         forKey key: String,
         decoder: JSONDecoder = JSONDecoder()
@@ -52,7 +57,7 @@ final class DiskCache {
         return try? decoder.decode(type, from: data)
     }
 
-    public func setValue<T: Encodable>(
+    func setValue<T: Encodable>(
         _ value: T,
         forKey key: String,
         encoder: JSONEncoder = JSONEncoder()
@@ -61,13 +66,13 @@ final class DiskCache {
         setData(data, forKey: key)
     }
 
-    public func removeValue(forKey key: String) {
+    func removeValue(forKey key: String) {
         removeData(forKey: key)
     }
 
     // MARK: - Codable (Async)
 
-    public func getValue<T: Decodable>(
+    func getValue<T: Decodable>(
         _ type: T.Type,
         forKey key: String,
         decoder: JSONDecoder = JSONDecoder()
@@ -80,7 +85,7 @@ final class DiskCache {
         }
     }
 
-    public func setValue<T: Encodable>(
+    func setValue<T: Encodable>(
         _ value: T,
         forKey key: String,
         encoder: JSONEncoder = JSONEncoder()
@@ -93,7 +98,7 @@ final class DiskCache {
         }
     }
 
-    public func removeValue(forKey key: String) async {
+    func removeValue(forKey key: String) async {
         await withUnsafeContinuation { continuation in
             queue.async {
                 self.removeData(forKey: key)
@@ -104,12 +109,12 @@ final class DiskCache {
 
     // MARK: - Data
 
-    public func getData(forKey key: String) -> Data? {
+    func getData(forKey key: String) -> Data? {
         guard let url = fileURL(for: key) else { return nil }
         return try? Data(contentsOf: url)
     }
 
-    public func setData(_ data: Data, forKey key: String) {
+    func setData(_ data: Data, forKey key: String) {
         guard let url = fileURL(for: key) else { return }
         do {
             try data.write(to: url)
@@ -120,13 +125,13 @@ final class DiskCache {
         }
     }
 
-    public func removeData(forKey key: String) {
+    func removeData(forKey key: String) {
         guard let url = fileURL(for: key) else { return }
         try? FileManager.default.removeItem(at: url)
     }
 
     /// Removes all cached entries.
-    public func removeAll() throws {
+    func removeAll() throws {
         try FileManager.default.removeItem(at: rootURL)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
     }
@@ -138,81 +143,70 @@ final class DiskCache {
 
     // MARK: - Sweep
 
-    private func performAndScheduleNextSweep() {
-        sweep()
+    private func performSweepIfNeeded() {
+        let sweepDateKey = "disk-cache-last-sweep-date-\(rootURL)"
+        if let sweepDate = UserDefaults.standard.value(forKey: sweepDateKey) as? Date,
+           Date().timeIntervalSince(sweepDate) < sweepInterval {
+            return // The last sweep was completed recently
+        }
+        // Perform the sweep after a brief delay to reduce the pressure on the system
+        // during the app launch
         queue.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
-            self?.performAndScheduleNextSweep()
+            guard let self = self else { return }
+            do {
+                try self.sweep()
+                UserDefaults.standard.set(Date(), forKey: sweepDateKey)
+            } catch {
+                DDLogError("Failed to perform cache sweep with error: \(error)")
+            }
         }
     }
 
-    /// Performs cache sweep and removes the least recently items which no longer fit.
-    public func sweep() {
-        var items = contents(keys: [.contentAccessDateKey, .totalFileAllocatedSizeKey])
-        guard !items.isEmpty else {
-            return
+    func sweep() throws {
+        var entries = try contents(withKeys: [.contentAccessDateKey, .totalFileAllocatedSizeKey])
+        guard !entries.isEmpty else { return }
+        var totalSize = entries.reduce(0) {
+            $0 + ($1.attributes.totalFileAllocatedSize ?? 0)
         }
-        var size = items.reduce(0) { $0 + ($1.meta.totalFileAllocatedSize ?? 0) }
-
-        guard size > sizeLimit else {
-            return // All good, no need to perform any work.
+        guard totalSize > sizeLimit else {
+            return // The size is OK
         }
-
         // Removes most entities, but not all (keep 50% of the size limit).
         let targetSizeLimit = Int(Double(sizeLimit) * 0.5)
-
-        // Most recently accessed items first
-        let past = Date.distantPast
-        items.sort { // Sort in place
-            ($0.meta.contentAccessDate ?? past) > ($1.meta.contentAccessDate ?? past)
+        let distantPath = Date.distantPast // Should never be needed
+        entries.sort { // Most recently accessed items first
+            ($0.attributes.contentAccessDate ?? distantPath) > ($1.attributes.contentAccessDate ?? distantPath)
         }
-
-        // Remove the items until it satisfies both size and count limits.
-        while size > targetSizeLimit, let item = items.popLast() {
-            size -= (item.meta.totalFileAllocatedSize ?? 0)
-            try? FileManager.default.removeItem(at: item.url)
+        while totalSize > targetSizeLimit, let entry = entries.popLast() {
+            totalSize -= (entry.attributes.totalFileAllocatedSize ?? 0)
+            try FileManager.default.removeItem(at: entry.url)
         }
     }
 
-    // MARK: - Contents
-
-    struct Entry {
+    private struct FileEntry {
         let url: URL
-        let meta: URLResourceValues
+        let attributes: URLResourceValues
     }
 
-    func contents(keys: [URLResourceKey] = []) -> [Entry] {
-        guard let urls = try? FileManager.default.contentsOfDirectory(at: rootURL, includingPropertiesForKeys: keys, options: .skipsHiddenFiles) else {
+    private func contents(withKeys keys: Set<URLResourceKey> = []) throws -> [FileEntry] {
+        let keys = keys.union([.isRegularFileKey])
+        guard let enumerator = FileManager.default.enumerator(
+            at: rootURL,
+            includingPropertiesForKeys: Array(keys),
+            options: [.skipsHiddenFiles, .skipsPackageDescendants]
+        ) else {
             return []
         }
-        let keys = Set(keys)
-        return urls.compactMap {
-            guard let meta = try? $0.resourceValues(forKeys: keys) else {
-                return nil
-            }
-            return Entry(url: $0, meta: meta)
+        var files: [FileEntry] = []
+        for case let fileURL as URL in enumerator {
+            do {
+                let attributes = try fileURL.resourceValues(forKeys: keys)
+                if attributes.isRegularFile ?? false {
+                    files.append(FileEntry(url: fileURL, attributes: attributes))
+                }
+            } catch { print(error, fileURL) }
         }
-    }
-
-    // MARK: - Inspection
-
-    /// The total number of items in the cache.
-    ///
-    /// - important: Requires disk IO, avoid using from the main thread.
-    public var totalCount: Int {
-        contents().count
-    }
-
-    /// The total file size of items written on disk.
-    ///
-    /// Uses `URLResourceKey.fileSizeKey` to calculate the size of each entry.
-    /// The total allocated size (see `totalAllocatedSize`. on disk might
-    /// actually be bigger.
-    ///
-    /// - important: Requires disk IO, avoid using from the main thread.
-    public var totalSize: Int {
-        contents(keys: [.fileSizeKey]).reduce(0) {
-            $0 + ($1.meta.fileSize ?? 0)
-        }
+        return files
     }
 }
 

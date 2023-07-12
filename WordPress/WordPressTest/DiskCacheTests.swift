@@ -19,21 +19,6 @@ class DiskCacheTests: XCTestCase {
         try FileManager.default.removeItem(at: cacheURL)
     }
 
-    // MARK: Init
-
-    func testInitWithURL() throws {
-        // Given
-        let name = UUID().uuidString
-        let rootURL = try XCTUnwrap(FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first)
-            .appendingPathComponent(name, isDirectory: true)
-
-        // When
-        let cache = DiskCache(url: rootURL)
-
-        // Then
-        XCTAssertNotNil(FileManager.default.fileExists(atPath: rootURL.absoluteString))
-    }
-
     // MARK: Add
 
     func testAdd() {
@@ -138,7 +123,7 @@ class DiskCacheTests: XCTestCase {
 
     // MARK: Sweep
 
-    func testSweep() {
+    func testSweep() throws {
         // GIVEN
         let mb = 1024 * 1024 // allocated size is usually about 4 KB on APFS, so use 1 MB just to be sure
         cache = DiskCache(url: cacheURL, sizeLimit: mb * 3)
@@ -149,24 +134,10 @@ class DiskCacheTests: XCTestCase {
         cache.setData(Data(repeating: 1, count: mb), forKey: "key4")
 
         // WHEN
-        cache.sweep()
+        try cache.sweep()
 
         // THEN
-        XCTAssertEqual(cache.totalSize, mb * 1)
-    }
-
-    // MARK: Inspection
-
-    func testTotalCount() {
-        cache.setData(blob, forKey: "key")
-
-        XCTAssertEqual(cache.totalCount, 1)
-    }
-
-    func testTotalSize() {
-        cache.setData(blob, forKey: "key")
-
-        XCTAssertTrue(cache.totalSize > 0)
+        XCTAssertEqual(try cache.getTotalCount(), 1)
     }
 
     // MARK: Resilience
