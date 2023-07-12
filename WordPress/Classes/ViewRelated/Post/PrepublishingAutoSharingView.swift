@@ -84,13 +84,15 @@ private extension PrepublishingAutoSharingView {
 /// The value-type data model that drives the `PrepublishingAutoSharingView`.
 struct PrepublishingAutoSharingViewModel {
 
+    // MARK: Helper Models
+
     /// A value-type representation of `PublicizeService` that's simplified for the needs of the auto-sharing view.
     struct Service: Hashable {
         let serviceName: PublicizeService.ServiceName
         let connections: [Connection]
 
         /// Whether the icon for this service should be opaque or transparent.
-        /// If at least one account is enabled, we'll show an opaque version.
+        /// If at least one account is enabled, an opaque version should be shown.
         var usesOpaqueIcon: Bool {
             connections.reduce(false) { partialResult, connection in
                 return partialResult || connection.enabled
@@ -107,18 +109,12 @@ struct PrepublishingAutoSharingViewModel {
         let enabled: Bool
     }
 
-    // TODO: Default values are for temporary testing purposes. Will be removed later.
-    let services: [Service] = [
-        Service(serviceName: .facebook, connections: [
-            Connection(account: "foo", enabled: true),
-            Connection(account: "foo-2", enabled: false)
-        ]),
-        Service(serviceName: .twitter, connections: [Connection(account: "bar", enabled: false)]),
-        Service(serviceName: .tumblr, connections: [Connection(account: "baz", enabled: true)])
-    ]
+    // MARK: Properties
 
-    // TODO: Default values are for temporary testing purposes. Will be removed later.
-    let sharingLimit: PublicizeInfo.SharingLimit? = .init(remaining: 1, limit: 30)
+    let services: [Service]
+    let sharingLimit: PublicizeInfo.SharingLimit?
+
+    // MARK: Computed Properties
 
     var enabledConnectionsCount: Int {
         services.reduce(0) { partialResult, service in
