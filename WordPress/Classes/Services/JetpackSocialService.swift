@@ -38,10 +38,11 @@ import CoreData
     ///   - blogID: The ID of the blog.
     ///   - completion: Closure that's called after the sync process completes.
     func syncSharingLimit(for blogID: Int, completion: @escaping (Result<PublicizeInfo.SharingLimit?, Error>) -> Void) {
-        remote.fetchPublicizeInfo(for: blogID) { [weak self] result in
+        // allow `self` to be retained inside this closure so the completion block will always be executed.
+        remote.fetchPublicizeInfo(for: blogID) { result in
             switch result {
             case .success(let remotePublicizeInfo):
-                self?.coreDataStack.performAndSave({ context -> PublicizeInfo.SharingLimit? in
+                self.coreDataStack.performAndSave({ context -> PublicizeInfo.SharingLimit? in
                     guard let blog = try Blog.lookup(withID: blogID, in: context) else {
                         // unexpected to fall into this case, since the API should return an error response.
                         throw ServiceError.blogNotFound(id: blogID)
@@ -84,7 +85,7 @@ import CoreData
             return
         }
 
-        syncSharingLimit(for: blogID, completion: { [success, failure] result in
+        syncSharingLimit(for: blogID, completion: { result in
             switch result {
             case .success:
                 success?()
