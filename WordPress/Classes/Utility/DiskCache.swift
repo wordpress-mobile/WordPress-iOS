@@ -132,7 +132,7 @@ final class DiskCache {
     }
 
     private func fileURL(for key: String) -> URL? {
-        guard let filename = key.sha1 else { return nil }
+        guard let filename = key.sha256 else { return nil }
         return rootURL.appendingPathComponent(filename, isDirectory: false)
     }
 
@@ -217,13 +217,11 @@ final class DiskCache {
 }
 
 private extension String {
-    var sha1: String? {
+    var sha256: String? {
         guard !isEmpty, let data = self.data(using: .utf8) else {
             return nil
         }
-        // SHA1 offers a good balance between performance and size. Git uses
-        // SHA1 for commit hashes and other purposes.
-        return Insecure.SHA1.hash(data: data)
+        return SHA256.hash(data: data)
             .map { String(format: "%02x", $0) }
             .joined()
     }
