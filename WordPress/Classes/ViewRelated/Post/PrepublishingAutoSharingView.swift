@@ -92,15 +92,11 @@ struct PrepublishingAutoSharingViewModel {
     // MARK: Computed Properties
 
     var enabledConnectionsCount: Int {
-        services.reduce(0) { partialResult, service in
-            return partialResult + service.enabledConnections.count
-        }
+        services.reduce(0) { $0 + $1.enabledConnections.count }
     }
 
     var totalConnectionsCount: Int {
-        services.reduce(0) { partialResult, service in
-            return partialResult + service.connections.count
-        }
+        services.reduce(0) { $0 + $1.connections.count }
     }
 
     var showsWarning: Bool {
