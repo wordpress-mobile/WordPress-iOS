@@ -31,8 +31,12 @@ public class EditorPostSettings: ScreenObject {
         $0.staticTexts["Immediately"]
     }
 
-    let dismissPopoverButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["PopoverDismissRegion"]
+    let nextMonthButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Next Month"]
+    }
+
+    let firstCalendarDayLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["1"]
     }
 
     let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -46,7 +50,8 @@ public class EditorPostSettings: ScreenObject {
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
     var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
-    var dismissPopoverButton: XCUIElement { dismissPopoverButtonGetter(app) }
+    var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
+    var firstCalendarDayLabel: XCUIElement { firstCalendarDayLabelGetter(app) }
     var doneButton: XCUIElement { doneButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
@@ -126,28 +131,15 @@ public class EditorPostSettings: ScreenObject {
     }
 
     @discardableResult
-    public func updatePublishDate() -> Self {
+    public func updatePublishDateToFutureDate() -> Self {
         publishDateButton.tap()
         dateSelector.tap()
 
-        let predicate = NSPredicate(format: "label CONTAINS[c] 'AM' OR label CONTAINS[c] 'PM'")
-        let timeButton = app.buttons.element(matching: predicate)
-        timeButton.tap()
+        // Selects the first day of the next month
+        nextMonthButton.tap()
+        firstCalendarDayLabel.tap()
 
-        let currentHour = app.pickerWheels.firstMatch.value as? String
-        let currentHourValue = Int(currentHour?.components(separatedBy: " ").first ?? "") ?? 0
-
-        // Set new hour to be 2 hours in the future
-        var newHourValue = currentHourValue + 2
-
-        // To handle hour as picker wheel displays time in 12-hour format
-        if newHourValue > 12 { newHourValue = newHourValue - 12}
-
-        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "\(newHourValue)")
-
-        dismissPopoverButton.tap()
         doneButton.tap()
-
         return self
     }
 
