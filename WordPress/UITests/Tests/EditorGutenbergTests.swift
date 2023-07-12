@@ -12,28 +12,28 @@ class EditorGutenbergTests: XCTestCase {
         )
 
         try TabNavComponent()
-            .gotoBlockEditorScreen()
+            .goToBlockEditorScreen()
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
     }
 
-    let title = "Rich post title"
-    let content = "Some text, and more text"
+    let postTitle = "Rich post title"
+    let postContent = "Some text, and more text"
     let videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     let audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
 
     func testTextPostPublish() throws {
 
         try BlockEditorScreen()
-            .enterTextInTitle(text: title)
-            .addParagraphBlock(withText: content)
-            .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
+            .enterTextInTitle(text: postTitle)
+            .addParagraphBlock(withText: postContent)
+            .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
             .publish()
-            .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .done()
+            .viewPublishedPost(withTitle: postTitle)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .tapDone()
     }
 
     func testBasicPostPublishWithCategoryAndTag() throws {
@@ -41,18 +41,18 @@ class EditorGutenbergTests: XCTestCase {
         let category = getCategory()
         let tag = getTag()
         try BlockEditorScreen()
-            .enterTextInTitle(text: title)
-            .addParagraphBlock(withText: content)
+            .enterTextInTitle(text: postTitle)
+            .addParagraphBlock(withText: postContent)
             .addImage()
-            .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
+            .verifyContentStructure(blocks: 2, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
             .openPostSettings()
             .selectCategory(name: category)
             .addTag(name: tag)
             .closePostSettings()
-        try BlockEditorScreen().publish()
-            .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .done()
+            .publish()
+            .viewPublishedPost(withTitle: postTitle)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .tapDone()
     }
 
     func testUndoRedo() throws {
@@ -74,9 +74,9 @@ class EditorGutenbergTests: XCTestCase {
     func testAddRemoveFeaturedImage() throws {
 
         try BlockEditorScreen()
-            .enterTextInTitle(text: title)
-            .addParagraphBlock(withText: content)
-            .verifyContentStructure(blocks: 1, words: content.components(separatedBy: " ").count, characters: content.count)
+            .enterTextInTitle(text: postTitle)
+            .addParagraphBlock(withText: postContent)
+            .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
             .openPostSettings()
             .setFeaturedImage()
             .verifyPostSettings(hasImage: true)
@@ -89,10 +89,10 @@ class EditorGutenbergTests: XCTestCase {
 
     func testAddGalleryBlock() throws {
         try BlockEditorScreen()
-            .enterTextInTitle(text: title)
-            .addParagraphBlock(withText: content)
+            .enterTextInTitle(text: postTitle)
+            .addParagraphBlock(withText: postContent)
             .addImageGallery()
-            .verifyContentStructure(blocks: 2, words: content.components(separatedBy: " ").count, characters: content.count)
+            .verifyContentStructure(blocks: 2, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
     }
 
     func testAddMediaBlocks() throws {

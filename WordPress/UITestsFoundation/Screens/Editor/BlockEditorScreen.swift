@@ -184,20 +184,39 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     public func publish() throws -> EditorNoticeComponent {
-        let publishButton = app.buttons["Publish"]
-        let publishNowButton = app.buttons["Publish Now"]
-        var tries = 0
-        // This loop to check for Publish Now Button is an attempt to confirm that the publishButton.tap() call took effect.
-        // The tests would fail sometimes in the pipeline with no apparent reason.
-        repeat {
-            publishButton.tap()
-            tries += 1
-        } while !publishNowButton.waitForIsHittable(timeout: 3) && tries <= 3
-        try confirmPublish()
-
-        return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+        return try post(action: "Publish")
     }
 
+    public func schedulePost() throws -> EditorNoticeComponent {
+        return try post(action: "Schedule")
+    }
+
+    private func post(action: String) throws -> EditorNoticeComponent {
+        let postButton = app.buttons[action]
+        let postNowButton = app.buttons["\(action) Now"]
+        var tries = 0
+        // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
+        // The tests would fail sometimes in the pipeline with no apparent reason.
+        repeat {
+            postButton.tap()
+            tries += 1
+        } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
+        try confirmPost(button: postNowButton)
+
+        let actionInNotice: String
+
+        if action == "Schedule" {
+            actionInNotice = "scheduled"
+        } else if action == "Publish" {
+            actionInNotice = "published"
+        } else {
+            throw NSError(domain: "InvalidAction", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid action: \(action)"])
+        }
+
+        return try EditorNoticeComponent(withNotice: "Post \(actionInNotice)", andAction: "View")
+    }
+
+    @discardableResult
     public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
         let postSettingsButton = app.buttons["Post Settings"] // Uses a localized string
@@ -314,12 +333,11 @@ public class BlockEditorScreen: ScreenObject {
                     .selectAlbum(atIndex: 0)
     }
 
-    private func confirmPublish() throws {
+    private func confirmPost(button: XCUIElement) throws {
         if FancyAlertComponent.isLoaded() {
             try FancyAlertComponent().acceptAlert()
         } else {
-            let publishNowButton = app.buttons["Publish Now"]
-            publishNowButton.tap()
+            button.tap()
             dismissBloggingRemindersAlertIfNeeded()
         }
     }
