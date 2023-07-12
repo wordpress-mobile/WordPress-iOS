@@ -111,14 +111,13 @@ private extension PrepublishingViewController {
     }
 
     func makeNoConnectionViewModel() -> JetpackSocialNoConnectionViewModel {
-        return coreDataStack.performQuery { [weak self] context in
-            guard let services = try? PublicizeService.allSupportedServices(in: context) else {
-                return .init()
-            }
-
-            // TODO: Tap actions
-            return .init(services: services, preferredBackgroundColor: self?.tableView.backgroundColor)
+        let context = post.managedObjectContext ?? coreDataStack.mainContext
+        guard let services = try? PublicizeService.allSupportedServices(in: context) else {
+            return .init()
         }
+
+        // TODO: Tap actions
+        return .init(services: services, preferredBackgroundColor: tableView.backgroundColor)
     }
 
     enum Constants {
