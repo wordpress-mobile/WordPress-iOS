@@ -1,6 +1,0 @@
-Corrigimos um problema no cartão "Trabalhar em um post em rascunho" da tela inicial. O aplicativo não vai mais travar quando você acessar os rascunhos durante o upload deles.
-
-Também resolvemos alguns problemas no editor de blocos.
-
-- Sem defeitos: agora os blocos de imagem vão exibir a proporção correta mesmo se a largura e altura da imagem não estiverem definidas.
-- Quando você ditar o texto, a posição do cursor vai ficar no lugar certo e não pulando para lá e para cá. Continue a ditar, continue a ditar...

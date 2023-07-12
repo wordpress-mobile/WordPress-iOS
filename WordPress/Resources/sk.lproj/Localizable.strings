@@ -505,9 +505,6 @@
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Buďte prvý, kto napíše komentár.";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Veľká aktualizácia pr iPhone\/iPad už dostupná";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blok citácie";
@@ -2536,7 +2533,6 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -2873,7 +2869,6 @@
 "Preparing..." = "Pripravuje sa...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -3034,13 +3029,8 @@
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Zapojte konverzáciu: napíšte nový článok.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Súvisiace články";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Súvisiace články zobrazujú príslušný obsah vašej webovej stránky pod vašimi článkami";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -3447,12 +3437,6 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Zdielanie chyby";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Zobraziť hlavičku";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Zobraziť obrázky";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Zobraziť tlačidlo To sa mi páči";
 
@@ -3461,9 +3445,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Zobraziť tlačidlo Reblog";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Zobraziť súvisiace články";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Zobraziť témy:";
@@ -3836,9 +3817,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "V URL adrese chýba platný hostiteľ.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Aplikácia WordPress pre Android v novom šate";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikácia nemôže rozpoznať odpoveď servera. Skontrolujte konfiguráciu na vašej webovej stránke.";
@@ -4365,9 +4343,6 @@
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Aktualizuje sa...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Nová aktualizácia: VideoPress pre svatby";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Nahrať súbor";
@@ -4898,15 +4873,6 @@
 
 /* Label displayed on image media items. */
 "image" = "obrázok";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "v \"Aplikácie\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "v \"Mobilné\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "v \"Aktualizácia\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

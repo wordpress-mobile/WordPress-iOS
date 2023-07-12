@@ -1,6 +1,0 @@
-We hebben een probleem opgelost met de kaart ‘Aan een conceptbericht werken’ op het startscherm. De app crasht niet meer wanneer je concepten opent terwijl ze nog worden geüpload.
-
-We hebben ook een aantal problemen opgelost met de blokeditor.
-
-- Geweldig, afbeeldingblokken worden nu in de juiste beeldverhouding weergegeven, of er nou wel of niet een breedte en hoogte zijn ingesteld voor het beeld.
-- Wanneer je een tekst dicteert, blijft de cursor waar die zou moeten zijn en springt deze niet meer over het scherm. Blijf kalm en dicteer verder.

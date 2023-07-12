@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloc %s. Le contenu de ce bloc est non valide";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s converti en bloc normal";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s converti en bloc normal";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Les aperçus de bloc embarqués %s seront prochainement disponibles";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Texte alternatif";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Vous pouvez également détacher et modifier ces blocs séparément en appuyant sur « Convertir en blocs normaux ».";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Vous pouvez également détacher et modifier ce bloc séparément en appuyant sur « Convertir en bloc normal ».";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Vous pouvez également saisir le mot de passe de ce compte.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Record de vues";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Une grosse mise à jour iPhone\/iPad est disponible";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Page vide créée";
@@ -2746,12 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Modifier la vidéo";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "La modification des blocs réutilisables n’est pas encore prise en charge sur %s pour Android";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "La modification des blocs réutilisables n’est pas encore prise en charge sur %s pour iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "La modification de ce GIF supprimera son animation.";
@@ -5232,7 +5211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Préparation...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6063,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Relancer la conversation : écrivez un nouvel article.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Articles similaires";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Les articles similaires affichent du contenu pertinent de votre site après chaque article.";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Me rappeler";
@@ -6340,9 +6312,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Retourner à l’article";
-
-/* No comment provided by engineer. */
-"Reusable" = "Réutilisable";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Annuler les modifications en attente";
@@ -6864,12 +6833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Erreur de partage";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Afficher l'en-tête";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Afficher les images";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Afficher le bouton j'aime";
 
@@ -6878,9 +6841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Afficher le bouton Rebloguer";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Afficher les articles similaires";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Me faire découvrir";
@@ -7560,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "L’URL ne contient pas d’hôte valide.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "L'application WordPress Android a reçu une cure de rajeunissement";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Les meilleurs fans du monde";
 
@@ -7766,9 +7723,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Une erreur est survenue lors du chargement des activités.";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "Un problème est survenu lors du chargement des campagnes.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Un problème est survenu lors du chargement des offres";
@@ -8497,9 +8451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Mise à jour en cours...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Aspect de la mise à jour : VideoPress pour les mariages";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Mettez votre plan à jour pour importer des fichiers audio";
@@ -9720,9 +9671,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "Terminé";
 
 /* Short status description */
-"blazeCampaign.status.created" = "Créé";
-
-/* Short status description */
 "blazeCampaign.status.inmoderation" = "En modération";
 
 /* Short status description */
@@ -10023,15 +9971,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "Image";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "dans \"Apps\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "dans \"Mobile\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "dans \"Mise à jour\"";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Pour prendre des photos ou réaliser des vidéos à utiliser dans vos articles.";
@@ -10450,14 +10389,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Travailler sur un brouillon d’article";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "brouillon d’article";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistiques du jour";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Statistiques";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Ignorer";

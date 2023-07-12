@@ -1,6 +1,0 @@
-Ana ekranın "Bir taslak yazı üzerinde çalışın" kartıyla ilgili bir sorunu düzelttik. Yüklenmekte olan taslaklara eriştiğinizde artık uygulama kilitlenmeyecek.
-
-Ayrıca, blok düzenleyicisiyle ilgili birkaç problemi de giderdik.
-
-- Tam isabet—Görsel blokları, görsel için belirlenmiş bir genişlik ve yükseklik olsun ya da olmasın artık doğru en boy oranını gösteriyor.
-- Metni dikte ederken imlecin konumu olması gerektiği yerde kalır ve sağa sola hareket etmez. Sakin olun ve dikte etmeye devam edin.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-26 11:45:40+0000 */
+/* Translation-Revision-Date: 2023-07-11 16:41:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: es */
@@ -249,12 +249,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloque %s. Este bloque tiene contenido no válido";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s convertido a bloque normal";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s convertido a bloques normales";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Pronto llegarán las vistas previas del bloque incrustado de %s";
@@ -739,10 +733,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Texto Alt";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativamente, puedes separar y editar estos bloques por separado tocando en «Convertir en bloques normales».";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "También puedes separar y editar este bloque individualmente tocando en «Convertir a bloque normal».";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativamente, puedes separar y editar estos bloques por separado tocando en «Separar patrones».";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "También puedes introducir la contraseña de esta cuenta.";
@@ -1120,9 +1111,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Mayor número de visitas";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Hay una importante actualización para iPhone\/iPad disponible.";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Página en blanco creada";
@@ -2748,10 +2736,10 @@ translators: Block name. %s: The localized block name */
 "Edit video" = "Editar el vídeo";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "La edición de bloques reutilizables todavía no está incluida en %s para Android";
+"Editing synced patterns is not yet supported on %s for Android" = "La edición de patrones sincronizados todavía no está incluida en %s para Android";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "La edición de bloques reutilizables todavía no está incluida en %s para iOS";
+"Editing synced patterns is not yet supported on %s for iOS" = "La edición de patrones sincronizados todavía no está incluida en %s para iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editar este GIF eliminará su animación.";
@@ -5232,7 +5220,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5804,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Preparándose";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6072,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Reemprende la conversación: escribe una entrada nueva.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Entradas relacionadas";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Las entradas relacionadas muestran contenido relacionado de tu sitio bajo tus entradas";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Recordármelo";
@@ -6340,9 +6321,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Volver a la entrada";
-
-/* No comment provided by engineer. */
-"Reusable" = "Reutilizable";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Deshacer el cambio pendiente";
@@ -6864,12 +6842,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Error al compartir";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Mostrar cabecera";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Mostrar imágenes";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Mostrar el botón «Me gusta»";
 
@@ -6878,9 +6850,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Mostrar botón de rebloguear";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Mostrar entradas relacionadas";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Muéstrame el camino";
@@ -7560,9 +7529,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "La URL no contiene un host válido.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "La aplicación para Android ha recibido una importante actualización";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Los mejores aficionados del mundo";
 
@@ -7766,9 +7732,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Hubo un error al cargar las actividades";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "Ocurrió un error al cargar las campañas.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Hubo un error cargando los planes";
@@ -8497,9 +8460,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Actualizando...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Novedades: VideoPress para bodas";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Actualiza tu plan para subir audio";
@@ -9668,6 +9628,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "No tienes ninguna campaña";
 
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "¡Vaya!";
+
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Cargando campañas…";
 
@@ -9720,10 +9683,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "Completada";
 
 /* Short status description */
-"blazeCampaign.status.created" = "Creada";
+"blazeCampaign.status.inmoderation" = "En moderación";
 
 /* Short status description */
-"blazeCampaign.status.inmoderation" = "En moderación";
+"blazeCampaign.status.processing" = "Procesando";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Rechazada";
@@ -9857,6 +9820,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of a label that encourages the user to create a new page. */
 "dashboardCard.pages.create.description" = "Comience con diseños personalizados y preparados para dispositivos móviles";
 
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "Ver estadísticas";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Los parámetros sobreescritos están marcados con un check.";
 
@@ -9937,6 +9903,9 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "Detalles de la campaña";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
@@ -9963,6 +9932,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the domain purchase result screen. Tells user their domain was obtained. */
 "freeToPaidPlans.resultView.title" = "¡Todo listo!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "Se ha producido un error";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "Reintentar";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Configura los recordatorios para publicar en el blog";
@@ -10029,15 +10004,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "imagen";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "en «Aplicaciones»";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "en «Móvil»";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "en «Actualización»";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Para hacer las fotos o vídeos que deseas usar en tus entradas.";
@@ -10456,14 +10422,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Trabajar en el borrador de una entrada";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "borrador de entrada";
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "Ver todos los borradores";
 
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Estadísticas de hoy";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Estadísticas";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Descartar";
@@ -10555,6 +10518,9 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
 
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " en los próximos 30 días";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Ver todas las respuestas";
 
@@ -10624,6 +10590,36 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nueva";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "en «Móvil»";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "Importante actualización para iPhone\/iPad disponible ahora";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "La aplicación WordPress para Android recibe un importante lavado de cara";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "Vista previa";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "Entradas relacionadas";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "Fallo al actualizar ajustes";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "Mostrar cabecera";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "Mostrar las entradas relacionadas";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "Mostrar imágenes";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "Entradas relacionadas";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Descartar";

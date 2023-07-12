@@ -1,6 +1,0 @@
-Wir haben ein Problem mit der Karte „An einem Beitragsentwurf arbeiten“ der Startseite behoben. Die App stürzt nun nicht mehr ab, wenn du auf Entwürfe zugreifst, während sie hochgeladen werden.
-
-Außerdem haben wir einige Probleme im Block-Editor behoben.
-
-- Bei Bildblöcken wird jetzt das richtige Bildformat angezeigt, egal ob Höhe und Breite des Bildes definiert sind oder nicht.
-- Beim Diktieren bleibt der Cursor an der gewünschten Stelle und springt nicht mehr herum. So kannst du ganz in Ruhe weiterdiktieren.

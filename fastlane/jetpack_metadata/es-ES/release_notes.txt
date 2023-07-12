@@ -1,6 +1,0 @@
-Hemos corregido un problema que se producía en la tarjeta “Trabajar en un borrador de entrada” de la pantalla de inicio. La aplicación ya no se bloqueará si accedes a los borradores mientras se cargan.
-
-También hemos resuelto un par de problemas en el editor de bloques.
-
-- Ahora, los bloques de imagen muestran la relación de aspecto correcta, tanto si la imagen tiene una anchura y una altura determinadas como si no.
-- Al dictar un texto, la posición del cursor se mantendrá en su sitio y no se producirán saltos. De esta manera, podrás dictar con tranquilidad.
