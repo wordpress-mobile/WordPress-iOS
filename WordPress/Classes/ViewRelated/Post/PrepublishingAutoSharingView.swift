@@ -94,9 +94,7 @@ struct PrepublishingAutoSharingViewModel {
         /// Whether the icon for this service should be opaque or transparent.
         /// If at least one account is enabled, an opaque version should be shown.
         var usesOpaqueIcon: Bool {
-            connections.reduce(false) { partialResult, connection in
-                return partialResult || connection.enabled
-            }
+            connections.reduce(false) { $0 || $1.enabled }
         }
 
         var enabledConnections: [Connection] {
@@ -117,15 +115,11 @@ struct PrepublishingAutoSharingViewModel {
     // MARK: Computed Properties
 
     var enabledConnectionsCount: Int {
-        services.reduce(0) { partialResult, service in
-            return partialResult + service.enabledConnections.count
-        }
+        services.reduce(0) { $0 + $1.enabledConnections.count }
     }
 
     var totalConnectionsCount: Int {
-        services.reduce(0) { partialResult, service in
-            return partialResult + service.connections.count
-        }
+        services.reduce(0) { $0 + $1.connections.count }
     }
 
     var showsWarning: Bool {
