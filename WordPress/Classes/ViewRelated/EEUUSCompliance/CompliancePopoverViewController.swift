@@ -4,6 +4,10 @@ import WordPressUI
 
 final class CompliancePopoverViewController: UIViewController {
 
+    // MARK: - Dependencies
+
+    private let viewModel: CompliancePopoverViewModel
+
     // MARK: - Views
     private let hostingController: UIHostingController<CompliancePopover>
 
@@ -11,7 +15,6 @@ final class CompliancePopoverViewController: UIViewController {
         return hostingController.view
     }
 
-    private let viewModel: CompliancePopoverViewModel
     private var bannerIntrinsicHeight: CGFloat = 0
 
     init(viewModel: CompliancePopoverViewModel) {
@@ -35,6 +38,7 @@ final class CompliancePopoverViewController: UIViewController {
         hostingController.rootView.saveAction = {
             self.viewModel.didTapSave()
         }
+        viewModel.didDisplayPopover()
     }
 
     override func viewDidLayoutSubviews() {
