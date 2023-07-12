@@ -3,90 +3,51 @@ import CryptoKit
 
 /// An LRU disk cache that stores data in files on disk.
 ///
-/// ``DiskCache`` uses LRU cleanup policy (least recently used items are removed
-/// first). The elements stored in the cache are automatically discarded if
-/// either *cost* or *count* limit is reached. The sweeps are performed periodically.
+/// ``DiskCache`` uses an LRU cleanup policy where the least recently used items
+/// are removed first). The elements stored in the cache are automatically
+/// discarded if either *cost* or *count* limit is exceeded.
 ///
-/// - important: It's possible to have more than one instance of ``DiskCache`` with
-/// the same path but it is not recommended.
-public actor DiskCache {
-    /// The path for the directory managed by the cache.
-    public nonisolated let rootURL: URL
+/// ``DiskCache`` is thread-safe; both reads and writes can be executed in parallel.
+///
+/// - important: It's not recommended to have more than one instance of ``DiskCache``
+/// managing the same path.
+final class DiskCache {
+    static let shared = DiskCache(
+        url: URL.getCachesURL().appendingPathComponent("WPCache", isDirectory: true)
+    )
 
-    /// The cache configuration.
-    public nonisolated let configuration: Configuration
+    private let rootURL: URL
+    private let sizeLimit: Int
 
-    public struct Configuration {
-        /// Size limit in bytes. `100 Mb` by default.
-        ///
-        /// Changes to the size limit will take effect when the next LRU sweep is run.
-        public var sizeLimit: Int = 1024 * 1024 * 100
-
-        /// When performing a sweep, the cache will remote entries until the size of
-        /// the remaining items is lower than or equal to `sizeLimit * trimRatio` and
-        /// the total count is lower than or equal to `countLimit * trimRatio`. `0.7`
-        /// by default.
-        var trimRatio = 0.7
-
-        /// The number of seconds between each LRU sweep. 30 by default.
-        /// The first sweep is performed right after the cache is initialized.
-        ///
-        /// Sweeps are performed in a background and can be performed in parallel
-        /// with reading.
-        public var sweepInterval: TimeInterval = 30
-
-        /// The delay after which the initial sweep is performed. 10 by default.
-        /// The initial sweep is performed after a delay to avoid competing with
-        /// other subsystems for the resources.
-        var initialSweepDelay: TimeInterval = 10
-
-        /// Initializes the configuration.
-        ///
-        /// - parameter sizeLimit: Size limit in bytes. `100 Mb` by default.
-        public init(sizeLimit: Int = 1024 * 1024 * 100) {
-            self.sizeLimit = sizeLimit
-        }
-    }
-
-    /// Creates a cache instance with a given `name`. The cache creates a directory
-    /// with the given `name` in a `.cachesDirectory` in `.userDomainMask`.
-    public init(name: String, configuration: Configuration = .init()) {
-        let cachesURL = DiskCache.getCachesURL()
-        self.init(url: cachesURL.appendingPathComponent(name, isDirectory: true), configuration: configuration)
-    }
-
-    private static func getCachesURL() -> URL {
-        guard let cachesURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            DDLogError("Failed to instantiate cache. Caches directory not available")
-            return URL(fileURLWithPath: "/dev/null") // This should never happen
-        }
-        return cachesURL
-    }
+    private let queue = DispatchQueue(label: "org.wordpress.diskCache")
 
     /// Creates a cache instance with a given root URL.
-    public init(url: URL, configuration: Configuration = .init()) {
+    ///
+    /// - parameters:
+    ///   - url: The directory URL where cached files will be stored. The
+    ///     directory will be automatically created by ``DiskCache``.
+    ///   - sizeLimit: The size limit in bytes. By default, 100 MB.
+    init(url: URL, sizeLimit: Int = 1024 * 1024 * 100) {
         self.rootURL = url
-        self.configuration = configuration
+        self.sizeLimit = sizeLimit
 
         do {
             try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
         } catch {
             DDLogError("Failed to creates cache root directory at: \(url) with error: \(error)")
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + configuration.initialSweepDelay) { [weak self] in
-            Task {
-                await self?.performAndScheduleNextSweep()
-            }
+        queue.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
+            self?.performAndScheduleNextSweep()
         }
     }
 
-    // MARK: Codable
+    // MARK: - Codable
 
     public func getValue<T: Decodable>(
         _ type: T.Type,
         forKey key: String,
         decoder: JSONDecoder = JSONDecoder()
-    ) async -> T? {
+    ) -> T? {
         guard let data = getData(forKey: key) else { return nil }
         return try? decoder.decode(type, from: data)
     }
@@ -95,7 +56,7 @@ public actor DiskCache {
         _ value: T,
         forKey key: String,
         encoder: JSONEncoder = JSONEncoder()
-    ) async {
+    ) {
         guard let data = try? encoder.encode(value) else { return }
         setData(data, forKey: key)
     }
@@ -104,31 +65,44 @@ public actor DiskCache {
         removeData(forKey: key)
     }
 
-    // MARK: Codable (Closures)
+    // MARK: - Codable (Async)
 
-    public nonisolated func getValue<T: Decodable>(
+    public func getValue<T: Decodable>(
         _ type: T.Type,
         forKey key: String,
-        decoder: JSONDecoder = JSONDecoder(),
-        _ completion: @escaping (T?) -> Void
-    ) {
-        Task {
-            let value = await getValue(type, forKey: key, decoder: decoder)
-            completion(value)
+        decoder: JSONDecoder = JSONDecoder()
+    ) async -> T? {
+        await withUnsafeContinuation { continuation in
+            queue.async {
+                let value = self.getValue(type, forKey: key, decoder: decoder)
+                continuation.resume(returning: value)
+            }
         }
     }
 
-    public nonisolated func setValue<T: Encodable>(
+    public func setValue<T: Encodable>(
         _ value: T,
         forKey key: String,
         encoder: JSONEncoder = JSONEncoder()
-    ) {
-        Task {
-            await setValue(value, forKey: key, encoder: encoder)
+    ) async {
+        await withUnsafeContinuation { continuation in
+            queue.async {
+                self.setValue(value, forKey: key, encoder: encoder)
+                continuation.resume()
+            }
         }
     }
 
-    // MARK: Accessing Cached Data
+    public func removeValue(forKey key: String) async {
+        await withUnsafeContinuation { continuation in
+            queue.async {
+                self.removeData(forKey: key)
+                continuation.resume()
+            }
+        }
+    }
+
+    // MARK: - Data
 
     public func getData(forKey key: String) -> Data? {
         guard let url = fileURL(for: key) else { return nil }
@@ -152,29 +126,22 @@ public actor DiskCache {
     }
 
     /// Removes all cached entries.
-    public func removeAll() {
-        do {
-            try FileManager.default.removeItem(at: rootURL)
-            try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            DDLogError("Failed to clear cache with error: \(error)")
-        }
+    public func removeAll() throws {
+        try FileManager.default.removeItem(at: rootURL)
+        try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
     }
 
-    /// Returns the URL for the given cache key.
-    public nonisolated func fileURL(for key: String) -> URL? {
+    private func fileURL(for key: String) -> URL? {
         guard let filename = key.sha1 else { return nil }
         return rootURL.appendingPathComponent(filename, isDirectory: false)
     }
 
-    // MARK: Sweep
+    // MARK: - Sweep
 
     private func performAndScheduleNextSweep() {
         sweep()
-        DispatchQueue.main.asyncAfter(deadline: .now() + configuration.sweepInterval) { [weak self] in
-            Task {
-                await self?.performAndScheduleNextSweep()
-            }
+        queue.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
+            self?.performAndScheduleNextSweep()
         }
     }
 
@@ -186,11 +153,12 @@ public actor DiskCache {
         }
         var size = items.reduce(0) { $0 + ($1.meta.totalFileAllocatedSize ?? 0) }
 
-        guard size > configuration.sizeLimit else {
+        guard size > sizeLimit else {
             return // All good, no need to perform any work.
         }
 
-        let targetSizeLimit = Int(Double(configuration.sizeLimit) * configuration.trimRatio)
+        // Removes most entities, but not all (keep 50% of the size limit).
+        let targetSizeLimit = Int(Double(sizeLimit) * 0.5)
 
         // Most recently accessed items first
         let past = Date.distantPast
@@ -205,7 +173,7 @@ public actor DiskCache {
         }
     }
 
-    // MARK: Contents
+    // MARK: - Contents
 
     struct Entry {
         let url: URL
@@ -225,7 +193,7 @@ public actor DiskCache {
         }
     }
 
-    // MARK: Inspection
+    // MARK: - Inspection
 
     /// The total number of items in the cache.
     ///
@@ -246,17 +214,6 @@ public actor DiskCache {
             $0 + ($1.meta.fileSize ?? 0)
         }
     }
-
-    /// The total file allocated size of all the items written on disk.
-    ///
-    /// Uses `URLResourceKey.totalFileAllocatedSizeKey`.
-    ///
-    /// - important: Requires disk IO, avoid using from the main thread.
-    public var totalAllocatedSize: Int {
-        contents(keys: [.totalFileAllocatedSizeKey]).reduce(0) {
-            $0 + ($1.meta.totalFileAllocatedSize ?? 0)
-        }
-    }
 }
 
 private extension String {
@@ -269,5 +226,19 @@ private extension String {
         return Insecure.SHA1.hash(data: data)
             .map { String(format: "%02x", $0) }
             .joined()
+    }
+}
+
+private extension URL {
+    static func getCachesURL() -> URL {
+        if #available(iOS 16, *) {
+            return URL.cachesDirectory
+        } else {
+            guard let cachesURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+                DDLogError("Failed to instantiate cache. Caches directory not available")
+                return URL(fileURLWithPath: "/dev/null") // This should never happen
+            }
+            return cachesURL
+        }
     }
 }
