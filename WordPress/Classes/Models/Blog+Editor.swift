@@ -39,7 +39,7 @@ extension Blog {
     /// The editor to use when creating a new post
     ///
     var editor: MobileEditor {
-        return mobileEditor ?? GutenbergSettings(database: UserDefaults.standard).getDefaultEditor(for: self)
+        return mobileEditor ?? GutenbergSettings().getDefaultEditor(for: self)
     }
 
     @objc var isGutenbergEnabled: Bool {
