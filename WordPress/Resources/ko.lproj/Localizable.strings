@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s 블록. 이 블록에는 잘못된 내용이 있습니다.";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "일반 블록으로 %s 변환됨";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "일반 블록으로 %s 변환됨";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s 임베드 블록 미리보기 곧 공개 예정";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "대체 텍스트";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "또는 \"일반 블록으로 변환\"을 눌러 이 블록을 분리하고 따로 편집할 수 있습니다.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "또는 이 계정에 대한 비밀번호를 입력하셔도 됩니다.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "최고 조회수";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "iPhone\/iPad 업데이트 지금 이용 가능";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "빈 페이지를 만들었습니다";
@@ -2746,12 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "비디오 편집";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "재사용 가능한 블록 편집은 아직 Android용 %s에서 지원되지 않습니다.";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "재사용 가능한 블록 편집은 아직 iOS용 %s에서 지원되지 않습니다.";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
@@ -5232,7 +5211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "준비중...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6063,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "대화 다시 계속하기: 새 글을 작성하세요.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "관련 글";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "관련 글에는 글 아래에 있는 사이트의 관련 콘텐츠가 표시됩니다.";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "나에게 알림";
@@ -6340,9 +6312,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "글로 돌아가기";
-
-/* No comment provided by engineer. */
-"Reusable" = "재사용 가능";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "보류 상태로 되돌림";
@@ -6864,12 +6833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "공유 오류";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "헤더 표시";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "이미지 보이기";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "좋아요 버튼 표시";
 
@@ -6878,9 +6841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "리블로그 버튼 표시";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "관련 글 표시";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "주변 보여주기";
@@ -7560,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL에 올바른 호스트가 없습니다.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "대대적으로 업데이트된 Android 앱용 WordPress";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "세계 최고의 팬";
 
@@ -7766,9 +7723,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "활동 로드하는 중 오류가 발생했습니다.";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "캠페인 로드 중 오류가 발생했습니다.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "요금제를 로드하는 중 오류가 발생했습니다.";
@@ -8497,9 +8451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "업데이트 중...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "업그레이드 핵심: 웨딩용 VideoPress";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "오디오를 업로드하려면 요금제를 업그레이드하세요.";
@@ -9720,9 +9671,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "완료됨";
 
 /* Short status description */
-"blazeCampaign.status.created" = "생성됨";
-
-/* Short status description */
 "blazeCampaign.status.inmoderation" = "검토 중";
 
 /* Short status description */
@@ -10029,15 +9977,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "이미지";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "\"앱\"에서";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "\"모바일\"에서";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "\"업그레이드\"에서";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "글에 사용할 사진이나 비디오를 촬영";
@@ -10456,14 +10395,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "임시글로 글 작업";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "초안 작성";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "오늘의 통계";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "통계";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";

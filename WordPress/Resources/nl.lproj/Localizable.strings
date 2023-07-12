@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-27 13:54:30+0000 */
+/* Translation-Revision-Date: 2023-07-08 07:09:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -249,12 +249,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Dit blok heeft ongeldige inhoud";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s naar normaal blok omzetten";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s geconverteerd naar gewone blokken";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s insluit blok voorbeelden komen binnenkort";
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-tekst";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Als alternatief, kun je deze blokken ook losmaken en afzonderlijk bewerken door op 'Converteren naar normale blokken' te tikken.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Als alternatief, kun je dit blok ook losmaken en afzonderlijk bewerken door op 'Converteren naar normaal blok' te tikken.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Je kunt ook het wachtwoord voor dit account invoeren.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best bekeken ooit";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Grote iPhone\/iPad update nu beschikbaar";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Lege pagina gemaakt";
@@ -2746,12 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Bewerk video";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door %s voor Android";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door %s voor iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Deze GIF bewerken zal de animatie verwijderen.";
@@ -4914,7 +4893,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No date range selected" = "Geen datumbereik geselecteerd";
 
 /* No comment provided by engineer. */
-"No description" = "Geen omschrijving";
+"No description" = "Geen beschrijving";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Geen opgeloste bedreigingen";
@@ -5041,6 +5020,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Geen bedreigingen gevonden";
+
+/* No comment provided by engineer. */
+"No title" = "Geen titel";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5229,7 +5211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5814,7 +5795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Voorbereiden...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6083,13 +6063,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Breng het gesprek weer op gang: schrijf een nieuw bericht.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Gerelateerde berichten";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Gerelateerde berichten geven relevante content van je site weer onder je berichten";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Stuur me een herinnering";
@@ -6858,12 +6833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Fout tijdens delen";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Koptekst weergeven";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Toon afbeeldingen";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Toon Like knop";
 
@@ -6872,9 +6841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Toon Reblog knop";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Toon gerelateerde berichten";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Leid me rond";
@@ -7358,7 +7324,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
-"Tagline" = "Ondertitel";
+"Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
    Label for Tags
@@ -7553,9 +7519,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "De URL heeft geen geldige host.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "De WordPress voor Android-app krijgt een grote update";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "De beste fans ter wereld";
@@ -8488,9 +8451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Bijwerken...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Upgradefocus: VideoPress voor bruiloften";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgrade je abonnement om audio te uploaden";
@@ -9702,16 +9662,31 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.active" = "Actief";
 
 /* Short status description */
-"blazeCampaign.status.completed" = "Voltooid";
+"blazeCampaign.status.approved" = "Goedgekeurd";
 
 /* Short status description */
-"blazeCampaign.status.created" = "Aangemaakt";
+"blazeCampaign.status.canceled" = "Geannuleerd";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "Voltooid";
 
 /* Short status description */
 "blazeCampaign.status.inmoderation" = "Wordt gemodereerd";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Afgewezen";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Ingepland";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "Budget";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "Kliks";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "Impressies";
 
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Dit verbergen";
@@ -9728,8 +9703,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "reactie";
 
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "Reacties op";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "Reactie op";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "Reageer op %1$@";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "Opslaan";
+
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Ga naar instellingen";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "Privacy beheren";
 
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Analytische gegevens";
@@ -9908,10 +9904,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "freeToPaidPlans.resultView.done" = "Klaar";
 
 /* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
-"freeToPaidPlans.resultView.notice" = "Het kan tot 30 minuten duren voor je domein correct werkt.";
+"freeToPaidPlans.resultView.notice" = "Het kan tot 30 minuten duren voor je domein correct werkt";
 
 /* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
 "freeToPaidPlans.resultView.subtitle" = "Je nieuwe domein, %@, wordt ingesteld.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Helemaal klaar om te gaan!";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Stel je blogging herinneringen in";
@@ -9978,15 +9977,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label displayed on image media items. */
 "image" = "afbeelding";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "in \"Apps\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "in \"Mobiel\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "in \"Upgrade\"";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
@@ -10382,7 +10372,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "movedToJetpack.learnMoreButtonTitle" = "Ga naar jetpack.com voor meer informatie";
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
-"movedToJetpack.notifications.title" = "Gebruik WordPress met Meldingen in de Jetpack-app";
+"movedToJetpack.notifications.title" = "Gebruik WordPress met Meldingen in de Jetpack app.";
 
 /* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.reader.title" = "Gebruik WordPress met Reader in de Jetpack-app.";
@@ -10405,14 +10395,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Werk aan een conceptbericht";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "bericht opstellen";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistieken van vandaag";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Statistieken";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
@@ -10607,11 +10591,32 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "JouwSitenaam.com";
 
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "Privacy";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Je site is zichtbaar voor iedereen, maar vraagt de zoekmachines om je site niet te indexeren.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "Verborgen";
+
 /* Hint for users when private privacy setting is set */
 "siteVisibility.private.hint" = "Je site is alleen zichtbaar voor jou en voor gebruikers die je hebt goedgekeurd.";
 
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "Privé";
+
 /* Hint for users when public privacy setting is set */
 "siteVisibility.public.hint" = "Je site is zichtbaar voor iedereen en mag door zoekmachines in het register worden opgenomen.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "Openbaar";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "Onbekend";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "Onbekend";
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Meldingen weergeven";
@@ -10627,6 +10632,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for the social media icons in the Jetpack Social no connection view */
 "social.noconnection.icons.accessibility.label" = "Social media-pictogrammen";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Niet nu";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";

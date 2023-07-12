@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s 區塊含有無效內容";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "「%s」已轉換為一般區塊";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s 已轉換為一般區塊";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s 嵌入內容區塊預覽功能即將推出";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "替代文字";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "你可以改為點選「轉換為一般區塊」，然後分別移除並編輯這些區塊。";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "你可以改為點選「轉換為一般區塊」，然後分別移除並編輯這些區塊。";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "或者你也可以輸入此帳號的密碼。";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "最高記錄的瀏覽次數";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "有重大的 iPhone\/iPad 更新可供使用";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "已建立空白頁面";
@@ -2746,9 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "編輯視訊";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "Android 版 %s 尚不支援編輯可重複使用區塊";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "編輯此 GIF 會移除動畫。";
@@ -5229,7 +5211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5814,7 +5795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "準備中...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6083,13 +6063,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "再度展開討論：撰寫新文章。";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "相關文章";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "相關文章會在你的文章下方顯示網站上的相關內容";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "提醒我";
@@ -6337,9 +6312,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "返回文章";
-
-/* No comment provided by engineer. */
-"Reusable" = "可重複使用";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "回復待確認的變更";
@@ -6861,12 +6833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "分享錯誤";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "顯示頁首";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "顯示圖片";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "顯示按讚按鈕";
 
@@ -6875,9 +6841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "顯示轉發按鈕";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "顯示相關文章";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "逐步說明";
@@ -7557,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "網址缺少有效的主機。";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Android 專用的 WordPress 應用程式已全面改款";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "全球最棒的粉絲";
 
@@ -7763,9 +7723,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "載入活動時發生錯誤";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "載入行銷活動時發生錯誤。";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "載入方案時發生錯誤";
@@ -8494,9 +8451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "正在更新...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "升級重點：婚禮適用的 VideoPress";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "升級方案即可上傳音訊";
@@ -9717,9 +9671,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "已完成";
 
 /* Short status description */
-"blazeCampaign.status.created" = "已建立";
-
-/* Short status description */
 "blazeCampaign.status.inmoderation" = "審核中";
 
 /* Short status description */
@@ -10023,15 +9974,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "圖片";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "在「應用程式」中";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "在「行動」中";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "在「升級」中";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "拍些相片或影片供文章使用。";
@@ -10450,14 +10392,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "編輯草稿文章";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "草稿文章";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "本日統計";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "統計";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";

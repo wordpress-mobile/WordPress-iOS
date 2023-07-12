@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s bllok. Ky bllok ka lëndë të pavlefshme";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s shndërruar në bllok të rregullt";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s u shndërrua në blloqe të rregullt";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Paraparjet e blloqeve %s vijnë së shpejti";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Tekst Alternativ";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shndërroji në blloqe të rregullt”.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Ndryshe, mund ta shkëputni dhe përpunoni ndarazi këtë bllok, duke prekur “Shndërroje në bllok të rregullt”.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Parjet më të mira ndonjëherë";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Gati një Përditësim i Madh për iPhone\/iPad";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "U krijua faqe e zbrazët";
@@ -2728,12 +2713,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Përpunoni video";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në %s për Android";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në %s për iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij.";
@@ -5202,7 +5181,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5784,7 +5762,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Po përgatitet…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6053,13 +6030,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Rindizni bisedën: shkruani një postim të ri.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Postime të Afërt";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Postimet e Afërta shfaqin nën postime tuajat lëndë të afërt prej sajtit tuaj";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Kujtoma";
@@ -6828,12 +6800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Gabim në ndarje me të tjerët";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Shfaq Kryet";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Shfaqni Figura";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Shfaq buton Pëlqimesh";
 
@@ -6842,9 +6808,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Shfaq buton Riblogimesh";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Shfaqni Postime të Afërta";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Tregomani ca";
@@ -7520,9 +7483,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-së i mungon një strehë e vlefshme.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Aplikacioni WordPress për Android i Ndërron Pamjen Goxha";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Tifozët Më të Zjarrtë të Botës";
@@ -8455,9 +8415,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Po përditësohet…";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Përmirësoni Focus-in: VideoPress Për Dasma";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Që të ngarkoni audio, përmirësoni planin tuaj";
@@ -9862,15 +9819,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on image media items. */
 "image" = "figurë";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "te “Aplikacione”";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "te “Celular”";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "te “Përmirësojeni”";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Që të bëjë foto ose video për t’u përdorur te postimet tuaja.";
 
@@ -10276,14 +10224,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Merruni me një skicë postimi";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "skicë postimi";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistikat e Sotme";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Statistika";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";

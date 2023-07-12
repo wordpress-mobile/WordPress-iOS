@@ -250,12 +250,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s bloku. Bu blok geçersiz içerik barındırıyor";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s normal bloğa dönüştürüldü";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s normal bloklara dönüştürüldü";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s Gömülü blok önizlemeleri yakında geliyor";
 
@@ -738,12 +732,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternatif metin";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternatif olarak, \"Normal bloklara dönüştür\" seçeneğine dokunarak bu blokları ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Alternatif olarak, \"Normal bloka dönüştür\" seçeneğine dokunarak bu bloku ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatif olarak, bu hesabın şifresini girebilirsiniz.";
 
@@ -1120,9 +1108,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Şuana kadar ki en iyi görüntülemeler";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Büyük iPhone\/iPad güncellemesi şu an mevcut";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "Boş sayfa oluşturuldu";
@@ -2746,12 +2731,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Videoyu düzenle";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "Tekrar kullanılabilir blokların düzenlenmesi Android için %s sitesinde henüz desteklenmemektedir";
-
-/* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "Tekrar kullanılabilir blokların düzenlenmesi iOS için %s sitesinde henüz desteklenmemektedir";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Bu GIF'i düzenlemek animasyonunu kaldıracaktır.";
@@ -5232,7 +5211,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5795,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Hazırlanıyor...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6063,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Konuşmayı tekrar alevlendirin: yeni bir yazı yazın.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "İlişkili yazılar";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "İlişkili yazılar, yazılarınızın altında sitenizin içeriği ile alakalı içerik gösterir";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Bana hatırlat";
@@ -6340,9 +6312,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Yazıya geri dön";
-
-/* No comment provided by engineer. */
-"Reusable" = "Yeniden kullanılabilir";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Bekleyen değişiklikleri geri al";
@@ -6864,12 +6833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Paylaşım hatası";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Başlığı göster";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Görselleri göster";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Beğenme tuşunu göster";
 
@@ -6878,9 +6841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Reblog tuşunu göster";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "İlişkili yazıları göster";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Bana etrafı göster";
@@ -7560,9 +7520,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL'de geçerli ana bilgisayar yok.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Android için WordPress uygulaması büyük bir görsel gelişim yaşadı";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Dünyanın En İyi Hayranları";
 
@@ -7766,9 +7723,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Etkinlikler yüklenirken bir hata oluştu.";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "Kampanyalar yüklenirken bir hata oluştu.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Planlar yüklenirken bir hata oluştu";
@@ -8497,9 +8451,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Güncelleniyor...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Güncelleme odağı: Düğünler için VideoPress";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Ses yüklemek için paketinizi yükseltin";
@@ -9720,9 +9671,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "Tamamlandı";
 
 /* Short status description */
-"blazeCampaign.status.created" = "Oluşturuldu";
-
-/* Short status description */
 "blazeCampaign.status.inmoderation" = "Denetlemede";
 
 /* Short status description */
@@ -10026,15 +9974,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "görsel";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "\"Uygulamalar\" içinde";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "\"Mobil\" içinde";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "\"Güncelleme\" içinde";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Yazılarınızda kullanacağınız fotoğraf veya videoları çekmek için.";
@@ -10453,14 +10392,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Bir taslak yazı üzerinde çalışın";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "yazı yaz";
-
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Bugünün İstatistikleri";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "İstatistikler";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
