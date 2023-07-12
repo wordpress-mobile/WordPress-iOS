@@ -66,6 +66,23 @@ extension PostSettingsViewController {
         return hostController.view
     }
 
+    // MARK: - Social share cells
+
+    @objc func userCanEditSharing() -> Bool {
+        guard let post = self.apost as? Post else {
+            return false
+        }
+        guard FeatureFlag.jetpackSocial.enabled else {
+            return post.canEditPublicizeSettings()
+        }
+
+        return post.canEditPublicizeSettings() && remainingSocialShares() > 0
+    }
+
+    @objc func remainingSocialShares() -> Int {
+        self.apost.blog.sharingLimit?.remaining ?? .max
+    }
+
 }
 
 // MARK: - Private methods
