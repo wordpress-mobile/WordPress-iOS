@@ -91,6 +91,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     var willDisplayPostSignupFlow: Bool = false
 
     private var createButtonCoordinator: CreateButtonCoordinator?
+    private var complianceCoordinator: CompliancePopoverCoordinator?
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
@@ -208,6 +209,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         createFABIfNeeded()
         fetchPrompt(for: blog)
+
+        complianceCoordinator = CompliancePopoverCoordinator(viewController: self)
+        complianceCoordinator?.presentIfNeeded()
     }
 
     override func viewDidLayoutSubviews() {
