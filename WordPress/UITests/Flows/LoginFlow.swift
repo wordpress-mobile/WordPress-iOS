@@ -24,13 +24,13 @@ class LoginFlow {
 
     // Login with WP site via Site Address.
     @discardableResult
-    static func login(siteUrl: String, email: String, password: String, title: String? = nil) throws -> MySiteScreen {
+    static func login(siteUrl: String, email: String, password: String, selectedSiteTitle: String? = nil) throws -> MySiteScreen {
         return try PrologueScreen()
             .selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
             .proceedWith(email: email)
             .proceedWithValidPassword()
-            .continueWithSelectedSite(title: title)
+            .continueWithSelectedSite(title: selectedSiteTitle)
     }
 
     // Login with self-hosted site via Site Address.

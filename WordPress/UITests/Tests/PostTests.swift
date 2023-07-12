@@ -10,7 +10,7 @@ class PostTests: XCTestCase {
             siteUrl: WPUITestCredentials.testWPcomSiteAddress,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword,
-            title: WPUITestCredentials.testWPcomSiteForScheduledPost
+            selectedSiteTitle: WPUITestCredentials.testWPcomSiteForScheduledPost
         )
 
         try TabNavComponent()
@@ -22,18 +22,18 @@ class PostTests: XCTestCase {
         takeScreenshotOfFailedTest()
     }
 
-    let title = "Scheduled Post"
+    let postTitle = "Scheduled Post"
 
     func testCreateScheduledPost() throws {
         try BlockEditorScreen()
-            .enterTextInTitle(text: title)
+            .enterTextInTitle(text: postTitle)
             .openPostSettings()
-            .updatePublishDate()
+            .updatePublishDateToFutureDate()
             .closePublishDateSelector()
             .closePostSettings()
             .schedulePost()
-            .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteForScheduledPost)
-            .done()
+            .viewPublishedPost(withTitle: postTitle)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSiteForScheduledPost)
+            .tapDone()
     }
 }
