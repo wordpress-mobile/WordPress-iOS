@@ -23,20 +23,13 @@ echo "--- :swift: Setting up Swift Packages"
 install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
-xcrun simctl list >> /dev/null
-echo "Shutdown all simulators as the changes to plist files only take effect after reboot."
-xcrun simctl shutdown all
-echo "Plutil print"
-for plist_file in ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist; do
-  plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o -  $plist_file
-done
-echo "Disable AutoFill Passwords"
-for plist_file in ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist; do
-  plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO $plist_file
-done
-echo "Plutil print"
-for plist_file in ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist; do
-  plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o -  $plist_file
+echo "LIST DEVICES"
+xcrun simctl list
+echo "LS -LA"
+ls -la ~/Library/Developer/CoreSimulator/Devices/
+echo "FIND"
+find ~/Library/Developer/CoreSimulator/Devices/ -path "*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist" -print0 | while IFS= read -r -d $'\0' user_settings_plist; do
+    plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO $user_settings_plist
 done
 rake mocks &
 set +e
