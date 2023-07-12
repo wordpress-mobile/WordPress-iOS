@@ -56,16 +56,12 @@ public class LoginUsernamePasswordScreen: ScreenObject {
 
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
         fill(username: username, password: password)
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySitesScreen()
     }
 
     public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySiteScreen()
     }
