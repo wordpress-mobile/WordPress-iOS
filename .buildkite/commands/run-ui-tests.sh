@@ -25,12 +25,18 @@ install_swiftpm_dependencies
 echo "--- 🔬 Testing"
 echo "LIST DEVICES"
 xcrun simctl list
-echo "LS -LA"
-ls -la ~/Library/Developer/CoreSimulator/Devices/
 echo "FIND"
 find ~/Library/Developer/CoreSimulator/Devices/ -path "*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist" -print0 | while IFS= read -r -d $'\0' user_settings_plist; do
+    echo $user_settings_plist
+    echo "VALUE BEFORE"
+    plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o - $user_settings_plist
+    echo "COMMAND"
     plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO $user_settings_plist
+    echo "VALUE AFTER"
+    plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o - $user_settings_plist
 done
+echo "SHUTDOWN ALL SIMULATORS"
+xcrun simctl shutdown all
 rake mocks &
 set +e
 bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
