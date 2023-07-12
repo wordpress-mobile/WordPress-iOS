@@ -27,9 +27,17 @@ xcrun simctl list >> /dev/null
 echo "Shutdown all simulators as the changes to plist files only take effect after reboot."
 xcrun simctl shutdown all
 echo "Plutil print"
-plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o - ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist
+for plist_file in ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist; do
+  plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o -  $plist_file
+done
 echo "Disable AutoFill Passwords"
-plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist
+for plist_file in ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist; do
+  plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO $plist_file
+done
+echo "Plutil print"
+for plist_file in ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist; do
+  plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o -  $plist_file
+done
 rake mocks &
 set +e
 bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
