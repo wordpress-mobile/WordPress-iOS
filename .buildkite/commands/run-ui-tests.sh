@@ -27,18 +27,11 @@ echo "LIST DEVICES"
 xcrun simctl list
 echo "SHUTDOWN ALL SIMULATORS"
 xcrun simctl shutdown all
-echo "FIND"
-folders=$(ls -la ~/Library/Developer/CoreSimulator/Devices | awk '{print $NF}' | grep -E '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$')
-for folder in $folders; do
-  plist_file="$HOME/Library/Developer/CoreSimulator/Devices/$folder/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
-  echo $plist_file
-  if [ -f $plist_file ]; then
-    echo "================> FILE"
-    plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o - $plist_file
-    plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO $user_settings_plist
-    plutil -extract restrictedBool.allowPasswordAutoFill.value raw -o - $plist_file
-  fi
-done
+echo "PLIST BUDDY"
+IPAD_PLIST="/Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
+IPHONE_PLIST="/Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
+/usr/libexec/PlistBuddy -c "Set :restrictedBool:allowPasswordAutoFill:value NO" $IPAD_PLIST
+/usr/libexec/PlistBuddy -c "Set :restrictedBool:allowPasswordAutoFill:value NO" $IPHONE_PLIST
 rake mocks &
 set +e
 bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
