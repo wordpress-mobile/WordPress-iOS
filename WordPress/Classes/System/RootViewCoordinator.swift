@@ -53,14 +53,17 @@ class RootViewCoordinator {
     }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
+    private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
 
     // MARK: Initializer
 
     init(featureFlagStore: RemoteFeatureFlagStore,
-         windowManager: WindowManager?) {
+         windowManager: WindowManager?,
+         wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
         self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
+        self.wordPressAuthenticator = wordPressAuthenticator
         updateJetpackFeaturesRemovalCoordinatorState()
     }
 
@@ -75,12 +78,12 @@ class RootViewCoordinator {
     }
 
     func showSignInUI(completion: (() -> Void)? = nil) {
-        guard let loginViewController = WordPressAuthenticator.loginUI() else {
+        guard let loginViewController = wordPressAuthenticator.loginUI() else {
             fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")
         }
 
         windowManager?.show(loginViewController, completion: completion)
-        WordPressAuthenticator.track(.openedLogin)
+        wordPressAuthenticator.track(.openedLogin)
         self.rootViewPresenter = nil
     }
 
