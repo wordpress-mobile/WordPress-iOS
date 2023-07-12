@@ -1,3 +1,5 @@
+/// Encapsulates logic related to Jetpack Social in the pre-publishing sheet.
+///
 extension PrepublishingViewController {
 
     /// Determines whether the account and the post's blog is eligible to see auto-sharing options.
@@ -12,25 +14,45 @@ extension PrepublishingViewController {
     }
 
     func configureSocialCell(_ cell: UITableViewCell) {
-        // TODO:
-        // - Show the NoConnectionView if user has 0 connections.
-        let autoSharingView = UIView.embedSwiftUIView(PrepublishingAutoSharingView(model: makeAutoSharingViewModel()))
-        cell.contentView.addSubview(autoSharingView)
-
-        // Pin constraints to the cell's layoutMarginsGuide so that the content is properly aligned.
-        NSLayoutConstraint.activate([
-            autoSharingView.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
-            autoSharingView.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor),
-            autoSharingView.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor),
-            autoSharingView.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor)
-        ])
-        cell.accessoryType = .disclosureIndicator // TODO: only for autoSharingView.
+        if hasExistingConnections {
+            configureAutoSharingView(for: cell)
+        } else {
+            configureNoConnectionView(for: cell)
+        }
     }
 }
 
 // MARK: - Helper Methods
 
 private extension PrepublishingViewController {
+
+    var hasExistingConnections: Bool {
+        coreDataStack.performQuery { [postObjectID = post.objectID] context in
+            guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
+                  let connections = post.blog.connections as? Set<PublicizeConnection> else {
+                return false
+            }
+            return !connections.isEmpty
+        }
+    }
+
+    // MARK: Auto Sharing View
+
+    func configureAutoSharingView(for cell: UITableViewCell) {
+        let viewModel = makeAutoSharingViewModel()
+        let viewToEmbed = UIView.embedSwiftUIView(PrepublishingAutoSharingView(model: viewModel))
+        cell.contentView.addSubview(viewToEmbed)
+
+        // Pin constraints to the cell's layoutMarginsGuide so that the content is properly aligned.
+        NSLayoutConstraint.activate([
+            viewToEmbed.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
+            viewToEmbed.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor),
+            viewToEmbed.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor),
+            viewToEmbed.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor)
+        ])
+
+        cell.accessoryType = .disclosureIndicator
+    }
 
     func makeAutoSharingViewModel() -> PrepublishingAutoSharingViewModel {
         return coreDataStack.performQuery { [postObjectID = post.objectID] context in
@@ -70,4 +92,36 @@ private extension PrepublishingViewController {
         }
     }
 
+    // MARK: - No Connection View
+
+    func configureNoConnectionView(for cell: UITableViewCell) {
+        let viewModel = makeNoConnectionViewModel()
+        guard let viewToEmbed = JetpackSocialNoConnectionView.createHostController(with: viewModel).view else {
+            return
+        }
+
+        cell.contentView.addSubview(viewToEmbed)
+        cell.contentView.pinSubviewToSafeArea(viewToEmbed)
+    }
+
+    func makeNoConnectionView() -> UIView {
+        let viewModel = makeNoConnectionViewModel()
+        let controller = JetpackSocialNoConnectionView.createHostController(with: viewModel)
+        return controller.view
+    }
+
+    func makeNoConnectionViewModel() -> JetpackSocialNoConnectionViewModel {
+        return coreDataStack.performQuery { [weak self] context in
+            guard let services = try? PublicizeService.allSupportedServices(in: context) else {
+                return .init()
+            }
+
+            // TODO: Tap actions
+            return .init(services: services, preferredBackgroundColor: self?.tableView.backgroundColor)
+        }
+    }
+
+    enum Constants {
+        static let socialCellBackgroundColor = UIColor(light: .listForeground, dark: .listBackground)
+    }
 }
