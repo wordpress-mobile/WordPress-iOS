@@ -33,7 +33,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
         - [x] Add and Remove Featured Image
         - [x] Add Gallery Block
         - [x] Add Media Blocks (Image, Video and Audio)
-        - [ ] Create Scheduled Post
+        - [x] Create Scheduled Post
     - [ ] Pages:
         - [ ] Create Page from Layout
         - [ ] Create Blank Page
