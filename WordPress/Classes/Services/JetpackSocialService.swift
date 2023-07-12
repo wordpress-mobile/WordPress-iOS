@@ -1,7 +1,7 @@
 import WordPressKit
 import CoreData
 
-class JetpackSocialService {
+@objc class JetpackSocialService: NSObject {
 
     // MARK: Properties
 
@@ -15,6 +15,13 @@ class JetpackSocialService {
     }()
 
     // MARK: Methods
+
+
+    /// Init method for Objective-C.
+    ///
+    @objc init(contextManager: ContextManager) {
+        self.coreDataStack = contextManager
+    }
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
@@ -62,15 +69,43 @@ class JetpackSocialService {
         }
     }
 
+    /// Sync method for Objective-C.
+    /// Fetches the latest state of the blog's Publicize auto-sharing limits and stores them locally.
+    ///
+    /// - Parameters:
+    ///   - dotComID: The WP.com ID of the blog.
+    ///   - success: Closure called when the sync process succeeds.
+    ///   - failure: Closure called when the sync process fails.
+    @objc func syncSharingLimit(dotComID: NSNumber?,
+                                success: (() -> Void)?,
+                                failure: ((NSError?) -> Void)?) {
+        guard let blogID = dotComID?.intValue else {
+            failure?(ServiceError.nilBlogID as NSError)
+            return
+        }
+
+        syncSharingLimit(for: blogID, completion: { [success, failure] result in
+            switch result {
+            case .success:
+                success?()
+            case .failure(let error):
+                failure?(error as NSError)
+            }
+        })
+    }
+
     // MARK: Errors
 
     enum ServiceError: LocalizedError {
         case blogNotFound(id: Int)
+        case nilBlogID
 
         var errorDescription: String? {
             switch self {
             case .blogNotFound(let id):
                 return "Blog with id: \(id) was unexpectedly not found."
+            case .nilBlogID:
+                return "Blog ID is unexpectedly nil."
             }
         }
     }
