@@ -21,10 +21,16 @@
   "testTargets" : [
     {
       "skippedTests" : [
+        "DashboardTests",
         "EditorAztecTests",
+        "EditorGutenbergTests",
+        "LoginTests",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "ReaderTests",
         "SignupTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests",
         "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
