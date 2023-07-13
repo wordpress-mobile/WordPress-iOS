@@ -27,17 +27,9 @@ echo "LIST DEVICES"
 xcrun simctl list >> /dev/null
 echo "SHUTDOWN ALL SIMULATORS"
 xcrun simctl shutdown all
-echo "FIND - UserSettings.plist"
-find ~/Library/Developer/CoreSimulator/Devices/ -path "*UserSettings.plist" -print0 | while IFS= read -r -d $'\0' user_settings_plist; do
+echo "FIND - *.plist"
+find ~/Library/Developer/CoreSimulator/Devices/ -path "*.plist" -print0 | while IFS= read -r -d $'\0' plist_file; do
     echo $user_settings_plist
-done
-echo "FIND - EffectiveUserSettings.plist"
-find ~/Library/Developer/CoreSimulator/Devices/ -path "*EffectiveUserSettings.plist" -print0 | while IFS= read -r -d $'\0' e_user_settings_plist; do
-    echo $e_user_settings_plist
-done
-echo "FIND - PublicEffectiveUserSettings.plist "
-find ~/Library/Developer/CoreSimulator/Devices/ -path "*PublicEffectiveUserSettings.plist" -print0 | while IFS= read -r -d $'\0' p_e_user_settings_plist; do
-    echo $p_e_user_settings_plist
 done
 rake mocks &
 set +e
