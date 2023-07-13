@@ -15,7 +15,7 @@ extension NSNotification.Name {
 }
 
 class OnboardingQuestionsCoordinator {
-    var navigationController: UINavigationController?
+    weak var navigationController: UINavigationController?
     var onDismiss: ((_ selection: OnboardingOption) -> Void)?
 
     func dismiss(selection: OnboardingOption) {
