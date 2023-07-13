@@ -7,7 +7,8 @@ private class WeeklyRoundupDataProvider {
 
     // MARK: - Definitions
 
-    typealias SiteStats = [Blog: StatsSummaryData]
+    typealias BlogManagedObjectID = NSManagedObjectID
+    typealias SiteStats = [BlogManagedObjectID: StatsSummaryData]
 
     enum DataRequestError: Error {
         case dotComSiteWithoutDotComID(_ site: Blog)
