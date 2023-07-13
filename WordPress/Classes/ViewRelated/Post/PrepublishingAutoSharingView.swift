@@ -84,29 +84,6 @@ private extension PrepublishingAutoSharingView {
 /// The value-type data model that drives the `PrepublishingAutoSharingView`.
 struct PrepublishingAutoSharingViewModel {
 
-    // MARK: Helper Models
-
-    /// A value-type representation of `PublicizeService` that's simplified for the needs of the auto-sharing view.
-    struct Service: Hashable {
-        let serviceName: PublicizeService.ServiceName
-        let connections: [Connection]
-
-        /// Whether the icon for this service should be opaque or transparent.
-        /// If at least one account is enabled, an opaque version should be shown.
-        var usesOpaqueIcon: Bool {
-            connections.reduce(false) { $0 || $1.enabled }
-        }
-
-        var enabledConnections: [Connection] {
-            connections.filter { $0.enabled }
-        }
-    }
-
-    struct Connection: Hashable {
-        let account: String
-        let enabled: Bool
-    }
-
     // MARK: Properties
 
     let services: [Service]
@@ -153,6 +130,31 @@ struct PrepublishingAutoSharingViewModel {
         default:
             return String()
         }
+    }
+
+    // MARK: Helper Models
+
+    /// A value-type representation of `PublicizeService` that's simplified for the needs of the auto-sharing view.
+    struct Service: Hashable {
+        let serviceName: PublicizeService.ServiceName
+        let connections: [Connection]
+
+        /// Whether the icon for this service should be opaque or transparent.
+        /// If at least one account is enabled, an opaque version should be shown.
+        var usesOpaqueIcon: Bool {
+            connections.reduce(false) { partialResult, connection in
+                return partialResult || connection.enabled
+            }
+        }
+
+        var enabledConnections: [Connection] {
+            connections.filter { $0.enabled }
+        }
+    }
+
+    struct Connection: Hashable {
+        let account: String
+        let enabled: Bool
     }
 }
 
