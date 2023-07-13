@@ -34,8 +34,22 @@ private class WeeklyRoundupDataProvider {
         self.onError = onError
     }
 
+    // MARK: API
+
     func getTopSiteStats(completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        getSites() { [weak self] sitesResult in
+        self.coreDataStack.performAndSave { [weak self] context in
+            guard let self else {
+                completion(.success(nil))
+                return
+            }
+            self.getTopSiteStats(in: context, completion: completion)
+        }
+    }
+
+    // MARK: Helpers
+
+    private func getTopSiteStats(in context: NSManagedObjectContext, completion: @escaping (Result<SiteStats?, Error>) -> Void) {
+        getSites(in: context) { [weak self] sitesResult in
             guard let self = self else {
                 return
             }
@@ -136,11 +150,11 @@ private class WeeklyRoundupDataProvider {
     ///
     /// - Returns: the requested sites (could be an empty array if there's none) or an error if there is one.
     ///
-    private func getSites(result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func getSites(in context: NSManagedObjectContext, result: @escaping (Result<[Blog], Error>) -> Void) {
 
-        switch getAllSites() {
+        switch getAllSites(in: context) {
         case .success(let sites):
-            filterCandidateSites(sites, result: result)
+            filterCandidateSites(sites, in: context, result: result)
         case .failure(let error):
             result(.failure(error))
         }
@@ -148,7 +162,7 @@ private class WeeklyRoundupDataProvider {
 
     /// Filters the candidate sites for the Weekly Roundup notification
     ///
-    private func filterCandidateSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func filterCandidateSites(_ sites: [Blog], in context: NSManagedObjectContext, result: @escaping (Result<[Blog], Error>) -> Void) {
         let administeredSites = sites.filter { site in
             site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
         }
@@ -158,33 +172,39 @@ private class WeeklyRoundupDataProvider {
             return
         }
 
-        filterWeeklyRoundupEnabledSites(administeredSites, result: result)
+        filterWeeklyRoundupEnabledSites(administeredSites, in: context, result: result)
     }
 
     /// Filters the sites that have the Weekly Roundup notification setting enabled.
     ///
-    private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], in context: NSManagedObjectContext, result: @escaping (Result<[Blog], Error>) -> Void) {
         let noteService = NotificationSettingsService(coreDataStack: coreDataStack)
 
         noteService.getAllSettings { settings in
-            let weeklyRoundupEnabledSites = sites.filter { site in
-                guard let siteSettings = settings.first(where: { $0.blog == site }),
-                      let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
-                      let sitePreferences = pushNotificationsStream.preferences else {
-                    return false
-                }
-
-                return sitePreferences["weekly_roundup"] ?? true
+            context.perform {
+                let weeklyRoundupEnabledSites = Self.weeklyRoundupEnabledSites(settings: settings, sites: sites, in: context)
+                result(.success(weeklyRoundupEnabledSites))
             }
-
-            result(.success(weeklyRoundupEnabledSites))
         } failure: { (error: NSError?) in
             let error = DataRequestError.filterWeeklyRoundupEnabledSitesError(error)
             result(.failure(error))
         }
     }
 
-    private func getAllSites() -> Result<[Blog], Error> {
+    static private func weeklyRoundupEnabledSites(settings: [NotificationSettings],
+                                                  sites: [Blog],
+                                                  in context: NSManagedObjectContext) -> [Blog] {
+        return sites.filter { site in
+            guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.objectID }),
+                  let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
+                  let sitePreferences = pushNotificationsStream.preferences else {
+                return false
+            }
+            return sitePreferences["weekly_roundup"] ?? true
+        }
+    }
+
+    private func getAllSites(in context: NSManagedObjectContext) -> Result<[Blog], Error> {
         let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
 
         request.sortDescriptors = [
@@ -193,7 +213,7 @@ private class WeeklyRoundupDataProvider {
         ]
 
         do {
-            let result = try coreDataStack.mainContext.fetch(request)
+            let result = try context.fetch(request)
             return .success(result)
         } catch {
             return .failure(DataRequestError.siteFetchingError(error))
