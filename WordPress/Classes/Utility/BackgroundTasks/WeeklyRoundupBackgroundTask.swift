@@ -480,25 +480,19 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
                 return
             }
 
-            for (site, stats) in siteStats {
+            for (siteID, stats) in siteStats {
                 group.enter()
-
-                self.notificationScheduler.scheduleDynamicNotification(
-                    site: site,
-                    views: stats.viewsCount,
-                    comments: stats.commentsCount,
-                    likes: stats.likesCount,
-                    periodEndDate: self.currentRunPeriodEndDate()
-                ) { result in
-
-                    switch result {
-                    case .success:
-                        self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: site.dotComID?.intValue)
-                    case .failure(let error):
-                        onError(error)
+                self.coreDataStack.performAndSave { context in
+                    guard let site = try? context.existingObject(with: siteID) as? Blog else {
+                        group.leave()
+                        return
                     }
-
-                    group.leave()
+                    self.scheduleDynamicNotification(site: site, stats: stats) { result in
+                        if case let .failure(error) = result {
+                            onError(error)
+                        }
+                        group.leave()
+                    }
                 }
             }
 
@@ -519,6 +513,27 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         operationQueue.addOperation(requestData)
         operationQueue.addOperation(scheduleNotification)
         operationQueue.addOperation(completionOperation)
+    }
+
+    // MARK: - Helpers
+
+    private func scheduleDynamicNotification(site: Blog, stats: StatsSummaryData, completion: @escaping (Result<Void, Error>) -> Void) {
+        let dotComID = site.dotComID?.intValue
+        self.notificationScheduler.scheduleDynamicNotification(
+            site: site,
+            views: stats.viewsCount,
+            comments: stats.commentsCount,
+            likes: stats.likesCount,
+            periodEndDate: self.currentRunPeriodEndDate()
+        ) { result in
+            switch result {
+            case .success:
+                self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: dotComID)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     enum Constants {
@@ -549,7 +564,6 @@ class WeeklyRoundupNotificationScheduler {
         userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
 
         self.userNotificationCenter = userNotificationCenter
-
         self.staticNotificationDateComponents = staticNotificationDateComponents ?? {
             var dateComponents = DateComponents()
 
@@ -600,13 +614,8 @@ class WeeklyRoundupNotificationScheduler {
         periodEndDate: Date,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        var siteTitle: String?
-        var dotComID: Int?
-
-        site.managedObjectContext?.performAndWait {
-            siteTitle = site.title
-            dotComID = site.dotComID?.intValue
-        }
+        var siteTitle = site.title
+        var dotComID = site.dotComID?.intValue
 
         guard let dotComID = dotComID else {
             fatalError("The argument site is not a WordPress.com site. Site: \(site)")
