@@ -8,7 +8,7 @@ struct PrepublishingAutoSharingView: View {
         HStack {
             textStack
             Spacer()
-            if model.connections.count > 0 {
+            if model.services.count > 0 {
                 socialIconsView
             }
         }
@@ -41,8 +41,8 @@ struct PrepublishingAutoSharingView: View {
 
     private var socialIconsView: some View {
         HStack(spacing: -2.0) {
-            ForEach(model.connections, id: \.self) { connection in
-                iconImage(connection.serviceName.localIconImage, opaque: connection.enabled)
+            ForEach(model.services, id: \.self) { service in
+                iconImage(service.serviceName.localIconImage, opaque: service.usesOpaqueIcon)
             }
         }
     }
@@ -84,22 +84,42 @@ private extension PrepublishingAutoSharingView {
 /// The value-type data model that drives the `PrepublishingAutoSharingView`.
 struct PrepublishingAutoSharingViewModel {
 
-    struct Connection: Hashable {
+    // MARK: Helper Models
+
+    /// A value-type representation of `PublicizeService` that's simplified for the needs of the auto-sharing view.
+    struct Service: Hashable {
         let serviceName: PublicizeService.ServiceName
+        let connections: [Connection]
+
+        /// Whether the icon for this service should be opaque or transparent.
+        /// If at least one account is enabled, an opaque version should be shown.
+        var usesOpaqueIcon: Bool {
+            connections.reduce(false) { $0 || $1.enabled }
+        }
+
+        var enabledConnections: [Connection] {
+            connections.filter { $0.enabled }
+        }
+    }
+
+    struct Connection: Hashable {
         let account: String
         let enabled: Bool
     }
 
-    // TODO: Default values are for temporary testing purposes. Will be removed later.
-    let connections: [Connection] = [.init(serviceName: .facebook, account: "foo", enabled: true),
-                                     .init(serviceName: .twitter, account: "bar", enabled: false),
-                                     .init(serviceName: .tumblr, account: "baz", enabled: true)]
+    // MARK: Properties
 
-    // TODO: Default values are for temporary testing purposes. Will be removed later.
-    let sharingLimit: PublicizeInfo.SharingLimit? = .init(remaining: 1, limit: 30)
+    let services: [Service]
+    let sharingLimit: PublicizeInfo.SharingLimit?
+
+    // MARK: Computed Properties
 
     var enabledConnectionsCount: Int {
-        connections.filter({ $0.enabled }).count
+        services.reduce(0) { $0 + $1.enabledConnections.count }
+    }
+
+    var totalConnectionsCount: Int {
+        services.reduce(0) { $0 + $1.connections.count }
     }
 
     var showsWarning: Bool {
@@ -110,14 +130,14 @@ struct PrepublishingAutoSharingViewModel {
     }
 
     var labelText: String {
-        switch (enabledConnectionsCount, connections.count) {
+        switch (enabledConnectionsCount, totalConnectionsCount) {
         case (let enabled, _) where enabled == 0:
             // not sharing to any social media
             return Strings.notSharingText
 
         case (let enabled, let total) where enabled == total && total == 1:
             // sharing to the one and only connection
-            guard let account = connections.first?.account else {
+            guard let account = services.first?.connections.first?.account else {
                 return String()
             }
             return String(format: Strings.singleConnectionTextFormat, account)
