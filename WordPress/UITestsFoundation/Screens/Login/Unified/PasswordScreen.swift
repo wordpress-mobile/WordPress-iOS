@@ -58,7 +58,6 @@ public class PasswordScreen: ScreenObject {
 
         passwordTextField.typeText(password)
         continueButton.tap()
-        app.dismissSavePasswordPrompt()
     }
 
     @discardableResult
