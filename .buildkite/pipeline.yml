@@ -19,6 +19,15 @@ steps:
   #################
   - group: "🛠 Builds for Testing"
     steps:
+      - label: "🛠 :wordpress: Build for Testing"
+        key: "build_wordpress"
+        command: ".buildkite/commands/build-for-testing.sh wordpress"
+        env: *common_env
+        plugins: *common_plugins
+        notify:
+          - github_commit_status:
+              context: "WordPress Build for Testing"
+
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
         command: ".buildkite/commands/build-for-testing.sh jetpack"
@@ -27,6 +36,20 @@ steps:
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"
+
+  #################
+  # Run Unit Tests
+  #################
+  - label: "🔬 :wordpress: Unit Tests"
+    command: ".buildkite/commands/run-unit-tests.sh"
+    depends_on: "build_wordpress"
+    env: *common_env
+    plugins: *common_plugins
+    artifact_paths:
+      - "build/results/*"
+    notify:
+      - github_commit_status:
+          context: "Unit Tests"
 
   #################
   # UI Tests
