@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "editor-chevron-down.png",
+      "filename" : "chevron_left 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "editor-chevron-down@2x.png",
+      "filename" : "chevron_left 1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "editor-chevron-down@3x.png",
+      "filename" : "chevron_left 1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

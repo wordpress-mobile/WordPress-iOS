@@ -56,7 +56,7 @@ class PostEditorNavigationBarManager {
     }()
 
     lazy var closeButton: UIButton = {
-        let closeImage = UIImage(named: "editor-chevron-down")
+        let closeImage = UIImage(named: "editor-chevron-left")
         let button = UIButton(type: .system)
         button.setImage(closeImage, for: .normal)
         button.sizeToFit()
