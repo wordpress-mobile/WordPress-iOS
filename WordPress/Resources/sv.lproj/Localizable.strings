@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-11 15:21:23+0000 */
+/* Translation-Revision-Date: 2023-07-12 18:22:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: sv_SE */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Block av typen %s. Detta block har ogiltigt innehåll";
+
+/* translators: %s: name of the synced block */
+"%s detached" = "%s frikopplad";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Snart kommer förhandsgranskningar av inbäddade block för %s";
@@ -731,6 +734,12 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Du kan även frikoppla och redigera dessa block separat genom att trycka på Frikoppla mönster.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Du kan även frikoppla och redigera det här blocket separat genom att trycka på Frikoppla mönster.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternativt kan du ange lösenordet för detta konto.";
@@ -2731,6 +2740,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Redigera video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "Redigering av synkroniserade mönster stöds ännu inte i %s för Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "Redigering av synkroniserade mönster stöds ännu inte i %s för iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Om du redigerar den här GIF-bilden tas animeringen bort.";
@@ -9619,6 +9634,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Du har inga kampanjer";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "Ett fel uppstod vid inläsning av kampanjerna.";
+
 /* Title for the view when there's an error loading Blaze campiagns. */
 "blaze.campaigns.errorTitle" = "Hoppsan";
 
@@ -9724,11 +9742,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Svar till %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Dessa cookies tillåter oss att optimera prestandan genom att samla in information om hur användare interagerar med våra webbplatser.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Spara";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Gå till inställningar";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Vi behandlar dina personuppgifter för att optimera vår webbplats och marknadsföringsaktiviteter baserat på ditt samtycke och vårt berättigade intresse.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Hantera integritet";
@@ -10515,6 +10539,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Prenumerera nu för att dela mer";
 
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d sociala delningar kvar";
+
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " under de kommande 30 dagarna";
 
@@ -10601,7 +10628,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "relatedPostsSettings.preview2.details" = "i ”Appar”";
 
 /* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "WordPress för Android-appen får ett ansiktslyft";
+
+/* Text for related post cell preview */
 "relatedPostsSettings.preview3.details" = "i ”Uppgradera”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Uppgradera fokus: VideoPress för bröllop";
 
 /* Section title for related posts section preview */
 "relatedPostsSettings.previewsHeaders" = "Förhandsgranska";
