@@ -30,8 +30,8 @@ xcrun simctl shutdown all
 echo "PLIST BUDDY"
 IPAD_PLIST="/Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
 IPHONE_PLIST="/Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
-/usr/libexec/PlistBuddy -c "Set :restrictedBool:allowPasswordAutoFill:value NO" $IPAD_PLIST
-/usr/libexec/PlistBuddy -c "Set :restrictedBool:allowPasswordAutoFill:value NO" $IPHONE_PLIST
+/usr/libexec/PlistBuddy -c "Add :restrictedBool:allowPasswordAutoFill:value NO" $IPAD_PLIST
+/usr/libexec/PlistBuddy -c "Add :restrictedBool:allowPasswordAutoFill:value false" $IPHONE_PLIST
 rake mocks &
 set +e
 bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
