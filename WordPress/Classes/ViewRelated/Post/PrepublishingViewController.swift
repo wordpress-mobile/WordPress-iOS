@@ -49,7 +49,7 @@ class PrepublishingViewController: UITableViewController {
             switch identifier {
             case .autoSharing:
                 // skip the social cell if the post's blog is not eligible for auto-sharing.
-                guard isEligibleForAutoSharing else {
+                guard isEligibleForAutoSharing() else {
                     return nil
                 }
                 break

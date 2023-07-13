@@ -34,16 +34,16 @@ struct JetpackSocialNoConnectionView: View {
             }
         }
         .padding(viewModel.padding)
-        .background(Color(UIColor.listForeground))
+        .background(Color(viewModel.preferredBackgroundColor))
     }
 
     func iconImage(_ image: UIImage) -> some View {
         Image(uiImage: image)
             .resizable()
             .frame(width: 32.0, height: 32.0)
-            .background(Color(UIColor.listForeground))
+            .background(Color(viewModel.preferredBackgroundColor))
             .clipShape(Circle())
-            .overlay(Circle().stroke(Color(UIColor.listForeground), lineWidth: 2.0))
+            .overlay(Circle().stroke(Color(viewModel.preferredBackgroundColor), lineWidth: 2.0))
     }
 }
 
@@ -53,7 +53,7 @@ extension JetpackSocialNoConnectionView {
     static func createHostController(with viewModel: JetpackSocialNoConnectionViewModel = JetpackSocialNoConnectionViewModel()) -> UIHostingController<JetpackSocialNoConnectionView> {
         let hostController = UIHostingController(rootView: JetpackSocialNoConnectionView(viewModel: viewModel))
         hostController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostController.view.backgroundColor = .listForeground
+        hostController.view.backgroundColor = viewModel.preferredBackgroundColor
         return hostController
     }
 }
@@ -63,6 +63,7 @@ extension JetpackSocialNoConnectionView {
 class JetpackSocialNoConnectionViewModel: ObservableObject {
     let padding: EdgeInsets
     let hideNotNow: Bool
+    let preferredBackgroundColor: UIColor
     let onConnectTap: (() -> Void)?
     let onNotNowTap: (() -> Void)?
     @MainActor @Published var icons: [UIImage] = [UIImage()]
@@ -70,10 +71,12 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
     init(services: [PublicizeService] = [],
          padding: EdgeInsets = Constants.defaultPadding,
          hideNotNow: Bool = false,
+         preferredBackgroundColor: UIColor? = nil,
          onConnectTap: (() -> Void)? = nil,
          onNotNowTap: (() -> Void)? = nil) {
         self.padding = padding
         self.hideNotNow = hideNotNow
+        self.preferredBackgroundColor = preferredBackgroundColor ?? Constants.defaultBackgroundColor
         self.onConnectTap = onConnectTap
         self.onNotNowTap = onNotNowTap
         updateIcons(services)
@@ -118,6 +121,7 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
 
 private struct Constants {
     static let defaultPadding = EdgeInsets(top: 16.0, leading: 16.0, bottom: 24.0, trailing: 16.0)
+    static let defaultBackgroundColor = UIColor.listForeground
     static let bodyText = NSLocalizedString("social.noconnection.body",
                                             value: "Increase your traffic by auto-sharing your posts with your friends on social media.",
                                             comment: "Body text for the Jetpack Social no connection view")

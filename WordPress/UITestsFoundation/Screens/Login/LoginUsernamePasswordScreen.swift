@@ -82,8 +82,6 @@ public class LoginUsernamePasswordScreen: ScreenObject {
             passwordTextField.typeText(password)
         }
         nextButton.tap()
-
-        app.dismissSavePasswordPrompt()
     }
 
     private func dismissQuickStartPromptIfNeeded() throws {
