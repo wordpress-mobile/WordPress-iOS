@@ -16,7 +16,7 @@ class NotificationSettingsService {
     ///
     public convenience init(coreDataStack: CoreDataStack) {
         let remoteApi = coreDataStack.performQuery { context -> WordPressComRestApi? in
-            guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
+            guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
                   defaultAccount.authToken != nil,
                   let restApi = defaultAccount.wordPressComRestApi,
                   restApi.hasCredentials() else {
