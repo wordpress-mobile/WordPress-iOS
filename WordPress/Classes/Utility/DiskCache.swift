@@ -137,7 +137,7 @@ final class DiskCache {
     }
 
     private func fileURL(for key: String) -> URL? {
-        guard let filename = key.sha256 else { return nil }
+        guard !key.isEmpty, let filename = key.sha256 else { return nil }
         return rootURL.appendingPathComponent(filename, isDirectory: false)
     }
 
@@ -212,7 +212,7 @@ final class DiskCache {
 
 private extension String {
     var sha256: String? {
-        guard !isEmpty, let data = self.data(using: .utf8) else {
+        guard let data = self.data(using: .utf8) else {
             return nil
         }
         return SHA256.hash(data: data)
