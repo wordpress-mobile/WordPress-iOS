@@ -119,8 +119,4 @@ private extension PrepublishingViewController {
         // TODO: Tap actions
         return .init(services: services, preferredBackgroundColor: tableView.backgroundColor)
     }
-
-    enum Constants {
-        static let socialCellBackgroundColor = UIColor(light: .listForeground, dark: .listBackground)
-    }
 }
