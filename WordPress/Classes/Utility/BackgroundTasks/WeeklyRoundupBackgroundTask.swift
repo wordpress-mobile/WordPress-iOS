@@ -56,80 +56,110 @@ private class WeeklyRoundupDataProvider {
             }
 
             switch sitesResult {
-                case .success(let sites):
-                    guard sites.count > 0 else {
-                        completion(.success(nil))
-                        return
-                    }
-
-                    self.getTopSiteStats(from: sites, completion: completion)
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let sites):
+                guard sites.count > 0 else {
+                    completion(.success(nil))
                     return
+                }
+
+                self.getTopSiteStats(from: sites, in: context, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+                return
             }
         }
     }
 
-    private func getTopSiteStats(from sites: [Blog], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        var endDateComponents = DateComponents()
-        endDateComponents.weekday = 1
-
-        // The DateComponents timezone is ignored when calling `Calendar.current.nextDate(...)`, so we need to
-        // create a GMT Calendar to perform the date search using it, instead.
-        var gmtCalendar = Calendar(identifier: .gregorian)
-        gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
-
-        guard let periodEndDate = gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward) else {
-            DDLogError("Something's wrong with the preiod end date selection.")
+    private func getTopSiteStats(
+        from sites: [Blog],
+        in context: NSManagedObjectContext,
+        completion: @escaping (Result<SiteStats?, Error>) -> Void
+    ) {
+        guard let periodEndDate = getPeriodEndDate() else {
+            DDLogError("Something's wrong with the period end date selection.")
             return
         }
 
-        var blogStats = [Blog: StatsSummaryData]()
-        var statsProcessed = 0
+        let group = DispatchGroup()
+        var blogStats = SiteStats()
 
         for site in sites {
             guard let authToken = site.account?.authToken else {
                 continue
             }
 
-            let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
+            group.enter()
 
-            guard let dotComID = site.dotComID?.intValue else {
-                onError(DataRequestError.dotComSiteWithoutDotComID(site))
-                continue
-            }
-
-            let statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
-
-            statsServiceRemote.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+            self.fetchStats(for: site, endingOn: periodEndDate, authToken: authToken, in: context) { [weak self] result in
                 defer {
-                    statsProcessed = statsProcessed + 1
-
-                    if statsProcessed == sites.count {
-                        let bestBlogStats = self.filterBest(5, from: blogStats)
-
-                        completion(.success(bestBlogStats))
-                    }
+                    group.leave()
                 }
-
-                guard let timeStats = timeStats else {
-                    guard let error = error else {
-                        self.onError(DataRequestError.unknownErrorRetrievingStats(site))
-                        return
-                    }
-
-                    self.onError(DataRequestError.errorRetrievingStats(dotComID, error: error))
+                guard let self else {
                     return
                 }
-
-                guard let stats = timeStats.summaryData.first else {
-                    // No stats for this site, or not enough views to qualify.  This is not an error.
-                    return
+                switch result {
+                case .failure(let error):
+                    self.onError(error)
+                case.success(let stats):
+                    if let stats {
+                        blogStats[site.objectID] = stats
+                    }
                 }
-
-                blogStats[site] = stats
             }
         }
+
+        group.notify(queue: .global()) {
+            context.perform {
+                let bestBlogStats = self.filterBest(5, from: blogStats)
+                completion(.success(bestBlogStats))
+            }
+        }
+    }
+
+    /// Fetches weekly stats data for a given site.
+    ///
+    /// This function fetches the statistics for a single site and passes the result to a completion handler.
+    /// If it encounters any error during fetching, it calls the completion handler with an appropriate error object.
+    /// The completion handler is executed in the same queue as the provided `NSManagedObjectContext`.
+    ///
+    /// **It's important to remember that the completion handler will be executed on the context's queue.**
+    private func fetchStats(
+        for site: Blog,
+        endingOn periodEndDate: Date,
+        authToken: String,
+        in context: NSManagedObjectContext,
+        completion: @escaping (Result< StatsSummaryData?, Error>) -> Void
+    ) {
+        guard let dotComID = site.dotComID?.intValue else {
+            completion(.failure(DataRequestError.dotComSiteWithoutDotComID(site)))
+            return
+        }
+        let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
+        let statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
+        statsServiceRemote.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+            context.perform {
+                guard let timeStats = timeStats else {
+                    if let error = error {
+                        completion(.failure(DataRequestError.errorRetrievingStats(dotComID, error: error)))
+                    } else {
+                        completion(.failure(DataRequestError.unknownErrorRetrievingStats(site)))
+                    }
+                    return
+                }
+                completion(.success(timeStats.summaryData.first))
+            }
+        }
+    }
+
+    /// Returns the end date for the period (the start of the current week).
+    /// This function creates a calendar with a GMT timezone and specifies that it needs a date representing the start of the current week.
+    /// If it can't find a valid date, it returns nil.
+    private func getPeriodEndDate() -> Date? {
+        var gmtCalendar = Calendar(identifier: .gregorian)
+        gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        var endDateComponents = DateComponents()
+        endDateComponents.weekday = 1
+        return gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward)
     }
 
     /// Filters the "best" count sites from the provided dictionary of sites and stats.  This method implicitly implements the
