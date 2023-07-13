@@ -24,14 +24,21 @@ install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 echo "LIST DEVICES"
-xcrun simctl list
+xcrun simctl list >> /dev/null
 echo "SHUTDOWN ALL SIMULATORS"
 xcrun simctl shutdown all
-echo "PLIST BUDDY"
-IPAD_PLIST="/Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
-IPHONE_PLIST="/Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist"
-/usr/libexec/PlistBuddy -c "Add :restrictedBool:allowPasswordAutoFill:value bool NO" $IPAD_PLIST
-/usr/libexec/PlistBuddy -c "Add :restrictedBool:allowPasswordAutoFill:value bool false" $IPHONE_PLIST
+echo "FIND - UserSettings.plist"
+find ~/Library/Developer/CoreSimulator/Devices/ -path "*UserSettings.plist" -print0 | while IFS= read -r -d $'\0' user_settings_plist; do
+    echo $user_settings_plist
+done
+echo "FIND - EffectiveUserSettings.plist"
+find ~/Library/Developer/CoreSimulator/Devices/ -path "*EffectiveUserSettings.plist" -print0 | while IFS= read -r -d $'\0' e_user_settings_plist; do
+    echo $e_user_settings_plist
+done
+echo "FIND - PublicEffectiveUserSettings.plist "
+find ~/Library/Developer/CoreSimulator/Devices/ -path "*PublicEffectiveUserSettings.plist" -print0 | while IFS= read -r -d $'\0' p_e_user_settings_plist; do
+    echo $p_e_user_settings_plist
+done
 rake mocks &
 set +e
 bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
