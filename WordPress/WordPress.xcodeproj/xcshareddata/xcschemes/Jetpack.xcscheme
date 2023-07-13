@@ -32,7 +32,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Disable AutoFill Passwords"
-               scriptText = "# Shutdown all simulators as the changes to plist files only take effect after reboot.&#10;xcrun simctl shutdown all&#10;&#10;# Disable AutoFill Passwords&#10;plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist&#10;">
+               scriptText = "echo &quot;==============&gt; PRE-ACTIONS&quot;&#10;# Shutdown all simulators as the changes to plist files only take effect after reboot.&#10;xcrun simctl shutdown all&#10;&#10;# Disable AutoFill Passwords&#10;IPAD_PLIST=&quot;/Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist&quot;&#10;IPHONE_PLIST=&quot;/Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist&quot;&#10;/usr/libexec/PlistBuddy -c &quot;Add :restrictedBool:allowPasswordAutoFill:value bool NO&quot; $IPAD_PLIST&#10;/usr/libexec/PlistBuddy -c &quot;Add :restrictedBool:allowPasswordAutoFill:value bool false&quot; $IPHONE_PLIST&#10;&#10;echo &quot;&lt;============== PRE-ACTIONS&quot;&#10;">
             </ActionContent>
          </ExecutionAction>
       </PreActions>
