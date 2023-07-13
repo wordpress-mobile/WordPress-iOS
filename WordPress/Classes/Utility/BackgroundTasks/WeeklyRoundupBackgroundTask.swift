@@ -303,17 +303,19 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     private let eventTracker: NotificationEventTracker
     let runDateComponents: DateComponents
     let notificationScheduler: WeeklyRoundupNotificationScheduler
+    let coreDataStack: ContextManager
 
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
         runDateComponents: DateComponents? = nil,
         staticNotificationDateComponents: DateComponents? = nil,
-        store: Store = Store()) {
-
+        store: Store = Store(),
+        coreDataStack: ContextManager = .shared
+    ) {
+        self.coreDataStack = coreDataStack
         self.eventTracker = eventTracker
-        notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
+        self.notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
         self.store = store
-
         self.runDateComponents = runDateComponents ?? {
             var dateComponents = DateComponents()
 
@@ -441,8 +443,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             }
         }
 
-        let dataProvider = WeeklyRoundupDataProvider(coreDataStack: ContextManager.shared, onError: onError)
-        var siteStats: [Blog: StatsSummaryData]? = nil
+        let dataProvider = WeeklyRoundupDataProvider(coreDataStack: coreDataStack, onError: onError)
+        var siteStats: WeeklyRoundupDataProvider.SiteStats? = nil
 
         let requestData = BlockOperation {
             let group = DispatchGroup()
