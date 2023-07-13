@@ -29,7 +29,7 @@ echo "SHUTDOWN ALL SIMULATORS"
 xcrun simctl shutdown all
 echo "FIND - *.plist"
 find ~/Library/Developer/CoreSimulator/Devices/ -path "*.plist" -print0 | while IFS= read -r -d $'\0' plist_file; do
-    echo $user_settings_plist
+    echo $plist_file
 done
 rake mocks &
 set +e
