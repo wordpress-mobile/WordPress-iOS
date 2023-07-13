@@ -1,13 +1,14 @@
+import Foundation
 import Kanvas
 
-class StoryMediaLoader {
+final class StoryMediaLoader {
 
     typealias Output = (CameraSegment, Data?)
 
-    var completion: (([Output]) -> Void)?
+    private var completion: (([Output]) -> Void)?
 
-    var downloadTasks: [ImageDownloaderTask] = []
-    var results: [Output?] = [] {
+    private var downloadTasks: [ImageDownloaderTask] = []
+    private var results: [Output?] = [] {
         didSet {
             if results.contains(where: { $0 == nil }) == false {
                 completion?(results.compactMap { $0 })
@@ -17,7 +18,6 @@ class StoryMediaLoader {
     }
 
     private let mediaUtility = EditorMediaUtility()
-    private let queue = DispatchQueue.global(qos: .userInitiated)
 
     func download(files: [MediaFile], for post: AbstractPost, completion: @escaping ([Output]) -> Void) {
 
@@ -60,7 +60,7 @@ class StoryMediaLoader {
                     let size = media.pixelSize()
                     if let url = URL(string: file.url) {
                         let task = self.mediaUtility.downloadImage(from: url, size: size, scale: 1, post: post, success: { [weak self] image in
-                            self?.queue.async {
+                            DispatchQueue.main.async {
                                 self?.results[idx] = (CameraSegment.image(image, nil, nil, Kanvas.MediaInfo(source: .kanvas_camera)), nil)
                             }
                         }, onFailure: { error in
@@ -72,7 +72,7 @@ class StoryMediaLoader {
                     EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post, withToken: true) { [weak self] result in
                         switch result {
                         case .success((let videoURL)):
-                            self?.queue.async {
+                            DispatchQueue.main.async {
                                 self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
                             }
                         case .failure(let error):
