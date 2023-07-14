@@ -116,7 +116,7 @@ platform :ios do
       result_bundle: true,
       output_types: '',
       fail_build: false,
-      parallel_testing: parallel_testing_value,
+      parallel_testing: false,
       concurrent_workers: CONCURRENT_SIMULATORS,
       max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
