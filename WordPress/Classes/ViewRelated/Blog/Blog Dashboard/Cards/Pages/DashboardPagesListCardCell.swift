@@ -115,7 +115,9 @@ extension DashboardPagesListCardCell {
     private func makeAllPagesAction() -> UIMenuElement {
         let allPagesAction = UIAction(title: Strings.allPages,
                                       image: Style.allPagesImage,
-                                      handler: { _ in self.showPagesList(source: .contextMenu) })
+                                      handler: { [weak self] _ in
+            self?.showPagesList(source: .contextMenu)
+        })
 
         // Wrap the pages action in a menu to display a divider between the pages action and hide this action.
         // https://developer.apple.com/documentation/uikit/uimenu/options/3261455-displayinline

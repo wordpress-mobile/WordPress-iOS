@@ -74,20 +74,24 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func configureTapEvents(for blog: Blog, with sourceController: UIViewController) {
-        statsButton.onTap = { [weak self] in
-            self?.showStats(for: blog, from: sourceController)
+        statsButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showStats(for: blog, from: sourceController)
         }
 
-        postsButton.onTap = { [weak self] in
-            self?.showPostList(for: blog, from: sourceController)
+        postsButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showPostList(for: blog, from: sourceController)
         }
 
-        mediaButton.onTap = { [weak self] in
-            self?.showMediaLibrary(for: blog, from: sourceController)
+        mediaButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showMediaLibrary(for: blog, from: sourceController)
         }
 
-        pagesButton.onTap = { [weak self] in
-            self?.showPageList(for: blog, from: sourceController)
+        pagesButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showPageList(for: blog, from: sourceController)
         }
     }
 

@@ -504,6 +504,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -782,7 +783,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
+        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItemsAztec
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
@@ -862,7 +863,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func refreshInterface() {
-        reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
         refreshTitleViewForMediaUploadIfNeeded()
@@ -914,15 +914,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         titleTextField.text = post.postTitle
         setHTML(content)
-    }
-
-    func reloadBlogTitleView() {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
-
-        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     func reloadPublishButton() {
@@ -3547,6 +3538,12 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         closeWasPressed()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {

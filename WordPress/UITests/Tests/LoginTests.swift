@@ -18,7 +18,7 @@ class LoginTests: XCTestCase {
             .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
-                    .verifyEpilogueDisplays(
+            .verifyEpilogueDisplays(
                 username: WPUITestCredentials.testWPcomUsername,
                 siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
             )

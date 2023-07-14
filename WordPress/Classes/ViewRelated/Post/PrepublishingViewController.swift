@@ -11,15 +11,7 @@ private struct PrepublishingOption {
 private enum PrepublishingCellType {
     case value
     case textField
-
-    var cellType: UITableViewCell.Type {
-        switch self {
-        case .value:
-            return WPTableViewCell.self
-        case .textField:
-            return WPTextFieldTableViewCell.self
-        }
-    }
+    case customContainer
 }
 
 enum PrepublishingIdentifier {
@@ -28,10 +20,12 @@ enum PrepublishingIdentifier {
     case visibility
     case tags
     case categories
+    case autoSharing
 }
 
 class PrepublishingViewController: UITableViewController {
     let post: Post
+    let coreDataStack: CoreDataStack
 
     private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
         return PublishSettingsViewModel(post: post)
@@ -48,7 +42,23 @@ class PrepublishingViewController: UITableViewController {
 
     private let completion: (CompletionResult) -> ()
 
-    private let options: [PrepublishingOption]
+    private let identifiers: [PrepublishingIdentifier]
+
+    private lazy var options: [PrepublishingOption] = {
+        return identifiers.compactMap { identifier in
+            switch identifier {
+            case .autoSharing:
+                // skip the social cell if the post's blog is not eligible for auto-sharing.
+                guard isEligibleForAutoSharing() else {
+                    return nil
+                }
+                break
+            default:
+                break
+            }
+            return .init(identifier: identifier)
+        }
+    }()
 
     private var didTapPublish = false
 
@@ -64,12 +74,14 @@ class PrepublishingViewController: UITableViewController {
     /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
     private var hasSelectedText: Bool = false
 
-    init(post: Post, identifiers: [PrepublishingIdentifier], completion: @escaping (CompletionResult) -> ()) {
+    init(post: Post,
+         identifiers: [PrepublishingIdentifier],
+         completion: @escaping (CompletionResult) -> (),
+         coreDataStack: CoreDataStack = ContextManager.shared) {
         self.post = post
-        self.options = identifiers.map { identifier in
-            return PrepublishingOption(identifier: identifier)
-        }
+        self.identifiers = identifiers
         self.completion = completion
+        self.coreDataStack = coreDataStack
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -142,10 +154,9 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // Forced unwrap copied from this guide by Apple:
-        // https://developer.apple.com/documentation/uikit/views_and_controls/table_views/adding_headers_and_footers_to_table_sections
-        //
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerReuseIdentifier) as! PrepublishingHeaderView
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerReuseIdentifier) as? PrepublishingHeaderView else {
+            return nil
+        }
 
         header.delegate = self
         header.configure(post.blog)
@@ -179,6 +190,8 @@ class PrepublishingViewController: UITableViewController {
         case .value:
             cell.accessoryType = .disclosureIndicator
             cell.textLabel?.text = option.title
+        default:
+            break
         }
 
         switch option.id {
@@ -194,6 +207,8 @@ class PrepublishingViewController: UITableViewController {
             configureScheduleCell(cell)
         case .categories:
             configureCategoriesCell(cell)
+        case .autoSharing:
+            configureSocialCell(cell)
         }
 
         return cell
@@ -211,13 +226,13 @@ class PrepublishingViewController: UITableViewController {
                 return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
             }
             return cell
+        case .customContainer:
+            return WPTableViewCell()
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch options[indexPath.row].id {
-        case .title:
-            break
         case .tags:
             didTapTagCell()
         case .visibility:
@@ -226,6 +241,8 @@ class PrepublishingViewController: UITableViewController {
             didTapSchedule(indexPath)
         case .categories:
             didTapCategoriesCell()
+        default:
+            break
         }
     }
 
@@ -523,6 +540,9 @@ private extension PrepublishingOption {
             self.init(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
         case .tags:
             self.init(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
+        case .autoSharing:
+            // TODO: Which cell to show?
+            self.init(id: .autoSharing, title: "Jetpack Social", type: .customContainer)
         }
     }
 }

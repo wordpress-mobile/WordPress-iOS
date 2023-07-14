@@ -33,7 +33,8 @@ extension PostEditor {
             return
         }
 
-        navigationBarManager.reloadTitleView(navigationBarManager.generatingPreviewTitleView)
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
 
         postService.autoSave(post, success: { [weak self] savedPost, previewURL in
 
@@ -83,8 +84,7 @@ extension PostEditor {
                 return
             }
 
-            let navigationBarManager = self.navigationBarManager
-            navigationBarManager.reloadTitleView(navigationBarManager.blogTitleViewLabel)
+            SVProgressHUD.dismiss()
 
             if error != nil {
                 let title = NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" )

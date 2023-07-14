@@ -24,8 +24,6 @@ public class PrologueScreen: ScreenObject {
     public func selectContinue() throws -> GetStartedScreen {
         continueButton.tap()
 
-        app.dismissSavePasswordPrompt()
-
         return try GetStartedScreen()
     }
 

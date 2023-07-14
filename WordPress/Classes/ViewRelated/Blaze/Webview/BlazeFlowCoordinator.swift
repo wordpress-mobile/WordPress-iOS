@@ -6,7 +6,7 @@ import UIKit
     case menuItem
     case postsList
     case pagesList
-    case campaignsList
+    case campaignList
 
     var description: String {
         switch self {
@@ -18,8 +18,8 @@ import UIKit
             return "posts_list"
         case .pagesList:
             return "pages_list"
-        case .campaignsList:
-            return "campaigns_list"
+        case .campaignList:
+            return "campaign_list"
         }
     }
 
@@ -107,10 +107,11 @@ import UIKit
     /// - Parameters:
     ///   - viewController: The view controller where the screen should be presented in.
     ///   - blog: `Blog` object representing the site with Blaze campaigns.
-    @objc(presentBlazeCampaignsInViewController:blog:)
+    @objc(presentBlazeCampaignsInViewController:source:blog:)
     static func presentBlazeCampaigns(in viewController: UIViewController,
+                                      source: BlazeSource,
                                       blog: Blog) {
-        let campaignsViewController = BlazeCampaignsViewController(blog: blog)
+        let campaignsViewController = BlazeCampaignsViewController(source: source, blog: blog)
         viewController.navigationController?.pushViewController(campaignsViewController, animated: true)
     }
 

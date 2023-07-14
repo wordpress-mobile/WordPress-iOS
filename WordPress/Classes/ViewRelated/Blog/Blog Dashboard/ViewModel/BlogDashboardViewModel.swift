@@ -19,12 +19,12 @@ enum DashboardItem: Hashable {
 typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardSection, DashboardItem>
 typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardSection, DashboardItem>
 
-class BlogDashboardViewModel {
+final class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
 
-    var blog: Blog
+    private var blog: Blog
 
     private var currentCards: [DashboardCardModel] = []
 
@@ -49,7 +49,7 @@ class BlogDashboardViewModel {
             return nil
         }
 
-        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, item in
+        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self, unowned viewController] collectionView, indexPath, item in
 
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
@@ -78,7 +78,7 @@ class BlogDashboardViewModel {
         }
     }()
 
-    private let blazeViewModel: DashboardBlazeCardCellViewModel
+    private var blazeViewModel: DashboardBlazeCardCellViewModel
 
     init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
         self.viewController = viewController
@@ -91,6 +91,15 @@ class BlogDashboardViewModel {
     /// Apply the initial configuration when the view loaded
     func viewDidLoad() {
         loadCardsFromCache()
+    }
+
+    /// Update to display the selected blog.
+    func update(blog: Blog) {
+        BlogDashboardAnalytics.shared.reset()
+        self.blog = blog
+        self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.loadCardsFromCache()
+        self.loadCards()
     }
 
     /// Call the API to return cards for the current blog

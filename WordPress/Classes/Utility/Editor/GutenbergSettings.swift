@@ -38,12 +38,8 @@ class GutenbergSettings {
     }
 
     // MARK: - Initialization
-    init(database: KeyValueDatabase) {
+    init(database: KeyValueDatabase = UserDefaults.standard) {
         self.database = database
-    }
-
-    convenience init() {
-        self.init(database: UserDefaults() as KeyValueDatabase)
     }
 
     // MARK: Public accessors
