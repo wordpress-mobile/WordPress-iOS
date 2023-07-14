@@ -48,14 +48,18 @@ done
 echo "SHUTDOWN ALL SIMULATORS"
 xcrun simctl shutdown all
 
-#echo "LIST DEVICES 2"
-#xcrun simctl list
-# xcrun simctl --set testing list devices
 
 rake mocks &
 set +e
 bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
+echo "LIST DEVICES AFTER"
+xcrun simctl list
+xcrun simctl --set testing list devices
+echo "FIND - *.plist"
+find ~/Library/Developer/XCTestDevices -path "*.plist" -print0 | while IFS= read -r -d $'\0' plist_file; do
+    echo $plist_file
+done
 set -e
 
 if [[ "$TESTS_EXIT_STATUS" -ne 0 ]]; then
