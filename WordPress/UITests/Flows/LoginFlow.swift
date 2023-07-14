@@ -27,7 +27,7 @@ class LoginFlow {
     static func login(siteUrl: String, email: String, password: String, selectedSiteTitle: String? = nil) throws -> MySiteScreen {
         return try PrologueScreen()
             .selectSiteAddress()
-            .proceedWithWP(siteUrl: siteUrl)
+            .proceedWithWordPress(siteUrl: siteUrl)
             .proceedWith(email: email)
             .proceedWithValidPassword()
             .continueWithSelectedSite(title: selectedSiteTitle)

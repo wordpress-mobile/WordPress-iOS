@@ -3,10 +3,15 @@ import XCTest
 
 public class SignupCheckMagicLinkScreen: ScreenObject {
 
+    private let openMailButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Open Mail Button"]
+    }
+
+    var openMailButton: XCUIElement { openMailButtonGetter(app) }
+
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            // swiftlint:disable:next opening_brace
-            expectedElementGetters: [{ $0.buttons["Open Mail Button"] }],
+            expectedElementGetters: [openMailButtonGetter],
             app: app
         )
     }
