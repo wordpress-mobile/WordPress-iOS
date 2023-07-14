@@ -289,6 +289,26 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     // Defines the structure of the contextual menu items.
     private var contextMenuItems: [[MenuItem]] {
+        let viewMoreMenuTapped = { [weak self] in
+            guard let self else { return }
+            self.viewMoreMenuTapped()
+        }
+
+        let skipMenuTapped = { [weak self] in
+            guard let self else { return }
+            self.skipMenuTapped()
+        }
+
+        let learnMoreTapped = { [weak self] in
+            guard let self else { return }
+            self.learnMoreTapped()
+        }
+
+        let removeMenuTapped = { [weak self] in
+            guard let self else { return }
+            self.removeMenuTapped()
+        }
+
         let defaultItems: [MenuItem] = [
             .viewMore(viewMoreMenuTapped),
             .skip(skipMenuTapped)

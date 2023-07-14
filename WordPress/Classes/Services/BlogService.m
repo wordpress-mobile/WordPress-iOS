@@ -159,6 +159,17 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
 
+    if ([Feature enabled:FeatureFlagJetpackSocial] && blog.dotComID != nil) {
+        JetpackSocialService *jetpackSocialService = [[JetpackSocialService alloc] initWithContextManager:ContextManager.sharedInstance];
+        dispatch_group_enter(syncGroup);
+        [jetpackSocialService syncSharingLimitWithDotComID:blog.dotComID success:^{
+            dispatch_group_leave(syncGroup);
+        } failure:^(NSError * _Nullable error) {
+            DDLogError(@"Failed syncing publicize sharing limit for blog %@: %@", blog.url, error);
+            dispatch_group_leave(syncGroup);
+        }];
+    }
+
     dispatch_group_enter(syncGroup);
     [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
         [self updateMultiAuthor:users forBlog:blogObjectID completionHandler:^{

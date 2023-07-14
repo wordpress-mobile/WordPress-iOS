@@ -56,22 +56,22 @@ class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
     func startBlazeFlow() {
         guard let initialURL,
               let cookieJar = view?.cookieJar else {
-            // TODO: Track Analytics Error Event
+            BlazeEventsTracker.trackCampaignDetailsError(for: source)
             view?.dismissView()
             return
         }
         authenticatedRequest(for: initialURL, with: cookieJar) { [weak self] (request) in
-            guard let weakSelf = self else {
+            guard let self else {
                 return
             }
-            weakSelf.view?.load(request: request)
-            // TODO: Track Analytics Event
+            self.view?.load(request: request)
+            BlazeEventsTracker.trackCampaignDetailsOpened(for: self.source)
         }
     }
 
     func dismissTapped() {
         view?.dismissView()
-        // TODO: Track Analytics Event
+        BlazeEventsTracker.trackCampaignDetailsDismissed(for: source)
     }
 
     func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy {

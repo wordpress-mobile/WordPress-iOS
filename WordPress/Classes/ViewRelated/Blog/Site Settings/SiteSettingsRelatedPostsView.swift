@@ -131,7 +131,7 @@ private extension RelatedPostsSettingsView {
         static let showRelatedPosts = NSLocalizedString("relatedPostsSettings.showRelatedPosts", value: "Show Related Posts", comment: "Label for configuration switch to enable/disable related posts")
         static let showHeader = NSLocalizedString("relatedPostsSettings.showHeader", value: "Show Header", comment: "Label for configuration switch to show/hide the header for the related posts section")
         static let showThumbnail = NSLocalizedString("relatedPostsSettings.showThumbnail", value: "Show Images", comment: "Label for configuration switch to show/hide images thumbnail for the related posts")
-        static let optionsFooter = NSLocalizedString("relatedPostsSettings.optionsFooter", value: "Related Posts displays relevant content from your site below your posts", comment: "Information of what related post are and how they are presented")
+        static let optionsFooter = NSLocalizedString("relatedPostsSettings.optionsFooter", value: "Related Posts displays relevant content from your site below your posts.", comment: "Information of what related post are and how they are presented")
         static let previewsHeader = NSLocalizedString("relatedPostsSettings.previewsHeaders", value: "Preview", comment: "Section title for related posts section preview")
         static let relatedPostsHeader = NSLocalizedString("relatedPostsSettings.relatedPostsHeader", value: "Related Posts", comment: "Label for Related Post header preview")
         static let saveFailed = NSLocalizedString("relatedPostsSettings.settingsUpdateFailed", value: "Settings update failed", comment: "Message to show when setting save failed")
