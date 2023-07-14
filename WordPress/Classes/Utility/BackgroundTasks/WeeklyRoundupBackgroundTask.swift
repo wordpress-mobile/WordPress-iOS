@@ -37,6 +37,13 @@ private class WeeklyRoundupDataProvider {
 
     // MARK: API
 
+    /// Fetches the top site statistics from all available sites in the provided context.
+    ///
+    /// This method retrieves all sites in the given context, then fetches the weekly stats
+    /// for each site. The result, which includes the top 5 sites based on the received stats,
+    /// is returned through the provided completion handler.
+    ///
+    /// **Note:** The completion handler is executed on a background queue.
     func getTopSiteStats(completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         self.coreDataStack.performAndSave { [weak self] context in
             guard let self else {
@@ -49,6 +56,13 @@ private class WeeklyRoundupDataProvider {
 
     // MARK: Helpers
 
+    /// Fetches the top site statistics from all available sites in the provided context.
+    ///
+    /// This method retrieves all sites in the given context, then fetches the weekly stats
+    /// for each site. The result, which includes the top 5 sites based on the received stats,
+    /// is returned through the provided completion handler.
+    ///
+    /// **Note:** The completion handler is executed on the context's queue.
     private func getTopSiteStats(in context: NSManagedObjectContext, completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         getSites(in: context) { [weak self] sitesResult in
             guard let self = self else {
@@ -70,6 +84,13 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
+    /// Fetches the top site statistics for a given array of blogs.
+    ///
+    /// This method asynchronously fetches weekly statistics for each blog in the provided list.
+    /// After all data has been fetched, it filters out the top 5 sites based on the received stats
+    /// and returns the result through the provided completion handler.
+    ///
+    /// **Note:** The completion handler is executed on the context's queue.
     private func getTopSiteStats(
         from sites: [Blog],
         in context: NSManagedObjectContext,
@@ -118,11 +139,11 @@ private class WeeklyRoundupDataProvider {
 
     /// Fetches weekly stats data for a given site.
     ///
-    /// This function fetches the statistics for a single site and passes the result to a completion handler.
+    /// This function fetches the stats for a single site and passes the result to a completion handler.
     /// If it encounters any error during fetching, it calls the completion handler with an appropriate error object.
     /// The completion handler is executed in the same queue as the provided `NSManagedObjectContext`.
     ///
-    /// **It's important to remember that the completion handler will be executed on the context's queue.**
+    /// **Note:** The completion handler is executed on the context's queue.
     private func fetchStats(
         for site: Blog,
         endingOn periodEndDate: Date,
@@ -222,9 +243,10 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    static private func weeklyRoundupEnabledSites(settings: [NotificationSettings],
-                                                  sites: [Blog],
-                                                  in context: NSManagedObjectContext) -> [Blog] {
+    static private func weeklyRoundupEnabledSites(
+        settings: [NotificationSettings],
+        sites: [Blog],
+        in context: NSManagedObjectContext) -> [Blog] {
         return sites.filter { site in
             guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.objectID }),
                   let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
