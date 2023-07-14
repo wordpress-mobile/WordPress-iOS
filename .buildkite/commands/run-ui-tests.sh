@@ -28,9 +28,16 @@ xcrun simctl list >> /dev/null
 
 echo "COPY USER SETTINGS PLIST"
 echo "===> iPhone"
-cp WordPress/UITests/UserSettings.plist ~/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist
+echo "------> mkdir"
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles
+echo "------> cp"
+cp WordPress/UITests/UserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/
+
 echo "===> iPad"
-cp WordPress/UITests/UserSettings.plist ~/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist
+echo "------> mkdir"
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles
+echo "------> cp"
+cp WordPress/UITests/UserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/
 
 echo "FIND - *.plist"
 find ~/Library/Developer/CoreSimulator/Devices -path "*s.plist" -print0 | while IFS= read -r -d $'\0' plist_file; do
