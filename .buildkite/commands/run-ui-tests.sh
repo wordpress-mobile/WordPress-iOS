@@ -24,7 +24,8 @@ install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 echo "LIST DEVICES"
-xcrun simctl list >> /dev/null
+xcrun simctl list
+xcrun simctl --set testing list devices
 
 echo "COPY USER SETTINGS PLIST"
 echo "===> iPhone"
