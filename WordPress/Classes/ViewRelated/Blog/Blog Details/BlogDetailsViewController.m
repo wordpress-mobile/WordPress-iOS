@@ -1986,7 +1986,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
 
     if ([RemoteFeature enabled:RemoteFeatureFlagBlazeManageCampaigns]) {
-        BlazeCampaignsViewController *controller = [BlazeCampaignsViewController makeWithBlog:self.blog];
+        BlazeCampaignsViewController *controller =  [BlazeCampaignsViewController makeWithSource:BlazeSourceMenuItem
+                                                                                            blog:self.blog];
         [self.presentationDelegate presentBlogDetailsViewController:controller];
     } else {
         [BlazeFlowCoordinator presentBlazeInViewController:self
