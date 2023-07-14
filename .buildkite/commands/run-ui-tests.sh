@@ -25,7 +25,7 @@ install_swiftpm_dependencies
 echo "--- 🔬 Testing"
 echo "LIST DEVICES"
 xcrun simctl list
-xcrun simctl --set testing list devices
+# xcrun simctl --set testing list devices
 
 echo "COPY USER SETTINGS PLIST"
 echo "===> iPhone"
@@ -47,6 +47,10 @@ done
 
 echo "SHUTDOWN ALL SIMULATORS"
 xcrun simctl shutdown all
+
+#echo "LIST DEVICES 2"
+#xcrun simctl list
+# xcrun simctl --set testing list devices
 
 rake mocks &
 set +e
