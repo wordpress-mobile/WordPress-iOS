@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-27 13:54:29+0000 */
+/* Translation-Revision-Date: 2023-07-12 14:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "مكوِّن %s. يحتوي هذا المكوِّن على محتوى غير صالح";
+
+/* translators: %s: name of the synced block */
+"%s detached" = "تم فصل %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "ستتوفر ميزة معاينات مكوّن التضمين %s قريبًا";
@@ -731,6 +734,12 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "النص البديل";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "وبدلاً من ذلك، يمكنك فصل هذه المكوّنات وتحريرها على حدة عن طريق الضغط على \"فصل الأنماط\".";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "وبدلاً من ذلك، يمكنك فصل هذا المكوّن وتحريره على حدة عن طريق النقر على \"فصل النمط\".";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "بدلاً من ذلك، قد تقوم بإدخال كلمة مرور هذا الحساب.";
@@ -2731,6 +2740,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "تحرير الفيديو";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "تحرير الأنماط التي تمت مزامنتها غير مدعوم حتى الآن على %s لنظام التشغيل Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "تحرير الأنماط التي تمت مزامنتها غير مدعوم حتى الآن على %s لنظام التشغيل iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "سيؤدي تحرير ملف GIF هذا إلى إزالة الرسوم المتحركة الخاصة به.";
@@ -9619,6 +9634,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "ليست لديك حملات";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "كان هناك خطأ في أثناء تحميل الحملات.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "عذرًا";
+
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "جارٍ تحميل الحملات...";
 
@@ -9669,6 +9690,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Short status description */
 "blazeCampaign.status.inmoderation" = "قيد الإشراف";
+
+/* Short status description */
+"blazeCampaign.status.processing" = "معالجة";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "مرفوض";
@@ -9799,6 +9823,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of a label that encourages the user to create a new page. */
 "dashboardCard.pages.create.description" = "ابدأ بتخطيطات معدة حسب الطلب ومناسبة للهواتف المحمولة.";
 
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "عرض الإحصاءات";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "يُشار إلى المعلمات التي تم تجاوزها بعلامة اختيار.";
 
@@ -9879,6 +9906,9 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "تفاصيل الحملة";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "التوهج";
 
@@ -9905,6 +9935,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the domain purchase result screen. Tells user their domain was obtained. */
 "freeToPaidPlans.resultView.title" = "كل شيء جاهز الآن!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "حدث خطأ";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "إعادة المحاولة";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "تعيين تذكيرات التدوين";
@@ -10389,6 +10425,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "العمل على إعداد مسودة للتدوينة";
 
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "عرض كل المسودات";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "عرض كل التدوينات المجدولة";
+
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "إحصاءات اليوم";
 
@@ -10482,6 +10524,12 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
 
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "الاشتراك الآن لمشاركة المزيد";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " في غضون الأيام الـ 30 المقبلة";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "عرض كل الردود";
 
@@ -10551,6 +10599,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "جديد";
+
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "تعرض التدوينات ذات الصلة المحتوى ذا الصلة من موقعك أسفل تدويناتك";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "في \"الهاتف المحمول\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "يتوافر الآن تحديث iPhone\/iPad الكبير";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "في \"التطبيقات\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "يحصل تطبيق ووردبريس لنظام التشغيل Android على عناية كبيرة";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "في \"الترقية\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "ترقية التركيز: فيديوبرس لحفلات الزفاف";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "معاينة";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "التدوينات ذات الصلة";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "فشل تحديث الإعدادات";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "عرض الترويسة";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "عرض المقالات ذات الصلة";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "عرض الصور";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "التدوينات ذات الصلة";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "تجاهل";

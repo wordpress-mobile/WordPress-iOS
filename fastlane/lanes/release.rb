@@ -92,6 +92,7 @@ platform :ios do
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
+    generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
