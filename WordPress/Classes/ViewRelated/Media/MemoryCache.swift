@@ -10,8 +10,10 @@ final class MemoryCache {
     private let cache = SDMemoryCache<NSString, AnyObject>()
 
     private init() {
-        self.cache.totalCostLimit = 128_000_000 // 128 MB
+        self.cache.totalCostLimit = 256_000_000 // 256 MB
     }
+
+    // MARK: - UIImage
 
     func setImage(_ image: UIImage, forKey key: String) {
         cache.setObject(image, forKey: key as NSString, cost: image.sd_memoryCost)
@@ -25,8 +27,18 @@ final class MemoryCache {
         cache.removeObject(forKey: key as NSString)
     }
 
-    func removeAllImages() {
+    // MARK: - Data
 
+    func setData(_ data: Data, forKey key: String) {
+        cache.setObject(data, forKey: key as NSString, cost: UInt(data.count))
+    }
+
+    func geData(forKey key: String) -> Data? {
+        cache.object(forKey: key as NSString) as? Data
+    }
+
+    func removeData(forKey key: String) {
+        cache.removeObject(forKey: key as NSString)
     }
 }
 
@@ -40,6 +52,8 @@ extension MemoryCache {
         UIImageView.af_sharedImageDownloader = AlamofireImage.ImageDownloader(
             imageCache: AlamofireImageCacheAdapter(cache: .shared)
         )
+
+        // WordPress.AnimatedImageCache uses WordPress.MemoryCache directly
     }
 }
 
