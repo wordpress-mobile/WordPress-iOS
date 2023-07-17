@@ -2,15 +2,24 @@
 ///
 extension PrepublishingViewController {
 
-    /// Determines whether the account and the post's blog is eligible to see auto-sharing options.
-    func isEligibleForAutoSharing(isJetpack: Bool = AppConfiguration.isJetpack,
-                                  isFeatureEnabled: Bool = FeatureFlag.jetpackSocial.enabled) -> Bool {
+    /// Determines whether the account and the post's blog is eligible to see the Jetpack Social row.
+    func canDisplaySocialRow(isJetpack: Bool = AppConfiguration.isJetpack,
+                             isFeatureEnabled: Bool = FeatureFlag.jetpackSocial.enabled) -> Bool {
+        guard isJetpack && isFeatureEnabled else {
+            return false
+        }
+
+        guard hasExistingConnections else {
+            // if the site has no connections, ensure that the No Connection view hasn't been dismissed before.
+            return !isNoConnectionDismissed
+        }
+
         let blogSupportsPublicize = coreDataStack.performQuery { [postObjectID = post.objectID] context in
             let post = (try? context.existingObject(with: postObjectID)) as? Post
             return post?.blog.supportsPublicize() ?? false
         }
 
-        return blogSupportsPublicize && isJetpack && isFeatureEnabled
+        return blogSupportsPublicize
     }
 
     func configureSocialCell(_ cell: UITableViewCell) {
@@ -25,6 +34,28 @@ extension PrepublishingViewController {
 // MARK: - Helper Methods
 
 private extension PrepublishingViewController {
+
+    /// Convenience variable representing whether the No Connection view has been dismissed.
+    /// Note: the value is stored per site.
+    var isNoConnectionDismissed: Bool {
+        get {
+            guard let postBlogID,
+                  let dictionary = persistentStore.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
+                  let storedValue = dictionary["\(postBlogID)"] else {
+                return false
+            }
+            return storedValue
+        }
+
+        set {
+            guard let postBlogID else {
+                return
+            }
+            var dictionary = (persistentStore.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
+            dictionary["\(postBlogID)"] = newValue
+            persistentStore.set(dictionary, forKey: Constants.noConnectionKey)
+        }
+    }
 
     var hasExistingConnections: Bool {
         coreDataStack.performQuery { [postObjectID = post.objectID] context in
@@ -116,7 +147,59 @@ private extension PrepublishingViewController {
             return .init()
         }
 
-        // TODO: Tap actions
-        return .init(services: services, preferredBackgroundColor: tableView.backgroundColor)
+        return .init(services: services,
+                     preferredBackgroundColor: tableView.backgroundColor,
+                     onConnectTap: noConnectionConnectTapped(),
+                     onNotNowTap: noConnectionDismissTapped())
+    }
+
+    /// A closure to be executed when the Connect button is tapped in the No Connection view.
+    func noConnectionConnectTapped() -> () -> Void {
+        return { [weak self] in
+            guard let self,
+                  let controller = SharingViewController(blog: self.post.blog, delegate: nil),
+                  self.presentedViewController == nil else {
+                return
+            }
+
+            // TODO: Set up delegate to react to changes when a new connection is set up.
+
+            let navigationController = UINavigationController(rootViewController: controller)
+            self.show(navigationController, sender: nil)
+        }
+    }
+
+    /// A closure to be executed when the "Not now" button is tapped in the No Connection view.
+    func noConnectionDismissTapped() -> () -> Void {
+        return { [weak self] in
+            guard let self,
+                  let autoSharingRowIndex = filteredIdentifiers.firstIndex(of: .autoSharing) else {
+                return
+            }
+
+            self.isNoConnectionDismissed = true
+            self.refreshOptions()
+
+            // ensure that the `.autoSharing` identifier is truly removed to prevent table updates from crashing.
+            guard filteredIdentifiers.firstIndex(of: .autoSharing) == nil else {
+                return
+            }
+
+            self.tableView.performBatchUpdates {
+                self.tableView.deleteRows(at: [.init(row: autoSharingRowIndex, section: .zero)], with: .fade)
+            } completion: { _ in
+                self.presentedVC?.transition(to: .collapsed)
+            }
+
+            // when displayed in a popover view (i.e. iPad), updating the content size will resize
+            // the popover window to fit the updated content.
+            self.navigationController?.preferredContentSize = self.tableView.contentSize
+        }
+    }
+
+    // MARK: - Constants
+
+    enum Constants {
+        static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
     }
 }
