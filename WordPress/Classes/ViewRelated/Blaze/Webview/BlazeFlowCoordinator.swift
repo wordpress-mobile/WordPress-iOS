@@ -23,8 +23,9 @@ import UIKit
         }
     }
 
+    /// Blaze overlays should be shown once only, regardless of entry point
     var key: String {
-        return description
+        return ""
     }
 
     var frequencyType: OverlayFrequencyTracker.FrequencyType {
@@ -93,10 +94,10 @@ import UIKit
     ///   - post: `AbstractPost` object representing the specific post to blaze. If `nil` is passed,
     ///    a general blaze overlay is displayed. If a valid value is passed, a blaze overlay with a post preview
     ///    is displayed.
-    private static func presentBlazeOverlay(in viewController: UIViewController,
-                                            source: BlazeSource,
-                                            blog: Blog,
-                                            post: AbstractPost? = nil) {
+    static func presentBlazeOverlay(in viewController: UIViewController,
+                                    source: BlazeSource,
+                                    blog: Blog,
+                                    post: AbstractPost? = nil) {
         let overlayViewController = BlazeOverlayViewController(source: source, blog: blog, post: post)
         let navigationController = UINavigationController(rootViewController: overlayViewController)
         navigationController.modalPresentationStyle = .formSheet
