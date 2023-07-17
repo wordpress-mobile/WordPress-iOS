@@ -28,17 +28,26 @@ xcrun simctl list
 # xcrun simctl --set testing list devices
 
 echo "COPY USER SETTINGS PLIST"
-echo "===> iPhone"
-echo "------> mkdir"
-mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles
-echo "------> cp"
-cp WordPress/UITests/UserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/
-
 echo "===> iPad"
 echo "------> mkdir"
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Library/UserConfigurationProfiles
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Library/UserConfigurationProfiles/PublicInfo
+echo "------> cp"
+cp WordPress/UITests/UserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/
+cp WordPress/UITests/EffectiveUserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Library/UserConfigurationProfiles/
+cp WordPress/UITests/PublicEffectiveUserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/FC4B5BA1-C4A0-4C60-94FE-8C40B29C17AD/data/Library/UserConfigurationProfiles/PublicInfo/
+
+
+echo "===> iPhone"
+echo "------> mkdir"
 mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Library/UserConfigurationProfiles
+mkdir -p /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Library/UserConfigurationProfiles/PublicInfo
 echo "------> cp"
 cp WordPress/UITests/UserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/
+cp WordPress/UITests/EffectiveUserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Library/UserConfigurationProfiles/
+cp WordPress/UITests/PublicEffectiveUserSettings.plist /Users/builder/Library/Developer/CoreSimulator/Devices/435326FA-9F81-4C3E-96B8-92446A5B0075/data/Library/UserConfigurationProfiles/PublicInfo/
 
 echo "FIND - *.plist"
 find ~/Library/Developer/CoreSimulator/Devices -path "*s.plist" -print0 | while IFS= read -r -d $'\0' plist_file; do

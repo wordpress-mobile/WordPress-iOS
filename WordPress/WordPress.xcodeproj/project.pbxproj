@@ -8870,6 +8870,8 @@
 		EA14534629AEF479001F3143 /* JetpackUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = JetpackUITests.xctestplan; sourceTree = "<group>"; };
 		EA2002C82A60E8C500AED5AF /* UserSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = UserSettings.plist; sourceTree = "<group>"; };
 		EA78189327596B2F00554DFA /* ContactUsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsScreen.swift; sourceTree = "<group>"; };
+		EA85B7A22A65B4290096E097 /* EffectiveUserSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = EffectiveUserSettings.plist; sourceTree = "<group>"; };
+		EA85B7A32A65B4430096E097 /* PublicEffectiveUserSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = PublicEffectiveUserSettings.plist; sourceTree = "<group>"; };
 		EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
 		EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsScreen.swift; sourceTree = "<group>"; };
 		EAD2BF4127594DAB00A847BB /* StatsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTests.swift; sourceTree = "<group>"; };
@@ -18217,6 +18219,8 @@
 				80D65C1129CC0813008E69D5 /* JetpackUITests-Info.plist */,
 				FF2716931CAAC87B0006E2D4 /* WordPressUITests-Info.plist */,
 				EA2002C82A60E8C500AED5AF /* UserSettings.plist */,
+				EA85B7A22A65B4290096E097 /* EffectiveUserSettings.plist */,
+				EA85B7A32A65B4430096E097 /* PublicEffectiveUserSettings.plist */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -20669,7 +20673,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
+			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\necho \"====================== SETUP SIMULATOR ==============================\"\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
 		};
 		F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */ = {
 			isa = PBXShellScriptBuildPhase;

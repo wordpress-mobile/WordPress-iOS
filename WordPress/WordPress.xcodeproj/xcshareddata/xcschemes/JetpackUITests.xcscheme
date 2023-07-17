@@ -27,6 +27,24 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;echo &quot;+++++++++++++++++++++++++ PRE ++++++++++++++++++++++++++&quot;&#10;">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;echo &quot;+++++++++++++++++++++++++ POS ++++++++++++++++++++++++++&quot;&#10;">
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <TestPlans>
          <TestPlanReference
             reference = "container:UITests/JetpackUITests.xctestplan"
