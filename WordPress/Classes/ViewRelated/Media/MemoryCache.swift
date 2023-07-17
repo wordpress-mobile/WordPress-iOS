@@ -20,12 +20,26 @@ final class MemoryCache {
     func getImage(forKey key: String) -> UIImage? {
         cache.object(forKey: key as NSString) as? UIImage
     }
+
+    func removeImage(forKey key: String) {
+        cache.removeObject(forKey: key as NSString)
+    }
+
+    func removeAllImages() {
+
+    }
 }
 
 extension MemoryCache {
     /// Registers the cache with all the image loading systems used by the app.
     func register() {
+        // WordPressUI
         WordPressUI.ImageCache.shared = WordpressUICacheAdapter(cache: .shared)
+
+        // AlamofireImage
+        UIImageView.af_sharedImageDownloader = AlamofireImage.ImageDownloader(
+            imageCache: AlamofireImageCacheAdapter(cache: .shared)
+        )
     }
 }
 
@@ -38,5 +52,47 @@ private struct WordpressUICacheAdapter: WordPressUI.ImageCaching {
 
     func getImage(forKey key: String) -> UIImage? {
         cache.getImage(forKey: key)
+    }
+}
+
+private struct AlamofireImageCacheAdapter: AlamofireImage.ImageRequestCache {
+    let cache: MemoryCache
+
+    func image(for request: URLRequest, withIdentifier identifier: String?) -> AlamofireImage.Image? {
+        image(withIdentifier: cacheKey(for: request, identifier: identifier))
+    }
+
+    func add(_ image: AlamofireImage.Image, for request: URLRequest, withIdentifier identifier: String?) {
+        add(image, withIdentifier: cacheKey(for: request, identifier: identifier))
+    }
+
+    func removeImage(for request: URLRequest, withIdentifier identifier: String?) -> Bool {
+        removeImage(withIdentifier: cacheKey(for: request, identifier: identifier))
+    }
+
+    func image(withIdentifier identifier: String) -> AlamofireImage.Image? {
+        cache.getImage(forKey: identifier)
+    }
+
+    func add(_ image: AlamofireImage.Image, withIdentifier identifier: String) {
+        cache.setImage(image, forKey: identifier)
+    }
+
+    func removeImage(withIdentifier identifier: String) -> Bool {
+        cache.removeImage(forKey: identifier)
+        return true
+    }
+
+    func removeAllImages() -> Bool {
+        // Do nothing (the app decides when to remove images)
+        return true
+    }
+
+    private func cacheKey(for request: URLRequest, identifier: String?) -> String {
+        var key = request.url?.absoluteString ?? ""
+        if let identifier = identifier {
+            key += "-\(identifier)"
+        }
+        return key
     }
 }
