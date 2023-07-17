@@ -358,8 +358,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             fatalError()
         }
 
-        let onBlogSelected: ((Blog) -> Void) = { [weak self] blog in
-            guard let self = self else {
+        let onBlogSelected: ((Blog) -> Void) = { [weak self, weak navigationController] blog in
+            guard let self, let navigationController else {
                 return
             }
 
@@ -381,7 +381,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
 
-        epilogueViewController.onCreateNewSite = {
+        epilogueViewController.onCreateNewSite = { [weak navigationController] in
+            guard let navigationController else { return }
+
             let source = "login_epilogue"
             JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
                 guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
@@ -415,8 +417,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
-        epilogueViewController.onContinue = { [weak self] in
-            guard let self = self else {
+        epilogueViewController.onContinue = { [weak self, weak navigationController] in
+            guard let self, let navigationController else {
                 return
             }
 
@@ -560,7 +562,9 @@ private extension WordPressAuthenticationManager {
 
         let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
 
-        coordinator.onDismiss = { selectedOption in
+        coordinator.onDismiss = { [weak navigationController] selectedOption in
+            guard let navigationController else { return }
+
             self.handleOnboardingQuestionsWillDismiss(option: selectedOption)
 
             let completion: (() -> Void)? = {
@@ -658,7 +662,9 @@ private extension WordPressAuthenticationManager {
         let viewController = PostSignUpInterstitialViewController()
         let windowManager = self.windowManager
 
-        viewController.dismiss = { dismissAction in
+        viewController.dismiss = { [weak navigationController] dismissAction in
+            guard let navigationController else { return }
+
             let completion: (() -> Void)?
 
             switch dismissAction {
