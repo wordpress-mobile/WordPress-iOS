@@ -7,16 +7,22 @@ final class MemoryCache {
     /// A shared image cache used by the entire system.
     static let shared = MemoryCache()
 
-    private let cache = SDMemoryCache<NSString, AnyObject>()
+    private let cache = NSCache<NSString, AnyObject>()
 
     private init() {
         self.cache.totalCostLimit = 256_000_000 // 256 MB
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMemoryWarning), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
+    }
+
+    @objc private func didReceiveMemoryWarning() {
+        cache.removeAllObjects()
     }
 
     // MARK: - UIImage
 
     func setImage(_ image: UIImage, forKey key: String) {
-        cache.setObject(image, forKey: key as NSString, cost: image.sd_memoryCost)
+        cache.setObject(image, forKey: key as NSString, cost: Int(image.sd_memoryCost))
     }
 
     func getImage(forKey key: String) -> UIImage? {
@@ -30,7 +36,7 @@ final class MemoryCache {
     // MARK: - Data
 
     func setData(_ data: Data, forKey key: String) {
-        cache.setObject(data, forKey: key as NSString, cost: UInt(data.count))
+        cache.setObject(data as NSData, forKey: key as NSString, cost: data.count)
     }
 
     func geData(forKey key: String) -> Data? {
