@@ -145,7 +145,6 @@ private extension BlogDashboardViewModel {
     func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
     }
@@ -205,13 +204,6 @@ private extension BlogDashboardViewModel {
         }
     }
 
-    // In case a post is published and create_first card
-    // is showing, we replace it with the create_next card.
-    @objc func showNextPostCardIfNeeded() {
-        if !currentCards.contains(where: { $0.cardType == .createPost }) {
-            loadCardsFromCache()
-        }
-    }
 }
 
 // MARK: - Ghost/Skeleton cards and failures
