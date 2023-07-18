@@ -91,6 +91,17 @@ final class DashboardBlazeCampaignsCardView: UIView {
         }
     }
 
+    private func showBlazeOverlay() {
+        guard let presentingViewController, let blog else { return }
+        BlazeFlowCoordinator.presentBlazeOverlay(in: presentingViewController, source: .dashboardCard, blog: blog)
+    }
+
+    private func makeLearnMoreMenuAction() -> UIAction {
+        UIAction(title: Strings.learnMore, image: UIImage(systemName: "info.circle")) { [weak self] _ in
+            self?.showBlazeOverlay()
+        }
+    }
+
     @objc private func campainViewTapped() {
         guard let presentingViewController, let blog, let campaign else { return }
         BlazeFlowCoordinator.presentBlazeCampaignDetails(in: presentingViewController, source: .dashboardCard, blog: blog, campaignID: campaign.campaignID)
@@ -112,6 +123,9 @@ final class DashboardBlazeCampaignsCardView: UIView {
                 makeShowCampaignsMenuAction()
             ]),
             UIMenu(options: .displayInline, children: [
+                makeLearnMoreMenuAction()
+            ]),
+            UIMenu(options: .displayInline, children: [
                 BlogDashboardHelpers.makeHideCardAction(for: .blaze, blog: blog)
             ])
         ], card: .blaze)
@@ -125,6 +139,7 @@ private extension DashboardBlazeCampaignsCardView {
     enum Strings {
         static let cardTitle = NSLocalizedString("dashboardCard.blazeCampaigns.title", value: "Blaze campaign", comment: "Title for the card displaying blaze campaigns.")
         static let viewAllCampaigns = NSLocalizedString("dashboardCard.blazeCampaigns.viewAllCampaigns", value: "View all campaigns", comment: "Title for the View All Campaigns button in the More menu")
+        static let learnMore = NSLocalizedString("dashboardCard.blazeCampaigns.learnMore", value: "Learn more", comment: "Title for the Learn more button in the More menu.")
         static let createCampaignButton = NSLocalizedString("dashboardCard.blazeCampaigns.createCampaignButton", value: "Create campaign", comment: "Title of a button that starts the campaign creation flow.")
     }
 
