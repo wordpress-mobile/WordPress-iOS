@@ -24,6 +24,8 @@ steps:
         env: *common_env
         plugins: *common_plugins
         if: "build.pull_request.id != null || build.pull_request.draft"
+        agents:
+          hostname: MV-MKE-X64-014
         notify:
           - github_commit_status:
               context: "WordPress Prototype Build"
