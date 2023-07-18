@@ -2,7 +2,7 @@ import UIKit
 import WordPressAuthenticator
 
 
-protocol SignupEpilogueCellDelegate {
+protocol SignupEpilogueCellDelegate: AnyObject {
     func updated(value: String, forType: EpilogueCellType)
     func changed(value: String, forType: EpilogueCellType)
 }
@@ -37,7 +37,7 @@ class SignupEpilogueCell: UITableViewCell {
     private let passwordTopMargin: CGFloat = 16
 
     private var cellType: EpilogueCellType?
-    open var delegate: SignupEpilogueCellDelegate?
+    open weak var delegate: SignupEpilogueCellDelegate?
 
     // MARK: - UITableViewCell
 
