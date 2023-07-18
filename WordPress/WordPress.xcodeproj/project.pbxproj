@@ -18311,6 +18311,7 @@
 				37399571B0D91BBEAE911024 /* [CP] Embed Pods Frameworks */,
 				920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */,
 				E1C5456F219F10E000896227 /* Copy Gutenberg JS */,
+				3FF795712A6671DB00F27B17 /* Lint against nested frameworks */,
 			);
 			buildRules = (
 			);
@@ -18607,6 +18608,7 @@
 				FABB264A2602FC2C00C8785C /* [CP] Embed Pods Frameworks */,
 				FABB264B2602FC2C00C8785C /* [CP] Copy Pods Resources */,
 				FABB264C2602FC2C00C8785C /* Copy Gutenberg JS */,
+				3FF795732A66730200F27B17 /* Lint against nested frameworks */,
 			);
 			buildRules = (
 			);
@@ -20119,6 +20121,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
+		};
+		3FF795712A6671DB00F27B17 /* Lint against nested frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Lint against nested frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintNestedFrameworks.sh\"\n";
+		};
+		3FF795732A66730200F27B17 /* Lint against nested frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Lint against nested frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintNestedFrameworks.sh\"\n";
 		};
 		49AE9271B82C7D67430387FA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
