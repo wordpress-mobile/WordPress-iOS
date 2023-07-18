@@ -253,7 +253,7 @@ class DashboardCardTests: CoreDataTestCase {
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: nil)
         let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: nil)
-        let shouldShowStats = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowStats = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: nil)
         let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: nil)
         let shouldShowActivityLog = DashboardCard.activityLog.shouldShow(for: blog, apiResponse: nil)
 
