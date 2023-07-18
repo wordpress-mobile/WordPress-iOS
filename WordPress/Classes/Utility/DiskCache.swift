@@ -20,8 +20,6 @@ final class DiskCache {
     private let sizeLimit: Int
     private let sweepInterval: TimeInterval = 86400 // Around 1 day
 
-    private let queue = DispatchQueue(label: "org.wordpress.diskCache")
-
     /// Creates a cache instance with a given root URL.
     ///
     /// - parameters:
@@ -44,67 +42,6 @@ final class DiskCache {
     /// Returns the total number of cached entities by enumerating the files.
     func getTotalCount() throws -> Int {
         try contents().count
-    }
-
-    // MARK: - Codable
-
-    func getValue<T: Decodable>(
-        _ type: T.Type,
-        forKey key: String,
-        decoder: JSONDecoder = JSONDecoder()
-    ) -> T? {
-        guard let data = getData(forKey: key) else { return nil }
-        return try? decoder.decode(type, from: data)
-    }
-
-    func setValue<T: Encodable>(
-        _ value: T,
-        forKey key: String,
-        encoder: JSONEncoder = JSONEncoder()
-    ) {
-        guard let data = try? encoder.encode(value) else { return }
-        setData(data, forKey: key)
-    }
-
-    func removeValue(forKey key: String) {
-        removeData(forKey: key)
-    }
-
-    // MARK: - Codable (Async)
-
-    func getValue<T: Decodable>(
-        _ type: T.Type,
-        forKey key: String,
-        decoder: JSONDecoder = JSONDecoder()
-    ) async -> T? {
-        await withUnsafeContinuation { continuation in
-            queue.async {
-                let value = self.getValue(type, forKey: key, decoder: decoder)
-                continuation.resume(returning: value)
-            }
-        }
-    }
-
-    func setValue<T: Encodable>(
-        _ value: T,
-        forKey key: String,
-        encoder: JSONEncoder = JSONEncoder()
-    ) async {
-        await withUnsafeContinuation { continuation in
-            queue.async {
-                self.setValue(value, forKey: key, encoder: encoder)
-                continuation.resume()
-            }
-        }
-    }
-
-    func removeValue(forKey key: String) async {
-        await withUnsafeContinuation { continuation in
-            queue.async {
-                self.removeData(forKey: key)
-                continuation.resume()
-            }
-        }
     }
 
     // MARK: - Data
@@ -130,7 +67,6 @@ final class DiskCache {
         try? FileManager.default.removeItem(at: url)
     }
 
-    /// Removes all cached entries.
     func removeAll() throws {
         try FileManager.default.removeItem(at: rootURL)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
@@ -151,7 +87,7 @@ final class DiskCache {
         }
         // Perform the sweep after a brief delay to reduce the pressure on the system
         // during the app launch
-        queue.asyncAfter(deadline: .now() + .seconds(10)) { [weak self] in
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + .seconds(5)) { [weak self] in
             guard let self = self else { return }
             do {
                 try self.sweep()

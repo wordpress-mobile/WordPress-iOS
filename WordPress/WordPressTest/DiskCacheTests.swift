@@ -66,61 +66,6 @@ class DiskCacheTests: XCTestCase {
         XCTAssertNil(cache.getData(forKey: "key2"))
     }
 
-    // MARK: Codable
-
-    private struct Payload: Codable {
-        let value: String
-    }
-
-    func testStoreCodable() {
-        // Given
-        let payload = Payload(value: "test")
-
-        // When
-        cache.setValue(payload, forKey: "key")
-        let cachedPayload = cache.getValue(Payload.self, forKey: "key")
-
-        // Then
-        XCTAssertEqual(cachedPayload?.value, "test")
-    }
-
-    func testRemoveCodable() {
-        // Given
-        let payload = Payload(value: "test")
-        cache.setValue(payload, forKey: "key")
-
-        // When
-        cache.removeValue(forKey: "key")
-
-        // Then
-        XCTAssertNil(cache.getValue(Payload.self, forKey: "key"))
-    }
-
-    func testStoreCodableAsync() async {
-        // Given
-        let payload = Payload(value: "test")
-
-        // When
-        await cache.setValue(payload, forKey: "key")
-        let cachedPayload = await cache.getValue(Payload.self, forKey: "key")
-
-        // Then
-        XCTAssertEqual(cachedPayload?.value, "test")
-    }
-
-    func testRemoveCodableAsync() async {
-        // Given
-        let payload = Payload(value: "test")
-        await cache.setValue(payload, forKey: "key")
-
-        // When
-        await cache.removeValue(forKey: "key")
-
-        // Then
-        let value = await cache.getValue(Payload.self, forKey: "key")
-        XCTAssertNil(value)
-    }
-
     // MARK: Sweep
 
     func testSweep() throws {
