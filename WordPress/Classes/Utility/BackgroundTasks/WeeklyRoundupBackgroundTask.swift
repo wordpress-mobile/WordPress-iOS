@@ -11,6 +11,7 @@ private class WeeklyRoundupDataProvider {
     typealias SiteStats = [BlogManagedObjectID: StatsSummaryData]
 
     enum DataRequestError: Error {
+        case authTokenNotFound
         case dotComSiteWithoutDotComID(_ site: Blog)
         case siteFetchingError(_ error: Error)
         case unknownErrorRetrievingStats(_ site: Blog)
@@ -96,7 +97,7 @@ private class WeeklyRoundupDataProvider {
         in context: NSManagedObjectContext,
         completion: @escaping (Result<SiteStats?, Error>) -> Void
     ) {
-        guard let periodEndDate = getPeriodEndDate() else {
+        guard let periodEndDate = Self.makePeriodEndDate() else {
             DDLogError("Something's wrong with the period end date selection.")
             return
         }
@@ -105,13 +106,18 @@ private class WeeklyRoundupDataProvider {
         var blogStats = SiteStats()
 
         for site in sites {
-            guard let authToken = site.account?.authToken else {
+            let service: StatsServiceRemoteV2
+
+            do {
+                service = try Self.makeRemoteStatsService(for: site)
+            } catch let error {
+                self.onError(error)
                 continue
             }
 
             group.enter()
 
-            self.fetchStats(for: site, endingOn: periodEndDate, authToken: authToken, in: context) { [weak self] result in
+            self.fetchStats(for: site, endingOn: periodEndDate, in: context, with: service) { [weak self] result in
                 defer {
                     group.leave()
                 }
@@ -147,20 +153,15 @@ private class WeeklyRoundupDataProvider {
     private func fetchStats(
         for site: Blog,
         endingOn periodEndDate: Date,
-        authToken: String,
         in context: NSManagedObjectContext,
+        with service: StatsServiceRemoteV2,
         completion: @escaping (Result<StatsSummaryData?, Error>) -> Void
     ) {
-        guard let dotComID = site.dotComID?.intValue else {
-            completion(.failure(DataRequestError.dotComSiteWithoutDotComID(site)))
-            return
-        }
-        let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
-        let statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
-        statsServiceRemote.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+        service.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
             context.perform {
                 guard let timeStats = timeStats else {
                     if let error = error {
+                        let dotComID = site.dotComID?.intValue ?? -1
                         completion(.failure(DataRequestError.errorRetrievingStats(dotComID, error: error)))
                     } else {
                         completion(.failure(DataRequestError.unknownErrorRetrievingStats(site)))
@@ -170,17 +171,6 @@ private class WeeklyRoundupDataProvider {
                 completion(.success(timeStats.summaryData.first))
             }
         }
-    }
-
-    /// Returns the end date for the period (the start of the current week).
-    /// This function creates a calendar with a GMT timezone and specifies that it needs a date representing the start of the current week.
-    /// If it can't find a valid date, it returns nil.
-    private func getPeriodEndDate() -> Date? {
-        var gmtCalendar = Calendar(identifier: .gregorian)
-        gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        var endDateComponents = DateComponents()
-        endDateComponents.weekday = 1
-        return gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward)
     }
 
     /// Filters the "best" count sites from the provided dictionary of sites and stats.  This method implicitly implements the
@@ -272,6 +262,37 @@ private class WeeklyRoundupDataProvider {
             return .failure(DataRequestError.siteFetchingError(error))
         }
     }
+
+    // MARK: - Factory Methods
+
+    /// Returns the end date for the period (the start of the current week).
+    /// This function creates a calendar with a GMT timezone and specifies that it needs a date representing the start of the current week.
+    /// If it can't find a valid date, it returns nil.
+    private static func makePeriodEndDate() -> Date? {
+        var gmtCalendar = Calendar(identifier: .gregorian)
+        gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        var endDateComponents = DateComponents()
+        endDateComponents.weekday = 1
+        return gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward)
+    }
+
+    /// Returns an instance responsible for fetching site stats remotely.
+    /// - Important: This method is not thread-safe and must be called from the "Blog" context's queue.
+    /// - Parameter site: The blog site for which to fetch stats.
+    /// - Throws: `DataRequestError.authTokenNotFound` if the account associated with the site has no auth token.
+    /// - Throws: `DataRequestError.dotComSiteWithoutDotComID(site)` if the dotComID of the site is not available.
+    /// - Returns: An instance of `StatsServiceRemoteV2` for the site.
+    static private func makeRemoteStatsService(for site: Blog) throws -> StatsServiceRemoteV2 {
+        guard let authToken = site.account?.authToken else {
+            throw DataRequestError.authTokenNotFound
+        }
+        guard let dotComID = site.dotComID?.intValue else {
+            throw DataRequestError.dotComSiteWithoutDotComID(site)
+        }
+        let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
+    }
+
 }
 
 class WeeklyRoundupBackgroundTask: BackgroundTask {
