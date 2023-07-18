@@ -186,14 +186,10 @@ class DashboardCardTests: CoreDataTestCase {
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
         let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: apiResponse)
 
         // Then
         XCTAssertTrue(shouldShowDrafts)
         XCTAssertFalse(shouldShowScheduled)
-        XCTAssertFalse(shouldShowNextPost)
-        XCTAssertFalse(shouldShowCreatePost)
     }
 
     func testShowingScheduledCardOnly() {
@@ -203,14 +199,10 @@ class DashboardCardTests: CoreDataTestCase {
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
         let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: apiResponse)
 
         // Then
         XCTAssertFalse(shouldShowDrafts)
         XCTAssertTrue(shouldShowScheduled)
-        XCTAssertFalse(shouldShowNextPost)
-        XCTAssertFalse(shouldShowCreatePost)
     }
 
     func testShowingDraftsAndScheduled() {
@@ -220,48 +212,10 @@ class DashboardCardTests: CoreDataTestCase {
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
         let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: apiResponse)
 
         // Then
         XCTAssertTrue(shouldShowDrafts)
         XCTAssertTrue(shouldShowScheduled)
-        XCTAssertFalse(shouldShowNextPost)
-        XCTAssertFalse(shouldShowCreatePost)
-    }
-
-    func testShowingNextPostCardOnly() {
-        // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: true)
-
-        // When
-        let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: apiResponse)
-
-        // Then
-        XCTAssertFalse(shouldShowDrafts)
-        XCTAssertFalse(shouldShowScheduled)
-        XCTAssertTrue(shouldShowNextPost)
-        XCTAssertFalse(shouldShowCreatePost)
-    }
-
-    func testShowingCreatePostCardOnly() {
-        // Given
-        let apiResponse = buildEntity(hasDrafts: false, hasScheduled: false, hasPublished: false)
-
-        // When
-        let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: apiResponse)
-        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: apiResponse)
-
-        // Then
-        XCTAssertFalse(shouldShowDrafts)
-        XCTAssertFalse(shouldShowScheduled)
-        XCTAssertFalse(shouldShowNextPost)
-        XCTAssertTrue(shouldShowCreatePost)
     }
 
     // MARK: Pages
@@ -299,17 +253,13 @@ class DashboardCardTests: CoreDataTestCase {
         // When
         let shouldShowDrafts = DashboardCard.draftPosts.shouldShow(for: blog, apiResponse: nil)
         let shouldShowScheduled = DashboardCard.scheduledPosts.shouldShow(for: blog, apiResponse: nil)
-        let shouldShowNextPost = DashboardCard.nextPost.shouldShow(for: blog, apiResponse: nil)
-        let shouldShowCreatePost = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
-        let shouldShowStats = DashboardCard.createPost.shouldShow(for: blog, apiResponse: nil)
+        let shouldShowStats = DashboardCard.todaysStats.shouldShow(for: blog, apiResponse: nil)
         let shouldShowPages = DashboardCard.pages.shouldShow(for: blog, apiResponse: nil)
         let shouldShowActivityLog = DashboardCard.activityLog.shouldShow(for: blog, apiResponse: nil)
 
         // Then
         XCTAssertFalse(shouldShowDrafts)
         XCTAssertFalse(shouldShowScheduled)
-        XCTAssertFalse(shouldShowNextPost)
-        XCTAssertFalse(shouldShowCreatePost)
         XCTAssertFalse(shouldShowStats)
         XCTAssertFalse(shouldShowPages)
         XCTAssertFalse(shouldShowActivityLog)

@@ -37,7 +37,7 @@ class RecentSitesService: NSObject {
     /// Initialize the service using the standard UserDefaults as the database.
     ///
     convenience override init() {
-        self.init(database: UserDefaults() as KeyValueDatabase)
+        self.init(database: UserDefaults.standard as KeyValueDatabase)
     }
 
     // MARK: - Public accessors
