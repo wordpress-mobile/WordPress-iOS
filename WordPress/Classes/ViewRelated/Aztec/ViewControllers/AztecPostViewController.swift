@@ -470,7 +470,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-    private let database: KeyValueDatabase = UserDefaults()
+    private let database: KeyValueDatabase = UserDefaults.standard
     private enum Key {
         static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
     }
