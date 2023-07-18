@@ -149,7 +149,7 @@ private class WeeklyRoundupDataProvider {
         endingOn periodEndDate: Date,
         authToken: String,
         in context: NSManagedObjectContext,
-        completion: @escaping (Result< StatsSummaryData?, Error>) -> Void
+        completion: @escaping (Result<StatsSummaryData?, Error>) -> Void
     ) {
         guard let dotComID = site.dotComID?.intValue else {
             completion(.failure(DataRequestError.dotComSiteWithoutDotComID(site)))
