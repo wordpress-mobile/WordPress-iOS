@@ -65,22 +65,25 @@ private class WeeklyRoundupDataProvider {
     ///
     /// **Note:** The completion handler is executed on the context's queue.
     private func getTopSiteStats(in context: NSManagedObjectContext, completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        getSites(in: context) { [weak self] sitesResult in
+        let result: (Result<[Blog], Error>) -> Void = { [weak self] sitesResult in
             guard let self = self else {
                 return
             }
-
             switch sitesResult {
             case .success(let sites):
                 guard sites.count > 0 else {
                     completion(.success(nil))
                     return
                 }
-
                 self.getTopSiteStats(from: sites, in: context, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
                 return
+            }
+        }
+        self.getSites(in: context) { sitesResult in
+            context.perform {
+                result(sitesResult)
             }
         }
     }
@@ -263,7 +266,7 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    // MARK: - Factory Methods
+    // MARK: Factory Methods
 
     /// Returns the end date for the period (the start of the current week).
     /// This function creates a calendar with a GMT timezone and specifies that it needs a date representing the start of the current week.
