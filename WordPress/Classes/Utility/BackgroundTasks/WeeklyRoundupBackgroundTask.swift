@@ -319,6 +319,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     }()
 
     enum RunError: Error {
+        case unableToScheduleDynamicNotification(reason: String)
         case staticNotificationAlreadyDelivered
     }
 
@@ -505,11 +506,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             for (siteID, stats) in siteStats {
                 group.enter()
                 self.coreDataStack.performAndSave { context in
-                    guard let site = try? context.existingObject(with: siteID) as? Blog else {
-                        group.leave()
-                        return
-                    }
-                    self.scheduleDynamicNotification(site: site, stats: stats) { result in
+                    self.scheduleDynamicNotification(siteID: siteID, stats: stats, in: context) { result in
                         if case let .failure(error) = result {
                             onError(error)
                         }
@@ -539,10 +536,25 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     // MARK: - Helpers
 
-    private func scheduleDynamicNotification(site: Blog, stats: StatsSummaryData, completion: @escaping (Result<Void, Error>) -> Void) {
-        let dotComID = site.dotComID?.intValue
+    private func scheduleDynamicNotification(
+        siteID: NSManagedObjectID,
+        stats: StatsSummaryData,
+        in context: NSManagedObjectContext,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard let site = try? context.existingObject(with: siteID) as? Blog else {
+            let error = RunError.unableToScheduleDynamicNotification(reason: "Blog with id \(siteID) not found in context")
+            completion(.failure(error))
+            return
+        }
+        guard let dotComID = site.dotComID?.intValue else {
+            let error = RunError.unableToScheduleDynamicNotification(reason: "Blog \(String(describing: site.title)) is not a WordPress.com site")
+            completion(.failure(error))
+            return
+        }
         self.notificationScheduler.scheduleDynamicNotification(
-            site: site,
+            siteTitle: site.title,
+            dotComID: dotComID,
             views: stats.viewsCount,
             comments: stats.commentsCount,
             likes: stats.likesCount,
@@ -629,20 +641,14 @@ class WeeklyRoundupNotificationScheduler {
     }
 
     func scheduleDynamicNotification(
-        site: Blog,
+        siteTitle: String?,
+        dotComID: Int,
         views: Int,
         comments: Int,
         likes: Int,
         periodEndDate: Date,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        var siteTitle = site.title
-        var dotComID = site.dotComID?.intValue
-
-        guard let dotComID = dotComID else {
-            fatalError("The argument site is not a WordPress.com site. Site: \(site)")
-        }
-
         let title = notificationTitle(siteTitle)
         let body = notificationBodyWith(views: views, comments: likes, likes: comments)
 
