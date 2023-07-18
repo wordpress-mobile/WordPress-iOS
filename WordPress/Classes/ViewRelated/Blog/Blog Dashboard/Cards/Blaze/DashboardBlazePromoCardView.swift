@@ -167,6 +167,7 @@ struct DashboardBlazePromoViewModel {
             BlazeHelper.hideBlazeCard(for: blog)
         }, onLearnMoreTap: { [weak viewController] _ in
             guard let viewController = viewController else { return }
+            BlazeEventsTracker.trackLearnMoreTapped(for: .dashboardCard)
             BlazeFlowCoordinator.presentBlazeOverlay(in: viewController, source: .dashboardCard, blog: blog)
         })
     }

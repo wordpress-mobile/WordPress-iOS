@@ -93,6 +93,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
 
     private func showBlazeOverlay() {
         guard let presentingViewController, let blog else { return }
+        BlazeEventsTracker.trackLearnMoreTapped(for: .dashboardCard)
         BlazeFlowCoordinator.presentBlazeOverlay(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
