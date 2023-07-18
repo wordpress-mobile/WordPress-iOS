@@ -16,7 +16,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     }
 
     func presentIfNeeded(on viewController: UIViewController) {
-        guard FeatureFlag.compliancePopover.enabled else {
+        guard FeatureFlag.compliancePopover.enabled, !defaults.didShowCompliancePopup else {
             return
         }
         complianceService.getIPCountryCode { [weak self] result in
