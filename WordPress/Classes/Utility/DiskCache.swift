@@ -73,7 +73,14 @@ final class DiskCache {
     }
 
     private func fileURL(for key: String) -> URL? {
-        guard !key.isEmpty, let filename = key.sha256 else { return nil }
+        guard !key.isEmpty else {
+            assertionFailure("The cache key can not be empty")
+            return nil
+        }
+        guard let filename = key.sha256 else {
+            assertionFailure("Failed to generate sha256 has for a key: \(key)")
+            return nil
+        }
         return rootURL.appendingPathComponent(filename, isDirectory: false)
     }
 
