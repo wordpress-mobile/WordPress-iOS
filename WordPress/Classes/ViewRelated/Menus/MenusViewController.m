@@ -14,7 +14,6 @@
 #import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressUI/WordPressUI.h>
 
 
 

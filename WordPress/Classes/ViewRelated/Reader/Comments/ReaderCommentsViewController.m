@@ -10,7 +10,6 @@
 #import "SuggestionsTableView.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
-#import <WordPressUI/WordPressUI.h>
 
 @class Comment;
 
