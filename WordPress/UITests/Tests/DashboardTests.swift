@@ -17,6 +17,7 @@ class DashboardTests: XCTestCase {
         takeScreenshotOfFailedTest()
     }
 
+    // Disabled for investigation/maintenance: https://github.com/wordpress-mobile/WordPress-iOS/pull/21132
     func testFreeToPaidCardNavigation() throws {
         try MySiteScreen()
             .scrollToFreeToPaidPlansCard()
