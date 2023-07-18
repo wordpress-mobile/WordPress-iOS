@@ -17,17 +17,6 @@ class DashboardTests: XCTestCase {
         takeScreenshotOfFailedTest()
     }
 
-    func testFreeToPaidCardNavigation() throws {
-        try MySiteScreen()
-            .scrollToFreeToPaidPlansCard()
-            .verifyFreeToPaidPlansCard()
-            .tapFreeToPaidPlansCard()
-            .assertScreenIsLoaded()
-            .selectDomain()
-            .goToPlanSelection()
-            .assertScreenIsLoaded()
-    }
-
     func testPagesCardHeaderNavigation() throws {
         try MySiteScreen()
             .scrollToPagesCard()
