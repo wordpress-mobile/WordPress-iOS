@@ -10,7 +10,7 @@ import WordPressShared
     @objc var keyringConnections: [KeyringConnection]
     @objc var existingPublicizeConnections: [PublicizeConnection]?
     @objc var immutableHandler: ImmuTableViewHandler!
-    @objc var delegate: SharingAccountSelectionDelegate?
+    @objc weak var delegate: SharingAccountSelectionDelegate?
     private let keyringAccountHelper = KeyringAccountHelper()
 
     fileprivate lazy var noResultsViewController: NoResultsViewController = {
