@@ -77,7 +77,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
             self?.showCampaignList()
         }
 
-        campaignView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(campainViewTapped)))
+        campaignView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(campaignViewTapped)))
     }
 
     private func showCampaignList() {
@@ -103,7 +103,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
         }
     }
 
-    @objc private func campainViewTapped() {
+    @objc private func campaignViewTapped() {
         guard let presentingViewController, let blog, let campaign else { return }
         BlazeFlowCoordinator.presentBlazeCampaignDetails(in: presentingViewController, source: .dashboardCard, blog: blog, campaignID: campaign.campaignID)
     }
