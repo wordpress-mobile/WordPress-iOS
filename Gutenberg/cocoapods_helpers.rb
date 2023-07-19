@@ -2,6 +2,7 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
+require 'json'
 require_relative './version'
 
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
@@ -165,9 +166,9 @@ def react_native_version!(gutenberg_path:)
   react_native_path = react_native_path!(gutenberg_path: gutenberg_path)
   package_json_path = File.join(react_native_path, 'package.json')
   package_json_content = File.read(package_json_path)
-  package_version_match = package_json_content.match(/"version":\s*"(.*?)"/)
+  package_json_version = JSON.parse(package_json_content)['version']
 
-  raise "[Gutenberg] Could not find React native version at #{react_native_path}" unless package_version_match
+  raise "[Gutenberg] Could not find React native version at #{react_native_path}" unless package_json_version
 
-  package_version_match[1].split('.').map(&:to_i)
+  package_json_version.split('.').map(&:to_i)
 end
