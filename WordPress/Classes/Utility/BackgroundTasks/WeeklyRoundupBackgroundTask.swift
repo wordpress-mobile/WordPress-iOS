@@ -12,10 +12,10 @@ private class WeeklyRoundupDataProvider {
 
     enum DataRequestError: Error {
         case authTokenNotFound
-        case dotComSiteWithoutDotComID(_ site: Blog)
+        case dotComSiteWithoutDotComID(_ site: NSManagedObjectID)
         case siteFetchingError(_ error: Error)
-        case unknownErrorRetrievingStats(_ site: Blog)
-        case errorRetrievingStats(_ blogID: Int, error: Error)
+        case unknownErrorRetrievingStats(_ site: NSManagedObjectID)
+        case errorRetrievingStats(_ blogID: Int?, error: Error)
         case filterWeeklyRoundupEnabledSitesError(_ error: NSError?)
     }
 
@@ -43,63 +43,30 @@ private class WeeklyRoundupDataProvider {
     /// This method retrieves all sites in the given context, then fetches the weekly stats
     /// for each site. The result, which includes the top 5 sites based on the received stats,
     /// is returned through the provided completion handler.
-    ///
-    /// **Note:** The completion handler is executed on a background queue.
     func getTopSiteStats(completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        self.coreDataStack.performAndSave { [weak self] context in
-            guard let self else {
-                completion(.success(nil))
-                return
-            }
-            self.getTopSiteStats(in: context, completion: completion)
-        }
-    }
-
-    // MARK: Helpers
-
-    /// Fetches the top site statistics from all available sites in the provided context.
-    ///
-    /// This method retrieves all sites in the given context, then fetches the weekly stats
-    /// for each site. The result, which includes the top 5 sites based on the received stats,
-    /// is returned through the provided completion handler.
-    ///
-    /// **Note:** The completion handler is executed on the context's queue.
-    private func getTopSiteStats(in context: NSManagedObjectContext, completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        let result: (Result<[Blog], Error>) -> Void = { [weak self] sitesResult in
-            guard let self = self else {
-                return
-            }
+        self.getSites { [weak self] sitesResult in
             switch sitesResult {
             case .success(let sites):
-                guard sites.count > 0 else {
+                guard let self, sites.count > 0 else {
                     completion(.success(nil))
                     return
                 }
-                self.getTopSiteStats(from: sites, in: context, completion: completion)
+                self.getTopSiteStats(from: sites, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
                 return
             }
         }
-        self.getSites(in: context) { sitesResult in
-            context.perform {
-                result(sitesResult)
-            }
-        }
     }
+
+    // MARK: Helpers
 
     /// Fetches the top site statistics for a given array of blogs.
     ///
     /// This method asynchronously fetches weekly statistics for each blog in the provided list.
     /// After all data has been fetched, it filters out the top 5 sites based on the received stats
     /// and returns the result through the provided completion handler.
-    ///
-    /// **Note:** The completion handler is executed on the context's queue.
-    private func getTopSiteStats(
-        from sites: [Blog],
-        in context: NSManagedObjectContext,
-        completion: @escaping (Result<SiteStats?, Error>) -> Void
-    ) {
+    private func getTopSiteStats(from sites: [Site], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         guard let periodEndDate = Self.makePeriodEndDate() else {
             DDLogError("Something's wrong with the period end date selection.")
             return
@@ -120,7 +87,7 @@ private class WeeklyRoundupDataProvider {
 
             group.enter()
 
-            self.fetchStats(for: site, endingOn: periodEndDate, in: context, with: service) { [weak self] result in
+            self.fetchStats(for: site, endingOn: periodEndDate, with: service) { [weak self] result in
                 defer {
                     group.leave()
                 }
@@ -132,17 +99,15 @@ private class WeeklyRoundupDataProvider {
                     self.onError(error)
                 case.success(let stats):
                     if let stats {
-                        blogStats[site.objectID] = stats
+                        blogStats[site.managedObjectID] = stats
                     }
                 }
             }
         }
 
         group.notify(queue: .global()) {
-            context.perform {
-                let bestBlogStats = self.filterBest(5, from: blogStats)
-                completion(.success(bestBlogStats))
-            }
+            let bestBlogStats = self.filterBest(5, from: blogStats)
+            completion(.success(bestBlogStats))
         }
     }
 
@@ -151,28 +116,22 @@ private class WeeklyRoundupDataProvider {
     /// This function fetches the stats for a single site and passes the result to a completion handler.
     /// If it encounters any error during fetching, it calls the completion handler with an appropriate error object.
     /// The completion handler is executed in the same queue as the provided `NSManagedObjectContext`.
-    ///
-    /// **Note:** The completion handler is executed on the context's queue.
     private func fetchStats(
-        for site: Blog,
+        for site: Site,
         endingOn periodEndDate: Date,
-        in context: NSManagedObjectContext,
         with service: StatsServiceRemoteV2,
         completion: @escaping (Result<StatsSummaryData?, Error>) -> Void
     ) {
         service.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
-            context.perform {
-                guard let timeStats = timeStats else {
-                    if let error = error {
-                        let dotComID = site.dotComID?.intValue ?? -1
-                        completion(.failure(DataRequestError.errorRetrievingStats(dotComID, error: error)))
-                    } else {
-                        completion(.failure(DataRequestError.unknownErrorRetrievingStats(site)))
-                    }
-                    return
+            guard let timeStats = timeStats else {
+                if let error = error {
+                    completion(.failure(DataRequestError.errorRetrievingStats(site.dotComID, error: error)))
+                } else {
+                    completion(.failure(DataRequestError.unknownErrorRetrievingStats(site.managedObjectID)))
                 }
-                completion(.success(timeStats.summaryData.first))
+                return
             }
+            completion(.success(timeStats.summaryData.first))
         }
     }
 
@@ -194,20 +153,24 @@ private class WeeklyRoundupDataProvider {
     /// Retrieves the sites considered by Weekly Roundup for reporting.
     ///
     /// - Returns: the requested sites (could be an empty array if there's none) or an error if there is one.
-    ///
-    private func getSites(in context: NSManagedObjectContext, result: @escaping (Result<[Blog], Error>) -> Void) {
-
-        switch getAllSites(in: context) {
-        case .success(let sites):
-            filterCandidateSites(sites, in: context, result: result)
-        case .failure(let error):
-            result(.failure(error))
+    private func getSites(result: @escaping (Result<[Site], Error>) -> Void) {
+        self.coreDataStack.performAndSave { [weak self] context in
+            guard let self else {
+                result(.success([]))
+                return
+            }
+            switch getAllSites(in: context) {
+            case .success(let sites):
+                filterCandidateSites(sites, result: result)
+            case .failure(let error):
+                result(.failure(error))
+            }
         }
     }
 
     /// Filters the candidate sites for the Weekly Roundup notification
     ///
-    private func filterCandidateSites(_ sites: [Blog], in context: NSManagedObjectContext, result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func filterCandidateSites(_ sites: [Site], result: @escaping (Result<[Site], Error>) -> Void) {
         let administeredSites = sites.filter { site in
             site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
         }
@@ -217,19 +180,16 @@ private class WeeklyRoundupDataProvider {
             return
         }
 
-        filterWeeklyRoundupEnabledSites(administeredSites, in: context, result: result)
+        self.filterWeeklyRoundupEnabledSites(administeredSites, result: result)
     }
 
     /// Filters the sites that have the Weekly Roundup notification setting enabled.
     ///
-    private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], in context: NSManagedObjectContext, result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func filterWeeklyRoundupEnabledSites(_ sites: [Site], result: @escaping (Result<[Site], Error>) -> Void) {
         let noteService = NotificationSettingsService(coreDataStack: coreDataStack)
-
         noteService.getAllSettings { settings in
-            context.perform {
-                let weeklyRoundupEnabledSites = Self.weeklyRoundupEnabledSites(settings: settings, sites: sites, in: context)
-                result(.success(weeklyRoundupEnabledSites))
-            }
+            let weeklyRoundupEnabledSites = Self.weeklyRoundupEnabledSites(settings: settings, sites: sites)
+            result(.success(weeklyRoundupEnabledSites))
         } failure: { (error: NSError?) in
             let error = DataRequestError.filterWeeklyRoundupEnabledSitesError(error)
             result(.failure(error))
@@ -238,10 +198,10 @@ private class WeeklyRoundupDataProvider {
 
     static private func weeklyRoundupEnabledSites(
         settings: [NotificationSettings],
-        sites: [Blog],
-        in context: NSManagedObjectContext) -> [Blog] {
+        sites: [Site]
+    ) -> [Site] {
         return sites.filter { site in
-            guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.objectID }),
+            guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.managedObjectID }),
                   let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
                   let sitePreferences = pushNotificationsStream.preferences else {
                 return false
@@ -250,7 +210,7 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    private func getAllSites(in context: NSManagedObjectContext) -> Result<[Blog], Error> {
+    private func getAllSites(in context: NSManagedObjectContext) -> Result<[Site], Error> {
         let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
 
         request.sortDescriptors = [
@@ -260,7 +220,8 @@ private class WeeklyRoundupDataProvider {
 
         do {
             let result = try context.fetch(request)
-            return .success(result)
+            let sites = result.map { Site(blog: $0) }
+            return .success(sites)
         } catch {
             return .failure(DataRequestError.siteFetchingError(error))
         }
@@ -285,15 +246,36 @@ private class WeeklyRoundupDataProvider {
     /// - Throws: `DataRequestError.authTokenNotFound` if the account associated with the site has no auth token.
     /// - Throws: `DataRequestError.dotComSiteWithoutDotComID(site)` if the dotComID of the site is not available.
     /// - Returns: An instance of `StatsServiceRemoteV2` for the site.
-    static private func makeRemoteStatsService(for site: Blog) throws -> StatsServiceRemoteV2 {
-        guard let authToken = site.account?.authToken else {
+    static private func makeRemoteStatsService(for site: Site) throws -> StatsServiceRemoteV2 {
+        guard let authToken = site.authToken else {
             throw DataRequestError.authTokenNotFound
         }
-        guard let dotComID = site.dotComID?.intValue else {
-            throw DataRequestError.dotComSiteWithoutDotComID(site)
+        guard let dotComID = site.dotComID else {
+            throw DataRequestError.dotComSiteWithoutDotComID(site.managedObjectID)
         }
         let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
+    }
+
+    // MARK: - Types
+
+    private struct Site {
+
+        let managedObjectID: NSManagedObjectID
+        let authToken: String?
+        let dotComID: Int?
+        let timeZone: TimeZone
+        let isAdmin: Bool
+        let isAutomatticP2: Bool
+
+        init(blog: Blog) {
+            self.managedObjectID = blog.objectID
+            self.authToken = blog.account?.authToken
+            self.dotComID = blog.dotComID?.intValue
+            self.timeZone = blog.timeZone
+            self.isAdmin = blog.isAdmin
+            self.isAutomatticP2 = blog.isAutomatticP2
+        }
     }
 
 }
