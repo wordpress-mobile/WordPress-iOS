@@ -23,9 +23,13 @@ import UIKit
         }
     }
 
-    /// Blaze overlays should be shown once only, regardless of entry point
+    /// Blaze overlays should be shown once only, regardless of entry point.
+    ///
+    /// We're using the dashboard card as the key to prevent showing the overlay to users who have
+    /// already seen it, based on the assumption that most users have either clicked the dashboard
+    /// card or haven't tried Blaze at all.
     var key: String {
-        return ""
+        return BlazeSource.dashboardCard.description
     }
 
     var frequencyType: OverlayFrequencyTracker.FrequencyType {
