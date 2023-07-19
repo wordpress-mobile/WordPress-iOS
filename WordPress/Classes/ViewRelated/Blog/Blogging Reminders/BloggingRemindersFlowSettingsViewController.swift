@@ -695,20 +695,21 @@ private extension BloggingRemindersFlowSettingsViewController {
     ///
     /// - Returns: A closure used to reset changes made to the prompt settings. Returns nil if the update condition is not fulfilled.
     func temporarilyUpdatePromptSettings() -> (() -> Void)? {
-        assert(Thread.isMainThread, "This function must be called from the main thread.")
-
-        // FIXME: Refactor this function to save asynchronously to avoid using the main context.
-        let context = coreDataStack.mainContext
-
         guard isBloggingPromptsEnabled,
               bloggingPromptsSwitch.isOn || (promptRemindersEnabled && !bloggingPromptsSwitch.isOn),
-              let siteID = bloggingPromptsService?.siteID,
-              let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context)
+              let siteID = bloggingPromptsService?.siteID
         else {
             return nil
         }
 
-        let previousSettings = RemoteBloggingPromptsSettings(with: settings)
+        let previousSettings: RemoteBloggingPromptsSettings? = coreDataStack.performQuery { [bloggingPromptsService] context in
+            guard let siteID = bloggingPromptsService?.siteID,
+                  let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context)
+            else {
+                return nil
+            }
+            return RemoteBloggingPromptsSettings(with: settings)
+        }
 
         // update local settings to the selected schedule and time.
         typealias Weekday = BloggingRemindersScheduler.Weekday
@@ -733,13 +734,20 @@ private extension BloggingRemindersFlowSettingsViewController {
             reminderTime: reminderTime
         )
 
-        settings.configure(with: newSettings, siteID: settings.siteID, context: context)
-        coreDataStack.saveContextAndWait(context)
+        coreDataStack.performAndSave({ context in
+            guard let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context) else { return }
+            settings.configure(with: newSettings, siteID: settings.siteID, context: context)
+        })
 
-        return { [coreDataStack, id = settings.objectID, siteID = settings.siteID] in
+        return { [coreDataStack] in
             coreDataStack.performAndSave({ context in
-                guard let settingsInContext = try? context.existingObject(with: id) as? BloggingPromptSettings else { return }
-                settingsInContext.configure(with: previousSettings, siteID: siteID, context: context)
+                guard let previousSettings,
+                      let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context)
+                else {
+                    return
+                }
+
+                settings.configure(with: previousSettings, siteID: settings.siteID, context: context)
             }, completion: nil, on: .global())
         }
     }
