@@ -1,13 +1,10 @@
 22.9
 -----
-* [*] Fix memory leaks in setting up Jetpack connection. [#21052]
-
-22.9
------
 * [*] [internal] Fix multiple memory leaks after logging in and logging out. [#21047, #21092]
 * [**] Block editor: Move undo/redo buttons to the navigation bar. [#20930]
 * [*] Fixed an issue that caused the UI to be briefly unresponsive in certain case when opening the app. [#21065]
 * [*] [internal] Update calls to use UserDefaults singleton. [#21088]
+* [*] Fix memory leaks in setting up Jetpack connection. [#21052]
 
 22.8
 -----
