@@ -210,8 +210,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         createFABIfNeeded()
         fetchPrompt(for: blog)
 
-        complianceCoordinator = CompliancePopoverCoordinator(viewController: self)
-        complianceCoordinator?.presentIfNeeded()
+        complianceCoordinator = CompliancePopoverCoordinator()
+        complianceCoordinator?.presentIfNeeded(on: self)
     }
 
     override func viewDidLayoutSubviews() {

@@ -19,8 +19,6 @@ enum DashboardCard: String, CaseIterable {
     case scheduledPosts
     case pages
     case activityLog = "activity_log"
-    case nextPost = "create_next"
-    case createPost = "create_first"
     case jetpackBadge
     /// Card placeholder for when loading data
     case ghost
@@ -40,10 +38,6 @@ enum DashboardCard: String, CaseIterable {
             return DashboardDraftPostsCardCell.self
         case .scheduledPosts:
             return DashboardScheduledPostsCardCell.self
-        case .nextPost:
-            return DashboardNextPostCardCell.self
-        case .createPost:
-            return DashboardFirstPostCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
         case .prompts:
@@ -94,8 +88,6 @@ enum DashboardCard: String, CaseIterable {
             return shouldShowRemoteCard(apiResponse: apiResponse)
         case .todaysStats:
             return DashboardStatsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
-        case .nextPost, .createPost:
-            return !DashboardPromptsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .ghost:
@@ -132,10 +124,6 @@ enum DashboardCard: String, CaseIterable {
             return apiResponse.hasDrafts
         case .scheduledPosts:
             return apiResponse.hasScheduled
-        case .nextPost:
-            return apiResponse.hasNoDraftsOrScheduled && apiResponse.hasPublished
-        case .createPost:
-            return apiResponse.hasNoDraftsOrScheduled && !apiResponse.hasPublished
         case .todaysStats:
             return apiResponse.hasStats
         case .pages:
@@ -189,14 +177,6 @@ private extension BlogDashboardRemoteEntity {
 
     var hasScheduled: Bool {
         return (self.posts?.value?.scheduled?.count ?? 0) > 0
-    }
-
-    var hasNoDraftsOrScheduled: Bool {
-        return !hasDrafts && !hasScheduled
-    }
-
-    var hasPublished: Bool {
-        return self.posts?.value?.hasPublished ?? true
     }
 
     var hasPages: Bool {
