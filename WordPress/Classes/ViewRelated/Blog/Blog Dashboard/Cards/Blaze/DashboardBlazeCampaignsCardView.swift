@@ -82,7 +82,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
 
     private func showCampaignList() {
         guard let presentingViewController, let blog else { return }
-        BlazeFlowCoordinator.presentBlazeCampaigns(in: presentingViewController, blog: blog)
+        BlazeFlowCoordinator.presentBlazeCampaigns(in: presentingViewController, source: .dashboardCard, blog: blog)
     }
 
     private func makeShowCampaignsMenuAction() -> UIAction {

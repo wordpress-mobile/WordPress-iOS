@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-27 10:54:09+0000 */
+/* Translation-Revision-Date: 2023-07-12 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ja_JP */
@@ -250,11 +250,8 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s ブロック。このブロックは無効なコンテンツです";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s が通常のブロックに変換されました";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%sを通常のブロックへ変換しました";
+/* translators: %s: name of the synced block */
+"%s detached" = "%sを切り離しました";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s 埋め込みブロックのプレビューがまもなく公開予定です ";
@@ -739,10 +736,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "代替テキスト";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "「通常のブロックへ変換」をタップして、これらのブロックを個別に切り離して編集できます。";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "または、「パターンを切り離す」をタップして、これらのブロックを個別に切り離して編集できます。";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "または、「通常のブロックへ変換」をタップして、このブロックを個別に切り離して編集できます。";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "または、「パターンを切り離す」をタップして、このブロックを個別に切り離して編集できます。";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "または、このアカウントのパスワードを入力することもできます。";
@@ -1120,9 +1117,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "過去最高の表示数";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "iPhone\/iPad の大幅なアップデートが利用できるようになりました";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "空白ページが作成されました";
@@ -2748,10 +2742,10 @@ translators: Block name. %s: The localized block name */
 "Edit video" = "動画を編集";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "再利用ブロックの編集は Android 用 %s ではまだサポートされていません";
+"Editing synced patterns is not yet supported on %s for Android" = "同期済みパターンの編集は Android 用 %s ではまだサポートされていません";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "再利用ブロックの編集は iOS 用 %s ではまだサポートされていません";
+"Editing synced patterns is not yet supported on %s for iOS" = "同期済みパターンの編集は iOS 用 %s ではまだサポートされていません";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "この GIF を編集するとアニメーションが削除されます。";
@@ -5232,7 +5226,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5810,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "準備中…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6078,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "ディスカッションを再開する:新規投稿を書く。";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "関連記事";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "後で再通知";
@@ -6340,9 +6327,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "投稿へ戻る";
-
-/* No comment provided by engineer. */
-"Reusable" = "再利用可能";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "保留中の変更を元に戻す";
@@ -6864,12 +6848,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "共有エラー";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "ヘッダーを表示";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "画像を表示";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "いいねボタンを表示";
 
@@ -6878,9 +6856,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "リブログボタンを表示";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "関連記事を表示";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "表示";
@@ -7560,9 +7535,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "この URL には有効なホストがありません。";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "WordPress for Android アプリが大幅リニューアル";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "世界最高のファン";
 
@@ -7766,9 +7738,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "アクティビティを読み込み中にエラーが発生しました";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "キャンペーンの読み込みでエラーが発生しました。";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "プラン読み込みエラー";
@@ -8497,9 +8466,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "更新中...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "アップグレードフォーカス: ウェディング向け VideoPress";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "プランをアップグレードして音声をアップロードする";
@@ -9668,6 +9634,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "キャンペーンがありません";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "キャンペーンの読み込みでエラーが発生しました。";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "エラー発生";
+
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "キャンペーンを読み込んでいます…";
 
@@ -9720,10 +9692,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "完了";
 
 /* Short status description */
-"blazeCampaign.status.created" = "作成済み";
+"blazeCampaign.status.inmoderation" = "モデレーション中";
 
 /* Short status description */
-"blazeCampaign.status.inmoderation" = "モデレーション中";
+"blazeCampaign.status.processing" = "処理中";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "却下";
@@ -9854,6 +9826,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of a label that encourages the user to create a new page. */
 "dashboardCard.pages.create.description" = "カスタムメイドのスマートフォンに対応したレイアウトから始める。";
 
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "統計情報を表示する";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "上書きした変数はチェックマークで表示されます。";
 
@@ -9934,6 +9909,9 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "キャンペーン詳細";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
@@ -9960,6 +9938,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the domain purchase result screen. Tells user their domain was obtained. */
 "freeToPaidPlans.resultView.title" = "準備完了 !";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "エラーが発生しました";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "再試行";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "ブログ投稿のリマインダーを設定";
@@ -10026,15 +10010,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "画像";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "「アプリ」カテゴリー";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "「モバイル」カテゴリー";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "「アップグレード」カテゴリー";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "投稿に使用する写真または動画を撮る。";
@@ -10453,14 +10428,14 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "下書き投稿を作成";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "下書き投稿";
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "すべての下書きを表示する";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "すべての予約済みの投稿を表示する";
 
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "今日の統計情報";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "統計情報";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
@@ -10552,6 +10527,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
 
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.remainingshares.text.format" = "残りのソーシャルシェア数は%1$d\/%2$dです";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " 30日以内";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "すべての回答を表示";
 
@@ -10621,6 +10605,45 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新規";
+
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "「モバイル」カテゴリー";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "「アプリ」カテゴリー";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "Android 版 WordPress アプリが大幅リニューアル";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "「アップグレード」カテゴリー";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "注目のアップグレード: ウェディング用の VideoPress";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "プレビュー";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "関連記事";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "設定更新に失敗";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "ヘッダーを表示";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "関連記事を表示";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "画像を表示";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "関連記事";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "閉じる";

@@ -2,7 +2,7 @@ import Nimble
 @testable import WordPress
 import XCTest
 
-class PrivacySettingsViewControllerTests: XCTestCase {
+final class PrivacySettingsViewControllerTests: XCTestCase {
 
     func testCrashReportingChangedLogsEvent() {
         let spy = PrivacySettingsAnalyticsTrackerSpy()
@@ -10,20 +10,18 @@ class PrivacySettingsViewControllerTests: XCTestCase {
 
         viewController.crashReportingChanged(true)
 
-        expect(spy.trackedCrashReportingEnabled) == true
+        expect(spy.trackedEvent).to(equal(.privacySettingsReportCrashesToggled))
+        expect(spy.trackedEventProperties).to(equal(["enabled": true.stringLiteral]))
     }
 }
 
-class PrivacySettingsAnalyticsTrackerSpy: PrivacySettingsAnalyticsTracking {
+final class PrivacySettingsAnalyticsTrackerSpy: PrivacySettingsAnalyticsTracking {
 
-    private(set) var trackedCrashReportingEnabled: Bool?
-    private(set) var trackedAnalyticsEnabled: Bool?
+    private(set) var trackedEvent: PrivacySettingsAnalytics?
+    private(set) var trackedEventProperties: [String: String]?
 
-    func trackPrivacySettingsReportCrashesToggled(enabled: Bool) {
-        trackedCrashReportingEnabled = enabled
-    }
-
-    func trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: Bool) {
-        trackedAnalyticsEnabled = analyticsEnabled
+    func track(_ event: PrivacySettingsAnalytics, properties: [String: String]) {
+        self.trackedEvent = event
+        self.trackedEventProperties = properties
     }
 }

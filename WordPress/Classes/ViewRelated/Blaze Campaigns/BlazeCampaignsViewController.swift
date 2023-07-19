@@ -5,8 +5,8 @@ import WordPressFlux
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {
     // MARK: - Views
 
-    private lazy var plusButton = UIBarButtonItem(
-        image: UIImage(systemName: "plus"),
+    private lazy var createButton = UIBarButtonItem(
+        title: Strings.createButtonTitle,
         style: .plain,
         target: self,
         action: #selector(buttonCreateCampaignTapped)
@@ -32,14 +32,20 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
     private var stream: BlazeCampaignsStream
     private var pendingStream: AnyObject?
+    private let source: BlazeSource
     private let blog: Blog
 
     // MARK: - Initializers
 
-    init(blog: Blog) {
+    init(source: BlazeSource, blog: Blog) {
+        self.source = source
         self.blog = blog
         self.stream = BlazeCampaignsStream(blog: blog)
         super.init(nibName: nil, bundle: nil)
+    }
+
+    @objc class func makeWithSource(_ source: BlazeSource, blog: Blog) -> BlazeCampaignsViewController {
+        BlazeCampaignsViewController(source: source, blog: blog)
     }
 
     required init?(coder: NSCoder) {
@@ -61,6 +67,11 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
         // Refresh data automatically when new campaign is created
         NotificationCenter.default.addObserver(self, selector: #selector(setNeedsToRefreshCampaigns), name: .blazeCampaignCreated, object: nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        BlazeEventsTracker.trackCampaignListOpened(for: source)
     }
 
     override func viewDidLayoutSubviews() {
@@ -151,8 +162,8 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
     }
 
     @objc private func buttonCreateCampaignTapped() {
-        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignsList)
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
+        BlazeEventsTracker.trackBlazeFlowStarted(for: .campaignList)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignList, blog: blog)
     }
 
     // MARK: - Private
@@ -165,7 +176,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
 
     private func setupNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = plusButton
+        navigationItem.rightBarButtonItem = createButton
     }
 
     private func setupNoResults() {
@@ -202,7 +213,7 @@ extension BlazeCampaignsViewController: UITableViewDataSource, UITableViewDelega
         guard let campaign = stream.campaigns[safe: indexPath.row] else {
             return
         }
-        BlazeFlowCoordinator.presentBlazeCampaignDetails(in: self, source: .campaignsList, blog: blog, campaignID: campaign.campaignID)
+        BlazeFlowCoordinator.presentBlazeCampaignDetails(in: self, source: .campaignList, blog: blog, campaignID: campaign.campaignID)
     }
 }
 
@@ -230,7 +241,7 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
     }
 
     func actionButtonPressed() {
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignsList, blog: blog)
+        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignList, blog: blog)
     }
 }
 
@@ -241,6 +252,7 @@ private extension BlazeCampaignsViewController {
     enum Strings {
         static let navigationTitle = NSLocalizedString("blaze.campaigns.title", value: "Blaze Campaigns", comment: "Title for the screen that allows users to manage their Blaze campaigns.")
         static let promoteButtonTitle = NSLocalizedString("blaze.campaigns.promote.button.title", value: "Promote", comment: "Button title for the button that shows the Blaze flow when tapped.")
+        static let createButtonTitle = NSLocalizedString("blaze.campaigns.create.button.title", value: "Create", comment: "Button title for the button that shows the Blaze flow when tapped.")
 
         enum NoResults {
             static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")

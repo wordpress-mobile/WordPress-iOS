@@ -230,11 +230,8 @@
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s block. This block has invalid content";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s converted to regular block";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s converted to regular blocks";
+/* translators: %s: name of the synced block */
+"%s detached" = "%s detached";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s embed block previews are coming soon";
@@ -770,10 +767,10 @@
 "Alt Text" = "Alt Text";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Alternatively, you can detach and edit this block separately by tapping “Detach pattern”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatively, you may enter the password for this account.";
@@ -1173,9 +1170,6 @@
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best views ever";
 
-/* Text for related post cell preview */
-"Big iPhone/iPad Update Now Available" = "Big iPhone/iPad Update Now Available";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "Blank page created";
 
@@ -1187,6 +1181,12 @@
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "You have no campaigns";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "There was an error loading campaigns.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "Oops";
 
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Loading campaigns...";
@@ -1240,10 +1240,10 @@
 "blazeCampaign.status.completed" = "Completed";
 
 /* Short status description */
-"blazeCampaign.status.created" = "Created";
+"blazeCampaign.status.inmoderation" = "In Moderation";
 
 /* Short status description */
-"blazeCampaign.status.inmoderation" = "In Moderation";
+"blazeCampaign.status.processing" = "Processing";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Rejected";
@@ -1971,8 +1971,7 @@ Example: Reply to Pamela Nguyen */
 "Completed: View your site" = "Completed: View your site";
 
 /* Footnote for the privacy compliance popover. */
-"compliance.analytics.popover.footnote" = "These cookies allow us to optimize performance by collecting
-information on how users interact with our websites.";
+"compliance.analytics.popover.footnote" = "These cookies allow us to optimize performance by collecting information on how users interact with our websites.";
 
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Save";
@@ -1981,8 +1980,7 @@ information on how users interact with our websites.";
 "compliance.analytics.popover.settings.button" = "Go to Settings";
 
 /* Subtitle for the privacy compliance popover. */
-"compliance.analytics.popover.subtitle" = "We process your personal data to optimize our website and
-marketing activities based on your consent and our legitimate interest.";
+"compliance.analytics.popover.subtitle" = "We process your personal data to optimize our website and marketing activities based on your consent and our legitimate interest.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Manage privacy";
@@ -2517,6 +2515,9 @@ marketing activities based on your consent and our legitimate interest.";
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Pages";
+
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "View stats";
 
 /* Title for a threat that includes the number of database rows affected */
 "Database %1$d threats" = "Database %1$d threats";
@@ -3066,10 +3067,10 @@ marketing activities based on your consent and our legitimate interest.";
 "Edit video" = "Edit video";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "Editing reusable blocks is not yet supported on %s for Android";
+"Editing synced patterns is not yet supported on %s for Android" = "Editing synced patterns is not yet supported on %s for Android";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "Editing reusable blocks is not yet supported on %s for iOS";
+"Editing synced patterns is not yet supported on %s for iOS" = "Editing synced patterns is not yet supported on %s for iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
@@ -3490,6 +3491,9 @@ marketing activities based on your consent and our legitimate interest.";
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "Campaign Details";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
@@ -3751,6 +3755,12 @@ marketing activities based on your consent and our legitimate interest.";
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
 "General" = "General";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "An error occurred";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "Retry";
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Generate new link";
@@ -4181,15 +4191,6 @@ marketing activities based on your consent and our legitimate interest.";
 
 /* Footer for the Serve images from our servers setting */
 "Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see.";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "in \"Apps\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "in \"Mobile\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "in \"Upgrade\"";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "In a few words, explain what this site is about.";
@@ -5531,14 +5532,14 @@ Please install the %3$@ to use the app with this site.";
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Work on a draft post";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "draft post";
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "View all drafts";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "View all scheduled posts";
 
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Today's Stats";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Stats";
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
@@ -6074,7 +6075,6 @@ Please install the %3$@ to use the app with this site.";
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -6718,6 +6718,15 @@ Please install the %3$@ to use the app with this site.";
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
 
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "Subscribe now to share more";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.remainingshares.text.format" = "%1$d/%2$d social shares remaining";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " in the next 30 days";
+
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Powered by Tenor";
 
@@ -6734,7 +6743,6 @@ Please install the %3$@ to use the app with this site.";
 "Preparing..." = "Preparing...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -7073,13 +7081,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Reignite the conversation: write a new post.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Related Posts";
 
 /* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Related Posts displays relevant content from your site below your posts";
+"relatedPostsSettings.optionsFooter" = "Related Posts displays relevant content from your site below your posts";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "in \"Mobile\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "Big iPhone/iPad Update Now Available";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "in \"Apps\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "The WordPress for Android App Gets a Big Facelift";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "in \"Upgrade\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Upgrade Focus: VideoPress For Weddings";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "Preview";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "Related Posts";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "Settings update failed";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "Show Header";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "Show Related Posts";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "Show Images";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "Related Posts";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Remind me";
@@ -7327,9 +7372,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Return to post";
-
-/* No comment provided by engineer. */
-"Reusable" = "Reusable";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Revert Pending Change";
@@ -7865,12 +7907,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Share extension error dialog title. */
 "Sharing Error" = "Sharing Error";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Show Header";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Show Images";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Show Like button";
 
@@ -7889,9 +7925,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Show Reblog button";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Show Related Posts";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Show themes:";
@@ -8923,9 +8956,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "The video could not be added to the Media Library.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "The WordPress for Android App Gets a Big Facelift";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "The World's Best Fans";
 
@@ -9018,9 +9048,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "There was an error loading activities";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "There was an error loading campaigns.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "There was an error loading plans";
@@ -9758,9 +9785,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Updating...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Upgrade Focus: VideoPress For Weddings";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgrade your plan to upload audio";

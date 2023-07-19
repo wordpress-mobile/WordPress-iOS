@@ -27,7 +27,7 @@ public class EditorPublishEpilogueScreen: ScreenObject {
     }
 
     /// - Note: Returns `Void` since the return screen depends on which screen we started from.
-    public func done() {
+    public func tapDone() {
         doneButton.tap()
     }
 

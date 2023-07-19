@@ -57,11 +57,12 @@ final class SitePickerViewController: UIViewController {
     }
 
     private func startObservingTitleChanges() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogUpdated,
-                                               object: nil,
-                                               queue: .main) { [weak self] _ in
+        NotificationCenter.default.addObserver(self, selector: #selector(handleBlogUpdated), name: .WPBlogUpdated, object: nil)
+    }
 
-            self?.updateTitles()
+    @objc private func handleBlogUpdated() {
+        DispatchQueue.main.async {
+            self.updateTitles()
         }
     }
 }

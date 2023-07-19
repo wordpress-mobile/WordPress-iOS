@@ -23,7 +23,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 2.2-beta'
+  pod 'WordPressShared', '~> 2.2'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', tag: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
@@ -50,9 +50,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 8.5-beta'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
+  pod 'WordPressKit', '~> 8.5'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
@@ -142,14 +142,14 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8-beta'
+  pod 'WPMediaPicker', '~> 1.8.8'
   ## while PR is in review:
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 6.1-beta'
+  pod 'WordPressAuthenticator', '~> 6.3.0-beta.1'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
