@@ -6,6 +6,7 @@ import WordPressKit
 final class BlazeCampaignsStreamTests: CoreDataTestCase {
     private var sut: BlazeCampaignsStream!
     private var blog: Blog!
+    // swiftlint:disable:next weak_delegate
     private var delegate = MockCampaignsStreamDelegate()
     private let service = MockBlazePaginatedService()
 

@@ -211,22 +211,21 @@ extension ReaderTabViewModel: NetworkStatusReceiver, NetworkStatusDelegate {
 extension ReaderTabViewModel {
 
     private func addNotificationsObservers() {
-        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification,
-                                               object: nil,
-                                               queue: nil) { notification in
-                                                self.clearTopics(removeAllTopics: false)
-                                                self.clearFlags()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAppTerminationNotification), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAccountChangedNotification), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+    }
 
-        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
-                                               object: nil,
-                                               queue: nil) { notification in
-                                                self.clearFlags()
-                                                self.clearSavedPosts()
-                                                self.clearTopics(removeAllTopics: true)
-                                                self.clearSearchSuggestions()
-                                                self.selectedIndex = 0
-        }
+    @objc private func handleAppTerminationNotification() {
+         clearTopics(removeAllTopics: false)
+         clearFlags()
+    }
+
+    @objc private func handleAccountChangedNotification() {
+         clearFlags()
+         clearSavedPosts()
+         clearTopics(removeAllTopics: true)
+         clearSearchSuggestions()
+         selectedIndex = 0
     }
 
     private func clearFlags() {

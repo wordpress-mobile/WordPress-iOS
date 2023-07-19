@@ -4,7 +4,7 @@ import WordPressAuthenticator
 class SignupUsernameTableViewController: UITableViewController, SearchTableViewCellDelegate {
     open var currentUsername: String?
     open var displayName: String?
-    open var delegate: SignupUsernameViewControllerDelegate?
+    open weak var delegate: SignupUsernameViewControllerDelegate?
     open var suggestions: [String] = []
     private var service: AccountSettingsService?
     private var isSearching: Bool = false
