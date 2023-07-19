@@ -125,7 +125,7 @@ private class QRCodeScanningSessionMock: QRCodeScanningSession {
     var hasCamera: Bool = true
     var session: AVCaptureSession? = nil
     var previewLayer: CALayer? = nil
-    var scanningDelegate: QRCodeScanningDelegate? = nil
+    weak var scanningDelegate: QRCodeScanningDelegate? = nil
 
     var isConfigured: Bool = false
     func configure() {
