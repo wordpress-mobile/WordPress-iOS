@@ -107,7 +107,7 @@ private class WeeklyRoundupDataProvider {
             }
         }
 
-        group.notify(queue: .global()) {
+        group.notify(queue: .main) {
             let bestBlogStats = self.filterBest(5, from: blogStats)
             completion(.success(bestBlogStats))
         }
