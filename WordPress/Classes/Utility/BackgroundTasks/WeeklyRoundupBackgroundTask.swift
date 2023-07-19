@@ -12,6 +12,7 @@ private class WeeklyRoundupDataProvider {
 
     enum DataRequestError: Error {
         case authTokenNotFound
+        case failedToMakePeriodEndDate
         case dotComSiteWithoutDotComID(_ site: NSManagedObjectID)
         case siteFetchingError(_ error: Error)
         case unknownErrorRetrievingStats(_ site: NSManagedObjectID)
@@ -69,6 +70,7 @@ private class WeeklyRoundupDataProvider {
     private func getTopSiteStats(from sites: [Site], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         guard let periodEndDate = Self.makePeriodEndDate() else {
             DDLogError("Something's wrong with the period end date selection.")
+            completion(.failure(DataRequestError.failedToMakePeriodEndDate))
             return
         }
 
