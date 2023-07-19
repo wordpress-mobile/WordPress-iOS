@@ -48,11 +48,21 @@ final class DashboardBlazePromoCardView: UIView {
     }()
 
     private lazy var contextMenu: UIMenu = {
+        let learnMoreAction = UIAction(title: Strings.learnMore,
+                                       image: Style.learnMoreImage,
+                                       handler: viewModel.onLearnMoreTap)
         let hideThisAction = UIAction(title: Strings.hideThis,
                                       image: Style.hideThisImage,
                                       attributes: [UIMenuElement.Attributes.destructive],
                                       handler: viewModel.onHideThisTap)
-        return UIMenu(title: String(), options: .displayInline, children: [hideThisAction])
+        return UIMenu(title: String(), options: .displayInline, children: [
+            UIMenu(options: .displayInline, children: [
+                learnMoreAction
+            ]),
+            UIMenu(options: .displayInline, children: [
+                hideThisAction
+            ])
+        ])
     }()
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
@@ -110,6 +120,7 @@ extension DashboardBlazePromoCardView {
         static let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         static let descriptionLabelFont = WPStyleGuide.fontForTextStyle(.subheadline)
         static let hideThisImage = UIImage(systemName: "minus.circle")
+        static let learnMoreImage = UIImage(systemName: "info.circle")
     }
 
     private enum Metrics {
@@ -127,6 +138,9 @@ extension DashboardBlazePromoCardView {
         static let hideThis = NSLocalizedString("blaze.dashboard.card.menu.hide",
                                                  value: "Hide this",
                                                  comment: "Title for a menu action in the context menu on the Blaze card.")
+        static let learnMore = NSLocalizedString("blaze.dashboard.card.menu.learnMore",
+                                                 value: "Learn more",
+                                                 comment: "Title for a menu action in the context menu on the Blaze card.")
     }
 }
 
@@ -137,6 +151,7 @@ struct DashboardBlazePromoViewModel {
     let onViewTap: () -> Void
     let onEllipsisTap: () -> Void
     let onHideThisTap: UIActionHandler
+    let onLearnMoreTap: UIActionHandler
 
     static func make(with blog: Blog, viewController: BlogDashboardViewController?) -> DashboardBlazePromoViewModel {
         DashboardBlazePromoViewModel(onViewTap: { [weak viewController] in
@@ -150,6 +165,10 @@ struct DashboardBlazePromoViewModel {
             BlogDashboardAnalytics.trackHideTapped(for: .blaze)
             BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
             BlazeHelper.hideBlazeCard(for: blog)
+        }, onLearnMoreTap: { [weak viewController] _ in
+            guard let viewController = viewController else { return }
+            BlazeEventsTracker.trackLearnMoreTapped(for: .dashboardCard)
+            BlazeFlowCoordinator.presentBlazeOverlay(in: viewController, source: .dashboardCard, blog: blog)
         })
     }
 }
