@@ -1378,11 +1378,13 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        self.gutenberg.onUndoPressed()
+        // FIXME: Disabled to compile in current testing configuration
+//        self.gutenberg.onUndoPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        self.gutenberg.onRedoPressed()
+        // FIXME: Disabled to compile in current testing configuration
+//        self.gutenberg.onRedoPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
