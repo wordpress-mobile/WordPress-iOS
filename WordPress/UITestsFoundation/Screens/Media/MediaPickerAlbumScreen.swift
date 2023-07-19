@@ -2,6 +2,7 @@ import ScreenObject
 import XCTest
 
 public class MediaPickerAlbumScreen: ScreenObject {
+
     private let mediaCollectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.collectionViews["MediaCollection"]
     }

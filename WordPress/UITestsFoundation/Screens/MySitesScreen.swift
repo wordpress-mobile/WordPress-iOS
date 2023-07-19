@@ -4,6 +4,7 @@ import XCTest
 /// The site switcher AKA blog list. Currently presented as a modal we can get to from My Site by
 /// tapping the down arrow next to the site title.
 public class MySitesScreen: ScreenObject {
+
     private let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["my-sites-cancel-button"]
     }
