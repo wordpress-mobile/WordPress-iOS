@@ -7,10 +7,29 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     var savingDraftButtonSize: CGSize { get }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView)
+}
+
+class ExtendedTouchAreaButton: UIButton {
+    private var touchAreaPadding: CGFloat = 24.0
+
+    override var isHighlighted: Bool {
+        didSet {
+            UIView.animate(withDuration: 0.2) {
+                self.alpha = self.isHighlighted ? 0.5 : 1.0
+            }
+        }
+    }
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let extendedArea = bounds.insetBy(dx: -touchAreaPadding, dy: -touchAreaPadding)
+        return extendedArea.contains(point)
+    }
 }
 
 // A class to share the navigation bar UI of the Post Editor.
@@ -23,26 +42,87 @@ class PostEditorNavigationBarManager {
 
     /// Dismiss Button
     ///
+    let siteIconView: SiteIconView = {
+        let siteIconView = SiteIconView(frame: .zero)
+        siteIconView.translatesAutoresizingMaskIntoConstraints = false
+        siteIconView.imageView.sizeToFit()
+
+        let widthConstraint = siteIconView.widthAnchor.constraint(equalToConstant: 28)
+        let heightConstraint = siteIconView.heightAnchor.constraint(equalToConstant: 28)
+        NSLayoutConstraint.activate([widthConstraint, heightConstraint])
+        siteIconView.isUserInteractionEnabled = false
+        siteIconView.removeButtonBorder()
+        return siteIconView
+    }()
+
     lazy var closeButton: UIButton = {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
+        let closeImage = UIImage(named: "editor-chevron-left")
         let button = UIButton(type: .system)
+        button.setImage(isRTL ? closeImage?.withHorizontallyFlippedOrientation() : closeImage, for: .normal)
+        button.sizeToFit()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        button.isUserInteractionEnabled = false
+        return button
+    }()
 
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = Assets.closeButtonModalImage
-        configuration.contentInsets = Constants.closeButtonInsets
-        button.configuration = configuration
-
-        button.addTarget(self, action: #selector(closeWasPressed), for: .touchUpInside)
-        button.setContentHuggingPriority(.required, for: .horizontal)
+    lazy var closeButtonContainer: ExtendedTouchAreaButton = {
+        let button = ExtendedTouchAreaButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = "editor-close-button"
-        button.tintColor = .editorPrimary
+        button.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close the editor")
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeWasPressed))
+        button.addGestureRecognizer(tapGesture)
+
+        button.addSubview(closeButton)
+        button.addSubview(siteIconView)
+
+        NSLayoutConstraint.activate([
+            closeButton.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -8),
+            closeButton.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+            siteIconView.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor, constant: 0),
+            siteIconView.trailingAnchor.constraint(equalTo: button.trailingAnchor),
+            siteIconView.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
+        button.isUserInteractionEnabled = true
+        button.frame = CGRect(x: 0, y: 0, width: 70, height: 28)
+        return button
+    }()
+
+    lazy var undoButton: UIButton = {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
+        let undoImage = UIImage(named: "editor-undo")
+        let button = UIButton(type: .system)
+        button.setImage(isRTL ? undoImage?.withHorizontallyFlippedOrientation() : undoImage, for: .normal)
+        button.accessibilityIdentifier = "editor-undo-button"
+        button.accessibilityLabel = NSLocalizedString("Undo", comment: "Action button to undo last change")
+        button.addTarget(self, action: #selector(undoWasPressed), for: .touchUpInside)
+        button.sizeToFit()
+        button.alpha = 0.3
+        button.isUserInteractionEnabled = false
+        return button
+    }()
+
+    lazy var redoButton: UIButton = {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
+        let redoImage = UIImage(named: "editor-redo")
+        let button = UIButton(type: .system)
+        button.setImage(isRTL ? redoImage?.withHorizontallyFlippedOrientation() : redoImage, for: .normal)
+        button.accessibilityIdentifier = "editor-redo-button"
+        button.accessibilityLabel = NSLocalizedString("Redo", comment: "Action button to redo last change")
+        button.addTarget(self, action: #selector(redoWasPressed), for: .touchUpInside)
+        button.sizeToFit()
+        button.alpha = 0.3
+        button.isUserInteractionEnabled = false
         return button
     }()
 
     private lazy var moreButton: UIButton = {
-        let image = UIImage.gridicon(.ellipsis)
+        let image = UIImage(named: "editor-more")
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
-        button.frame = CGRect(origin: .zero, size: image.size)
         button.accessibilityLabel = NSLocalizedString("More Options", comment: "Action button to display more available options")
         button.accessibilityIdentifier = "more_post_options"
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
@@ -66,7 +146,8 @@ class PostEditorNavigationBarManager {
         button.sizeToFit()
         button.isEnabled = delegate?.isPublishButtonEnabled ?? false
         button.setContentHuggingPriority(.required, for: .horizontal)
-        button.tintColor = .editorPrimary
+        button.tintColor = .editorActionText
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
         return button
     }()
 
@@ -81,19 +162,13 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    /// Preview Generating Button
-    ///
-    private lazy var previewGeneratingView: LoadingStatusView = {
-        let view = LoadingStatusView(title: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
-        return view
-    }()
-
     // MARK: - Bar button items
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
     ///
     internal lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        separator.width = 16
         return separator
     }()
 
@@ -101,7 +176,7 @@ class PostEditorNavigationBarManager {
     /// NavigationBar's Close Button
     ///
     lazy var closeBarButtonItem: UIBarButtonItem = {
-        let cancelItem = UIBarButtonItem(customView: self.closeButton)
+        let cancelItem = UIBarButtonItem(customView: self.closeButtonContainer)
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
@@ -127,6 +202,14 @@ class PostEditorNavigationBarManager {
         delegate?.navigationBarManager(self, closeWasPressed: sender)
     }
 
+    @objc private func undoWasPressed(sender: UIButton) {
+        delegate?.navigationBarManager(self, undoWasPressed: sender)
+    }
+
+    @objc private func redoWasPressed(sender: UIButton) {
+        delegate?.navigationBarManager(self, redoWasPressed: sender)
+    }
+
     @objc private func moreWasPressed(sender: UIButton) {
         delegate?.navigationBarManager(self, moreWasPressed: sender)
     }
@@ -142,18 +225,20 @@ class PostEditorNavigationBarManager {
     // MARK: - Public
 
     var leftBarButtonItems: [UIBarButtonItem] {
-        return [separatorButtonItem, closeBarButtonItem]
+        return [closeBarButtonItem]
     }
 
     var uploadingMediaTitleView: UIView {
         mediaUploadingButton
     }
 
-    var generatingPreviewTitleView: UIView {
-        previewGeneratingView
+    var rightBarButtonItems: [UIBarButtonItem] {
+        let undoButton = UIBarButtonItem(customView: self.undoButton)
+        let redoButton = UIBarButtonItem(customView: self.redoButton)
+        return [publishBarButtonItem, separatorButtonItem, moreBarButtonItem, separatorButtonItem, redoButton, separatorButtonItem, undoButton]
     }
 
-    var rightBarButtonItems: [UIBarButtonItem] {
+    var rightBarButtonItemsAztec: [UIBarButtonItem] {
         return [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
     }
 
@@ -161,10 +246,6 @@ class PostEditorNavigationBarManager {
         publishButton.setTitle(delegate?.publishButtonText ?? "", for: .normal)
         publishButton.sizeToFit()
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
-    }
-
-    func reloadBlogTitleView(text: String) {
-        blogTitleViewLabel.text = text
     }
 
     func reloadTitleView(_ view: UIView) {

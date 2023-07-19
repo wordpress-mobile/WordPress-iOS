@@ -7,7 +7,7 @@ import WordPressShared.WPStyleGuide
     @IBOutlet fileprivate weak var detailLabel: UILabel!
 
     // Required by ReaderStreamHeader protocol.
-    open var delegate: ReaderStreamHeaderDelegate?
+    open weak var delegate: ReaderStreamHeaderDelegate?
 
 
     // MARK: - Lifecycle Methods

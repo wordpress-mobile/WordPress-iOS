@@ -67,7 +67,7 @@ class WindowManager: NSObject {
     ///
     @objc func showAppUI(for blog: Blog? = nil, animated: Bool = true, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
-        show(RootViewCoordinator.sharedPresenter.rootViewController, animated: animated, completion: completion)
+        RootViewCoordinator.shared.showAppUI(animated: animated, completion: completion)
 
         guard let blog = blog else {
             return
@@ -81,12 +81,7 @@ class WindowManager: NSObject {
     func showSignInUI(completion: Completion? = nil) {
         isShowingFullscreenSignIn = true
 
-        guard let loginViewController = WordPressAuthenticator.loginUI() else {
-            fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")
-        }
-
-        show(loginViewController, completion: completion)
-        WordPressAuthenticator.track(.openedLogin)
+        RootViewCoordinator.shared.showSignInUI(completion: completion)
     }
 
     /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing

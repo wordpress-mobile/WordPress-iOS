@@ -393,7 +393,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSiteTopic")
         fetchRequest.predicate = NSPredicate(format: "following = YES")
 

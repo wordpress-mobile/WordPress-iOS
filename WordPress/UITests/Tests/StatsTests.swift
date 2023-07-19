@@ -9,7 +9,6 @@ class StatsTests: XCTestCase {
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
-        try MySiteScreen()
             .goToMenu()
             .goToStatsScreen()
             .switchTo(mode: .insights)

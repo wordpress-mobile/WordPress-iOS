@@ -29,7 +29,7 @@ open class JetpackConnectionViewController: UITableViewController {
 
     // MARK: - Public Properties
 
-    @objc var delegate: JetpackConnectionDelegate?
+    @objc weak var delegate: JetpackConnectionDelegate?
 
     // MARK: - Initializer
 

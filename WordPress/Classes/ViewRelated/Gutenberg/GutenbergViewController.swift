@@ -242,6 +242,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     let navigationBarManager: PostEditorNavigationBarManager
 
+    // swiftlint:disable:next weak_delegate
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
@@ -339,6 +340,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         self.navigationBarManager.delegate = self
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -456,16 +458,31 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
-        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
+
+        // Add bottom border line
+        let screenScale = UIScreen.main.scale
+        let borderWidth: CGFloat = 1.0 / screenScale
+        let borderColor = UIColor(red: 60/255, green: 60/255, blue: 67/255, alpha: 0.36).cgColor
+
+        let borderBottom = UIView()
+        borderBottom.backgroundColor = UIColor(cgColor: borderColor)
+        borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
+        borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        navigationController?.navigationBar.addSubview(borderBottom)
     }
 
-    private func reloadBlogTitleView() {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
+    private func reloadBlogIconView() {
+        let blog = post.blog
 
-        navigationBarManager.reloadBlogTitleView(text: blogTitle)
+        if blog.hasIcon == true {
+            let size = CGSize(width: 24, height: 24)
+            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
+        } else if blog.isWPForTeams() {
+            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
+            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
+        } else {
+            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
+        }
     }
 
     private func reloadEditorContents() {
@@ -480,7 +497,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func refreshInterface() {
-        reloadBlogTitleView()
+        reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()
     }
@@ -585,7 +602,6 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
-
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         post.managedObjectContext!.perform {
             GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
@@ -1340,8 +1356,34 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.savingDraftButtonSize
     }
 
+    func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
+    func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         requestHTML(for: .close)
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+        self.gutenberg.onUndoPressed()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+        self.gutenberg.onRedoPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {

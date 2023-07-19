@@ -73,6 +73,8 @@ final class DashboardBlazeCampaignView: UIView {
         if viewModel.isShowingStats {
             makeStatsViews(for: viewModel).forEach(statsView.addArrangedSubview)
         }
+
+        enableVoiceOver(with: viewModel)
     }
 
     private func makeStatsViews(for viewModel: BlazeCampaignViewModel) -> [UIView] {
@@ -83,6 +85,16 @@ final class DashboardBlazeCampaignView: UIView {
         clicksView.countString = "\(viewModel.clicks)"
 
         return [impressionsView, clicksView]
+    }
+
+    private func enableVoiceOver(with viewModel: BlazeCampaignViewModel) {
+        var accessibilityLabel = "\(viewModel.title), \(viewModel.status.title)"
+        if viewModel.isShowingStats {
+            accessibilityLabel += ", \(Strings.impressions) \(viewModel.impressions), \(Strings.clicks) \(viewModel.clicks)"
+        }
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityTraits = .allowsDirectInteraction
     }
 }
 
@@ -100,8 +112,8 @@ private extension DashboardBlazeCampaignView {
 struct BlazeCampaignViewModel {
     let title: String
     let imageURL: URL?
-    let impressions: Int
-    let clicks: Int
+    let impressions: String
+    let clicks: String
     let budget: String
     var status: BlazeCampaignStatusViewModel { .init(campaign: campaign) }
 
@@ -129,8 +141,8 @@ struct BlazeCampaignViewModel {
         self.campaign = campaign
         self.title = campaign.name ?? "–"
         self.imageURL = campaign.contentConfig?.imageURL.flatMap(URL.init)
-        self.impressions = campaign.stats?.impressionsTotal ?? 0
-        self.clicks = campaign.stats?.clicksTotal ?? 0
+        self.impressions = campaign.stats?.impressionsTotal?.abbreviatedString() ?? "0"
+        self.clicks = campaign.stats?.clicksTotal?.abbreviatedString() ?? "0"
         self.budget = currencyFormatter.string(from: ((campaign.budgetCents ?? 0) / 100) as NSNumber) ?? "-"
     }
 }

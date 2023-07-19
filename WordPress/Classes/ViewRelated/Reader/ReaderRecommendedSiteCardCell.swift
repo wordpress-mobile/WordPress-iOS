@@ -9,7 +9,7 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var infoTrailingConstraint: NSLayoutConstraint!
 
-    var delegate: ReaderRecommendedSitesCardCellDelegate?
+    weak var delegate: ReaderRecommendedSitesCardCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -110,6 +110,6 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     }
 }
 
-protocol ReaderRecommendedSitesCardCellDelegate {
+protocol ReaderRecommendedSitesCardCellDelegate: AnyObject {
     func handleFollowActionForCell(_ cell: ReaderRecommendedSiteCardCell)
 }

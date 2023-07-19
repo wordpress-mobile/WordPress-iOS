@@ -15,7 +15,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 
     private let post: ReaderPost
     private weak var delegate: ReaderCommentsFollowPresenterDelegate?
-    private let presentingViewController: UIViewController
+    private unowned let presentingViewController: UIViewController
     private let followCommentsService: FollowCommentsService?
 
     // MARK: - Initialization

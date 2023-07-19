@@ -78,6 +78,7 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *enabledConnections;
 
 @property (nonatomic, strong) NoResultsViewController *noResultsView;
 @property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
@@ -112,6 +113,7 @@ FeaturedImageViewControllerDelegate>
     if (self) {
         self.apost = aPost;
         self.unsupportedConnections = @[];
+        self.enabledConnections = [NSMutableArray array];
     }
     return self;
 }
@@ -255,6 +257,11 @@ FeaturedImageViewControllerDelegate>
         }
 
         [supportedConnections addObject:connection];
+
+        if (![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID]
+            && ![self.enabledConnections containsObject:connection.keyringConnectionID]) {
+            [self.enabledConnections addObject:connection.keyringConnectionID];
+        }
     }
 
     self.publicizeConnections = supportedConnections;
@@ -875,46 +882,75 @@ FeaturedImageViewControllerDelegate>
     return featuredURL;
 }
 
+- (UITableViewCell *)configureSocialCellForIndexPath:(NSIndexPath *)indexPath
+                                          connection:(PublicizeConnection *)connection
+                                      canEditSharing:(BOOL)canEditSharing
+                                             section:(NSInteger)section
+{
+    BOOL isJetpackSocialEnabled = [Feature enabled:FeatureFlagJetpackSocial];
+    UITableViewCell *cell = [self getWPTableViewImageAndAccessoryCell];
+    UIImage *image = [WPStyleGuide socialIconFor:connection.service];
+    if (isJetpackSocialEnabled) {
+        image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
+                                            bounds:CGSizeMake(28.0, 28.0)
+                              interpolationQuality:kCGInterpolationDefault];
+    }
+    [cell.imageView setImage:image];
+    if (canEditSharing && !isJetpackSocialEnabled) {
+        cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
+    }
+    cell.textLabel.text = connection.externalDisplay;
+    cell.textLabel.enabled = canEditSharing;
+    if (connection.isBroken) {
+        cell.accessoryView = section == PostSettingsSectionShare ?
+        [WPStyleGuide sharingCellWarningAccessoryImageView] :
+        [WPStyleGuide sharingCellErrorAccessoryImageView];
+    } else {
+        UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
+        // This interaction is handled at a cell level
+        switchAccessory.userInteractionEnabled = NO;
+        switchAccessory.on = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
+        switchAccessory.enabled = canEditSharing;
+        cell.accessoryView = switchAccessory;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.tag = PostSettingsRowShareConnection;
+    cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@ %@", connection.service, connection.externalDisplay];
+    return cell;
+}
+
+- (UITableViewCell *)configureDisclosureCellWithSharing:(BOOL)canEditSharing
+{
+    UITableViewCell *cell = [self getWPTableViewDisclosureCell];
+    cell.textLabel.text = NSLocalizedString(@"Message", @"Label for the share message field on the post settings.");
+    cell.textLabel.enabled = canEditSharing;
+    cell.detailTextLabel.text = self.post.publicizeMessage ? self.post.publicizeMessage : self.post.titleForDisplay;
+    cell.detailTextLabel.enabled = canEditSharing;
+    cell.tag = PostSettingsRowShareMessage;
+    cell.accessibilityIdentifier = @"Customize the message";
+    return cell;
+}
+
 - (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    BOOL canEditSharing = [self.post canEditPublicizeSettings];
+    BOOL canEditSharing = [self userCanEditSharing];
     NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
     NSArray<PublicizeConnection *> *connections = sec == PostSettingsSectionShare ? self.publicizeConnections : self.unsupportedConnections;
 
     if (indexPath.row < connections.count) {
-        cell = [self getWPTableViewImageAndAccessoryCell];
         PublicizeConnection *connection = connections[indexPath.row];
-        UIImage *image = [WPStyleGuide iconForService: connection.service];
-        [cell.imageView setImage:image];
-        if (canEditSharing) {
-            cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
+        if ([Feature enabled:FeatureFlagJetpackSocial]) {
+            BOOL hasRemainingShares = self.enabledConnections.count < [self remainingSocialShares];
+            BOOL isSwitchOn = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
+            canEditSharing = canEditSharing && (hasRemainingShares || isSwitchOn);
         }
-        cell.textLabel.text = connection.externalDisplay;
-        cell.textLabel.enabled = canEditSharing;
-        if (connection.isBroken) {
-            cell.accessoryView = sec == PostSettingsSectionShare ?
-                                  [WPStyleGuide sharingCellWarningAccessoryImageView] :
-                                  [WPStyleGuide sharingCellErrorAccessoryImageView];
-        } else {
-            UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
-            // This interaction is handled at a cell level
-            switchAccessory.userInteractionEnabled = NO;
-            switchAccessory.on = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
-            switchAccessory.enabled = canEditSharing;
-            cell.accessoryView = switchAccessory;
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.tag = PostSettingsRowShareConnection;
-        cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@ %@", connection.service, connection.externalDisplay];
+        cell = [self configureSocialCellForIndexPath:indexPath
+                                          connection:connection
+                                      canEditSharing:canEditSharing
+                                             section:sec];
     } else {
-        cell = [self getWPTableViewDisclosureCell];
-        cell.textLabel.text = NSLocalizedString(@"Message", @"Label for the share message field on the post settings.");
-        cell.textLabel.enabled = canEditSharing;
-        cell.detailTextLabel.text = self.post.publicizeMessage ? self.post.publicizeMessage : self.post.titleForDisplay;
-        cell.detailTextLabel.enabled = canEditSharing;
-        cell.tag = PostSettingsRowShareMessage;
-        cell.accessibilityIdentifier = @"Customize the message";
+        cell = [self configureDisclosureCellWithSharing:canEditSharing];
     }
     cell.userInteractionEnabled = canEditSharing;
     return cell;
@@ -1147,8 +1183,18 @@ FeaturedImageViewControllerDelegate>
             [cellSwitch setOn:!cellSwitch.on animated:YES];
             if (cellSwitch.on) {
                 [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+
+                if ([Feature enabled:FeatureFlagJetpackSocial]) {
+                    [self.enabledConnections addObject:connection.keyringConnectionID];
+                    [self reloadSocialSectionComparingValue:[self remainingSocialShares]];
+                }
             } else {
                 [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+
+                if ([Feature enabled:FeatureFlagJetpackSocial]) {
+                    [self.enabledConnections removeObject:connection.keyringConnectionID];
+                    [self reloadSocialSectionComparingValue:[self remainingSocialShares] - 1];
+                }
             }
         }
     }
@@ -1389,6 +1435,15 @@ FeaturedImageViewControllerDelegate>
     UITableViewCell *cell = [self configureGenericCellWith:[self createRemainingSharesView]];
     cell.tag = PostSettingsRowSocialRemainingShares;
     return cell;
+}
+
+- (void)reloadSocialSectionComparingValue:(NSUInteger)value
+{
+    if (self.enabledConnections.count == value) {
+        NSUInteger sharingSection = [self.sections indexOfObject:@(PostSettingsSectionShare)];
+        NSIndexSet *sharingSectionSet = [NSIndexSet indexSetWithIndex:sharingSection];
+        [self.tableView reloadSections:sharingSectionSet withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods

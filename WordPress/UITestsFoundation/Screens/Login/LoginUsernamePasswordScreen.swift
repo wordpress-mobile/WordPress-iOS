@@ -44,8 +44,7 @@ public class LoginUsernamePasswordScreen: ScreenObject {
                 usernameTextFieldGetter,
                 passwordTextFieldGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
@@ -57,16 +56,12 @@ public class LoginUsernamePasswordScreen: ScreenObject {
 
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
         fill(username: username, password: password)
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySitesScreen()
     }
 
     public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySiteScreen()
     }
@@ -87,8 +82,6 @@ public class LoginUsernamePasswordScreen: ScreenObject {
             passwordTextField.typeText(password)
         }
         nextButton.tap()
-
-        app.dismissSavePasswordPrompt()
     }
 
     private func dismissQuickStartPromptIfNeeded() throws {

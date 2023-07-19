@@ -1,6 +1,3 @@
-We fixed an issue with the home screen’s “Work on a draft post” card. The app will no longer crash when you access drafts while they’re in the middle of uploading.
+We disabled blogging reminders for self-hosted sites that aren’t connected to Jetpack, since this feature is only available in the Jetpack app.
 
-We also solved a couple of problems in the block editor.
-
-- Right on—image blocks now display the correct aspect ratio, whether or not the image has a set width and height.
-- When you’re dictating text, the cursor’s position will stay where it’s supposed to—no more jumping around. Keep calm and dictate on.
+Reusable blocks are now known as synced patterns, the same as in the desktop editor.

@@ -40,20 +40,12 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
-    let collectionView: UICollectionView
+    weak var collectionView: UICollectionView?
+
     var topics: [String] {
         didSet {
             reloadData()
         }
-    }
-
-    deinit {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
-            return
-        }
-
-        layout.isExpanded = false
-        layout.invalidateLayout()
     }
 
     init(collectionView: UICollectionView, topics: [String]) {
@@ -62,23 +54,32 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
         super.init()
 
-        configureCollectionView()
+        configure(collectionView)
+    }
+
+    func invalidate() {
+        guard let layout = collectionView?.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.isExpanded = false
+        layout.invalidateLayout()
     }
 
     func reloadData() {
-        collectionView.reloadData()
-        collectionView.invalidateIntrinsicContentSize()
+        collectionView?.reloadData()
+        collectionView?.invalidateIntrinsicContentSize()
     }
 
     func changeState(_ state: ReaderTopicCollectionViewState) {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+        guard let layout = collectionView?.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
         }
 
         layout.isExpanded = state == .expanded
     }
 
-    private func configureCollectionView() {
+    private func configure(_ collectionView: UICollectionView) {
         collectionView.isAccessibilityElement = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -105,7 +106,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         layout.allowsCentering = false
     }
 
-    private func sizeForCell(title: String) -> CGSize {
+    private func sizeForCell(title: String, of collectionView: UICollectionView)-> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
         ]
@@ -193,7 +194,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
     }
 
     @objc func toggleExpanded(_ sender: ReaderInterestsCollectionViewCell) {
-        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+        guard let layout = collectionView?.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
         }
 
@@ -206,7 +207,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return sizeForCell(title: topics[indexPath.row])
+        return sizeForCell(title: topics[indexPath.row], of: collectionView)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -225,6 +226,6 @@ extension ReaderTopicCollectionViewCoordinator: ReaderInterestsCollectionViewFlo
     func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath, remainingItems: Int?) -> CGSize {
 
         let title = string(for: remainingItems)
-        return sizeForCell(title: title)
+        return sizeForCell(title: title, of: collectionView)
     }
 }

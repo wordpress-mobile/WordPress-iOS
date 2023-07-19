@@ -27,14 +27,22 @@ extension WPTabBarController {
     }
 
     @objc func makeReaderTabViewController() -> ReaderTabViewController {
-        return ReaderTabViewController(viewModel: self.readerTabViewModel, readerTabViewFactory: makeReaderTabView(_:))
+        return ReaderTabViewController(viewModel: readerTabViewModel) { [unowned self] viewModel in
+            return self.makeReaderTabView(viewModel)
+        }
     }
 
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
-        let viewModel = ReaderTabViewModel(readerContentFactory: makeReaderContentViewController(with:),
-                                           searchNavigationFactory: navigateToReaderSearch,
-                                           tabItemsStore: ReaderTabItemsStore(),
-                                           settingsPresenter: ReaderManageScenePresenter())
+        let viewModel = ReaderTabViewModel(
+            readerContentFactory: { [unowned self] in
+                self.makeReaderContentViewController(with: $0)
+            },
+            searchNavigationFactory: { [unowned self] in
+                self.navigateToReaderSearch()
+            },
+            tabItemsStore: ReaderTabItemsStore(),
+            settingsPresenter: ReaderManageScenePresenter()
+        )
         return viewModel
     }
 

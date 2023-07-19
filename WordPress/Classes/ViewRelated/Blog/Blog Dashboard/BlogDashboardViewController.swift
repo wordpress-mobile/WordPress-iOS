@@ -14,6 +14,7 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
+
     lazy var collectionView: DynamicHeightCollectionView = {
         let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -112,10 +113,7 @@ final class BlogDashboardViewController: UIViewController {
         }
 
         self.blog = blog
-        viewModel.blog = blog
-        BlogDashboardAnalytics.shared.reset()
-        viewModel.loadCardsFromCache()
-        viewModel.loadCards()
+        self.viewModel.update(blog: blog)
     }
 
     @objc func refreshControlPulled() {
@@ -159,30 +157,27 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
+    }
 
-            guard let self = self else {
-                return
-            }
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        if let info = notification.userInfo,
+           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-
-                switch element {
-                case .setupQuickStart:
-                    self.loadCardsFromCache()
-                    self.displayQuickStart()
-                case .updateQuickStart:
-                    self.loadCardsFromCache()
-                case .stats, .mediaScreen:
-                    if self.embeddedInScrollView {
-                        self.mySiteScrollView?.scrollToTop(animated: true)
-                    } else {
-                        self.collectionView.scrollToTop(animated: true)
-                    }
-                default:
-                    break
+            switch element {
+            case .setupQuickStart:
+                self.loadCardsFromCache()
+                self.displayQuickStart()
+            case .updateQuickStart:
+                self.loadCardsFromCache()
+            case .stats, .mediaScreen:
+                if self.embeddedInScrollView {
+                    self.mySiteScrollView?.scrollToTop(animated: true)
+                } else {
+                    self.collectionView.scrollToTop(animated: true)
                 }
+            default:
+                break
             }
         }
     }

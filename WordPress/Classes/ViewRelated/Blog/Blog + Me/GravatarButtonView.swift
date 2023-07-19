@@ -28,7 +28,6 @@ class GravatarButtonView: CircularImageView {
     }
 }
 
-
 /// Touch animation
 extension GravatarButtonView {
 

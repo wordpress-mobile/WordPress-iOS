@@ -25,7 +25,7 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail,
                             password: WPUITestCredentials.testWPcomPassword,
-                            selectedSiteTitle: "yourjetpack.blog")
+                            selectedSiteTitle: "weekendbakesblog.wordpress.com")
     }
 
     override func tearDown() {

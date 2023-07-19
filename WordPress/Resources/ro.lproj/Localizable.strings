@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-26 13:11:37+0000 */
+/* Translation-Revision-Date: 2023-07-12 14:34:23+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -250,11 +250,8 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloc %s. Acest bloc are conținut invalid";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s a fost convertit într-un bloc normal";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s a fost convertit în blocuri normale";
+/* translators: %s: name of the synced block */
+"%s detached" = "%s este detașat";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "În curând, previzualizări pentru înglobarea blocului %s";
@@ -739,10 +736,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Text alternativ";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Ca alternativă, poți să detașezi și să editezi separat aceste blocuri atingând „Detașează modulele”.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Ca alternativă, poți să detașezi și să editezi separat acest bloc atingând „Detașează modulele”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ca alternativă, poți să introduci parola pentru acest cont.";
@@ -1120,9 +1117,6 @@ translators: Block name. %s: The localized block name */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Cele mai multe vizualizări";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "O actualizare mare pentru  iPhone\/iPad este acum disponibilă";
 
 /* Notice that a page without content has been created */
 "Blank page created" = "A fost creată o pagină goală";
@@ -2314,7 +2308,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
-"Default Post Format" = "Format articol implicit";
+"Default Post Format" = "Format implicit pentru articole";
 
 /* Placeholder for the reader CSS URL */
 "Default URL" = "URL implicit";
@@ -2748,10 +2742,10 @@ translators: Block name. %s: The localized block name */
 "Edit video" = "Editează videoul";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for Android" = "%s pentru Android nu suportă încă editarea blocurilor reutilizabile";
+"Editing synced patterns is not yet supported on %s for Android" = "%s pentru Android nu suportă încă editarea modelelor sincronizate";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing reusable blocks is not yet supported on %s for iOS" = "%s pentru iOS nu suportă încă editarea blocurilor reutilizabile";
+"Editing synced patterns is not yet supported on %s for iOS" = "%s pentru iOS nu suportă încă editarea modelelor sincronizate";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editarea acestui GIF îi va înlătura animația.";
@@ -5232,7 +5226,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -5817,7 +5810,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Pregătesc...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -6086,13 +6078,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Reaprinde conversația: a scrie un articol nou.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Articole similare";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Articole similare afișează conținut relevant de pe site-ul tău sub articolele tale";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Amintește-mi";
@@ -6340,9 +6327,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Share extension error dialog cancel button text */
 "Return to post" = "Revino la articol";
-
-/* No comment provided by engineer. */
-"Reusable" = "Reutilizabil";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Rrenunță la modificare în așteptare";
@@ -6864,12 +6848,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Eroare de partajare";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Arată antet";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Arată imagini";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Arată butonul de apreciere";
 
@@ -6878,9 +6856,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Arată butonul de reblogare";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Arată articole similare";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Arată-mi ce să fac";
@@ -7560,9 +7535,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-ului îi lipsește o gazdă validă.";
 
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Aplicația WordPress pentru Android a primit o mare schimbare de aspect";
-
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Cei mai buni fani din lume";
 
@@ -7766,9 +7738,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "A fost o eroare la încărcarea activităților";
-
-/* Text displayed when there is a failure loading Blaze campaigns. */
-"There was an error loading campaigns." = "A fost o eroare la încărcarea campaniilor.";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "A fost o eroare la încărcarea planurilor";
@@ -8497,9 +8466,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Actualizez...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Focus actualizare: VideoPress pentru nunți";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Pentru a încărca fișiere audio, actualizează-ți planul";
@@ -9668,6 +9634,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Nu ai creat nicio campanie";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "A fost o eroare la încărcarea campaniilor.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "Hopa";
+
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Încarc campaniile...";
 
@@ -9720,10 +9692,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.completed" = "Finalizată";
 
 /* Short status description */
-"blazeCampaign.status.created" = "Creată";
+"blazeCampaign.status.inmoderation" = "În moderare";
 
 /* Short status description */
-"blazeCampaign.status.inmoderation" = "În moderare";
+"blazeCampaign.status.processing" = "În procesare";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Respinsă";
@@ -9770,11 +9742,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Răspunde-i lui %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Aceste cookie-uri ne permit să optimizăm performanța prin colectarea de informații despre modul în care utilizatorii interacționează cu site-urile noastre web.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Salvează";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Mergi la Setări";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Îți prelucrăm datele cu caracter personal, pe baza consimțământului tău și a intereselor noastre legitime, ca să optimizăm site-ul nostru web și activitățile noastre de marketing.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Administrează confidențialitatea";
@@ -9857,6 +9835,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of a label that encourages the user to create a new page. */
 "dashboardCard.pages.create.description" = "Începe cu aranjamente personalizate, prietenoase pentru dispozitivele mobile.";
 
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "Vezi statisticile";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Parametrii contramandați sunt marcați cu o bifă.";
 
@@ -9937,6 +9918,9 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "exemplu.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "Detalii campanie";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Fă-l cunoscut";
 
@@ -9963,6 +9947,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the domain purchase result screen. Tells user their domain was obtained. */
 "freeToPaidPlans.resultView.title" = "Totul este pregătit să începi!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "A apărut o eroare";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "Reîncearcă";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Setează reamintirile pentru publicare";
@@ -10029,15 +10019,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label displayed on image media items. */
 "image" = "imagine";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "în \"Apps\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "în \"Mobile\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "în \"Actualizări\"";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Să faci poze sau videouri pe care să le folosești în articolele tale.";
@@ -10456,14 +10437,14 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Lucrează la un articol ciornă";
 
-/* The part in the title that should be highlighted. */
-"my-sites.drafts.card.title.hint" = "redactează un articol";
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "Vezi toate ciornele";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "Vezi toate articolele programate";
 
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistici pentru azi";
-
-/* The part of the title that needs to be emphasized */
-"my-sites.stats.card.title.hint" = "Statistici";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Închide";
@@ -10555,6 +10536,15 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovează cu Blaze";
 
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "Abonează-te acum ca să partajezi mai mult";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.remainingshares.text.format" = "Partajări sociale rămase: %1$d\/%2$d";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " în următoarele 30 de zile";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Vezi toate răspunsurile";
 
@@ -10624,6 +10614,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nou";
+
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "Articole similare afișează conținut relevant de pe site-ul tău sub articolele tale";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "în „dispozitive mobile”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "Este disponibilă o importantă actualizare pentru iPhone\/iPad";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "în „Aplicații”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "Aplicația WordPress pentru Android primește o mare îmbunătățire vizuală";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "în „Actualizează”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Actualizare în atenție: VideoPress pentru nunți";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "Previzualizează";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "Articole similare";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "Actualizarea setărilor a eșuat";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "Arată antetul";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "Arată articole similare";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "Arată imaginile";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "Articole similare";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Închide";

@@ -16,8 +16,7 @@ public class SiteSettingsScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [blockEditorToggleGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

@@ -50,6 +50,12 @@ class AccountBuilder: NSObject {
     }
 
     @objc
+    func with(authToken: String) -> AccountBuilder {
+        account.authToken = authToken
+        return self
+    }
+
+    @objc
     @discardableResult
     func build() -> WPAccount {
         account

@@ -39,7 +39,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
     }
 
     private func addSubviews() {
-        frameView.setTitle(Strings.statsTitle, titleHint: Strings.statsTitleHint)
+        frameView.setTitle(Strings.statsTitle)
 
         let statsStackview = DashboardStatsStackView()
         frameView.add(subview: statsStackview)
@@ -70,13 +70,20 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func configureCard(for blog: Blog, in viewController: UIViewController) {
-        frameView.onViewTap = { [weak self] in
-            self?.showStats(for: blog, from: viewController)
+        frameView.onViewTap = { [weak self, weak viewController] in
+            guard let self, let viewController else { return }
+
+            self.showStats(for: blog, from: viewController)
         }
 
         if FeatureFlag.personalizeHomeTab.enabled {
             frameView.addMoreMenu(items: [
-                BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
+                UIMenu(options: .displayInline, children: [
+                    makeShowStatsMenuAction(for: blog, in: viewController)
+                ]),
+                UIMenu(options: .displayInline, children: [
+                    BlogDashboardHelpers.makeHideCardAction(for: .todaysStats, blog: blog)
+                ])
             ], card: .todaysStats)
         }
 
@@ -84,8 +91,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         statsStackView?.visitors = viewModel?.todaysVisitors
         statsStackView?.likes = viewModel?.todaysLikes
 
-        nudgeView?.onTap = { [weak self] in
-            self?.showNudgeHint(for: blog, from: viewController)
+        nudgeView?.onTap = { [weak self, weak viewController] in
+            guard let self, let viewController else { return }
+
+            self.showNudgeHint(for: blog, from: viewController)
         }
 
         nudgeView?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
@@ -93,6 +102,14 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         BlogDashboardAnalytics.shared.track(.dashboardCardShown,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
+    }
+
+    private func makeShowStatsMenuAction(for blog: Blog, in viewController: UIViewController) -> UIAction {
+        UIAction(title: Strings.viewStats, image: UIImage(systemName: "chart.bar.xaxis")) { [weak self, weak viewController] _ in
+            guard let self, let viewController else { return }
+
+            self.showStats(for: blog, from: viewController)
+        }
     }
 
     private func showStats(for blog: Blog, from sourceController: UIViewController) {
@@ -133,9 +150,9 @@ private extension DashboardStatsCardCell {
 
     enum Strings {
         static let statsTitle = NSLocalizedString("my-sites.stats.card.title", value: "Today's Stats", comment: "Title for the card displaying today's stats.")
-        static let statsTitleHint = NSLocalizedString("my-sites.stats.card.title.hint", value: "Stats", comment: "The part of the title that needs to be emphasized")
         static let nudgeButtonTitle = NSLocalizedString("Interested in building your audience? Check out our top tips", comment: "Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped.")
         static let nudgeButtonHint = NSLocalizedString("top tips", comment: "The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...'")
+        static let viewStats = NSLocalizedString("dashboardCard.stats.viewStats", value: "View stats", comment: "Title for the View stats button in the More menu")
     }
 
     enum Constants {

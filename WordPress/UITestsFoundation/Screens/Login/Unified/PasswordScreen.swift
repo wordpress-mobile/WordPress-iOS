@@ -22,15 +22,12 @@ public class PasswordScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ passwordTextFieldGetter, continueButtonGetter ],
-            app: app,
-            waitTimeout: 10
+            app: app
         )
     }
 
     public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
         try tryProceed(password: "pw")
-
-        app.dismissSavePasswordPrompt()
 
         return try LoginEpilogueScreen()
     }
@@ -61,7 +58,6 @@ public class PasswordScreen: ScreenObject {
 
         passwordTextField.typeText(password)
         continueButton.tap()
-        app.dismissSavePasswordPrompt()
     }
 
     @discardableResult

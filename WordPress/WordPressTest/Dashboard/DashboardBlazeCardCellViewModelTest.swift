@@ -51,8 +51,8 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         switch sut.state {
         case .promo:
             XCTFail("The card should display the latest campaign")
-        case .campaign(let viewModel):
-            XCTAssertEqual(viewModel.title, "Test Post - don't approve")
+        case .campaign(let campaign):
+            XCTAssertEqual(campaign.name, "Test Post - don't approve")
         }
     }
 
@@ -70,8 +70,8 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
         switch sut.state {
         case .promo:
             XCTFail("The card should display the latest campaign")
-        case .campaign(let viewModel):
-            XCTAssertEqual(viewModel.title, "Test Post - don't approve")
+        case .campaign(let campaign):
+            XCTAssertEqual(campaign.name, "Test Post - don't approve")
         }
     }
 
@@ -99,7 +99,7 @@ final class DashboardBlazeCardCellViewModelTest: CoreDataTestCase {
 private final class MockBlazeService: BlazeServiceProtocol {
     var didPerformRequest = false
 
-    func getRecentCampaigns(for blog: Blog, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
+    func getRecentCampaigns(for blog: Blog, page: Int, completion: @escaping (Result<BlazeCampaignsSearchResponse, Error>) -> Void) {
         didPerformRequest = true
         DispatchQueue.main.async {
             completion(Result(catching: getMockResponse))
@@ -120,12 +120,10 @@ private final class MockDashboardBlazeStore: DashboardBlazeStoreProtocol {
 }
 
 private func getMockResponse() throws -> BlazeCampaignsSearchResponse {
+    let data = try Bundle.test.json(named: "blaze-search-response")
+
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     decoder.dateDecodingStrategy = .iso8601
-
-    let url = try XCTUnwrap(Bundle(for: MockDashboardBlazeStore.self)
-        .url(forResource: "blaze-search-response", withExtension: "json"))
-    let data = try Data(contentsOf: url)
     return try decoder.decode(BlazeCampaignsSearchResponse.self, from: data)
 }

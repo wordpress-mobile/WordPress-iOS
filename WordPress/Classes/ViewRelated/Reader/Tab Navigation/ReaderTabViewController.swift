@@ -7,7 +7,7 @@ class ReaderTabViewController: UIViewController {
 
     private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
-    private lazy var readerTabView: ReaderTabView = {
+    private lazy var readerTabView: ReaderTabView = { [unowned viewModel] in
         return makeReaderTabView(viewModel)
     }()
 
@@ -140,11 +140,13 @@ extension ReaderTabViewController {
 // MARK: Observing Quick Start
 extension ReaderTabViewController {
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-                self?.settingsButton.shouldShowSpotlight = element == .readerDiscoverSettings
-            }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
+    }
+
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        if let info = notification.userInfo,
+           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+            settingsButton.shouldShowSpotlight = element == .readerDiscoverSettings
         }
     }
 }
