@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 import AutomatticTracks
 
 /// A wrapper around the logging stack – provides shared initialization and configuration for Tracks Crash and Event Logging
@@ -12,6 +13,8 @@ struct WPLoggingStack {
     private let eventLoggingDataProvider = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
     private let eventLoggingDelegate = EventLoggingDelegate()
 
+    private let enterForegroundObserver: AnyCancellable
+
     init() {
 
         let eventLogging = EventLogging(dataSource: eventLoggingDataProvider, delegate: eventLoggingDelegate)
@@ -20,17 +23,15 @@ struct WPLoggingStack {
         self.crashLogging = CrashLogging(dataProvider: WPCrashLoggingDataProvider(), eventLogging: eventLogging)
 
         /// Upload any remaining files any time the app becomes active
-        let willEnterForeground = UIApplication.willEnterForegroundNotification
-        NotificationCenter.default.addObserver(forName: willEnterForeground, object: nil, queue: nil, using: self.willEnterForeground)
+        enterForegroundObserver = NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink(receiveValue: { [eventLogging] _ in
+                eventLogging.uploadNextLogFileIfNeeded()
+                DDLogDebug("📜 Resumed encrypted log upload queue due to app entering foreground")
+            })
     }
 
     func start() throws {
         _ = try crashLogging.start()
-    }
-
-    private func willEnterForeground(note: Foundation.Notification) {
-        self.eventLogging.uploadNextLogFileIfNeeded()
-        DDLogDebug("📜 Resumed encrypted log upload queue due to app entering foreground")
     }
 }
 

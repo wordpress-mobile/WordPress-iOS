@@ -19,8 +19,7 @@ public class WelcomeScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [logInButtonGetter, signupButtonGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

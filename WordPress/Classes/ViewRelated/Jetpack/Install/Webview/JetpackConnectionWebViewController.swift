@@ -4,7 +4,7 @@ import Gridicons
 import WordPressAuthenticator
 import Combine
 
-protocol JetpackConnectionWebDelegate {
+protocol JetpackConnectionWebDelegate: AnyObject {
     func jetpackConnectionCompleted()
     func jetpackConnectionCanceled()
 }
@@ -13,7 +13,7 @@ class JetpackConnectionWebViewController: UIViewController {
     let blog: Blog
     let webView: WKWebView
     let progressView = WebProgressView()
-    var delegate: JetpackConnectionWebDelegate?
+    weak var delegate: JetpackConnectionWebDelegate?
 
     // Sometimes wp-login doesn't redirect to the expected URL, so we're storing
     // it and redirecting manually

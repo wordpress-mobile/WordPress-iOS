@@ -10,11 +10,41 @@ public class PostsScreen: ScreenObject {
 
     private var currentlyFilteredPostStatus: PostStatus = .published
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    let postsTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["PostsTable"]
+    }
+
+    let publishedButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["published"]
+    }
+
+    let draftsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["drafts"]
+    }
+
+    let scheduledButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["scheduled"]
+    }
+
+    let createPostButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Create Post Button"]
+    }
+
+    let autosaveAlertGetter: (XCUIApplication) -> XCUIElement = {
+        $0.alerts["autosave-options-alert"]
+    }
+
+    var postsTable: XCUIElement { postsTableGetter(app) }
+    var publishedButton: XCUIElement { publishedButtonGetter(app) }
+    var draftsButton: XCUIElement { draftsButtonGetter(app) }
+    var scheduledButton: XCUIElement { scheduledButtonGetter(app) }
+    var createPostButton: XCUIElement { createPostButtonGetter(app) }
+    var autosaveAlert: XCUIElement { autosaveAlertGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.tables["PostsTable"] } ],
-            app: app,
-            waitTimeout: 7
+            expectedElementGetters: [postsTableGetter],
+            app: app
         )
         showOnly(.published)
     }
@@ -23,9 +53,9 @@ public class PostsScreen: ScreenObject {
     public func showOnly(_ status: PostStatus) -> PostsScreen {
         switch status {
         case .published:
-            app.buttons["published"].tap()
+            publishedButton.tap()
         case .drafts:
-            app.buttons["drafts"].tap()
+            draftsButton.tap()
         }
 
         currentlyFilteredPostStatus = status
@@ -55,9 +85,8 @@ public class PostsScreen: ScreenObject {
     /// If there are two versions of a local post, the app will ask which version we want to use when editing.
     /// We always want to use the local version (which is currently the first option)
     private func dismissAutosaveDialogIfNeeded() {
-        let autosaveDialog = app.alerts["autosave-options-alert"]
-        if autosaveDialog.exists {
-            autosaveDialog.buttons.firstMatch.tap()
+        if autosaveAlert.exists {
+            autosaveAlert.buttons.firstMatch.tap()
         }
     }
 }

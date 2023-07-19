@@ -311,9 +311,6 @@
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Коментирайте първи.";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Може да бъде изтеглено голямо обновяване за iPhone\/iPad ";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Цитат";
@@ -1688,7 +1685,6 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -1911,7 +1907,6 @@
 "Preparing..." = "Подготовка...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -2030,13 +2025,8 @@
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Регистриран домейн";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Подобни публикации";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Модулът за свързани публикации показва релевантно съдържание от вашия сайт под публикациите ви.";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -2277,12 +2267,6 @@
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Бутони за споделяне";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Към заглавната част";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Показване на изображенията";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Показване на бутона за харесване";
 
@@ -2291,9 +2275,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Показване на бутон за реблогване";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Показване на подобни публикации";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Показване на теми:";
@@ -2536,9 +2517,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Този адрес няма валиден хост.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Приложението WordPress за Android претърпява изумителни подобрения";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Приложението не разпознава отговора на сървъра. Проверете конфигурацията на сайта си.";
@@ -2829,9 +2807,6 @@
 /* Label action for updating a link on the editor */
 "Update Link" = "Обновяване на връзката";
 
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "На фокус: VideoPress за сватби";
-
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Неуспешно качване";
@@ -3111,15 +3086,6 @@
 
 /* Label displayed on image media items. */
 "image" = "изображение";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "в \"Приложения\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "в \"Мобилно\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "в \"Обновяване\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

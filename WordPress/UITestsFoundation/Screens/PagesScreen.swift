@@ -15,8 +15,7 @@ public class PagesScreen: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ pagesTableGetter ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

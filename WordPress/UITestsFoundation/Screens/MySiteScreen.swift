@@ -128,8 +128,7 @@ public class MySiteScreen: ScreenObject {
                 mediaButtonGetter,
                 createButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
@@ -167,12 +166,7 @@ public class MySiteScreen: ScreenObject {
         return try JetpackBackupScreen()
     }
 
-    public func gotoPostsScreen() throws -> PostsScreen {
-        // A hack for iPad, because sometimes tapping "posts" doesn't load it the first time
-        if XCUIDevice.isPad {
-            mediaButton.tap()
-        }
-
+    public func goToPostsScreen() throws -> PostsScreen {
         postsButtonGetter(app).tap()
         return try PostsScreen()
     }

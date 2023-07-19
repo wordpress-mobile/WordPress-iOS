@@ -886,9 +886,6 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best views ever";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Big iPhone\/iPad Update Now Available";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "Blank page created";
 
@@ -4251,7 +4248,6 @@ translators: Block name. %s: The localized block name */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -4784,7 +4780,6 @@ translators: Block name. %s: The localized block name */
 "Preparing..." = "Preparing...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -5024,13 +5019,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Reignite the conversation: write a new post.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Related Posts";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Related Posts displays relevant content from your site below your posts";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Remind me";
@@ -5674,12 +5664,6 @@ translators: Block name. %s: The localized block name */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Sharing error";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Show Header";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Show Images";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Show Like button";
 
@@ -5688,9 +5672,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Show Reblog button";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Show Related Posts";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6290,9 +6271,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "The URL is missing a valid host.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "The WordPress for Android App Gets a Big Facelift";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "The World's Best Fans";
@@ -7054,9 +7032,6 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Updating...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Upgrade Focus: VideoPress For Weddings";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Upload Media";
@@ -8002,15 +7977,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed on image media items. */
 "image" = "image";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "in \"Apps\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "in \"Mobile\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "in \"Upgrade\"";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organisation, even if they received the link from somebody else, so make sure that you share it with trusted people.";

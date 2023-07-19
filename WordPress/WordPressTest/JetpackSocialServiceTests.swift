@@ -60,9 +60,7 @@ class JetpackSocialServiceTests: CoreDataTestCase {
     // non-existing PublicizeInfo + nil RemotePublicizeInfo -> nothing changes
     func testSyncSharingLimitWithNilPublicizeInfo() {
         stub(condition: isPath(jetpackSocialPath)) { _ in
-            HTTPStubsResponse(jsonObject: [String: Any](),
-                              statusCode: 200,
-                              headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
 
         let expectation = expectation(description: "syncSharingLimit should succeed")
@@ -110,9 +108,7 @@ class JetpackSocialServiceTests: CoreDataTestCase {
     func testSyncSharingLimitWithNilPublicizeInfoGivenPreExistingData() throws {
         try addPreExistingPublicizeInfo()
         stub(condition: isPath(jetpackSocialPath)) { _ in
-            HTTPStubsResponse(jsonObject: [String: Any](),
-                              statusCode: 200,
-                              headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
 
         let expectation = expectation(description: "syncSharingLimit should succeed")
@@ -133,9 +129,7 @@ class JetpackSocialServiceTests: CoreDataTestCase {
     func testSyncSharingLimitWithNewPublicizeInfoGivenInvalidBlogID() {
         let invalidBlogID = 1002
         stub(condition: isPath("/wpcom/v2/sites/\(invalidBlogID)/jetpack-social")) { _ in
-            HTTPStubsResponse(jsonObject: [String: Any](),
-                              statusCode: 200,
-                              headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
 
         let expectation = expectation(description: "syncSharingLimit should fail")
@@ -154,9 +148,7 @@ class JetpackSocialServiceTests: CoreDataTestCase {
 
     func testSyncSharingLimitRemoteFetchFailure() {
         stub(condition: isPath(jetpackSocialPath)) { _ in
-            HTTPStubsResponse(jsonObject: [String: Any](),
-                              statusCode: 500,
-                              headers: nil)
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
         let expectation = expectation(description: "syncSharingLimit should fail")
@@ -169,6 +161,56 @@ class JetpackSocialServiceTests: CoreDataTestCase {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: timeout)
+    }
+
+    // MARK: syncSharingLimit Objective-C
+
+    func testObjcSyncSharingLimitSuccess() async {
+        stub(condition: isPath(jetpackSocialPath)) { _ in
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
+        }
+
+        let syncSucceeded = await withCheckedContinuation { continuation in
+            service.syncSharingLimit(dotComID: NSNumber(value: blogID)) {
+                continuation.resume(returning: true)
+            } failure: { error in
+                continuation.resume(returning: false)
+            }
+        }
+
+        XCTAssertTrue(syncSucceeded)
+    }
+
+    func testObjcSyncSharingLimitNilIDFailure() async {
+        stub(condition: isPath(jetpackSocialPath)) { _ in
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
+        }
+
+        let syncSucceeded = await withCheckedContinuation { continuation in
+            service.syncSharingLimit(dotComID: NSNumber(value: blogID)) {
+                continuation.resume(returning: true)
+            } failure: { error in
+                continuation.resume(returning: false)
+            }
+        }
+
+        XCTAssertFalse(syncSucceeded)
+    }
+
+    func testObjcSyncSharingLimitRequestFailure() async {
+        stub(condition: isPath(jetpackSocialPath)) { _ in
+            HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
+        }
+
+        let syncSucceeded = await withCheckedContinuation { continuation in
+            service.syncSharingLimit(dotComID: NSNumber(value: blogID)) {
+                continuation.resume(returning: true)
+            } failure: { error in
+                continuation.resume(returning: false)
+            }
+        }
+
+        XCTAssertFalse(syncSucceeded)
     }
 
 }

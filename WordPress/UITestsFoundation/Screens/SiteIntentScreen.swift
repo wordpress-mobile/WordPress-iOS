@@ -14,8 +14,7 @@ public class SiteIntentScreen: ScreenObject {
                 { $0.tables["Site Intent Table"] },
                 cancelButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

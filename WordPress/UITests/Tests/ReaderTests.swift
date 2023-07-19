@@ -10,9 +10,8 @@ class ReaderTests: XCTestCase {
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
-        try EditorFlow
-            .goToMySiteScreen()
-            .tabBar.goToReaderScreen()
+        try TabNavComponent()
+            .goToReaderScreen()
     }
 
     override func tearDownWithError() throws {

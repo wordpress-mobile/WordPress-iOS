@@ -3,7 +3,7 @@ import WordPressKit
 
 final class DashboardBlazeCardCell: DashboardCollectionViewCell {
     private var blog: Blog?
-    private var viewController: BlogDashboardViewController?
+    private weak var viewController: BlogDashboardViewController?
     private var viewModel: DashboardBlazeCardCellViewModel?
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {

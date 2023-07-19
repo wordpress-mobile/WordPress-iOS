@@ -159,10 +159,22 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
 
+    if ([Feature enabled:FeatureFlagJetpackSocial] && blog.dotComID != nil) {
+        JetpackSocialService *jetpackSocialService = [[JetpackSocialService alloc] initWithContextManager:ContextManager.sharedInstance];
+        dispatch_group_enter(syncGroup);
+        [jetpackSocialService syncSharingLimitWithDotComID:blog.dotComID success:^{
+            dispatch_group_leave(syncGroup);
+        } failure:^(NSError * _Nullable error) {
+            DDLogError(@"Failed syncing publicize sharing limit for blog %@: %@", blog.url, error);
+            dispatch_group_leave(syncGroup);
+        }];
+    }
+
     dispatch_group_enter(syncGroup);
     [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
-        [self updateMultiAuthor:users forBlog:blogObjectID];
-        dispatch_group_leave(syncGroup);
+        [self updateMultiAuthor:users forBlog:blogObjectID completionHandler:^{
+            dispatch_group_leave(syncGroup);
+        }];
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
@@ -261,8 +273,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
 
     [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
-        [self updateMultiAuthor:users forBlog:blogObjectID];
-        success();
+        [self updateMultiAuthor:users forBlog:blogObjectID completionHandler:success];
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         failure(error);
@@ -585,7 +596,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 #pragma mark - Completion handlers
 
-- (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID
+- (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
 {
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         NSError *error;
@@ -623,7 +634,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                 }
             }
         }
-    }];
+    } completion: completion onQueue:dispatch_get_main_queue()];
 }
 
 - (BlogDetailsHandler)blogDetailsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID

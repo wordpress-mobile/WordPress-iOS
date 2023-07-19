@@ -70,8 +70,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func configureCard(for blog: Blog, in viewController: UIViewController) {
-        frameView.onViewTap = { [weak self] in
-            self?.showStats(for: blog, from: viewController)
+        frameView.onViewTap = { [weak self, weak viewController] in
+            guard let self, let viewController else { return }
+
+            self.showStats(for: blog, from: viewController)
         }
 
         if FeatureFlag.personalizeHomeTab.enabled {
@@ -89,8 +91,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         statsStackView?.visitors = viewModel?.todaysVisitors
         statsStackView?.likes = viewModel?.todaysLikes
 
-        nudgeView?.onTap = { [weak self] in
-            self?.showNudgeHint(for: blog, from: viewController)
+        nudgeView?.onTap = { [weak self, weak viewController] in
+            guard let self, let viewController else { return }
+
+            self.showNudgeHint(for: blog, from: viewController)
         }
 
         nudgeView?.isHidden = !(viewModel?.shouldDisplayNudge ?? false)
@@ -101,8 +105,10 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     }
 
     private func makeShowStatsMenuAction(for blog: Blog, in viewController: UIViewController) -> UIAction {
-        UIAction(title: Strings.viewStats, image: UIImage(systemName: "chart.bar.xaxis")) { [weak self] _ in
-            self?.showStats(for: blog, from: viewController)
+        UIAction(title: Strings.viewStats, image: UIImage(systemName: "chart.bar.xaxis")) { [weak self, weak viewController] _ in
+            guard let self, let viewController else { return }
+
+            self.showStats(for: blog, from: viewController)
         }
     }
 

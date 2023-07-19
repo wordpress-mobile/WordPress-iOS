@@ -42,7 +42,6 @@ extension PostService {
                                                         purgeExisting: purgeExisting) {
                                         let users = self.likeUsersFor(postID: postID, siteID: siteID)
                                         success(users, totalLikes.intValue, count)
-                                        LikeUserHelper.purgeStaleLikes()
                                     }
                                  }, failure: { error in
                                     DDLogError(String(describing: error))
@@ -104,6 +103,8 @@ private extension PostService {
             if purgeExisting {
                 self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext, likesToKeep: likers)
             }
+
+            LikeUserHelper.purgeStaleLikes(fromContext: derivedContext)
         }, completion: onComplete, on: .main)
     }
 

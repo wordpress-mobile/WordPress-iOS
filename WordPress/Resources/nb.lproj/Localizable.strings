@@ -795,9 +795,6 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Beste visninger noensinne";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Stor iPhone\/iPad-oppdatering nå tilgjengelig";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blokksitat";
@@ -3556,7 +3553,6 @@ translators: Block name. %s: The localized block name */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -4033,7 +4029,6 @@ translators: Block name. %s: The localized block name */
 "Preparing..." = "Forbereder...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -4255,13 +4250,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Bluss opp samtalen: skriv en nytt innlegg.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Relaterte innlegg";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Relaterte innlegg viser relevant innhold fra siden din under innleggene dine";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -4787,12 +4777,6 @@ translators: Block name. %s: The localized block name */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Delingsfeil";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Vis overskift";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Vis bilder";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Vis Liker-knapp";
 
@@ -4801,9 +4785,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Vis Gjenblogg-knapp";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Vis relaterte innlegg";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5334,9 +5315,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-en savner en gyldig vert.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "WordPress for Android får et stort ansiktsløft";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Appen kjenner ikke igjen svaret fra serveren. Vennligst sjekk oppsettet på ditt nettsted.";
@@ -5996,9 +5974,6 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Oppdaterer...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Oppgraderingsfokus: VideoPress for bryllup";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Last opp medier";
@@ -6778,15 +6753,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed on image media items. */
 "image" = "bilde";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "i \"Apper\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "i \"Mobil\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "i \"Oppgrader\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

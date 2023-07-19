@@ -40,44 +40,15 @@ extension CommentService {
                                                             commentID: commentID,
                                                             siteID: siteID,
                                                             purgeExisting: purgeExisting) {
-                                            let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
+                                            assert(Thread.isMainThread)
+
+                                            let users = LikeUserHelper.likeUsersFor(commentID: commentID, siteID: siteID, in: self.coreDataStack.mainContext)
                                             success(users, totalLikes.intValue, count)
-                                            LikeUserHelper.purgeStaleLikes()
                                         }
                                     }, failure: { error in
                                         DDLogError(String(describing: error))
                                         failure(error)
                                     })
-    }
-
-    /**
-     Fetches a list of users from Core Data that liked the comment with the given IDs.
-
-     @param commentID   The ID of the comment to fetch likes for.
-     @param siteID      The ID of the site that contains the post.
-     @param after       Filter results to likes after this Date. Optional.
-     */
-    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date? = nil) -> [LikeUser] {
-        self.coreDataStack.performQuery { context in
-            let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-
-            request.predicate = {
-                if let after = after {
-                    // The date comparison is 'less than' because Likes are in descending order.
-                    return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
-                }
-
-                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
-            }()
-
-            request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
-
-            if let users = try? context.fetch(request) {
-                return users
-            }
-
-            return [LikeUser]()
-        }
     }
 
 }
@@ -106,6 +77,8 @@ private extension CommentService {
             if purgeExisting {
                 self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext, likesToKeep: likers)
             }
+
+            LikeUserHelper.purgeStaleLikes(fromContext: derivedContext)
         }, completion: onComplete, on: .main)
     }
 

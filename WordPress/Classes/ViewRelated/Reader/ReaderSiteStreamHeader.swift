@@ -36,7 +36,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
     @IBOutlet fileprivate weak var descriptionLabelTopConstraint: NSLayoutConstraint!
 
-    open var delegate: ReaderStreamHeaderDelegate?
+    open weak var delegate: ReaderStreamHeaderDelegate?
     fileprivate var defaultBlavatar = "blavatar-default"
 
     // MARK: - Lifecycle Methods

@@ -17,15 +17,12 @@ public class PrologueScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [continueButtonGetter, siteAddressButtonGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
     public func selectContinue() throws -> GetStartedScreen {
         continueButton.tap()
-
-        app.dismissSavePasswordPrompt()
 
         return try GetStartedScreen()
     }
