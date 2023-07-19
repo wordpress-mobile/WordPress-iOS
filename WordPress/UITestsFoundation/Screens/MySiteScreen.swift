@@ -1,126 +1,140 @@
 import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let navBarTitle = "my-site-navigation-bar"
-    static let blogTable = "Blog Details Table"
-    static let removeSiteButton = "BlogDetailsRemoveSiteCell"
-    static let activityLogButton = "Activity Log Row"
-    static let jetpackScanButton = "Scan Row"
-    static let jetpackBackupButton = "Backup Row"
-    static let postsButton = "Blog Post Row"
-    static let mediaButton = "Media Row"
-    static let statsButton = "Stats Row"
-    static let peopleButton = "People Row"
-    static let settingsButton = "Settings Row"
-    static let domainsButton = "Domains Row"
-    static let createButton = "floatingCreateButton"
-    static let ReaderButton = "Reader"
-    static let switchSiteButton = "SwitchSiteButton"
-    static let dashboardButton = "Home"
-    static let segmentedControlMenuButton = "Menu"
-    // "Free To Paid Plans" Card
-    static let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
-    static let freeToPaidPlansCardHeaderButton = "Free domain with an annual plan"
-    // "Pages" Card
-    static let pagesCardId = "dashboard-pages-card-frameview"
-    static let pagesCardHeaderButton = "Pages"
-    static let pagesCardMoreButton = "More"
-    static let pagesCardCreatePageButton = "Create another page"
-    // "Activity Log" Card
-    static let activityLogCardId = "dashboard-activity-log-card-frameview"
-    static let activityLogCardHeaderButton = "Recent activity"
-}
-
 /// The home-base screen for an individual site. Used in many of our UI tests.
 public class MySiteScreen: ScreenObject {
-    public let tabBar: TabNavComponent
 
-    let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells[ElementStringIDs.activityLogButton]
+    private let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Activity Log Row"]
     }
 
-    let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells[ElementStringIDs.postsButton]
+    private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Blog Post Row"]
     }
 
-    let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells[ElementStringIDs.mediaButton]
+    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Reader"]
     }
 
-    var mediaButton: XCUIElement { mediaButtonGetter(app) }
-
-    let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells[ElementStringIDs.statsButton]
+    private let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Media Row"]
     }
 
-    let createButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.createButton]
-    }
-    let readerButton: XCUIElement
-
-    let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.switchSiteButton]
+    private let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Stats Row"]
     }
 
-    let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.dashboardButton]
+    private let createButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["floatingCreateButton"]
     }
 
-    let segmentedControlMenuButton: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.segmentedControlMenuButton]
+    private let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["SwitchSiteButton"]
     }
 
-    let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.freeToPaidPlansCardHeaderButton]
+    private let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Home"]
     }
 
-    let pagesCardGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.pagesCardId]
+    private let segmentedControlMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Menu"]
     }
 
-    let pagesCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardHeaderButton]
+    private let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Free domain with an annual plan"]
     }
 
-    let pagesCardMoreButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardHeaderButton]
+    private let pagesCardGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["dashboard-pages-card-frameview"]
     }
 
-    let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.pagesCardId].buttons[ElementStringIDs.pagesCardMoreButton]
+    private let pagesCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["dashboard-pages-card-frameview"].buttons["Pages"]
     }
 
-    let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells[ElementStringIDs.domainsButton]
+    private let pagesCardMoreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["dashboard-pages-card-frameview"].buttons["More"]
     }
 
-    let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.activityLogCardId]
+    private let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["dashboard-pages-card-frameview"].buttons["Create another page"]
     }
 
-    let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[ElementStringIDs.activityLogCardId].buttons[ElementStringIDs.activityLogCardHeaderButton]
+    private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Domains Row"]
     }
 
-    var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
-    var pagesCard: XCUIElement { pagesCardGetter(app) }
-    var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
-    var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
-    var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
+    private let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["dashboard-activity-log-card-frameview"]
+    }
+
+    private let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["dashboard-activity-log-card-frameview"].buttons["Recent activity"]
+    }
+
+    private let blogTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Blog Details Table"]
+    }
+
+    private let blogDetailsRemoveSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["BlogDetailsRemoveSiteCell"]
+    }
+
+    private let removeSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Remove Site"]
+    }
+
+    private let removeSiteAlertGetter: (XCUIApplication) -> XCUIElement = {
+        $0.alerts.buttons.element(boundBy: 1)
+    }
+
+    private let jetpackScanButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Scan Row"]
+    }
+
+    private let jetpackBackupButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Backup Row"]
+    }
+
+    private let settingsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Settings Row"]
+    }
+
+    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["People Row"]
+    }
+
+    var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
     var activityLogCard: XCUIElement { activityLogCardGetter(app) }
     var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
+    var blogDetailsRemoveSiteButton: XCUIElement { blogDetailsRemoveSiteButtonGetter(app) }
+    var blogTable: XCUIElement { blogTableGetter(app) }
+    var createButton: XCUIElement { createButtonGetter(app) }
+    var domainsButton: XCUIElement { domainsButtonGetter(app) }
+    var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
+    var homeButton: XCUIElement { homeButtonGetter(app) }
+    var jetpackBackupButton: XCUIElement { jetpackBackupButtonGetter(app) }
+    var jetpackScanButton: XCUIElement { jetpackScanButtonGetter(app) }
+    var mediaButton: XCUIElement { mediaButtonGetter(app) }
+    var pagesCard: XCUIElement { pagesCardGetter(app) }
+    var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
+    var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
+    var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
+    var peopleButton: XCUIElement { peopleButtonGetter(app) }
+    var postsButton: XCUIElement { postsButtonGetter(app) }
+    var readerButton: XCUIElement { readerButtonGetter(app)}
+    var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
+    var removeSiteButton: XCUIElement { removeSiteButtonGetter(app) }
+    var segmentedControlMenuButton: XCUIElement { segmentedControlMenuButtonGetter(app) }
+    var settingsButton: XCUIElement { settingsButtonGetter(app) }
+    var statsButton: XCUIElement { statsButtonGetter(app) }
+    var switchSiteButton: XCUIElement { switchSiteButtonGetter(app)}
 
-    static var isVisible: Bool {
-        let app = XCUIApplication()
-        let blogTable = app.tables[ElementStringIDs.blogTable]
-        return blogTable.exists && blogTable.isHittable
-    }
+    let activityLogCardId = "dashboard-activity-log-card-frameview"
+    let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
+    let pagesCardId = "dashboard-pages-card-frameview"
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        tabBar = try TabNavComponent()
-        readerButton = app.buttons[ElementStringIDs.ReaderButton]
-
         try super.init(
             expectedElementGetters: [
                 switchSiteButtonGetter,
@@ -133,41 +147,35 @@ public class MySiteScreen: ScreenObject {
     }
 
     public func showSiteSwitcher() throws -> MySitesScreen {
-        switchSiteButtonGetter(app).tap()
+        switchSiteButton.tap()
         return try MySitesScreen()
     }
 
     public func removeSelfHostedSite() {
-        app.tables[ElementStringIDs.blogTable].swipeUp(velocity: .fast)
-        app.cells[ElementStringIDs.removeSiteButton].doubleTap()
+        blogTable.swipeUp(velocity: .fast)
+        blogDetailsRemoveSiteButton.doubleTap()
 
-        let removeButton: XCUIElement
-        if XCUIDevice.isPad {
-            removeButton = app.alerts.buttons.element(boundBy: 1)
-        } else {
-            removeButton = app.buttons["Remove Site"]
-        }
-
+        let removeButton = XCUIDevice.isPad ? removeSiteAlert : removeSiteButton
         removeButton.tap()
     }
 
     public func goToActivityLog() throws -> ActivityLogScreen {
-        app.cells[ElementStringIDs.activityLogButton].tap()
+        activityLogButton.tap()
         return try ActivityLogScreen()
     }
 
     public func goToJetpackScan() throws -> JetpackScanScreen {
-        app.cells[ElementStringIDs.jetpackScanButton].tap()
+        jetpackScanButton.tap()
         return try JetpackScanScreen()
     }
 
     public func goToJetpackBackup() throws -> JetpackBackupScreen {
-        app.cells[ElementStringIDs.jetpackBackupButton].tap()
+        jetpackBackupButton.tap()
         return try JetpackBackupScreen()
     }
 
     public func goToPostsScreen() throws -> PostsScreen {
-        postsButtonGetter(app).tap()
+        postsButton.tap()
         return try PostsScreen()
     }
 
@@ -177,28 +185,28 @@ public class MySiteScreen: ScreenObject {
     }
 
     public func goToStatsScreen() throws -> StatsScreen {
-        statsButtonGetter(app).tap()
+        statsButton.tap()
         return try StatsScreen()
     }
 
     @discardableResult
     public func goToSettingsScreen() throws -> SiteSettingsScreen {
-        app.cells[ElementStringIDs.settingsButton].tap()
+        settingsButton.tap()
         return try SiteSettingsScreen()
     }
 
     public func goToCreateSheet() throws -> ActionSheetComponent {
-        createButtonGetter(app).tap()
+        createButton.tap()
         return try ActionSheetComponent()
     }
 
     public func goToHomeScreen() -> Self {
-        homeButtonGetter(app).tap()
+        homeButton.tap()
         return self
     }
 
     public func goToDomainsScreen() throws -> DomainsScreen {
-        app.cells[ElementStringIDs.domainsButton].tap()
+        domainsButton.tap()
         return try DomainsScreen()
     }
 
@@ -209,13 +217,13 @@ public class MySiteScreen: ScreenObject {
             return self
         }
 
-        segmentedControlMenuButton(app).tap()
+        segmentedControlMenuButton.tap()
         return self
     }
 
     @discardableResult
     public func goToPeople() throws -> PeopleScreen {
-        app.cells[ElementStringIDs.peopleButton].tap()
+        peopleButton.tap()
         return try PeopleScreen()
     }
 
@@ -268,13 +276,13 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func scrollToFreeToPaidPlansCard() throws -> Self {
-        scrollToCard(withId: ElementStringIDs.freeToPaidPlansCardId)
+        scrollToCard(withId: freeToPaidPlansCardId)
         return self
     }
 
     @discardableResult
     public func scrollToPagesCard() throws -> Self {
-        scrollToCard(withId: ElementStringIDs.pagesCardId)
+        scrollToCard(withId: pagesCardId)
         return self
     }
 
@@ -286,7 +294,7 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func scrollToActivityLogCard() throws -> Self {
-        scrollToCard(withId: ElementStringIDs.activityLogCardId)
+        scrollToCard(withId: activityLogCardId)
         return self
     }
 
