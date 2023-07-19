@@ -14,6 +14,7 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
+
     lazy var collectionView: DynamicHeightCollectionView = {
         let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -112,10 +113,7 @@ final class BlogDashboardViewController: UIViewController {
         }
 
         self.blog = blog
-        viewModel.blog = blog
-        BlogDashboardAnalytics.shared.reset()
-        viewModel.loadCardsFromCache()
-        viewModel.loadCards()
+        self.viewModel.update(blog: blog)
     }
 
     @objc func refreshControlPulled() {

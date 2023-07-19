@@ -56,7 +56,7 @@ public class TabNavComponent: ScreenObject {
     }
 
     @discardableResult
-    public func gotoBlockEditorScreen() throws -> BlockEditorScreen {
+    public func goToBlockEditorScreen() throws -> BlockEditorScreen {
         try goToMySiteScreen()
             .goToCreateSheet()
             .goToBlogPost()

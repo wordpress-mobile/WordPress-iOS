@@ -65,29 +65,35 @@ public class LoginEpilogueScreen: ScreenObject {
     }
 
     private func dismissQuickStartPromptIfNeeded() throws {
-        try XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { _ in
-            guard QuickStartPromptScreen.isLoaded() else { return }
-
+        XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { _ in
             Logger.log(message: "Dismising quick start prompt...", event: .i)
-            _ = try QuickStartPromptScreen().selectNoThanks()
+            do {
+                _ = try QuickStartPromptScreen().selectNoThanks()
+            } catch {
+                return
+            }
         }
     }
 
     private func dismissOnboardingQuestionsPromptIfNeeded() throws {
-        try XCTContext.runActivity(named: "Dismiss onboarding questions prompt if needed.") { _ in
-            guard OnboardingQuestionsPromptScreen.isLoaded() else { return }
-
+        XCTContext.runActivity(named: "Dismiss onboarding questions prompt if needed.") { _ in
             Logger.log(message: "Dismissing onboarding questions prompt...", event: .i)
-            _ = try OnboardingQuestionsPromptScreen().selectSkip()
+            do {
+                _ = try OnboardingQuestionsPromptScreen().selectSkip()
+            } catch {
+                return
+            }
         }
     }
 
     private func dismissFeatureIntroductionIfNeeded() throws {
-        try XCTContext.runActivity(named: "Dismiss feature introduction screen if needed.") { _ in
-            guard FeatureIntroductionScreen.isLoaded() else { return }
-
+        XCTContext.runActivity(named: "Dismiss feature introduction screen if needed.") { _ in
             Logger.log(message: "Dismissing feature introduction screen...", event: .i)
-            _ = try FeatureIntroductionScreen().dismiss()
+            do {
+                _ = try FeatureIntroductionScreen().dismiss()
+            } catch {
+                return
+            }
         }
     }
 }

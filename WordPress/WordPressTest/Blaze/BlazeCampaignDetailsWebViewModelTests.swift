@@ -24,7 +24,7 @@ final class BlazeCampaignDetailsWebViewModelTests: CoreDataTestCase {
 
     func testInternalURLsAllowed() throws {
         // Given
-        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignsList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
+        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
         let validURL = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
         var validRequest = URLRequest(url: validURL)
         validRequest.mainDocumentURL = validURL
@@ -39,7 +39,7 @@ final class BlazeCampaignDetailsWebViewModelTests: CoreDataTestCase {
 
     func testExternalURLsBlocked() throws {
         // Given
-        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignsList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
+        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
         let invalidURL = try XCTUnwrap(URL(string: "https://test.com/test?example=test"))
         var invalidRequest = URLRequest(url: invalidURL)
         invalidRequest.mainDocumentURL = invalidURL
@@ -55,7 +55,7 @@ final class BlazeCampaignDetailsWebViewModelTests: CoreDataTestCase {
 
     func testCallingDismissTappedDismissesTheView() {
         // Given
-        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignsList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
+        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
 
         // When
         viewModel.dismissTapped()
@@ -66,14 +66,14 @@ final class BlazeCampaignDetailsWebViewModelTests: CoreDataTestCase {
 
     func testCallingStartBlazeSiteFlowLoadsTheView() throws {
         // Given
-        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignsList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
+        let viewModel = BlazeCampaignDetailsWebViewModel(source: .campaignList, blog: blog, campaignID: 0, view: view, externalURLHandler: externalURLHandler)
 
         // When
         viewModel.startBlazeFlow()
 
         // Then
         XCTAssertTrue(view.loadCalled)
-        XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com/campaigns/0?source=campaigns_list")
+        XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com/campaigns/0?source=campaign_list")
     }
 }
 

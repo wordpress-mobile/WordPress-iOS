@@ -51,7 +51,7 @@ protocol QRCameraPermissionsHandler: CameraPermissionsHandler {
 }
 
 /// A delegate that handles when a code was scanned and whether its valid or not
-protocol QRCodeScanningDelegate {
+protocol QRCodeScanningDelegate: AnyObject {
     func validLink(_ stringValue: String) -> Bool
     func didScanURLString(_ urlString: String)
 }

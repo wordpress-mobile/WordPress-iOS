@@ -7,7 +7,7 @@ class ReaderTabViewController: UIViewController {
 
     private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
-    private lazy var readerTabView: ReaderTabView = {
+    private lazy var readerTabView: ReaderTabView = { [unowned viewModel] in
         return makeReaderTabView(viewModel)
     }()
 

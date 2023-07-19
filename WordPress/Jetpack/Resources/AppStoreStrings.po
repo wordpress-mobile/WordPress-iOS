@@ -81,14 +81,11 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v22.7-whats-new"
+msgctxt "v22.8-whats-new"
 msgid ""
-"We fixed an issue with the home screen’s “Work on a draft post” card. The app will no longer crash when you access drafts while they’re in the middle of uploading.\n"
+"We disabled blogging reminders for self-hosted sites that aren’t connected to Jetpack, since this feature is only available in the Jetpack app.\n"
 "\n"
-"We also solved a couple of problems in the block editor.\n"
-"\n"
-"- Right on—image blocks now display the correct aspect ratio, whether or not the image has a set width and height.\n"
-"- When you’re dictating text, the cursor’s position will stay where it’s supposed to—no more jumping around. Keep calm and dictate on.\n"
+"Reusable blocks are now known as synced patterns, the same as in the desktop editor.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

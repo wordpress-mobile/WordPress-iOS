@@ -4,31 +4,6 @@ import WordPressShared
 import Gridicons
 import UIKit
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     private let postCompactCellIdentifier = "PostCompactCellIdentifier"
@@ -779,7 +754,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func updateForLocalPostsMatchingSearchText() {
         // If the user taps and starts to type right away, avoid doing the search
         // while the tableViewHandler is not ready yet
-        if !_tableViewHandler.isSearching && currentSearchTerm()?.count > 0 {
+        if !_tableViewHandler.isSearching, let search = currentSearchTerm(), !search.isEmpty {
             return
         }
 

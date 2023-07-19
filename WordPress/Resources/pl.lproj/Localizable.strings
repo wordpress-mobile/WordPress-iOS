@@ -358,9 +358,6 @@
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Najlepsza godzina";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Duże uaktualnienie dla iPhone'a\/iPada jest już dostępne";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Cytat blokowy";
@@ -2020,7 +2017,6 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading Blaze campiagns.
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
@@ -2239,7 +2235,6 @@
 "Preparing..." = "Przygotowuję…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -2374,9 +2369,7 @@
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Zarejestrowana domena";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Powiązane posty";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -2647,12 +2640,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Przyciski udostępniania";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Pokaż nagłówek";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Pokaż obrazki";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Pokaż przycisk polubienia";
 
@@ -2661,9 +2648,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Pokaż przycisk reblogowania";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Pokaż powiązane posty";
 
 /* No comment provided by engineer. */
 "Show post content" = "Pokaż treść wpisu";
@@ -3618,9 +3602,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Odrzuć";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "w \"Aplikacjach\"";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";

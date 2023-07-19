@@ -4,8 +4,6 @@ import SwiftUI
 
 class DebugMenuViewController: UITableViewController {
     private var handler: ImmuTableViewHandler!
-    private let remoteStore = RemoteFeatureFlagStore()
-    private let overrideStore = FeatureFlagOverrideStore()
 
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -39,40 +37,24 @@ class DebugMenuViewController: UITableViewController {
     }
 
     private func reloadViewModel() {
-        let remoteFeatureFlags = RemoteFeatureFlag.allCases.filter({ $0.canOverride })
-        let remoteFeatureFlagsRows: [ImmuTableRow] = remoteFeatureFlags.map({ makeRemoteFeatureFlagsRows(for: $0) })
-
-        let localFeatureFlags = FeatureFlag.allCases.filter({ $0.canOverride })
-        let localFeatureFlagsRows: [ImmuTableRow] = localFeatureFlags.map({ makeLocalFeatureFlagsRow(for: $0) })
-
         handler.viewModel = ImmuTable(sections: [
-            ImmuTableSection(headerText: Strings.remoteFeatureFlags, rows: remoteFeatureFlagsRows),
-            ImmuTableSection(headerText: Strings.localFeatureFlags, rows: localFeatureFlagsRows),
+            ImmuTableSection(headerText: Strings.general, rows: generalRows),
             ImmuTableSection(headerText: Strings.tools, rows: toolsRows),
             ImmuTableSection(headerText: Strings.crashLogging, rows: crashLoggingRows),
             ImmuTableSection(headerText: Strings.reader, rows: readerRows),
         ])
     }
 
-    private func makeLocalFeatureFlagsRow(for flag: FeatureFlag) -> ImmuTableRow {
-        let overridden: String? = overrideStore.isOverridden(flag) ? Strings.overridden : nil
-
-        return SwitchWithSubtitleRow(title: String(describing: flag), value: flag.enabled, subtitle: overridden, onChange: { isOn in
-            try? self.overrideStore.override(flag, withValue: isOn)
-            self.reloadViewModel()
-        })
-    }
-
-    private func makeRemoteFeatureFlagsRows(for flag: RemoteFeatureFlag) -> ImmuTableRow {
-        let overridden: String? = overrideStore.isOverridden(flag) ? Strings.overridden : nil
-        let enabled = flag.enabled(using: remoteStore, overrideStore: overrideStore)
-        return SwitchWithSubtitleRow(title: String(describing: flag), value: enabled, subtitle: overridden, onChange: { isOn in
-            try? self.overrideStore.override(flag, withValue: isOn)
-            self.reloadViewModel()
-        })
-    }
-
     // MARK: Tools
+
+    private var generalRows: [ImmuTableRow] {
+        [
+            NavigationItemRow(title: Strings.featureFlags) { [weak self] _ in
+                let vc = UIHostingController(rootView: DebugFeatureFlagsView())
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        ]
+    }
 
     private var toolsRows: [ImmuTableRow] {
         var toolsRows = [
@@ -196,9 +178,6 @@ class DebugMenuViewController: UITableViewController {
     }
 
     enum Strings {
-        static let overridden = NSLocalizedString("Overridden", comment: "Used to indicate a setting is overridden in debug builds of the app")
-        static let localFeatureFlags = NSLocalizedString("debugMenu.section.localFeatureFlags", value: "Local Feature Flags", comment: "Title of the Local Feature Flags screen used in debug builds of the app")
-        static let remoteFeatureFlags = NSLocalizedString("debugMenu.section.remoteFeatureFlags", value: "Remote Feature Flags", comment: "Title of the Remote Feature Flags screen used in debug builds of the app")
         static let tools = NSLocalizedString("Tools", comment: "Title of the Tools section of the debug screen used in debug builds of the app")
         static let sandboxStoreCookieSecretRow = NSLocalizedString("Use Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
         static let quickStartForNewSiteRow = NSLocalizedString("Enable Quick Start for New Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
@@ -212,8 +191,8 @@ class DebugMenuViewController: UITableViewController {
         static let readerCssTitle = NSLocalizedString("Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
         static let readerURLPlaceholder = NSLocalizedString("Default URL", comment: "Placeholder for the reader CSS URL")
         static let readerURLHint = NSLocalizedString("Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
-        static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title",
-                                                         value: "Remote Config",
-                                                         comment: "Remote Config debug menu title")
+        static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
+        static let general = NSLocalizedString("debugMenu.generalSectionTitle", value: "General", comment: "General section title")
+        static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     }
 }

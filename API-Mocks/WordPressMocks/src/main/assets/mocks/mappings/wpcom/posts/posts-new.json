@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "urlPattern": "/rest/v1.2/sites/.*/posts/new(/)?($|\\?.*)",
+    "urlPattern": "/rest/v1.2/sites/106707880/posts/new?($|\\?.*)",
     "queryParameters": {
       "context": {
         "equalTo": "edit"
@@ -27,8 +27,8 @@
         "profile_URL": "http://en.gravatar.com/e2eflowtestingmobile",
         "site_ID": 1
       },
-      "date": "2019-03-12T15:00:53+00:00",
-      "modified": "2019-03-12T15:00:53+00:00",
+      "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
+      "modified": "{{now format=customformat}}",
       "title": "{{jsonPath request.body '$.title'}}",
       "URL": "https://lowtestingmobile.wordpress.com/2019/03/12/title-33/",
       "short_URL": "https://e/paIC9Y-1r",
@@ -75,9 +75,9 @@
             "parent": 0,
             "meta": {
               "links": {
-                "self": "https://ic-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
-                "help": "https://ic-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
-                "site": "https://ic-api.wordpress.com/rest/v1.2/sites/106707880"
+                "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
+                "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
               }
             }
           }
@@ -101,9 +101,9 @@
           "parent": 0,
           "meta": {
             "links": {
-              "self": "https://ic-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
-              "help": "https://ic-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
-              "site": "https://ic-api.wordpress.com/rest/v1.2/sites/106707880"
+              "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+              "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
+              "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
             }
           }
         }
@@ -120,11 +120,11 @@
       ],
       "meta": {
         "links": {
-          "self": "https://ic-api.wordpress.com/rest/v1.1/sites/106707880/posts/5",
-          "help": "https://ic-api.wordpress.com/rest/v1.2/sites/106707880/posts/5/help",
-          "site": "https://ic-api.wordpress.com/rest/v1.2/sites/106707880",
-          "replies": "https://ic-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/replies/",
-          "likes": "https://ic-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/likes/"
+          "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5",
+          "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/5/help",
+          "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
+          "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/replies/",
+          "likes": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/likes/"
         }
       },
       "capabilities": {

@@ -106,6 +106,7 @@ extension WPStyleGuide {
         }
     }
 
+    // TODO: Remove this in favor of `PublicizeService.ServiceName` once `jetpackSocial` flag is removed.
     enum SharingServiceNames: String {
         case Facebook = "facebook"
         case Twitter = "twitter"

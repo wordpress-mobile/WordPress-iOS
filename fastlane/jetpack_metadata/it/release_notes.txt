@@ -1,6 +1,0 @@
-Abbiamo risolto un problema con la scheda "Lavora su un articolo bozza" nella schermata iniziale. L'app non si arresta più in modo anomalo quando si accede alle bozze mentre sono in fase di caricamento.
-
-Abbiamo anche risolto un paio di problemi nell'Editor a blocchi.
-
-- Miglioramento immediato: i blocchi di immagini ora mostrano le proporzioni corrette, indipendentemente dal fatto che l'immagine abbia o meno larghezza e altezza impostate.
-- Durante la dettatura di un testo, la posizione del cursore rimarrà dove deve, non dovrai muoverti nel testo. Keep calm and dictate on.

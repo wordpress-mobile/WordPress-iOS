@@ -1,7 +1,7 @@
 
 import Foundation
 
-protocol TemplatePreviewViewDelegate {
+protocol TemplatePreviewViewDelegate: AnyObject {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
     func deviceButtonTapped(_ previewDevice: PreviewDevice)
     func deviceModeChanged(_ previewDevice: PreviewDevice)
@@ -20,7 +20,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var progressBar: UIProgressView!
 
-    internal var delegate: TemplatePreviewViewDelegate?
+    internal weak var delegate: TemplatePreviewViewDelegate?
     private let demoURL: String
     private var estimatedProgressObserver: NSKeyValueObservation?
     internal var selectedPreviewDevice: PreviewDevice {
