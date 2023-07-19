@@ -937,13 +937,11 @@ extension StatsInsightsStore {
             return [:]
         }
 
-        return postingEvents.reduce([:]) { partialResult, event in
-            var result = partialResult
-            if result[event.date] == nil {
-                result[event.date] = event
-            }
-            return result
+        var dictionary: [Date: PostingStreakEvent] = [:]
+        for event in postingEvents {
+            dictionary[event.date] = event
         }
+        return dictionary
     }
 
     func getAllDotComFollowers() -> StatsDotComFollowersInsight? {
