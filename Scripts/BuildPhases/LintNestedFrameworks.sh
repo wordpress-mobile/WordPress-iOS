@@ -21,7 +21,7 @@ else
         #  * The `sed` command removes the leading `./` in the paths returned by `find`, then quote the results in backticks for nicer formatting in final message.
         #  * The `tr` command joins all the lines (= found frameworks) with a `,`. Note that this will result in an extra comma at the end of the list too, but we'll get rid of that in the final message using ${nested_fmks%,} bash substitution.
         nested_fmks=$(cd "${fmk_dir}" && find . -name '*.framework' -depth 1 | sed "s:^./\(.*\)$:\`\1\`:" | tr '\n' ',')
-        echo "error: Found nested frameworks in ${fmk_dir} -- Such a configuration is invalid and will be rejected by TestFlight. Please fix by choosing 'Do Not Embed' for the nested framework(s) ${nested_fmks%,} within the \`${parent_fmk}\` Xcode project which links to them. You might need to use Xcode 12.5 to fix this, due to an Xcode 12.4 bug – see paNNhX-ee-p2"
+        echo "error: Found nested frameworks in ${fmk_dir} -- Such a configuration is invalid and will be rejected by TestFlight. Please fix by choosing 'Do Not Embed' for the nested framework(s) ${nested_fmks%,} within the \`${parent_fmk}\` Xcode project which links to them."
     done
     exit 1
 fi
