@@ -310,10 +310,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         return;
     }
 
-    ReaderSiteTopic *feedSiteTopic = [ReaderSiteTopic lookupWithFeedID:readerPost.feedID inContext:context];
-    if (feedSiteTopic) {
-        [topicService toggleFollowingForSite:feedSiteTopic success:success failure:failure];
-        return;
+    if (readerPost.feedID) {
+        ReaderSiteTopic *feedSiteTopic = [ReaderSiteTopic lookupWithFeedID:readerPost.feedID inContext:context];
+        if (feedSiteTopic) {
+            [topicService toggleFollowingForSite:feedSiteTopic success:success failure:failure];
+            return;
+        }
     }
 
 
