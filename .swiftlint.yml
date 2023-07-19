@@ -3,6 +3,10 @@ remote_timeout: 10.0
 
 opt_in_rules:
   - overridden_super_call
+  - weak_delegate
 
 overridden_super_call:
+  severity: error
+
+weak_delegate:
   severity: error
