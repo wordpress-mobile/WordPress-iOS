@@ -57,7 +57,6 @@ extension PostSettingsViewController {
 
         let shouldDisplayWarning = publicizeConnections.count > sharingLimit.remaining
         let viewModel = JetpackSocialRemainingSharesViewModel(remaining: sharingLimit.remaining,
-                                                              limit: sharingLimit.limit,
                                                               displayWarning: shouldDisplayWarning,
                                                               onSubscribeTap: onSubscribeTap())
         let hostController = UIHostingController(rootView: JetpackSocialSettingsRemainingSharesView(viewModel: viewModel))
