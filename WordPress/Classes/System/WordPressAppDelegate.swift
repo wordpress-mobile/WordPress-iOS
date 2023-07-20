@@ -776,6 +776,11 @@ extension WordPressAppDelegate {
         SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjack.dynamicLogLevel = level
     }
+
+    /// Logs the error in Sentry.
+    @objc class func logError(_ error: Error) {
+        crashLogging?.logError(error)
+    }
 }
 
 // MARK: - Local Notification Helpers
