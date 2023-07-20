@@ -3461,6 +3461,9 @@
 		EA14533829AD874C001F3143 /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		EA14533929AD874C001F3143 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = EA14532529AD874C001F3143 /* BuildkiteTestCollector */; };
 		EA78189427596B2F00554DFA /* ContactUsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78189327596B2F00554DFA /* ContactUsScreen.swift */; };
+		EA85B7AB2A686C7A0096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
+		EA85B7AF2A688AB00096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
+		EA85B7B02A688B1C0096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
 		EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */; };
 		EAD08D0E29D45E23001A72F9 /* CommentsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */; };
 		EAD2BF4227594DAB00A847BB /* StatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD2BF4127594DAB00A847BB /* StatsTests.swift */; };
@@ -8901,6 +8904,7 @@
 		EA14534229AD874C001F3143 /* JetpackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA14534629AEF479001F3143 /* JetpackUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = JetpackUITests.xctestplan; sourceTree = "<group>"; };
 		EA78189327596B2F00554DFA /* ContactUsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsScreen.swift; sourceTree = "<group>"; };
+		EA85B7A92A6860370096E097 /* TestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObserver.swift; sourceTree = "<group>"; };
 		EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
 		EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsScreen.swift; sourceTree = "<group>"; };
 		EAD2BF4127594DAB00A847BB /* StatsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTests.swift; sourceTree = "<group>"; };
@@ -11635,6 +11639,7 @@
 				3F762E9226784A950088CD45 /* Logger.swift */,
 				3FE39A4326F8391D006E2B3A /* Screens */,
 				3FA640592670CCD40064401E /* UITestsFoundation.h */,
+				EA85B7A92A6860370096E097 /* TestObserver.swift */,
 				3F762E9426784B540088CD45 /* WireMock.swift */,
 				3F107B1829B6F7E0009B3658 /* XCTestCase+Utils.swift */,
 				3F6A8CDF2A246357009DBC2B /* XCUIApplication+SavePassword.swift */,
@@ -22996,6 +23001,7 @@
 				3F2F855026FAF227000FCDA5 /* SignupEmailScreen.swift in Sources */,
 				3F2F855826FAF227000FCDA5 /* SignupEpilogueScreen.swift in Sources */,
 				3F2F855726FAF227000FCDA5 /* WelcomeScreenSignupComponent.swift in Sources */,
+				EA85B7AB2A686C7A0096E097 /* TestObserver.swift in Sources */,
 				3F107B1929B6F7E0009B3658 /* XCTestCase+Utils.swift in Sources */,
 				3F2F855326FAF227000FCDA5 /* EditorPostSettings.swift in Sources */,
 				3F2F856026FAF235000FCDA5 /* NotificationsScreen.swift in Sources */,
@@ -23874,6 +23880,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA85B7AF2A688AB00096E097 /* TestObserver.swift in Sources */,
 				EA14532929AD874C001F3143 /* MainNavigationTests.swift in Sources */,
 				80379C6F2A5C0D8F00D924AC /* PostTests.swift in Sources */,
 				EA14532A29AD874C001F3143 /* ReaderTests.swift in Sources */,
@@ -25839,6 +25846,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA85B7B02A688B1C0096E097 /* TestObserver.swift in Sources */,
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				80379C6E2A5C0D8F00D924AC /* PostTests.swift in Sources */,
 				EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */,
