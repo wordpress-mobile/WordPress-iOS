@@ -3461,7 +3461,6 @@
 		EA14533829AD874C001F3143 /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		EA14533929AD874C001F3143 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = EA14532529AD874C001F3143 /* BuildkiteTestCollector */; };
 		EA78189427596B2F00554DFA /* ContactUsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78189327596B2F00554DFA /* ContactUsScreen.swift */; };
-		EA85B7AB2A686C7A0096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
 		EA85B7AF2A688AB00096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
 		EA85B7B02A688B1C0096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
 		EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */; };
@@ -23001,7 +23000,6 @@
 				3F2F855026FAF227000FCDA5 /* SignupEmailScreen.swift in Sources */,
 				3F2F855826FAF227000FCDA5 /* SignupEpilogueScreen.swift in Sources */,
 				3F2F855726FAF227000FCDA5 /* WelcomeScreenSignupComponent.swift in Sources */,
-				EA85B7AB2A686C7A0096E097 /* TestObserver.swift in Sources */,
 				3F107B1929B6F7E0009B3658 /* XCTestCase+Utils.swift in Sources */,
 				3F2F855326FAF227000FCDA5 /* EditorPostSettings.swift in Sources */,
 				3F2F856026FAF235000FCDA5 /* NotificationsScreen.swift in Sources */,
