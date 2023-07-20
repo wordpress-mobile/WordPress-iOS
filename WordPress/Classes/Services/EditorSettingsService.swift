@@ -71,8 +71,7 @@ import WordPressKit
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.postDesignateMobileEditorForAllSites(remoteEditor, setOnlyIfEmpty: !overrideRemote, success: { response in
-            self.updateAllSites(with: response)
-            onSuccess?()
+            self.updateAllSites(with: response, completion: onSuccess)
         }) { (error) in
             DDLogError("Error saving editor settings: \(error)")
         }
@@ -83,25 +82,24 @@ import WordPressKit
     }
 
     var apiForDefaultAccount: WordPressComRestApi? {
-        return defaultWPComAccount?.wordPressComRestApi
+        coreDataStack.performQuery { context in
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+            return account?.wordPressComRestApi
+        }
     }
 }
 
 private extension EditorSettingsService {
-    var defaultWPComAccount: WPAccount? {
-        coreDataStack.performQuery { context in
-            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-        }
-    }
-
-    func updateAllSites(with response: [Int: EditorSettings.Mobile]) {
-        guard let account = defaultWPComAccount else {
-            return
-        }
-        let settings = GutenbergSettings()
-        for (siteID, editor) in response {
-            self.updateSite(withID: siteID, editor: editor, account: account, settings: settings)
-        }
+    func updateAllSites(with response: [Int: EditorSettings.Mobile], completion: (() -> Void)?) {
+        coreDataStack.performAndSave({ context in
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+                return
+            }
+            let settings = GutenbergSettings()
+            for (siteID, editor) in response {
+                self.updateSite(withID: siteID, editor: editor, account: account, settings: settings)
+            }
+        }, completion: completion, on: .main)
     }
 
     func updateSite(withID siteID: Int, editor: EditorSettings.Mobile, account: WPAccount, settings: GutenbergSettings) {
