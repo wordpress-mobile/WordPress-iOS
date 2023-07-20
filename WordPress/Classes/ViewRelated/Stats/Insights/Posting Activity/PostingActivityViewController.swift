@@ -8,7 +8,7 @@ struct PostingActivityViewModel {
     }
 
     lazy var yearData: [[PostingStreakEvent]] = {
-        return insightsStore.getYearlyPostingActivityFrom(date: Date())
+        return insightsStore.getYearlyPostingActivity(from: Date())
     }()
 }
 

@@ -876,48 +876,30 @@ extension StatsInsightsStore {
     /// Summarizes the daily posting count for the month in the given date.
     /// Returns an array containing every day of the month and associated post count.
     ///
-    func getMonthlyPostingActivityFor(date: Date) -> [PostingStreakEvent] {
+    func getMonthlyPostingActivity(for date: Date) -> [PostingStreakEvent] {
         let postingEventDates = getPostingEventsDates()
 
         return getMonthlyPostingActivityFor(date: date, postingEventsDates: postingEventDates)
     }
 
-    func getMonthlyPostingActivityFor(date: Date, postingEventsDates: [Date: PostingStreakEvent]) -> [PostingStreakEvent] {
+    func getQuarterlyPostingActivity(from date: Date) -> [[PostingStreakEvent]] {
+        let postingEventDates = getPostingEventsDates()
+        var quarterlyData = [[PostingStreakEvent]]()
 
-        let calendar = Calendar.autoupdatingCurrent
-        let components = calendar.dateComponents([.month, .year], from: date)
-
-        guard
-            let month = components.month,
-            let year = components.year
-            else {
-                return []
+        if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: date) {
+            quarterlyData.append(getMonthlyPostingActivityFor(date: twoMonthsAgo, postingEventsDates: postingEventDates))
         }
 
-        // This gives a range of how many days there are in a given month...
-        let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
-
-        let mappedMonth = rangeOfMonth
-            // then we create a `Date` representing each of those days
-            // and pick out a relevant `PostingStreakEvent` from data we have or return
-            // an empty one.
-            .compactMap { (day: Int) -> PostingStreakEvent? in
-                guard let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else {
-                    return nil
-                }
-
-                if let postingEvent = postingEventsDates[date] {
-                    return postingEvent
-                }
-
-                return PostingStreakEvent(date: date, postCount: 0)
+        if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: date) {
+            quarterlyData.append(getMonthlyPostingActivityFor(date: oneMonthAgo, postingEventsDates: postingEventDates))
         }
 
-        return mappedMonth
+        quarterlyData.append(getMonthlyPostingActivityFor(date: date, postingEventsDates: postingEventDates))
 
+        return quarterlyData
     }
 
-    func getYearlyPostingActivityFrom(date: Date) -> [[PostingStreakEvent]] {
+    func getYearlyPostingActivity(from date: Date) -> [[PostingStreakEvent]] {
         let postingEventsDates = getPostingEventsDates()
 
         // We operate on a "reversed" range since we want least-recent months first.
@@ -930,18 +912,6 @@ extension StatsInsightsStore {
 
             return getMonthlyPostingActivityFor(date: monthDate, postingEventsDates: postingEventsDates)
         }
-    }
-
-    private func getPostingEventsDates() -> [Date: PostingStreakEvent] {
-        guard let postingEvents = state.postingActivity?.postingEvents else {
-            return [:]
-        }
-
-        var dictionary: [Date: PostingStreakEvent] = [:]
-        for event in postingEvents {
-            dictionary[event.date] = event
-        }
-        return dictionary
     }
 
     func getAllDotComFollowers() -> StatsDotComFollowersInsight? {
@@ -1126,5 +1096,56 @@ private extension InsightStoreState {
                 return false
         }
         return true
+    }
+}
+
+// MARK: - Posting Activity Private Methods
+
+private extension StatsInsightsStore {
+    private func getMonthlyPostingActivityFor(date: Date, postingEventsDates: [Date: PostingStreakEvent]) -> [PostingStreakEvent] {
+
+        let calendar = Calendar.autoupdatingCurrent
+        let components = calendar.dateComponents([.month, .year], from: date)
+
+        guard
+            let month = components.month,
+            let year = components.year
+            else {
+                return []
+        }
+
+        // This gives a range of how many days there are in a given month...
+        let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
+
+        let mappedMonth = rangeOfMonth
+            // then we create a `Date` representing each of those days
+            // and pick out a relevant `PostingStreakEvent` from data we have or return
+            // an empty one.
+            .compactMap { (day: Int) -> PostingStreakEvent? in
+                guard let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else {
+                    return nil
+                }
+
+                if let postingEvent = postingEventsDates[date] {
+                    return postingEvent
+                }
+
+                return PostingStreakEvent(date: date, postCount: 0)
+        }
+
+        return mappedMonth
+
+    }
+
+    private func getPostingEventsDates() -> [Date: PostingStreakEvent] {
+        guard let postingEvents = state.postingActivity?.postingEvents else {
+            return [:]
+        }
+
+        var dictionary: [Date: PostingStreakEvent] = [:]
+        for event in postingEvents {
+            dictionary[event.date] = event
+        }
+        return dictionary
     }
 }
