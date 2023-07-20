@@ -4,11 +4,15 @@ class TestObserver: NSObject, XCTestObservation {
     override init() {
             super.init()
             XCTestObservationCenter.shared.addTestObserver(self)
-        }
+    }
 
     func testBundleWillStart(_ testBundle: Bundle) {
         // Code added here will run only once before all the tests
         executeWithRetries(disableAutoFillPasswords)
+    }
+
+    func testBundleDidFinish(_ testBundle: Bundle) {
+        XCTestObservationCenter.shared.removeTestObserver(self)
     }
 
     func executeWithRetries(_ operation: () -> Bool) {
@@ -21,37 +25,25 @@ class TestObserver: NSObject, XCTestObservation {
 
     func disableAutoFillPasswords() -> Bool {
         let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        // Terminating Settings in case of a retry.
         settings.terminate()
-
         settings.activate()
+
         let passwordsMenuItem = settings.staticTexts["Passwords"]
         passwordsMenuItem.waitForIsHittable()
-        guard passwordsMenuItem.waitForIsHittable() else {
-            XCTFail("SetUp Failed: Passwords menu item was not hittable in Settings.")
-            return false
-        }
-        settings.staticTexts["Passwords"].tap()
+        passwordsMenuItem.tap()
 
         let enterPasscodeScreen = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let passwordField = enterPasscodeScreen.secureTextFields["Passcode field"]
-        guard passwordField.waitForIsHittable() else {
-            XCTFail("SetUp Failed: Password field was not hittable in 'Enter passcode screen.")
-            return false
-        }
+        passwordField.waitForIsHittable()
         passwordField.typeText(" \r")
 
         let passwordOptions = settings.staticTexts["Password Options"]
-        guard passwordOptions.waitForIsHittable() else {
-            XCTFail("SetUp Failed: Password Options was not hittable in Passwords.")
-            return false
-        }
+        passwordOptions.waitForIsHittable()
         passwordOptions.tap()
 
         let autoFillPasswordsSwitch = settings.switches["AutoFill Passwords"]
-        guard autoFillPasswordsSwitch.waitForIsHittable() else {
-            XCTFail("SetUp Failed: AutoFill Passwords switch was not hittable in Passwords Options.")
-            return false
-        }
+        autoFillPasswordsSwitch.waitForIsHittable()
 
         if autoFillPasswordsSwitch.value as? String == "1" {
             autoFillPasswordsSwitch.tap()
