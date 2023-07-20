@@ -29,7 +29,7 @@ protocol RootViewPresenter: AnyObject {
     func switchToMyLikes()
     func switchToFollowedSites()
     func navigateToReaderSite(_ topic: ReaderSiteTopic)
-    func navigateToReaderTag( _ topic: ReaderTagTopic)
+    func navigateToReaderTag(_ tagSlug: String)
     func navigateToReader(_ pushControlller: UIViewController?)
 
     // MARK: My Site
