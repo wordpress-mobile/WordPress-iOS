@@ -6,6 +6,7 @@
 * [*] [internal] Update calls to use UserDefaults singleton. [#21088]
 * [*] Fix memory leaks in setting up Jetpack connection. [#21052]
 * [*] Fix a memory leak caused by the theme customization web view. [#21051]
+* [*] Update close button icon in Editor Navigation bar [#21097]
 
 22.8
 -----
