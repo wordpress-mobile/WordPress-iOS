@@ -8,6 +8,9 @@ extension XCTestCase {
         removeBeforeLaunching: Bool = false,
         crashOnCoreDataConcurrencyIssues: Bool = true
     ) {
+        // To avoid handling 'Save Password' prompts after login.
+        disableAutoFillPasswords()
+
         // To ensure that the test starts with a new simulator launch each time
         app.terminate()
         super.setUp()
@@ -30,6 +33,24 @@ extension XCTestCase {
         // Media permissions alert handler
         let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
+    }
+
+    public func disableAutoFillPasswords() {
+        let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        settings.activate()
+        settings.staticTexts["Passwords"].tap()
+
+        let enterPasscodeScreen = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        enterPasscodeScreen.secureTextFields["Passcode field"].typeText(" ")
+        enterPasscodeScreen.buttons["done"].tap()
+
+        settings.staticTexts["Password Options"].tap()
+
+        let autoFillPasswordsSwitch = settings.switches["AutoFill Passwords"]
+        if autoFillPasswordsSwitch.value as? String == "1" {
+            autoFillPasswordsSwitch.tap()
+        }
+        settings.terminate()
     }
 
     public func takeScreenshotOfFailedTest() {

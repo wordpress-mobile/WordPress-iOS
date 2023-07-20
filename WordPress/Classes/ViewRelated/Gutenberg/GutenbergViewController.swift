@@ -241,6 +241,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     let navigationBarManager: PostEditorNavigationBarManager
 
+    // swiftlint:disable:next weak_delegate
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
@@ -338,6 +339,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         self.navigationBarManager.delegate = self
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {

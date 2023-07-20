@@ -28,7 +28,7 @@ final class BlazeCampaignSingleStatView: UIView {
     private lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         label.textColor = .text
         label.isAccessibilityElement = false
         return label

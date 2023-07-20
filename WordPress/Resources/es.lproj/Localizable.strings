@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-11 16:41:06+0000 */
+/* Translation-Revision-Date: 2023-07-12 18:49:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: es */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloque %s. Este bloque tiene contenido no válido";
+
+/* translators: %s: name of the synced block */
+"%s detached" = "%s separado";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Pronto llegarán las vistas previas del bloque incrustado de %s";
@@ -734,6 +737,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativamente, puedes separar y editar estos bloques por separado tocando en «Separar patrones».";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "También puedes pulsar en \"Separar patrón\" para separar y editar este bloque en exclusiva.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "También puedes introducir la contraseña de esta cuenta.";
@@ -9628,6 +9634,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "No tienes ninguna campaña";
 
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "Se ha producido un error al cargar las campañas.";
+
 /* Title for the view when there's an error loading Blaze campiagns. */
 "blaze.campaigns.errorTitle" = "¡Vaya!";
 
@@ -9733,11 +9742,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Responder a %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Estas cookies nos permiten optimizar el rendimiento al recopilar información sobre cómo los usuarios interactúan con nuestras webs.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Guardar";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Ir a los ajustes";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Procesamos tus datos personales para optimizar nuestra web y para actividades de marketing basándonos en tu consentimiento y nuestro legítimo interés.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Gestión de la privacidad";
@@ -10425,6 +10440,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View all drafts button in the More menu */
 "my-sites.drafts.card.viewAllDrafts" = "Ver todos los borradores";
 
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "Ver todas las entradas programadas";
+
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Estadísticas de hoy";
 
@@ -10518,6 +10536,12 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
 
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "Suscríbete ahora para compartir más";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d entradas compartidas en redes sociales restantes";
+
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " en los próximos 30 días";
 
@@ -10591,6 +10615,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nueva";
 
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "Las entradas relacionadas muestran contenido relacionado de tu sitio bajo tus entradas";
+
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "en «Móvil»";
 
@@ -10598,7 +10625,16 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "relatedPostsSettings.preview1.title" = "Importante actualización para iPhone\/iPad disponible ahora";
 
 /* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "en \"Aplicaciones\"";
+
+/* Text for related post cell preview */
 "relatedPostsSettings.preview2.title" = "La aplicación WordPress para Android recibe un importante lavado de cara";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "en \"Mejora\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Actualizar Foco: VideoPress para bodas";
 
 /* Section title for related posts section preview */
 "relatedPostsSettings.previewsHeaders" = "Vista previa";

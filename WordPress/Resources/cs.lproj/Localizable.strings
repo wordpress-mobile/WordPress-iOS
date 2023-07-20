@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-05-31 19:11:27+0000 */
+/* Translation-Revision-Date: 2023-07-12 15:32:34+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: cs_CZ */
@@ -731,6 +731,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternativní text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternativně můžete tyto bloky oddělit a upravit samostatně klepnutím na „Převést na běžné bloky“.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Případně můžete zadat heslo pro tento účet.";

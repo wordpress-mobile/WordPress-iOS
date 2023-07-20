@@ -25,7 +25,23 @@ enum PrepublishingIdentifier {
 
 class PrepublishingViewController: UITableViewController {
     let post: Post
+    let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStack
+    let persistentStore: UserPersistentRepository
+
+    lazy var postBlogID: Int? = {
+        coreDataStack.performQuery { [postObjectID = post.objectID] context in
+            guard let post = (try? context.existingObject(with: postObjectID)) as? Post else {
+                return nil
+            }
+            return post.blog.dotComID?.intValue
+        }
+    }()
+
+    /// The list of `PrepublishingIdentifier`s that have been filtered for display.
+    var filteredIdentifiers: [PrepublishingIdentifier] {
+        options.map { $0.id }
+    }
 
     private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
         return PublishSettingsViewModel(post: post)
@@ -42,23 +58,8 @@ class PrepublishingViewController: UITableViewController {
 
     private let completion: (CompletionResult) -> ()
 
-    private let identifiers: [PrepublishingIdentifier]
-
-    private lazy var options: [PrepublishingOption] = {
-        return identifiers.compactMap { identifier in
-            switch identifier {
-            case .autoSharing:
-                // skip the social cell if the post's blog is not eligible for auto-sharing.
-                guard isEligibleForAutoSharing else {
-                    return nil
-                }
-                break
-            default:
-                break
-            }
-            return .init(identifier: identifier)
-        }
-    }()
+    /// The data source for the table rows, based on the filtered `identifiers`.
+    private var options = [PrepublishingOption]()
 
     private var didTapPublish = false
 
@@ -77,11 +78,13 @@ class PrepublishingViewController: UITableViewController {
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
          completion: @escaping (CompletionResult) -> (),
-         coreDataStack: CoreDataStack = ContextManager.shared) {
+         coreDataStack: CoreDataStack = ContextManager.shared,
+         persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
         self.identifiers = identifiers
         self.completion = completion
         self.coreDataStack = coreDataStack
+        self.persistentStore = persistentStore
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -92,8 +95,26 @@ class PrepublishingViewController: UITableViewController {
     private var cancellables = Set<AnyCancellable>()
     @Published private var keyboardShown: Bool = false
 
+    func refreshOptions() {
+        options = identifiers.compactMap { identifier -> PrepublishingOption? in
+            switch identifier {
+            case .autoSharing:
+                // skip the social cell if the post's blog is not eligible for auto-sharing.
+                guard canDisplaySocialRow() else {
+                    return nil
+                }
+                break
+            default:
+                break
+            }
+            return .init(identifier: identifier)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        refreshOptions()
 
         title = ""
 
@@ -139,6 +160,9 @@ class PrepublishingViewController: UITableViewController {
                 self?.hasSelectedText = true
             }
         })
+
+        // when displayed in a popover, update content size so the window is resized to fit the current content.
+        navigationController?.preferredContentSize = tableView.contentSize
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -541,7 +565,6 @@ private extension PrepublishingOption {
         case .tags:
             self.init(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
         case .autoSharing:
-            // TODO: Which cell to show?
             self.init(id: .autoSharing, title: "Jetpack Social", type: .customContainer)
         }
     }

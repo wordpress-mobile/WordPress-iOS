@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-08 07:09:04+0000 */
+/* Translation-Revision-Date: 2023-07-12 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -731,6 +731,12 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-tekst";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Als alternatief, kan je deze blokken ook losmaken en afzonderlijk bewerken door op 'Patronen losmaken' te tikken.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Als alternatief, kan je dit blok ook losmaken en afzonderlijk bewerken door op 'Patroon losmaken' te tikken.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Je kunt ook het wachtwoord voor dit account invoeren.";
@@ -2731,6 +2737,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Edit video" = "Bewerk video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "Bewerken van gesynchroniseerde patronen wordt momenteel niet ondersteund door %s voor Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "Bewerken van gesynchroniseerde patronen wordt momenteel niet ondersteund door %s voor iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Deze GIF bewerken zal de animatie verwijderen.";
@@ -9674,6 +9686,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.inmoderation" = "Wordt gemodereerd";
 
 /* Short status description */
+"blazeCampaign.status.processing" = "Bezig met verwerken";
+
+/* Short status description */
 "blazeCampaign.status.rejected" = "Afgewezen";
 
 /* Short status description */
@@ -9805,6 +9820,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of a label that encourages the user to create a new page. */
 "dashboardCard.pages.create.description" = "Ga aan de slag met op maat gemaakte lay-outs voor mobiele apparaten.";
 
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "Statistieken weergeven";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Overschreven parameters zijn gemarkeerd met een vinkje.";
 
@@ -9885,6 +9903,9 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "Campagnedetails";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
@@ -9911,6 +9932,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the domain purchase result screen. Tells user their domain was obtained. */
 "freeToPaidPlans.resultView.title" = "Helemaal klaar om te gaan!";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "Opnieuw proberen";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Stel je blogging herinneringen in";
@@ -10395,6 +10419,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Werk aan een conceptbericht";
 
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "Alle concepten bekijken";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "Alle ingeplande berichten bekijken";
+
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistieken van vandaag";
 
@@ -10488,6 +10518,12 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promoten met Blaze";
 
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "Neem nu een abonnement om meer te delen";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d keer delen op social media resterend";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
 
@@ -10557,6 +10593,39 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nieuw";
+
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "Gerelateerde berichten geven relevante content van je site weer onder je berichten";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "in 'Mobiel'";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "Grote update iPhone\/iPad nu beschikbaar";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "in 'Apps'";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "De WordPress for Android-app krijgt een make-over";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "in 'Upgrade'";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Upgradefocus: VideoPress voor bruiloften";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "Bijwerken van instellingen mislukt";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "Koptekst weergeven";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "Gerelateerde berichten weergeven";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "Afbeeldingen weergeven";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Negeren";

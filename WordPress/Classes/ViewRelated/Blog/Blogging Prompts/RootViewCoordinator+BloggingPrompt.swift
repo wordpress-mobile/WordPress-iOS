@@ -8,7 +8,7 @@ extension RootViewCoordinator {
     }
 
     @objc func updatePromptsIfNeeded() {
-        guard let blog = rootViewPresenter.currentOrLastBlog() else {
+        guard let blog = Self.sharedPresenter.currentOrLastBlog() else {
             return
         }
 
@@ -22,7 +22,7 @@ extension RootViewCoordinator {
         guard Feature.enabled(.bloggingPrompts),
               let siteID = userInfo[BloggingPrompt.NotificationKeys.siteID] as? Int,
               let blog = accountSites?.first(where: { $0.dotComID == NSNumber(value: siteID) }),
-              let viewController = rootViewPresenter.currentViewController else {
+              let viewController = Self.sharedPresenter.currentViewController else {
             return
         }
 

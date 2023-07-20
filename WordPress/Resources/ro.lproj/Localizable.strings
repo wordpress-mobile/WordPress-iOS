@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-11 15:26:46+0000 */
+/* Translation-Revision-Date: 2023-07-12 14:34:23+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ro */
@@ -9742,11 +9742,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Răspunde-i lui %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Aceste cookie-uri ne permit să optimizăm performanța prin colectarea de informații despre modul în care utilizatorii interacționează cu site-urile noastre web.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Salvează";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Mergi la Setări";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Îți prelucrăm datele cu caracter personal, pe baza consimțământului tău și a intereselor noastre legitime, ca să optimizăm site-ul nostru web și activitățile noastre de marketing.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Administrează confidențialitatea";

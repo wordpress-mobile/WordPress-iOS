@@ -470,7 +470,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-    private let database: KeyValueDatabase = UserDefaults()
+    private let database: KeyValueDatabase = UserDefaults.standard
     private enum Key {
         static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
     }
@@ -504,6 +504,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {

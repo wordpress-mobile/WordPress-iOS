@@ -6,7 +6,7 @@ import UIKit
     case menuItem
     case postsList
     case pagesList
-    case campaignsList
+    case campaignList
 
     var description: String {
         switch self {
@@ -18,13 +18,18 @@ import UIKit
             return "posts_list"
         case .pagesList:
             return "pages_list"
-        case .campaignsList:
-            return "campaigns_list"
+        case .campaignList:
+            return "campaign_list"
         }
     }
 
+    /// Blaze overlays should be shown once only, regardless of entry point.
+    ///
+    /// We're using the dashboard card as the key to prevent showing the overlay to users who have
+    /// already seen it, based on the assumption that most users have either clicked the dashboard
+    /// card or haven't tried Blaze at all.
     var key: String {
-        return description
+        return BlazeSource.dashboardCard.description
     }
 
     var frequencyType: OverlayFrequencyTracker.FrequencyType {
@@ -93,10 +98,10 @@ import UIKit
     ///   - post: `AbstractPost` object representing the specific post to blaze. If `nil` is passed,
     ///    a general blaze overlay is displayed. If a valid value is passed, a blaze overlay with a post preview
     ///    is displayed.
-    private static func presentBlazeOverlay(in viewController: UIViewController,
-                                            source: BlazeSource,
-                                            blog: Blog,
-                                            post: AbstractPost? = nil) {
+    static func presentBlazeOverlay(in viewController: UIViewController,
+                                    source: BlazeSource,
+                                    blog: Blog,
+                                    post: AbstractPost? = nil) {
         let overlayViewController = BlazeOverlayViewController(source: source, blog: blog, post: post)
         let navigationController = UINavigationController(rootViewController: overlayViewController)
         navigationController.modalPresentationStyle = .formSheet
@@ -107,10 +112,11 @@ import UIKit
     /// - Parameters:
     ///   - viewController: The view controller where the screen should be presented in.
     ///   - blog: `Blog` object representing the site with Blaze campaigns.
-    @objc(presentBlazeCampaignsInViewController:blog:)
+    @objc(presentBlazeCampaignsInViewController:source:blog:)
     static func presentBlazeCampaigns(in viewController: UIViewController,
+                                      source: BlazeSource,
                                       blog: Blog) {
-        let campaignsViewController = BlazeCampaignsViewController(blog: blog)
+        let campaignsViewController = BlazeCampaignsViewController(source: source, blog: blog)
         viewController.navigationController?.pushViewController(campaignsViewController, animated: true)
     }
 

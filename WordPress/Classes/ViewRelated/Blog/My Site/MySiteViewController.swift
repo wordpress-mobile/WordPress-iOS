@@ -91,6 +91,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     var willDisplayPostSignupFlow: Bool = false
 
     private var createButtonCoordinator: CreateButtonCoordinator?
+    private var complianceCoordinator: CompliancePopoverCoordinator?
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
@@ -139,13 +140,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private(set) var sitePickerViewController: SitePickerViewController?
-    private(set) var blogDetailsViewController: BlogDetailsViewController? {
+    private(set) weak var sitePickerViewController: SitePickerViewController?
+    private(set) weak var blogDetailsViewController: BlogDetailsViewController? {
         didSet {
             blogDetailsViewController?.presentationDelegate = self
         }
     }
-    private var blogDashboardViewController: BlogDashboardViewController?
+    private weak var blogDashboardViewController: BlogDashboardViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -208,6 +209,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         createFABIfNeeded()
         fetchPrompt(for: blog)
+
+        complianceCoordinator = CompliancePopoverCoordinator()
+        complianceCoordinator?.presentIfNeeded(on: self)
     }
 
     override func viewDidLayoutSubviews() {

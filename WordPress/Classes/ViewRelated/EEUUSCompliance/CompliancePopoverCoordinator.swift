@@ -1,23 +1,22 @@
 import UIKit
 
-protocol CompliancePopoverCoordinatorProtocol {
-    func presentIfNeeded()
+protocol CompliancePopoverCoordinatorProtocol: AnyObject {
+    func presentIfNeeded(on viewController: UIViewController)
     func navigateToSettings()
     func dismiss()
 }
 
 final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
-    private let viewController: UIViewController
+    private weak var presentingViewController: UIViewController?
     private let complianceService = ComplianceLocationService()
     private let defaults: UserDefaults
 
-    init(viewController: UIViewController, defaults: UserDefaults = UserDefaults.standard) {
-        self.viewController = viewController
+    init(defaults: UserDefaults = UserDefaults.standard) {
         self.defaults = defaults
     }
 
-    func presentIfNeeded() {
-        guard FeatureFlag.compliancePopover.enabled else {
+    func presentIfNeeded(on viewController: UIViewController) {
+        guard FeatureFlag.compliancePopover.enabled, !defaults.didShowCompliancePopup else {
             return
         }
         complianceService.getIPCountryCode { [weak self] result in
@@ -26,20 +25,20 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.presentPopover()
+                    self.presentPopover(on: viewController)
                 }
             }
         }
     }
 
     func navigateToSettings() {
-        viewController.dismiss(animated: true) {
+        presentingViewController?.dismiss(animated: true) {
             RootViewCoordinator.sharedPresenter.navigateToPrivacySettings()
         }
     }
 
     func dismiss() {
-        viewController.dismiss(animated: true)
+        presentingViewController?.dismiss(animated: true)
     }
 
     private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
@@ -47,7 +46,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         return isCountryInEU && !defaults.didShowCompliancePopup
     }
 
-    private func presentPopover() {
+    private func presentPopover(on viewController: UIViewController) {
         let complianceViewModel = CompliancePopoverViewModel(
             defaults: defaults,
             contextManager: ContextManager.shared
@@ -56,7 +55,9 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
         let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
 
-        bottomSheetViewController.show(from: self.viewController)
+        bottomSheetViewController.show(from: viewController)
+
+        self.presentingViewController = viewController
     }
 }
 

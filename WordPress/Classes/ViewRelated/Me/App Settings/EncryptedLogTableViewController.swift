@@ -31,10 +31,7 @@ class EncryptedLogTableViewController: UITableViewController {
         let item = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addEncryptedLog))
         self.navigationItem.rightBarButtonItem = item
 
-        let name = WPLoggingStack.QueuedLogsDidChangeNotification
-        NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { _ in
-            self.updateData()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQueuedLogsDidChangeNotification), name: WPLoggingStack.QueuedLogsDidChangeNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +77,13 @@ class EncryptedLogTableViewController: UITableViewController {
     }
 
     // MARK: Internal Helpers
+
+    @objc private func handleQueuedLogsDidChangeNotification() {
+        DispatchQueue.main.async {
+            self.updateData()
+        }
+    }
+
     private func updateData() {
         self.logs = eventLogging.queuedLogFiles
         self.tableView.reloadData()

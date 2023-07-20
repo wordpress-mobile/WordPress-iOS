@@ -455,6 +455,7 @@ import Foundation
     case blazeEntryPointTapped
     case blazeContextualMenuAccessed
     case blazeCardHidden
+    case blazeCardLearnMoreTapped
     case blazeOverlayDisplayed
     case blazeOverlayButtonTapped
     case blazeOverlayDismissed
@@ -462,6 +463,10 @@ import Foundation
     case blazeFlowCanceled
     case blazeFlowCompleted
     case blazeFlowError
+    case blazeCampaignListOpened
+    case blazeCampaignDetailsOpened
+    case blazeCampaignDetailsError
+    case blazeCampaignDetailsDismissed
 
     // Moved to Jetpack static screen
     case removeStaticPosterDisplayed
@@ -1278,6 +1283,8 @@ import Foundation
             return "blaze_entry_point_menu_accessed"
         case .blazeCardHidden:
             return "blaze_entry_point_hide_tapped"
+        case .blazeCardLearnMoreTapped:
+            return "blaze_entry_point_learn_more_tapped"
         case .blazeOverlayDisplayed:
             return "blaze_overlay_displayed"
         case .blazeOverlayButtonTapped:
@@ -1292,6 +1299,14 @@ import Foundation
             return "blaze_flow_completed"
         case .blazeFlowError:
             return "blaze_flow_error"
+        case .blazeCampaignListOpened:
+            return "blaze_campaign_list_opened"
+        case .blazeCampaignDetailsOpened:
+            return "blaze_campaign_details_opened"
+        case .blazeCampaignDetailsError:
+            return "blaze_campaign_details_error"
+        case .blazeCampaignDetailsDismissed:
+            return "blaze_campaign_details_dismissed"
 
         // Moved to Jetpack static screen
         case .removeStaticPosterDisplayed:

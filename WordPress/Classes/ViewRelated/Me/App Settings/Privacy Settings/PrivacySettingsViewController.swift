@@ -133,17 +133,42 @@ class PrivacySettingsViewController: UITableViewController {
         ])
     }
 
-    func usageTrackingChanged(_ enabled: Bool) {
+    /// A method that reacts to changes in the user's analytics tracking preference.
+    ///
+    /// This method is invoked when a user enables or disables analytics tracking in their privacy settings. Its purpose is to update the user's preference locally and remotely, and to track the event if possible.
+    ///
+    /// - If the user is enabling tracking, this method first turns tracking on, then sends an event to the analytics tracker. This ensures that the event of enabling tracking is tracked.
+    /// - If the user is disabling tracking, the event is sent to the analytics tracker before tracking is turned off. This ensures that the event of disabling tracking is tracked before tracking is fully turned off.
+    ///
+    /// - Parameters:
+    ///     - enabled: A boolean that indicates the user's preference. If `true`, analytics tracking is enabled. If `false`, analytics tracking is disabled.
+    ///
+    private func usageTrackingChanged(_ enabled: Bool) {
+        analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
+        updateUserHasOptedOut(enabled)
+        analyticsTracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: enabled)
+        persistTrackingUpdateRemotely(enabled)
+    }
+
+    private func updateUserHasOptedOut(_ enabled: Bool) {
         let appAnalytics = WordPressAppDelegate.shared?.analytics
         appAnalytics?.setUserHasOptedOut(!enabled)
+    }
 
-        let context = ContextManager.shared.mainContext
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
-            return
+    private func persistTrackingUpdateRemotely(_ enabled: Bool) {
+        let result = ContextManager.shared.performQuery { context -> (NSNumber, WordPressComRestApi)? in
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+                  let wordPressComRestApi = account.wordPressComRestApi
+            else {
+                return nil
+            }
+            return (account.userID, wordPressComRestApi)
         }
 
-        let change = AccountSettingsChange.tracksOptOut(!enabled)
-        AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
+        if let (accountID, wordPressComRestApi) = result {
+            let change = AccountSettingsChange.tracksOptOut(!enabled)
+            AccountSettingsService(userID: accountID.intValue, api: wordPressComRestApi).saveChange(change)
+        }
     }
 
     func openCookiePolicy() -> ImmuTableAction {

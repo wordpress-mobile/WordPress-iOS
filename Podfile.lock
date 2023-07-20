@@ -504,7 +504,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (6.2.0):
+  - WordPressAuthenticator (6.3.0-beta.1):
     - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
@@ -611,7 +611,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 6.2.0)
+  - WordPressAuthenticator (~> 6.3.0-beta.1)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.12.5)
@@ -879,7 +879,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: b0b900696de5129a215adcd1e9ae6eb89da36ac8
+  WordPressAuthenticator: 453cb91432485204356c909271b02bfe7a409a50
   WordPressKit: f6943a6e927e9f57bc8793938af1e3a4c3adb614
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
@@ -895,6 +895,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: d1a2566033c325f4188d736422f6997b7551d2cb
+PODFILE CHECKSUM: 5238db288b233109c5666c6dfc4557a393fb3dd0
 
 COCOAPODS: 1.12.1

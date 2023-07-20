@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAuthenticator
 
 extension NSNotification.Name {
     static let WPAppUITypeChanged = NSNotification.Name(rawValue: "WPAppUITypeChanged")
@@ -19,7 +20,17 @@ class RootViewCoordinator {
     static let shared = RootViewCoordinator(featureFlagStore: RemoteFeatureFlagStore(),
                                             windowManager: WordPressAppDelegate.shared?.windowManager)
     static var sharedPresenter: RootViewPresenter {
-        shared.rootViewPresenter
+        guard let rootViewPresenter = shared.rootViewPresenter else {
+            /// Accessing RootViewPresenter before root view is presented is incorrect behavior
+            /// It shows either inconsistent order of app dependency initialization
+            /// or that RootViewPresenter contains actions unrelated to presented views
+            DDLogWarn("RootViewPresenter is accessed before root view is presented")
+            let rootViewPresenter = shared.createPresenter(shared.currentAppUIType)
+            shared.rootViewPresenter = rootViewPresenter
+            return rootViewPresenter
+        }
+
+        return rootViewPresenter
     }
 
     // MARK: Public Variables
@@ -34,7 +45,7 @@ class RootViewCoordinator {
 
     // MARK: Private instance variables
 
-    private(set) var rootViewPresenter: RootViewPresenter
+    private var rootViewPresenter: RootViewPresenter?
     private var currentAppUIType: AppUIType {
         didSet {
             updateJetpackFeaturesRemovalCoordinatorState()
@@ -42,25 +53,50 @@ class RootViewCoordinator {
     }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
+    private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
 
     // MARK: Initializer
 
     init(featureFlagStore: RemoteFeatureFlagStore,
-         windowManager: WindowManager?) {
+         windowManager: WindowManager?,
+         wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
         self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
-        switch self.currentAppUIType {
+        self.wordPressAuthenticator = wordPressAuthenticator
+        updateJetpackFeaturesRemovalCoordinatorState()
+    }
+
+    // MARK: - Root Coordination
+
+    func showAppUI(animated: Bool = true, completion: (() -> Void)? = nil) {
+        let rootViewPresenter = createPresenter(currentAppUIType)
+        windowManager?.show(rootViewPresenter.rootViewController, animated: animated, completion: completion)
+        self.rootViewPresenter = rootViewPresenter
+
+        updatePromptsIfNeeded()
+    }
+
+    func showSignInUI(completion: (() -> Void)? = nil) {
+        guard let loginViewController = wordPressAuthenticator.loginUI() else {
+            fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")
+        }
+
+        windowManager?.show(loginViewController, completion: completion)
+        wordPressAuthenticator.track(.openedLogin)
+        self.rootViewPresenter = nil
+    }
+
+    private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
+        switch appType {
         case .normal:
-            self.rootViewPresenter = WPTabBarController(staticScreens: false)
+            return WPTabBarController(staticScreens: false)
         case .simplified:
             let meScenePresenter = MeScenePresenter()
-            self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+            return MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
         case .staticScreens:
-            self.rootViewPresenter = StaticScreensTabBarWrapper()
+            return StaticScreensTabBarWrapper()
         }
-        updateJetpackFeaturesRemovalCoordinatorState()
-        updatePromptsIfNeeded()
     }
 
     // MARK: JP Features State
@@ -122,15 +158,6 @@ class RootViewCoordinator {
     }
 
     private func reloadUI(using windowManager: WindowManager) {
-        switch currentAppUIType {
-        case .normal:
-            self.rootViewPresenter = WPTabBarController(staticScreens: false)
-        case .simplified:
-            let meScenePresenter = MeScenePresenter()
-            self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
-        case .staticScreens:
-            self.rootViewPresenter = StaticScreensTabBarWrapper()
-        }
         windowManager.showUI(animated: false)
     }
 
