@@ -6,6 +6,7 @@
 * [*] [internal] Update calls to use UserDefaults singleton. [#21088]
 * [*] Fix memory leaks in setting up Jetpack connection. [#21052]
 * [*] Fix a memory leak caused by the theme customization web view. [#21051]
+* [**] Updated the code that enables Gutenberg editor in all blogs when the user is in the Gutenberg rollout group. [#21146]
 
 22.8
 -----
