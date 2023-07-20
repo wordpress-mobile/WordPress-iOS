@@ -77,11 +77,15 @@ final class DiskCache {
             assertionFailure("The cache key can not be empty")
             return nil
         }
-        guard let filename = key.sha256 else {
-            assertionFailure("Failed to generate sha256 has for a key: \(key)")
+        guard let data = key.data(using: .utf8) else {
+            // A conversion to .utf8 can't fail because it can represent any characters
+            // that the `String` type support. A conversion to a different encoding,
+            // such as `.ascii` with a limited character set, could fail.
+            assertionFailure("Failed to convert \(key) to utf8")
             return nil
         }
-        return rootURL.appendingPathComponent(filename, isDirectory: false)
+        // Some characters (`/`) can't be used in a filename, and a hashing function takes care of that.
+        return rootURL.appendingPathComponent(data.sha256, isDirectory: false)
     }
 
     // MARK: - Sweep
@@ -153,14 +157,14 @@ final class DiskCache {
     }
 }
 
-private extension String {
-    var sha256: String? {
-        guard let data = self.data(using: .utf8) else {
-            return nil
+private extension Data {
+    var sha256: String {
+        let digest = SHA256.hash(data: self)
+        var output = ""
+        for byte in digest {
+            output.append(String(format: "%02x", byte))
         }
-        return SHA256.hash(data: data)
-            .map { String(format: "%02x", $0) }
-            .joined()
+        return output
     }
 }
 
