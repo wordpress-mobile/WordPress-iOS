@@ -46,11 +46,17 @@ final class DiskCache {
 
     // MARK: - Data
 
-    func getData(forKey key: String) -> Data? {
-        guard let url = fileURL(for: key) else { return nil }
-        return try? Data(contentsOf: url)
-    }
-
+    /// Stores the data for the given key.
+    ///
+    /// - parameters:
+    ///   - data: The data to be stored
+    ///   - key: The key to associate the data with. The key can contain any
+    ///   Unicode characters. For example, a URL can serve as a key.
+    ///
+    /// - warning: The cache makes not guarantees about the cached data availability.
+    /// The program must never rely on the cached data being available after it's
+    /// stored in the cache. The OS may clear the caches folder at any point of
+    /// the app lifetime.
     func setData(_ data: Data, forKey key: String) {
         guard let url = fileURL(for: key) else { return }
         do {
@@ -60,6 +66,11 @@ final class DiskCache {
             try? FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
             try? data.write(to: url) // re-create a directory and try again
         }
+    }
+
+    func getData(forKey key: String) -> Data? {
+        guard let url = fileURL(for: key) else { return nil }
+        return try? Data(contentsOf: url)
     }
 
     func removeData(forKey key: String) {
