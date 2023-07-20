@@ -513,13 +513,11 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
             for (siteID, stats) in siteStats {
                 group.enter()
-                self.coreDataStack.performAndSave { context in
-                    self.scheduleDynamicNotification(siteID: siteID, stats: stats, in: context) { result in
-                        if case let .failure(error) = result {
-                            onError(error)
-                        }
-                        group.leave()
+                self.scheduleDynamicNotification(siteID: siteID, stats: stats) { result in
+                    if case let .failure(error) = result {
+                        onError(error)
                     }
+                    group.leave()
                 }
             }
 
@@ -547,33 +545,34 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     private func scheduleDynamicNotification(
         siteID: NSManagedObjectID,
         stats: StatsSummaryData,
-        in context: NSManagedObjectContext,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        guard let site = try? context.existingObject(with: siteID) as? Blog else {
-            let error = RunError.unableToScheduleDynamicNotification(reason: "Blog with id \(siteID) not found in context")
-            completion(.failure(error))
-            return
-        }
-        guard let dotComID = site.dotComID?.intValue else {
-            let error = RunError.unableToScheduleDynamicNotification(reason: "Blog \(String(describing: site.title)) is not a WordPress.com site")
-            completion(.failure(error))
-            return
-        }
-        self.notificationScheduler.scheduleDynamicNotification(
-            siteTitle: site.title,
-            dotComID: dotComID,
-            views: stats.viewsCount,
-            comments: stats.commentsCount,
-            likes: stats.likesCount,
-            periodEndDate: self.currentRunPeriodEndDate()
-        ) { result in
-            switch result {
-            case .success:
-                self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: dotComID)
-                completion(.success(()))
-            case .failure(let error):
+        self.coreDataStack.performAndSave { context in
+            guard let site = try? context.existingObject(with: siteID) as? Blog else {
+                let error = RunError.unableToScheduleDynamicNotification(reason: "Blog with id \(siteID) not found in context")
                 completion(.failure(error))
+                return
+            }
+            guard let dotComID = site.dotComID?.intValue else {
+                let error = RunError.unableToScheduleDynamicNotification(reason: "Blog \(String(describing: site.title)) is not a WordPress.com site")
+                completion(.failure(error))
+                return
+            }
+            self.notificationScheduler.scheduleDynamicNotification(
+                siteTitle: site.title,
+                dotComID: dotComID,
+                views: stats.viewsCount,
+                comments: stats.commentsCount,
+                likes: stats.likesCount,
+                periodEndDate: self.currentRunPeriodEndDate()
+            ) { result in
+                switch result {
+                case .success:
+                    self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: dotComID)
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
     }
