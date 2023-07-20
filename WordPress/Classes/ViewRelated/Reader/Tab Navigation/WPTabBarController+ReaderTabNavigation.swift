@@ -84,8 +84,8 @@ extension WPTabBarController {
         navigateToReader(contentController)
     }
 
-    func navigateToReaderTag( _ topic: ReaderTagTopic) {
-        let contentController = ReaderStreamViewController.controllerWithTopic(topic)
+    func navigateToReaderTag(_ tagSlug: String) {
+        let contentController = ReaderStreamViewController.controllerWithTagSlug(tagSlug)
         navigateToReader(contentController)
     }
 

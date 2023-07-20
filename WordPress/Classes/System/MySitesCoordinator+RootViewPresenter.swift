@@ -83,7 +83,7 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func navigateToReaderTag(_ topic: ReaderTagTopic) {
+    func navigateToReaderTag(_ tagSlug: String) {
         unsupportedFeatureFallback()
     }
 
