@@ -68,6 +68,7 @@ final class DiskCache {
     }
 
     func removeAll() throws {
+        guard FileManager.default.fileExists(at: rootURL) else { return }
         try FileManager.default.removeItem(at: rootURL)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: nil)
     }
