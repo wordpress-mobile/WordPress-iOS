@@ -32,7 +32,7 @@ private class WeeklyRoundupDataProvider {
     ///
     private let debugSettings = WeeklyRoundupDebugScreen.Settings()
 
-    init(coreDataStack: ContextManager, onError: @escaping (Error) -> Void) {
+    init(coreDataStack: CoreDataStackSwift, onError: @escaping (Error) -> Void) {
         self.coreDataStack = coreDataStack
         self.onError = onError
     }
