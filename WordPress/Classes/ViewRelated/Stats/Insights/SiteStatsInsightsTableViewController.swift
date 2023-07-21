@@ -368,17 +368,24 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        postService.getPostWithID(postID, for: blog, success: { apost in
-            guard let post = apost as? Post else {
-                DDLogInfo("Failed to get post with id \(postID)")
-                return
-            }
+        let coreDataStack = ContextManager.shared
+        let postRepository = PostRepository(coreDataStack: coreDataStack)
+        Task { @MainActor in
+            do {
+                let postObjectID = try await postRepository.getPost(withID: postID, from: .ofSaved(blog))
+                let apost = try postObjectID.existingObject(in: coreDataStack.mainContext)
 
-            let shareController = PostSharingController()
-            shareController.sharePost(post, fromView: fromView, inViewController: self)
-        }, failure: { error in
-            DDLogInfo("Error getting post with id \(postID): \(error.localizedDescription)")
-        })
+                guard let post = apost as? Post else {
+                    DDLogInfo("Failed to get post with id \(postID)")
+                    return
+                }
+
+                let shareController = PostSharingController()
+                shareController.sharePost(post, fromView: fromView, inViewController: self)
+            } catch {
+                DDLogInfo("Error getting post with id \(postID): \(error.localizedDescription)")
+            }
+        }
     }
 
     func showPostingActivityDetails() {
