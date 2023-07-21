@@ -4,6 +4,10 @@ import XCTest
 /// The home-base screen for an individual site. Used in many of our UI tests.
 public class MySiteScreen: ScreenObject {
 
+    static let activityLogCardId = "dashboard-activity-log-card-frameview"
+    static let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
+    static let pagesCardId = "dashboard-pages-card-frameview"
+
     private let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Activity Log Row"]
     }
@@ -45,19 +49,19 @@ public class MySiteScreen: ScreenObject {
     }
 
     private let pagesCardGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["dashboard-pages-card-frameview"]
+        $0.otherElements[pagesCardId]
     }
 
     private let pagesCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["dashboard-pages-card-frameview"].buttons["Pages"]
+        $0.otherElements[pagesCardId].buttons["Pages"]
     }
 
     private let pagesCardMoreButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["dashboard-pages-card-frameview"].buttons["More"]
+        $0.otherElements[pagesCardId].buttons["More"]
     }
 
     private let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["dashboard-pages-card-frameview"].buttons["Create another page"]
+        $0.otherElements[pagesCardId].buttons["Create another page"]
     }
 
     private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -65,11 +69,11 @@ public class MySiteScreen: ScreenObject {
     }
 
     private let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["dashboard-activity-log-card-frameview"]
+        $0.otherElements[activityLogCardId]
     }
 
     private let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["dashboard-activity-log-card-frameview"].buttons["Recent activity"]
+        $0.otherElements[activityLogCardId].buttons["Recent activity"]
     }
 
     private let blogTableGetter: (XCUIApplication) -> XCUIElement = {
@@ -129,10 +133,6 @@ public class MySiteScreen: ScreenObject {
     var settingsButton: XCUIElement { settingsButtonGetter(app) }
     var statsButton: XCUIElement { statsButtonGetter(app) }
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app)}
-
-    let activityLogCardId = "dashboard-activity-log-card-frameview"
-    let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
-    let pagesCardId = "dashboard-pages-card-frameview"
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -276,13 +276,13 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func scrollToFreeToPaidPlansCard() throws -> Self {
-        scrollToCard(withId: freeToPaidPlansCardId)
+        scrollToCard(withId: MySiteScreen.freeToPaidPlansCardId)
         return self
     }
 
     @discardableResult
     public func scrollToPagesCard() throws -> Self {
-        scrollToCard(withId: pagesCardId)
+        scrollToCard(withId: MySiteScreen.pagesCardId)
         return self
     }
 
@@ -294,7 +294,7 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func scrollToActivityLogCard() throws -> Self {
-        scrollToCard(withId: activityLogCardId)
+        scrollToCard(withId: MySiteScreen.activityLogCardId)
         return self
     }
 
