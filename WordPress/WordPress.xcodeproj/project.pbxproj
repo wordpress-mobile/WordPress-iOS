@@ -5585,6 +5585,8 @@
 		FE6BB144293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB1462932289B001E5F7A /* ContentMigrationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */; };
 		FE76C5E0293A63A800573C92 /* UIApplication+AppAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */; };
+		FE7B9A872A6A613000488791 /* PrepublishingSocialAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */; };
+		FE7B9A882A6A613000488791 /* PrepublishingSocialAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */; };
 		FE7FAABB299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */; };
 		FE7FAABE299A998E0032A6F2 /* EventTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABC299A98B90032A6F2 /* EventTracker.swift */; };
 		FE7FAABF299A998F0032A6F2 /* EventTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABC299A98B90032A6F2 /* EventTracker.swift */; };
@@ -9407,6 +9409,7 @@
 		FE59DA9527D1FD0700624D26 /* WordPress 138.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 138.xcdatamodel"; sourceTree = "<group>"; };
 		FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinator.swift; sourceTree = "<group>"; };
 		FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinatorTests.swift; sourceTree = "<group>"; };
+		FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSocialAccountsViewController.swift; sourceTree = "<group>"; };
 		FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPComJetpackRemoteInstallViewModelTests.swift; sourceTree = "<group>"; };
 		FE7FAABC299A98B90032A6F2 /* EventTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTracker.swift; sourceTree = "<group>"; };
 		FE9438B12A050251006C40EC /* BlockEditorSettings_GutenbergEditorSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEditorSettings_GutenbergEditorSettingsTests.swift; sourceTree = "<group>"; };
@@ -18221,6 +18224,7 @@
 				8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */,
 				FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */,
 				FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */,
+				FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */,
 			);
 			path = Prepublishing;
 			sourceTree = "<group>";
@@ -21839,6 +21843,7 @@
 				9848DF8121B8BB5700B99DA4 /* PostingActivityLegend.swift in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
 				011F52C02A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift in Sources */,
+				FE7B9A872A6A613000488791 /* PrepublishingSocialAccountsViewController.swift in Sources */,
 				E192E78C22EF453C008D725D /* WordPress-87-88.xcmappingmodel in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,
 				E125F1E71E8E59C800320B67 /* SharePost+UIActivityItemSource.swift in Sources */,
@@ -25659,6 +25664,7 @@
 				FABB25B62602FC2C00C8785C /* Product.swift in Sources */,
 				FABB25B72602FC2C00C8785C /* PostTag.m in Sources */,
 				FABB25B82602FC2C00C8785C /* ActivityListViewModel.swift in Sources */,
+				FE7B9A882A6A613000488791 /* PrepublishingSocialAccountsViewController.swift in Sources */,
 				FABB25BA2602FC2C00C8785C /* StoreKit+Debug.swift in Sources */,
 				FABB25BB2602FC2C00C8785C /* PrivacySettingsViewController.swift in Sources */,
 				3FFDEF812917882800B625CE /* MigrationNavigationController.swift in Sources */,
