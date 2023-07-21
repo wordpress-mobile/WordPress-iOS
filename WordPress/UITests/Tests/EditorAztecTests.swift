@@ -15,7 +15,8 @@ class EditorAztecTests: XCTestCase {
         try EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()
-            .tabBar.goToAztecEditorScreen()
+        try TabNavComponent()
+            .goToAztecEditorScreen()
             .dismissNotificationAlertIfNeeded(.accept)
     }
 
