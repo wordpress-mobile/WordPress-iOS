@@ -38,7 +38,7 @@ class TestObserver: NSObject, XCTestObservation {
         guard passwordField.waitForIsHittable() else { return false }
         passwordField.typeText(" \r")
 
-        let passwordOptions = settings.staticTexts["Passwordd Options"]
+        let passwordOptions = settings.staticTexts["Password Options"]
         guard passwordOptions.waitForIsHittable() else { return false }
         passwordOptions.tap()
 
