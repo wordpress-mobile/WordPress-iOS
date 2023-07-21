@@ -55,7 +55,7 @@ struct BlazeCampaignStatusViewModel {
         case .created, .processing, .scheduled, .canceled:
             self.textColor = UIColor(
                 light: .muriel(name: .yellow, .shade80),
-                dark: .muriel(name: .yellow, .shade30)
+                dark: .muriel(name: .yellow, .shade10)
             )
             self.backgroundColor = UIColor(
                 light: .muriel(name: .yellow, .shade5),
@@ -64,7 +64,7 @@ struct BlazeCampaignStatusViewModel {
         case .rejected:
             self.textColor = UIColor(
                 light: .muriel(name: .red, .shade70),
-                dark: .muriel(name: .red, .shade30)
+                dark: .muriel(name: .red, .shade10)
             )
             self.backgroundColor = UIColor(
                 light: .muriel(name: .red, .shade5),
@@ -73,7 +73,7 @@ struct BlazeCampaignStatusViewModel {
         case .active, .approved:
             self.textColor = UIColor(
                 light: .muriel(name: .green, .shade80),
-                dark: .muriel(name: .green, .shade30)
+                dark: .muriel(name: .green, .shade10)
             )
             self.backgroundColor = UIColor(
                 light: .muriel(name: .green, .shade5),
@@ -82,7 +82,7 @@ struct BlazeCampaignStatusViewModel {
         case .finished:
             self.textColor = UIColor(
                 light: .muriel(name: .blue, .shade80),
-                dark: .muriel(name: .blue, .shade30).lightVariant() /// Explicitly using the light variant of blue
+                dark: .muriel(name: .blue, .shade10).lightVariant() /// Explicitly using the light variant of blue
             )
             self.backgroundColor = UIColor(
                 light: .muriel(name: .blue, .shade5),
