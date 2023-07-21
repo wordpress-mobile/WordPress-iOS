@@ -387,7 +387,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [self preloadMetadata];
 
@@ -396,11 +395,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         AccountService *acctService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleDataModelChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:context];
+
+    [self observeNotifications];
 
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
@@ -2174,6 +2170,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [self reloadTableViewPreservingSelection];
     }
+}
+
+- (void)handleWillEnterForegroundNotification:(NSNotification *)note
+{
+    [self configureTableViewData];
+    [self reloadTableViewPreservingSelection];
+}
+
+- (void)observeNotifications
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDataModelChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:context];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleWillEnterForegroundNotification:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 #pragma mark - WPSplitViewControllerDetailProvider
