@@ -1,0 +1,3 @@
+Vi har inaktiverat bloggningspåminnelser för webbplatser som drivs på egen server och inte är anslutna till Jetpack, eftersom funktionen endast är tillgänglig i Jetpack-appen.
+
+Återanvändbara block kallas nu synkroniserade mönster, precis som i skrivbordsredigeraren.

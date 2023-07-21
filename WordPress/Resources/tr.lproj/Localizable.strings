@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-12 16:54:32+0000 */
+/* Translation-Revision-Date: 2023-07-19 16:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: tr */
@@ -9739,11 +9739,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ için yanıt verin";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Bu tanımlama bilgileri, kullanıcıların web sitelerimizle nasıl etkileşimde bulunduğu hakkında bilgi toplayarak performansı optimize etmemizi sağlar.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Kaydet";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Ayarlara git";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Kişisel verilerinizi, sizin onayınıza ve meşru yararımıza dayalı olarak web sitemizi ve pazarlama faaliyetlerimizi optimize etmek için işleriz.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Gizlilik yönetimi";

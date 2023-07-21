@@ -4,11 +4,11 @@ import XCTest
 public class ActivityLogScreen: ScreenObject {
     public let tabBar: TabNavComponent
 
-    let dateRangeButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let dateRangeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Date Range"].firstMatch
     }
 
-    let activityTypeButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let activityTypeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Activity Type"].firstMatch
     }
 

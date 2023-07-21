@@ -1,0 +1,3 @@
+We hebben blogherinneringen uitgeschakeld voor zelfgehoste sites die niet gekoppeld zijn aan Jetpack, aangezien deze functie alleen beschikbaar is in de Jetpack-app.
+
+Herbruikbare blokken zijn nu hernoemd tot gesynchroniseerde patronen, net als in de desktopeditor.

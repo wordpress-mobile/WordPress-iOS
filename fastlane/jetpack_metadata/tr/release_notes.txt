@@ -1,0 +1,3 @@
+Bu özellik yalnızca Jetpack uygulamasında sunulduğu için, kullanıcı tarafından barındırılan siteler için blog hatırlatıcılarını devre dışı bıraktık.
+
+Tekrar kullanılabilir bloklar, artık masaüstü düzenleyicisinde olduğu gibi senkronize edilmiş desenler olarak adlandırılıyor.
