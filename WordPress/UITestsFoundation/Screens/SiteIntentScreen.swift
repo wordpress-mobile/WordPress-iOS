@@ -3,15 +3,21 @@ import XCTest
 
 public class SiteIntentScreen: ScreenObject {
 
-    let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["site-intent-cancel-button"]
     }
+
+    private let siteIntentTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Site Intent Table"]
+    }
+
+    var cancelButton: XCUIElement { cancelButtonGetter(app) }
+    var siteIntentTable: XCUIElement { siteIntentTableGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                // swiftlint:disable:next opening_brace
-                { $0.tables["Site Intent Table"] },
+                siteIntentTableGetter,
                 cancelButtonGetter
             ],
             app: app
@@ -20,7 +26,7 @@ public class SiteIntentScreen: ScreenObject {
 
     @discardableResult
     public func closeModal() throws -> MySitesScreen {
-        cancelButtonGetter(app).tap()
+        cancelButton.tap()
         return try MySitesScreen()
     }
 

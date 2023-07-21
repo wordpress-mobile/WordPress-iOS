@@ -160,9 +160,6 @@ class PrepublishingViewController: UITableViewController {
                 self?.hasSelectedText = true
             }
         })
-
-        // when displayed in a popover, update content size so the window is resized to fit the current content.
-        navigationController?.preferredContentSize = tableView.contentSize
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-12 01:18:31+0000 */
+/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ko_KR */
@@ -9742,11 +9742,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@에 회신";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "이러한 쿠키를 통해 당사에서는 사용자가 당사 웹사이트와 상호 작용하는 방식에 대한 정보를 수집하여 성능을 최적화할 수 있습니다.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "저장";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "설정으로 이동";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "당사에서는 회원님의 동의와 당사의 적법한 이해에 따라 회원님의 개인 데이터를 처리하여 당사의 웹사이트와 마케팅 활동을 최적화합니다.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "개인정보 관리";

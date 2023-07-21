@@ -1,0 +1,3 @@
+Les rappels de blog étant uniquement disponibles dans l’application Jetpack, nous les avons désactivés pour les sites auto-hébergés qui ne sont pas connectés à Jetpack.
+
+Les blocs réutilisables sont désormais désignés « compositions synchronisées », comme dans l’éditeur de bureau.

@@ -2,24 +2,51 @@ import ScreenObject
 import XCTest
 
 public class MeTabScreen: ScreenObject {
-    let logOutButton: XCUIElement
-    let logOutAlert: XCUIElement
-    var appSettingsButton: XCUIElement { expectedElement }
-    let myProfileButton: XCUIElement
-    let accountSettingsButton: XCUIElement
-    let notificationSettingsButton: XCUIElement
-    let doneButton: XCUIElement
+
+    private let logOutButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["logOutFromWPcomButton"]
+    }
+
+    private let logOutAlertGetter: (XCUIApplication) -> XCUIElement = {
+        $0.alerts.element(boundBy: 0)
+    }
+
+    private let logInButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Log In"]
+    }
+
+    private let appSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["appSettings"]
+    }
+
+    private let myProfileButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["myProfile"]
+    }
+
+    private let accountSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["accountSettings"]
+    }
+
+    private let notificationSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["notificationSettings"]
+    }
+
+    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Done"]
+    }
+
+    var accountSettingsButton: XCUIElement { accountSettingsButtonGetter(app) }
+    var appSettingsButton: XCUIElement { appSettingsButtonGetter(app) }
+    var doneButton: XCUIElement { doneButtonGetter(app) }
+    var logInButton: XCUIElement { logInButtonGetter(app) }
+    var logOutAlert: XCUIElement { logOutAlertGetter(app) }
+    var logOutButton: XCUIElement { logOutButtonGetter(app) }
+    var myProfileButton: XCUIElement { myProfileButtonGetter(app) }
+    var notificationSettingsButton: XCUIElement { notificationSettingsButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        logOutButton = app.cells["logOutFromWPcomButton"]
-        logOutAlert = app.alerts.element(boundBy: 0)
-        myProfileButton = app.cells["myProfile"]
-        accountSettingsButton = app.cells["accountSettings"]
-        notificationSettingsButton = app.cells["notificationSettings"]
-        doneButton = app.navigationBars.buttons["doneBarButton"]
-
         try super.init(
-            expectedElementGetter: { $0.cells["appSettings"] },
+            expectedElementGetters: [ appSettingsButtonGetter ],
             app: app
         )
     }
@@ -29,7 +56,7 @@ public class MeTabScreen: ScreenObject {
     }
 
     public func logout() throws -> WelcomeScreen {
-        app.cells["logOutFromWPcomButton"].tap()
+        logOutButton.tap()
 
         // Some localizations have very long "log out" text, which causes the UIAlertView
         // to stack. We need to detect these cases in order to reliably tap the correct button
@@ -44,7 +71,7 @@ public class MeTabScreen: ScreenObject {
     }
 
     public func logoutToPrologue() throws -> PrologueScreen {
-        app.cells["logOutFromWPcomButton"].tap()
+        logOutButton.tap()
 
         // Some localizations have very long "log out" text, which causes the UIAlertView
         // to stack. We need to detect these cases in order to reliably tap the correct button
@@ -59,13 +86,13 @@ public class MeTabScreen: ScreenObject {
     }
 
     func goToLoginFlow() throws -> PrologueScreen {
-        app.cells["Log In"].tap()
+        logInButton.tap()
 
         return try PrologueScreen()
     }
 
     public func dismiss() throws -> MySiteScreen {
-        app.buttons["Done"].tap()
+        doneButton.tap()
 
         return try MySiteScreen()
     }

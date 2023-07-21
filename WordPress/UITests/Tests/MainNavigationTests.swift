@@ -29,8 +29,8 @@ class MainNavigationTests: XCTestCase {
     }
 
    func testTabBarNavigation() throws {
-       try MySiteScreen()
-           .tabBar.goToReaderScreen()
+       try TabNavComponent()
+           .goToReaderScreen()
            .assertScreenIsLoaded()
 
        // We may get a notifications fancy alert when loading the reader for the first time
