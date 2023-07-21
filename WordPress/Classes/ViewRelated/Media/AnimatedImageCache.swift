@@ -22,33 +22,25 @@ final class AnimatedImageCache {
     // MARK: Instance methods
 
     func cacheData(data: Data, url: URL?) {
-        guard let url = url else {
-            return
-        }
+        guard let url else { return }
         let key = url.absoluteString + Constants.keyDataSuffix
         MemoryCache.shared.setData(data, forKey: key)
     }
 
     func cachedData(url: URL?) -> Data? {
-        guard let url = url else {
-            return nil
-        }
+        guard let url else { return nil }
         let key = url.absoluteString + Constants.keyDataSuffix
         return MemoryCache.shared.geData(forKey: key)
     }
 
     func cacheStaticImage(url: URL?, image: UIImage?) {
-        guard let url = url, let image = image else {
-            return
-        }
+        guard let url, let image else { return }
         let key = url.absoluteString + Constants.keyStaticImageSuffix
         MemoryCache.shared.setImage(image, forKey: key)
     }
 
     func cachedStaticImage(url: URL?) -> UIImage? {
-        guard let url = url else {
-            return nil
-        }
+        guard let url else { return nil }
         let key = url.absoluteString + Constants.keyStaticImageSuffix
         return MemoryCache.shared.getImage(forKey: key)
     }
