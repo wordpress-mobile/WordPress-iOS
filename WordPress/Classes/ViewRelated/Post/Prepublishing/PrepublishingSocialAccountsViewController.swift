@@ -31,7 +31,9 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         WPStyleGuide.configureTableViewCell(cell)
 
         cell.textLabel?.text = Constants.messageCellLabelText
+        cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.detailTextLabel?.text = shareMessage
+        cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
         cell.accessoryType = .disclosureIndicator
 
         return cell
@@ -115,6 +117,7 @@ private extension PrepublishingSocialAccountsViewController {
 
         cell.textLabel?.text = connection.account
         cell.textLabel?.numberOfLines = 1
+        cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.imageView?.image = connection.imageForCell
         cell.on = connection.isOn
         cell.onChange = { [weak self] newValue in
