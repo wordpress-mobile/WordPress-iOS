@@ -23,12 +23,12 @@ public extension StoryboardLoadable where Self: UIViewController {
         return Bundle.main
     }
 
-    /// Loads view from storyboard.
+    /// Loads view from storyboard and allows initializer injection.
     ///
     /// - Returns: Loaded view.
-    static func loadFromStoryboard() -> Self {
+    static func loadFromStoryboard<ViewController: UIViewController>(creator: ((NSCoder) -> ViewController?)? = nil) -> Self {
         let storyboard = UIStoryboard(name: defaultStoryboardName, bundle: defaultBundle)
-        guard let viewController = storyboard.instantiateViewController(withIdentifier: defaultControllerID) as? Self else {
+        guard let viewController = storyboard.instantiateViewController(identifier: defaultControllerID, creator: creator) as? Self else {
             fatalError("[StoryboardLoadable] Cannot instantiate view controller from storyboard.")
         }
         return viewController

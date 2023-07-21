@@ -1,6 +1,18 @@
 import UIKit
 
-class PostingActivityViewController: UIViewController, StoryboardLoadable {
+struct PostingActivityViewModel {
+    private let insightsStore: StatsInsightsStore
+
+    init(insightsStore: StatsInsightsStore) {
+        self.insightsStore = insightsStore
+    }
+
+    lazy var yearData: [[PostingStreakEvent]] = {
+        return insightsStore.getYearlyPostingActivity(from: Date())
+    }()
+}
+
+final class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
 
@@ -15,10 +27,21 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
-    var yearData = [[PostingStreakEvent]]()
-
     private var selectedDay: PostingActivityDay?
     private typealias Style = WPStyleGuide.Stats
+
+    // MARK: - Private
+
+    private var viewModel: PostingActivityViewModel
+
+    init?(coder: NSCoder, viewModel: PostingActivityViewModel) {
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Init
 
@@ -50,13 +73,13 @@ extension PostingActivityViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return yearData.count
+        return viewModel.yearData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingActivityCollectionViewCell.reuseIdentifier, for: indexPath) as! PostingActivityCollectionViewCell
-        cell.configure(withData: yearData[indexPath.row], postingActivityDayDelegate: self)
+        cell.configure(withData: viewModel.yearData[indexPath.row], postingActivityDayDelegate: self)
 
         return cell
     }

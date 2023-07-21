@@ -27,7 +27,7 @@ struct JetpackSocialSettingsRemainingSharesView: View {
     }
 
     private var remainingText: some View {
-        let sharesRemainingString = String(format: Constants.remainingTextFormat, viewModel.remaining, viewModel.limit)
+        let sharesRemainingString = String(format: Constants.remainingTextFormat, viewModel.remaining)
         let sharesRemaining = Text(sharesRemainingString).font(.callout)
         if viewModel.displayWarning {
             return sharesRemaining
@@ -37,10 +37,10 @@ struct JetpackSocialSettingsRemainingSharesView: View {
     }
 
     private struct Constants {
-        static let remainingTextFormat = NSLocalizedString("postsettings.social.remainingshares.text.format",
-                                                           value: "%1$d/%2$d social shares remaining",
+        static let remainingTextFormat = NSLocalizedString("postsettings.social.shares.text.format",
+                                                           value: "%1$d social shares remaining",
                                                            comment: "Beginning text of the remaining social shares a user has left."
-                                                           + " %1$d is their current remaining shares. %2$d is their share limit."
+                                                           + " %1$d is their current remaining shares."
                                                            + " This text is combined with ' in the next 30 days' if there is no warning displayed.")
         static let remainingEndText = NSLocalizedString("postsettings.social.remainingshares.text.part",
                                                         value: " in the next 30 days",
@@ -55,16 +55,13 @@ struct JetpackSocialSettingsRemainingSharesView: View {
 
 struct JetpackSocialRemainingSharesViewModel {
     let remaining: Int
-    let limit: Int
     let displayWarning: Bool
     let onSubscribeTap: () -> Void
 
     init(remaining: Int,
-         limit: Int,
          displayWarning: Bool,
          onSubscribeTap: @escaping () -> Void) {
         self.remaining = remaining
-        self.limit = limit
         self.displayWarning = displayWarning
         self.onSubscribeTap = onSubscribeTap
     }
