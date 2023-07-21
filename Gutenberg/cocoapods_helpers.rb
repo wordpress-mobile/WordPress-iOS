@@ -110,12 +110,6 @@ def gutenberg_post_install(installer:)
   puts "[Gutenberg] Running Gutenberg post install hook (RN path: #{react_native_path})"
 
   # It seems like React Native prepends $PWD to the path internally in the post install hook.
-  # When using an absolute path, we get this error, notice the duplicated "/Users/gio/Developer/a8c/wpios":
-  #
-  #   [!] An error occurred while processing the post-install hook of the Podfile.
-  #
-  #   No such file or directory @ rb_sysopen - <GUTENBERG_MOBILE_PROJECT_PATH>/gutenberg/node_modules/react-native/package.json
-  #
   # To workaround, we make sure the path is relative to Dir.pwd
   react_native_path = Pathname.new(react_native_path).relative_path_from(Dir.pwd)
 
