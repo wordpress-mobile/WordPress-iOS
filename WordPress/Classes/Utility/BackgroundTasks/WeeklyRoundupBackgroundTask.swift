@@ -125,15 +125,15 @@ private class WeeklyRoundupDataProvider {
         completion: @escaping (Result<StatsSummaryData?, Error>) -> Void
     ) {
         service.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
-            guard let timeStats = timeStats else {
-                if let error = error {
-                    completion(.failure(DataRequestError.errorRetrievingStats(site.dotComID, error: error)))
-                } else {
-                    completion(.failure(DataRequestError.unknownErrorRetrievingStats(site.managedObjectID)))
-                }
-                return
+            let result: Result<StatsSummaryData?, Error>
+            if let error {
+              result = .failure(DataRequestError.errorRetrievingStats(site.dotComID, error: error))
+            } else if let timeStats {
+              result = .success(timeStats.summaryData.first)
+            } else {
+              result = .failure(DataRequestError.unknownErrorRetrievingStats(site.managedObjectID))
             }
-            completion(.success(timeStats.summaryData.first))
+            completion(result)
         }
     }
 
