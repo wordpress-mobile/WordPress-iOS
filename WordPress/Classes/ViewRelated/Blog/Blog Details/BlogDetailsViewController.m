@@ -1573,7 +1573,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return cell;
     }
 
-    if (section.category == BlogDetailsSectionCategoryMigrationSuccess && MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
+    if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
         [cell configureWithViewController:self];
         return cell;
@@ -1587,6 +1587,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
+
+    if (cell == nil) {
+        DDLogError(@"Cell with identifier '%@' at index path '%@' is nil", row.identifier, indexPath);
+    }
+
     cell.accessibilityHint = row.accessibilityHint;
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentNatural;
