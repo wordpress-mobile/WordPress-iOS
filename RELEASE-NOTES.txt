@@ -9,6 +9,7 @@
 * [*] Fix a memory leak caused by the theme customization web view. [#21051]
 * [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21140]
+* [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
 
 22.8
 -----
