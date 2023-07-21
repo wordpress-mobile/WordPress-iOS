@@ -221,9 +221,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         animatedGifData = data
         DispatchQueue.main.async() {
             self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
-            self.animate(withGIFData: data) {
+            self.animate(withGIFData: data, preparationBlock: {
                 success?()
-            }
+            })
         }
     }
 
