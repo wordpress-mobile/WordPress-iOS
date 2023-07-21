@@ -91,12 +91,8 @@ extension PrepublishingSocialAccountsViewController {
             return
         }
 
-        // TODO: Edit message
+        showEditMessageScreen()
     }
-
-    // TODO: Footer view
-    // TODO: Handle upgrade flow
-    // TODO: Set up delegate so the parent can refresh
 }
 
 // MARK: - Private Helpers
@@ -152,6 +148,20 @@ private extension PrepublishingSocialAccountsViewController {
         isSharingLimitReached = enabledCount >= sharingLimit.remaining
     }
 
+    func showEditMessageScreen() {
+        let multiTextViewController = SettingsMultiTextViewController(text: shareMessage,
+                                                                      placeholder: nil,
+                                                                      hint: Constants.editShareMessageHint,
+                                                                      isPassword: false)
+
+        multiTextViewController.title = Constants.editShareMessageNavigationTitle
+        multiTextViewController.onValueChanged = { [weak self] newValue in
+            self?.shareMessage = newValue
+        }
+
+        self.navigationController?.pushViewController(multiTextViewController, animated: true)
+    }
+
     /// Convenient model that represents the user's Publicize connections.
     struct Connection {
         let service: PublicizeService.ServiceName
@@ -188,6 +198,21 @@ private extension PrepublishingSocialAccountsViewController {
                 The label displayed for a table row that displays the sharing message for the post.
                 Tapping on this row allows the user to edit the sharing message.
                 """
+        )
+
+        static let editShareMessageNavigationTitle = NSLocalizedString(
+            "prepublishing.socialAccounts.editMessage.navigationTitle",
+            value: "Customize message",
+            comment: "The navigation title for a screen that edits the sharing message for the post."
+        )
+
+        static let editShareMessageHint = NSLocalizedString(
+            "prepublishing.socialAccounts.editMessage.hint",
+            value: """
+                Customize the message you want to share.
+                If you don't add your own text here, we'll use the post's title as the message.
+                """,
+            comment: "A hint shown below the text field when editing the sharing message from the pre-publishing flow."
         )
     }
 
