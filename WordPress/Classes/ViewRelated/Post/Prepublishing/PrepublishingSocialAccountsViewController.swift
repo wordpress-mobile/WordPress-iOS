@@ -23,6 +23,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         }
     }
 
+    /// Store the last table row toggled by the user.
     private var lastToggledRow: Int = -1
 
     private lazy var messageCell: UITableViewCell = {
@@ -84,14 +85,18 @@ extension PrepublishingSocialAccountsViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // interactions for the account switches are absorbed by the tap gestures set up in the SwitchTableViewCell,
+        // so it shouldn't trigger this method. In any case, we should only care about handling taps on the message row.
         guard indexPath.row == connections.count else {
             return
         }
 
-        // TODO: Show SettingsMultiTextSelector
+        // TODO: Edit message
     }
 
     // TODO: Footer view
+    // TODO: Handle upgrade flow
+    // TODO: Set up delegate so the parent can refresh
 }
 
 // MARK: - Private Helpers
@@ -139,6 +144,7 @@ private extension PrepublishingSocialAccountsViewController {
 
     func toggleInteractivityIfNeeded() {
         guard let sharingLimit else {
+            // if sharing limit does not exist, then interactions should be unlimited.
             isSharingLimitReached = false
             return
         }
