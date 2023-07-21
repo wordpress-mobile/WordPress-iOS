@@ -396,7 +396,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
 
-    [self observeNotifications];
+    [self observeManagedObjectContextObjectsDidChangeNotification];
 
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
@@ -405,7 +405,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    [self observeWillEnterForegroundNotification];
+
     if (self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
@@ -450,6 +452,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self stopObservingWillEnterForegroundNotification];
     [self stopAlertTimer];
 }
 
@@ -2178,17 +2181,28 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self reloadTableViewPreservingSelection];
 }
 
-- (void)observeNotifications
+- (void)observeManagedObjectContextObjectsDidChangeNotification
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
+}
+
+- (void)observeWillEnterForegroundNotification
+{
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleWillEnterForegroundNotification:)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+}
+
+- (void)stopObservingWillEnterForegroundNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationWillEnterForegroundNotification
+                                                  object:nil];
 }
 
 #pragma mark - WPSplitViewControllerDetailProvider
