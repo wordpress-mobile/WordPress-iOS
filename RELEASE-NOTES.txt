@@ -9,6 +9,7 @@
 * [*] Fix a memory leak caused by the theme customization web view. [#21051]
 * [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21140]
+* [*] [Jetpack-only] Fixed a crash that could occur when the user deletes the WordPress app upon a successful migration. [#21167]
 * [*] Fixed a crash that occurs in Weekly Roundup Background task due to a Core Data Concurrency violation. [#21076]
 * [***] Block editor: Editor UX improvements with new icons, colors and additional design enhancements. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5985]
 
