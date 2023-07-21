@@ -5,7 +5,7 @@ DEST="$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"
 
 # CocoaPods fetches Gutenberg in two possible ways: XCFramework and source.
 #
-# We check first for the XCFramework setup, fallingback to source only if that is not there.
+# We check first for the XCFramework setup, falling back to source only if that is not there.
 #
 # Because the XCFramework location is in `PODS_XCFRAMEWORKS_BUILD_DIR`, it will only appear if CocoaPods use XCFrameworks.
 # This makes the setup robust against having both a copy of the XCFramework and of the Gutenberg source code in the Pods folder.
