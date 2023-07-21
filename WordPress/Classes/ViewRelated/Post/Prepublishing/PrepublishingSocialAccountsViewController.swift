@@ -1,10 +1,4 @@
 class PrepublishingSocialAccountsViewController: UITableViewController {
-    /// TODO
-    /// - grouped table view
-    /// - table footer view
-    /// - react after upgrade: perform sync on viewDidAppear
-
-    typealias Connection = PrepublishingAutoSharingModel.Connection
 
     // MARK: Properties
 
@@ -14,17 +8,30 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     private var shareMessage: String {
         didSet {
-            // update the message cell.
-            var contentConfiguration = messageCell.defaultContentConfiguration()
-            contentConfiguration.text = Constants.messageCellLabelText
-            contentConfiguration.secondaryText = shareMessage
-            messageCell.contentConfiguration = contentConfiguration
+            messageCell.detailTextLabel?.text = shareMessage
         }
     }
+
+    private var isSharingLimitReached: Bool = false {
+        didSet {
+            guard oldValue != isSharingLimitReached else {
+                return // no need to reload if the value doesn't change.
+            }
+            // only reload connections that are turned off.
+            // the last toggled row is skipped so it can perform its full switch animation.
+            tableView.reloadRows(at: indexPathsForDisabledConnections.filter { $0.row != lastToggledRow }, with: .none)
+        }
+    }
+
+    private var lastToggledRow: Int = -1
 
     private lazy var messageCell: UITableViewCell = {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: Constants.messageCellIdentifier)
         WPStyleGuide.configureTableViewCell(cell)
+
+        cell.textLabel?.text = Constants.messageCellLabelText
+        cell.detailTextLabel?.text = shareMessage
+        cell.accessoryType = .disclosureIndicator
 
         return cell
     }()
@@ -36,7 +43,11 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
     }
 
     init(model: PrepublishingAutoSharingModel) {
-        self.connections = model.services.flatMap { $0.connections }
+        self.connections = model.services.flatMap { service in
+            service.connections.map {
+                .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
+            }
+        }
         self.shareMessage = model.message
         self.sharingLimit = model.sharingLimit
 
@@ -61,7 +72,7 @@ extension PrepublishingSocialAccountsViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return connections.count + 1 // message row
+        return connections.count + 1 // extra row for the sharing message
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,6 +83,14 @@ extension PrepublishingSocialAccountsViewController {
         return messageCell
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row == connections.count else {
+            return
+        }
+
+        // TODO: Show SettingsMultiTextSelector
+    }
+
     // TODO: Footer view
 }
 
@@ -79,19 +98,31 @@ extension PrepublishingSocialAccountsViewController {
 
 private extension PrepublishingSocialAccountsViewController {
 
+    var enabledCount: Int {
+        connections.filter { $0.isOn }.count
+    }
+
+    var indexPathsForDisabledConnections: [IndexPath] {
+        connections.indexed().compactMap { $1.isOn ? nil : IndexPath(row: $0, section: .zero) }
+    }
+
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
-        guard let connection = connections[safe: indexPath.row],
+        guard var connection = connections[safe: indexPath.row],
               let cell = tableView.dequeueReusableCell(withIdentifier: Constants.accountCellIdentifier) as? SwitchTableViewCell else {
             return UITableViewCell()
         }
 
-        var contentConfiguration = cell.defaultContentConfiguration()
-        contentConfiguration.text = connection.account
-        cell.contentConfiguration = contentConfiguration
-        cell.on = connection.enabled
+        cell.textLabel?.text = connection.account
+        cell.textLabel?.numberOfLines = 1
+        cell.imageView?.image = connection.imageForCell
+        cell.on = connection.isOn
         cell.onChange = { [weak self] newValue in
             self?.updateConnection(at: indexPath.row, enabled: newValue)
         }
+
+        let isInteractionAllowed = connection.isOn || !isSharingLimitReached
+        isInteractionAllowed ? cell.enable() : cell.disable()
+        cell.imageView?.alpha = isInteractionAllowed ? 1.0 : Constants.disabledCellImageOpacity
 
         return cell
     }
@@ -101,12 +132,40 @@ private extension PrepublishingSocialAccountsViewController {
             return
         }
 
-        connections[index].enabled = enabled
-
-        // TODO: check between enabled and remaining values.
+        // directly mutate the value to avoid copy-on-write.
+        connections[index].isOn = enabled
+        lastToggledRow = index
     }
 
+    func toggleInteractivityIfNeeded() {
+        guard let sharingLimit else {
+            isSharingLimitReached = false
+            return
+        }
+
+        isSharingLimitReached = enabledCount >= sharingLimit.remaining
+    }
+
+    /// Convenient model that represents the user's Publicize connections.
+    struct Connection {
+        let service: PublicizeService.ServiceName
+        let account: String
+        let keyringID: Int
+        var isOn: Bool
+
+        lazy var imageForCell: UIImage = {
+            service.localIconImage.resizedImage(with: .scaleAspectFit,
+                                                bounds: Constants.cellImageSize,
+                                                interpolationQuality: .default)
+        }()
+    }
+
+    // MARK: Constants
+
     enum Constants {
+        static let disabledCellImageOpacity = 0.36
+        static let cellImageSize = CGSize(width: 28.0, height: 28.0)
+
         static let accountCellIdentifier = "AccountCell"
         static let messageCellIdentifier = "MessageCell"
 
