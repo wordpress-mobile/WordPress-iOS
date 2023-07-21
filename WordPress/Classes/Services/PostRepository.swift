@@ -58,6 +58,8 @@ final class PostRepository {
                 }
             }
 
+            PostHelper.update(post, with: remotePost, in: context)
+
             return try .ofUnsaved(post)
         }
     }

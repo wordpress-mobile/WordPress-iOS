@@ -1287,6 +1287,8 @@
 		4AA33F05299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */; };
 		4AAD68FC2A6A1F9D007FE77E /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FB2A6A1F9D007FE77E /* PostRepository.swift */; };
 		4AAD68FD2A6A1F9D007FE77E /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FB2A6A1F9D007FE77E /* PostRepository.swift */; };
+		4AAD69002A6A3A11007FE77E /* PostHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FF2A6A3A11007FE77E /* PostHelper.m */; };
+		4AAD69012A6A3A11007FE77E /* PostHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FF2A6A3A11007FE77E /* PostHelper.m */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -6922,6 +6924,8 @@
 		4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSiteTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTagTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AAD68FB2A6A1F9D007FE77E /* PostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
+		4AAD68FE2A6A3A11007FE77E /* PostHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostHelper.h; sourceTree = "<group>"; };
+		4AAD68FF2A6A3A11007FE77E /* PostHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PostHelper.m; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AD5657128E543A30054C676 /* BlogQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQueryTests.swift; sourceTree = "<group>"; };
@@ -14200,6 +14204,8 @@
 				9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */,
 				2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */,
 				4AAD68FB2A6A1F9D007FE77E /* PostRepository.swift */,
+				4AAD68FE2A6A3A11007FE77E /* PostHelper.h */,
+				4AAD68FF2A6A3A11007FE77E /* PostHelper.m */,
 				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
 				08472A1F1C727E020040769D /* PostServiceOptions.m */,
 				57D66B99234BB206005A2D74 /* PostServiceRemoteFactory.swift */,
@@ -22100,6 +22106,7 @@
 				400A2C862217A985000A8A59 /* ReferrerStatsRecordValue+CoreDataClass.swift in Sources */,
 				F1112AB2255C2D4600F1F746 /* BlogDetailHeaderView.swift in Sources */,
 				B5EB19EC20C6DACC008372B9 /* ImageDownloader.swift in Sources */,
+				4AAD69002A6A3A11007FE77E /* PostHelper.m in Sources */,
 				8B0CE7D12481CFE8004C4799 /* ReaderDetailHeaderView.swift in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				4A1E77CC2989F2F7006281CC /* WPAccount+DeduplicateBlogs.swift in Sources */,
@@ -25431,6 +25438,7 @@
 				FAFC064C27D22E4C002F0483 /* QuickStartTourStateView.swift in Sources */,
 				C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */,
 				FABB25062602FC2C00C8785C /* ReaderTagsTableViewModel.swift in Sources */,
+				4AAD69012A6A3A11007FE77E /* PostHelper.m in Sources */,
 				17ABD3532811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift in Sources */,
 				C324D7AB28C2F73100310DEF /* SplashPrologueStyleGuide.swift in Sources */,
 				3F8B45A7292C1A2300730FA4 /* MigrationSuccessCardView.swift in Sources */,
