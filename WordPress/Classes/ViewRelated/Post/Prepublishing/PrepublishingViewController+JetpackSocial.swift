@@ -29,6 +29,16 @@ extension PrepublishingViewController {
             configureNoConnectionView(for: cell)
         }
     }
+
+    func didTapAutoSharingCell() {
+        guard hasExistingConnections else {
+            return
+        }
+
+        let model = makeAutoSharingModel()
+        let socialAccountsViewController = PrepublishingSocialAccountsViewController(model: model)
+        self.navigationController?.pushViewController(socialAccountsViewController, animated: true)
+    }
 }
 
 // MARK: - Helper Methods
