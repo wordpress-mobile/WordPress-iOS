@@ -1,20 +1,12 @@
-import XCTest
 import OHHTTPStubs
+import WordPress
+import XCTest
 
 class ReaderSiteServiceTests: CoreDataTestCase {
 
-    private var service: ReaderSiteService!
-
-    override func setUp() {
-        let accountService = AccountService(coreDataStack: contextManager)
-        accountService.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
-        self.service = ReaderSiteService(coreDataStack: contextManager)
-
-        stub(condition: isHost("public-api.wordpress.com")) { request in
-            NSLog("[Warning] Received an unexpected request sent to \(String(describing: request.url))")
-            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
-        }
+    override class func tearDown() {
         HTTPStubs.removeAllStubs()
+        super.tearDown()
     }
 
     func testFollowSiteByURL() {
@@ -38,8 +30,9 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             ] as [String: Any], statusCode: 200, headers: nil)
         }
 
+        let service = makeService()
         let success = expectation(description: "The success block should be called")
-        self.service.followSite(by: URL(string: "https://test.blog")!, success: success.fulfill, failure: nil)
+        service.followSite(by: URL(string: "https://test.blog")!, success: success.fulfill, failure: nil)
         wait(for: [success], timeout: 0.5)
     }
 
@@ -58,8 +51,9 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             ] as [String: Any], statusCode: 200, headers: nil)
         }
 
+        let service = makeService()
         let success = expectation(description: "The success block should be called")
-        self.service.followSite(withID: 42, success: success.fulfill, failure: nil)
+        service.followSite(withID: 42, success: success.fulfill, failure: nil)
         wait(for: [success], timeout: 0.5)
     }
 
@@ -68,9 +62,29 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 200, headers: nil)
         }
 
+        let service = makeService()
         let success = expectation(description: "The success block should be called")
-        self.service.unfollowSite(withID: 42, success: success.fulfill, failure: nil)
+        service.unfollowSite(withID: 42, success: success.fulfill, failure: nil)
         wait(for: [success], timeout: 0.5)
     }
+}
 
+extension ReaderSiteServiceTests {
+
+    func makeService(
+        username: String = "testuser",
+        authToken: String = "authtoken"
+    ) -> ReaderSiteService {
+        return makeService(username: username, authToken: authToken, contextManager: contextManager)
+    }
+
+    func makeService(
+        username: String,
+        authToken: String,
+        contextManager: ContextManager
+    ) -> ReaderSiteService {
+        let accountService = AccountService(coreDataStack: contextManager)
+        accountService.createOrUpdateAccount(withUsername: username, authToken: authToken)
+        return ReaderSiteService(coreDataStack: contextManager)
+    }
 }
