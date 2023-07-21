@@ -166,7 +166,7 @@ private extension PrepublishingViewController {
             guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
                   let connections = post.blog.sortedConnections as? [PublicizeConnection],
                   let supportedServices = try? PublicizeService.allSupportedServices(in: context) else {
-                return .init(services: [], sharingLimit: nil)
+                return .init(services: [], message: String(), sharingLimit: nil)
             }
 
             // first, build a dictionary to categorize the connections.
@@ -196,7 +196,9 @@ private extension PrepublishingViewController {
                 )
             }
 
-            return .init(services: modelServices, sharingLimit: post.blog.sharingLimit)
+            return .init(services: modelServices,
+                         message: post.publicizeMessage ?? post.titleForDisplay(),
+                         sharingLimit: post.blog.sharingLimit)
         }
     }
 
@@ -212,6 +214,7 @@ private extension PrepublishingViewController {
 /// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
 struct PrepublishingAutoSharingModel {
     let services: [Service]
+    let message: String
     let sharingLimit: PublicizeInfo.SharingLimit?
 
     struct Service: Hashable {
