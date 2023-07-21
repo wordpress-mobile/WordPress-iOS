@@ -204,6 +204,13 @@ extension CoreDataStack {
         }
     }
 
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async rethrows -> T {
+        let context = newDerivedContext()
+        return try await context.perform {
+            try block(context)
+        }
+    }
+
     // MARK: - Database Migration
 
     /// Creates a copy of the current open store and saves it to the specified destination
@@ -423,6 +430,54 @@ extension CoreDataStack {
     func performQuery<T, E>(_ block: @escaping (NSManagedObjectContext) -> Result<T, E>?) -> Result<T, E>? where T: NSManagedObject, E: Error {
         mainContext.performAndWait { [mainContext] in
             block(mainContext)
+        }
+    }
+}
+
+struct CoreDataObjectIdentifier<Model: NSManagedObject> {
+    var objectID: NSManagedObjectID
+
+    init(objectID: NSManagedObjectID) {
+        precondition(!objectID.isTemporaryID, "The `objectID` is not a permanent id. Call `obtainPermanentIDs` first.")
+        // TODO: Verify if the object associated with the objectID is `Model`.
+        self.objectID = objectID
+    }
+
+    static func ofUnsaved<T: NSManagedObject>(_ object: NSManagedObject, type: T.Type = T.self) throws -> CoreDataObjectIdentifier<T> {
+        precondition(object.isKind(of: type), "The object (\(object)) is not the given type \(type)")
+
+        var objectID = object.objectID
+        if objectID.isTemporaryID {
+            let context = object.managedObjectContext!
+            try context.obtainPermanentIDs(for: [object])
+            objectID = object.objectID
+        }
+
+        return CoreDataObjectIdentifier<T>(objectID: objectID)
+    }
+
+    static func ofSaved<T: NSManagedObject>(_ object: NSManagedObject, type: T.Type = T.self) -> CoreDataObjectIdentifier<T> {
+        precondition(object.isKind(of: type), "The object (\(object)) is not the given type \(type)")
+
+        return CoreDataObjectIdentifier<T>(objectID: object.objectID)
+    }
+
+    func existingObject(in context: NSManagedObjectContext) throws -> Model {
+        do {
+            var result: Result<Model, Error>!
+
+            // Catch an Objective-C `NSInvalidArgumentException` exception from `existingObject(with:)`.
+            // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
+            try WPException.objcTry {
+                result = Result {
+                    let object = try context.existingObject(with: objectID)
+                    return object as! Model
+                }
+            }
+
+            return try result.get()
+        } catch {
+            throw error
         }
     }
 }
