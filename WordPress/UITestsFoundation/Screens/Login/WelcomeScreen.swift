@@ -1,8 +1,6 @@
 import ScreenObject
 import XCTest
 
-// TODO: remove when unifiedAuth is permanent.
-
 public class WelcomeScreen: ScreenObject {
 
     private let logInButtonGetter: (XCUIApplication) -> XCUIElement = {
