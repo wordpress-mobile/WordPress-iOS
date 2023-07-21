@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-12 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: id */
@@ -9742,11 +9742,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Balasan untuk %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Cookie ini memungkinkan kami untuk mengoptimalkan performa dengan mengumpulkan informasi tentang cara pengguna berinteraksi dengan situs kami.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Simpan";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Buka Pengaturan";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Kami memproses data pribadi Anda untuk mengoptimalkan situs dan aktivitas pemasaran berdasarkan persetujuan Anda dan kepentingan sah kami.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Kelola privasi";

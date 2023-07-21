@@ -1,0 +1,3 @@
+Hemos desactivado los recordatorios del blog para los sitios autoalojados que no están conectados a Jetpack, ya que esta función solo está disponible en la aplicación de Jetpack.
+
+Ahora, los bloques reutilizables se llaman "patrones sincronizados" (como en el editor del escritorio).
