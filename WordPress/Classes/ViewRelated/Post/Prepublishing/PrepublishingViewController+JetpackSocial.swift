@@ -181,7 +181,7 @@ private extension PrepublishingViewController {
 
             // first, build a dictionary to categorize the connections.
             var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
-            connections.forEach { connection in
+            connections.filter { !$0.requiresUserAction() }.forEach { connection in
                 let serviceName = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
                 var serviceConnections = connectionsMap[serviceName] ?? []
                 serviceConnections.append(connection)
