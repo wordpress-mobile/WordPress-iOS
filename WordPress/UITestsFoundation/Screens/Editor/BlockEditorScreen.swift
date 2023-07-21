@@ -4,48 +4,108 @@ import XCUITestHelpers
 
 public class BlockEditorScreen: ScreenObject {
 
-    let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     }
 
-    let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
     }
 
-    let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
     }
 
-    let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["add-block-button"]
     }
 
-    let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["more_post_options"]
     }
 
-    let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Insert from URL"]
     }
 
-    let applyButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let applyButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Apply"]
     }
 
-    var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
-    var undoButton: XCUIElement { undoButtonGetter(app) }
-    var redoButton: XCUIElement { redoButtonGetter(app) }
+    private let discardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Discard"]
+    }
+
+    private let firstParagraphBlockGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Paragraph Block. Row 1. Empty"]
+    }
+
+    private let postTitleViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Post title. Empty"]
+    }
+
+    private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"]
+    }
+
+    private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Close"]
+    }
+
+    private let dismissPopoverRegionGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["PopoverDismissRegion"]
+    }
+
+    private let keepEditingButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Keep Editing"]
+    }
+
+    private let postSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Post Settings"]
+    }
+
+    private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Choose from device"]
+    }
+
+    private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Set reminders"]
+    }
+
+    private let fullScreenImageGetter: (XCUIApplication) -> XCUIElement = {
+        $0.images["Fullscreen view of image. Double tap to dismiss"]
+    }
+
+    private let unsavedChangesLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["You have unsaved changes."]
+    }
+
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
-    var moreButton: XCUIElement { moreButtonGetter(app) }
-    var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
     var applyButton: XCUIElement { applyButtonGetter(app) }
+    var chooseFromDeviceButton: XCUIElement { chooseFromDeviceButtonGetter(app) }
+    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var discardButton: XCUIElement { discardButtonGetter(app) }
+    var dismissPopoverRegion: XCUIElement { dismissPopoverRegionGetter(app) }
+    var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
+    var editorNavigationBar: XCUIElement { editorNavigationBarGetter(app) }
+    var firstParagraphBlock: XCUIElement { firstParagraphBlockGetter(app) }
+    var fullScreenImage: XCUIElement { fullScreenImageGetter(app) }
+    var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
+    var keepEditingButton: XCUIElement { keepEditingButtonGetter(app) }
+    var moreButton: XCUIElement { moreButtonGetter(app) }
+    var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
+    var postTitleView: XCUIElement { postTitleViewGetter(app) }
+    var redoButton: XCUIElement { redoButtonGetter(app) }
+    var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
+    var undoButton: XCUIElement { undoButtonGetter(app) }
+    var unsavedChangesLabel: XCUIElement { unsavedChangesLabelGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
         // is loaded, we rely only on the button to add a new block and on the navigation bar we
         // expect to encase the screen.
         try super.init(
-            expectedElementGetters: [ editorCloseButtonGetter, undoButtonGetter, redoButtonGetter, addBlockButtonGetter ],
+            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter, redoButtonGetter, undoButtonGetter ],
             app: app
         )
     }
@@ -55,7 +115,7 @@ public class BlockEditorScreen: ScreenObject {
      - Parameter text: the test to enter into the title
      */
     public func enterTextInTitle(text: String) -> BlockEditorScreen {
-        let titleView = app.otherElements["Post title. Empty"].firstMatch // Uses a localized string
+        let titleView = postTitleView.firstMatch // Uses a localized string
         XCTAssert(titleView.waitForExistence(timeout: 3), "Title View does not exist!")
         type(text: text, in: titleView)
 
@@ -69,7 +129,7 @@ public class BlockEditorScreen: ScreenObject {
     public func addParagraphBlock(withText text: String) -> BlockEditorScreen {
         addBlock("Paragraph block")
 
-        let paragraphView = app.otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
+        let paragraphView = firstParagraphBlock.textViews.element(boundBy: 0)
         type(text: text, in: paragraphView)
 
         return self
@@ -158,27 +218,15 @@ public class BlockEditorScreen: ScreenObject {
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
-                guard app.staticTexts["You have unsaved changes."].waitForIsHittable(timeout: 3) else { return }
+                guard unsavedChangesLabel.waitForIsHittable(timeout: 3) else { return }
 
                 Logger.log(message: "Discarding unsaved changes", event: .v)
-                let discardButton = app.buttons["Discard"] // Uses a localized string
                 discardButton.tap()
             }
 
-            let editorNavBar = app.navigationBars["Gutenberg Editor Navigation Bar"]
-            let waitForEditorToClose = editorNavBar.waitFor(predicateString: "isEnabled == false")
+            let waitForEditorToClose = editorNavigationBar.waitFor(predicateString: "isEnabled == false")
             XCTAssertEqual(waitForEditorToClose, .completed, "Block editor should be closed but is still loaded.")
         }
-    }
-
-    // Sometimes ScreenObject times out due to long loading time making the Editor Screen evaluate to `nil`.
-    // This function adds the ability to still close the Editor Screen when that happens.
-    public static func closeEditorDiscardingChanges(app: XCUIApplication = XCUIApplication()) {
-        let closeButton = app.buttons["Close"]
-        if closeButton.waitForIsHittable() { closeButton.tap() }
-
-        let discardChangesButton = app.buttons["Discard"]
-        if discardChangesButton.waitForIsHittable() { discardChangesButton.tap() }
     }
 
     public func publish() throws -> EditorNoticeComponent {
@@ -211,13 +259,12 @@ public class BlockEditorScreen: ScreenObject {
             throw NSError(domain: "InvalidAction", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid action: \(action)"])
         }
 
-        return try EditorNoticeComponent(withNotice: "Post \(actionInNotice)", andAction: "View")
+        return try EditorNoticeComponent(withNotice: "Post \(actionInNotice)")
     }
 
     @discardableResult
     public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
-        let postSettingsButton = app.buttons["Post Settings"] // Uses a localized string
         postSettingsButton.tap()
 
         return try EditorPostSettings()
@@ -233,15 +280,14 @@ public class BlockEditorScreen: ScreenObject {
 
     private func dismissBlockEditorPopovers() {
         if XCUIDevice.isPad {
-            app.otherElements["PopoverDismissRegion"].tap()
+            dismissPopoverRegion.tap()
             dismissImageViewIfNeeded()
         } else {
-            app.buttons["Keep Editing"].tap()
+            keepEditingButton.tap()
         }
     }
 
     private func dismissImageViewIfNeeded() {
-        let fullScreenImage = app.images["Fullscreen view of image. Double tap to dismiss"]
         if fullScreenImage.exists { fullScreenImage.tap() }
     }
 
@@ -320,9 +366,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func chooseFromDevice() throws -> MediaPickerAlbumScreen {
-        let imageDeviceButton = app.buttons["Choose from device"] // Uses a localized string
-
-        imageDeviceButton.tap()
+        chooseFromDeviceButton.tap()
 
         // Allow access to device media
         app.tap() // trigger the media permissions alert handler
@@ -341,7 +385,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {
-        guard app.buttons["Set reminders"].waitForExistence(timeout: 3) else { return }
+        guard setRemindersButton.waitForExistence(timeout: 3) else { return }
 
         if XCUIDevice.isPad {
             app.swipeDown(velocity: .fast)
