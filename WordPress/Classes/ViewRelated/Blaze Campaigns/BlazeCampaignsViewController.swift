@@ -225,7 +225,7 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
         configureAndDisplayNoResults(on: view,
                                      title: Strings.NoResults.emptyTitle,
                                      subtitle: Strings.NoResults.emptySubtitle,
-                                     buttonTitle: Strings.promoteButtonTitle)
+                                     buttonTitle: Strings.createButtonTitle)
     }
 
     private func showErrorView() {
@@ -251,13 +251,12 @@ private extension BlazeCampaignsViewController {
 
     enum Strings {
         static let navigationTitle = NSLocalizedString("blaze.campaigns.title", value: "Blaze Campaigns", comment: "Title for the screen that allows users to manage their Blaze campaigns.")
-        static let promoteButtonTitle = NSLocalizedString("blaze.campaigns.promote.button.title", value: "Promote", comment: "Button title for the button that shows the Blaze flow when tapped.")
         static let createButtonTitle = NSLocalizedString("blaze.campaigns.create.button.title", value: "Create", comment: "Button title for the button that shows the Blaze flow when tapped.")
 
         enum NoResults {
             static let loadingTitle = NSLocalizedString("blaze.campaigns.loading.title", value: "Loading campaigns...", comment: "Displayed while Blaze campaigns are being loaded.")
             static let emptyTitle = NSLocalizedString("blaze.campaigns.empty.title", value: "You have no campaigns", comment: "Title displayed when there are no Blaze campaigns to display.")
-            static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click promote to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
+            static let emptySubtitle = NSLocalizedString("blaze.campaigns.empty.subtitle", value: "You have not created any campaigns yet. Click create to get started.", comment: "Text displayed when there are no Blaze campaigns to display.")
             static let errorTitle = NSLocalizedString("blaze.campaigns.errorTitle", value: "Oops", comment: "Title for the view when there's an error loading Blaze campiagns.")
             static let errorSubtitle = NSLocalizedString("blaze.campaigns.errorMessage", value: "There was an error loading campaigns.", comment: "Text displayed when there is a failure loading Blaze campaigns.")
         }

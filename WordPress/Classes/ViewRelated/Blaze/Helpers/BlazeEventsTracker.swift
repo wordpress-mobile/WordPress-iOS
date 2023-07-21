@@ -23,6 +23,10 @@ import Foundation
         WPAnalytics.track(.blazeCardHidden, properties: analyticsProperties(for: source))
     }
 
+    static func trackLearnMoreTapped(for source: BlazeSource) {
+        WPAnalytics.track(.blazeCardLearnMoreTapped, properties: analyticsProperties(for: source))
+    }
+
     // MARK: - Overlay
 
     static func trackOverlayDisplayed(for source: BlazeSource) {

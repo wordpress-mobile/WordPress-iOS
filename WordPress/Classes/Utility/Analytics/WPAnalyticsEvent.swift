@@ -455,6 +455,7 @@ import Foundation
     case blazeEntryPointTapped
     case blazeContextualMenuAccessed
     case blazeCardHidden
+    case blazeCardLearnMoreTapped
     case blazeOverlayDisplayed
     case blazeOverlayButtonTapped
     case blazeOverlayDismissed
@@ -1282,6 +1283,8 @@ import Foundation
             return "blaze_entry_point_menu_accessed"
         case .blazeCardHidden:
             return "blaze_entry_point_hide_tapped"
+        case .blazeCardLearnMoreTapped:
+            return "blaze_entry_point_learn_more_tapped"
         case .blazeOverlayDisplayed:
             return "blaze_overlay_displayed"
         case .blazeOverlayButtonTapped:

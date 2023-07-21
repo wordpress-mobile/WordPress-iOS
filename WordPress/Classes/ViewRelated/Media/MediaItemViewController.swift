@@ -13,6 +13,7 @@ class MediaItemViewController: UITableViewController {
 
     }
 
+    // swiftlint:disable:next weak_delegate
     let delegate = DownloadDelegate()
 
     @objc let media: Media

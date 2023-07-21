@@ -3,7 +3,12 @@
 * [*] [internal] Fix multiple memory leaks after logging in and logging out. [#21047, #21092]
 * [**] Block editor: Move undo/redo buttons to the navigation bar. [#20930]
 * [*] Fixed an issue that caused the UI to be briefly unresponsive in certain case when opening the app. [#21065]
+* [**] Blogging Prompts: Fixed a crash in Reader after tapping on a blogging prompt multiple times. [#21112]
 * [*] [internal] Update calls to use UserDefaults singleton. [#21088]
+* [*] Fix memory leaks in setting up Jetpack connection. [#21052]
+* [*] Fix a memory leak caused by the theme customization web view. [#21051]
+* [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
+* [*] Fixed a crash that could occur when following sites in Reader. [#21140]
 
 22.8
 -----

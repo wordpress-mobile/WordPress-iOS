@@ -6,7 +6,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "WPTableViewActivityCell.h"
-#import "WPTableImageSource.h"
 #import "CoreDataStack.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
@@ -68,7 +67,6 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
-@property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) NSData *animatedFeaturedImageData;
 
