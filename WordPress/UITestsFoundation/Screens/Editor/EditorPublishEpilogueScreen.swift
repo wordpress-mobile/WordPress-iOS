@@ -42,11 +42,11 @@ public class EditorPublishEpilogueScreen: ScreenObject {
     }
 
     public func verifyEpilogueDisplays(postTitle expectedPostTitle: String, siteAddress expectedSiteAddress: String) -> EditorPublishEpilogueScreen {
-        let actualPostTitle = postTitle.label
-        let actualSiteUrl = siteUrl.label
+        let actualPostTitle = app.staticTexts["postTitle"].label
+        let actualSiteUrl = app.staticTexts["siteUrl"].label
 
         XCTAssertEqual(expectedPostTitle, actualPostTitle, "Post title doesn't match expected title")
-        XCTAssertEqual(expectedSiteAddress, actualSiteUrl, "Site address doesn't match expected address")
+        XCTAssertEqual(expectedSiteAddress, actualSiteUrl, "Site URL doesn't match expected URL")
 
         return self
     }

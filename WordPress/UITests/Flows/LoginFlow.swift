@@ -32,12 +32,4 @@ class LoginFlow {
             .proceedWithValidPassword()
             .continueWithSelectedSite(title: selectedSiteTitle)
     }
-
-    // Login with self-hosted site via Site Address.
-    static func loginIfNeeded(siteUrl: String, username: String, password: String) throws -> TabNavComponent {
-        guard TabNavComponent.isLoaded() else {
-            return try login(siteUrl: siteUrl, username: username, password: password).tabBar
-        }
-        return try TabNavComponent()
-    }
 }
