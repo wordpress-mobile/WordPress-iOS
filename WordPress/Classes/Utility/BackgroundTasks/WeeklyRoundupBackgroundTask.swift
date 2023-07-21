@@ -22,7 +22,7 @@ private class WeeklyRoundupDataProvider {
 
     // MARK: - Misc Properties
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
 
     /// Method to report errors that won't interrupt the execution.
     ///
@@ -32,7 +32,7 @@ private class WeeklyRoundupDataProvider {
     ///
     private let debugSettings = WeeklyRoundupDebugScreen.Settings()
 
-    init(coreDataStack: CoreDataStack, onError: @escaping (Error) -> Void) {
+    init(coreDataStack: ContextManager, onError: @escaping (Error) -> Void) {
         self.coreDataStack = coreDataStack
         self.onError = onError
     }
@@ -156,18 +156,16 @@ private class WeeklyRoundupDataProvider {
     ///
     /// - Returns: the requested sites (could be an empty array if there's none) or an error if there is one.
     private func getSites(result: @escaping (Result<[Site], Error>) -> Void) {
-        self.coreDataStack.performAndSave { [weak self] context in
-            guard let self else {
-                result(.success([]))
-                return
-            }
-            switch getAllSites(in: context) {
+        self.coreDataStack.performAndSave({ context -> Result<[Site], Error> in
+            return self.getAllSites(in: context)
+        }, completion: { allSites in
+            switch allSites {
             case .success(let sites):
-                filterCandidateSites(sites, result: result)
+                self.filterCandidateSites(sites, result: result)
             case .failure(let error):
                 result(.failure(error))
             }
-        }
+        }, on: .global())
     }
 
     /// Filters the candidate sites for the Weekly Roundup notification
@@ -547,32 +545,44 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         stats: StatsSummaryData,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        self.coreDataStack.performAndSave { context in
+        self.coreDataStack.performAndSave({ context -> (title: String?, dotComID: Int) in
             guard let site = try? context.existingObject(with: siteID) as? Blog else {
-                let error = RunError.unableToScheduleDynamicNotification(reason: "Blog with id \(siteID) not found in context")
-                completion(.failure(error))
-                return
+                throw RunError.unableToScheduleDynamicNotification(reason: "Blog with id \(siteID) not found in context")
             }
             guard let dotComID = site.dotComID?.intValue else {
-                let error = RunError.unableToScheduleDynamicNotification(reason: "Blog \(String(describing: site.title)) is not a WordPress.com site")
-                completion(.failure(error))
-                return
+                throw RunError.unableToScheduleDynamicNotification(reason: "Blog \(String(describing: site.title)) is not a WordPress.com site")
             }
-            self.notificationScheduler.scheduleDynamicNotification(
-                siteTitle: site.title,
-                dotComID: dotComID,
-                views: stats.viewsCount,
-                comments: stats.commentsCount,
-                likes: stats.likesCount,
-                periodEndDate: self.currentRunPeriodEndDate()
-            ) { result in
-                switch result {
-                case .success:
-                    self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: dotComID)
-                    completion(.success(()))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+            return (site.title, dotComID)
+        }, completion: { result in
+            switch result {
+            case .success(let site):
+                self.scheduleDynamicNotification(siteTitle: site.title, dotComID: site.dotComID, stats: stats, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }, on: .global())
+    }
+
+    private func scheduleDynamicNotification(
+        siteTitle: String?,
+        dotComID: Int,
+        stats: StatsSummaryData,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        self.notificationScheduler.scheduleDynamicNotification(
+            siteTitle: siteTitle,
+            dotComID: dotComID,
+            views: stats.viewsCount,
+            comments: stats.commentsCount,
+            likes: stats.likesCount,
+            periodEndDate: self.currentRunPeriodEndDate()
+        ) { result in
+            switch result {
+            case .success:
+                self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: dotComID)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
