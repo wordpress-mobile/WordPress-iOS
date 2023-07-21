@@ -43,7 +43,7 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.69.4)
   - fmt (6.2.1)
   - FSInteractiveMap (0.1.0)
-  - Gifu (3.2.0)
+  - Gifu (3.3.1)
   - glog (0.3.5)
   - GoogleSignIn (6.0.2):
     - AppAuth (~> 1.4)
@@ -553,7 +553,7 @@ DEPENDENCIES:
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.100.0-alpha1/third-party-podspecs/FBLazyVector.podspec.json`)
   - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.100.0-alpha1/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json`)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
-  - Gifu (= 3.2.0)
+  - Gifu (= 3.3.1)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.100.0-alpha1/third-party-podspecs/glog.podspec.json`)
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.100.0-alpha1`)
@@ -810,7 +810,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 03365206a695e76184146098efecb19a07f98ffc
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
-  Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
+  Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   glog: 741689bdd65551bc8fb59d633e55c34293030d3e
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
@@ -895,6 +895,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 5238db288b233109c5666c6dfc4557a393fb3dd0
+PODFILE CHECKSUM: 219c9d34b99c2ffae24b5f8f02060f2cac26145c
 
 COCOAPODS: 1.12.1
