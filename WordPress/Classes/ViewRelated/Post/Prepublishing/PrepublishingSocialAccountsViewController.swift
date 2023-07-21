@@ -125,6 +125,8 @@ private extension PrepublishingSocialAccountsViewController {
         isInteractionAllowed ? cell.enable() : cell.disable()
         cell.imageView?.alpha = isInteractionAllowed ? 1.0 : Constants.disabledCellImageOpacity
 
+        cell.accessibilityLabel = "\(connection.service.description), \(connection.account)"
+
         return cell
     }
 
@@ -136,6 +138,8 @@ private extension PrepublishingSocialAccountsViewController {
         // directly mutate the value to avoid copy-on-write.
         connections[index].isOn = enabled
         lastToggledRow = index
+
+        toggleInteractivityIfNeeded()
     }
 
     func toggleInteractivityIfNeeded() {
