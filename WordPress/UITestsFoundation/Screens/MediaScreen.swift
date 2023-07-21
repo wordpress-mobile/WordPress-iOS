@@ -3,9 +3,15 @@ import XCTest
 
 public class MediaScreen: ScreenObject {
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    private let mediaCollectionGetter: (XCUIApplication) -> XCUIElement = {
+        $0.collectionViews["MediaCollection"]
+    }
+
+    var mediaCollection: XCUIElement { mediaCollectionGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.collectionViews["MediaCollection"] } ],
+            expectedElementGetters: [ mediaCollectionGetter ],
             app: app
         )
     }

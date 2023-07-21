@@ -21,11 +21,12 @@ public extension Color {
                 if AppConfiguration.isJetpack {
                     return jetpack
                 } else {
-                    return jetpack // FIXME: WordPress colors
+                    return wordPress
                 }
             }
 
             private static let jetpack = Color(DesignSystemColorNames.Background.jetpack)
+            private static let wordPress = Color(DesignSystemColorNames.Background.wordPress)
         }
 
         public enum Border {
@@ -52,6 +53,7 @@ internal enum DesignSystemColorNames {
         internal static let tertiary = "backgroundTertiary"
         internal static let quaternary = "backgroundQuaternary"
         internal static let jetpack = "brandJetpack"
+        internal static let wordPress = "brandWordPress"
     }
 
     internal enum Border {

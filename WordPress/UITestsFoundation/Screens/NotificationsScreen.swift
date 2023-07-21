@@ -3,9 +3,20 @@ import XCTest
 
 public class NotificationsScreen: ScreenObject {
 
+    private let notificationsTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Notifications Table"]
+    }
+
+    private let replyButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["reply-button"]
+    }
+
+    var notificationsTable: XCUIElement { notificationsTableGetter(app) }
+    var replyButton: XCUIElement { replyButtonGetter(app) }
+
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.tables["Notifications Table"] } ],
+            expectedElementGetters: [ notificationsTableGetter ],
             app: app
         )
     }
@@ -18,7 +29,6 @@ public class NotificationsScreen: ScreenObject {
 
     @discardableResult
     public func replyToNotification() -> NotificationsScreen {
-        let replyButton = app.buttons["reply-button"]
         replyButton.tap()
         return self
     }

@@ -1,0 +1,1 @@
+Pour faire court, les rappels de blog étant uniquement disponibles dans l’application Jetpack, nous les avons désactivés pour les sites auto-hébergés qui ne sont pas connectés à Jetpack.

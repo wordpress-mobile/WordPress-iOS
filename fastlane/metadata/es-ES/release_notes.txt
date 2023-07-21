@@ -1,0 +1,1 @@
+Hemos desactivado los recordatorios del blog para los sitios autoalojados que no están conectados a Jetpack, ya que esta función solo está disponible en la aplicación de Jetpack. Breve y conciso.

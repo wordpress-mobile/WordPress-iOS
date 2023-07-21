@@ -3,22 +3,25 @@ import XCTest
 
 public class EditorNoticeComponent: ScreenObject {
 
-    private let noticeTitleGetter: (XCUIApplication) -> XCUIElement
-    private let noticeActionGetter: (XCUIApplication) -> XCUIElement
+    private let noticeViewTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["notice_title_and_message"]
+    }
 
-    private let expectedNoticeTitle: String
+    private let noticeViewButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["View"]
+    }
+
+    var expectedNoticeTitle: String
+    var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
+    var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
 
     init(
         withNotice noticeTitle: String,
-        andAction buttonText: String,
         app: XCUIApplication = XCUIApplication()
     ) throws {
-        noticeTitleGetter = { app in app.otherElements["notice_title_and_message"] }
-        noticeActionGetter = { app in app.buttons[buttonText] }
         expectedNoticeTitle = noticeTitle
-
         try super.init(
-            expectedElementGetters: [ noticeTitleGetter, noticeActionGetter ],
+            expectedElementGetters: [ noticeViewTitleGetter ],
             app: app
         )
     }
@@ -28,13 +31,12 @@ public class EditorNoticeComponent: ScreenObject {
         // (the postTitle). It does not seem possible to target the specific postTitle label
         // only because of this.
         XCTAssertEqual(
-            noticeTitleGetter(app).label,
+            noticeViewTitle.label,
             String(format: "%@. %@", expectedNoticeTitle, postTitle),
             "Post title not visible on published post notice"
         )
 
-        noticeActionGetter(app).tap()
-
+        noticeViewButton.tap()
         return try EditorPublishEpilogueScreen()
     }
 }
