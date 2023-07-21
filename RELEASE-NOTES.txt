@@ -9,6 +9,7 @@
 * [*] Fix a memory leak caused by the theme customization web view. [#21051]
 * [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21140]
+* [*] Fixed a crash that occurs in Weekly Roundup Background task due to a Core Data Concurrency violation. [#21076]
 
 22.8
 -----
