@@ -129,7 +129,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     if ([components count] > 2) {
         NSString *type = components[1];
         NSString *hash = components[2];
-        if ([hash length] == 32) {
+        if ([hash length] == 32 || [hash length] == 64) {
             // Looks like a valid hash
             if ([type isEqualToString:@"avatar"]) {
                 if (avatarHash) *avatarHash = hash;
