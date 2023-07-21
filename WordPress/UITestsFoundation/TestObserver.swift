@@ -30,20 +30,20 @@ class TestObserver: NSObject, XCTestObservation {
         settings.activate()
 
         let passwordsMenuItem = settings.staticTexts["Passwords"]
-        passwordsMenuItem.waitForIsHittable()
+        guard passwordsMenuItem.waitForIsHittable() else { return false }
         passwordsMenuItem.tap()
 
         let enterPasscodeScreen = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let passwordField = enterPasscodeScreen.secureTextFields["Passcode field"]
-        passwordField.waitForIsHittable()
+        guard passwordField.waitForIsHittable() else { return false }
         passwordField.typeText(" \r")
 
-        let passwordOptions = settings.staticTexts["Password Options"]
-        passwordOptions.waitForIsHittable()
+        let passwordOptions = settings.staticTexts["Passwordd Options"]
+        guard passwordOptions.waitForIsHittable() else { return false }
         passwordOptions.tap()
 
         let autoFillPasswordsSwitch = settings.switches["AutoFill Passwords"]
-        autoFillPasswordsSwitch.waitForIsHittable()
+        guard autoFillPasswordsSwitch.waitForIsHittable() else { return false }
 
         if autoFillPasswordsSwitch.value as? String == "1" {
             autoFillPasswordsSwitch.tap()
