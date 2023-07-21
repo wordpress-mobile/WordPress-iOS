@@ -87,10 +87,6 @@ def gutenberg_dependencies(options:)
 end
 
 def apply_rnreanimated_workaround!(dependencies:, gutenberg_path:)
-  # RNReanimated needs React-jsc
-  # Reference: https://github.com/WordPress/gutenberg/pull/51386/commits/9538f8eaf73dfacef17382e1ab7feda40231061f
-  dependencies.push('React-jsc')
-
   # Use a custom RNReanimated version while we coordinate a fix upstream
   dependencies.delete('RNReanimated')
 
