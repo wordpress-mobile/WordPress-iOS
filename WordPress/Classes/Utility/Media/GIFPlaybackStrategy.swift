@@ -69,12 +69,12 @@ class SmallGIFPlaybackStrategy: GIFPlaybackStrategy {
 
 class MediumGIFPlaybackStrategy: GIFPlaybackStrategy {
     var maxSize = 20_000_000  // in MB
-    var frameBufferCount = 150
+    var frameBufferCount = 50
     var gifStrategy: GIFStrategy = .mediumGIFs
 }
 
 class LargeGIFPlaybackStrategy: GIFPlaybackStrategy {
     var maxSize = 50_000_000  // in MB
-    var frameBufferCount = 300
+    var frameBufferCount = 50
     var gifStrategy: GIFStrategy = .largeGIFs
 }
