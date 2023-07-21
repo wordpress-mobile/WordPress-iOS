@@ -3,25 +3,35 @@ import XCTest
 
 public class EditorPublishEpilogueScreen: ScreenObject {
 
-    private let getDoneButton: (XCUIApplication) -> XCUIElement = {
+    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.navigationBars.buttons["doneButton"]
     }
 
-    private let getViewButton: (XCUIApplication) -> XCUIElement = {
+    private let viewButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["viewPostButton"]
     }
 
-    var doneButton: XCUIElement { getDoneButton(app) }
-    var viewButton: XCUIElement { getViewButton(app) }
+    private let publishedPostStatusLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["publishedPostStatusLabel"]
+    }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
-        // Defining this via a `let` rather than inline only to avoid a SwiftLint style violation
-        let publishedPostStatusGetter: (XCUIApplication) -> XCUIElement = {
-            $0.staticTexts["publishedPostStatusLabel"]
-        }
+    private let postTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["postTitle"]
+    }
 
+    private let siteUrlGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["siteUrl"]
+    }
+
+    var doneButton: XCUIElement { doneButtonGetter(app) }
+    var postTitle: XCUIElement { postTitleGetter(app) }
+    var publishedPostStatusLabel: XCUIElement { publishedPostStatusLabelGetter(app) }
+    var siteUrl: XCUIElement { siteUrlGetter(app) }
+    var viewButton: XCUIElement { viewButtonGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ getDoneButton, getViewButton, publishedPostStatusGetter ],
+            expectedElementGetters: [ doneButtonGetter, viewButtonGetter, publishedPostStatusLabelGetter ],
             app: app
         )
     }
