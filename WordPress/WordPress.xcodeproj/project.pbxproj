@@ -14825,6 +14825,7 @@
 			isa = PBXGroup;
 			children = (
 				F5D0A64C23CC157100B20D27 /* Preview */,
+				FE7B9A852A6A60EC00488791 /* Prepublishing */,
 				8B0732EA242BEF1900E7FBD3 /* Prepublishing Nudge */,
 				F57402A5235FF71F00374346 /* Scheduling */,
 				4349B0A6218A2E810034118A /* Revisions */,
@@ -14856,9 +14857,6 @@
 				8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */,
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
-				8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */,
-				FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */,
-				FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */,
 				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
 				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
 				C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */,
@@ -18215,6 +18213,16 @@
 				FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */,
 			);
 			path = Migration;
+			sourceTree = "<group>";
+		};
+		FE7B9A852A6A60EC00488791 /* Prepublishing */ = {
+			isa = PBXGroup;
+			children = (
+				8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */,
+				FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */,
+				FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */,
+			);
+			path = Prepublishing;
 			sourceTree = "<group>";
 		};
 		FE7FAAB9299A35D40032A6F2 /* Install */ = {
