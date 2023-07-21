@@ -10,27 +10,27 @@ public class PostsScreen: ScreenObject {
 
     private var currentlyFilteredPostStatus: PostStatus = .published
 
-    let postsTableGetter: (XCUIApplication) -> XCUIElement = {
+    private let postsTableGetter: (XCUIApplication) -> XCUIElement = {
         $0.tables["PostsTable"]
     }
 
-    let publishedButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let publishedButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["published"]
     }
 
-    let draftsButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let draftsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["drafts"]
     }
 
-    let scheduledButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let scheduledButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["scheduled"]
     }
 
-    let createPostButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let createPostButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Create Post Button"]
     }
 
-    let autosaveAlertGetter: (XCUIApplication) -> XCUIElement = {
+    private let autosaveAlertGetter: (XCUIApplication) -> XCUIElement = {
         $0.alerts["autosave-options-alert"]
     }
 
