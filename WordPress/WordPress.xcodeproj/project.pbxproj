@@ -5587,6 +5587,8 @@
 		FE76C5E0293A63A800573C92 /* UIApplication+AppAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */; };
 		FE7B9A872A6A613000488791 /* PrepublishingSocialAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */; };
 		FE7B9A882A6A613000488791 /* PrepublishingSocialAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */; };
+		FE7B9A8A2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B9A892A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift */; };
+		FE7B9A8B2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B9A892A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift */; };
 		FE7FAABB299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */; };
 		FE7FAABE299A998E0032A6F2 /* EventTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABC299A98B90032A6F2 /* EventTracker.swift */; };
 		FE7FAABF299A998F0032A6F2 /* EventTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABC299A98B90032A6F2 /* EventTracker.swift */; };
@@ -9410,6 +9412,7 @@
 		FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinator.swift; sourceTree = "<group>"; };
 		FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinatorTests.swift; sourceTree = "<group>"; };
 		FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSocialAccountsViewController.swift; sourceTree = "<group>"; };
+		FE7B9A892A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSocialAccountsTableFooterView.swift; sourceTree = "<group>"; };
 		FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPComJetpackRemoteInstallViewModelTests.swift; sourceTree = "<group>"; };
 		FE7FAABC299A98B90032A6F2 /* EventTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTracker.swift; sourceTree = "<group>"; };
 		FE9438B12A050251006C40EC /* BlockEditorSettings_GutenbergEditorSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEditorSettings_GutenbergEditorSettingsTests.swift; sourceTree = "<group>"; };
@@ -18225,6 +18228,7 @@
 				FEDA8D9B2A5AA7050081314F /* PrepublishingViewController+JetpackSocial.swift */,
 				FEDA8D9E2A5B1B1B0081314F /* PrepublishingAutoSharingView.swift */,
 				FE7B9A862A6A613000488791 /* PrepublishingSocialAccountsViewController.swift */,
+				FE7B9A892A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift */,
 			);
 			path = Prepublishing;
 			sourceTree = "<group>";
@@ -22726,6 +22730,7 @@
 				80EF929028105CFA0064A971 /* QuickStartFactory.swift in Sources */,
 				082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */,
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
+				FE7B9A8A2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */,
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
@@ -23957,6 +23962,7 @@
 				FABB20E22602FC2C00C8785C /* NotificationSyncMediator.swift in Sources */,
 				FABB20E42602FC2C00C8785C /* ThemeBrowserHeaderView.swift in Sources */,
 				FABB20E52602FC2C00C8785C /* SiteStatsInformation.swift in Sources */,
+				FE7B9A8B2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */,
 				FABB20E62602FC2C00C8785C /* TitleSubtitleHeader.swift in Sources */,
 				FABB20E82602FC2C00C8785C /* AppAppearance.swift in Sources */,
 				FABB20E92602FC2C00C8785C /* ReaderTabViewController.swift in Sources */,
