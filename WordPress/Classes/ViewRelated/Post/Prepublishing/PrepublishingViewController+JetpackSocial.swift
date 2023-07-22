@@ -37,6 +37,11 @@ extension PrepublishingViewController {
 
         let model = makeAutoSharingModel()
         let socialAccountsViewController = PrepublishingSocialAccountsViewController(model: model)
+
+        socialAccountsViewController.onContentHeightUpdated = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+        }
+
         self.navigationController?.pushViewController(socialAccountsViewController, animated: true)
     }
 }

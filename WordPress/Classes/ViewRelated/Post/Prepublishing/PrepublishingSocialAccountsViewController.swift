@@ -14,6 +14,8 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         }
     }
 
+    var onContentHeightUpdated: (() -> Void)? = nil
+
     private var isSharingLimitReached: Bool = false {
         didSet {
             guard oldValue != isSharingLimitReached else {
@@ -69,6 +71,28 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Constants.accountCellIdentifier)
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // manually configure preferredContentSize for precise drawer sizing.
+        if let safeAreaInsets = UIApplication.shared.mainWindow?.safeAreaInsets {
+            preferredContentSize = CGSize(width: tableView.contentSize.width,
+                                          height: tableView.contentSize.height + safeAreaInsets.bottom + 16.0)
+            onContentHeightUpdated?()
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // when the vertical size class changes, ensure that we are displaying the max drawer height on compact size
+        // or revert to collapsed mode otherwise.
+        if let previousVerticalSizeClass = previousTraitCollection?.verticalSizeClass,
+           previousVerticalSizeClass != traitCollection.verticalSizeClass {
+            presentedVC?.transition(to: traitCollection.verticalSizeClass == .compact ? .expanded : .collapsed)
+        }
+    }
 }
 
 // MARK: - UITableView
@@ -107,7 +131,7 @@ extension PrepublishingSocialAccountsViewController {
         }
 
         return PrepublishingSocialAccountsTableFooterView(remaining: sharingLimit.remaining,
-                                                          showsWarning: true,
+                                                          showsWarning: shouldDisplayWarning,
                                                           onButtonTap: nil)
     }
 }
@@ -122,6 +146,13 @@ private extension PrepublishingSocialAccountsViewController {
 
     var indexPathsForDisabledConnections: [IndexPath] {
         connections.indexed().compactMap { $1.isOn ? nil : IndexPath(row: $0, section: .zero) }
+    }
+
+    var shouldDisplayWarning: Bool {
+        guard let sharingLimit else {
+            return false
+        }
+        return connections.count >= sharingLimit.remaining
     }
 
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
