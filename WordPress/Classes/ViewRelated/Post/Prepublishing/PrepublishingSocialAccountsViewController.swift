@@ -1,3 +1,5 @@
+import WordPressUI
+
 class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
@@ -97,6 +99,16 @@ extension PrepublishingSocialAccountsViewController {
         }
 
         showEditMessageScreen()
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let sharingLimit else {
+            return nil
+        }
+
+        return PrepublishingSocialAccountsTableFooterView(remaining: sharingLimit.remaining,
+                                                          showsWarning: true,
+                                                          onButtonTap: nil)
     }
 }
 
@@ -226,4 +238,15 @@ private extension PrepublishingSocialAccountsViewController {
         )
     }
 
+}
+
+extension PrepublishingSocialAccountsViewController: DrawerPresentable {
+
+    var collapsedHeight: DrawerHeight {
+        .intrinsicHeight
+    }
+
+    var scrollableView: UIScrollView? {
+        tableView
+    }
 }
