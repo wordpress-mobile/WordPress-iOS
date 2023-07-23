@@ -1,0 +1,1 @@
+Vi har tagit bort bloggningspåminnelserna för webbplatser på webbhotell om de inte är kopplade till Jetpack, eftersom denna funktion endast finns i Jetpack-appen. Ganska självklart.

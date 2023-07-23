@@ -11,6 +11,10 @@ public class CommentsScreen: ScreenObject {
         $0.otherElements["reply-to-post-text-field"]
     }
 
+    private let replyMessageNoticeGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["notice_title_and_message"]
+    }
+
     private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.navigationBars.buttons["Reader"]
     }
@@ -19,9 +23,10 @@ public class CommentsScreen: ScreenObject {
         $0.buttons["Reply"]
     }
 
-    var replyField: XCUIElement { replyFieldGetter(app) }
     var backButton: XCUIElement { backButtonGetter(app) }
     var replyButton: XCUIElement { replyButtonGetter(app) }
+    var replyField: XCUIElement { replyFieldGetter(app) }
+    var replyMessageNotice: XCUIElement { replyMessageNoticeGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -58,8 +63,7 @@ public class CommentsScreen: ScreenObject {
     }
 
     public func verifyCommentSent(_ content: String) {
-        let replySentMessage = app.otherElements["notice_title_and_message"]
-        XCTAssertTrue(replySentMessage.waitForIsHittable(), "'Reply Sent' message was not displayed.")
+        XCTAssertTrue(replyMessageNotice.waitForIsHittable(), "'Reply Sent' message was not displayed.")
         XCTAssertTrue(app.cells.containing(.textView, identifier: content).count == 1, "Comment was not visible")
     }
 }

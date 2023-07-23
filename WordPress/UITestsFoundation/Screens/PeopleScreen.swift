@@ -3,19 +3,28 @@ import XCTest
 
 public class PeopleScreen: ScreenObject {
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
-        let filterButtonGetter: (String) -> (XCUIApplication) -> XCUIElement = { identifier in
-            return { app in
-                app.buttons[identifier]
-            }
-        }
+    private let emailFilterButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["email"]
+    }
 
+    private let followersFilterButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["followers"]
+    }
+
+    private let userFilterButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["users"]
+    }
+
+    var emailFilterButton: XCUIElement { emailFilterButtonGetter(app) }
+    var followersFilterButton: XCUIElement { followersFilterButtonGetter(app) }
+    var userFilterButton: XCUIElement { userFilterButtonGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                // See the PeopleViewController.Filter rawValues
-                filterButtonGetter("users"),
-                filterButtonGetter("followers"),
-                filterButtonGetter("email")
+                emailFilterButtonGetter,
+                followersFilterButtonGetter,
+                userFilterButtonGetter
             ],
             app: app
         )

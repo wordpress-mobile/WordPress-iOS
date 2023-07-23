@@ -41,7 +41,7 @@ public class LoginEpilogueScreen: ScreenObject {
         return try MySitesScreen()
     }
 
-    public func verifyEpilogueDisplays(username: String? = nil, siteUrl: String) -> LoginEpilogueScreen {
+    public func verifyEpilogueDisplays(username: String? = nil, siteUrl: String) -> Self {
         if var expectedUsername = username {
             expectedUsername = "@\(expectedUsername)"
             let actualUsername = app.staticTexts["login-epilogue-username-label"].label

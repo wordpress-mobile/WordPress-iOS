@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-12 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: zh_TW */
@@ -9736,11 +9736,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "回覆 %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "這些 Cookie 讓我們得以收集使用者與網站互動的相關資訊，進而最佳化效能。";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "儲存";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "前往「設定」";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "我們根據你的同意和我們的合法利益來處理你的個人資料，使網站和行銷活動最佳化。";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "管理隱私權";

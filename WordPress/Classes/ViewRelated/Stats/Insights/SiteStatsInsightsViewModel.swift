@@ -396,7 +396,7 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func yearlyPostingActivity(from date: Date = Date()) -> [[PostingStreakEvent]] {
-        return insightsStore.getYearlyPostingActivityFrom(date: date)
+        return insightsStore.getYearlyPostingActivity(from: date)
     }
 
     func annualInsightsYear() -> Int? {
@@ -686,17 +686,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createPostingActivityRow() -> PostingActivityRow {
-        var monthsData = [[PostingStreakEvent]]()
-
-        if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
-            monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: twoMonthsAgo))
-        }
-
-        if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
-            monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: oneMonthAgo))
-        }
-
-        monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: Date()))
+        let monthsData = insightsStore.getQuarterlyPostingActivity(from: Date())
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }

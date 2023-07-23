@@ -1,0 +1,3 @@
+Kami menonaktifkan pengingat blogging untuk situs yang dihosting sendiri dan tidak terhubung ke Jetpack karena fitur ini hanya tersedia di aplikasi Jetpack.
+
+Blok pakai ulang sekarang disebut sebagai pola tersinkron, sama seperti yang ada di editor desktop.

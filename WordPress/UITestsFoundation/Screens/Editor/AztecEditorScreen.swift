@@ -252,7 +252,7 @@ public class AztecEditorScreen: ScreenObject {
 
         try confirmPublish()
 
-        return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+        return try EditorNoticeComponent(withNotice: "Post published")
     }
 
     private func confirmPublish() throws {

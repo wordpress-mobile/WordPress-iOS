@@ -685,6 +685,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     BOOL isPrivateSite = post.isPrivate;
     [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentID) {
+        if (!commentID) {
+            NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to create a comment for a post"}];
+            if (failure) {
+                failure(error);
+            }
+            [WordPressAppDelegate logError:error];
+            return;
+        }
         void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 Comment *comment = [context existingObjectWithID:commentID error:nil];
@@ -730,6 +738,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     BOOL isPrivateSite = post.isPrivate;
     [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentObjectID) {
+        if (!commentObjectID) {
+            NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to create a comment for a post"}];
+            if (failure) {
+                failure(error);
+            }
+            [WordPressAppDelegate logError:error];
+            return;
+        }
         void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
             // Update and save the comment
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {

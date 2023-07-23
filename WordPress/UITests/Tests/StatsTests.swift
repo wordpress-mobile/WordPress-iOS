@@ -11,7 +11,7 @@ class StatsTests: XCTestCase {
         )
             .goToMenu()
             .goToStatsScreen()
-            .switchTo(mode: .insights)
+            .switchTo(mode: "insights")
             .refreshStatsIfNeeded()
             .dismissCustomizeInsightsNotice()
     }
@@ -51,13 +51,13 @@ class StatsTests: XCTestCase {
 
     func testInsightsStatsLoadProperly() throws {
         try StatsScreen()
-            .switchTo(mode: .insights)
+            .switchTo(mode: "insights")
             .assertStatsAreLoaded(insightsStats)
     }
 
     func testYearsStatsLoadProperly() throws {
         try StatsScreen()
-            .switchTo(mode: .years)
+            .switchTo(mode: "years")
             .assertStatsAreLoaded(yearsStats)
             .assertChartIsLoaded(yearsChartBars)
     }

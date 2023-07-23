@@ -58,29 +58,7 @@ class ReaderCoordinator: NSObject {
         let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
 
-        getTagTopic(tagSlug: slug) { result in
-            guard let topic = try? result.get() else { return }
-            RootViewCoordinator.sharedPresenter.navigateToReaderTag(topic)
-        }
-    }
-
-    private func getTagTopic(tagSlug: String, completion: @escaping (Result<ReaderTagTopic, Error>) -> Void) {
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.tagTopicForTag(withSlug: tagSlug,
-            success: { objectID in
-
-                guard let objectID = objectID,
-                    let topic = try? ContextManager.sharedInstance().mainContext.existingObject(with: objectID) as? ReaderTagTopic else {
-                    DDLogError("Reader: Error retriving tag topic - invalid tag slug")
-                    return
-                }
-                completion(.success(topic))
-            },
-            failure: { error in
-                let defaultError = NSError(domain: "readerTagTopicError", code: -1, userInfo: nil)
-                DDLogError("Reader: Error retriving tag topic - " + (error?.localizedDescription ?? "unknown failure reason"))
-                completion(.failure(error ?? defaultError))
-            })
+        RootViewCoordinator.sharedPresenter.navigateToReaderTag(slug)
     }
 
     func showStream(with siteID: Int, isFeed: Bool) {

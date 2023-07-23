@@ -101,7 +101,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func navigateToReaderTag(_ topic: ReaderTagTopic) {
+    func navigateToReaderTag(_ tagSlug: String) {
         // Do nothing
     }
 

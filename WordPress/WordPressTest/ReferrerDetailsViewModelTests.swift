@@ -3,6 +3,7 @@ import XCTest
 
 class ReferrerDetailsViewModelTests: XCTestCase {
     private var sut: ReferrerDetailsViewModel!
+    // swiftlint:disable:next weak_delegate
     private var spyDelegate: ViewModelDelegateSpy!
 
     override func setUpWithError() throws {
