@@ -15,6 +15,7 @@ struct JetpackSocialNoConnectionView: View {
             .accessibilityLabel(Constants.iconGroupAccessibilityLabel)
             Text(Constants.bodyText)
                 .font(.callout)
+                .foregroundColor(Color(viewModel.bodyTextColor))
             HStack {
                 Text(Constants.connectText)
                     .font(.callout)
@@ -33,6 +34,7 @@ struct JetpackSocialNoConnectionView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(viewModel.padding)
         .background(Color(viewModel.preferredBackgroundColor))
     }
@@ -64,6 +66,7 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
     let padding: EdgeInsets
     let hideNotNow: Bool
     let preferredBackgroundColor: UIColor
+    let bodyTextColor: UIColor
     let onConnectTap: (() -> Void)?
     let onNotNowTap: (() -> Void)?
     @MainActor @Published var icons: [UIImage] = [UIImage()]
@@ -72,11 +75,13 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
          padding: EdgeInsets = Constants.defaultPadding,
          hideNotNow: Bool = false,
          preferredBackgroundColor: UIColor? = nil,
+         bodyTextColor: UIColor = .label,
          onConnectTap: (() -> Void)? = nil,
          onNotNowTap: (() -> Void)? = nil) {
         self.padding = padding
         self.hideNotNow = hideNotNow
         self.preferredBackgroundColor = preferredBackgroundColor ?? Constants.defaultBackgroundColor
+        self.bodyTextColor = bodyTextColor
         self.onConnectTap = onConnectTap
         self.onNotNowTap = onNotNowTap
         updateIcons(services)
