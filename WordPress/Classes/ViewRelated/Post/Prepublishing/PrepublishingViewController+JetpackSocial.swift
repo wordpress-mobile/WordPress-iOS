@@ -31,12 +31,13 @@ extension PrepublishingViewController {
     }
 
     func didTapAutoSharingCell() {
-        guard hasExistingConnections else {
+        guard let postBlogID,
+              hasExistingConnections else {
             return
         }
 
         let model = makeAutoSharingModel()
-        let socialAccountsViewController = PrepublishingSocialAccountsViewController(postObjectID: post.objectID,
+        let socialAccountsViewController = PrepublishingSocialAccountsViewController(blogID: postBlogID,
                                                                                      model: model,
                                                                                      coreDataStack: coreDataStack)
 

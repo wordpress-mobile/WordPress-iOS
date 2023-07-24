@@ -6,7 +6,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     private let coreDataStack: CoreDataStack
 
-    private let postObjectID: NSManagedObjectID
+    private let blogID: Int
 
     private var connections: [Connection]
 
@@ -56,10 +56,8 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(postObjectID: NSManagedObjectID,
-         model: PrepublishingAutoSharingModel,
-         coreDataStack: CoreDataStack = ContextManager.shared) {
-        self.postObjectID = postObjectID
+    init(blogID: Int, model: PrepublishingAutoSharingModel, coreDataStack: CoreDataStack = ContextManager.shared) {
+        self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
                 .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
@@ -240,13 +238,13 @@ private extension PrepublishingSocialAccountsViewController {
     func makeCheckoutViewController() -> UIViewController? {
         coreDataStack.performQuery { [weak self] context in
             guard let self,
-                  let post = (try? context.existingObject(with: self.postObjectID)) as? Post,
-                  let host = post.blog.hostname,
+                  let blog = try? Blog.lookup(withID: self.blogID, in: context),
+                  let host = blog.hostname,
                   let url = URL(string: "https://wordpress.com/checkout/\(host)/jetpack_social_basic_yearly") else {
                 return nil
             }
 
-            return WebViewControllerFactory.controller(url: url, blog: post.blog, source: Constants.webViewSource)
+            return WebViewControllerFactory.controller(url: url, blog: blog, source: Constants.webViewSource)
         }
     }
 
