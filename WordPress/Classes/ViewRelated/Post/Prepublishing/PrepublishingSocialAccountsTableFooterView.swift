@@ -51,6 +51,8 @@ struct PrepublishingSocialAccountsFooterView: View {
                 .font(.callout)
                 .foregroundColor(Color(showsWarning ? Constants.warningColor : .label))
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isStaticText)
     }
 
     var subscribeButton: some View {
@@ -98,7 +100,7 @@ struct PrepublishingSocialAccountsFooterView: View {
         )
 
         static let warningIconAccessibilityText = NSLocalizedString(
-            "prepublishing.socialAccounts.footer.warningIcon.a11y",
+            "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint",
             value: "Warning",
             comment: "a VoiceOver description for the warning icon to hint that the remaining shares are low."
         )
