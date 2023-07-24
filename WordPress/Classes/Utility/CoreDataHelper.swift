@@ -434,15 +434,41 @@ extension CoreDataStack {
     }
 }
 
+/// `CoreDataObjectIdentifier` is a strongly typed `NSManagedObject`.
+///
+/// By using this strongly typed `NSManagedObject`, we can declare APIs that're bound to specific model types, thus
+/// preventing an incorrect object id being used as argument.
+///
+/// Take the following function as an example,
+/// ```
+/// func getPost(fromBlogID blogID: NSManagedObjectID)
+/// ```
+///
+/// We can call it with any `NSManagedObjectID`: `getPost(fromBlogID: themeObjectID)`. This usage is obviously
+/// incorrect, but we won't be able to catch this error until something goes wrong at rumtime.
+///
+/// However, we can change the declaration to
+/// ```
+/// func getPost(fromBlogID: CoreDataObjectIdentifier<Blog>)
+/// ```
+///
+/// Now the type `Blog` is built into the function signature, and Swift compiler would report an error if we call it using
+/// `getPost(fromBlogID: themeObjectID)`.
 struct CoreDataObjectIdentifier<Model: NSManagedObject> {
     var objectID: NSManagedObjectID
 
-    init(objectID: NSManagedObjectID) {
+    // This initialzer is declared as `private`, because we want to prevent mismatch between `Model` and the type
+    // that the `objectID` represents.
+    //
+    // When this private initialzer is called, we need to ensure the following requirements are satisfied at runtime:
+    // - The `objectID` is a permanent id.
+    // - The model associated with the given `objectID` is indeed `Model`.
+    private init(objectID: NSManagedObjectID) {
         precondition(!objectID.isTemporaryID, "The `objectID` is not a permanent id. Call `obtainPermanentIDs` first.")
-        // TODO: Verify if the object associated with the objectID is `Model`.
         self.objectID = objectID
     }
 
+    /// Create an `CoreDataObjectIdentifier` instance of an object that's yet saved.
     static func ofUnsaved<T: NSManagedObject>(_ object: NSManagedObject, type: T.Type = T.self) throws -> CoreDataObjectIdentifier<T> {
         precondition(object.isKind(of: type), "The object (\(object)) is not the given type \(type)")
 
@@ -456,12 +482,16 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
         return CoreDataObjectIdentifier<T>(objectID: objectID)
     }
 
+    /// Create an `CoreDataObjectIdentifier` instance of an object that's already saved.
     static func ofSaved<T: NSManagedObject>(_ object: NSManagedObject, type: T.Type = T.self) -> CoreDataObjectIdentifier<T> {
         precondition(object.isKind(of: type), "The object (\(object)) is not the given type \(type)")
 
         return CoreDataObjectIdentifier<T>(objectID: object.objectID)
     }
 
+    /// Find the object associated with this object id in the given `context`.
+    ///
+    /// - SeeAlso: `NSManagedObjectContext.existingObject(with:)`
     func existingObject(in context: NSManagedObjectContext) throws -> Model {
         do {
             var result: Result<Model, Error>!
