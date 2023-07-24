@@ -36,7 +36,9 @@ extension PrepublishingViewController {
         }
 
         let model = makeAutoSharingModel()
-        let socialAccountsViewController = PrepublishingSocialAccountsViewController(model: model)
+        let socialAccountsViewController = PrepublishingSocialAccountsViewController(postObjectID: post.objectID,
+                                                                                     model: model,
+                                                                                     coreDataStack: coreDataStack)
 
         socialAccountsViewController.onContentHeightUpdated = { [weak self] in
             self?.presentedVC?.containerViewWillLayoutSubviews()

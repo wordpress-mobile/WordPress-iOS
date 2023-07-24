@@ -4,6 +4,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
 
+    private let coreDataStack: CoreDataStack
+
+    private let postObjectID: NSManagedObjectID
+
     private var connections: [Connection]
 
     private let sharingLimit: PublicizeInfo.SharingLimit?
@@ -52,7 +56,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(model: PrepublishingAutoSharingModel) {
+    init(postObjectID: NSManagedObjectID,
+         model: PrepublishingAutoSharingModel,
+         coreDataStack: CoreDataStack = ContextManager.shared) {
+        self.postObjectID = postObjectID
         self.connections = model.services.flatMap { service in
             service.connections.map {
                 .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
@@ -60,6 +67,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         }
         self.shareMessage = model.message
         self.sharingLimit = model.sharingLimit
+        self.coreDataStack = coreDataStack
 
         super.init(style: .insetGrouped)
     }
@@ -132,7 +140,9 @@ extension PrepublishingSocialAccountsViewController {
 
         return PrepublishingSocialAccountsTableFooterView(remaining: sharingLimit.remaining,
                                                           showsWarning: shouldDisplayWarning,
-                                                          onButtonTap: nil)
+                                                          onButtonTap: { [weak self] in
+            self?.subscribeButtonTapped()
+        })
     }
 }
 
@@ -215,6 +225,31 @@ private extension PrepublishingSocialAccountsViewController {
         self.navigationController?.pushViewController(multiTextViewController, animated: true)
     }
 
+    func subscribeButtonTapped() {
+        guard let checkoutViewController = makeCheckoutViewController() else {
+            return
+        }
+
+        let navigationController = UINavigationController(rootViewController: checkoutViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
+
+        // TODO: Flag to sync on viewDidAppear in case the user has made a purchase.
+    }
+
+    func makeCheckoutViewController() -> UIViewController? {
+        coreDataStack.performQuery { [weak self] context in
+            guard let self,
+                  let post = (try? context.existingObject(with: self.postObjectID)) as? Post,
+                  let host = post.blog.hostname,
+                  let url = URL(string: "https://wordpress.com/checkout/\(host)/jetpack_social_basic_yearly") else {
+                return nil
+            }
+
+            return WebViewControllerFactory.controller(url: url, blog: post.blog, source: Constants.webViewSource)
+        }
+    }
+
     /// Convenient model that represents the user's Publicize connections.
     struct Connection {
         let service: PublicizeService.ServiceName
@@ -237,6 +272,8 @@ private extension PrepublishingSocialAccountsViewController {
 
         static let accountCellIdentifier = "AccountCell"
         static let messageCellIdentifier = "MessageCell"
+
+        static let webViewSource = "prepublishing_social_accounts_subscribe"
 
         static let navigationTitle = NSLocalizedString(
             "prepublishing.socialAccounts.navigationTitle",
