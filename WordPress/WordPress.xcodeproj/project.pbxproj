@@ -1248,6 +1248,7 @@
 		4A2C73EF2A9577C000ACE79E /* PostHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73EC2A9577C000ACE79E /* PostHelper.m */; };
 		4A2C73F42A95856000ACE79E /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73F32A95856000ACE79E /* PostRepository.swift */; };
 		4A2C73F52A95856000ACE79E /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73F32A95856000ACE79E /* PostRepository.swift */; };
+		4A2C73F72A9585B000ACE79E /* PostRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */; };
 		4A358DE629B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
@@ -6832,6 +6833,7 @@
 		4A2C73EC2A9577C000ACE79E /* PostHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostHelper.m; sourceTree = "<group>"; };
 		4A2C73ED2A9577C000ACE79E /* PostHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostHelper.h; sourceTree = "<group>"; };
 		4A2C73F32A95856000ACE79E /* PostRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
+		4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRepositoryTests.swift; sourceTree = "<group>"; };
 		4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeService+Lookup.swift"; sourceTree = "<group>"; };
 		4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharingButton+Lookup.swift"; sourceTree = "<group>"; };
 		4A526BDD296BE9A50007B5BA /* CoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataService.m; sourceTree = "<group>"; };
@@ -15409,6 +15411,7 @@
 				7E8980B822E73F4000C567B0 /* EditorSettingsServiceTests.swift */,
 				570B037622F1FFF6009D8411 /* PostCoordinatorFailedPostsFetcherTests.swift */,
 				57569CF1230485680052EE14 /* PostAutoUploadInteractorTests.swift */,
+				4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */,
 				57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */,
 				57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */,
 				575802122357C41200E4C63C /* MediaCoordinatorTests.swift */,
@@ -23641,6 +23644,7 @@
 				0118969129D1F2FE00D34BA9 /* DomainsDashboardCardHelperTests.swift in Sources */,
 				C8567498243F41CA001A995E /* MockTenorService.swift in Sources */,
 				1D19C56629C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift in Sources */,
+				4A2C73F72A9585B000ACE79E /* PostRepositoryTests.swift in Sources */,
 				4A9314DC297790C300360232 /* PeopleServiceTests.swift in Sources */,
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				4A76A4BB29D4381100AABF4B /* CommentService+LikesTests.swift in Sources */,
