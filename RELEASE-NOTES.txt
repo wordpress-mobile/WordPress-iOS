@@ -1,3 +1,7 @@
+23.0
+-----
+* [**] [internal] Refactor fetching a post with id. [#21163]
+
 22.9
 -----
 * [*] [internal] Fix multiple memory leaks after logging in and logging out. [#21047, #21092]
