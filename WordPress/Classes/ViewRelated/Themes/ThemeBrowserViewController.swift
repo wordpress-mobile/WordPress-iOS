@@ -98,6 +98,7 @@ public protocol ThemePresenter: AnyObject {
 
     @IBOutlet weak var collectionView: UICollectionView!
 
+    // swiftlint:disable:next weak_delegate
     fileprivate lazy var customizerNavigationDelegate: ThemeWebNavigationDelegate = {
         return ThemeWebNavigationDelegate()
     }()

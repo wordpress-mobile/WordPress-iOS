@@ -241,6 +241,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     let navigationBarManager: PostEditorNavigationBarManager
 
+    // swiftlint:disable:next weak_delegate
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {

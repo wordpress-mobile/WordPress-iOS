@@ -44,6 +44,8 @@ class PrepublishingNavigationController: LightNavigationController {
     init(rootViewController: UIViewController, shouldDisplayPortrait: Bool) {
         self.shouldDisplayPortrait = shouldDisplayPortrait
         super.init(rootViewController: rootViewController)
+
+        configureNavigationBar()
     }
 
     required init?(coder: NSCoder) {
@@ -54,6 +56,20 @@ class PrepublishingNavigationController: LightNavigationController {
         if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
             presentedVC.transition(to: .collapsed)
         }
+    }
+
+    /// Updates the navigation bar color so it matches the view's background.
+    ///
+    /// Originally, in dark mode the navigation bar color is grayish, but there's a few points gap on top of the
+    /// navigation bar to accommodate the `GripButton` from `BottomSheetViewController`. The bottom sheet itself
+    /// assigns the background color according to its child controller's view background color.
+    private func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .basicBackground
+
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
     }
 
     private enum Constants {

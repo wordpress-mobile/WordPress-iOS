@@ -112,8 +112,8 @@ private extension DashboardBlazeCampaignView {
 struct BlazeCampaignViewModel {
     let title: String
     let imageURL: URL?
-    let impressions: Int
-    let clicks: Int
+    let impressions: String
+    let clicks: String
     let budget: String
     var status: BlazeCampaignStatusViewModel { .init(campaign: campaign) }
 
@@ -141,8 +141,8 @@ struct BlazeCampaignViewModel {
         self.campaign = campaign
         self.title = campaign.name ?? "–"
         self.imageURL = campaign.contentConfig?.imageURL.flatMap(URL.init)
-        self.impressions = campaign.stats?.impressionsTotal ?? 0
-        self.clicks = campaign.stats?.clicksTotal ?? 0
+        self.impressions = campaign.stats?.impressionsTotal?.abbreviatedString() ?? "0"
+        self.clicks = campaign.stats?.clicksTotal?.abbreviatedString() ?? "0"
         self.budget = currencyFormatter.string(from: ((campaign.budgetCents ?? 0) / 100) as NSNumber) ?? "-"
     }
 }
