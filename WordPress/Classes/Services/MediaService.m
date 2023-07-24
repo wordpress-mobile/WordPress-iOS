@@ -143,7 +143,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 return;
             }
 
-            [self updateMedia:mediaInContext withRemoteMedia:media];
+            [MediaHelper updateMedia:mediaInContext withRemoteMedia:media];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     success();
@@ -201,7 +201,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 return;
             }
 
-            [self updateMedia:mediaInContext withRemoteMedia:media];
+            [MediaHelper updateMedia:mediaInContext withRemoteMedia:media];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     success();
@@ -604,7 +604,7 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
             if (!local) {
                 local = [Media makeMediaWithBlog:blog];                
             }
-            [self updateMedia:local withRemoteMedia:remote];
+            [MediaHelper updateMedia:local withRemoteMedia:remote];
             [mediaToKeep addObject:local];
         }
     }
