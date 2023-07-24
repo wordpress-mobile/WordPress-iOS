@@ -4,6 +4,7 @@ final class PostRepository {
 
     enum Error: Swift.Error {
         case postNotFound
+        case remoteAPIUnavailable
         case unknown
     }
 
@@ -27,9 +28,8 @@ final class PostRepository {
             return remoteFactory.forBlog(blog)
         }
 
-        // TODO: In which case would remote be nil?
         guard let remote else {
-            throw PostRepository.Error.unknown
+            throw PostRepository.Error.remoteAPIUnavailable
         }
 
         let remotePost: RemotePost? = try await withCheckedThrowingContinuation { continuation in
