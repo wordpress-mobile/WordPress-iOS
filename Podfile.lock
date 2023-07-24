@@ -490,12 +490,12 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (8.8.0):
-    - Sentry/Core (= 8.8.0)
-    - SentryPrivate (= 8.8.0)
-  - Sentry/Core (8.8.0):
-    - SentryPrivate (= 8.8.0)
-  - SentryPrivate (8.8.0)
+  - Sentry (8.9.2):
+    - Sentry/Core (= 8.9.2)
+    - SentryPrivate (= 8.9.2)
+  - Sentry/Core (8.9.2):
+    - SentryPrivate (= 8.9.2)
+  - SentryPrivate (8.9.2)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -504,7 +504,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (6.3.0-beta.1):
+  - WordPressAuthenticator (6.3.0):
     - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
@@ -611,7 +611,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 6.3.0-beta.1)
+  - WordPressAuthenticator (~> 6.3-beta)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.12.5)
@@ -870,8 +870,8 @@ SPEC CHECKSUMS:
   RNTAztecView: 5b3859ec43d41024875dfb3894418decfb296e15
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: 927dfb29d18a14d924229a59cc2ad149f43349f2
-  SentryPrivate: 4350d865f898224ab9fa02b37d6ee7fbb623f47e
+  Sentry: 4fe92c018ba6ed61ce1fc652dd1ccac34505a4c6
+  SentryPrivate: b58fc25b3a0ac7e3d4ec229be63d583e3314a47a
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -879,7 +879,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: 453cb91432485204356c909271b02bfe7a409a50
+  WordPressAuthenticator: 9bfb316cb165e1997b73aa94d92fadc991cc9725
   WordPressKit: f6943a6e927e9f57bc8793938af1e3a4c3adb614
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
@@ -895,6 +895,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 219c9d34b99c2ffae24b5f8f02060f2cac26145c
+PODFILE CHECKSUM: bc29b8c7c29da0feaa4a5ed3dff2a805e1a06a93
 
 COCOAPODS: 1.12.1
