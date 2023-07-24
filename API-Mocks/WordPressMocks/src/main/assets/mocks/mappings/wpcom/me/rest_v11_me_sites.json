@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPathPattern": "/rest/v1.(1|2)/me/sites",
+    "urlPathPattern": "/rest/v1.1/me/sites",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -151,16 +151,14 @@
             "is_cloud_eligible": false
           },
           "plan": {
-            "product_id": 1,
-            "product_slug": "free_plan",
-            "product_name_short": "Free",
+            "product_id": 1029,
+            "product_slug": "personal-bundle-2y",
+            "product_name_short": "Personal",
             "expired": false,
             "user_is_owner": false,
-            "is_free": true
+            "is_free": false
           },
-          "products": [
-
-          ],
+          "products": [],
           "jetpack_modules": null,
           "meta": {
             "links": {
@@ -357,9 +355,9 @@
         },
         {
           "ID": 181977606,
-          "description": "Site with everything enabled",
           "name": "Weekend Bakes",
-          "URL": "weekendbakesblog.wordpress.com",
+          "description": "Site on Free Plan",
+          "URL": "https://weekendbakesblog.wordpress.com",
           "user_can_manage": false,
           "capabilities": {
             "edit_pages": true,
@@ -381,47 +379,42 @@
             "delete_users": false,
             "remove_users": true,
             "own_site": true,
-            "view_hosting": false,
-            "view_stats": true
+            "view_hosting": true,
+            "view_stats": true,
+            "activate_plugins": true
           },
-          "jetpack": true,
-          "jetpack_connection": true,
-          "is_multisite": false,
+          "jetpack": false,
+          "jetpack_connection": false,
+          "is_multisite": true,
+          "site_owner": 214071396,
           "post_count": 2,
           "subscribers_count": 1,
-          "lang": "en-US",
-          "icon": {
-            "img": "https://weekendbakesblog.files.wordpress.com/2020/08/image.jpg?w=96",
-            "ico": "https://weekendbakesblog.files.wordpress.com/2020/08/image.jpg?w=96",
-            "media_id": 12
-          },
+          "lang": "en-gb",
           "logo": {
             "id": 0,
-            "sizes": [
-
-            ],
+            "sizes": [],
             "url": ""
           },
           "visible": true,
           "is_private": false,
-          "is_coming_soon": false,
-          "single_user_site": false,
+          "is_coming_soon": true,
+          "single_user_site": true,
           "is_vip": false,
           "is_following": true,
           "organization_id": 0,
           "options": {
             "timezone": "",
             "gmt_offset": 0,
-            "blog_public": 1,
+            "blog_public": 0,
             "videopress_enabled": false,
-            "upgraded_filetypes_enabled": true,
-            "login_url": "https://pressable-jetpack-complete.mystagingwebsite.com/wp-login.php",
-            "admin_url": "https://pressable-jetpack-complete.mystagingwebsite.com/wp-admin/",
-            "is_mapped_domain": true,
+            "upgraded_filetypes_enabled": false,
+            "login_url": "https://weekendbakesblog.wordpress.com/wp-login.php",
+            "admin_url": "https://weekendbakesblog.wordpress.com/wp-admin/",
+            "is_mapped_domain": false,
             "is_redirect": false,
-            "unmapped_url": "https://pressable-jetpack-complete.mystagingwebsite.com",
-            "featured_images_enabled": false,
-            "theme_slug": "twentytwenty",
+            "unmapped_url": "https://weekendbakesblog.wordpress.com",
+            "featured_images_enabled": true,
+            "theme_slug": "pub/zoologist",
             "header_image": false,
             "background_color": false,
             "image_default_link_type": "none",
@@ -433,11 +426,9 @@
             "image_large_width": 1024,
             "image_large_height": 1024,
             "permalink_structure": "/%year%/%monthnum%/%day%/%postname%/",
-            "post_formats": [
-
-            ],
-            "default_post_format": "standard",
-            "default_category": 1,
+            "post_formats": [],
+            "default_post_format": "0",
+            "default_category": 97,
             "allowed_file_types": [
               "jpg",
               "jpeg",
@@ -454,31 +445,30 @@
               "xls",
               "xlsx",
               "key",
-              "asc",
-              "mp3",
-              "m4a",
-              "wav",
-              "ogg",
-              "zip"
+              "webp",
+              "heic",
+              "heif",
+              "asc"
             ],
-            "show_on_front": "posts",
+            "show_on_front": "page",
             "default_likes_enabled": true,
             "default_sharing_status": true,
-            "default_comment_status": false,
-            "default_ping_status": false,
-            "software_version": "5.7.1",
-            "created_at": "2020-11-04T10:05:55+00:00",
+            "default_comment_status": true,
+            "default_ping_status": true,
+            "software_version": "6.3-alpha-55954",
+            "created_at": "2022-11-15T08:27:10+00:00",
+            "updated_at": "2022-12-07T06:46:31+00:00",
             "wordads": false,
             "publicize_permanently_disabled": false,
-            "frame_nonce": "5b3dcfa6ca",
-            "jetpack_frame_nonce": "1620454064:1:53483dc97819622179cfe0fe9d28ce80",
+            "frame_nonce": "7803b34234",
+            "jetpack_frame_nonce": "7803b34234",
+            "page_on_front": 2,
+            "page_for_posts": 0,
             "headstart": false,
             "headstart_is_fresh": false,
-            "ak_vp_bundle_enabled": false,
+            "ak_vp_bundle_enabled": null,
             "advanced_seo_front_page_description": "",
-            "advanced_seo_title_formats": [
-
-            ],
+            "advanced_seo_title_formats": [],
             "verification_services_codes": null,
             "podcasting_archive": null,
             "is_domain_only": false,
@@ -486,92 +476,87 @@
             "is_wpcom_atomic": false,
             "is_wpcom_store": false,
             "woocommerce_is_active": false,
+            "editing_toolkit_is_active": true,
             "design_type": null,
-            "site_goals": null,
-            "site_segment": false,
+            "site_segment": null,
             "import_engine": null,
             "is_pending_plan": false,
             "is_wpforteams_site": false,
+            "p2_hub_blog_id": null,
             "is_cloud_eligible": false,
             "anchor_podcast": false,
-            "jetpack_version": "9.7",
-            "main_network_site": "https://pressable-jetpack-complete.mystagingwebsite.com",
-            "active_modules": [
-              "contact-form",
-              "enhanced-distribution",
-              "json-api",
-              "notes",
-              "protect",
-              "stats",
-              "verification-tools",
-              "woocommerce-analytics",
-              "search"
-            ],
-            "max_upload_size": false,
-            "wp_memory_limit": "268435456",
-            "wp_max_memory_limit": "268435456",
-            "is_multi_network": false,
-            "is_multi_site": false,
-            "file_mod_disabled": [
-              "wp_auto_update_core_disabled"
-            ]
+            "was_created_with_blank_canvas_design": false,
+            "videopress_storage_used": 0,
+            "is_difm_lite_in_progress": false,
+            "difm_lite_site_options": {},
+            "site_intent": "",
+            "site_vertical_id": null,
+            "blogging_prompts_settings": {
+              "prompts_reminders_opted_in": false,
+              "reminders_days": {
+                "monday": false,
+                "tuesday": false,
+                "wednesday": false,
+                "thursday": false,
+                "friday": false,
+                "saturday": false,
+                "sunday": false
+              },
+              "reminders_time": "10.00",
+              "is_potential_blogging_site": true,
+              "prompts_card_opted_in": true
+            },
+            "launchpad_screen": false,
+            "launchpad_checklist_tasks_statuses": [],
+            "wpcom_production_blog_id": 0,
+            "wpcom_staging_blog_ids": [],
+            "can_blaze": false,
+            "wpcom_site_setup": false
           },
+          "p2_thumbnail_elements": null,
           "plan": {
-            "product_id": 2014,
-            "product_slug": "jetpack_complete",
-            "product_name_short": "Complete",
+            "product_id": 1035,
+            "product_slug": "pro-plan-2y",
+            "product_name_short": "Pro",
             "expired": false,
-            "user_is_owner": true,
+            "user_is_owner": false,
             "is_free": false
           },
-          "products": [
-
-          ],
+          "products": [],
           "zendesk_site_meta": {
-            "plan": "jp_complete",
-            "addon": [
-
-            ]
+            "plan": "free",
+            "addon": []
           },
-          "jetpack_modules": [
-            "contact-form",
-            "enhanced-distribution",
-            "json-api",
-            "notes",
-            "protect",
-            "stats",
-            "verification-tools",
-            "woocommerce-analytics",
-            "search"
-          ],
+          "jetpack_modules": null,
           "meta": {
             "links": {
-              "self": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/185124945",
-              "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/185124945/help",
-              "posts": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/185124945/posts/",
-              "comments": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/185124945/comments/",
-              "xmlrpc": "https://pressable-jetpack-complete.mystagingwebsite.com/xmlrpc.php",
-              "site_icon": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/185124945/media/8"
+              "self": "https://public-api.wordpress.com/rest/v1.2/sites/181977606",
+              "help": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/help",
+              "posts": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/posts/",
+              "comments": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/",
+              "xmlrpc": "https://jddteststore01.wordpress.com/xmlrpc.php"
             }
           },
           "quota": {
-            "space_allowed": 2100373225472,
-            "space_used": 0,
-            "percent_used": 0,
-            "space_available": 2100373225472
+            "space_allowed": 3221225472,
+            "space_used": 4042929,
+            "percent_used": 0.12550903484225273,
+            "space_available": 3217182543
           },
-          "launch_status": false,
+          "launch_status": "unlaunched",
           "site_migration": null,
           "is_fse_active": false,
           "is_fse_eligible": false,
-          "is_core_site_editor_enabled": false,
-          "updates": {
-            "wordpress": 0,
-            "plugins": 0,
-            "themes": 0,
-            "translations": 0,
-            "total": 0
-          }
+          "is_core_site_editor_enabled": true,
+          "is_wpcom_atomic": false,
+          "is_wpcom_staging_site": false,
+          "user_interactions": [
+            "2022-12-07",
+            "2022-11-16",
+            "2022-11-15"
+          ],
+          "was_ecommerce_trial": false,
+          "was_migration_trial": false
         }
       ]
     },

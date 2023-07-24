@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPattern": "/rest/v1.2/sites/.*/posts.*",
+    "urlPattern": "/rest/v1.2/sites/106707880/posts.*",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"

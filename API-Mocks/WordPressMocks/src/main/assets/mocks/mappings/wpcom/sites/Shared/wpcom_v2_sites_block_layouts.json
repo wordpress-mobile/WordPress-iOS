@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/wpcom/v2/sites/([0-9]+)/block-layouts",
+    "urlPathPattern": "/wpcom/v2/sites/.*/block-layouts",
     "queryParameters": {
       "supported_blocks": {
         "matches": "(.*)"

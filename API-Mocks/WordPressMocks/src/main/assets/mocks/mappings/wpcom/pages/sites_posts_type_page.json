@@ -1,0 +1,38 @@
+{
+    "request": {
+      "method": "GET",
+      "urlPathPattern": "/rest/v1.2/sites/.*/posts.*",
+      "queryParameters": {
+        "locale": {
+          "matches": "(.*)"
+        },
+        "context": {
+          "equalTo": "edit"
+        },
+        "meta": {
+          "equalTo": "autosave"
+        },
+        "number": {
+          "matches": "(.*)"
+        },
+        "status": {
+          "equalTo": "draft,pending,publish,private,future"
+        },
+        "type": {
+          "equalTo": "page"
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "jsonBody": {
+        "found": 0,
+        "posts": [],
+        "meta": {
+          "links": {
+            "counts": "https://public-api.wordpress.com/rest/v1.2/sites/1/post-counts/page"
+          }
+        }
+      }
+    }
+  }
