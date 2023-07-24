@@ -77,7 +77,7 @@ struct PrepublishingSocialAccountsFooterView: View {
     }
 
     private enum Constants {
-        static let buttonLabelFont = Font(WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold))
+        static let buttonLabelFont = Font.title3.weight(.semibold)
         static let buttonColor = UIColor.primary
         static let buttonHighlightedColor = UIColor.muriel(color: .jetpackGreen, .shade70)
         static let warningColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade50))
