@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PrepublishingAutoSharingView: View {
 
-    let model: PrepublishingAutoSharingViewModel
+    let model: PrepublishingAutoSharingModel
 
     var body: some View {
         HStack {
@@ -42,7 +42,7 @@ struct PrepublishingAutoSharingView: View {
     private var socialIconsView: some View {
         HStack(spacing: -2.0) {
             ForEach(model.services, id: \.self) { service in
-                iconImage(service.serviceName.localIconImage, opaque: service.usesOpaqueIcon)
+                iconImage(service.name.localIconImage, opaque: service.usesOpaqueIcon)
             }
         }
     }
@@ -79,18 +79,23 @@ private extension PrepublishingAutoSharingView {
     }
 }
 
-// MARK: - View Model
+// MARK: - PrepublishingAutoSharingModel Private Extensions
 
-/// The value-type data model that drives the `PrepublishingAutoSharingView`.
-struct PrepublishingAutoSharingViewModel {
+private extension PrepublishingAutoSharingModel.Service {
+    /// Whether the icon for this service should be opaque or transparent.
+    /// If at least one account is enabled, an opaque version should be shown.
+    var usesOpaqueIcon: Bool {
+        connections.reduce(false) { partialResult, connection in
+            return partialResult || connection.enabled
+        }
+    }
 
-    // MARK: Properties
+    var enabledConnections: [PrepublishingAutoSharingModel.Connection] {
+        connections.filter { $0.enabled }
+    }
+}
 
-    let services: [Service]
-    let sharingLimit: PublicizeInfo.SharingLimit?
-
-    // MARK: Computed Properties
-
+private extension PrepublishingAutoSharingModel {
     var enabledConnectionsCount: Int {
         services.reduce(0) { $0 + $1.enabledConnections.count }
     }
@@ -131,34 +136,6 @@ struct PrepublishingAutoSharingViewModel {
             return String()
         }
     }
-
-    // MARK: Helper Models
-
-    /// A value-type representation of `PublicizeService` that's simplified for the needs of the auto-sharing view.
-    struct Service: Hashable {
-        let serviceName: PublicizeService.ServiceName
-        let connections: [Connection]
-
-        /// Whether the icon for this service should be opaque or transparent.
-        /// If at least one account is enabled, an opaque version should be shown.
-        var usesOpaqueIcon: Bool {
-            connections.reduce(false) { partialResult, connection in
-                return partialResult || connection.enabled
-            }
-        }
-
-        var enabledConnections: [Connection] {
-            connections.filter { $0.enabled }
-        }
-    }
-
-    struct Connection: Hashable {
-        let account: String
-        let enabled: Bool
-    }
-}
-
-private extension PrepublishingAutoSharingViewModel {
 
     enum Strings {
         static let notSharingText = NSLocalizedString(
@@ -205,5 +182,4 @@ private extension PrepublishingAutoSharingViewModel {
                 """
         )
     }
-
 }

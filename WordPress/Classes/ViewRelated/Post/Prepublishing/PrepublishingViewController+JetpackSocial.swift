@@ -29,6 +29,16 @@ extension PrepublishingViewController {
             configureNoConnectionView(for: cell)
         }
     }
+
+    func didTapAutoSharingCell() {
+        guard hasExistingConnections else {
+            return
+        }
+
+        let model = makeAutoSharingModel()
+        let socialAccountsViewController = PrepublishingSocialAccountsViewController(model: model)
+        self.navigationController?.pushViewController(socialAccountsViewController, animated: true)
+    }
 }
 
 // MARK: - Helper Methods
@@ -70,7 +80,7 @@ private extension PrepublishingViewController {
     // MARK: Auto Sharing View
 
     func configureAutoSharingView(for cell: UITableViewCell) {
-        let viewModel = makeAutoSharingViewModel()
+        let viewModel = makeAutoSharingModel()
         let viewToEmbed = UIView.embedSwiftUIView(PrepublishingAutoSharingView(model: viewModel))
         cell.contentView.addSubview(viewToEmbed)
 
@@ -83,44 +93,6 @@ private extension PrepublishingViewController {
         ])
 
         cell.accessoryType = .disclosureIndicator
-    }
-
-    func makeAutoSharingViewModel() -> PrepublishingAutoSharingViewModel {
-        return coreDataStack.performQuery { [postObjectID = post.objectID] context in
-            guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
-                  let connections = post.blog.sortedConnections as? [PublicizeConnection],
-                  let supportedServices = try? PublicizeService.allSupportedServices(in: context) else {
-                return .init(services: [], sharingLimit: nil)
-            }
-
-            // first, build a dictionary to categorize the connections.
-            var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
-            connections.forEach { connection in
-                let serviceName = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
-                var serviceConnections = connectionsMap[serviceName] ?? []
-                serviceConnections.append(connection)
-                connectionsMap[serviceName] = serviceConnections
-            }
-
-            // then, transform [PublicizeService] to [PrepublishingAutoSharingViewModel.Service].
-            let modelServices = supportedServices.compactMap { service -> PrepublishingAutoSharingViewModel.Service? in
-                // skip services without connections.
-                guard let serviceConnections = connectionsMap[service.name],
-                      !serviceConnections.isEmpty else {
-                    return nil
-                }
-
-                return PrepublishingAutoSharingViewModel.Service(
-                    serviceName: service.name,
-                    connections: serviceConnections.map {
-                        .init(account: $0.externalDisplay,
-                              enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
-                    }
-                )
-            }
-
-            return .init(services: modelServices, sharingLimit: post.blog.sharingLimit)
-        }
     }
 
     // MARK: - No Connection View
@@ -197,9 +169,72 @@ private extension PrepublishingViewController {
         }
     }
 
+    // MARK: - Model Creation
+
+    func makeAutoSharingModel() -> PrepublishingAutoSharingModel {
+        return coreDataStack.performQuery { [postObjectID = post.objectID] context in
+            guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
+                  let connections = post.blog.sortedConnections as? [PublicizeConnection],
+                  let supportedServices = try? PublicizeService.allSupportedServices(in: context) else {
+                return .init(services: [], message: String(), sharingLimit: nil)
+            }
+
+            // first, build a dictionary to categorize the connections.
+            var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
+            connections.filter { !$0.requiresUserAction() }.forEach { connection in
+                let serviceName = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
+                var serviceConnections = connectionsMap[serviceName] ?? []
+                serviceConnections.append(connection)
+                connectionsMap[serviceName] = serviceConnections
+            }
+
+            // then, transform [PublicizeService] to [PrepublishingAutoSharingModel.Service].
+            let modelServices = supportedServices.compactMap { service -> PrepublishingAutoSharingModel.Service? in
+                // skip services without connections.
+                guard let serviceConnections = connectionsMap[service.name],
+                      !serviceConnections.isEmpty else {
+                    return nil
+                }
+
+                return PrepublishingAutoSharingModel.Service(
+                    name: service.name,
+                    connections: serviceConnections.map {
+                        .init(account: $0.externalDisplay,
+                              keyringID: $0.keyringConnectionID.intValue,
+                              enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
+                    }
+                )
+            }
+
+            return .init(services: modelServices,
+                         message: post.publicizeMessage ?? post.titleForDisplay(),
+                         sharingLimit: post.blog.sharingLimit)
+        }
+    }
+
     // MARK: - Constants
 
     enum Constants {
         static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
+    }
+}
+
+// MARK: - Auto Sharing Model
+
+/// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
+struct PrepublishingAutoSharingModel {
+    let services: [Service]
+    let message: String
+    let sharingLimit: PublicizeInfo.SharingLimit?
+
+    struct Service: Hashable {
+        let name: PublicizeService.ServiceName
+        let connections: [Connection]
+    }
+
+    struct Connection: Hashable {
+        let account: String
+        let keyringID: Int
+        var enabled: Bool
     }
 }

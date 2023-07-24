@@ -43,6 +43,11 @@ extension PublicizeService {
         var localIconImage: UIImage {
             WPStyleGuide.socialIcon(for: rawValue as NSString)
         }
+
+        /// A string describing the service in a human-readable format.
+        var description: String {
+            rawValue.split(separator: "-").joined(separator: " ").localizedCapitalized
+        }
     }
 
     var name: ServiceName {

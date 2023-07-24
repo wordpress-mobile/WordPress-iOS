@@ -262,6 +262,8 @@ class PrepublishingViewController: UITableViewController {
             didTapSchedule(indexPath)
         case .categories:
             didTapCategoriesCell()
+        case .autoSharing:
+            didTapAutoSharingCell()
         default:
             break
         }
