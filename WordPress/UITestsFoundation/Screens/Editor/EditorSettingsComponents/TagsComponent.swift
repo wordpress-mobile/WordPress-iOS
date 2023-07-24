@@ -3,12 +3,15 @@ import XCTest
 
 public class TagsComponent: ScreenObject {
 
-    // expectedElement comes from the superclass and gets the first expectedElementGetters result
-    var tagsField: XCUIElement { expectedElement }
+    private let tagsFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textViews["add-tags"]
+    }
+
+    var tagsField: XCUIElement { tagsFieldGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.textViews["add-tags"] } ],
+            expectedElementGetters: [ tagsFieldGetter ],
             app: app
         )
     }
