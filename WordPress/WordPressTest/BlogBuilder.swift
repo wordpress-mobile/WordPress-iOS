@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 
 @testable import WordPress
 
@@ -83,6 +84,11 @@ final class BlogBuilder {
     func with(visible: Bool) -> Self {
         blog.visible = visible
 
+        return self
+    }
+
+    func withAccount(id: NSManagedObjectID) throws -> Self {
+        blog.account = try XCTUnwrap(context.existingObject(with: id) as? WPAccount)
         return self
     }
 

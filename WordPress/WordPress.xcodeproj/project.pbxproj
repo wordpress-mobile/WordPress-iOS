@@ -1289,6 +1289,7 @@
 		4AAD68FD2A6A1F9D007FE77E /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FB2A6A1F9D007FE77E /* PostRepository.swift */; };
 		4AAD69002A6A3A11007FE77E /* PostHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FF2A6A3A11007FE77E /* PostHelper.m */; };
 		4AAD69012A6A3A11007FE77E /* PostHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD68FF2A6A3A11007FE77E /* PostHelper.m */; };
+		4AAD69032A6DE95D007FE77E /* PostRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD69022A6DE95D007FE77E /* PostRepositoryTests.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -6926,6 +6927,7 @@
 		4AAD68FB2A6A1F9D007FE77E /* PostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
 		4AAD68FE2A6A3A11007FE77E /* PostHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostHelper.h; sourceTree = "<group>"; };
 		4AAD68FF2A6A3A11007FE77E /* PostHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PostHelper.m; sourceTree = "<group>"; };
+		4AAD69022A6DE95D007FE77E /* PostRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositoryTests.swift; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AD5657128E543A30054C676 /* BlogQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQueryTests.swift; sourceTree = "<group>"; };
@@ -15510,6 +15512,7 @@
 				57569CF1230485680052EE14 /* PostAutoUploadInteractorTests.swift */,
 				57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */,
 				57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */,
+				4AAD69022A6DE95D007FE77E /* PostRepositoryTests.swift */,
 				575802122357C41200E4C63C /* MediaCoordinatorTests.swift */,
 				46B30B772582C7DD00A25E66 /* SiteAddressServiceTests.swift */,
 				17FC0031264D728E00FCBD37 /* SharingServiceTests.swift */,
@@ -23591,6 +23594,7 @@
 				FF1B11E7238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift in Sources */,
 				FE320CC5294705990046899B /* ReaderPostBackupTests.swift in Sources */,
 				F4D9AF51288AE23500803D40 /* SuggestionTableViewTests.swift in Sources */,
+				4AAD69032A6DE95D007FE77E /* PostRepositoryTests.swift in Sources */,
 				8BC12F72231FEBA1004DDA72 /* PostCoordinatorTests.swift in Sources */,
 				C3C2F84628AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift in Sources */,
 				D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */,
