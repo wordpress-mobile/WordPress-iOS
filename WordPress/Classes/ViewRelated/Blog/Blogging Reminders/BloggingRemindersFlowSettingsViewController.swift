@@ -221,6 +221,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private var scheduledTime: Date
     private weak var delegate: BloggingRemindersFlowDelegate?
 
+    fileprivate var coreDataStack: CoreDataStackSwift {
+        ContextManager.shared
+    }
+
     init(
         for blog: Blog,
         tracker: BloggingRemindersTracker,
@@ -669,12 +673,19 @@ private extension BloggingRemindersFlowSettingsViewController {
     }
 
     var promptRemindersEnabled: Bool {
-        guard isBloggingPromptsEnabled,
-              let settings = bloggingPromptsService?.localSettings else {
+        guard isBloggingPromptsEnabled else {
             return false
         }
 
-        return settings.promptRemindersEnabled
+        return coreDataStack.performQuery { [bloggingPromptsService] context in
+            guard let siteID = bloggingPromptsService?.siteID,
+                  let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context)
+            else {
+                return false
+            }
+
+            return settings.promptRemindersEnabled
+        }
     }
 
     /// Temporarily update the local prompt settings with the new one.
@@ -686,12 +697,19 @@ private extension BloggingRemindersFlowSettingsViewController {
     func temporarilyUpdatePromptSettings() -> (() -> Void)? {
         guard isBloggingPromptsEnabled,
               bloggingPromptsSwitch.isOn || (promptRemindersEnabled && !bloggingPromptsSwitch.isOn),
-              let settings = bloggingPromptsService?.localSettings,
-              let context = settings.managedObjectContext else {
+              let siteID = bloggingPromptsService?.siteID
+        else {
             return nil
         }
 
-        let previousSettings = RemoteBloggingPromptsSettings(with: settings)
+        let previousSettings: RemoteBloggingPromptsSettings? = coreDataStack.performQuery { [bloggingPromptsService] context in
+            guard let siteID = bloggingPromptsService?.siteID,
+                  let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context)
+            else {
+                return nil
+            }
+            return RemoteBloggingPromptsSettings(with: settings)
+        }
 
         // update local settings to the selected schedule and time.
         typealias Weekday = BloggingRemindersScheduler.Weekday
@@ -716,12 +734,21 @@ private extension BloggingRemindersFlowSettingsViewController {
             reminderTime: reminderTime
         )
 
-        settings.configure(with: newSettings, siteID: settings.siteID, context: context)
-        ContextManager.shared.saveContextAndWait(context)
+        coreDataStack.performAndSave({ context in
+            guard let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context) else { return }
+            settings.configure(with: newSettings, siteID: settings.siteID, context: context)
+        })
 
-        return {
-            settings.configure(with: previousSettings, siteID: settings.siteID, context: context)
-            ContextManager.shared.saveContextAndWait(context)
+        return { [coreDataStack] in
+            coreDataStack.performAndSave({ context in
+                guard let previousSettings,
+                      let settings = try? BloggingPromptSettings.lookup(withSiteID: siteID, in: context)
+                else {
+                    return
+                }
+
+                settings.configure(with: previousSettings, siteID: settings.siteID, context: context)
+            }, completion: nil, on: .global())
         }
     }
 
@@ -730,13 +757,24 @@ private extension BloggingRemindersFlowSettingsViewController {
     /// - Parameter completion: Closure called when the process completes.
     func syncPromptsScheduleIfNeeded(_ completion: @escaping () -> Void) {
         guard isBloggingPromptsEnabled,
-              let service = bloggingPromptsService,
-              let settings = service.localSettings else {
+              let service = bloggingPromptsService
+        else {
             completion()
             return
         }
 
-        let newSettings = RemoteBloggingPromptsSettings(with: settings)
+        let newSettings: RemoteBloggingPromptsSettings? = coreDataStack.performQuery { context in
+            guard let settings = try? BloggingPromptSettings.lookup(withSiteID: service.siteID, in: context) else {
+                return nil
+            }
+            return .init(with: settings)
+        }
+
+        guard let newSettings else {
+            completion()
+            return
+        }
+
         service.updateSettings(settings: newSettings) { updatedSettings in
             completion()
         } failure: { error in
