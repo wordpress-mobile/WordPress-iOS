@@ -88,11 +88,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         super.viewDidLayoutSubviews()
 
         // manually configure preferredContentSize for precise drawer sizing.
-        if let safeAreaInsets = UIApplication.shared.mainWindow?.safeAreaInsets {
-            preferredContentSize = CGSize(width: tableView.contentSize.width,
-                                          height: tableView.contentSize.height + safeAreaInsets.bottom + 16.0)
-            onContentHeightUpdated?()
-        }
+        let safeBottomInset = UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? Constants.defaultBottomInset
+        preferredContentSize = CGSize(width: tableView.contentSize.width,
+                                      height: tableView.contentSize.height + safeBottomInset + 16.0)
+        onContentHeightUpdated?()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -235,8 +234,7 @@ private extension PrepublishingSocialAccountsViewController {
         }
 
         let navigationController = UINavigationController(rootViewController: checkoutViewController)
-        navigationController.modalPresentationStyle = .overFullScreen // .fullScreen messes up the drawer position.
-        present(navigationController, animated: true)
+        show(navigationController, sender: nil)
     }
 
     func makeCheckoutViewController() -> UIViewController? {
@@ -295,6 +293,8 @@ private extension PrepublishingSocialAccountsViewController {
     enum Constants {
         static let disabledCellImageOpacity = 0.36
         static let cellImageSize = CGSize(width: 28.0, height: 28.0)
+
+        static let defaultBottomInset: CGFloat = 34.0
 
         static let accountCellIdentifier = "AccountCell"
         static let messageCellIdentifier = "MessageCell"
