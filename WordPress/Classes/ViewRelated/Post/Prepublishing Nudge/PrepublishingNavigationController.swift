@@ -30,13 +30,13 @@ class PrepublishingNavigationController: LightNavigationController {
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         super.pushViewController(viewController, animated: animated)
 
-        transition()
+        transition(for: viewController)
     }
 
     override func popViewController(animated: Bool) -> UIViewController? {
         let viewController = super.popViewController(animated: animated)
 
-        transition()
+        transition(for: viewController)
 
         return viewController
     }
@@ -52,10 +52,25 @@ class PrepublishingNavigationController: LightNavigationController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func transition() {
-        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
-            presentedVC.transition(to: .collapsed)
+    private func transition(for viewController: UIViewController?) {
+        guard let bottomSheet = self.parent as? BottomSheetViewController,
+              let presentedVC = bottomSheet.presentedVC else {
+            return
         }
+
+        let preferredDrawerPosition: DrawerPosition = {
+            guard FeatureFlag.jetpackSocial.enabled else {
+                return .collapsed
+            }
+
+            if let positionable = viewController as? ChildDrawerPositionable {
+                return positionable.preferredDrawerPosition
+            }
+
+            return traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .expanded : .collapsed
+        }()
+
+        presentedVC.transition(to: preferredDrawerPosition)
     }
 
     /// Updates the navigation bar color so it matches the view's background.

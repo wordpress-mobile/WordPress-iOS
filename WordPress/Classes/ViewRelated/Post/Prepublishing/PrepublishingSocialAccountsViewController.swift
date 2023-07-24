@@ -34,6 +34,9 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.detailTextLabel?.text = shareMessage
         cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            cell.detailTextLabel?.numberOfLines = 3
+        }
         cell.accessoryType = .disclosureIndicator
 
         return cell
