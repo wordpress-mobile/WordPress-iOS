@@ -24,7 +24,8 @@ class LoginTests: XCTestCase {
             )
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-            .tabBar.goToMeScreen()
+        try TabNavComponent()
+            .goToMeScreen()
             .logoutToPrologue()
             .assertScreenIsLoaded()
     }
@@ -41,7 +42,8 @@ class LoginTests: XCTestCase {
             .openMagicLoginLink()
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-            .tabBar.goToMeScreen()
+        try TabNavComponent()
+            .goToMeScreen()
             .logout()
             .assertScreenIsLoaded()
     }

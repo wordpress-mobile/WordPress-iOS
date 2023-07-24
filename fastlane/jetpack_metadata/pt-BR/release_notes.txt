@@ -1,0 +1,3 @@
+Desativamos lembretes de blogs para sites auto-hospedados que não estão conectados ao Jetpack, já que essa funcionalidade está disponível apenas nesse aplicativo.
+
+Os blocos reutilizáveis agora são os padrões sincronizados, iguais aos do editor para desktop.

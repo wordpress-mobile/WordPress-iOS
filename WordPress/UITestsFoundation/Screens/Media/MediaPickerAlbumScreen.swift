@@ -2,9 +2,22 @@ import ScreenObject
 import XCTest
 
 public class MediaPickerAlbumScreen: ScreenObject {
-    let mediaCollectionGetter: (XCUIApplication) -> XCUIElement = {
+
+    private let mediaCollectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.collectionViews["MediaCollection"]
     }
+
+    private let selectedActionButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["SelectedActionButton"]
+    }
+
+    private let azctecEditorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Azctec Editor Navigation Bar"]
+    }
+
+    var azctecEditorNavigationBar: XCUIElement { azctecEditorNavigationBarGetter(app) }
+    var mediaCollection: XCUIElement { mediaCollectionGetter(app) }
+    var selectedActionButton: XCUIElement { selectedActionButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -14,7 +27,7 @@ public class MediaPickerAlbumScreen: ScreenObject {
     }
 
     public func selectImage(atIndex index: Int) {
-        let selectedImage = mediaCollectionGetter(app).cells.element(boundBy: index)
+        let selectedImage = mediaCollection.cells.element(boundBy: index)
         XCTAssertTrue(selectedImage.waitForExistence(timeout: 5), "Selected image did not load")
         selectedImage.tap()
     }
@@ -26,20 +39,10 @@ public class MediaPickerAlbumScreen: ScreenObject {
             index += 1
         }
 
-        app.buttons["SelectedActionButton"].tap()
-    }
-
-    func insertSelectedImage() {
-        app.buttons["SelectedActionButton"].tap()
+        selectedActionButton.tap()
     }
 
     public static func isLoaded(app: XCUIApplication = XCUIApplication()) -> Bool {
-        // Check if the media picker is loaded as a component within the editor
-        // and only return true if the media picker is a full screen
-        if app.navigationBars["Azctec Editor Navigation Bar"].exists {
-            return false
-        }
-
         return (try? MediaPickerAlbumScreen().isLoaded) ?? false
     }
 }

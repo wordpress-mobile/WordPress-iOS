@@ -15,7 +15,7 @@ public class ActionSheetComponent: ScreenObject {
     var blogPostButton: XCUIElement { Self.getBlogPostButton(app) }
     var sitePageButton: XCUIElement { Self.getSitePageButton(app) }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [Self.getBlogPostButton, Self.getSitePageButton],
             app: app

@@ -108,7 +108,7 @@ abstract_target 'Apps' do
   ## Third party libraries
   ## =====================
   ##
-  pod 'Gifu', '3.2.0'
+  pod 'Gifu', '3.3.1'
 
   app_center_version = '~> 4.1'
   app_center_configurations = %w[Release-Internal Release-Alpha]

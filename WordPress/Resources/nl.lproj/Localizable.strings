@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-12 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-18 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: nl */
@@ -9733,11 +9733,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reageer op %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Met deze cookies kunnen wij prestaties optimaliseren door informatie te verzamelen over hoe gebruikers zich gedragen op onze website.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Opslaan";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Ga naar instellingen";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "We verwerken je persoonlijke gegevens om onze website en marketingactiviteiten te optimaliseren op basis van jouw toestemming en ons legitiem belang.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Privacy beheren";

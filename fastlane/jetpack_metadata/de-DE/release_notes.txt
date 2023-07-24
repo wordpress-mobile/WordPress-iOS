@@ -1,0 +1,3 @@
+Wir haben die Blog-Erinnerungen für selbst gehostete Websites, die nicht mit Jetpack verknüpft sind, deaktiviert, da diese Funktion ausschließlich in der Jetpack-App zur Verfügung steht.
+
+Wiederverwendbare Blöcke heißen nun synchronisierte Vorlagen, genau wie im Desktop-Editor.
