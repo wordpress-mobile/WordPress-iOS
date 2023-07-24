@@ -26,7 +26,7 @@ enum PrepublishingIdentifier {
 class PrepublishingViewController: UITableViewController {
     let post: Post
     let identifiers: [PrepublishingIdentifier]
-    let coreDataStack: CoreDataStack
+    let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
 
     lazy var postBlogID: Int? = {
@@ -78,7 +78,7 @@ class PrepublishingViewController: UITableViewController {
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
          completion: @escaping (CompletionResult) -> (),
-         coreDataStack: CoreDataStack = ContextManager.shared,
+         coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
         self.identifiers = identifiers

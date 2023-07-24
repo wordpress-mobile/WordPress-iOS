@@ -4,13 +4,15 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
+
+    private let service: JetpackSocialService
 
     private let blogID: Int
 
     private var connections: [Connection]
 
-    private let sharingLimit: PublicizeInfo.SharingLimit?
+    private var sharingLimit: PublicizeInfo.SharingLimit?
 
     private var shareMessage: String {
         didSet {
@@ -56,7 +58,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(blogID: Int, model: PrepublishingAutoSharingModel, coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(blogID: Int,
+         model: PrepublishingAutoSharingModel,
+         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         jetpackSocialService: JetpackSocialService? = nil) {
         self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
@@ -66,6 +71,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         self.shareMessage = model.message
         self.sharingLimit = model.sharingLimit
         self.coreDataStack = coreDataStack
+        self.service = jetpackSocialService ?? JetpackSocialService(coreDataStack: coreDataStack)
 
         super.init(style: .insetGrouped)
     }
@@ -229,10 +235,8 @@ private extension PrepublishingSocialAccountsViewController {
         }
 
         let navigationController = UINavigationController(rootViewController: checkoutViewController)
-        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.modalPresentationStyle = .overFullScreen // .fullScreen messes up the drawer position.
         present(navigationController, animated: true)
-
-        // TODO: Flag to sync on viewDidAppear in case the user has made a purchase.
     }
 
     func makeCheckoutViewController() -> UIViewController? {
@@ -244,7 +248,31 @@ private extension PrepublishingSocialAccountsViewController {
                 return nil
             }
 
-            return WebViewControllerFactory.controller(url: url, blog: blog, source: Constants.webViewSource)
+            return WebViewControllerFactory.controller(url: url, blog: blog, source: Constants.webViewSource) {
+                self.onCheckoutDismissed()
+            }
+        }
+    }
+
+    /// When the checkout web view is dismissed, try to sync the latest sharing limit in case the user did make
+    /// a purchase. We can make this assumption if the returned `sharingLimit` is nil, which means there's no longer
+    /// any sharing limit for the site.
+    func onCheckoutDismissed() {
+        service.syncSharingLimit(for: blogID) { [weak self] result in
+            switch result {
+            case .success(let sharingLimit):
+                self?.sharingLimit = sharingLimit
+                self?.toggleInteractivityIfNeeded()
+
+                if sharingLimit == nil {
+                    self?.tableView.reloadData()
+                }
+
+                // TODO: Inform prepublishing VC to reload data.
+
+            default:
+                break
+            }
         }
     }
 
