@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 final class StatsPediodCache {
     static let shared = StatsPediodCache()

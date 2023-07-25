@@ -119,9 +119,7 @@ struct InsightStoreState {
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
-    fileprivate static let cacheTTL: TimeInterval = 300 // 5 minutes
     private let cache: StatsInsightsCache = .shared
-    private var lastRefreshDates: [NSNumber: Date] = [:]
 
     init() {
         super.init(initialState: InsightStoreState())
@@ -214,7 +212,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         state.postingActivity.map { setValue($0, .postingActivity) }
         state.topTagsAndCategories.map { setValue($0, .topTagsAndCategories) }
 
-        lastRefreshDates[siteID] = Date()
+        cache.setLastRefreshDate(Date(), forSiteID: siteID)
     }
 }
 
@@ -417,7 +415,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        guard forceRefresh || hasCacheExpired else {
+        guard forceRefresh || cache.isExpired else {
             DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
             return
         }
@@ -771,23 +769,6 @@ private extension StatsInsightsStore {
 
     func shouldFetchAnnual() -> Bool {
         return !isFetchingAnnual
-    }
-
-    // MARK: - Cache expiry
-
-    var hasCacheExpired: Bool {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-              let date = lastRefreshDates[siteID] else {
-                  return true
-              }
-
-        let interval = Date().timeIntervalSince(date)
-        let expired = interval > StatsInsightsStore.cacheTTL
-
-        let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
-        DDLogInfo("Stats: Insights cache for site \(siteID) has \(expired ? "" : "not ")expired \(intervalLogMessage).")
-
-        return expired
     }
 }
 
