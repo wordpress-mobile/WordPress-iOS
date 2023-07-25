@@ -5,21 +5,19 @@ import XCTest
 class DashboardTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
-
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
     }
 
-    // Disabled for investigation/maintenance: https://github.com/wordpress-mobile/WordPress-iOS/pull/21132
     func testFreeToPaidCardNavigation() throws {
-        try MySiteScreen()
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword,
+            selectedSiteTitle: WPUITestCredentials.testWPcomSecondaryFreeSite
+        )
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
@@ -30,7 +28,11 @@ class DashboardTests: XCTestCase {
     }
 
     func testPagesCardHeaderNavigation() throws {
-        try MySiteScreen()
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
             .scrollToPagesCard()
             .verifyPagesCard()
             .verifyPagesCard(hasPage: "Blog")
@@ -44,7 +46,11 @@ class DashboardTests: XCTestCase {
     }
 
     func testActivityLogCardHeaderNavigation() throws {
-        try MySiteScreen()
+        try LoginFlow.login(
+            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
             .scrollToActivityLogCard()
             .verifyActivityLogCard()
             .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")

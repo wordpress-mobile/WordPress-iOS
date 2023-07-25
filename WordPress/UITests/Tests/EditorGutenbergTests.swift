@@ -32,7 +32,7 @@ class EditorGutenbergTests: XCTestCase {
             .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
             .publish()
             .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
             .tapDone()
     }
 
@@ -51,7 +51,7 @@ class EditorGutenbergTests: XCTestCase {
             .closePostSettings()
             .publish()
             .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
             .tapDone()
     }
 

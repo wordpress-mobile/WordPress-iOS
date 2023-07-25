@@ -20,7 +20,7 @@ class LoginTests: XCTestCase {
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(
                 username: WPUITestCredentials.testWPcomUsername,
-                siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
+                siteUrl: WPUITestCredentials.testWPcomPrimaryPaidSite
             )
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
@@ -80,7 +80,7 @@ class LoginTests: XCTestCase {
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(
                 username: WPUITestCredentials.testWPcomUsername,
-                siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
+                siteUrl: WPUITestCredentials.testWPcomPrimaryPaidSite
             )
             .continueWithSelectedSite() //returns MySite screen
 
