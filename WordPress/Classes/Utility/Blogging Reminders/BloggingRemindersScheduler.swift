@@ -92,6 +92,10 @@ class BloggingRemindersScheduler {
     ///
     private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
+    private var coreDataStack: CoreDataStackSwift {
+        ContextManager.shared
+    }
+
     /// The time of the day when blogging reminders will be received for the given blog
     /// - Parameter blog: the given blog
     /// - Returns: the time of the day
@@ -100,12 +104,18 @@ class BloggingRemindersScheduler {
         case .weekDaysWithTime(let daysWithTime):
             return daysWithTime.time
         default:
-            let settings = BloggingPromptsService(blog: blog)?.localSettings
             let defaultTime = Calendar.current.date(from: DateComponents(calendar: Calendar.current, hour: Weekday.defaultHour, minute: 0)) ?? Date()
+            guard FeatureFlag.bloggingPrompts.enabled else {
+                return defaultTime
+            }
 
-            if FeatureFlag.bloggingPrompts.enabled, settings?.promptRemindersEnabled ?? false {
-                return settings?.reminderTimeDate() ?? defaultTime
-            } else {
+            return coreDataStack.performQuery { [blogID = blog.objectID] context in
+                if let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                   let settings = try? BloggingPromptSettings.of(blogInContext),
+                   settings.promptRemindersEnabled,
+                   let reminderTimeDate = settings.reminderTimeDate() {
+                    return reminderTimeDate
+                }
                 return defaultTime
             }
         }
