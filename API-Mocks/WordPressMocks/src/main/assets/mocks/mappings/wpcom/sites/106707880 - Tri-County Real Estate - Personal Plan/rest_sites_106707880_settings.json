@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/rest/v1.1/sites/181977606/settings",
+    "urlPath": "/rest/v1.1/sites/106707880/settings",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -11,20 +11,19 @@
   "response": {
     "status": 200,
     "jsonBody": {
-      "ID": 181977606,
-      "name": "Weekend Bakes",
+      "ID": 106707880,
+      "name": "Tri-County Real Estate",
       "description": "",
-      "URL": "https://weekendbakesblog.wordpress.com",
+      "URL": "http://tricountyrealestate.wordpress.com",
       "lang": "en",
       "settings": {
-        "admin_url": "https://weekendbakesblog.wordpress.com/wp-admin/",
+        "admin_url": "https://tricountyrealestate.wordpress.com/wp-admin/",
         "default_ping_status": true,
         "default_comment_status": true,
-        "instant_search_enabled": false,
         "blog_public": 1,
         "jetpack_sync_non_public_post_stati": false,
         "jetpack_relatedposts_allowed": true,
-        "jetpack_relatedposts_enabled": true,
+        "jetpack_relatedposts_enabled": false,
         "jetpack_relatedposts_show_headline": "",
         "jetpack_relatedposts_show_thumbnails": "",
         "jetpack_search_enabled": false,
@@ -34,9 +33,13 @@
           {
             "value": 1,
             "name": "Uncategorized"
+          },
+          {
+            "value": 1674,
+            "name": "Wedding"
           }
         ],
-        "default_post_format": "standard",
+        "default_post_format": "0",
         "default_pingback_flag": true,
         "require_name_email": true,
         "comment_registration": false,
@@ -55,11 +58,9 @@
         "social_notifications_subscribe": false,
         "comment_moderation": false,
         "comment_whitelist": true,
-        "comment_previously_approved": false,
         "comment_max_links": 2,
         "moderation_keys": "",
         "blacklist_keys": "",
-        "disallowed_keys": false,
         "lang_id": 1,
         "wga": false,
         "disabled_likes": false,
@@ -73,12 +74,12 @@
         "date_format": "F j, Y",
         "time_format": "g:i a",
         "start_of_week": "1",
-        "jetpack_testimonial": false,
+        "jetpack_testimonial": true,
         "jetpack_testimonial_posts_per_page": 10,
         "jetpack_portfolio": false,
         "jetpack_portfolio_posts_per_page": 10,
         "markdown_supported": true,
-        "site_icon": 12,
+        "site_icon": 0,
         "advanced_seo_front_page_description": "",
         "advanced_seo_title_formats": [
 
@@ -91,9 +92,8 @@
         "rss_use_excerpt": false,
         "wpcom_publish_posts_with_markdown": false,
         "wpcom_publish_comments_with_markdown": false,
-        "infinite_scroll": true,
-        "infinite_scroll_blocked": false,
-        "wpcom_coming_soon": 0,
+        "infinite_scroll": false,
+        "infinite_scroll_blocked": "footer",
         "podcasting_category_id": 0,
         "podcasting_title": "",
         "podcasting_subtitle": "",

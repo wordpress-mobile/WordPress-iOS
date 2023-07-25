@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/wpcom/v2/sites/106707880/external-services",
+    "urlPathPattern": "/wpcom/v2/sites/.*/external-services",
     "queryParameters": {
       "locale": {
           "matches": "(.*)"

@@ -1,17 +1,26 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/rest/v1.2/sites/106707880/posts",
+    "urlPathPattern": "/rest/v1.2/sites/.*/posts.*",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
       },
+      "context": {
+        "equalTo": "edit"
+      },
+      "meta": {
+        "equalTo": "autosave"
+      },
+      "number": {
+        "matches": "(.*)"
+      },
+      "status": {
+        "equalTo": "draft,pending,publish,private,future"
+      },
       "type": {
         "equalTo": "page"
-      },
-      "offset": {
-        "equalTo": "3"
-      }        
+      }
     }
   },
   "response": {

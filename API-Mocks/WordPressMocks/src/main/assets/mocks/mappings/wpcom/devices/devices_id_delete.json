@@ -1,18 +1,12 @@
 {
   "request": {
-    "method": "GET",
-    "urlPattern": "/wpcom/v2/sites/185124945/rewind/capabilities(/)?($|\\?.*)"
+    "urlPattern": "/rest/v1.1/devices/[0-9]+/delete.*",
+    "method": "POST"
   },
   "response": {
     "status": 200,
     "jsonBody": {
-      "capabilities": [
-        "backup",
-        "restore",
-        "backup-realtime",
-        "scan",
-        "antispam"
-      ]
+      "success": true
     },
     "headers": {
       "Content-Type": "application/json",
