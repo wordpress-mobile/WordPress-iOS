@@ -78,11 +78,11 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
-                .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: false)
+                .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
             }
         }
         self.shareMessage = model.message
-        self.sharingLimit = .init(remaining: 1, limit: 30)
+        self.sharingLimit = model.sharingLimit
         self.coreDataStack = coreDataStack
         self.service = blogService ?? BlogService(coreDataStack: coreDataStack)
         self.canInteractWithDisabledConnections = model.enabledConnectionsCount < (sharingLimit?.remaining ?? .max)
