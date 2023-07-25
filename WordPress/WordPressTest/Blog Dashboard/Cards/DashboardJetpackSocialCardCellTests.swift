@@ -127,13 +127,13 @@ private extension DashboardJetpackSocialCardCellTests {
     func createTestBlog(isPublicizeSupported: Bool = true,
                         hasServices: Bool = true,
                         hasConnections: Bool = false) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: mainContext) as! Blog
-        blog.account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: mainContext) as? WPAccount
-        blog.capabilities = [Blog.Capability.PublishPosts.rawValue: true]
-        blog.dotComID = 12345 as NSNumber
+        var builder = BlogBuilder(mainContext)
+            .withAnAccount()
+            .with(dotComID: 12345)
+            .with(capabilities: [.PublishPosts])
 
         if isPublicizeSupported {
-            blog.options = ["active_modules": ["value": ["publicize"]]]
+            builder = builder.with(modules: ["publicize"])
         }
 
         if hasServices {
@@ -142,9 +142,9 @@ private extension DashboardJetpackSocialCardCellTests {
 
         if hasConnections {
             let connection = PublicizeConnection(context: mainContext)
-            blog.connections = [connection]
+            builder = builder.with(connections: [connection])
         }
-        return blog
+        return builder.build()
     }
 
     func createPublicizeService() -> PublicizeService {
