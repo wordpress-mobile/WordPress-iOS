@@ -3,7 +3,7 @@ import Foundation
 final class StatsInsightsCache {
     static let shared = StatsInsightsCache()
 
-    private var cache: [CacheKey: Any] = [:]
+    private var cache: [CacheKey: StatsInsightData] = [:]
 
     func getValue<T: StatsInsightData>(record: Record, siteID: NSNumber) -> T? {
         let key = CacheKey(record: record, siteID: siteID)

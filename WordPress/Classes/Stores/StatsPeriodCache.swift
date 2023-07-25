@@ -3,7 +3,7 @@ import Foundation
 final class StatsPediodCache {
     static let shared = StatsPediodCache()
 
-    private var cache: [CacheKey: Any] = [:]
+    private var cache: [CacheKey: StatsTimeIntervalData] = [:]
 
     func getValue<T: StatsTimeIntervalData>(record: Record, date: Date, period: StatsPeriodUnit, siteID: NSNumber) -> T? {
         let key = makeKey(record: record, date: date, period: period, siteID: siteID)
