@@ -22,7 +22,7 @@
           "slug": "tag",
           "description": "",
           "post_count": 1,
-          "feed_url": "https://infocusphotographers.com/tag/tag/feed/",
+          "feed_url": "https://tricountyrealestate.wordpress.com/tag/tag/feed/",
           "meta": {
             "links": {
               "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/tags/slug:tag",

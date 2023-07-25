@@ -51,7 +51,6 @@
           "date": "2023-02-03 09:46:32"
         }
       ],
-
       "activity": {
         "@context": "https://www.w3.org/ns/activitystreams",
         "summary": "Activity log",
@@ -159,7 +158,6 @@
           ]
         }
       }
-
     }
   }
 }

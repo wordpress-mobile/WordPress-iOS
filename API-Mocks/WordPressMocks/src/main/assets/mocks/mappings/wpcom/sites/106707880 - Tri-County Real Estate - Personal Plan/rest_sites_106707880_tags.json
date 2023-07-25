@@ -1,12 +1,15 @@
 {
   "request": {
-    "urlPattern": "/rest/v1/devices/[0-9]+/delete.*",
-    "method": "POST"
+    "method": "GET",
+    "urlPath": "/rest/v1.1/sites/106707880/tags"
   },
   "response": {
     "status": 200,
     "jsonBody": {
-      "success": true
+      "found": 0,
+      "tags": [
+
+      ]
     },
     "headers": {
       "Content-Type": "application/json",

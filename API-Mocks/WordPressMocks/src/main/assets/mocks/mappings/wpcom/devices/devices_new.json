@@ -1,7 +1,12 @@
 {
   "request": {
-    "urlPath": "/rest/v1/devices/new",
-    "method": "POST"
+    "urlPath": "/rest/v1.1/devices/new",
+    "method": "POST",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      }
+    }
   },
   "response": {
     "status": 200,
