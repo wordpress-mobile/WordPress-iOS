@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPathPattern": "/rest/v1.1/me/sites",
+    "urlPathPattern": "/rest/v1.2/me/sites",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
