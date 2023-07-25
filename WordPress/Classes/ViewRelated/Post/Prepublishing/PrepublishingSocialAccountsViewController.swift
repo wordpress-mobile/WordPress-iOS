@@ -1,29 +1,52 @@
+import WordPressUI
+
 class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
 
+    private let coreDataStack: CoreDataStackSwift
+
+    private let service: BlogService
+
+    private let blogID: Int
+
     private var connections: [Connection]
 
-    private let sharingLimit: PublicizeInfo.SharingLimit?
+    private var sharingLimit: PublicizeInfo.SharingLimit? {
+        didSet {
+            toggleInteractivityIfNeeded()
+            tableView.reloadData()
+            // TODO: Inform changes to the prepublishing VC.
+        }
+    }
 
     private var shareMessage: String {
         didSet {
             messageCell.detailTextLabel?.text = shareMessage
+            // TODO: Inform changes to the prepublishing VC.
         }
     }
 
-    private var isSharingLimitReached: Bool = false {
+    var onContentHeightUpdated: (() -> Void)? = nil
+
+    /// Stores the interaction state for disabled connections.
+    /// The value is stored in order to perform table operations *only* when the value changes.
+    private var canInteractWithDisabledConnections: Bool {
         didSet {
-            guard oldValue != isSharingLimitReached else {
-                return // no need to reload if the value doesn't change.
+            guard oldValue != canInteractWithDisabledConnections else {
+                return
             }
             // only reload connections that are turned off.
             // the last toggled row is skipped so it can perform its full switch animation.
             tableView.reloadRows(at: indexPathsForDisabledConnections.filter { $0.row != lastToggledRow }, with: .none)
+            lastToggledRow = -1 // reset once the reload completes.
         }
     }
 
-    /// Store the last table row toggled by the user.
+    /// Stores the last table row toggled by the user.
+    ///
+    /// This property is only used for visual purposes, to allow the toggled cell's switch animation to complete
+    /// instead of having it abruptly stopped due to the table view reload.
     private var lastToggledRow: Int = -1
 
     private lazy var messageCell: UITableViewCell = {
@@ -48,7 +71,11 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(model: PrepublishingAutoSharingModel) {
+    init(blogID: Int,
+         model: PrepublishingAutoSharingModel,
+         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         blogService: BlogService? = nil) {
+        self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
                 .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
@@ -56,6 +83,9 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         }
         self.shareMessage = model.message
         self.sharingLimit = model.sharingLimit
+        self.coreDataStack = coreDataStack
+        self.service = blogService ?? BlogService(coreDataStack: coreDataStack)
+        self.canInteractWithDisabledConnections = model.enabledConnectionsCount < (sharingLimit?.remaining ?? .max)
 
         super.init(style: .insetGrouped)
     }
@@ -66,6 +96,27 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         title = Constants.navigationTitle
 
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Constants.accountCellIdentifier)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // manually configure preferredContentSize for precise drawer sizing.
+        let safeBottomInset = UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? Constants.defaultBottomInset
+        preferredContentSize = CGSize(width: tableView.contentSize.width,
+                                      height: tableView.contentSize.height + safeBottomInset + 16.0)
+        onContentHeightUpdated?()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // when the vertical size class changes, ensure that we are displaying the max drawer height on compact size
+        // or revert to collapsed mode otherwise.
+        if let previousVerticalSizeClass = previousTraitCollection?.verticalSizeClass,
+           previousVerticalSizeClass != traitCollection.verticalSizeClass {
+            presentedVC?.transition(to: traitCollection.verticalSizeClass == .compact ? .expanded : .collapsed)
+        }
     }
 }
 
@@ -98,6 +149,18 @@ extension PrepublishingSocialAccountsViewController {
 
         showEditMessageScreen()
     }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let sharingLimit else {
+            return nil
+        }
+
+        return PrepublishingSocialAccountsTableFooterView(remaining: sharingLimit.remaining,
+                                                          showsWarning: shouldDisplayWarning,
+                                                          onButtonTap: { [weak self] in
+            self?.subscribeButtonTapped()
+        })
+    }
 }
 
 // MARK: - Private Helpers
@@ -110,6 +173,10 @@ private extension PrepublishingSocialAccountsViewController {
 
     var indexPathsForDisabledConnections: [IndexPath] {
         connections.indexed().compactMap { $1.isOn ? nil : IndexPath(row: $0, section: .zero) }
+    }
+
+    var shouldDisplayWarning: Bool {
+        connections.count >= (sharingLimit?.remaining ?? .max)
     }
 
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
@@ -127,7 +194,7 @@ private extension PrepublishingSocialAccountsViewController {
             self?.updateConnection(at: indexPath.row, enabled: newValue)
         }
 
-        let isInteractionAllowed = connection.isOn || !isSharingLimitReached
+        let isInteractionAllowed = connection.isOn || canInteractWithDisabledConnections
         isInteractionAllowed ? cell.enable() : cell.disable()
         cell.imageView?.alpha = isInteractionAllowed ? 1.0 : Constants.disabledCellImageOpacity
 
@@ -146,16 +213,12 @@ private extension PrepublishingSocialAccountsViewController {
         lastToggledRow = index
 
         toggleInteractivityIfNeeded()
+
+        // TODO: Inform changes to the prepublishing VC.
     }
 
     func toggleInteractivityIfNeeded() {
-        guard let sharingLimit else {
-            // if sharing limit does not exist, then interactions should be unlimited.
-            isSharingLimitReached = false
-            return
-        }
-
-        isSharingLimitReached = enabledCount >= sharingLimit.remaining
+        canInteractWithDisabledConnections = enabledCount < (sharingLimit?.remaining ?? .max)
     }
 
     func showEditMessageScreen() {
@@ -170,6 +233,59 @@ private extension PrepublishingSocialAccountsViewController {
         }
 
         self.navigationController?.pushViewController(multiTextViewController, animated: true)
+    }
+
+    func subscribeButtonTapped() {
+        guard let checkoutViewController = makeCheckoutViewController() else {
+            return
+        }
+
+        let navigationController = UINavigationController(rootViewController: checkoutViewController)
+        show(navigationController, sender: nil)
+    }
+
+    func makeCheckoutViewController() -> UIViewController? {
+        return coreDataStack.performQuery { [weak self] context in
+            guard let self,
+                  let blog = try? Blog.lookup(withID: self.blogID, in: context),
+                  let host = blog.hostname,
+                  let url = URL(string: "https://wordpress.com/checkout/\(host)/jetpack_social_basic_yearly") else {
+                return nil
+            }
+
+            return WebViewControllerFactory.controller(url: url, blog: blog, source: Constants.webViewSource) {
+                self.checkoutDismissed()
+            }
+        }
+    }
+
+    /// When the checkout web view is dismissed, try to sync the latest sharing limit in case the user did make
+    /// a purchase. We can make this assumption if the returned `sharingLimit` is nil, which means there's no longer
+    /// any sharing limit for the site.
+    func checkoutDismissed() {
+        assert(Thread.isMainThread, "\(#function) must be called from the main thread")
+
+        guard let blog = try? Blog.lookup(withID: blogID, in: coreDataStack.mainContext),
+              ReachabilityUtils.isInternetReachable() else {
+            return
+        }
+
+        service.syncBlog(blog) { [weak self] in
+            guard let self else {
+                return
+            }
+
+            // re-fetch the blog after sync completes to check if the sharing limit for the blog has been removed.
+            self.sharingLimit = self.coreDataStack.performQuery { context in
+                guard let blog = try? Blog.lookup(withID: self.blogID, in: context) else {
+                    return nil
+                }
+                return blog.sharingLimit
+            }
+
+        } failure: { error in
+            DDLogError("Failed to sync blog after dismissing checkout webview due to error: \(error)")
+        }
     }
 
     /// Convenient model that represents the user's Publicize connections.
@@ -192,8 +308,12 @@ private extension PrepublishingSocialAccountsViewController {
         static let disabledCellImageOpacity = 0.36
         static let cellImageSize = CGSize(width: 28.0, height: 28.0)
 
+        static let defaultBottomInset: CGFloat = 34.0
+
         static let accountCellIdentifier = "AccountCell"
         static let messageCellIdentifier = "MessageCell"
+
+        static let webViewSource = "prepublishing_social_accounts_subscribe"
 
         static let navigationTitle = NSLocalizedString(
             "prepublishing.socialAccounts.navigationTitle",
@@ -226,4 +346,21 @@ private extension PrepublishingSocialAccountsViewController {
         )
     }
 
+}
+
+extension PrepublishingSocialAccountsViewController: DrawerPresentable {
+
+    var collapsedHeight: DrawerHeight {
+        .intrinsicHeight
+    }
+
+    var scrollableView: UIScrollView? {
+        tableView
+    }
+}
+
+private extension PrepublishingAutoSharingModel {
+    var enabledConnectionsCount: Int {
+        services.flatMap { $0.connections }.filter { $0.enabled }.count
+    }
 }
