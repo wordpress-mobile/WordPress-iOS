@@ -6,34 +6,47 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     private let coreDataStack: CoreDataStackSwift
 
-    private let service: JetpackSocialService
+    private let service: BlogService
 
     private let blogID: Int
 
     private var connections: [Connection]
 
-    private var sharingLimit: PublicizeInfo.SharingLimit?
+    private var sharingLimit: PublicizeInfo.SharingLimit? {
+        didSet {
+            toggleInteractivityIfNeeded()
+            tableView.reloadData()
+            // TODO: Inform changes to the prepublishing VC.
+        }
+    }
 
     private var shareMessage: String {
         didSet {
             messageCell.detailTextLabel?.text = shareMessage
+            // TODO: Inform changes to the prepublishing VC.
         }
     }
 
     var onContentHeightUpdated: (() -> Void)? = nil
 
-    private var isSharingLimitReached: Bool = false {
+    /// Stores the interaction state for disabled connections.
+    /// The value is stored in order to perform table operations *only* when the value changes.
+    private var canInteractWithDisabledConnections: Bool {
         didSet {
-            guard oldValue != isSharingLimitReached else {
-                return // no need to reload if the value doesn't change.
+            guard oldValue != canInteractWithDisabledConnections else {
+                return
             }
             // only reload connections that are turned off.
             // the last toggled row is skipped so it can perform its full switch animation.
             tableView.reloadRows(at: indexPathsForDisabledConnections.filter { $0.row != lastToggledRow }, with: .none)
+            lastToggledRow = -1 // reset once the reload completes.
         }
     }
 
-    /// Store the last table row toggled by the user.
+    /// Stores the last table row toggled by the user.
+    ///
+    /// This property is only used for visual purposes, to allow the toggled cell's switch animation to complete
+    /// instead of having it abruptly stopped due to the table view reload.
     private var lastToggledRow: Int = -1
 
     private lazy var messageCell: UITableViewCell = {
@@ -61,17 +74,18 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
     init(blogID: Int,
          model: PrepublishingAutoSharingModel,
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         jetpackSocialService: JetpackSocialService? = nil) {
+         blogService: BlogService? = nil) {
         self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
-                .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
+                .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: false)
             }
         }
         self.shareMessage = model.message
-        self.sharingLimit = model.sharingLimit
+        self.sharingLimit = .init(remaining: 1, limit: 30)
         self.coreDataStack = coreDataStack
-        self.service = jetpackSocialService ?? JetpackSocialService(coreDataStack: coreDataStack)
+        self.service = blogService ?? BlogService(coreDataStack: coreDataStack)
+        self.canInteractWithDisabledConnections = model.enabledConnectionsCount < (sharingLimit?.remaining ?? .max)
 
         super.init(style: .insetGrouped)
     }
@@ -162,10 +176,7 @@ private extension PrepublishingSocialAccountsViewController {
     }
 
     var shouldDisplayWarning: Bool {
-        guard let sharingLimit else {
-            return false
-        }
-        return connections.count >= sharingLimit.remaining
+        connections.count >= (sharingLimit?.remaining ?? .max)
     }
 
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
@@ -183,7 +194,7 @@ private extension PrepublishingSocialAccountsViewController {
             self?.updateConnection(at: indexPath.row, enabled: newValue)
         }
 
-        let isInteractionAllowed = connection.isOn || !isSharingLimitReached
+        let isInteractionAllowed = connection.isOn || canInteractWithDisabledConnections
         isInteractionAllowed ? cell.enable() : cell.disable()
         cell.imageView?.alpha = isInteractionAllowed ? 1.0 : Constants.disabledCellImageOpacity
 
@@ -202,16 +213,12 @@ private extension PrepublishingSocialAccountsViewController {
         lastToggledRow = index
 
         toggleInteractivityIfNeeded()
+
+        // TODO: Inform changes to the prepublishing VC.
     }
 
     func toggleInteractivityIfNeeded() {
-        guard let sharingLimit else {
-            // if sharing limit does not exist, then interactions should be unlimited.
-            isSharingLimitReached = false
-            return
-        }
-
-        isSharingLimitReached = enabledCount >= sharingLimit.remaining
+        canInteractWithDisabledConnections = enabledCount < (sharingLimit?.remaining ?? .max)
     }
 
     func showEditMessageScreen() {
@@ -238,7 +245,7 @@ private extension PrepublishingSocialAccountsViewController {
     }
 
     func makeCheckoutViewController() -> UIViewController? {
-        coreDataStack.performQuery { [weak self] context in
+        return coreDataStack.performQuery { [weak self] context in
             guard let self,
                   let blog = try? Blog.lookup(withID: self.blogID, in: context),
                   let host = blog.hostname,
@@ -247,7 +254,7 @@ private extension PrepublishingSocialAccountsViewController {
             }
 
             return WebViewControllerFactory.controller(url: url, blog: blog, source: Constants.webViewSource) {
-                self.onCheckoutDismissed()
+                self.checkoutDismissed()
             }
         }
     }
@@ -255,22 +262,29 @@ private extension PrepublishingSocialAccountsViewController {
     /// When the checkout web view is dismissed, try to sync the latest sharing limit in case the user did make
     /// a purchase. We can make this assumption if the returned `sharingLimit` is nil, which means there's no longer
     /// any sharing limit for the site.
-    func onCheckoutDismissed() {
-        service.syncSharingLimit(for: blogID) { [weak self] result in
-            switch result {
-            case .success(let sharingLimit):
-                self?.sharingLimit = sharingLimit
-                self?.toggleInteractivityIfNeeded()
+    func checkoutDismissed() {
+        assert(Thread.isMainThread, "\(#function) must be called from the main thread")
 
-                if sharingLimit == nil {
-                    self?.tableView.reloadData()
-                }
+        guard let blog = try? Blog.lookup(withID: blogID, in: coreDataStack.mainContext),
+              ReachabilityUtils.isInternetReachable() else {
+            return
+        }
 
-                // TODO: Inform prepublishing VC to reload data.
-
-            default:
-                break
+        service.syncBlog(blog) { [weak self] in
+            guard let self else {
+                return
             }
+
+            // re-fetch the blog after sync completes to check if the sharing limit for the blog has been removed.
+            self.sharingLimit = self.coreDataStack.performQuery { context in
+                guard let blog = try? Blog.lookup(withID: self.blogID, in: context) else {
+                    return nil
+                }
+                return blog.sharingLimit
+            }
+
+        } failure: { error in
+            DDLogError("Failed to sync blog after dismissing checkout webview due to error: \(error)")
         }
     }
 
@@ -342,5 +356,11 @@ extension PrepublishingSocialAccountsViewController: DrawerPresentable {
 
     var scrollableView: UIScrollView? {
         tableView
+    }
+}
+
+private extension PrepublishingAutoSharingModel {
+    var enabledConnectionsCount: Int {
+        services.flatMap { $0.connections }.filter { $0.enabled }.count
     }
 }
