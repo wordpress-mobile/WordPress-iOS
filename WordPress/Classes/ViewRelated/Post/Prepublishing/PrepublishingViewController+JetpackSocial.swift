@@ -138,7 +138,7 @@ private extension PrepublishingViewController {
     func noConnectionConnectTapped() -> () -> Void {
         return { [weak self] in
             guard let self,
-                  let controller = SharingViewController(blog: self.post.blog, delegate: nil),
+                  let controller = SharingViewController(blog: self.post.blog, delegate: self),
                   self.presentedViewController == nil else {
                 return
             }
@@ -248,12 +248,22 @@ struct PrepublishingAutoSharingModel {
     }
 }
 
+// MARK: - Sharing View Controller Delegate
+
+extension PrepublishingViewController: SharingViewControllerDelegate {
+
+    func didChangePublicizeServices() {
+        reloadData()
+    }
+
+}
+
+// MARK: - Prepublishing Social Accounts Delegate
+
 extension PrepublishingViewController: PrepublishingSocialAccountsDelegate {
 
     func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
-        if newValue == nil {
-            reloadData()
-        }
+        reloadData()
     }
 
     func didFinish(with connectionChanges: [Int: Bool], message: String?) {
