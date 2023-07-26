@@ -5,7 +5,6 @@ final class PostRepository {
     enum Error: Swift.Error {
         case postNotFound
         case remoteAPIUnavailable
-        case unknown
     }
 
     private let coreDataStack: CoreDataStackSwift
@@ -36,7 +35,7 @@ final class PostRepository {
             remote.getPostWithID(
                 postID,
                 success: { continuation.resume(returning: $0) },
-                failure: { continuation.resume(throwing: $0 ?? PostRepository.Error.unknown ) }
+                failure: { continuation.resume(throwing: $0!) }
             )
         }
 
