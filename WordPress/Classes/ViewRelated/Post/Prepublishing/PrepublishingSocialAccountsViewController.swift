@@ -192,8 +192,7 @@ private extension PrepublishingSocialAccountsViewController {
 
     var enabledCount: Int {
         connections
-            .map { connectionChanges[$0.keyringID] ?? $0.isOn }
-            .filter { $0 }
+            .filter { connectionChanges[$0.keyringID] ?? $0.isOn }
             .count
     }
 
@@ -239,7 +238,7 @@ private extension PrepublishingSocialAccountsViewController {
         guard let connection = connections[safe: index] else {
             return false
         }
-        return connectionChanges[index] ?? connection.isOn
+        return connectionChanges[connection.keyringID] ?? connection.isOn
     }
 
     func updateConnection(at index: Int, value: Bool) {
