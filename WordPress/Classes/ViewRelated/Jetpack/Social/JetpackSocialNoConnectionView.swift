@@ -131,7 +131,7 @@ private struct Constants {
                                             value: "Increase your traffic by auto-sharing your posts with your friends on social media.",
                                             comment: "Body text for the Jetpack Social no connection view")
     static let connectText = NSLocalizedString("social.noconnection.connect",
-                                               value: "Connect your profiles",
+                                               value: "Connect accounts",
                                                comment: "Title for the connect button to add social sharing for the Jetpack Social no connection view")
     static let notNowText = NSLocalizedString("social.noconnection.notnow",
                                               value: "Not now",

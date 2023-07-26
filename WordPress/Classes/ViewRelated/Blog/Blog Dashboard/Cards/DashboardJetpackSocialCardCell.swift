@@ -122,7 +122,7 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
     struct Constants {
         static let hideNoConnectionViewKey = "dashboard-social-no-connection-view-hidden"
         static let connectTitle = NSLocalizedString("dashboard.card.social.noconnections.title",
-                                                    value: "Connect your social profiles",
+                                                    value: "Share across your social networks",
                                                     comment: "Title for the Jetpack Social dashboard card when the user has no social connections.")
         static let hideThis = NSLocalizedString("dashboard.card.social.menu.hide",
                                                 value: "Hide this",
