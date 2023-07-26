@@ -123,15 +123,6 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         onContentHeightUpdated?()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // only call the delegate method if the user has made some changes.
-        if !connectionChanges.isEmpty || shareMessage != originalMessage {
-            delegate?.didFinish(with: connectionChanges, message: shareMessage)
-        }
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -142,6 +133,14 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
             presentedVC?.transition(to: traitCollection.verticalSizeClass == .compact ? .expanded : .collapsed)
         }
     }
+
+    deinit {
+        // only call the delegate method if the user has made some changes.
+        if hasChanges {
+            delegate?.didFinish(with: connectionChanges, message: shareMessage)
+        }
+    }
+
 }
 
 // MARK: - UITableView
@@ -206,6 +205,10 @@ private extension PrepublishingSocialAccountsViewController {
 
     var shouldDisplayWarning: Bool {
         connections.count >= (sharingLimit?.remaining ?? .max)
+    }
+
+    var hasChanges: Bool {
+        !connectionChanges.isEmpty || shareMessage != originalMessage
     }
 
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
