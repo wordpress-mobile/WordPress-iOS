@@ -34,7 +34,7 @@ class EditorAztecTests: XCTestCase {
 //            .enterText(text: content)
 //            .publish()
 //            .viewPublishedPost(withTitle: title)
-//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
 //            .done()
 //    }
 //
@@ -59,7 +59,7 @@ class EditorAztecTests: XCTestCase {
 //            .closePostSettings()
 //        AztecEditorScreen(mode: .rich).publish()
 //            .viewPublishedPost(withTitle: title)
-//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
 //            .done()
 //    }
 //
