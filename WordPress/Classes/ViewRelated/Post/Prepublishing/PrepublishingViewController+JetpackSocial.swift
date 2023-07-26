@@ -39,6 +39,7 @@ extension PrepublishingViewController {
         let model = makeAutoSharingModel()
         let socialAccountsViewController = PrepublishingSocialAccountsViewController(blogID: postBlogID,
                                                                                      model: model,
+                                                                                     delegate: self,
                                                                                      coreDataStack: coreDataStack)
 
         socialAccountsViewController.onContentHeightUpdated = { [weak self] in
@@ -137,7 +138,7 @@ private extension PrepublishingViewController {
     func noConnectionConnectTapped() -> () -> Void {
         return { [weak self] in
             guard let self,
-                  let controller = SharingViewController(blog: self.post.blog, delegate: nil),
+                  let controller = SharingViewController(blog: self.post.blog, delegate: self),
                   self.presentedViewController == nil else {
                 return
             }
@@ -245,4 +246,46 @@ struct PrepublishingAutoSharingModel {
         let keyringID: Int
         var enabled: Bool
     }
+}
+
+// MARK: - Sharing View Controller Delegate
+
+extension PrepublishingViewController: SharingViewControllerDelegate {
+
+    func didChangePublicizeServices() {
+        reloadData()
+    }
+
+}
+
+// MARK: - Prepublishing Social Accounts Delegate
+
+extension PrepublishingViewController: PrepublishingSocialAccountsDelegate {
+
+    func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
+        reloadData()
+    }
+
+    func didFinish(with connectionChanges: [Int: Bool], message: String?) {
+        coreDataStack.performAndSave({ [postObjectID = post.objectID] context in
+            guard let post = (try? context.existingObject(with: postObjectID)) as? Post else {
+                return
+            }
+
+            connectionChanges.forEach { (keyringID, enabled) in
+                if enabled {
+                    post.enablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+                } else {
+                    post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+                }
+            }
+
+            let isMessageEmpty = message?.isEmpty ?? true
+            post.publicizeMessage = isMessageEmpty ? nil : message
+
+        }, completion: { [weak self] in
+            self?.reloadData()
+        }, on: .main)
+    }
+
 }
