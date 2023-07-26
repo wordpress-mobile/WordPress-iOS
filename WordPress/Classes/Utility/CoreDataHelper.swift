@@ -468,7 +468,7 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
         self.objectID = objectID
     }
 
-    /// Create an `CoreDataObjectIdentifier` instance of an object that's yet saved.
+    /// Create an `CoreDataObjectIdentifier` instance of an object that's not yet saved.
     static func ofUnsaved<T: NSManagedObject>(_ object: T, type: T.Type = T.self) throws -> CoreDataObjectIdentifier<T> {
         precondition(object.isKind(of: type), "The object (\(object)) is not the given type \(type)")
 
