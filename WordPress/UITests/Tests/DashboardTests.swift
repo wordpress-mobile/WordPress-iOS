@@ -5,6 +5,12 @@ import XCTest
 class DashboardTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
+
+        try LoginFlow.loginWithoutSelectingSite(
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
+            email: WPUITestCredentials.testWPcomUserEmail,
+            password: WPUITestCredentials.testWPcomPassword
+        )
     }
 
     override func tearDownWithError() throws {
@@ -12,12 +18,8 @@ class DashboardTests: XCTestCase {
     }
 
     func testFreeToPaidCardNavigation() throws {
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomPaidSite,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword,
-            selectedSiteTitle: WPUITestCredentials.testWPcomFreeSite
-        )
+        try LoginEpilogueScreen()
+            .continueWithSelectedSite(title: WPUITestCredentials.testWPcomFreeSite)
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
@@ -28,11 +30,8 @@ class DashboardTests: XCTestCase {
     }
 
     func testPagesCardHeaderNavigation() throws {
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomPaidSite,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+        try LoginEpilogueScreen()
+            .continueWithSelectedSite(title: WPUITestCredentials.testWPcomPaidSite)
             .scrollToPagesCard()
             .verifyPagesCard()
             .verifyPagesCard(hasPage: "Blog")
@@ -46,11 +45,8 @@ class DashboardTests: XCTestCase {
     }
 
     func testActivityLogCardHeaderNavigation() throws {
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomPaidSite,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+        try LoginEpilogueScreen()
+            .continueWithSelectedSite(title: WPUITestCredentials.testWPcomPaidSite)
             .scrollToActivityLogCard()
             .verifyActivityLogCard()
             .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")
