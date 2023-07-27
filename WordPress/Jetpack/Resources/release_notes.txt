@@ -1,15 +1,5 @@
-* [*] [internal] Fix multiple memory leaks after logging in and logging out. [#21047, #21092]
-* [**] Block editor: Move undo/redo buttons to the navigation bar. [#20930]
-* [*] Fixed an issue that caused the UI to be briefly unresponsive in certain case when opening the app. [#21065]
-* [**] Blogging Prompts: Fixed a crash in Reader after tapping on a blogging prompt multiple times. [#21112]
-* [*] [internal] Update calls to use UserDefaults singleton. [#21088]
-* [*] Fix memory leaks in setting up Jetpack connection. [#21052]
-* [*] Fix a memory leak caused by the theme customization web view. [#21051]
-* [**] [internal] Updated the code that enables Gutenberg editor in all blogs when the user is in the Gutenberg rollout group. [#21146]
-* [**] [internal] Fix a few potential Core Data issues in Blogging Prompts & Reminders. [#21016]
-* [*] Made performance improvements for Posting Activity stats. [#21136]
-* [*] Fixed a crash that could occur when following sites in Reader. [#21140]
-* [*] Fixed a crash that could occur when the user deletes the WordPress app upon a successful migration. [#21167]
-* [*] Fixed a crash that occurs in Weekly Roundup Background task due to a Core Data Concurrency violation. [#21076]
-* [***] Block editor: Editor UX improvements with new icons, colors and additional design enhancements. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5985]
+We made some big changes to the block editor, including styles, colors, and icons. You’ll also find more buttons and block options in the header toolbar, including the undo and redo buttons. That’s right, you now have more tools than Batman’s utility belt.
 
+While we were at it, we plugged a few memory leaks, improved posting activity stats, and solved an issue where the app wouldn’t work for some users after opening.
+
+We also fixed several crashes caused by tapping blogging prompts, following sites in the Reader, and deleting the WordPress app after a successful migration.
