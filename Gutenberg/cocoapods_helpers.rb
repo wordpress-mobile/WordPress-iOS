@@ -2,9 +2,12 @@
 
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
+require 'json'
 require_relative './version'
 
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
+
+LOCAL_GUTENBERG_KEY = 'LOCAL_GUTENBERG'
 
 # Note that the pods in this array might seem unused if you look for
 # `import` statements in this codebase. However, make sure to also check
@@ -12,34 +15,6 @@ DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
 #
 # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
 DEPENDENCIES = %w[
-  FBLazyVector
-  React
-  ReactCommon
-  RCTRequired
-  RCTTypeSafety
-  React-Core
-  React-CoreModules
-  React-RCTActionSheet
-  React-RCTAnimation
-  React-RCTBlob
-  React-RCTImage
-  React-RCTLinking
-  React-RCTNetwork
-  React-RCTSettings
-  React-RCTText
-  React-RCTVibration
-  React-callinvoker
-  React-cxxreact
-  React-jsinspector
-  React-jsi
-  React-jsiexecutor
-  React-logger
-  React-perflogger
-  React-runtimeexecutor
-  boost
-  Yoga
-  RCT-Folly
-  glog
   react-native-safe-area
   react-native-safe-area-context
   react-native-video
@@ -55,23 +30,32 @@ DEPENDENCIES = %w[
   RNCMaskedView
   RNCClipboard
   RNFastImage
-  React-Codegen
-  React-bridging
 ].freeze
 
 def gutenberg_pod(config: GUTENBERG_CONFIG)
+  # We check local_gutenberg first because it should take precedence, being an override set by the user.
+  return gutenberg_local_pod if should_use_local_gutenberg
+
   options = config
 
-  local_gutenberg_key = 'LOCAL_GUTENBERG'
-  local_gutenberg = ENV.fetch(local_gutenberg_key, nil)
-  if local_gutenberg
-    options = { path: File.exist?(local_gutenberg) ? local_gutenberg : DEFAULT_GUTENBERG_LOCATION }
+  id = options[:tag] || options[:commit]
 
-    raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{local_gutenberg_key} environment variable." unless File.exist?(options[:path])
-  else
-    options[:git] = "https://github.com/#{GITHUB_ORG}/#{REPO_NAME}.git"
-    options[:submodules] = true
-  end
+  # Notice there's no period at the end of the message as CocoaPods will add it.
+  raise 'Neither tag nor commit to use for Gutenberg found' unless id
+
+  pod 'Gutenberg', podspec: "https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{id}.podspec"
+end
+
+def gutenberg_local_pod
+  options = { path: local_gutenberg_path }
+
+  raise "Could not find Gutenberg pod at #{options[:path]}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(options[:path])
+
+  puts "[Gutenberg] Installing pods using local Gutenberg version from #{local_gutenberg_path}"
+
+  react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
+
+  use_react_native! path: react_native_path
 
   pod 'Gutenberg', options
   pod 'RNTAztecView', options
@@ -80,20 +64,101 @@ def gutenberg_pod(config: GUTENBERG_CONFIG)
 end
 
 def gutenberg_dependencies(options:)
-  if options[:path]
-    podspec_prefix = options[:path]
-  else
-    tag_or_commit = options[:tag] || options[:commit]
-    podspec_prefix = "https://raw.githubusercontent.com/#{GITHUB_ORG}/#{REPO_NAME}/#{tag_or_commit}"
-  end
+  # When referencing via a tag or commit, we download pre-built frameworks.
+  return if options.key?(:tag) || options.key?(:commit)
+
+  podspec_prefix = options[:path]
+  gutenberg_path = options[:path]
+
+  raise "Unexpected Gutenberg dependencies configuration '#{options}'" if podspec_prefix.nil?
 
   podspec_prefix += '/third-party-podspecs'
   podspec_extension = 'podspec.json'
 
-  # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
-  pod 'FBReactNativeSpec', podspec: "#{podspec_prefix}/FBReactNativeSpec/FBReactNativeSpec.#{podspec_extension}"
+  computed_dependencies = DEPENDENCIES.dup
 
-  DEPENDENCIES.each do |pod_name|
+  react_native_version = react_native_version!(gutenberg_path: gutenberg_path)
+  # We need to apply a workaround for the RNReanimated library when using React Native 0.71+.
+  apply_rnreanimated_workaround!(dependencies: computed_dependencies, gutenberg_path: gutenberg_path) unless react_native_version[1] < 71
+
+  computed_dependencies.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
   end
+end
+
+def apply_rnreanimated_workaround!(dependencies:, gutenberg_path:)
+  # Use a custom RNReanimated version while we coordinate a fix upstream
+  dependencies.delete('RNReanimated')
+
+  # This is required to workaround an issue with RNReanimated after upgrading to version 2.17.0
+  rn_node_modules = File.join(gutenberg_path, '..', 'gutenberg', 'node_modules')
+  raise "Could not find node modules at given path #{rn_node_modules}" unless File.exist? rn_node_modules
+
+  ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
+  puts "[Gutenberg] Set REACT_NATIVE_NODE_MODULES_DIR env var for RNReanimated to #{rn_node_modules}"
+
+  pod 'RNReanimated', git: 'https://github.com/wordpress-mobile/react-native-reanimated', branch: 'wp-fork-2.17.0'
+end
+
+def gutenberg_post_install(installer:)
+  return unless should_use_local_gutenberg
+
+  raise "[Gutenberg] Could not find local Gutenberg at given path #{local_gutenberg_path}" unless File.exist?(local_gutenberg_path)
+
+  react_native_path = require_react_native_helpers!(gutenberg_path: local_gutenberg_path)
+
+  puts "[Gutenberg] Running Gutenberg post install hook (RN path: #{react_native_path})"
+
+  # It seems like React Native prepends $PWD to the path internally in the post install hook.
+  # To workaround, we make sure the path is relative to Dir.pwd
+  react_native_path = Pathname.new(react_native_path).relative_path_from(Dir.pwd)
+
+  react_native_post_install(installer, react_native_path)
+end
+
+private
+
+def should_use_local_gutenberg
+  value = ENV.fetch(LOCAL_GUTENBERG_KEY, nil)
+
+  return false if value.nil?
+
+  value
+end
+
+def local_gutenberg_path
+  local_gutenberg = ENV.fetch(LOCAL_GUTENBERG_KEY, nil)
+
+  return nil if local_gutenberg.nil?
+
+  return local_gutenberg if File.exist?(local_gutenberg)
+
+  DEFAULT_GUTENBERG_LOCATION
+end
+
+def require_react_native_helpers!(gutenberg_path:)
+  react_native_path = react_native_path!(gutenberg_path: gutenberg_path)
+
+  require_relative File.join(react_native_path, 'scripts', 'react_native_pods')
+
+  react_native_path
+end
+
+def react_native_path!(gutenberg_path:)
+  react_native_path = File.join(gutenberg_path, 'gutenberg', 'node_modules', 'react-native')
+
+  raise "[Gutenberg] Could not find React Native at given path #{react_native_path}" unless File.exist?(react_native_path)
+
+  react_native_path
+end
+
+def react_native_version!(gutenberg_path:)
+  react_native_path = react_native_path!(gutenberg_path: gutenberg_path)
+  package_json_path = File.join(react_native_path, 'package.json')
+  package_json_content = File.read(package_json_path)
+  package_json_version = JSON.parse(package_json_content)['version']
+
+  raise "[Gutenberg] Could not find React native version at #{react_native_path}" unless package_json_version
+
+  package_json_version.split('.').map(&:to_i)
 end
