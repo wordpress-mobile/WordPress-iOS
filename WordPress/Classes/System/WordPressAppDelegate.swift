@@ -91,6 +91,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         AppAppearance.overrideAppearance()
+        MemoryCache.shared.register()
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()

@@ -1,0 +1,1 @@
+Kami menonaktifkan pengingat blogging untuk situs yang dihosting sendiri dan tidak terhubung ke Jetpack karena fitur ini hanya tersedia di aplikasi Jetpack. Ringkas dan praktis.

@@ -124,6 +124,11 @@ final class BlogBuilder {
         return self
     }
 
+    func with(dotComID: Int) -> Self {
+        blog.dotComID = dotComID as NSNumber
+        return self
+    }
+
     func with(url: String) -> Self {
         blog.url = url
 
@@ -166,6 +171,18 @@ final class BlogBuilder {
 
     func with(isWPForTeamsSite: Bool) -> Self {
         return set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
+    }
+
+    func with(connections: Set<PublicizeConnection>) -> Self {
+        blog.connections = connections
+        return self
+    }
+
+    func with(capabilities: [Blog.Capability]) -> Self {
+        blog.capabilities = capabilities.reduce(into: [String: Bool]()) {
+            $0[$1.rawValue] = true
+        }
+        return self
     }
 
     @discardableResult

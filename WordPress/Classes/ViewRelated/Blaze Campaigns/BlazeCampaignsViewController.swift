@@ -241,7 +241,7 @@ extension BlazeCampaignsViewController: NoResultsViewControllerDelegate {
     }
 
     func actionButtonPressed() {
-        BlazeFlowCoordinator.presentBlaze(in: self, source: .campaignList, blog: blog)
+        buttonCreateCampaignTapped()
     }
 }
 

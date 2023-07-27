@@ -1,0 +1,1 @@
+Wir haben Blogging-Erinnerungen für selbst gehostete Websites, die nicht mit Jetpack verbunden sind, deaktiviert, da diese Funktion nur in der Jetpack-App verfügbar ist. Kurz und bündig.

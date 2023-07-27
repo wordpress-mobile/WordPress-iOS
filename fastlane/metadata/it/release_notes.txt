@@ -1,0 +1,1 @@
+Abbiamo disattivato i promemoria relativi al blog per i siti ospitati personalmente che non sono connessi a Jetpack, poiché questa funzionalità è disponibile solo nell'app Jetpack. Breve e gradevole.
