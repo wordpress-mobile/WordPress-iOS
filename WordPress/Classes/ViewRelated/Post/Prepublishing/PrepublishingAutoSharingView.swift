@@ -33,7 +33,7 @@ struct PrepublishingAutoSharingView: View {
                     .frame(width: 16.0, height: 16.0)
                     .padding(4.0)
             }
-            Text(String(format: Constants.remainingSharesTextFormat, sharingLimit.remaining, sharingLimit.limit))
+            Text(String(format: Constants.remainingSharesTextFormat, sharingLimit.remaining))
                 .font(.subheadline)
                 .foregroundColor(Color(showsWarning ? Constants.warningColor : .secondaryLabel))
         }
@@ -66,14 +66,13 @@ private extension PrepublishingAutoSharingView {
         static let warningColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade50))
 
         static let remainingSharesTextFormat = NSLocalizedString(
-            "prepublishing.social.remainingShares",
-            value: "%1$d/%2$d social shares remaining",
+            "prepublishing.social.remainingShares.text",
+            value: "%1$d social shares remaining",
             comment: """
                 A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
                 Informs the remaining limit for post auto-sharing.
                 %1$d is a placeholder for the remaining shares.
-                %2$d is a placeholder for the maximum shares allowed for the user's blog.
-                Example: 27/30 social shares remaining
+                Example: 27 social shares remaining
                 """
         )
     }
