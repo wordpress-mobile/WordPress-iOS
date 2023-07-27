@@ -117,9 +117,7 @@ public class BlockEditorScreen: ScreenObject {
     public func enterTextInTitle(text: String) -> BlockEditorScreen {
         let titleView = postTitleView.firstMatch // Uses a localized string
         XCTAssert(titleView.waitForExistence(timeout: 3), "Title View does not exist!")
-
-        titleView.tap()
-        titleView.typeText(text)
+        type(text: text, in: titleView)
 
         return self
     }
@@ -132,7 +130,7 @@ public class BlockEditorScreen: ScreenObject {
         addBlock("Paragraph block")
 
         let paragraphView = firstParagraphBlock.textViews.element(boundBy: 0)
-        paragraphView.typeText(text)
+        type(text: text, in: paragraphView)
 
         return self
     }
@@ -411,5 +409,45 @@ public class BlockEditorScreen: ScreenObject {
     public func closeBlockPicker() throws -> BlockEditorScreen {
         editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
         return try BlockEditorScreen()
+    }
+
+    // This could be moved as an XCUIApplication method via an extension if needed elsewhere.
+    private func type(text: String, in element: XCUIElement) {
+        // A simple implementation here would be:
+        //
+        // element.tap()
+        // element.typeText(text)
+        //
+        // But as of a recent (but not pinpointed at the time of writing) Gutenberg update, that is not enough.
+        // The test would fail with: Neither element nor any descendant has keyboard focus.
+        // (E.g.: https://buildkite.com/automattic/wordpress-ios/builds/15598)
+        //
+        // The following is a convoluted but seemingly robust approach that bypasses the keyboard by using the pasteboard instead.
+        UIPasteboard.general.string = text
+
+        // Safety check
+        XCTAssertTrue(element.waitForExistence(timeout: 1))
+
+        element.doubleTap()
+
+        let pasteButton = app.menuItems["Paste"]
+
+        if pasteButton.waitForExistence(timeout: 1) == false {
+            // Drill in hierarchy looking for it
+            var found = false
+            element.descendants(matching: .any).enumerated().forEach { e in
+                guard found == false else { return }
+
+                e.element.firstMatch.doubleTap()
+
+                if pasteButton.waitForExistence(timeout: 1) {
+                    found = true
+                }
+            }
+        }
+
+        XCTAssertTrue(pasteButton.exists, "Could not find menu item paste button.")
+
+        pasteButton.tap()
     }
 }
