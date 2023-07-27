@@ -45,9 +45,11 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v22.8-whats-new"
+msgctxt "v22.9-whats-new"
 msgid ""
-"We disabled blogging reminders for self-hosted sites that aren’t connected to Jetpack, since this feature is only available in the Jetpack app. Short and sweet.\n"
+"We made some big changes to the block editor, including styles, colors, and icons. You’ll also find more buttons and block options in the header toolbar, including the undo and redo buttons. That’s right, you now have more tools than Batman’s utility belt.\n"
+"\n"
+"While we were at it, we plugged a few memory leaks and solved an issue where the app wouldn’t work for some users after opening.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
