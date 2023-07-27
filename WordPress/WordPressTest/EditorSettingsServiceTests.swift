@@ -114,12 +114,14 @@ class EditorSettingsServiceTest: CoreDataTestCase {
             $0.mobileEditor = .gutenberg
         }
 
+        contextManager.saveContextAndWait(mainContext)
+
         service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
         remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
 
-        blogs.forEach {
-            XCTAssertFalse($0.isGutenbergEnabled)
-            XCTAssertEqual($0.editor, .aztec)
+        blogs.forEach { blog in
+            expect(blog.isGutenbergEnabled).toEventually(beFalse())
+            expect(blog.editor).toEventually(equal(.aztec))
         }
     }
 }

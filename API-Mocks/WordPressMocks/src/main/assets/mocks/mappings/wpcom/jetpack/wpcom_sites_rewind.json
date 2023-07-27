@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/wpcom/v2/sites/.*/rewind?.*"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "credentials": [
+        {
+          "still_valid": true,
+          "type": "managed",
+          "role": "main"
+        }
+      ],
+      "alerts": {
+        "threats": []
+      },
+      "state": "active",
+      "last_updated": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now offset='-2 hours' format=customformat}}",
+      "has_cloud": false
+    }
+  }
+}

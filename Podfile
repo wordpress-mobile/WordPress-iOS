@@ -42,7 +42,7 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.12.5'
+  pod 'WordPressUI', '~> 1.14'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
@@ -108,7 +108,7 @@ abstract_target 'Apps' do
   ## Third party libraries
   ## =====================
   ##
-  pod 'Gifu', '3.2.0'
+  pod 'Gifu', '3.3.1'
 
   app_center_version = '~> 4.1'
   app_center_configurations = %w[Release-Internal Release-Alpha]
@@ -149,7 +149,7 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 6.3.0-beta.1'
+  pod 'WordPressAuthenticator', '~> 6.3-beta'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'

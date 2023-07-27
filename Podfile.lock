@@ -30,7 +30,7 @@ PODS:
   - CropViewController (2.5.3)
   - Down (0.6.6)
   - FSInteractiveMap (0.1.0)
-  - Gifu (3.2.0)
+  - Gifu (3.3.1)
   - GoogleSignIn (6.0.2):
     - AppAuth (~> 1.4)
     - GTMAppAuth (~> 1.0)
@@ -90,12 +90,12 @@ PODS:
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Sentry (8.8.0):
-    - Sentry/Core (= 8.8.0)
-    - SentryPrivate (= 8.8.0)
-  - Sentry/Core (8.8.0):
-    - SentryPrivate (= 8.8.0)
-  - SentryPrivate (8.8.0)
+  - Sentry (8.9.2):
+    - Sentry/Core (= 8.9.2)
+    - SentryPrivate (= 8.9.2)
+  - Sentry/Core (8.9.2):
+    - SentryPrivate (= 8.9.2)
+  - SentryPrivate (8.9.2)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -104,7 +104,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (6.3.0-beta.1):
+  - WordPressAuthenticator (6.3.0):
     - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
@@ -119,7 +119,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
-  - WordPressUI (1.12.5)
+  - WordPressUI (1.14.0)
   - WPMediaPicker (1.8.8)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
-  - Gifu (= 3.2.0)
+  - Gifu (= 3.3.1)
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-77f2c68803c6b069c91932206b38e6f07da58570.podspec`)
   - JTAppleCalendar (~> 8.0.2)
@@ -164,10 +164,10 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 6.3.0-beta.1)
+  - WordPressAuthenticator (~> 6.3-beta)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
-  - WordPressUI (~> 1.12.5)
+  - WordPressUI (~> 1.14)
   - WPMediaPicker (~> 1.8.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -249,7 +249,7 @@ SPEC CHECKSUMS:
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
-  Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
+  Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
@@ -264,8 +264,8 @@ SPEC CHECKSUMS:
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Sentry: 927dfb29d18a14d924229a59cc2ad149f43349f2
-  SentryPrivate: 4350d865f898224ab9fa02b37d6ee7fbb623f47e
+  Sentry: 4fe92c018ba6ed61ce1fc652dd1ccac34505a4c6
+  SentryPrivate: b58fc25b3a0ac7e3d4ec229be63d583e3314a47a
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -273,10 +273,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: 453cb91432485204356c909271b02bfe7a409a50
+  WordPressAuthenticator: 9bfb316cb165e1997b73aa94d92fadc991cc9725
   WordPressKit: f6943a6e927e9f57bc8793938af1e3a4c3adb614
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
-  WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
+  WordPressUI: 09b5477f8678446f27e651cccb6b6401bd19d9a3
   WPMediaPicker: 0d40b8d66b6dfdaa2d6a41e3be51249ff5898775
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -288,6 +288,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: b995ca3ba695e70fd1f2f728800a419cf418f6ec
+PODFILE CHECKSUM: 7003683b2b7525f253b6f3bca7f16b039a352bae
 
 COCOAPODS: 1.12.1

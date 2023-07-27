@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-07-12 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-17 19:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.4 */
 /* Language: ar */
@@ -9736,11 +9736,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "الرد على %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "تسمح لنا ملفات تعريف الارتباط هذه بتحسين الأداء عن طريق جمع المعلومات حول كيفية تفاعل المستخدمين مع مواقعنا على الويب.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "حفظ";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "الانتقال إلى الإعدادات";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "نعالج بياناتك الشخصية لتحسين موقعنا على الويب وأنشطة التسويق استنادًا إلى موافقتك ومصلحتنا المشروعة.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "إدارة الخصوصية";
