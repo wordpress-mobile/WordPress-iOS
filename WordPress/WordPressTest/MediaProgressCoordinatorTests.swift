@@ -1,6 +1,23 @@
 import Foundation
 import XCTest
 
+extension Error {
+
+    static func testError(
+        description: String = "A test error",
+        domain: String = "org.wordpress.unit-tests",
+        code: Int = 1
+    ) -> NSError {
+        NSError(
+            domain: domain,
+            code: code,
+            userInfo: [
+                NSLocalizedDescriptionKey: description
+            ]
+        )
+    }
+}
+
 @testable import WordPress
 
 class MediaProgressCoordinatorTests: CoreDataTestCase {
@@ -9,10 +26,6 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
 
     fileprivate func makeTestMedia() -> Media {
         return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
-    }
-
-    fileprivate func makeTestError() -> NSError {
-        return NSError(domain: "org.wordpress.media-tests", code: 1, userInfo: nil)
     }
 
     override func setUp() {
@@ -146,7 +159,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // simulate a failed request
         progress.completedUnitCount = 0
 
-        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: .testError(), toMediaID: "1")
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
 
@@ -169,7 +182,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // Fail all the requests
         mediaProgressCoordinator.mediaInProgress.values.enumerated().forEach({ index, progress in
             progress.completedUnitCount = 0
-            mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "\(index+1)")
+            mediaProgressCoordinator.attach(error: .testError(), toMediaID: "\(index+1)")
         })
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
@@ -194,8 +207,8 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         mediaProgressCoordinator.mediaInProgress["1"]!.completedUnitCount = 0
         mediaProgressCoordinator.mediaInProgress["2"]!.completedUnitCount = 0
 
-        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "1")
-        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "2")
+        mediaProgressCoordinator.attach(error: .testError(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: .testError(), toMediaID: "2")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
 
