@@ -96,11 +96,10 @@ final class WPComJetpackRemoteInstallViewModelTests: CoreDataTestCase {
     func test_installJetpack_givenValidSite_AndRequestFails_shouldUpdateStateToFailure() {
         // arrange
         let blog = makeBlog(with: .selfHostedWithIndividualPluginViaWPCom)
-        let mockError = NSError(domain: "error.domain", code: 500)
 
         // act
         viewModel.installJetpack(for: blog, isRetry: false)
-        api.failureBlockPassedIn?(mockError, nil) // call the failure block to trigger Result.failure
+        api.failureBlockPassedIn?(NSError.testError(), nil) // call the failure block to trigger Result.failure
 
         // assert
         guard case .failure(let error) = viewModel.state else {

@@ -23,3 +23,15 @@ extension NSError {
         )
     }
 }
+
+extension Error {
+
+    static func testError(
+        description: String = "A test error",
+        domain: String = "org.wordpress.unit-tests",
+        code: Int = 1
+    ) -> Self {
+        // This would be discouraged if it wasn't for the facts that we know that NSError converts to Error.
+        NSError.testError(description: description, domain: domain, code: code) as! Self
+    }
+}

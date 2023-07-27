@@ -118,7 +118,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
         let context = contextManager.mainContext
         let blog = insertBlog(context)
 
-        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let testError = NSError.testError()
         let expect = expectation(description: "Delete Site failure expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
@@ -138,7 +138,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
 
         XCTAssertFalse(blogObjectID.isTemporaryID, "Should be a permanent object")
 
-        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let testError = NSError.testError()
         let expect = expectation(description: "Remove Blog success expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
@@ -181,7 +181,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
         let context = contextManager.mainContext
         let blog = insertBlog(context)
 
-        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let testError = NSError.testError()
         let expect = expectation(description: "ExportContent failure expectation")
         mockRemoteService.reset()
         siteManagementService.exportContentForBlog(blog,
@@ -221,7 +221,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
         let context = contextManager.mainContext
         let blog = insertBlog(context)
 
-        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let testError = NSError.testError()
         let expect = expectation(description: "GetActivePurchases failure expectation")
         mockRemoteService.reset()
         siteManagementService.getActivePurchasesForBlog(blog,

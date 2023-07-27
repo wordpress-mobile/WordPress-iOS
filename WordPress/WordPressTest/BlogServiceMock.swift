@@ -12,8 +12,7 @@ class BlogServiceMock: BlogService {
             success()
         }
         else {
-            let error = NSError(domain: "", code: 0)
-            failure(error)
+            failure(NSError.testError())
         }
 
     }
