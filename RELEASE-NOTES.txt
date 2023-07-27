@@ -1,6 +1,6 @@
 23.0
 -----
-
+* [**] [internal] Upgrade React Native to 0.71.11 [#20956]
 
 22.9
 -----
@@ -11,7 +11,6 @@
 * [*] [internal] Update calls to use UserDefaults singleton. [#21088]
 * [*] Fix memory leaks in setting up Jetpack connection. [#21052]
 * [*] Fix a memory leak caused by the theme customization web view. [#21051]
-* [**] [internal] Upgrade React Native to 0.71.11 [#20956]
 * [**] [internal] Updated the code that enables Gutenberg editor in all blogs when the user is in the Gutenberg rollout group. [#21146]
 * [**] [internal] Fix a few potential Core Data issues in Blogging Prompts & Reminders. [#21016]
 * [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
