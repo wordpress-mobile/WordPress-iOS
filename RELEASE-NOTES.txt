@@ -1,5 +1,6 @@
 23.0
 -----
+* [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
 * [**] [internal] Upgrade React Native to 0.71.11 [#20956]
 
 22.9
