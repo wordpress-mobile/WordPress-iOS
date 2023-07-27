@@ -534,7 +534,7 @@
               "help": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/help",
               "posts": "https://public-api.wordpress.com/rest/v1.2/sites/181977606/posts/",
               "comments": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/",
-              "xmlrpc": "https://jddteststore01.wordpress.com/xmlrpc.php"
+              "xmlrpc": "https://weekendbakesblog.wordpress.com/xmlrpc.php"
             }
           },
           "quota": {

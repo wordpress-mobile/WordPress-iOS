@@ -108,6 +108,10 @@ public class MySiteScreen: ScreenObject {
         $0.cells["People Row"]
     }
 
+    private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["notice_title_and_message"]
+    }
+
     var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
     var activityLogCard: XCUIElement { activityLogCardGetter(app) }
     var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
@@ -120,6 +124,7 @@ public class MySiteScreen: ScreenObject {
     var jetpackBackupButton: XCUIElement { jetpackBackupButtonGetter(app) }
     var jetpackScanButton: XCUIElement { jetpackScanButtonGetter(app) }
     var mediaButton: XCUIElement { mediaButtonGetter(app) }
+    var noticeTitle: XCUIElement { noticeTitleGetter(app) }
     var pagesCard: XCUIElement { pagesCardGetter(app) }
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
@@ -304,7 +309,15 @@ public class MySiteScreen: ScreenObject {
         return try ActivityLogScreen()
     }
 
-    func scrollToCard(withId id: String) {
+    @discardableResult
+    public func verifyCheckSiteTitleNoticeDisplayed(_ siteTitle: String) -> Self {
+        XCTAssertTrue(noticeTitle.exists)
+        XCTAssertTrue(noticeTitle.label.contains("Select \(siteTitle) to set a new title"), "Notice does not contain site title!")
+
+        return self
+    }
+
+    private func scrollToCard(withId id: String) {
         let collectionView = app.collectionViews.firstMatch
         let cardCell = collectionView.cells.containing(.any, identifier: id).firstMatch
         app.scrollDownToElement(element: cardCell)

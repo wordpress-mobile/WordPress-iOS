@@ -1,0 +1,70 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/rest/v1.1/sites/new",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.lang_id",
+        "equalTo": ".*"
+      },
+      {
+        "matchesJsonPath": "$.options.template",
+        "equalTo": "default"
+      },
+      {
+        "matchesJsonPath": "$.options.timezone_string",
+        "equalTo": ".*"
+      },
+      {
+        "matchesJsonPath": "$.options.site_information.site_tagline",
+        "equalTo": ""
+      },
+      {
+        "matchesJsonPath": "$.find_available_url",
+        "equalTo": false
+      },
+      {
+        "matchesJsonPath": "$.blog_title",
+        "equalTo": ""
+      },
+      {
+        "matchesJsonPath": "$.public",
+        "equalTo": 1
+      },
+      {
+        "matchesJsonPath": "$.client_secret",
+        "equalTo": ".*"
+      },
+      {
+        "matchesJsonPath": "$.validate",
+        "equalTo": true
+      },
+      {
+        "matchesJsonPath": "$.client_id",
+        "equalTo": ".*"
+      },
+      {
+        "matchesJsonPath": "$.blog_name",
+        "equalTo": ".*"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "success": true,
+      "blog_details": {
+        "url": "https://domainexample.blog/",
+        "blogid": "221670093",
+        "blogname": "NUX Test Site",
+        "xmlrpc": "https://domainexample.blog/xmlrpc.php",
+        "site_slug": "domainexample.blog"
+      }
+    }
+  }
+}
