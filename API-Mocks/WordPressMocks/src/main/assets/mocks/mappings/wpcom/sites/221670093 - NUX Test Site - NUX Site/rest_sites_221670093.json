@@ -12,7 +12,7 @@
     "status": 200,
     "jsonBody": {
       "ID": 221670093,
-      "name": "New NUX Site",
+      "name": "New Testing Site",
       "description": "Newly created site",
       "URL": "https://domainexample.blog",
       "user_can_manage": false,
