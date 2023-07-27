@@ -18,10 +18,10 @@ class NUXTests: XCTestCase {
         takeScreenshotOfFailedTest()
     }
 
-    let siteTitle = "New NUX Site"
+    let siteTitle = "New Testing Site"
     let domainName = "domainexample.blog"
 
-    func testNUXWithQuickStart() throws {
+    func testCreateNewSiteWithQuickStart() throws {
         try LoginEpilogueScreen()
             .tapCreateNewSite()
             .skipSiteTopicAndTheme()
