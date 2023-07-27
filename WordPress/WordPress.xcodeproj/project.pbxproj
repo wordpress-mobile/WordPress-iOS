@@ -18,6 +18,17 @@
 			name = GenerateCredentials;
 			productName = GenerateCredentials;
 		};
+		3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 3F47AC4D2A7206C000208F0D /* Build configuration list for PBXAggregateTarget "ConfigureSimulatorForUITesting" */;
+			buildPhases = (
+				3F47AC4E2A7206C900208F0D /* Set up Simulator */,
+			);
+			dependencies = (
+			);
+			name = ConfigureSimulatorForUITesting;
+			productName = ConfigureSimulatorForUITesting;
+		};
 		A2795807198819DE0031C6A3 /* OCLint */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = A279580C198819DE0031C6A3 /* Build configuration list for PBXAggregateTarget "OCLint" */;
@@ -5722,6 +5733,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 096A92F526E29FFF00448C68;
 			remoteInfo = GenerateCredentials;
+		};
+		3F47AC4F2A72074300208F0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F47AC482A7206BE00208F0D;
+			remoteInfo = ConfigureSimulatorForUITesting;
+		};
+		3F47AC512A72074800208F0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F47AC482A7206BE00208F0D;
+			remoteInfo = ConfigureSimulatorForUITesting;
 		};
 		3F526C5A2538CF2B0069706C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -18452,7 +18477,6 @@
 				37399571B0D91BBEAE911024 /* [CP] Embed Pods Frameworks */,
 				920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */,
 				E1C5456F219F10E000896227 /* Copy Gutenberg JS */,
-				3FF795712A6671DB00F27B17 /* Lint against nested frameworks */,
 			);
 			buildRules = (
 			);
@@ -18676,7 +18700,7 @@
 				E16AB92514D978240047A2E5 /* Sources */,
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
-				EB9D389F0D45EE518743B199 /* [CP] Embed Pods Frameworks */,
+				4CEE641DB5EC328B91BF3706 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -18699,11 +18723,11 @@
 				EA14532829AD874C001F3143 /* Sources */,
 				EA14533729AD874C001F3143 /* Frameworks */,
 				EA14533B29AD874C001F3143 /* Resources */,
-				EA14533C29AD874C001F3143 /* Set Up Simulator */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3F47AC502A72074300208F0D /* PBXTargetDependency */,
 				EA14534529AD877C001F3143 /* PBXTargetDependency */,
 			);
 			name = JetpackUITests;
@@ -18749,7 +18773,6 @@
 				FABB264A2602FC2C00C8785C /* [CP] Embed Pods Frameworks */,
 				FABB264B2602FC2C00C8785C /* [CP] Copy Pods Resources */,
 				FABB264C2602FC2C00C8785C /* Copy Gutenberg JS */,
-				3FF795732A66730200F27B17 /* Lint against nested frameworks */,
 			);
 			buildRules = (
 			);
@@ -18798,11 +18821,11 @@
 				FF27168B1CAAC87A0006E2D4 /* Sources */,
 				FF27168C1CAAC87A0006E2D4 /* Frameworks */,
 				FF27168D1CAAC87A0006E2D4 /* Resources */,
-				CC875D93233BCEC800595CC8 /* Set Up Simulator */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3F47AC522A72074800208F0D /* PBXTargetDependency */,
 				FF2716951CAAC87B0006E2D4 /* PBXTargetDependency */,
 			);
 			name = WordPressUITests;
@@ -18846,6 +18869,9 @@
 								enabled = 1;
 							};
 						};
+					};
+					3F47AC482A7206BE00208F0D = {
+						CreatedOnToolsVersion = 14.3.1;
 					};
 					3F526C4B2538CF2A0069706C = {
 						CreatedOnToolsVersion = 12.0.1;
@@ -19018,6 +19044,7 @@
 				0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */,
 				0107E13828FE9DB200DE87DB /* JetpackIntents */,
 				EA14532229AD874C001F3143 /* JetpackUITests */,
+				3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */,
 			);
 		};
 /* End PBXProject section */
@@ -20267,7 +20294,7 @@
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
-		3FF795712A6671DB00F27B17 /* Lint against nested frameworks */ = {
+		3F47AC4E2A7206C900208F0D /* Set up Simulator */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -20277,32 +20304,15 @@
 			);
 			inputPaths = (
 			);
-			name = "Lint against nested frameworks";
+			name = "Set up Simulator";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintNestedFrameworks.sh\"\n";
-		};
-		3FF795732A66730200F27B17 /* Lint against nested frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Lint against nested frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintNestedFrameworks.sh\"\n";
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/ConfigureSimulatorForUITesting.sh\n";
+			showEnvVarsInLog = 0;
 		};
 		4C304224F0F810A17D96A402 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -20330,6 +20340,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4CEE641DB5EC328B91BF3706 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4F4D5C2BB6478A3E90ADC3C5 /* [CP] Check Pods Manifest.lock */ = {
@@ -20602,24 +20632,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CC875D93233BCEC800595CC8 /* Set Up Simulator */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Set Up Simulator";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
-		};
 		CE51D1C75430FDDD21B27F64 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -20724,44 +20736,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.sh\"\n";
-		};
-		EA14533C29AD874C001F3143 /* Set Up Simulator */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Set Up Simulator";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
-		};
-		EB9D389F0D45EE518743B199 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -25880,6 +25854,16 @@
 			target = 096A92F526E29FFF00448C68 /* GenerateCredentials */;
 			targetProxy = 096A92FC26E2A0AE00448C68 /* PBXContainerItemProxy */;
 		};
+		3F47AC502A72074300208F0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */;
+			targetProxy = 3F47AC4F2A72074300208F0D /* PBXContainerItemProxy */;
+		};
+		3F47AC522A72074800208F0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */;
+			targetProxy = 3F47AC512A72074800208F0D /* PBXContainerItemProxy */;
+		};
 		3F526C5B2538CF2B0069706C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */;
@@ -26723,6 +26707,38 @@
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
+		};
+		3F47AC492A7206C000208F0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3F47AC4A2A7206C000208F0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3F47AC4B2A7206C000208F0D /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Internal";
+		};
+		3F47AC4C2A7206C000208F0D /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Alpha";
 		};
 		3F526C5D2538CF2C0069706C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -30536,6 +30552,17 @@
 				1D6058950D05DD3E006BFB54 /* Release */,
 				93DEAA9E182D567A004E34D1 /* Release-Internal */,
 				8546B4441BEAD39700193C07 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F47AC4D2A7206C000208F0D /* Build configuration list for PBXAggregateTarget "ConfigureSimulatorForUITesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F47AC492A7206C000208F0D /* Debug */,
+				3F47AC4A2A7206C000208F0D /* Release */,
+				3F47AC4B2A7206C000208F0D /* Release-Internal */,
+				3F47AC4C2A7206C000208F0D /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
