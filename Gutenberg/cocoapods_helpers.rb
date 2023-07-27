@@ -3,7 +3,7 @@
 # Helpers and configurations for integrating Gutenberg in Jetpack and WordPress via CocoaPods.
 
 require 'json'
-require_relative './version'
+require 'yaml'
 
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
 
@@ -32,13 +32,19 @@ DEPENDENCIES = %w[
   RNFastImage
 ].freeze
 
-def gutenberg_pod(config: GUTENBERG_CONFIG)
+def gutenberg_pod
   # We check local_gutenberg first because it should take precedence, being an override set by the user.
   return gutenberg_local_pod if should_use_local_gutenberg
 
-  options = config
+  gutenberg_config_path = File.join(__dir__, '..', 'Gutenberg', 'config.yml')
 
-  id = options[:tag] || options[:commit]
+  raise "Could not find config YAML at path #{gutenberg_config_path}" unless File.exist?(gutenberg_config_path)
+
+  config = YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+
+  raise 'Gutenberg config does not contain expected key :ref' if config[:ref].nil?
+
+  id = config[:ref][:tag] || config[:ref][:commit]
 
   # Notice there's no period at the end of the message as CocoaPods will add it.
   raise 'Neither tag nor commit to use for Gutenberg found' unless id
