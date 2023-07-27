@@ -6,7 +6,7 @@ class EditorGutenbergTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
@@ -32,7 +32,7 @@ class EditorGutenbergTests: XCTestCase {
             .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
             .publish()
             .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
     }
 
@@ -51,7 +51,7 @@ class EditorGutenbergTests: XCTestCase {
             .closePostSettings()
             .publish()
             .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
     }
 

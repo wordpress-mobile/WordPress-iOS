@@ -8,7 +8,7 @@ class EditorAztecTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
@@ -34,7 +34,7 @@ class EditorAztecTests: XCTestCase {
 //            .enterText(text: content)
 //            .publish()
 //            .viewPublishedPost(withTitle: title)
-//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPaidSite)
 //            .done()
 //    }
 //
@@ -59,7 +59,7 @@ class EditorAztecTests: XCTestCase {
 //            .closePostSettings()
 //        AztecEditorScreen(mode: .rich).publish()
 //            .viewPublishedPost(withTitle: title)
-//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPrimaryPaidSite)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPaidSite)
 //            .done()
 //    }
 //

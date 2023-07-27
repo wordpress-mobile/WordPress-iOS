@@ -13,10 +13,10 @@ class DashboardTests: XCTestCase {
 
     func testFreeToPaidCardNavigation() throws {
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword,
-            selectedSiteTitle: WPUITestCredentials.testWPcomSecondaryFreeSite
+            selectedSiteTitle: WPUITestCredentials.testWPcomFreeSite
         )
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
@@ -29,7 +29,7 @@ class DashboardTests: XCTestCase {
 
     func testPagesCardHeaderNavigation() throws {
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
@@ -47,7 +47,7 @@ class DashboardTests: XCTestCase {
 
     func testActivityLogCardHeaderNavigation() throws {
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
