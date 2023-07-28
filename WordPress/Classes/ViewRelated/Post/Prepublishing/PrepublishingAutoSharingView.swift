@@ -133,7 +133,7 @@ private extension PrepublishingAutoSharingModel {
         guard let remaining = sharingLimit?.remaining else {
             return false
         }
-        return enabledConnectionsCount > remaining
+        return totalConnectionsCount > remaining
     }
 
     var labelText: String {
