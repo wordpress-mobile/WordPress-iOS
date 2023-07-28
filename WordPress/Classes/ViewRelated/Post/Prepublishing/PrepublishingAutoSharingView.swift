@@ -56,8 +56,8 @@ struct PrepublishingAutoSharingView: View {
             if showsWarning {
                 Image("icon-warning")
                     .resizable()
-                    .padding(4.0)
                     .frame(width: warningIconLength, height: warningIconLength)
+                    .padding(4.0)
                     .accessibilityElement()
                     .accessibilityLabel(Constants.warningIconAccessibilityText)
             }
