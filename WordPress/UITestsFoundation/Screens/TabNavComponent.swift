@@ -39,7 +39,7 @@ public class TabNavComponent: ScreenObject {
         )
     }
 
-    // This method no longer return MeTabScreen because MeTabScreen is a pop up on top of MySiteScreen on iPad
+    // Removed the MeTabScreen return value because MeTabScreen is a modal on top of MySiteScreen on iPad
     // Returning it causes flakiness in CI as MySiteScreen is loaded first, making the test look for elements on MySiteScreen instead of MeTabScreen
     public func goToMeScreen() throws {
         try goToMySiteScreen()
