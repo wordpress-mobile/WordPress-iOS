@@ -1,6 +1,7 @@
 23.0
 -----
 * [**] [internal] Upgrade React Native to 0.71.11 [#20956]
+* [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
 
 22.9
 -----
