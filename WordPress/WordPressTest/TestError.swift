@@ -7,6 +7,16 @@ struct TestError: Error {
     }
 }
 
+// There must be a way to make this as an Error extension.
+// However, when I try to do so I get the following errors.
+//
+// Usage: .testError()
+// Error: Contextual member reference to static method 'testError(description:domain:code:)' requires 'Self' constraint in the protocol extension
+//
+// Usage: Error.testError()
+// Error: Static member 'testError' cannot be used on protocol metatype '(any Error).Type'
+//
+// In the meantime, we can call this via NSError.testError()
 extension NSError {
 
     static func testError(
