@@ -7,7 +7,7 @@ final class MenuNavigationTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
+            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
             password: WPUITestCredentials.testWPcomPassword
         )
