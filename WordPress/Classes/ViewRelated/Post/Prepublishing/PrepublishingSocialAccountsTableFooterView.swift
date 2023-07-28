@@ -50,7 +50,6 @@ struct PrepublishingSocialAccountsFooterView: View {
             Image("icon-warning")
                 .resizable()
                 .frame(width: warningIconLength, height: warningIconLength)
-                .padding(4.0)
         }
         .accessibilityLabel(showsWarning ? "\(Constants.warningIconAccessibilityText), \(sharesText)" : sharesText)
     }

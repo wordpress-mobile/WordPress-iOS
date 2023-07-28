@@ -36,7 +36,7 @@ struct PrepublishingAutoSharingView: View {
     }
 
     private var textStack: some View {
-        VStack(alignment: .leading, spacing: .zero) {
+        VStack(alignment: .leading, spacing: 2.0) {
             Text(model.labelText)
                 .font(.body)
                 .foregroundColor(Color(.label))
@@ -57,7 +57,6 @@ struct PrepublishingAutoSharingView: View {
                 Image("icon-warning")
                     .resizable()
                     .frame(width: warningIconLength, height: warningIconLength)
-                    .padding(4.0)
                     .accessibilityElement()
                     .accessibilityLabel(Constants.warningIconAccessibilityText)
             }
