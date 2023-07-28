@@ -7,9 +7,7 @@ class DashboardTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.loginWithoutSelectingSite(
-            siteUrl: WPUITestCredentials.testWPcomPaidSite,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
+            email: WPUITestCredentials.testWPcomUserEmail
         )
     }
 

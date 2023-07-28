@@ -35,7 +35,7 @@ class LoginFlow {
 
     // Login without selecting site
     @discardableResult
-    static func loginWithoutSelectingSite(siteUrl: String, email: String, password: String) throws -> LoginEpilogueScreen {
+    static func loginWithoutSelectingSite(email: String) throws -> LoginEpilogueScreen {
         return try PrologueScreen()
             .selectContinue()
             .proceedWith(email: email)
