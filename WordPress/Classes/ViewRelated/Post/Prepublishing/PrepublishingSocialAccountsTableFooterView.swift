@@ -26,33 +26,33 @@ class PrepublishingSocialAccountsTableFooterView: UITableViewHeaderFooterView, R
 struct PrepublishingSocialAccountsFooterView: View {
 
     @State var remaining: Int
+
     @State var showsWarning: Bool
+
+    @ScaledMetric(relativeTo: .callout) private var warningIconSize = 16.0
+
     var onButtonTap: (() -> Void)?
 
     var body: some View {
         VStack(spacing: 16.0) {
-            remainingSharesText
+            remainingSharesLabel
             subscribeButton
         }
         .padding(EdgeInsets(top: 24.0, leading: 0, bottom: 0, trailing: 0))
     }
 
-    var remainingSharesText: some View {
-        HStack(alignment: .top, spacing: 6.0) {
-            if showsWarning {
-                Image("icon-warning")
-                    .resizable()
-                    .frame(width: 16.0, height: 16.0)
-                    .padding(2.0)
-                    .accessibilityElement()
-                    .accessibilityLabel(Constants.warningIconAccessibilityText)
-            }
-            Text(String(format: Constants.remainingSharesLabelTextFormat, remaining))
+    var remainingSharesLabel: some View {
+        Label {
+            Text(sharesText)
                 .font(.callout)
                 .foregroundColor(Color(showsWarning ? Constants.warningColor : .label))
+        } icon: {
+            Image("icon-warning")
+                .resizable()
+                .frame(width: warningIconSize, height: warningIconSize)
+                .padding(4.0)
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isStaticText)
+        .accessibilityLabel(showsWarning ? "\(Constants.warningIconAccessibilityText), \(sharesText)" : sharesText)
     }
 
     var subscribeButton: some View {
@@ -64,6 +64,10 @@ struct PrepublishingSocialAccountsFooterView: View {
                 .frame(maxWidth: .infinity) // needs to be set here to make the button stretch full-width.
         }
         .buttonStyle(SubscribeButtonStyle())
+    }
+
+    private var sharesText: String {
+        String(format: Constants.remainingSharesLabelTextFormat, remaining)
     }
 
     private struct SubscribeButtonStyle: ButtonStyle {
