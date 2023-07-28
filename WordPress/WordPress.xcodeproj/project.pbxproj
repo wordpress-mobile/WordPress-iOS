@@ -365,6 +365,10 @@
 		0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
+		0C2C83FA2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
+		0C2C83FB2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
+		0C2C83FD2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
+		0C2C83FE2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
 		0C35FFF129CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */; };
 		0C35FFF229CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */; };
 		0C35FFF429CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */; };
@@ -6142,6 +6146,8 @@
 		0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+Comparable.swift"; sourceTree = "<group>"; };
 		0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelMock.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
+		0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodCache.swift; sourceTree = "<group>"; };
+		0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInsightsCache.swift; sourceTree = "<group>"; };
 		0C35FFF029CB81F700D224EB /* BlogDashboardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardHelpers.swift; sourceTree = "<group>"; };
 		0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModelTests.swift; sourceTree = "<group>"; };
 		0C35FFF529CBB5DE00D224EB /* BlogDashboardEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardEmptyStateCell.swift; sourceTree = "<group>"; };
@@ -16875,7 +16881,9 @@
 				E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */,
 				40ADB15420686870009A9161 /* PluginStore+Persistence.swift */,
 				98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */,
+				0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */,
 				984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */,
+				0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */,
 				9A4A8F4A235758EF00088CE4 /* StatsStore+Cache.swift */,
 				E1CB6DA2200F376400945457 /* TimeZoneStore.swift */,
 				9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */,
@@ -21565,6 +21573,7 @@
 				4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */,
 				731E88C921C9A10B0055C014 /* ErrorStateViewConfiguration.swift in Sources */,
 				17C3FA6F25E591D200EFFE12 /* UIFont+Weight.swift in Sources */,
+				0C2C83FD2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */,
 				73E4E376227A033A0007D752 /* PostChart.swift in Sources */,
 				4631359124AD013F0017E65C /* PageCoordinator.swift in Sources */,
 				43290D04215C28D800F6B398 /* Blog+QuickStart.swift in Sources */,
@@ -22395,6 +22404,7 @@
 				400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */,
 				9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */,
 				B06378C1253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift in Sources */,
+				0C2C83FA2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */,
 				4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */,
 				FE32F002275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
@@ -24361,6 +24371,7 @@
 				FABB220C2602FC2C00C8785C /* Blog.m in Sources */,
 				FABB220D2602FC2C00C8785C /* JetpackRemoteInstallStateView.swift in Sources */,
 				F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */,
+				0C2C83FB2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */,
 				FABB220E2602FC2C00C8785C /* PublishSettingsViewController.swift in Sources */,
 				FABB220F2602FC2C00C8785C /* MediaHost+AbstractPost.swift in Sources */,
 				FABB22102602FC2C00C8785C /* PageTemplateCategory+CoreDataProperties.swift in Sources */,
@@ -25133,6 +25144,7 @@
 				FABB24462602FC2C00C8785C /* BaseRestoreStatusViewController.swift in Sources */,
 				FABB24472602FC2C00C8785C /* SignupEpilogueTableViewController.swift in Sources */,
 				FABB24482602FC2C00C8785C /* MyProfileViewController.swift in Sources */,
+				0C2C83FE2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */,
 				FAD7626529F1480E00C09583 /* DashboardActivityLogCardCell+ActivityPresenter.swift in Sources */,
 				3FE3D1FF26A6F56700F3CD10 /* Comment+Interface.swift in Sources */,
 				FABB24492602FC2C00C8785C /* CreateButtonActionSheet.swift in Sources */,
