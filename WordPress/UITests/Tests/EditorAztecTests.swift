@@ -8,9 +8,7 @@ class EditorAztecTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomPaidSite,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
+            email: WPUITestCredentials.testWPcomUserEmail
         )
         try EditorFlow
             .toggleBlockEditor(to: .off)
