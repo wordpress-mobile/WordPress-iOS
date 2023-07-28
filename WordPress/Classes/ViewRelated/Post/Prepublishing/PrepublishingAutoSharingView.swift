@@ -6,9 +6,9 @@ struct PrepublishingAutoSharingView: View {
 
     @SwiftUI.Environment(\.sizeCategory) private var sizeCategory
 
-    @ScaledMetric(relativeTo: .subheadline) private var warningIconSize = 16.0
+    @ScaledMetric(relativeTo: .subheadline) private var warningIconLength = 16.0
 
-    @ScaledMetric(relativeTo: .body) private var imageSize = 28.0
+    @ScaledMetric(relativeTo: .body) private var imageLength = 28.0
 
     var body: some View {
         Group {
@@ -28,7 +28,7 @@ struct PrepublishingAutoSharingView: View {
             textStack
             if model.services.count > 0 {
                 if !shouldStackContentVertically {
-                    Spacer() // to push the icons to the trailing side in horizontal layout.
+                    Spacer(minLength: .zero) // to push the icons to the trailing side in horizontal layout.
                 }
                 socialIconsView
             }
@@ -57,7 +57,7 @@ struct PrepublishingAutoSharingView: View {
                 Image("icon-warning")
                     .resizable()
                     .padding(4.0)
-                    .frame(width: warningIconSize, height: warningIconSize)
+                    .frame(width: warningIconLength, height: warningIconLength)
                     .accessibilityElement()
                     .accessibilityLabel(Constants.warningIconAccessibilityText)
             }
@@ -76,7 +76,7 @@ struct PrepublishingAutoSharingView: View {
     private func iconImage(_ uiImage: UIImage, opaque: Bool) -> some View {
         Image(uiImage: uiImage)
             .resizable()
-            .frame(width: imageSize, height: imageSize)
+            .frame(width: imageLength, height: imageLength)
             .opacity(opaque ? 1.0 : Constants.disabledSocialIconOpacity)
             .background(Color(.listForeground))
             .clipShape(Circle())

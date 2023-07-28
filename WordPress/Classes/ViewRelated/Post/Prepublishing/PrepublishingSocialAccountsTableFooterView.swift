@@ -29,7 +29,7 @@ struct PrepublishingSocialAccountsFooterView: View {
 
     @State var showsWarning: Bool
 
-    @ScaledMetric(relativeTo: .callout) private var warningIconSize = 16.0
+    @ScaledMetric(relativeTo: .callout) private var warningIconLength = 16.0
 
     var onButtonTap: (() -> Void)?
 
@@ -49,7 +49,7 @@ struct PrepublishingSocialAccountsFooterView: View {
         } icon: {
             Image("icon-warning")
                 .resizable()
-                .frame(width: warningIconSize, height: warningIconSize)
+                .frame(width: warningIconLength, height: warningIconLength)
                 .padding(4.0)
         }
         .accessibilityLabel(showsWarning ? "\(Constants.warningIconAccessibilityText), \(sharesText)" : sharesText)
