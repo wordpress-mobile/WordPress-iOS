@@ -11555,7 +11555,7 @@
 			path = Badge;
 			sourceTree = "<group>";
 		};
-		3F662C4824DC9F8300CAEA95 /* What's New */ = {
+		3F662C4824DC9F8300CAEA95 /* WhatsNew */ = {
 			isa = PBXGroup;
 			children = (
 				3F6A7E90251BC1C4005B6A61 /* Dependency container */,
@@ -11563,7 +11563,7 @@
 				3F8CBE1224EF958700F71234 /* Presenter */,
 				3F3087C024EDB6900087B548 /* Views */,
 			);
-			path = "What's New";
+			path = WhatsNew;
 			sourceTree = "<group>";
 		};
 		3F6A7E90251BC1C4005B6A61 /* Dependency container */ = {
@@ -13663,7 +13663,7 @@
 				B53AD9B31BE9560F009AB87E /* Tools */,
 				987E79C9261F8857000192B7 /* User Profile Sheet */,
 				031662E60FFB14C60045D052 /* Views */,
-				3F662C4824DC9F8300CAEA95 /* What's New */,
+				3F662C4824DC9F8300CAEA95 /* WhatsNew */,
 				D86572182186C36E0023A99C /* Wizards */,
 			);
 			path = ViewRelated;
