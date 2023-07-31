@@ -48,8 +48,8 @@ extension LoginEpilogueUserInfo {
 
     /// Updates the Epilogue properties, given a SocialService instance.
     ///
-    mutating func update(with service: SocialService) {
-        fullName = service.user.fullName
-        email = service.user.email
+    mutating func update(with socialUser: SocialUser) {
+        fullName = socialUser.fullName
+        email = socialUser.email
     }
 }

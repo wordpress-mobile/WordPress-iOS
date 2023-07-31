@@ -10,7 +10,7 @@ class SignupEpilogueViewController: UIViewController {
     // MARK: - Public Properties
 
     var credentials: AuthenticatorCredentials?
-    var socialService: SocialService?
+    var socialUser: SocialUser?
 
     /// Closure to be executed upon tapping the continue button.
     ///
@@ -72,7 +72,7 @@ class SignupEpilogueViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
         if let vc = segue.destination as? SignupEpilogueTableViewController {
             vc.credentials = credentials
-            vc.socialService = socialService
+            vc.socialUser = socialUser
             vc.dataSource = self
             vc.delegate = self
         }
@@ -301,10 +301,11 @@ private extension SignupEpilogueViewController {
 
     func tracksProperties() -> [AnyHashable: Any] {
         let source: String = {
-            guard let service = socialService else {
+            guard let socialUser else {
                 return "email"
             }
-            switch service {
+
+            switch socialUser.service {
             case .google:
                 return "google"
             case .apple:
