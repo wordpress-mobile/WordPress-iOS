@@ -6,18 +6,31 @@ import SwiftSyntax
 import System
 
 private let appModuleName = "WordPress"
-private let performQueryUSR = "s:So13CoreDataStackP9WordPressE12performQueryyqd__qd__So22NSManagedObjectContextCclF"
 
 func analyzePerformQueryReturnType(indexStore: IndexStoreDB, compilerInvocations: [String: [[String]]]) async throws -> [Violation] {
+    // These APIs all have a closure as their first argument, which is hard-coded in the analyzing code (the `extractCandidate` function specifically).
+    let coreDataAPIUSRs = [
+        // performQuery(_:)
+        "s:So13CoreDataStackP9WordPressE12performQueryyqd__qd__So22NSManagedObjectContextCclF",
+        // performAndSave(_:completion:on:)
+        "s:9WordPress18CoreDataStackSwiftP14performAndSave_10completion2onyqd__So22NSManagedObjectContextCc_yqd__cSgSo17OS_dispatch_queueCtlF",
+        // performAndSave(_:completion:on:) the throwing version
+        "s:9WordPress18CoreDataStackSwiftP14performAndSave_10completion2onyqd__So22NSManagedObjectContextCKc_ys6ResultOyqd__s5Error_pGcSgSo17OS_dispatch_queueCtlF",
+        // performAndSave(_:completion:on:) the async version
+        "s:9WordPress18CoreDataStackSwiftP14performAndSaveyqd__qd__So22NSManagedObjectContextCKcYaKlF",
+    ]
+
     var violations = [Violation]()
-    for occurence in indexStore.occurrences(ofUSR: performQueryUSR, roles: .call) {
-        let location = occurence.location
-        let problematicReturnType = try await analyze(
-            location: location,
-            compilerArguments: compilerInvocations[location.path, default: [[]]].first ?? []
-        )
-        if let problematicReturnType {
-            violations.append(Violation(message: "It's unsafe to return \(problematicReturnType) from performQuery", file: URL(fileURLWithPath: location.path), line: location.line, column: location.utf8Column))
+    for usr in coreDataAPIUSRs {
+        for occurence in indexStore.occurrences(ofUSR: usr, roles: .call) {
+            let location = occurence.location
+            let problematicReturnType = try await analyze(
+                location: location,
+                compilerArguments: compilerInvocations[location.path, default: [[]]].first ?? []
+            )
+            if let problematicReturnType {
+                violations.append(Violation(message: "It's unsafe to return \(problematicReturnType) from \(occurence.symbol.name)", file: URL(fileURLWithPath: location.path), line: location.line, column: location.utf8Column))
+            }
         }
     }
     return violations
@@ -26,7 +39,7 @@ func analyzePerformQueryReturnType(indexStore: IndexStoreDB, compilerInvocations
 private func analyze(location: SymbolLocation, compilerArguments: [String]) async throws -> String? {
     print("performQuery is called at \(location)")
 
-    let resolvedTypename = try await extractCandidateFromPerformQuery(location: location, compilerArguments: compilerArguments)
+    let resolvedTypename = try await extractCandidate(location: location, compilerArguments: compilerArguments)
     print("Its return type is \(resolvedTypename)")
 
     let visitor = TypeIdentifierVisitor(viewMode: .sourceAccurate)
@@ -42,7 +55,8 @@ private func analyze(location: SymbolLocation, compilerArguments: [String]) asyn
     }
 
     for typename in typenames {
-        if try await isManagedObject(typename: typename, usedIn: FilePath(location.path), compilerArguments: compilerArguments) {
+        if try await isManagedObject(typename: typename, usedAt: location, compilerArguments: compilerArguments) {
+            print("❌ \(typename) is a NSManagedObject")
             return resolvedTypename
         }
     }
@@ -50,7 +64,7 @@ private func analyze(location: SymbolLocation, compilerArguments: [String]) asyn
     return nil
 }
 
-private func extractCandidateFromPerformQuery(location: SymbolLocation, compilerArguments: [String]) async throws -> String {
+private func extractCandidate(location: SymbolLocation, compilerArguments: [String]) async throws -> String {
     let expression = try await expressionType(location: location, compilerArguments: compilerArguments)
     let closure = try getFunctionArgumentType(at: 1, function: expression)
     return try getFunctionReturnType(function: closure)
@@ -170,40 +184,33 @@ private class TypeIdentifierVisitor: SyntaxVisitor {
     }
 }
 
-private func isManagedObject(typename: String, moduleName: String? = nil, usedIn file: FilePath, compilerArguments: [String]) async throws -> Bool {
+private func isManagedObject(typename: String, moduleName: String? = nil, usedAt location : SymbolLocation, compilerArguments: [String]) async throws -> Bool {
     let fileManager = FileManager.default
     let tempFile = fileManager.temporaryDirectory.appendingPathComponent("temp.swift")
-    try? fileManager.removeItem(at: tempFile)
-    try fileManager.copyItem(at: URL(filePath: file)!, to: tempFile)
+    var tempFileContent = try String(contentsOfFile: location.path)
 
-    var newCode = [String]()
     if let moduleName, moduleName.starts(with: "_") == false, moduleName != appModuleName {
-        newCode.append("import \(moduleName)")
+        tempFileContent = tempFileContent.inserting("import \(moduleName)", atLine: 1)
     }
-    let typeCheckLine = "func injected_function() { var object: \(typename)? = nil }"
-    let typeColumn = typeCheckLine.range(of: typename)!.upperBound.utf16Offset(in: typeCheckLine)
-    newCode.append(typeCheckLine)
-    let fileHandle = try FileHandle(forUpdating: tempFile)
-    try fileHandle.seekToEnd()
-    try fileHandle.write(contentsOf: newCode.joined(separator: "\n").data(using: .utf8)!)
-    try fileHandle.close()
 
-    var totalLines: Int64 = 0
-    try String(contentsOf: tempFile).enumerateLines { line, _ in
-        totalLines += 1
-    }
+
+    let typeCheckCode = "let __injected_variable: \(typename)? = nil"
+    let typenameLine = location.line + 1
+    let typenameColumn = typeCheckCode.range(of: typename)!.upperBound.utf16Offset(in: typeCheckCode)
+    tempFileContent = tempFileContent.inserting(typeCheckCode, atLine: typenameLine)
+
+    try tempFileContent.write(to: tempFile, atomically: true, encoding: .utf8)
+    let typenameOffset = StringView(tempFileContent).byteOffset(forLine: Int64(typenameLine), bytePosition: Int64(typenameColumn))!
 
     let newArgs = compilerArguments.map({ arg in
-        if arg == file.string {
+        if arg == location.path {
             return tempFile.path
         } else {
             return arg
         }
     })
 
-    let offset = try StringView(String(contentsOf: tempFile)).byteOffset(forLine: totalLines, bytePosition: Int64(typeColumn))!
-
-    let response = try await Request.cursorInfo(file: tempFile.path, offset: offset, arguments: newArgs).asyncSend()
+    let response = try await Request.cursorInfo(file: tempFile.path, offset: typenameOffset, arguments: newArgs).asyncSend()
     try response.ensureSourceKitSuccessfulReponse()
 
     let kind: String = try response.get("key.kind")
@@ -224,7 +231,7 @@ private func isManagedObject(typename: String, moduleName: String? = nil, usedIn
     case "MainActor": return false
     default:
         let moduleName: String = try response.get("key.modulename")
-        return try await isManagedObject(typename: superTypename, moduleName: moduleName, usedIn: file, compilerArguments: compilerArguments)
+        return try await isManagedObject(typename: superTypename, moduleName: moduleName, usedAt: location, compilerArguments: compilerArguments)
     }
 }
 
@@ -242,5 +249,18 @@ private class SuperclassXMLParserDelegate: NSObject, XMLParserDelegate {
         if parsingRefClass, superTypename == nil {
             superTypename = string
         }
+    }
+}
+
+extension String {
+    func inserting(_ string: String, atLine line: Int) -> String {
+        precondition(line > 0)
+
+        var allLines = [String]()
+        self.enumerateLines { line, _ in
+            allLines.append(line)
+        }
+        allLines.insert(string, at: line - 1)
+        return allLines.joined(separator: "\n")
     }
 }
