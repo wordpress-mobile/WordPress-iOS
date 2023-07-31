@@ -6,11 +6,7 @@ class NUXTests: XCTestCase {
         try super.setUpWithError()
         setUpTestSuite()
 
-        try PrologueScreen()
-            .selectSiteAddress()
-            .proceedWithWordPress(siteUrl: WPUITestCredentials.testWPcomSiteAddress)
-            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWithValidPassword()
+        try LoginFlow.loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDownWithError() throws {

@@ -17,7 +17,7 @@ class DashboardTests: XCTestCase {
 
     func testFreeToPaidCardNavigation() throws {
         try LoginEpilogueScreen()
-            .continueWithSelectedSite(title: WPUITestCredentials.testWPcomFreeSite)
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomFreeSite)
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
@@ -29,7 +29,7 @@ class DashboardTests: XCTestCase {
 
     func testPagesCardHeaderNavigation() throws {
         try LoginEpilogueScreen()
-            .continueWithSelectedSite(title: WPUITestCredentials.testWPcomPaidSite)
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
             .scrollToPagesCard()
             .verifyPagesCard()
             .verifyPagesCard(hasPage: "Blog")
@@ -44,7 +44,7 @@ class DashboardTests: XCTestCase {
 
     func testActivityLogCardHeaderNavigation() throws {
         try LoginEpilogueScreen()
-            .continueWithSelectedSite(title: WPUITestCredentials.testWPcomPaidSite)
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
             .scrollToActivityLogCard()
             .verifyActivityLogCard()
             .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")

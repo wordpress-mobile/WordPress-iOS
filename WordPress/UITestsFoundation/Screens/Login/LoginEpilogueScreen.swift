@@ -57,8 +57,8 @@ public class LoginEpilogueScreen: ScreenObject {
         )
     }
 
-    public func continueWithSelectedSite(title: String? = nil) throws -> MySiteScreen {
-        if let title = title {
+    public func continueWithSelectedSite(_ siteAddress: String? = nil) throws -> MySiteScreen {
+        if let title = siteAddress {
             let selectedSite = loginEpilogueTable.cells[title]
             selectedSite.tap()
         } else {

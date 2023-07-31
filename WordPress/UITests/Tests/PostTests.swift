@@ -7,10 +7,8 @@ class PostTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomPaidSite,
             email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword,
-            selectedSiteTitle: WPUITestCredentials.testWPcomSiteForScheduledPost
+            siteAddress: WPUITestCredentials.testWPcomSiteForScheduledPost
         )
 
         try TabNavComponent()

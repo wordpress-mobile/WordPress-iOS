@@ -21,17 +21,17 @@ public class LoginSiteAddressScreen: ScreenObject {
         )
     }
 
-    public func proceedWith(siteUrl: String) throws -> LoginUsernamePasswordScreen {
+    public func proceedWith(siteAddress: String) throws -> LoginUsernamePasswordScreen {
         siteAddressTextField.tap()
-        siteAddressTextField.typeText(siteUrl)
+        siteAddressTextField.typeText(siteAddress)
         siteAddressNextButton.tap()
 
         return try LoginUsernamePasswordScreen()
     }
 
-    public func proceedWithWordPress(siteUrl: String) throws -> GetStartedScreen {
+    public func proceedWithWordPress(_ siteAddress: String) throws -> GetStartedScreen {
         siteAddressTextField.tap()
-        siteAddressTextField.typeText(siteUrl)
+        siteAddressTextField.typeText(siteAddress)
         siteAddressNextButton.tap()
 
         return try GetStartedScreen()
