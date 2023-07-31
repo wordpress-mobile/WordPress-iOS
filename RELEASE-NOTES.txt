@@ -3,6 +3,7 @@
 * [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
 * [**] [internal] Upgrade React Native to 0.71.11 [#20956]
 * [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
+* [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
 
 22.9
 -----
