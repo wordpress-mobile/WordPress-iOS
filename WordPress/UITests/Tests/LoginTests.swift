@@ -26,6 +26,7 @@ class LoginTests: XCTestCase {
             .dismissNotificationAlertIfNeeded()
         try TabNavComponent()
             .goToMeScreen()
+        try MeTabScreen()
             .logoutToPrologue()
             .assertScreenIsLoaded()
     }
@@ -44,6 +45,7 @@ class LoginTests: XCTestCase {
             .dismissNotificationAlertIfNeeded()
         try TabNavComponent()
             .goToMeScreen()
+        try MeTabScreen()
             .logout()
             .assertScreenIsLoaded()
     }
