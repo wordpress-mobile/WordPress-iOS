@@ -6,9 +6,8 @@ class DashboardTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.loginWithoutSelectingSite(
-            email: WPUITestCredentials.testWPcomUserEmail
-        )
+        try LoginFlow
+            .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDownWithError() throws {

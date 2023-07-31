@@ -4,6 +4,7 @@ import XCTest
 class StatsTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
+
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
             .goToMenu()
