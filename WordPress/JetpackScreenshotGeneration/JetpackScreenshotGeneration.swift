@@ -23,9 +23,7 @@ class JetpackScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail,
-                            password: WPUITestCredentials.testWPcomPassword,
-                            selectedSiteTitle: "weekendbakesblog.wordpress.com")
+        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDown() {
