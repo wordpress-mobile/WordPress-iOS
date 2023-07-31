@@ -1,6 +1,8 @@
 23.0
 -----
-
+* [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
+* [**] [internal] Upgrade React Native to 0.71.11 [#20956]
+* [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
 
 22.9
 -----

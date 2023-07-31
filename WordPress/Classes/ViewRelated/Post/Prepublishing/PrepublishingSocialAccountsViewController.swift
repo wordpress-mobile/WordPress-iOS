@@ -1,5 +1,12 @@
 import WordPressUI
 
+protocol PrepublishingSocialAccountsDelegate: NSObjectProtocol {
+
+    func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?)
+
+    func didFinish(with connectionChanges: [Int: Bool], message: String?)
+}
+
 class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
@@ -8,22 +15,27 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     private let service: BlogService
 
+    private weak var delegate: PrepublishingSocialAccountsDelegate?
+
     private let blogID: Int
 
-    private var connections: [Connection]
+    private let connections: [Connection]
+
+    private let originalMessage: String
+
+    private var connectionChanges = [Int: Bool]()
 
     private var sharingLimit: PublicizeInfo.SharingLimit? {
         didSet {
             toggleInteractivityIfNeeded()
             tableView.reloadData()
-            // TODO: Inform changes to the prepublishing VC.
+            delegate?.didUpdateSharingLimit(with: sharingLimit)
         }
     }
 
     private var shareMessage: String {
         didSet {
             messageCell.detailTextLabel?.text = shareMessage
-            // TODO: Inform changes to the prepublishing VC.
         }
     }
 
@@ -73,6 +85,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     init(blogID: Int,
          model: PrepublishingAutoSharingModel,
+         delegate: PrepublishingSocialAccountsDelegate?,
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          blogService: BlogService? = nil) {
         self.blogID = blogID
@@ -81,8 +94,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
                 .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
             }
         }
-        self.shareMessage = model.message
+        self.originalMessage = model.message
+        self.shareMessage = originalMessage
         self.sharingLimit = model.sharingLimit
+        self.delegate = delegate
         self.coreDataStack = coreDataStack
         self.service = blogService ?? BlogService(coreDataStack: coreDataStack)
         self.canInteractWithDisabledConnections = model.enabledConnectionsCount < (sharingLimit?.remaining ?? .max)
@@ -118,6 +133,14 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
             presentedVC?.transition(to: traitCollection.verticalSizeClass == .compact ? .expanded : .collapsed)
         }
     }
+
+    deinit {
+        // only call the delegate method if the user has made some changes.
+        if hasChanges {
+            delegate?.didFinish(with: connectionChanges, message: shareMessage)
+        }
+    }
+
 }
 
 // MARK: - UITableView
@@ -168,15 +191,23 @@ extension PrepublishingSocialAccountsViewController {
 private extension PrepublishingSocialAccountsViewController {
 
     var enabledCount: Int {
-        connections.filter { $0.isOn }.count
+        connections
+            .filter { connectionChanges[$0.keyringID] ?? $0.isOn }
+            .count
     }
 
     var indexPathsForDisabledConnections: [IndexPath] {
-        connections.indexed().compactMap { $1.isOn ? nil : IndexPath(row: $0, section: .zero) }
+        connections.indexed().compactMap { index, _ in
+            valueForConnection(at: index) ? nil : IndexPath(row: index, section: .zero)
+        }
     }
 
     var shouldDisplayWarning: Bool {
         connections.count >= (sharingLimit?.remaining ?? .max)
+    }
+
+    var hasChanges: Bool {
+        !connectionChanges.isEmpty || shareMessage != originalMessage
     }
 
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
@@ -189,12 +220,12 @@ private extension PrepublishingSocialAccountsViewController {
         cell.textLabel?.numberOfLines = 1
         cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.imageView?.image = connection.imageForCell
-        cell.on = connection.isOn
+        cell.on = valueForConnection(at: indexPath.row)
         cell.onChange = { [weak self] newValue in
-            self?.updateConnection(at: indexPath.row, enabled: newValue)
+            self?.updateConnection(at: indexPath.row, value: newValue)
         }
 
-        let isInteractionAllowed = connection.isOn || canInteractWithDisabledConnections
+        let isInteractionAllowed = cell.on || canInteractWithDisabledConnections
         isInteractionAllowed ? cell.enable() : cell.disable()
         cell.imageView?.alpha = isInteractionAllowed ? 1.0 : Constants.disabledCellImageOpacity
 
@@ -203,18 +234,28 @@ private extension PrepublishingSocialAccountsViewController {
         return cell
     }
 
-    func updateConnection(at index: Int, enabled: Bool) {
-        guard index < connections.count else {
+    func valueForConnection(at index: Int) -> Bool {
+        guard let connection = connections[safe: index] else {
+            return false
+        }
+        return connectionChanges[connection.keyringID] ?? connection.isOn
+    }
+
+    func updateConnection(at index: Int, value: Bool) {
+        guard let connection = connections[safe: index] else {
             return
         }
 
-        // directly mutate the value to avoid copy-on-write.
-        connections[index].isOn = enabled
+        let originalValue = connection.isOn
+
+        if value == originalValue {
+            connectionChanges.removeValue(forKey: connection.keyringID)
+        } else {
+            connectionChanges[connection.keyringID] = value
+        }
+
         lastToggledRow = index
-
         toggleInteractivityIfNeeded()
-
-        // TODO: Inform changes to the prepublishing VC.
     }
 
     func toggleInteractivityIfNeeded() {
@@ -293,7 +334,7 @@ private extension PrepublishingSocialAccountsViewController {
         let service: PublicizeService.ServiceName
         let account: String
         let keyringID: Int
-        var isOn: Bool
+        let isOn: Bool
 
         lazy var imageForCell: UIImage = {
             service.localIconImage.resizedImage(with: .scaleAspectFit,

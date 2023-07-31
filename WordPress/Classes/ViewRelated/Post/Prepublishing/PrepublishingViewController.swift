@@ -269,7 +269,8 @@ class PrepublishingViewController: UITableViewController {
         }
     }
 
-    private func reloadData() {
+    func reloadData() {
+        refreshOptions()
         tableView.reloadData()
     }
 

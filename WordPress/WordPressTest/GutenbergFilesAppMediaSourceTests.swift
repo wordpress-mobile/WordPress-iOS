@@ -1,5 +1,5 @@
 import XCTest
-@testable import Gutenberg
+import Gutenberg
 @testable import WordPress
 
 final class GutenbergFilesAppMediaSourceTests: XCTestCase {
