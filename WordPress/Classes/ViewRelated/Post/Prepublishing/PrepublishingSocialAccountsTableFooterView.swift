@@ -47,9 +47,11 @@ struct PrepublishingSocialAccountsFooterView: View {
                 .font(.callout)
                 .foregroundColor(Color(showsWarning ? Constants.warningColor : .label))
         } icon: {
-            Image("icon-warning")
-                .resizable()
-                .frame(width: warningIconLength, height: warningIconLength)
+            if showsWarning {
+                Image("icon-warning")
+                    .resizable()
+                    .frame(width: warningIconLength, height: warningIconLength)
+            }
         }
         .accessibilityLabel(showsWarning ? "\(Constants.warningIconAccessibilityText), \(sharesText)" : sharesText)
     }
