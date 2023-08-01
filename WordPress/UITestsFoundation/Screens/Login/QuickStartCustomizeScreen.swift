@@ -41,13 +41,13 @@ public class QuickStartCustomizeScreen: ScreenObject {
         )
     }
 
-    public func verifyCustomizeSiteListDisplayed() -> Self {
-        XCTAssertTrue(customizeSiteHeader.waitForExistence(timeout: 10))
-        XCTAssertTrue(createSiteLabel.exists)
-        XCTAssertTrue(checkSiteTitleLabel.exists)
-        XCTAssertTrue(chooseSiteIconLabel.exists)
-        XCTAssertTrue(reviewSitePagesLabel.exists)
-        XCTAssertTrue(viewSiteLabel.exists)
+    public func verifyCustomizeSiteListDisplayed(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(customizeSiteHeader.waitForExistence(timeout: 10), file: file, line: line)
+        XCTAssertTrue(createSiteLabel.exists, file: file, line: line)
+        XCTAssertTrue(checkSiteTitleLabel.exists, file: file, line: line)
+        XCTAssertTrue(chooseSiteIconLabel.exists, file: file, line: line)
+        XCTAssertTrue(reviewSitePagesLabel.exists, file: file, line: line)
+        XCTAssertTrue(viewSiteLabel.exists, file: file, line: line)
 
         return self
     }

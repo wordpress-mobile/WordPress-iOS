@@ -10,8 +10,8 @@ class NUXTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        try super.tearDownWithError()
         takeScreenshotOfFailedTest()
+        try super.tearDownWithError()
     }
 
     let siteTitle = "New Testing Site"

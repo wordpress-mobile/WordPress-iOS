@@ -311,8 +311,8 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyCheckSiteTitleNoticeDisplayed(_ siteTitle: String) -> Self {
-        XCTAssertTrue(noticeTitle.exists)
+    public func verifyCheckSiteTitleNoticeDisplayed(_ siteTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(noticeTitle.exists, file: file, line: line)
         XCTAssertTrue(noticeTitle.label.contains("Select \(siteTitle) to set a new title"), "Notice does not contain site title!")
 
         return self
