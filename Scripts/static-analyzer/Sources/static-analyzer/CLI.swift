@@ -39,7 +39,7 @@ struct MainCommand: AsyncParsableCommand {
     }
 
     private func createIndexStoreDB() throws -> IndexStoreDB {
-        let path = try AbsolutePath(validating: derivedDataPath)
+        let path = try AbsolutePath(validating: derivedDataPath, relativeTo: AbsolutePath(validating: FileManager.default.currentDirectoryPath))
         let storePath = path.appending(components: ["Index.noindex", "DataStore"])
         let databasePath = path.appending(components: ["sa-index-store.db"])
 
