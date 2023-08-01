@@ -1,7 +1,6 @@
 import ArgumentParser
 import Foundation
 import IndexStoreDB
-import System
 import TSCBasic
 
 @main
@@ -40,9 +39,9 @@ struct MainCommand: AsyncParsableCommand {
     }
 
     private func createIndexStoreDB() throws -> IndexStoreDB {
-        let path = FilePath.resolveAbsolutePath(derivedDataPath)
-        let storePath = path.appending("Index.noindex/DataStore")
-        let databasePath = path.appending("sa-index-store.db/")
+        let path = try AbsolutePath(validating: derivedDataPath)
+        let storePath = path.appending(components: ["Index.noindex", "DataStore"])
+        let databasePath = path.appending(components: ["sa-index-store.db"])
 
         let process = TSCBasic.Process(args: "/usr/bin/xcrun", "--find", "swift")
         try process.launch()
@@ -51,8 +50,8 @@ struct MainCommand: AsyncParsableCommand {
         let lib = try IndexStoreLibrary(dylibPath: libPath.pathString)
 
         return try IndexStoreDB(
-            storePath: storePath.string,
-            databasePath: databasePath.string,
+            storePath: storePath.pathString,
+            databasePath: databasePath.pathString,
             library: lib,
             waitUntilDoneInitializing: true,
             listenToUnitEvents: false
@@ -68,22 +67,5 @@ struct Violation: CustomStringConvertible {
 
     var description: String {
         "\(message). \(file.path):\(line):\(column)"
-    }
-}
-
-extension FilePath {
-    static func resolveAbsolutePath(_ path: String) -> FilePath {
-        if path.hasPrefix("/") {
-            return FilePath(path)
-        }
-
-        return path
-            .split(separator: "/")
-            .reduce(into: FilePath(FileManager.default.currentDirectoryPath)) { filePath, comp in
-                if let component = FilePath.Component(String(comp)) {
-                    filePath.append(component)
-                }
-            }
-            .lexicallyNormalized()
     }
 }
