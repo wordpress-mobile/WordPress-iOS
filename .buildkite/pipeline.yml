@@ -15,15 +15,15 @@ common_params:
 steps:
 
   #################
-  # Create Prototype Builds for WP and JP
+  # Create Builds for Testing
   #################
-  - group: "🛠 Prototype Builds"
+  - group: "🛠 Builds for Testing"
     steps:
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
+      - label: "🛠 :jetpack: Build for Testing"
+        key: "build_jetpack"
+        command: ".buildkite/commands/build-for-testing.sh jetpack"
         env: *common_env
         plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
         notify:
           - github_commit_status:
-              context: "Jetpack Prototype Build"
+              context: "Jetpack Build for Testing"

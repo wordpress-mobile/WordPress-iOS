@@ -29,3 +29,10 @@ bundle exec fastlane build_${APP}_for_testing
 echo "--- :arrow_up: Upload Build Products"
 tar -cf build-products-${APP}.tar DerivedData/Build/Products/
 upload_artifact build-products-${APP}.tar
+
+echo "--- :swift: Build static-analyzer"
+cd Scripts/static-analyzer
+swift build
+
+echo "--- :swift: Run static-analyzer"
+swift run --skip-build static-analyzer --derived-data-path ../../DerivedData --xcodebuild-log-path /Users/builder/Library/Logs/scan/Jetpack-Jetpack.log
