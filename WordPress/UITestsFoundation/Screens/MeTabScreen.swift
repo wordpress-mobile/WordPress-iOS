@@ -44,7 +44,7 @@ public class MeTabScreen: ScreenObject {
     var myProfileButton: XCUIElement { myProfileButtonGetter(app) }
     var notificationSettingsButton: XCUIElement { notificationSettingsButtonGetter(app) }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ appSettingsButtonGetter ],
             app: app
