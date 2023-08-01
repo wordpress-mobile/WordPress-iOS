@@ -17,3 +17,11 @@ install_swiftpm_dependencies
 
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane build_and_upload_jetpack_prototype_build
+
+cd Scripts/static-analyzer
+
+echo "--- :swift: Build static-analyzer"
+swift build
+
+echo "--- :swift: Run static-analyzer"
+swift run static-analyzer --derived-data-path ../../DerivedData --xcodebuild-log-path /Users/builder/Library/Logs/gym/Jetpack-Jetpack.log
