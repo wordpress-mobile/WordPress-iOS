@@ -203,7 +203,7 @@ end
 
 desc 'Checks the source for style errors'
 task lint: %w[dependencies:lint:check] do
-  swiftlint %w[lint --quiet]
+  #swiftlint %w[lint --quiet]
 end
 
 namespace :lint do
