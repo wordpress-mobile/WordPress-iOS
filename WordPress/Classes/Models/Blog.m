@@ -63,7 +63,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic roles;
 @dynamic currentThemeId;
 @dynamic lastPostsSync;
-@dynamic lastStatsSync;
 @dynamic lastPagesSync;
 @dynamic lastCommentsSync;
 @dynamic lastUpdateWarning;
