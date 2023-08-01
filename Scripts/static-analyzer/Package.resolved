@@ -5,7 +5,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/indexstore-db",
       "state" : {
-        "branch" : "release/5.8",
+        "branch" : "swift-5.8-RELEASE",
         "revision" : "6caa12ab3bb6245eee4e09dce7677e64720c6545"
       }
     },
@@ -34,6 +34,24 @@
       "state" : {
         "revision" : "cd793adf5680e138bf2bcbaacc292490175d0dcd",
         "version" : "508.0.0"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system.git",
+      "state" : {
+        "revision" : "836bc4557b74fe6d2660218d56e3ce96aff76574",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-tools-support-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-tools-support-core.git",
+      "state" : {
+        "revision" : "93784c59434dbca8e8a9e4b700d0d6d94551da6a",
+        "version" : "0.5.2"
       }
     },
     {
