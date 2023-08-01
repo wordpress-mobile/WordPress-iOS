@@ -384,45 +384,4 @@ extension CoreDataStack {
 /// }
 /// ```
 extension CoreDataStack {
-    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
-    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T where T: NSManagedObject {
-        mainContext.performAndWait { [mainContext] in
-            block(mainContext)
-        }
-    }
-
-    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
-    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T?) -> T? where T: NSManagedObject {
-        mainContext.performAndWait { [mainContext] in
-            block(mainContext)
-        }
-    }
-
-    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
-    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T where T: Sequence, T.Element: NSManagedObject {
-        mainContext.performAndWait { [mainContext] in
-            block(mainContext)
-        }
-    }
-
-    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
-    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T?) -> T? where T: Sequence, T.Element: NSManagedObject {
-        mainContext.performAndWait { [mainContext] in
-            block(mainContext)
-        }
-    }
-
-    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
-    func performQuery<T, E>(_ block: @escaping (NSManagedObjectContext) -> Result<T, E>) -> Result<T, E> where T: NSManagedObject, E: Error {
-        mainContext.performAndWait { [mainContext] in
-            block(mainContext)
-        }
-    }
-
-    @available(*, deprecated, message: "Returning `NSManagedObject` instances may introduce Core Data concurrency issues.")
-    func performQuery<T, E>(_ block: @escaping (NSManagedObjectContext) -> Result<T, E>?) -> Result<T, E>? where T: NSManagedObject, E: Error {
-        mainContext.performAndWait { [mainContext] in
-            block(mainContext)
-        }
-    }
 }

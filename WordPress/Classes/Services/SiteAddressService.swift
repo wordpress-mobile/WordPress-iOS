@@ -72,9 +72,12 @@ final class DomainsServiceAdapter: SiteAddressService {
     // MARK: LocalCoreDataService
 
     @objc convenience init(coreDataStack: CoreDataStack) {
-        let api: WordPressComRestApi = coreDataStack.performQuery({
-                (try? WPAccount.lookupDefaultWordPressComAccount(in: $0))?.wordPressComRestApi
-            }) ?? WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
+        let account: WPAccount? = coreDataStack.performQuery({
+            (try? WPAccount.lookupDefaultWordPressComAccount(in: $0))
+        })
+
+        let api: WordPressComRestApi = account?.wordPressComRestApi
+            ?? WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
 
         self.init(coreDataStack: coreDataStack, api: api)
     }
