@@ -91,7 +91,7 @@ def apply_rnreanimated_workaround!(dependencies:, gutenberg_path:)
   dependencies.delete('RNReanimated')
 
   # This is required to workaround an issue with RNReanimated after upgrading to version 2.17.0
-  rn_node_modules = File.join(gutenberg_path, '..', 'gutenberg', 'node_modules')
+  rn_node_modules = File.join(gutenberg_path, 'gutenberg', 'node_modules')
   raise "Could not find node modules at given path #{rn_node_modules}" unless File.exist? rn_node_modules
 
   ENV['REACT_NATIVE_NODE_MODULES_DIR'] = rn_node_modules
