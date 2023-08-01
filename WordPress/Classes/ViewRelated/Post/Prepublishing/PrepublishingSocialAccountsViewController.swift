@@ -111,6 +111,9 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         title = Constants.navigationTitle
 
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Constants.accountCellIdentifier)
+
+        // setting a custom spacer view will override the default 34pt padding from the grouped table view style.
+        tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: Constants.tableTopPadding))
     }
 
     override func viewDidLayoutSubviews() {
@@ -350,6 +353,7 @@ private extension PrepublishingSocialAccountsViewController {
         static let disabledCellImageOpacity = 0.36
         static let cellImageSize = CGSize(width: 28.0, height: 28.0)
 
+        static let tableTopPadding: CGFloat = 16.0
         static let minContentHeight: CGFloat = 300.0
         static let defaultBottomInset: CGFloat = 34.0
         static let additionalBottomInset: CGFloat = 16.0
