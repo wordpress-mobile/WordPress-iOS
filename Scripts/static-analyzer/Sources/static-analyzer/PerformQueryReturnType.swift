@@ -235,23 +235,6 @@ private func isManagedObject(typename: String, moduleName: String? = nil, usedAt
     }
 }
 
-
-private class SuperclassXMLParserDelegate: NSObject, XMLParserDelegate {
-    var superTypename: String?
-
-    var parsingRefClass = false
-
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        parsingRefClass = elementName == "ref.class"
-    }
-
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-        if parsingRefClass, superTypename == nil {
-            superTypename = string
-        }
-    }
-}
-
 extension String {
     func inserting(_ string: String, atLine line: Int) -> String {
         precondition(line > 0)
