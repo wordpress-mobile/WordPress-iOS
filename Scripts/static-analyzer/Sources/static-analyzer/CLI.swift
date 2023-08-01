@@ -2,6 +2,7 @@ import ArgumentParser
 import Foundation
 import IndexStoreDB
 import System
+import TSCBasic
 
 @main
 struct MainCommand: AsyncParsableCommand {
@@ -42,7 +43,12 @@ struct MainCommand: AsyncParsableCommand {
         let path = FilePath.resolveAbsolutePath(derivedDataPath)
         let storePath = path.appending("Index.noindex/DataStore")
         let databasePath = path.appending("sa-index-store.db/")
-        let lib = try IndexStoreLibrary(dylibPath: "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libIndexStore.dylib")
+
+        let process = TSCBasic.Process(args: "/usr/bin/xcrun", "--find", "swift")
+        try process.launch()
+        let result = try process.waitUntilExit()
+        let libPath = try AbsolutePath(validating: "../../lib/libIndexStore.dylib", relativeTo: AbsolutePath(validating: result.utf8Output()))
+        let lib = try IndexStoreLibrary(dylibPath: libPath.pathString)
 
         return try IndexStoreDB(
             storePath: storePath.string,
