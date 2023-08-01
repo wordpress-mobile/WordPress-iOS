@@ -117,9 +117,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         super.viewDidLayoutSubviews()
 
         // manually configure preferredContentSize for precise drawer sizing.
-        let safeBottomInset = UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? Constants.defaultBottomInset
+        let bottomInset = max(UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? 0, Constants.defaultBottomInset)
+        let contentHeight = tableView.contentSize.height + bottomInset + Constants.additionalBottomInset
         preferredContentSize = CGSize(width: tableView.contentSize.width,
-                                      height: tableView.contentSize.height + safeBottomInset + 16.0)
+                                      height: max(contentHeight, Constants.minContentHeight))
         onContentHeightUpdated?()
     }
 
@@ -349,7 +350,9 @@ private extension PrepublishingSocialAccountsViewController {
         static let disabledCellImageOpacity = 0.36
         static let cellImageSize = CGSize(width: 28.0, height: 28.0)
 
+        static let minContentHeight: CGFloat = 300.0
         static let defaultBottomInset: CGFloat = 34.0
+        static let additionalBottomInset: CGFloat = 16.0
 
         static let accountCellIdentifier = "AccountCell"
         static let messageCellIdentifier = "MessageCell"

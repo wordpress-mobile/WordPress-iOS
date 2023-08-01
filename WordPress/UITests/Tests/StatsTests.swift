@@ -4,11 +4,9 @@ import XCTest
 class StatsTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+
+        try LoginFlow
+            .login(email: WPUITestCredentials.testWPcomUserEmail)
             .goToMenu()
             .goToStatsScreen()
             .switchTo(mode: "insights")

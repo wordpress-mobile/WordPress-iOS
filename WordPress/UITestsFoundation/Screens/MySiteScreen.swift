@@ -200,6 +200,7 @@ public class MySiteScreen: ScreenObject {
         return try ActionSheetComponent()
     }
 
+    @discardableResult
     public func goToHomeScreen() -> Self {
         homeButton.tap()
         return self

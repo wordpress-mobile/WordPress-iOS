@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 152
+
+ @kean 2023-07-28
+
+ -  Remove the following stats-related entities: `AllTimeStatsRecordValue` ,`AnnualAndMostPopularTimeStatsRecordValue` ,`ClicksStatsRecordValue` ,`CountryStatsRecordValue` ,`FileDownloadsStatsRecordValue` ,`FollowersCountStatsRecordValue` ,`FollowersStatsRecordValue` ,`LastPostStatsRecordValue` ,`OtherAndTotalViewsCount` ,`PublicizeConnectionStatsRecordValue` ,`ReferrerStatsRecordValue` ,`SearchResultsStatsRecordValue` ,`StatsRecord` ,`StatsRecordValue` ,`StreakInsightStatsRecordValue` ,`StreakStatsRecordValue` ,`TagsCategoriesStatsRecordValue` ,`TodayStatsRecordValue` ,`TopCommentedPostStatsRecordValue` ,`TopCommentsAuthorStatsRecordValue` ,`TopViewedAuthorStatsRecordValue` ,`TopViewedPostStatsRecordValue` ,`TopViewedVideoStatsRecordValue` ,`VisitsSummaryStatsRecordValue`.
+ - Remove `statsRecords` and `lastStatsSync` from `Blog`
+
 ## WordPress 151
 
 @dvdchr 2023-06-28

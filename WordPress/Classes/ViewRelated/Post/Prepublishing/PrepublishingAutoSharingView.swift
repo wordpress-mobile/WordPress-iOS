@@ -4,39 +4,64 @@ struct PrepublishingAutoSharingView: View {
 
     let model: PrepublishingAutoSharingModel
 
+    @SwiftUI.Environment(\.sizeCategory) private var sizeCategory
+
+    @ScaledMetric(relativeTo: .subheadline) private var warningIconLength = 16.0
+
+    @ScaledMetric(relativeTo: .body) private var imageLength = 28.0
+
     var body: some View {
-        HStack {
+        Group {
+            if shouldStackContentVertically {
+                VStack(alignment: .leading, spacing: 8.0) { content }
+            } else {
+                HStack { content }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+    }
+
+    private var content: some View {
+        Group {
             textStack
-            Spacer()
             if model.services.count > 0 {
+                if !shouldStackContentVertically {
+                    Spacer(minLength: .zero) // to push the icons to the trailing side in horizontal layout.
+                }
                 socialIconsView
             }
         }
     }
 
     private var textStack: some View {
-        VStack(alignment: .leading, spacing: .zero) {
+        VStack(alignment: .leading, spacing: 2.0) {
             Text(model.labelText)
                 .font(.body)
                 .foregroundColor(Color(.label))
-            if let sharingLimit = model.sharingLimit {
-                remainingSharesView(sharingLimit: sharingLimit, showsWarning: model.showsWarning)
+            if let text = model.remainingSharesText {
+                remainingSharesLabel(text: text, showsWarning: model.showsWarning)
             }
         }
     }
 
-    private func remainingSharesView(sharingLimit: PublicizeInfo.SharingLimit, showsWarning: Bool) -> some View {
-        HStack(spacing: 4.0) {
+    @ViewBuilder
+    private func remainingSharesLabel(text: String, showsWarning: Bool) -> some View {
+        Label {
+            Text(text)
+                .font(.subheadline)
+                .foregroundColor(Color(showsWarning ? Constants.warningColor : .secondaryLabel))
+        } icon: {
             if showsWarning {
                 Image("icon-warning")
                     .resizable()
-                    .frame(width: 16.0, height: 16.0)
-                    .padding(4.0)
+                    .frame(width: warningIconLength, height: warningIconLength)
+                    .accessibilityElement()
+                    .accessibilityLabel(Constants.warningIconAccessibilityText)
             }
-            Text(String(format: Constants.remainingSharesTextFormat, sharingLimit.remaining, sharingLimit.limit))
-                .font(.subheadline)
-                .foregroundColor(Color(showsWarning ? Constants.warningColor : .secondaryLabel))
         }
+        .accessibilityLabel(showsWarning ? "\(Constants.warningIconAccessibilityText), \(text)" : text)
     }
 
     private var socialIconsView: some View {
@@ -50,7 +75,7 @@ struct PrepublishingAutoSharingView: View {
     private func iconImage(_ uiImage: UIImage, opaque: Bool) -> some View {
         Image(uiImage: uiImage)
             .resizable()
-            .frame(width: 28.0, height: 28.0)
+            .frame(width: imageLength, height: imageLength)
             .opacity(opaque ? 1.0 : Constants.disabledSocialIconOpacity)
             .background(Color(.listForeground))
             .clipShape(Circle())
@@ -61,20 +86,19 @@ struct PrepublishingAutoSharingView: View {
 
 private extension PrepublishingAutoSharingView {
 
+    var shouldStackContentVertically: Bool {
+        (model.services.count > Constants.maxServicesForHorizontalLayout) || sizeCategory.isAccessibilityCategory
+    }
+
     enum Constants {
+        static let maxServicesForHorizontalLayout = 3
         static let disabledSocialIconOpacity: CGFloat = 0.36
         static let warningColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade50))
 
-        static let remainingSharesTextFormat = NSLocalizedString(
-            "prepublishing.social.remainingShares",
-            value: "%1$d/%2$d social shares remaining",
-            comment: """
-                A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-                Informs the remaining limit for post auto-sharing.
-                %1$d is a placeholder for the remaining shares.
-                %2$d is a placeholder for the maximum shares allowed for the user's blog.
-                Example: 27/30 social shares remaining
-                """
+        static let warningIconAccessibilityText = NSLocalizedString(
+            "prepublishing.social.warningIcon.accessibilityHint",
+            value: "Warning",
+            comment: "a VoiceOver description for the warning icon to hint that the remaining shares are low."
         )
     }
 }
@@ -108,7 +132,7 @@ private extension PrepublishingAutoSharingModel {
         guard let remaining = sharingLimit?.remaining else {
             return false
         }
-        return enabledConnectionsCount > remaining
+        return totalConnectionsCount > remaining
     }
 
     var labelText: String {
@@ -135,6 +159,14 @@ private extension PrepublishingAutoSharingModel {
         default:
             return String()
         }
+    }
+
+    var remainingSharesText: String? {
+        guard let remaining = sharingLimit?.remaining else {
+            return nil
+        }
+
+        return String(format: Strings.remainingSharesTextFormat, remaining)
     }
 
     enum Strings {
@@ -179,6 +211,17 @@ private extension PrepublishingAutoSharingModel {
                 %1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
                 %2$d is a placeholder for the total number of social media accounts connected to the user's blog.
                 Example: Sharing to 2 of 3 accounts
+                """
+        )
+
+        static let remainingSharesTextFormat = NSLocalizedString(
+            "prepublishing.social.remainingShares.format",
+            value: "%1$d social shares remaining",
+            comment: """
+                A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+                Informs the remaining limit for post auto-sharing.
+                %1$d is a placeholder for the remaining shares.
+                Example: 27 social shares remaining
                 """
         )
     }

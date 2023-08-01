@@ -21,8 +21,8 @@ class MediaThumbnailCoordinator: NSObject {
     /// Tries to generate a thumbnail for the specified media object with the size requested
     ///
     /// - Parameters:
-    ///   - media: the media object to generate the thumbnail representation
-    ///   - size: the size of the thumbnail
+    ///   - media: The media object to generate the thumbnail representation.
+    ///   - size: The size of the thumbnail in pixels.
     ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
     @objc func thumbnail(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
         if media.remoteStatus == .stub {
@@ -57,7 +57,7 @@ class MediaThumbnailCoordinator: NSObject {
     ///
     /// - Parameters:
     ///   - media: the media object to generate the thumbnail representation
-    ///   - size: the size of the thumbnail
+    ///   - size: The size of the thumbnail in pixels.
     ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
     func fetchThumbnailForMediaStub(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
         fetchStubMedia(for: media) { [weak self] (fetchedMedia, error) in
