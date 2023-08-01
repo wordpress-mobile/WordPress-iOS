@@ -146,7 +146,7 @@ private extension DashboardJetpackSocialCardCell {
     static func showNoConnectionView(for blog: Blog) -> Bool {
         guard let context = blog.managedObjectContext,
               let dotComID = blog.dotComID?.stringValue,
-              let services = try? PublicizeService.allPublicizeServices(in: context),
+              let services = try? PublicizeService.allSupportedServices(in: context),
               let connections = blog.connections else {
             return false
         }
@@ -188,7 +188,7 @@ private extension DashboardJetpackSocialCardCell {
 
     func createNoConnectionCard() -> UIView? {
         guard let context = blog?.managedObjectContext,
-              let services = try? PublicizeService.allPublicizeServices(in: context) else {
+              let services = try? PublicizeService.allSupportedServices(in: context) else {
             // Note: The context and publicize services are checked prior to this call in
             // `showNoConnectionView`. This scenario *shouldn't* be possible.
             assertionFailure("No managed object context or publicize services")
