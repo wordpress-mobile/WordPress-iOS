@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-12 18:49:23+0000 */
+/* Translation-Revision-Date: 2023-07-26 17:38:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: es */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "AÑADIR UNA IMAGEN O UN VÍDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "AÑADIR ENLACE";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "AÑADIR MEDIOS";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Crear enlace";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Crear tu primera entrada";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Crear tu próxima entrada";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Crea tu sitio";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Toca dos veces para previsualizar la entrada.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Toca dos veces para rehacer el último cambio";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Toca dos veces para seleccionar";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Toca dos veces para cambiar el ajuste";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Toca dos veces para deshacer el último cambio";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Doble toque para ver las opciones de incrustación.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Insertar %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Insertar bloque de audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Insertar bloque de galería";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Insertar una regla horizontal";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Insertar bloque de imagen";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Insertar elemento multimedia";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Insertar bloque de video";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Insertar entrada cruzada";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Exterior";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Anulado";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELÉFONO";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Actividad de publicación";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "¡Publicar regularmente ayuda a crear tu audiencia!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Entradas y páginas";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Las entradas aparecen en la página de tu blog en orden cronológicamente inverso. ¡Es el momento de compartir tus ideas con el mundo!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Página de entradas";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Conectado de nuevo";
+
+/* Action button to redo last change */
+"Redo" = "Rehacer";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referencia";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Subrayado";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,6 +9621,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Descartar";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Crear";
+
 /* Text displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.subtitle" = "Todavía no has creado ninguna campaña. Haz clic en promocionar para empezar.";
 
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Cargando campañas…";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Promocionar";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Campañas en Blaze";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Ocultar esto";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Más información";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promociona tu contenido con Blaze";
@@ -9811,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "Impresiones";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Más información";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Campaña en Blaze";
 
@@ -9838,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Ver estadísticas";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Indicadores de características";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Generales";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Los parámetros sobreescritos están marcados con un check.";
 
@@ -9849,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configuración remota";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Banderas de característica locales";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Banderas de característica remotas";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Hazte con tu rincón en Internet con una dirección web fácil de encontrar, de compartir y de seguir.";
@@ -10539,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Suscríbete ahora para compartir más";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d entradas compartidas en redes sociales restantes";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " en los próximos 30 días";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "%1$d entradas compartidas en redes sociales restantes";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Se compartirá en %1$d cuentas";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "No se compartirá en ninguna red social";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Se compartirá en %1$d de %2$d cuentas";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Se compartirá en %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "%1$d\/%2$d entradas compartidas en redes sociales restantes";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Ver todas las respuestas";
@@ -10616,7 +10646,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nueva";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "Las entradas relacionadas muestran contenido relacionado de tu sitio bajo tus entradas";
+"relatedPostsSettings.optionsFooter" = "Las entradas relacionadas muestran contenido relacionado de tu sitio bajo tus entradas.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "en «Móvil»";

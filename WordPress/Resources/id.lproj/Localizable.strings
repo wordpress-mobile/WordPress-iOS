@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-26 12:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "TAMBAHKAN GAMBAR ATAU VIDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "TAMBAHKAN TAUTAN";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "TAMBAHKAN MEDIA";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Buat tautan";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Buat artikel pertama Anda";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Buat artikel Anda selanjutnya";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Buat situs Anda";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Ketuk dua kali untuk melihat artikel.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Ketuk dua kali untuk mengulangi perubahan terakhir";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Ketuk dua kali untuk memilih";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Ketuk dua kali untuk mengaktifkan\/menonaktifkan pengaturan";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Ketuk dua kali untuk mengurungkan perubahan terakhir";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Ketuk dua kali untuk melihat pilihan sematan.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Masukkan %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Masukkan Blok Audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Masukkan Blok Galeri";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Sisipkan Penggaris Horizontal";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Masukkan Blok Gambar";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Sisipkan Media";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Masukkan Blok Video";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Sisipkan lintas pos";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Di luar";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Ditumpuk";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEPON";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivitas Posting";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Konsisten menerbitkan artikel membantu membangun audiens!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Pos dan Halaman";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Artikel ditampilkan di halaman blog Anda dalam urutan kronologis terbalik. Saatnya membagikan ide Anda kepada dunia!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Halaman pos";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Dihubungkan kembali";
+
+/* Action button to redo last change */
+"Redo" = "Ulangi";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Perujuk";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Garis Bawah";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Tutup";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Buat";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "Anda belum membuat kampanye apa pun. Klik promosikan untuk memulai.";
+"blaze.campaigns.empty.subtitle" = "Anda belum membuat kampanye. Klik buat untuk memulai.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Anda tidak punya kampanye";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Muat kampanye...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Promosikan";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Kampanye Blaze";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Tutup";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Baca selengkapnya";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promosikan konten dengan Blaze";
@@ -9811,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "Tayangan";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Baca selengkapnya";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Kampanye Blaze";
 
@@ -9838,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Lihat statistik";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Bendera Fitur";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Umum";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Parameter yang ditolak ditandai dengan tanda centang.";
 
@@ -9849,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Konfigurasi Jarak Jauh";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Bendera Fitur Setempat";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Bendera Fitur Jarak Jauh";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Ajukan klaim domain Anda dengan alamat situs yang mudah ditemukan, dibagikan, dan diikuti.";
@@ -10539,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Langganan sekarang untuk kesempatan berbagi lebih banyak";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "Tersisa %1$d\/%2$d kesempatan berbagi di media sosial";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " dalam 30 hari ke depan";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "Tersisa %1$d kesempatan berbagi di media sosial";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Berbagi ke %1$d akun";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Tidak berbagi ke media sosial";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Berbagi ke %1$d dari %2$d akun";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Berbagi ke %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "Tersisa %1$d\/%2$d kesempatan berbagi di media sosial";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Lihat semua tanggapan";
@@ -10616,7 +10646,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Baru";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "Pos Terkait menampilkan konten yang relevan dari situs Anda di bawah pos Anda";
+"relatedPostsSettings.optionsFooter" = "Pos Terkait menampilkan konten yang relevan dari situs Anda di bawah pos Anda.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "dalam \"Seluler\"";

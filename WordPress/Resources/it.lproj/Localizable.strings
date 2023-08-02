@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-26 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: it */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "AGGIUNGI IMMAGINE O VIDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "AGGIUNGI LINK";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "AGGIUNGI ELEMENTO MULTIMEDIALE";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Crea un link";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Crea il tuo primo articolo";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Crea il tuo prossimo articolo";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Crea il tuo sito";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Tocca due volte per visualizzare l'anteprima dell'articolo.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Tocca due volte per ripetere l'ultima modifica";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Tocca due volte per selezionare";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Tocca due volte per attivare\/disattivare l'impostazione";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Tocca due volte per annullare l'ultima modifica";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Tocca due volte per visualizzare le opzioni incorporate.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Inserisci %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Inserisci blocco audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Inserisci blocco galleria";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Inserisci righello orizzontale";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Inserisci blocco immagine";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Inserisci media";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Inserisci blocco video";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Inserisci pubblicazione incrociata";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Esterno";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Sovrascritta";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFONO";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Attività di pubblicazione";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Pubblicare con regolarità aiuta a creare il tuo pubblico.";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Articoli e Pagine";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Gli articoli vengono visualizzati sulla pagina del tuo blog in ordine cronologico inverso. È tempo di condividere le tue idee con il mondo.";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Pagina degli articoli";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Riconnesso";
+
+/* Action button to redo last change */
+"Redo" = "Ripeti";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referrer";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Sottolineato";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Ignora";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Crea";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "Non hai ancora creato alcuna campagna. Fai clic su Promuovi per iniziare a lavorare.";
+"blaze.campaigns.empty.subtitle" = "Non hai ancora creato alcuna campagna. Fai clic su Crea per iniziare.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Non hai campagne";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Caricamento delle campagne in corso...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Promuovi";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Campagne di Blaze";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Nascondi";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Scopri di più";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promuovi i tuoi contenuti con Blaze";
@@ -9811,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "Impressioni";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Scopri di più";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Campagna di Blaze";
 
@@ -9838,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Visualizza le statistiche";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Flag funzionalità";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Generale";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "I parametri sovrascritti sono contrassegnati da un segno di spunta.";
 
@@ -9849,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurazione remota";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Flag funzionalità locale";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Flag funzionalità remota";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Rivendica il tuo angolo di web con un indirizzo del sito facile da trovare, condividere e seguire.";
@@ -10539,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Iscriviti ora per avere più condivisioni";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d condivisioni sui social rimanenti";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " nei prossimi 30 giorni";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "%1$d condivisioni sui social rimanenti";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Condivisione su %1$d account";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Non condividere sui social";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Condivisione su %1$d di %2$d account";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Condivisione su %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "%1$d\/%2$d condivisioni sui social rimanenti";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Visualizza tutte le risposte";
@@ -10616,7 +10646,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nuovo";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "Articoli correlati visualizza contenuti pertinenti del tuo sito sotto i tuoi articoli";
+"relatedPostsSettings.optionsFooter" = "Articoli correlati visualizza contenuti pertinenti del tuo sito sotto i tuoi articoli.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "in \"Mobile\"";

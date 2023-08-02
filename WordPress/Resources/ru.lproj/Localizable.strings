@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-12 11:07:11+0000 */
+/* Translation-Revision-Date: 2023-07-24 20:10:23+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "ДОБАВИТЬ ИЗОБРАЖЕНИЕ ИЛИ ВИДЕО";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "ДОБАВИТЬ ССЫЛКУ";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "ДОБАВИТЬ МЕДИА";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Создать ссылку";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Создайте свою первую запись";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Создайте вашу следующую запись";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Создайте свой сайт";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Нажмите дважды для предварительного просмотра записи.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Нажмите дважды для повторения последнего изименения";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Нажмите дважды для выбора";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Нажмите дважды для переключения настройки";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Нажмите дважды для отмены последнего действия";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Нажмите дважды, чтобы просмотреть возможности встраивания.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Вставить %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Вставить блок звукозаписи";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Вставить блок галереи";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Вставить горизонтальную линейку";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Вставить блок изображения";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Вставить медиафайл";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Вставить блок видео";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Вставить кросспост";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Снаружи";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Переопределено";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "ТЕЛЕФОН";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Частота публикаций";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Регулярные публикации помогают вам формировать аудиторию!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Записи и страницы";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Записи появляются на странице в вашего блога в обратном хронологическом порядке. Самое время поделиться вашими мыслями с миром!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Страница записей";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Подключение установлено.";
+
+/* Action button to redo last change */
+"Redo" = "Повторить";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Источник перехода";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Подчеркнутый";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Закрыть";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Создать";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "Вы еще не создали кампании. Нажмите «Продвинуть», чтобы начать.";
+"blaze.campaigns.empty.subtitle" = "Вы еще не создали кампании. Нажмите «создать», чтобы начать.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "У вас нет кампаний";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Загрузка кампаний...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Продвинуть";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Кампания Blaze";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Свернуть";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Узнать больше";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Продвигайте содержимое с помощью Blaze";
@@ -9811,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "Показов";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Узнать больше";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Кампания Blaze";
 
@@ -9838,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Просмотр статистики";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Отметки возможностей";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Общее";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Переопределенные параметры обозначаются галочкой.";
 
@@ -9849,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Удаленная настройка";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Отметки локальных возможностей";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Отметки удаленных возможностей";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Займите себе место в Интернете: зарегистрируйте адрес сайта, который будет легко запомнить и порекомендовать друзьям.";
@@ -10539,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Подпишитесь, чтобы делиться больше";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "Осталось %1$d\/%2$d возможностей поделиться";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " в следующие 30 дней";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "Осталось %1$d возможностей поделиться";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Делимся с %1$d учётными записями";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Не делимся в соцсетях";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Делимся с %1$d из %2$d учётных записей";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Делимся с %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "Осталось %1$d\/%2$d возможностей поделиться";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Посмотреть все ответы";
@@ -10616,7 +10646,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Создано";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "Похожие записи показывают связанное содержимое вашего сайта под содержимым записей";
+"relatedPostsSettings.optionsFooter" = "Похожие записи показывают связанное содержимое вашего сайта под содержимым записей.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "в \"Мобильном\"";

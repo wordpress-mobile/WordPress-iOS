@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-26 16:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "新增圖片或視訊";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "新增連結";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "新增媒體";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "建立連結";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "建立你的首篇文章";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "建立下一篇文章";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "建立網站";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "點兩下可預覽文章。";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "按兩次即可取消復原上次變更";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "按兩下以選擇";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "按兩下以切換設定";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "按兩次即可復原上次變更";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "點兩下即可檢視嵌入選項。";
@@ -3808,8 +3794,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "插入 %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "插入音訊區塊";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "插入圖庫區塊";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "插入水平尺規";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "插入圖片區塊";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3818,6 +3813,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "插入媒體";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "插入影片區塊";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "插入多重發佈";
@@ -5340,9 +5338,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "外部";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "已覆寫";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "電話";
 
@@ -5754,9 +5749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "張貼活動";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "定期發文有助於建立讀者群！";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5772,9 +5764,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "文章與頁面";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "文章會在你的網誌頁面上按時間倒序顯示。 是時候和全世界分享你的想法了！";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "文章列表頁面";
@@ -6044,6 +6033,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "已重新連線";
+
+/* Action button to redo last change */
+"Redo" = "取消復原";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "訪客連結來源";
@@ -8321,7 +8313,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "底線";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9625,8 +9618,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "關閉";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "建立";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "你尚未建立任何行銷活動。 按一下「宣傳」即可開始使用。";
+"blaze.campaigns.empty.subtitle" = "你尚未建立任何行銷活動。 按一下「建立」便可開始創建行銷活動。";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "你沒有任何行銷活動";
@@ -9640,9 +9636,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "正在載入行銷活動...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "宣傳";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Blaze 行銷活動";
 
@@ -9651,6 +9644,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "隱藏此項目";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "深入瞭解";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "使用 Blaze 宣傳你的內容";
@@ -9805,6 +9801,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "曝光數";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "深入瞭解";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Blaze 行銷活動";
 
@@ -9832,6 +9831,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "檢視統計資料";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "功能旗標";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "一般";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "覆寫的參數會以核取記號表示。";
 
@@ -9843,12 +9848,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "遠端設定";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "本機功能旗標";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "遠端功能旗標";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "建立易於搜尋、分享和追蹤的網站位址，打造屬於自己的網路園地。";
@@ -10533,11 +10532,36 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "立即訂購以提高分享次數";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "剩下 %1$d 次社群分享 (共 %2$d 次)";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " 在接下來 30 天內";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "剩下 %1$d 次社群分享額度";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "分享至 %1$d 個帳號";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "未分享至社群";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "分享至 %1$d 個帳號 (總額度為 %2$d 個帳號)";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "剩下 %1$d 次社群分享額度 (共 %2$d 次)";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "檢視所有回應";
@@ -10610,7 +10634,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新增";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "「相關文章」會在你的文章下方顯示網站上的相關內容";
+"relatedPostsSettings.optionsFooter" = "「相關文章」會在你的文章下方顯示你網站上的相關內容。";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "在「行動」中";
