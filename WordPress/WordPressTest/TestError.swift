@@ -1,3 +1,33 @@
+typealias TestError = NSError
+
+extension TestError {
+
+    convenience init(
+        id: Int = 1,
+        description: String = "A test error",
+        domain: String = "org.wordpress.unit-tests"
+    ) {
+        self.init(code: id, domain: domain, description: description)
+    }
+}
+
+extension NSError {
+
+    convenience init(
+        code: Int,
+        domain: String,
+        description: String
+    ) {
+        self.init(
+            domain: domain,
+            code: code,
+            userInfo: [
+                NSLocalizedDescriptionKey: description
+            ]
+        )
+    }
+}
+
 // There must be a way to make this as an Error extension.
 // However, when I try to do so I get the following errors.
 //
@@ -15,13 +45,7 @@ extension NSError {
         domain: String = "org.wordpress.unit-tests",
         code: Int = 1
     ) -> NSError {
-        NSError(
-            domain: domain,
-            code: code,
-            userInfo: [
-                NSLocalizedDescriptionKey: description
-            ]
-        )
+        .init(code: code, domain: domain, description: description)
     }
 }
 
