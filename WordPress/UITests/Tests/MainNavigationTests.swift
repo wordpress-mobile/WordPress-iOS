@@ -5,11 +5,8 @@ class MainNavigationTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+        try LoginFlow
+            .login(email: WPUITestCredentials.testWPcomUserEmail)
             .goToMenu()
     }
 
@@ -29,8 +26,8 @@ class MainNavigationTests: XCTestCase {
     }
 
    func testTabBarNavigation() throws {
-       try MySiteScreen()
-           .tabBar.goToReaderScreen()
+       try TabNavComponent()
+           .goToReaderScreen()
            .assertScreenIsLoaded()
 
        // We may get a notifications fancy alert when loading the reader for the first time

@@ -9,7 +9,7 @@ public class LoginEpilogueScreen: ScreenObject {
 
     var loginEpilogueTable: XCUIElement { loginEpilogueTableGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [loginEpilogueTableGetter],
             app: app,
@@ -17,8 +17,8 @@ public class LoginEpilogueScreen: ScreenObject {
         )
     }
 
-    public func continueWithSelectedSite(title: String? = nil) throws -> MySiteScreen {
-        if let title = title {
+    public func continueWithSelectedSite(_ siteAddress: String? = nil) throws -> MySiteScreen {
+        if let title = siteAddress {
             let selectedSite = loginEpilogueTable.cells[title]
             selectedSite.tap()
         } else {
@@ -41,7 +41,7 @@ public class LoginEpilogueScreen: ScreenObject {
         return try MySitesScreen()
     }
 
-    public func verifyEpilogueDisplays(username: String? = nil, siteUrl: String) -> LoginEpilogueScreen {
+    public func verifyEpilogueDisplays(username: String? = nil, siteUrl: String) -> Self {
         if var expectedUsername = username {
             expectedUsername = "@\(expectedUsername)"
             let actualUsername = app.staticTexts["login-epilogue-username-label"].label

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-07-12 15:32:34+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -411,9 +411,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "PŘIDAT OBRAZ NEBO VIDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "Přidat odkaz";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "Přidat média";
@@ -1611,6 +1608,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2136,12 +2134,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Vytvořit odkaz";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Vytvořte svůj první příspěvek";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Vytvořte svůj další příspěvek";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Vytvořit stránku";
 
@@ -2564,9 +2556,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Dvojitým klepnutím zobrazíte náhled příspěvku.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Poslední změnu provedete dvojitým klepnutím";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Vyberte dvojitým klepnutím";
 
 /* No comment provided by engineer. */
@@ -2589,9 +2578,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Dvojitým klepnutím přepnete nastavení";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Poslední změnu vrátíte dvojitým klepnutím";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Dvojitým klepnutím zobrazíte možnosti vložení.";
@@ -5292,9 +5278,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Vně";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Přepsáno";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "Telefon";
 
@@ -5700,9 +5683,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivita publikování";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Pravidelné zveřejňování pomáhá budovat vaše publikum!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5718,9 +5698,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Příspěvky a stránky";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Příspěvky se na stránce vašeho blogu zobrazují v obráceném chronologickém pořadí. Je čas podělit se o své nápady se světem!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Stránka příspěvků";
@@ -8255,7 +8232,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Zdůraznit";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation

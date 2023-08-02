@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-12 16:54:32+0000 */
+/* Translation-Revision-Date: 2023-07-26 07:14:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "GÖRSEL VEYA VİDEO EKLE";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "BAĞLANTI EKLE";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "ORTAM EKLE";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Bağlantı oluştur";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "İlk yazınızı oluşturun";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Bir sonraki gönderinizi oluşturun";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Sitenizi oluşturun";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Gönderiyi önizlemek için iki kez dokunun.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Son değişikliği yinelemek için çift dokunun";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Seçmek için çift dokunun";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Ayarı değiştirmek için çift dokunun";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Son değişikliği geri almak için çift dokunun";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Gömme seçeneklerini görüntülemek için iki kez dokunun.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "%@ ekle";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Ses bloğu ekle";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Galeri bloğu ekle";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Yatak çizgi ekle";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Görsel bloğu ekle";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Ortam ekle";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Video bloğu ekle";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Çapraz gönderi ekle";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Dışarıda";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Değiştirildi";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Yazım etkinliği";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Düzenli olarak paylaşım yapmak, hedef kitlenizi oluşturmanıza yardımcı olur!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Yazılar ve sayfalar";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Gönderiler blog sayfanızda ters kronolojik sırada görünür. Fikirlerinizi dünyayla paylaşmanın zamanı geldi!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Yazılar sayfası";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Yeniden bağlandı";
+
+/* Action button to redo last change */
+"Redo" = "İleri al";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Kaynak";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Altı çizili";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Kapat";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Oluştur";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "Henüz bir kampanya oluşturmadınız. Başlamak için tanıtma seçeneğine tıklayın.";
+"blaze.campaigns.empty.subtitle" = "Henüz bir kampanya oluşturmadınız. Başlamak için oluştur seçeneğine tıklayın.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Kampanyanız yok";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Kampanyalar yükleniyor...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Tanıtın";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Kampanyaları Öne Çıkar";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Bunu gizle";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Daha fazla bilgi";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "İçeriğinizi Blaze ile öne çıkarın";
@@ -9700,6 +9696,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short status description */
 "blazeCampaign.status.rejected" = "Reddedildi";
 
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Zamanlandı";
+
 /* Title for budget stats view */
 "blazeCampaigns.budget" = "Bütçe";
 
@@ -9739,11 +9738,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ için yanıt verin";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Bu tanımlama bilgileri, kullanıcıların web sitelerimizle nasıl etkileşimde bulunduğu hakkında bilgi toplayarak performansı optimize etmemizi sağlar.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Kaydet";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Ayarlara git";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Kişisel verilerinizi, sizin onayınıza ve meşru yararımıza dayalı olarak web sitemizi ve pazarlama faaliyetlerimizi optimize etmek için işleriz.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Gizlilik yönetimi";
@@ -9802,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "İzlenimler";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Daha fazla bilgi";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Kampanyayı öne çıkar";
 
@@ -9829,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "İstatistikleri Görüntüle";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Özellik bayrakları";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Genel";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "İptal edilen parametreler bir onay işareti ile gösterilir.";
 
@@ -9840,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Uzaktan Yapılandırma";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Yerel Özellik Bayrakları";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Uzaktan Özellik Bayrakları";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Bulması, paylaşması ve takip etmesi kolay bir site adresiyle internet dünyasındaki yerinizi alın.";
@@ -10530,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Daha fazla paylaşım için şimdi abone olun";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d sosyal paylaşım hakkı kaldı";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " önümüzdeki 30 gün içinde";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "%1$d sosyal paylaşım hakkı kaldı";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "%1$d hesaba paylaşılıyor";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Sosyal medyada paylaşılmıyor";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "%1$d \/ %2$d hesaba paylaşılıyor";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "%1$@ ile paylaşılıyor";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "%1$d\/%2$d kalan sosyal paylaşım";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Tüm yanıtları görüntüle";
@@ -10607,7 +10646,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Yeni";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "İlişkili yazılar, yazılarınızın altında sitenizin içeriği ile alakalı içerik gösterir";
+"relatedPostsSettings.optionsFooter" = "Benzer Yazılar, yazılarınızın altında sitenizden ilgili içerikler gösterir.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "\"Mobil\" içinde";

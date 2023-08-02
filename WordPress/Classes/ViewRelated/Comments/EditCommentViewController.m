@@ -2,7 +2,6 @@
 #import "CommentService.h"
 #import "CoreDataStack.h"
 
-#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 

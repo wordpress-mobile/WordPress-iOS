@@ -3,13 +3,23 @@ import XCTest
 
 public class DomainsSuggestionsScreen: ScreenObject {
 
-    let siteDomainsNavbarHeaderGetter: (XCUIApplication) -> XCUIElement = {
+    private let domainSuggestionsTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["DomainSuggestionsTable"]
+    }
+
+    private let selectDomainButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Select domain"]
+    }
+
+    private let siteDomainsNavbarHeaderGetter: (XCUIApplication) -> XCUIElement = {
         $0.staticTexts["Search domains"]
     }
 
+    var domainSuggestionsTable: XCUIElement { domainSuggestionsTableGetter(app) }
+    var selectDomainButton: XCUIElement { selectDomainButtonGetter(app) }
     var siteDomainsNavbarHeader: XCUIElement { siteDomainsNavbarHeaderGetter(app) }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ siteDomainsNavbarHeaderGetter ],
             app: app
@@ -22,13 +32,13 @@ public class DomainsSuggestionsScreen: ScreenObject {
 
     @discardableResult
     public func selectDomain() throws -> Self {
-        app.tables["DomainSuggestionsTable"].cells.lastMatch?.tap()
+        domainSuggestionsTable.cells.lastMatch?.tap()
         return self
     }
 
     @discardableResult
     public func goToPlanSelection() throws -> PlanSelectionScreen {
-        app.buttons["Select domain"].tap()
+        selectDomainButton.tap()
         return try PlanSelectionScreen()
     }
 }

@@ -105,7 +105,6 @@
 #import "WPStyleGuide+Pages.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPStyleGuide+WebView.h"
-#import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
 #import "WPWebViewController.h"

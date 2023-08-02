@@ -54,39 +54,39 @@ struct BlazeCampaignStatusViewModel {
         switch status {
         case .created, .processing, .scheduled, .canceled:
             self.textColor = UIColor(
-                light: UIColor(fromHex: 0x4F3500),
-                dark: UIColor(fromHex: 0xDEB100)
+                light: .muriel(name: .yellow, .shade80),
+                dark: .muriel(name: .yellow, .shade10)
             )
             self.backgroundColor = UIColor(
-                light: UIColor(fromHex: 0xF5E6B3),
-                dark: UIColor(fromHex: 0x332200)
+                light: .muriel(name: .yellow, .shade5),
+                dark: .muriel(name: .yellow, .shade90)
             )
         case .rejected:
             self.textColor = UIColor(
-                light: UIColor(fromHex: 0x8A2424),
-                dark: UIColor(fromHex: 0xF86368)
+                light: .muriel(name: .red, .shade70),
+                dark: .muriel(name: .red, .shade10)
             )
             self.backgroundColor = UIColor(
-                light: UIColor(fromHex: 0xFACFD2),
-                dark: UIColor(fromHex: 0x451313)
+                light: .muriel(name: .red, .shade5),
+                dark: .muriel(name: .red, .shade90)
             )
         case .active, .approved:
             self.textColor = UIColor(
-                light: UIColor(fromHex: 0x00450C),
-                dark: UIColor(fromHex: 0x00BA37)
+                light: .muriel(name: .green, .shade80),
+                dark: .muriel(name: .green, .shade10)
             )
             self.backgroundColor = UIColor(
-                light: UIColor(fromHex: 0xB8E6BF),
-                dark: UIColor(fromHex: 0x003008)
+                light: .muriel(name: .green, .shade5),
+                dark: .muriel(name: .green, .shade90)
             )
         case .finished:
             self.textColor = UIColor(
-                light: UIColor(fromHex: 0x02395C),
-                dark: UIColor(fromHex: 0x399CE3)
+                light: .muriel(name: .blue, .shade80),
+                dark: .muriel(name: .blue, .shade10).lightVariant() /// Explicitly using the light variant of blue
             )
             self.backgroundColor = UIColor(
-                light: UIColor(fromHex: 0xBBE0FA),
-                dark: UIColor(fromHex: 0x01283D)
+                light: .muriel(name: .blue, .shade5),
+                dark: .muriel(name: .blue, .shade90).lightVariant() /// Explicitly using the light variant of blue
             )
         case .unknown:
             self.textColor = .label

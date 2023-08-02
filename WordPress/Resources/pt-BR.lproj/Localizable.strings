@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-04-21 14:14:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -411,9 +411,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "Adicionar imagem ou vídeo";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "ADICIONAR LINK";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "ADICIONAR MÍDIA";
@@ -1617,6 +1614,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2142,12 +2140,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Criar link";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Crie seu primeiro post";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Crie seu próximo post";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Crie seu site";
 
@@ -2573,9 +2565,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Toque duas vezes para visualizar o post.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Toque duas vezes para refazer a última alteração";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Toque duas vezes para selecionar";
 
 /* No comment provided by engineer. */
@@ -2598,9 +2587,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Toque duas vezes para alternar as configurações";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Toque duas vezes para desfazer a última alteração";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Toque duas vezes para ver as opções de mídia incorporada.";
@@ -5310,9 +5296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Externo";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Substituído";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "Telefone";
 
@@ -5724,9 +5707,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Atividade de publicação";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Publicar regularmente ajuda a construir sua audiência!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5742,9 +5722,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Posts e páginas";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts são exibidos na página de blog em ordem cronológica inversa (mais recentes primeiro). Compartilhe suas ideias com o mundo!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Página de posts";
@@ -8291,7 +8268,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Sublinhado";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9696,12 +9674,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurações remotas";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Marcações de funcionalidade locais";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Marcações de funcionalidade remotas";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Marque sua presença na Web com um endereço de site fácil de encontrar, compartilhar e seguir.";

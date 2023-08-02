@@ -7,13 +7,32 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Discover"]
     }
 
+    private let readerTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Reader"]
+    }
+
+    private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Visit"]
+    }
+
+    private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Back"]
+    }
+
+    private let dismissButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Dismiss"]
+    }
+
+    var backButton: XCUIElement { backButtonGetter(app) }
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
+    var dismissButton: XCUIElement { dismissButtonGetter(app) }
+    var readerTable: XCUIElement { readerTableGetter(app) }
+    var visitButton: XCUIElement { visitButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                // swiftlint:skip:next opening_brace
-                { $0.tables["Reader"] },
+                readerTableGetter,
                 discoverButtonGetter
             ],
             app: app
@@ -27,7 +46,7 @@ public class ReaderScreen: ScreenObject {
 
     public func openLastPostInSafari() -> ReaderScreen {
         getLastPost().buttons["More"].tap()
-        app.buttons["Visit"].tap()
+        visitButton.tap()
         return self
     }
 
@@ -38,6 +57,7 @@ public class ReaderScreen: ScreenObject {
         return try CommentsScreen()
     }
 
+    @discardableResult
     public func getLastPost() -> XCUIElement {
         guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
         scrollDownUntilElementIsFullyVisible(element: post)
@@ -66,9 +86,6 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func dismissPost() {
-        let backButton = app.buttons["Back"]
-        let dismissButton = app.buttons["Dismiss"]
-
         if dismissButton.isHittable { dismissButton.tap() }
         if backButton.isHittable { backButton.tap() }
     }

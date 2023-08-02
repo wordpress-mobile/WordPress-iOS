@@ -1,0 +1,3 @@
+Nous avons apporté des modifications majeures à l’éditeur de blocs, notamment en ce qui concerne les styles, les couleurs et les icônes. Vous trouverez également davantage de boutons et d’options de bloc dans la barre d’outils de l’en-tête, dont les boutons d’annulation et de rétablissement. Vous disposez désormais de plus d’outils que la ceinture multifonctions de Batman.
+
+Par la même occasion, nous avons corrigé quelques fuites de mémoire et résolu un problème qui empêchait certains utilisateurs d’utiliser l’application après l’avoir ouverte.

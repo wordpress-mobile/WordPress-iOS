@@ -22,7 +22,6 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
-        "DashboardTests\/testFreeToPaidCardNavigation()",
         "EditorAztecTests",
         "LoginTests\/testEmailMagicLinkLogin()",
         "SignupTests",

@@ -1,7 +1,6 @@
 #import "WPError.h"
 #import "WPAccount.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressUI/WordPressUI.h>
 #import <wpxmlrpc/WPXMLRPC.h>
 #import "WordPress-Swift.h"
 

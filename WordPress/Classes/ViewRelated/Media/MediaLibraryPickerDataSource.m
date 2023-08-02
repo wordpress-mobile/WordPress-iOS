@@ -436,8 +436,10 @@
         fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
     }
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
-    fetchRequest.sortDescriptors = @[sortDescriptor];
+    fetchRequest.sortDescriptors = @[
+        [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering],
+        [NSSortDescriptor sortDescriptorWithKey:@"mediaID" ascending:self.ascendingOrdering]
+    ];
 
     _fetchController = [[NSFetchedResultsController alloc]
                             initWithFetchRequest:fetchRequest

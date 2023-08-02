@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-12 14:34:23+0000 */
+/* Translation-Revision-Date: 2023-07-25 13:45:34+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "ADAUGĂ IMAGINE SAU VIDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "ADAUGĂ O LEGĂTURĂ";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "ADAUGĂ MEDIA";
@@ -1594,7 +1591,7 @@ translators: Block name. %s: The localized block name */
 "Choose your topics" = "Alege subiecte";
 
 /* Register Domain - Address information field City */
-"City" = "Oraș";
+"City" = "Localitate";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
 "Claim your free domain" = "Revendică-ți domeniul gratuit";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Creează o legătură";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Scrie primul tău articol";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Creează următorul articol";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Creează-ți site-ul";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Atinge de două ori pentru a previzualiza articolul.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Atinge de două ori pentru a reface ultima modificare";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Atinge de două ori pentru a selecta";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Atinge de două ori pentru a comuta setarea";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Atinge de două ori pentru a anula ultima modificare";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Atinge de două ori pentru a vedea opțiunile de înglobare.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Inserează %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Inserează blocul Audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Inserează blocul Galerie";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Inserează riglă orizontală";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Inserează blocul Imagine";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Inserare media";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Inserează blocul Video";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Inserează crosspost";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "În exterior";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Contramandată";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Activitate de publicare";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Publicările dese te ajută să-ți construiești audiența!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Articole și pagini";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Articolele apar pe pagina blogului în ordine cronologică inversă. Este timpul să-ți împărtășești ideile întregii lumi!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Pagină articole";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Reconectat";
+
+/* Action button to redo last change */
+"Redo" = "Refă";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referință";
@@ -7047,7 +7039,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Partajare socială";
+"Social sharing" = "Partajare pe media socială";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Unele blocuri au setări suplimentare. Atinge iconul setări din dreapta jos a blocului pentru a vedea mai multe opțiuni.";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Subliniere";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Refuză";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Creează";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "Nu ai creat nicio campanie până acum. Dă clic pe promovează pentru a începe.";
+"blaze.campaigns.empty.subtitle" = "Nu ai creat nicio campanie până acum. Dă clic pe Creează pentru a începe.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Nu ai creat nicio campanie";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Încarc campaniile...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Promovează";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Campanii Blaze";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Ascunde asta";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Află mai multe";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promovează-ți conținutul cu Blaze";
@@ -9811,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "Impresii";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Află mai multe";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Campanie Blaze";
 
@@ -9838,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Vezi statisticile";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Comutări funcționalități";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Generale";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Parametrii contramandați sunt marcați cu o bifă.";
 
@@ -9849,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurare la distanță";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Steaguri pentru funcționalități locale";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Steaguri pentru funcționalitate la distanță";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Rezervă-ți partea ta pe web cu o adresă de site ușor de găsit, partajat și urmărit.";
@@ -10539,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Abonează-te acum ca să partajezi mai mult";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "Partajări sociale rămase: %1$d\/%2$d";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " în următoarele 30 de zile";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "Partajări sociale rămase: %1$d";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Partajez pe %1$d conturi";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Fără partajare pe media socială";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Partajez pe %1$d conturi din %2$d";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Partajez pe %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "Partajări sociale rămase: %1$d\/%2$d";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Vezi toate răspunsurile";
@@ -10616,7 +10646,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nou";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "Articole similare afișează conținut relevant de pe site-ul tău sub articolele tale";
+"relatedPostsSettings.optionsFooter" = "Articole similare afișează conținut relevant de pe site-ul tău sub articolele tale.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "în „dispozitive mobile”";

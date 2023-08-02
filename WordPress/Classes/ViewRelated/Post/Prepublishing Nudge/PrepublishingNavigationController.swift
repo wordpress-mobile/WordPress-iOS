@@ -30,13 +30,13 @@ class PrepublishingNavigationController: LightNavigationController {
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         super.pushViewController(viewController, animated: animated)
 
-        transition()
+        transition(for: viewController)
     }
 
     override func popViewController(animated: Bool) -> UIViewController? {
         let viewController = super.popViewController(animated: animated)
 
-        transition()
+        transition(for: viewController)
 
         return viewController
     }
@@ -44,16 +44,47 @@ class PrepublishingNavigationController: LightNavigationController {
     init(rootViewController: UIViewController, shouldDisplayPortrait: Bool) {
         self.shouldDisplayPortrait = shouldDisplayPortrait
         super.init(rootViewController: rootViewController)
+
+        configureNavigationBar()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func transition() {
-        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
-            presentedVC.transition(to: .collapsed)
+    private func transition(for viewController: UIViewController?) {
+        guard let bottomSheet = self.parent as? BottomSheetViewController,
+              let presentedVC = bottomSheet.presentedVC else {
+            return
         }
+
+        let preferredDrawerPosition: DrawerPosition = {
+            guard FeatureFlag.jetpackSocial.enabled else {
+                return .collapsed
+            }
+
+            if let positionable = viewController as? ChildDrawerPositionable {
+                return positionable.preferredDrawerPosition
+            }
+
+            return traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .expanded : .collapsed
+        }()
+
+        presentedVC.transition(to: preferredDrawerPosition)
+    }
+
+    /// Updates the navigation bar color so it matches the view's background.
+    ///
+    /// Originally, in dark mode the navigation bar color is grayish, but there's a few points gap on top of the
+    /// navigation bar to accommodate the `GripButton` from `BottomSheetViewController`. The bottom sheet itself
+    /// assigns the background color according to its child controller's view background color.
+    private func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .basicBackground
+
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
     }
 
     private enum Constants {

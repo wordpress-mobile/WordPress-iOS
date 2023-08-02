@@ -1,0 +1,5 @@
+Blok düzenleyicisinde stiller, renkler ve simgeler dahil olmak üzere bazı büyük değişiklikler yaptık. Ayrıca, üst bilgi araç çubuğunda, geri alma ve yineleme düğmeleri dahil olmak üzere daha fazla düğme ve blok seçeneği göreceksiniz. Evet, bu doğru, artık Batman'in alet kemerindekinden daha fazla aracınız var.
+
+İşe koyulmuşken birkaç bellek sızıntısını giderdik, gönderi etkinliği istatistiklerini iyileştirdik ve uygulamanın açıldıktan sonra bazı kullanıcılar için çalışmamasına neden olan bir sorunu çözdük.
+
+Ayrıca, başarılı bir geçişin ardından, blog taleplerine dokunmaktan, Okuyucu'da siteleri takip etmekten ve WordPress uygulamasını silmekten kaynaklanan birkaç kilitlenmeyi de düzelttik.

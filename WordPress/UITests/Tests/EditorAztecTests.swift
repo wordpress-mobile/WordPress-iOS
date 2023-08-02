@@ -8,14 +8,13 @@ class EditorAztecTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
+            email: WPUITestCredentials.testWPcomUserEmail
         )
         try EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()
-            .tabBar.goToAztecEditorScreen()
+        try TabNavComponent()
+            .goToAztecEditorScreen()
             .dismissNotificationAlertIfNeeded(.accept)
     }
 
@@ -33,7 +32,7 @@ class EditorAztecTests: XCTestCase {
 //            .enterText(text: content)
 //            .publish()
 //            .viewPublishedPost(withTitle: title)
-//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPaidSite)
 //            .done()
 //    }
 //
@@ -58,7 +57,7 @@ class EditorAztecTests: XCTestCase {
 //            .closePostSettings()
 //        AztecEditorScreen(mode: .rich).publish()
 //            .viewPublishedPost(withTitle: title)
-//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPaidSite)
 //            .done()
 //    }
 //

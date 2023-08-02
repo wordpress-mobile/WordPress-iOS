@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-12 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-26 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -411,9 +411,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "AFBEELDING OF VIDEO TOEVOEGEN";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "VOEG EEN LINK TOE";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "MEDIA TOEVOEGEN";
@@ -1629,6 +1626,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2154,12 +2152,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "Maak link";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Maak je eerste bericht";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Maak je volgende bericht";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Maak je site";
 
@@ -2588,9 +2580,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Twee keer tikken om een voorbeeld van het bericht te bekijken.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Tik tweemaal om laatste wijziging opnieuw uit te voeren";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Tik tweemaal om te selecteren";
 
 /* No comment provided by engineer. */
@@ -2613,9 +2602,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Tik tweemaal om instelling in\/uit te schakelen";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Tik tweemaal om laatste wijziging ongedaan te maken";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Twee keer tikken om insluit opties te zien.";
@@ -3808,8 +3794,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Invoegen %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Audioblok invoegen";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Galerijblok invoegen";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Horizontale liniaal invoeren";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Afbeeldingblok invoegen";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3818,6 +3813,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Media invoeren";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Videoblok invoegen";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Kruisbericht invoegen";
@@ -5340,9 +5338,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "Buiten";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Overschreven";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFOON";
 
@@ -5754,9 +5749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Berichtactiviteiten";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Regelmatig publiceren helpt je publiek opbouwen!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5772,9 +5764,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Berichten en pagina's";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Berichten verschijnen op je blogpagina in omgekeerde chronologische volgorde. Het is tijd om je ideeën met de wereld te delen!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Berichtenpagina";
@@ -6044,6 +6033,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Opnieuw verbinding gemaakt";
+
+/* Action button to redo last change */
+"Redo" = "Opnieuw uitvoeren";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Verwijzer";
@@ -8321,7 +8313,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Onderstreept";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9625,17 +9618,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Negeren";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Aanmaken";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "Je hebt nog geen campagnes gemaakt. Klik op promoten om te beginnen.";
+"blaze.campaigns.empty.subtitle" = "Je hebt nog geen campagnes aangemaakt. Klik op Aanmaken om te beginnen.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "Je hebt geen campagnes";
 
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Campagnes aan het inladen ...";
-
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "Promoot";
 
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Blaze campagnes";
@@ -9645,6 +9638,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Dit verbergen";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Meer informatie";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promoot je content met Blaze";
@@ -9733,11 +9729,17 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reageer op %1$@";
 
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Met deze cookies kunnen wij prestaties optimaliseren door informatie te verzamelen over hoe gebruikers zich gedragen op onze website.";
+
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Opslaan";
 
 /* Settings Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.settings.button" = "Ga naar instellingen";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "We verwerken je persoonlijke gegevens om onze website en marketingactiviteiten te optimaliseren op basis van jouw toestemming en ons legitiem belang.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Privacy beheren";
@@ -9796,6 +9798,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "Impressies";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Meer informatie";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Blaze campagne";
 
@@ -9823,6 +9828,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "Statistieken weergeven";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Functievlaggen";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Algemeen";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Overschreven parameters zijn gemarkeerd met een vinkje.";
 
@@ -9834,12 +9845,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Externe configuratie";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "Lokale functievlaggen";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "Externe functievlaggen";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "Eis je eigen hoekje van het internet op met een site adres dat eenvoudig te vinden, te delen en te volgen is.";
@@ -10521,8 +10526,39 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Neem nu een abonnement om meer te delen";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d keer delen op social media resterend";
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "%1$d keer delen op social media resterend";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Delen naar %1$d accounts";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Niet delen naar social media";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Delen naar %1$d van %2$d accounts";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Delen naar %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "%1$d\/%2$d keer delen op social media resterend";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
@@ -10595,7 +10631,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nieuw";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "Gerelateerde berichten geven relevante content van je site weer onder je berichten";
+"relatedPostsSettings.optionsFooter" = "Gerelateerde berichten geeft relevante content van je site weer onder je berichten.";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "in 'Mobiel'";

@@ -1,1 +1,4 @@
+# Gutenberg when extracted as an XCFramework via CocoaPods
+$PODS_XCFRAMEWORKS_BUILD_DIR/Gutenberg/Gutenberg.framework
+# Gutenberg when compiled from source via CocoaPods
 $PODS_ROOT/Gutenberg/bundle/ios

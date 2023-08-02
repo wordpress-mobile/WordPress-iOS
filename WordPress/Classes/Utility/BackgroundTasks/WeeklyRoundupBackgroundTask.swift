@@ -7,19 +7,22 @@ private class WeeklyRoundupDataProvider {
 
     // MARK: - Definitions
 
-    typealias SiteStats = [Blog: StatsSummaryData]
+    typealias BlogManagedObjectID = NSManagedObjectID
+    typealias SiteStats = [BlogManagedObjectID: StatsSummaryData]
 
     enum DataRequestError: Error {
-        case dotComSiteWithoutDotComID(_ site: Blog)
+        case authTokenNotFound
+        case failedToMakePeriodEndDate
+        case dotComSiteWithoutDotComID(_ site: NSManagedObjectID)
         case siteFetchingError(_ error: Error)
-        case unknownErrorRetrievingStats(_ site: Blog)
-        case errorRetrievingStats(_ blogID: Int, error: Error)
+        case unknownErrorRetrievingStats(_ site: NSManagedObjectID)
+        case errorRetrievingStats(_ blogID: Int?, error: Error)
         case filterWeeklyRoundupEnabledSitesError(_ error: NSError?)
     }
 
     // MARK: - Misc Properties
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
 
     /// Method to report errors that won't interrupt the execution.
     ///
@@ -29,91 +32,108 @@ private class WeeklyRoundupDataProvider {
     ///
     private let debugSettings = WeeklyRoundupDebugScreen.Settings()
 
-    init(coreDataStack: CoreDataStack, onError: @escaping (Error) -> Void) {
+    init(coreDataStack: CoreDataStackSwift, onError: @escaping (Error) -> Void) {
         self.coreDataStack = coreDataStack
         self.onError = onError
     }
 
+    // MARK: API
+
+    /// Fetches the top site statistics from all available sites in the provided context.
+    ///
+    /// This method retrieves all sites in the given context, then fetches the weekly stats
+    /// for each site. The result, which includes the top 5 sites based on the received stats,
+    /// is returned through the provided completion handler.
     func getTopSiteStats(completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        getSites() { [weak self] sitesResult in
-            guard let self = self else {
-                return
-            }
-
+        self.getSites { [weak self] sitesResult in
             switch sitesResult {
-                case .success(let sites):
-                    guard sites.count > 0 else {
-                        completion(.success(nil))
-                        return
-                    }
-
-                    self.getTopSiteStats(from: sites, completion: completion)
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let sites):
+                guard let self, sites.count > 0 else {
+                    completion(.success(nil))
                     return
+                }
+                self.getTopSiteStats(from: sites, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+                return
             }
         }
     }
 
-    private func getTopSiteStats(from sites: [Blog], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        var endDateComponents = DateComponents()
-        endDateComponents.weekday = 1
+    // MARK: Helpers
 
-        // The DateComponents timezone is ignored when calling `Calendar.current.nextDate(...)`, so we need to
-        // create a GMT Calendar to perform the date search using it, instead.
-        var gmtCalendar = Calendar(identifier: .gregorian)
-        gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
-
-        guard let periodEndDate = gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward) else {
-            DDLogError("Something's wrong with the preiod end date selection.")
+    /// Fetches the top site statistics for a given array of blogs.
+    ///
+    /// This method asynchronously fetches weekly statistics for each blog in the provided list.
+    /// After all data has been fetched, it filters out the top 5 sites based on the received stats
+    /// and returns the result through the provided completion handler.
+    private func getTopSiteStats(from sites: [Site], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
+        guard let periodEndDate = Self.makePeriodEndDate() else {
+            DDLogError("Something's wrong with the period end date selection.")
+            completion(.failure(DataRequestError.failedToMakePeriodEndDate))
             return
         }
 
-        var blogStats = [Blog: StatsSummaryData]()
-        var statsProcessed = 0
+        let group = DispatchGroup()
+        var blogStats = SiteStats()
 
         for site in sites {
-            guard let authToken = site.account?.authToken else {
+            let service: StatsServiceRemoteV2
+
+            do {
+                service = try Self.makeRemoteStatsService(for: site)
+            } catch let error {
+                self.onError(error)
                 continue
             }
 
-            let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
+            group.enter()
 
-            guard let dotComID = site.dotComID?.intValue else {
-                onError(DataRequestError.dotComSiteWithoutDotComID(site))
-                continue
-            }
-
-            let statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
-
-            statsServiceRemote.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+            self.fetchStats(for: site, endingOn: periodEndDate, with: service) { [weak self] result in
                 defer {
-                    statsProcessed = statsProcessed + 1
-
-                    if statsProcessed == sites.count {
-                        let bestBlogStats = self.filterBest(5, from: blogStats)
-
-                        completion(.success(bestBlogStats))
-                    }
+                    group.leave()
                 }
-
-                guard let timeStats = timeStats else {
-                    guard let error = error else {
-                        self.onError(DataRequestError.unknownErrorRetrievingStats(site))
-                        return
-                    }
-
-                    self.onError(DataRequestError.errorRetrievingStats(dotComID, error: error))
+                guard let self else {
                     return
                 }
-
-                guard let stats = timeStats.summaryData.first else {
-                    // No stats for this site, or not enough views to qualify.  This is not an error.
-                    return
+                switch result {
+                case .failure(let error):
+                    self.onError(error)
+                case.success(let stats):
+                    if let stats {
+                        blogStats[site.managedObjectID] = stats
+                    }
                 }
-
-                blogStats[site] = stats
             }
+        }
+
+        group.notify(queue: .main) {
+            let bestBlogStats = self.filterBest(5, from: blogStats)
+            completion(.success(bestBlogStats))
+        }
+    }
+
+    /// Fetches weekly stats data for a given site.
+    ///
+    /// This function fetches the stats for a single site and passes the result to a completion handler.
+    /// If it encounters any error during fetching, it calls the completion handler with an appropriate error object.
+    /// The completion handler is executed in the same queue as the provided `NSManagedObjectContext`.
+    private func fetchStats(
+        for site: Site,
+        endingOn periodEndDate: Date,
+        with service: StatsServiceRemoteV2,
+        completion: @escaping (Result<StatsSummaryData?, Error>) -> Void
+    ) {
+        service.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+            let result: Result<StatsSummaryData?, Error>
+            if let error {
+              result = .failure(DataRequestError.errorRetrievingStats(site.dotComID, error: error))
+            } else if let timeStats {
+              result = .success(timeStats.summaryData.first)
+            } else {
+              result = .failure(DataRequestError.unknownErrorRetrievingStats(site.managedObjectID))
+            }
+            completion(result)
         }
     }
 
@@ -135,20 +155,22 @@ private class WeeklyRoundupDataProvider {
     /// Retrieves the sites considered by Weekly Roundup for reporting.
     ///
     /// - Returns: the requested sites (could be an empty array if there's none) or an error if there is one.
-    ///
-    private func getSites(result: @escaping (Result<[Blog], Error>) -> Void) {
-
-        switch getAllSites() {
-        case .success(let sites):
-            filterCandidateSites(sites, result: result)
-        case .failure(let error):
-            result(.failure(error))
-        }
+    private func getSites(result: @escaping (Result<[Site], Error>) -> Void) {
+        self.coreDataStack.performAndSave({ context -> Result<[Site], Error> in
+            return self.getAllSites(in: context)
+        }, completion: { allSites in
+            switch allSites {
+            case .success(let sites):
+                self.filterCandidateSites(sites, result: result)
+            case .failure(let error):
+                result(.failure(error))
+            }
+        }, on: .global())
     }
 
     /// Filters the candidate sites for the Weekly Roundup notification
     ///
-    private func filterCandidateSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func filterCandidateSites(_ sites: [Site], result: @escaping (Result<[Site], Error>) -> Void) {
         let administeredSites = sites.filter { site in
             site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
         }
@@ -158,25 +180,15 @@ private class WeeklyRoundupDataProvider {
             return
         }
 
-        filterWeeklyRoundupEnabledSites(administeredSites, result: result)
+        self.filterWeeklyRoundupEnabledSites(administeredSites, result: result)
     }
 
     /// Filters the sites that have the Weekly Roundup notification setting enabled.
     ///
-    private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
+    private func filterWeeklyRoundupEnabledSites(_ sites: [Site], result: @escaping (Result<[Site], Error>) -> Void) {
         let noteService = NotificationSettingsService(coreDataStack: coreDataStack)
-
         noteService.getAllSettings { settings in
-            let weeklyRoundupEnabledSites = sites.filter { site in
-                guard let siteSettings = settings.first(where: { $0.blog == site }),
-                      let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
-                      let sitePreferences = pushNotificationsStream.preferences else {
-                    return false
-                }
-
-                return sitePreferences["weekly_roundup"] ?? true
-            }
-
+            let weeklyRoundupEnabledSites = Self.weeklyRoundupEnabledSites(settings: settings, sites: sites)
             result(.success(weeklyRoundupEnabledSites))
         } failure: { (error: NSError?) in
             let error = DataRequestError.filterWeeklyRoundupEnabledSitesError(error)
@@ -184,7 +196,21 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    private func getAllSites() -> Result<[Blog], Error> {
+    static private func weeklyRoundupEnabledSites(
+        settings: [NotificationSettings],
+        sites: [Site]
+    ) -> [Site] {
+        return sites.filter { site in
+            guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.managedObjectID }),
+                  let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
+                  let sitePreferences = pushNotificationsStream.preferences else {
+                return false
+            }
+            return sitePreferences["weekly_roundup"] ?? true
+        }
+    }
+
+    private func getAllSites(in context: NSManagedObjectContext) -> Result<[Site], Error> {
         let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
 
         request.sortDescriptors = [
@@ -193,12 +219,65 @@ private class WeeklyRoundupDataProvider {
         ]
 
         do {
-            let result = try coreDataStack.mainContext.fetch(request)
-            return .success(result)
+            let result = try context.fetch(request)
+            let sites = result.map { Site(blog: $0) }
+            return .success(sites)
         } catch {
             return .failure(DataRequestError.siteFetchingError(error))
         }
     }
+
+    // MARK: Factory Methods
+
+    /// Returns the end date for the period (the start of the current week).
+    /// This function creates a calendar with a GMT timezone and specifies that it needs a date representing the start of the current week.
+    /// If it can't find a valid date, it returns nil.
+    private static func makePeriodEndDate() -> Date? {
+        var gmtCalendar = Calendar(identifier: .gregorian)
+        gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        var endDateComponents = DateComponents()
+        endDateComponents.weekday = 1
+        return gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward)
+    }
+
+    /// Returns an instance responsible for fetching site stats remotely.
+    /// - Important: This method is not thread-safe and must be called from the "Blog" context's queue.
+    /// - Parameter site: The blog site for which to fetch stats.
+    /// - Throws: `DataRequestError.authTokenNotFound` if the account associated with the site has no auth token.
+    /// - Throws: `DataRequestError.dotComSiteWithoutDotComID(site)` if the dotComID of the site is not available.
+    /// - Returns: An instance of `StatsServiceRemoteV2` for the site.
+    static private func makeRemoteStatsService(for site: Site) throws -> StatsServiceRemoteV2 {
+        guard let authToken = site.authToken else {
+            throw DataRequestError.authTokenNotFound
+        }
+        guard let dotComID = site.dotComID else {
+            throw DataRequestError.dotComSiteWithoutDotComID(site.managedObjectID)
+        }
+        let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
+    }
+
+    // MARK: - Types
+
+    private struct Site {
+
+        let managedObjectID: NSManagedObjectID
+        let authToken: String?
+        let dotComID: Int?
+        let timeZone: TimeZone
+        let isAdmin: Bool
+        let isAutomatticP2: Bool
+
+        init(blog: Blog) {
+            self.managedObjectID = blog.objectID
+            self.authToken = blog.account?.authToken
+            self.dotComID = blog.dotComID?.intValue
+            self.timeZone = blog.timeZone
+            self.isAdmin = blog.isAdmin
+            self.isAutomatticP2 = blog.isAutomatticP2
+        }
+    }
+
 }
 
 class WeeklyRoundupBackgroundTask: BackgroundTask {
@@ -246,23 +325,26 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     }()
 
     enum RunError: Error {
+        case unableToScheduleDynamicNotification(reason: String)
         case staticNotificationAlreadyDelivered
     }
 
     private let eventTracker: NotificationEventTracker
     let runDateComponents: DateComponents
     let notificationScheduler: WeeklyRoundupNotificationScheduler
+    let coreDataStack: ContextManager
 
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
         runDateComponents: DateComponents? = nil,
         staticNotificationDateComponents: DateComponents? = nil,
-        store: Store = Store()) {
-
+        store: Store = Store(),
+        coreDataStack: ContextManager = .shared
+    ) {
+        self.coreDataStack = coreDataStack
         self.eventTracker = eventTracker
-        notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
+        self.notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
         self.store = store
-
         self.runDateComponents = runDateComponents ?? {
             var dateComponents = DateComponents()
 
@@ -390,8 +472,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             }
         }
 
-        let dataProvider = WeeklyRoundupDataProvider(coreDataStack: ContextManager.shared, onError: onError)
-        var siteStats: [Blog: StatsSummaryData]? = nil
+        let dataProvider = WeeklyRoundupDataProvider(coreDataStack: coreDataStack, onError: onError)
+        var siteStats: WeeklyRoundupDataProvider.SiteStats? = nil
 
         let requestData = BlockOperation {
             let group = DispatchGroup()
@@ -427,24 +509,12 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
                 return
             }
 
-            for (site, stats) in siteStats {
+            for (siteID, stats) in siteStats {
                 group.enter()
-
-                self.notificationScheduler.scheduleDynamicNotification(
-                    site: site,
-                    views: stats.viewsCount,
-                    comments: stats.commentsCount,
-                    likes: stats.likesCount,
-                    periodEndDate: self.currentRunPeriodEndDate()
-                ) { result in
-
-                    switch result {
-                    case .success:
-                        self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: site.dotComID?.intValue)
-                    case .failure(let error):
+                self.scheduleDynamicNotification(siteID: siteID, stats: stats) { result in
+                    if case let .failure(error) = result {
                         onError(error)
                     }
-
                     group.leave()
                 }
             }
@@ -466,6 +536,55 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         operationQueue.addOperation(requestData)
         operationQueue.addOperation(scheduleNotification)
         operationQueue.addOperation(completionOperation)
+    }
+
+    // MARK: - Helpers
+
+    private func scheduleDynamicNotification(
+        siteID: NSManagedObjectID,
+        stats: StatsSummaryData,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        self.coreDataStack.performAndSave({ context -> (title: String?, dotComID: Int) in
+            guard let site = try? context.existingObject(with: siteID) as? Blog else {
+                throw RunError.unableToScheduleDynamicNotification(reason: "Blog with id \(siteID) not found in context")
+            }
+            guard let dotComID = site.dotComID?.intValue else {
+                throw RunError.unableToScheduleDynamicNotification(reason: "Blog \(String(describing: site.title)) is not a WordPress.com site")
+            }
+            return (site.title, dotComID)
+        }, completion: { result in
+            switch result {
+            case .success(let site):
+                self.scheduleDynamicNotification(siteTitle: site.title, dotComID: site.dotComID, stats: stats, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }, on: .global())
+    }
+
+    private func scheduleDynamicNotification(
+        siteTitle: String?,
+        dotComID: Int,
+        stats: StatsSummaryData,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        self.notificationScheduler.scheduleDynamicNotification(
+            siteTitle: siteTitle,
+            dotComID: dotComID,
+            views: stats.viewsCount,
+            comments: stats.commentsCount,
+            likes: stats.likesCount,
+            periodEndDate: self.currentRunPeriodEndDate()
+        ) { result in
+            switch result {
+            case .success:
+                self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: dotComID)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     enum Constants {
@@ -496,7 +615,6 @@ class WeeklyRoundupNotificationScheduler {
         userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
 
         self.userNotificationCenter = userNotificationCenter
-
         self.staticNotificationDateComponents = staticNotificationDateComponents ?? {
             var dateComponents = DateComponents()
 
@@ -540,25 +658,14 @@ class WeeklyRoundupNotificationScheduler {
     }
 
     func scheduleDynamicNotification(
-        site: Blog,
+        siteTitle: String?,
+        dotComID: Int,
         views: Int,
         comments: Int,
         likes: Int,
         periodEndDate: Date,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        var siteTitle: String?
-        var dotComID: Int?
-
-        site.managedObjectContext?.performAndWait {
-            siteTitle = site.title
-            dotComID = site.dotComID?.intValue
-        }
-
-        guard let dotComID = dotComID else {
-            fatalError("The argument site is not a WordPress.com site. Site: \(site)")
-        }
-
         let title = notificationTitle(siteTitle)
         let body = notificationBodyWith(views: views, comments: likes, likes: comments)
 

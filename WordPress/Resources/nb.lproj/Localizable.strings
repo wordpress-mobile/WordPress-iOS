@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -279,9 +279,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "LEGG TIL BILDE ELLER VIDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "LEGG TIL LENKE";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "LEGG TIL VIDEO";
@@ -1150,6 +1147,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1793,9 +1791,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Dobbelttrykk for å forhåndsvise innlegget.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Dobbelttrykk for å gjenta siste endring";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Dobbelttrykk for å velge";
 
 /* No comment provided by engineer. */
@@ -1806,9 +1801,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Dobbelttrykk for å veksle innstilling";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Dobbelttrykk for å angre siste endring";
 
 /* Download button title */
 "Download" = "Last ned";
@@ -3645,9 +3637,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Outside" = "Utenfor";
-
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Overstyrt";
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
@@ -5850,7 +5839,8 @@ translators: Block name. %s: The localized block name */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Understrek";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation

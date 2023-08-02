@@ -119,7 +119,7 @@ struct InsightStoreState {
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
-    fileprivate static let cacheTTL: TimeInterval = 300 // 5 minutes
+    private let cache: StatsInsightsCache = .shared
 
     init() {
         super.init(initialState: InsightStoreState())
@@ -194,28 +194,26 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         processQueries()
     }
 
-    func persistToCoreData() {
-        guard
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                return
+    func saveDataInCache() {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
         }
+        func setValue<T: StatsInsightData>(_ value: T, _ record: StatsInsightsCache.Record) {
+            cache.setValue(value, record: record, siteID: siteID)
+        }
+        state.lastPostInsight.map { setValue($0, .lastPostInsight) }
+        state.allTimeStats.map { setValue($0, .allTimeStats) }
+        state.annualAndMostPopularTime.map { setValue($0, .annualAndMostPopularTime) }
+        state.dotComFollowers.map { setValue($0, .dotComFollowers) }
+        state.emailFollowers.map { setValue($0, .emailFollowers) }
+        state.publicizeFollowers.map { setValue($0, .publicizeFollowers) }
+        state.topCommentsInsight.map { setValue($0, .topCommentsInsight) }
+        state.todaysStats.map { setValue($0, .todaysStats) }
+        state.postingActivity.map { setValue($0, .postingActivity) }
+        state.topTagsAndCategories.map { setValue($0, .topTagsAndCategories) }
 
-        _ = state.lastPostInsight.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.allTimeStats.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.annualAndMostPopularTime.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.dotComFollowers.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.emailFollowers.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.publicizeFollowers.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topCommentsInsight.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.todaysStats.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.postingActivity.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topTagsAndCategories.flatMap { StatsRecord.record(from: $0, for: blog) }
-
-        try? ContextManager.shared.mainContext.save()
-        setLastRefreshDate(Date(), for: siteID)
+        cache.setLastRefreshDate(Date(), forSiteID: siteID)
     }
-
 }
 
 // MARK: - Private Methods
@@ -227,7 +225,7 @@ private extension StatsInsightsStore {
         guard !activeQueries.isEmpty else {
             // This being empty means a VC just unregistered from observing data.
             // Let's persist what we have an clear the in-memory store.
-            persistToCoreData()
+            saveDataInCache()
             state = InsightStoreState()
             return
         }
@@ -365,35 +363,34 @@ private extension StatsInsightsStore {
     }
 
     func loadFromCache() {
-        guard
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                return
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
+        }
+        func getValue<T: StatsInsightData>(_ record: StatsInsightsCache.Record) -> T? {
+            cache.getValue(record: record, siteID: siteID)
         }
 
         transaction { state in
-            state.lastPostInsight = StatsRecord.insight(for: blog, type: .lastPostInsight).flatMap { StatsLastPostInsight(statsRecordValues: $0.recordValues) }
+            state.lastPostInsight = getValue(.lastPostInsight)
+            state.allTimeStats = getValue(.allTimeStats)
+            state.annualAndMostPopularTime = getValue(.annualAndMostPopularTime)
+            state.publicizeFollowers = getValue(.publicizeFollowers)
+            state.todaysStats = getValue(.todaysStats)
+            state.postingActivity = getValue(.postingActivity)
+            state.topTagsAndCategories = getValue(.topTagsAndCategories)
+            state.topCommentsInsight = getValue(.topCommentsInsight)
+            state.dotComFollowers = getValue(.dotComFollowers)
+            state.emailFollowers = getValue(.emailFollowers)
+
             state.lastPostSummaryStatus = state.lastPostInsight == nil ? .error : .success
-            state.allTimeStats = StatsRecord.insight(for: blog, type: .allTimeStatsInsight).flatMap { StatsAllTimesInsight(statsRecordValues: $0.recordValues) }
             state.allTimeStatus = state.allTimeStats == nil ? .error : .success
-            state.annualAndMostPopularTime = StatsRecord.insight(for: blog, type: .annualAndMostPopularTimes).flatMap { StatsAnnualAndMostPopularTimeInsight(statsRecordValues: $0.recordValues) }
             state.annualAndMostPopularTimeStatus = state.annualAndMostPopularTime != nil ? .error : .success
-            state.publicizeFollowers = StatsRecord.insight(for: blog, type: .publicizeConnection).flatMap { StatsPublicizeInsight(statsRecordValues: $0.recordValues) }
             state.publicizeFollowersStatus = state.publicizeFollowers == nil ? .error : .success
-            state.todaysStats = StatsRecord.insight(for: blog, type: .today).flatMap { StatsTodayInsight(statsRecordValues: $0.recordValues) }
             state.todaysStatsStatus = state.todaysStats == nil ? .error : .success
-            state.postingActivity = StatsRecord.insight(for: blog, type: .streakInsight).flatMap { StatsPostingStreakInsight(statsRecordValues: $0.recordValues) }
             state.postingActivityStatus = state.postingActivity == nil ? .error : .success
-            state.topTagsAndCategories = StatsRecord.insight(for: blog, type: .tagsAndCategories).flatMap { StatsTagsAndCategoriesInsight(statsRecordValues: $0.recordValues) }
             state.tagsAndCategoriesStatus = state.topTagsAndCategories == nil ? .error : .success
-            state.topCommentsInsight = StatsRecord.insight(for: blog, type: .commentInsight).flatMap { StatsCommentsInsight(statsRecordValues: $0.recordValues) }
             state.commentsInsightStatus = state.topCommentsInsight == nil ? .error : .success
-
-            let followersInsight = StatsRecord.insight(for: blog, type: .followers)
-
-            state.dotComFollowers = followersInsight.flatMap { StatsDotComFollowersInsight(statsRecordValues: $0.recordValues) }
             state.dotComFollowersStatus = state.dotComFollowers == nil ? .error : .success
-            state.emailFollowers = followersInsight.flatMap { StatsEmailFollowersInsight(statsRecordValues: $0.recordValues) }
             state.emailFollowersStatus = state.emailFollowers == nil ? .error : .success
         }
 
@@ -418,7 +415,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        guard forceRefresh || hasCacheExpired else {
+        guard forceRefresh || cache.isExpired else {
             DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
             return
         }
@@ -427,7 +424,7 @@ private extension StatsInsightsStore {
             DDLogInfo("Stats: Forcing an Insights refresh.")
         }
 
-        persistToCoreData()
+        saveDataInCache()
         fetchInsights()
     }
 
@@ -773,39 +770,6 @@ private extension StatsInsightsStore {
     func shouldFetchAnnual() -> Bool {
         return !isFetchingAnnual
     }
-
-    // MARK: - Cache expiry
-
-    var hasCacheExpired: Bool {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-              let date = lastRefreshDate(for: siteID) else {
-                  return true
-              }
-
-        let interval = Date().timeIntervalSince(date)
-        let expired = interval > StatsInsightsStore.cacheTTL
-
-        let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
-        DDLogInfo("Stats: Insights cache for site \(siteID) has \(expired ? "" : "not ")expired \(intervalLogMessage).")
-
-        return expired
-    }
-
-    func lastRefreshDate(for siteID: NSNumber) -> Date? {
-        if let date = UserPersistentStoreFactory.instance().object(forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)") as? Date {
-            return date
-        }
-
-        return nil
-    }
-
-    func setLastRefreshDate(_ date: Date, for siteID: NSNumber) {
-        UserPersistentStoreFactory.instance().set(date, forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)")
-    }
-
-    private enum CacheUserDefaultsKeys {
-        static let lastRefreshDatePrefix: String = "StatsStoreLastRefreshDate-"
-    }
 }
 
 // MARK: - Public Accessors
@@ -876,42 +840,32 @@ extension StatsInsightsStore {
     /// Summarizes the daily posting count for the month in the given date.
     /// Returns an array containing every day of the month and associated post count.
     ///
-    func getMonthlyPostingActivityFor(date: Date) -> [PostingStreakEvent] {
+    func getMonthlyPostingActivity(for date: Date) -> [PostingStreakEvent] {
+        let postingEventDates = getPostingEventsDates()
 
-        let calendar = Calendar.autoupdatingCurrent
-        let components = calendar.dateComponents([.month, .year], from: date)
-
-        guard
-            let month = components.month,
-            let year = components.year
-            else {
-                return []
-        }
-
-        let postingEvents = state.postingActivity?.postingEvents ?? []
-
-        // This gives a range of how many days there are in a given month...
-        let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
-
-        let mappedMonth = rangeOfMonth
-            // then we create a `Date` representing each of those days
-            .compactMap {
-                return calendar.date(from: DateComponents(year: year, month: month, day: $0))
-            }
-            // and pick out a relevant `PostingStreakEvent` from data we have or return
-            // an empty one.
-            .map { (date: Date) -> PostingStreakEvent in
-                if let postingEvent = postingEvents.first(where: { event in return event.date == date }) {
-                    return postingEvent
-                }
-                return PostingStreakEvent(date: date, postCount: 0)
-        }
-
-        return mappedMonth
-
+        return getMonthlyPostingActivityFor(date: date, postingEventsDates: postingEventDates)
     }
 
-    func getYearlyPostingActivityFrom(date: Date) -> [[PostingStreakEvent]] {
+    func getQuarterlyPostingActivity(from date: Date) -> [[PostingStreakEvent]] {
+        let postingEventDates = getPostingEventsDates()
+        var quarterlyData = [[PostingStreakEvent]]()
+
+        if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: date) {
+            quarterlyData.append(getMonthlyPostingActivityFor(date: twoMonthsAgo, postingEventsDates: postingEventDates))
+        }
+
+        if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: date) {
+            quarterlyData.append(getMonthlyPostingActivityFor(date: oneMonthAgo, postingEventsDates: postingEventDates))
+        }
+
+        quarterlyData.append(getMonthlyPostingActivityFor(date: date, postingEventsDates: postingEventDates))
+
+        return quarterlyData
+    }
+
+    func getYearlyPostingActivity(from date: Date) -> [[PostingStreakEvent]] {
+        let postingEventsDates = getPostingEventsDates()
+
         // We operate on a "reversed" range since we want least-recent months first.
         return (0...11).reversed().compactMap {
             guard
@@ -920,7 +874,7 @@ extension StatsInsightsStore {
                     return nil
             }
 
-            return getMonthlyPostingActivityFor(date: monthDate)
+            return getMonthlyPostingActivityFor(date: monthDate, postingEventsDates: postingEventsDates)
         }
     }
 
@@ -1106,5 +1060,56 @@ private extension InsightStoreState {
                 return false
         }
         return true
+    }
+}
+
+// MARK: - Posting Activity Private Methods
+
+private extension StatsInsightsStore {
+    private func getMonthlyPostingActivityFor(date: Date, postingEventsDates: [Date: PostingStreakEvent]) -> [PostingStreakEvent] {
+
+        let calendar = Calendar.autoupdatingCurrent
+        let components = calendar.dateComponents([.month, .year], from: date)
+
+        guard
+            let month = components.month,
+            let year = components.year
+            else {
+                return []
+        }
+
+        // This gives a range of how many days there are in a given month...
+        let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
+
+        let mappedMonth = rangeOfMonth
+            // then we create a `Date` representing each of those days
+            // and pick out a relevant `PostingStreakEvent` from data we have or return
+            // an empty one.
+            .compactMap { (day: Int) -> PostingStreakEvent? in
+                guard let date = calendar.date(from: DateComponents(year: year, month: month, day: day)) else {
+                    return nil
+                }
+
+                if let postingEvent = postingEventsDates[date] {
+                    return postingEvent
+                }
+
+                return PostingStreakEvent(date: date, postCount: 0)
+        }
+
+        return mappedMonth
+
+    }
+
+    private func getPostingEventsDates() -> [Date: PostingStreakEvent] {
+        guard let postingEvents = state.postingActivity?.postingEvents else {
+            return [:]
+        }
+
+        var dictionary: [Date: PostingStreakEvent] = [:]
+        for event in postingEvents {
+            dictionary[event.date] = event
+        }
+        return dictionary
     }
 }

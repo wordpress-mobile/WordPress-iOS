@@ -4,8 +4,6 @@
 #import "BlogService.h"
 #import "SVProgressHUD+Dismiss.h"
 
-#import <WordPressUI/WordPressUI.h>
-
 #import "WordPress-Swift.h"
 
 

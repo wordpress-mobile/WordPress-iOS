@@ -3,58 +3,58 @@ import XCTest
 
 public class EditorPostSettings: ScreenObject {
 
-    let settingsTableGetter: (XCUIApplication) -> XCUIElement = {
+    private let settingsTableGetter: (XCUIApplication) -> XCUIElement = {
         $0.tables["SettingsTable"]
     }
 
-    let categoriesSectionGetter: (XCUIApplication) -> XCUIElement = {
+    private let categoriesSectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Categories"]
     }
 
-    let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
+    private let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Tags"]
     }
 
-    let featuredImageButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let featuredImageButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["SetFeaturedImage"]
     }
 
-    let currentFeaturedImageGetter: (XCUIApplication) -> XCUIElement = {
+    private let currentFeaturedImageGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["CurrentFeaturedImage"]
     }
 
-    let publishDateButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let publishDateButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.staticTexts["Publish Date"]
     }
 
-    let dateSelectorGetter: (XCUIApplication) -> XCUIElement = {
+    private let dateSelectorGetter: (XCUIApplication) -> XCUIElement = {
         $0.staticTexts["Immediately"]
     }
 
-    let nextMonthButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let nextMonthButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Next Month"]
     }
 
-    let firstCalendarDayLabelGetter: (XCUIApplication) -> XCUIElement = {
+    private let firstCalendarDayLabelGetter: (XCUIApplication) -> XCUIElement = {
         $0.staticTexts["1"]
     }
 
-    let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Done"]
     }
 
-    var settingsTable: XCUIElement { settingsTableGetter(app) }
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
-    var tagsSection: XCUIElement { tagsSectionGetter(app) }
-    var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
-    var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
-    var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
-    var firstCalendarDayLabel: XCUIElement { firstCalendarDayLabelGetter(app) }
     var doneButton: XCUIElement { doneButtonGetter(app) }
+    var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
+    var firstCalendarDayLabel: XCUIElement { firstCalendarDayLabelGetter(app) }
+    var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
+    var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
+    var settingsTable: XCUIElement { settingsTableGetter(app) }
+    var tagsSection: XCUIElement { tagsSectionGetter(app) }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ settingsTableGetter ],
             app: app

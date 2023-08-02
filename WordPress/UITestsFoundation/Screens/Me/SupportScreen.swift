@@ -13,7 +13,7 @@ public class SupportScreen: ScreenObject {
         $0.cells["contact-support-button"]
     }
 
-    private let contactEmailFieldGetter: (XCUIApplication) -> XCUIElement = {
+    private let contactEmailTextFieldGetter: (XCUIApplication) -> XCUIElement = {
         $0.textFields["Email"]
     }
 
@@ -25,31 +25,39 @@ public class SupportScreen: ScreenObject {
         $0.buttons["OK"]
     }
 
-    var closeButton: XCUIElement { closeButtonGetter(app) }
-    var visitForumsButton: XCUIElement { visitForumsButtonGetter(app) }
-    var okButton: XCUIElement { okButtonGetter(app) }
+    private let visitWordPressForumsPromptGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["visit-wordpress-forums-prompt"]
+    }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    private let activityLogsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["activity-logs-button"]
+    }
+
+    var activityLogsButton: XCUIElement { activityLogsButtonGetter(app) }
+    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
+    var contactEmailTextField: XCUIElement { contactEmailTextFieldGetter(app) }
+    var okButton: XCUIElement { okButtonGetter(app) }
+    var visitForumsButton: XCUIElement { visitForumsButtonGetter(app) }
+    var visitWordPressForumsPrompt: XCUIElement { visitWordPressForumsPromptGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 closeButtonGetter,
                 visitForumsButtonGetter,
-                // swiftlint:disable opening_brace
-                { $0.cells["visit-wordpress-forums-prompt"] },
-                { $0.cells["activity-logs-button"] }
-                // swiftlint:enable opening_brace
+                visitWordPressForumsPromptGetter,
+                activityLogsButtonGetter
             ],
             app: app
         )
     }
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
-        let emailTextField = app.textFields["Email"]
-
-        app.cells["contact-support-button"].tap()
-        emailTextField.tap()
-        emailTextField.typeText(userEmail)
-        app.buttons["OK"].tap()
+        contactSupportButton.tap()
+        contactEmailTextField.tap()
+        contactEmailTextField.typeText(userEmail)
+        okButton.tap()
 
         return try ContactUsScreen()
     }

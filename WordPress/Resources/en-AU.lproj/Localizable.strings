@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-06-05 00:24:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: en_AU */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -304,9 +304,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "ADD IMAGE OR VIDEO";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "ADD LINK";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "ADD VIDEO";
@@ -1301,6 +1298,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1714,12 +1712,6 @@ translators: Block name. %s: The localized block name */
 /* Button title for download backup action */
 "Create downloadable file" = "Create downloadable file";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Create your first post";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Create your next post";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Create your site";
 
@@ -2084,9 +2076,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Double tap to preview post.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Double tap to redo last change";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Double tap to select";
 
 /* No comment provided by engineer. */
@@ -2106,9 +2095,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Double tap to toggle setting";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Double tap to undo last change";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Double tap to view embed options.";
@@ -4350,9 +4336,6 @@ translators: Block name. %s: The localized block name */
    Other Sites Notification Settings Title */
 "Other Sites" = "Other Sites";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Overridden";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "Phone";
 
@@ -4727,9 +4710,6 @@ translators: Block name. %s: The localized block name */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Posting Activity";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -4745,9 +4725,6 @@ translators: Block name. %s: The localized block name */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Posts and Pages";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Posts page";
@@ -6902,7 +6879,8 @@ translators: Block name. %s: The localized block name */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Underline";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation

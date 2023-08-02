@@ -4,14 +4,12 @@ import XCTest
 class StatsTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+
+        try LoginFlow
+            .login(email: WPUITestCredentials.testWPcomUserEmail)
             .goToMenu()
             .goToStatsScreen()
-            .switchTo(mode: .insights)
+            .switchTo(mode: "insights")
             .refreshStatsIfNeeded()
             .dismissCustomizeInsightsNotice()
     }
@@ -51,13 +49,13 @@ class StatsTests: XCTestCase {
 
     func testInsightsStatsLoadProperly() throws {
         try StatsScreen()
-            .switchTo(mode: .insights)
+            .switchTo(mode: "insights")
             .assertStatsAreLoaded(insightsStats)
     }
 
     func testYearsStatsLoadProperly() throws {
         try StatsScreen()
-            .switchTo(mode: .years)
+            .switchTo(mode: "years")
             .assertStatsAreLoaded(yearsStats)
             .assertChartIsLoaded(yearsChartBars)
     }

@@ -177,6 +177,8 @@ class MediaThumbnailService: NSObject {
                 if media.blog.isPrivateAtWPCom() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
                     remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
                 } else {
+                    let scale = 1.0 / UIScreen.main.scale
+                    let preferredSize = preferredSize.applying(CGAffineTransform(scaleX: scale, y: scale))
                     remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
                 }
             }

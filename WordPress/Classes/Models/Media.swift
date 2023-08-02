@@ -51,7 +51,7 @@ extension Media {
 
     func setMediaType(forFilenameExtension filenameExtension: String) {
         let type = UTType(filenameExtension: filenameExtension)
-        self.mediaType = getMediaType(for: type)
+        setMediaType(getMediaType(for: type))
     }
 
     func setMediaType(forMimeType mimeType: String) {
@@ -59,7 +59,12 @@ extension Media {
         if mimeType == "video/videopress" {
             mimeType = "video/mp4"
         }
-        self.mediaType = getMediaType(for: UTType(mimeType: mimeType))
+        setMediaType(getMediaType(for: UTType(mimeType: mimeType)))
+    }
+
+    private func setMediaType(_ newType: MediaType) {
+        guard self.mediaType != newType else { return }
+        self.mediaType = newType
     }
 
     private func getMediaType(for type: UTType?) -> MediaType {

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-06-21 05:46:57+0000 */
+/* Translation-Revision-Date: 2023-07-24 20:13:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: pl */
 
 /* Per-year postfix shown after a domain's cost. */
@@ -595,6 +595,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -831,12 +832,6 @@
 /* No comment provided by engineer. */
 "Create link" = "Stwórz odnośnik";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Stwórz swój pierwszy wpis";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Utwórz kolejny wpis";
-
 /* No comment provided by engineer. */
 "Current" = "Obecnie";
 
@@ -1010,9 +1005,6 @@
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Stuknij dwukrotnie aby przełączyć ustawienie";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Stuknij dwukrotnie aby cofnąć zmiany";
 
 /* Name for the status of a draft post. */
 "Draft" = "Szkic";
@@ -1467,10 +1459,22 @@
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Wstaw %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Wstaw blok audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Wstaw blok galerii";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Wstaw blok obrazka";
+
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
    Label action for inserting a link on the editor */
 "Insert Link" = "Wstaw odnośnik";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Wstaw blok filmu";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Wstaw media";
@@ -2352,6 +2356,9 @@
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Połączono ponownie";
+
+/* Action button to redo last change */
+"Redo" = "Ponów";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Odsyłający";
@@ -3529,6 +3536,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Wypróbuj teraz";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Flagi funkcji";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Ogólne";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "np. 1122334455";
 
@@ -3651,6 +3664,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Przejdź do powiadomień";
 
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Przełącz się na aplikację Jetpack, aby otrzymywać powiadomienia w czasie rzeczywistym na swoim urządzeniu.";
+
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Otrzymuj powiadomienia dzięki aplikacji Jetpack";
 
@@ -3750,8 +3766,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The secondary button title in the Delete WordPress screen */
 "migration.deleteWordpress.secondaryButton" = "Potrzebujesz pomocy?";
 
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPressa na swoim urządzeniu";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Koniec";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "odinstalowanie aplikacji WordPressa";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Przenieśliśmy wszystkie twoje dane i ustawienia. Wszystko jest dokładnie tam, gdzie było.";
