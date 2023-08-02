@@ -13,7 +13,7 @@ class AccountSettingsRemoteInterfaceStub: AccountSettingsRemoteInterface {
     init(
         updateSettingResult: Result<Void, Error> = .success(()),
         // Defaulting to failure to avoid having to create AccountSettings here, because it required an NSManagedContext
-        getSettingsResult: Result<AccountSettings, Error> = .failure(NSError.testError()),
+        getSettingsResult: Result<AccountSettings, Error> = .failure(NSError.testInstance()),
         changeUsernameShouldSucceed: Bool = true,
         suggestUsernamesResult: [String] = [],
         updatePasswordResult: Result<Void, Error> = .success(()),

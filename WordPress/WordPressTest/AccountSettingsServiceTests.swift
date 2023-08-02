@@ -46,7 +46,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
         // Since this approach bypasses the entire network stack, the hope is that it'll result in a more robust test.
         let service = AccountSettingsService(
             userID: 1,
-            remote: AccountSettingsRemoteInterfaceStub(updateSettingResult: .failure(NSError.testError())),
+            remote: AccountSettingsRemoteInterfaceStub(updateSettingResult: .failure(NSError.testInstance())),
             coreDataStack: contextManager
         )
 

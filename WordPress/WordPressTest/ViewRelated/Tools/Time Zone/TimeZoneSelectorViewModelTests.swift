@@ -148,7 +148,7 @@ class TimeZoneSelectorViewModelTests: CoreDataTestCase {
         // Given ViewModel
         // When ViewModel state is error
         viewModel = TimeZoneSelectorViewModel(
-                state: TimeZoneSelectorViewModel.State.with(storeState: TimeZoneStoreState.error(NSError.testError())),
+                state: TimeZoneSelectorViewModel.State.with(storeState: TimeZoneStoreState.error(NSError.testInstance())),
                 selectedValue: "",
                 filter: nil)
 
