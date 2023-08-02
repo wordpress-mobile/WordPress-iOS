@@ -3,7 +3,6 @@
 #import "CoreDataStack.h"
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
-#import "WPAvatarSource.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
@@ -261,48 +260,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     return self.author;
-}
-
-- (NSString *)avatar
-{
-    return self.authorAvatarURL;
-}
-
-- (UIImage *)cachedAvatarWithSize:(CGSize)size
-{
-    NSString *hash;
-    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
-    if (!hash) {
-        return nil;
-    }
-    return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
-}
-
-- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success
-{
-    NSString *hash;
-    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
-
-    if (hash) {
-        [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
-    } else if (success) {
-        success(nil);
-    }
-}
-
-- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash
-{
-    if (self.authorAvatarURL) {
-        NSURL *avatarURL = [NSURL URLWithString:self.authorAvatarURL];
-        if (avatarURL) {
-            return [[WPAvatarSource sharedSource] parseURL:avatarURL forAvatarHash:hash];
-        }
-    }
-    if (self.blogURL) {
-        *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
-        return WPAvatarSourceTypeBlavatar;
-    }
-    return WPAvatarSourceTypeUnknown;
 }
 
 - (NSURL *)featuredImageURL
