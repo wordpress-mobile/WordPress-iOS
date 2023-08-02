@@ -1,3 +1,5 @@
-Desativamos lembretes de blogs para sites auto-hospedados que não estão conectados ao Jetpack, já que essa funcionalidade está disponível apenas nesse aplicativo.
+Fizemos grandes mudanças no editor de blocos, inclusive nas opções de estilos, cores e ícones. Você também encontrará mais botões e opções de blocos na barra de ferramentas do cabeçalho, incluindo os botões de desfazer e refazer. Isso mesmo. Agora você tem mais ferramentas do que o cinto de utilidades do Batman.
 
-Os blocos reutilizáveis agora são os padrões sincronizados, iguais aos do editor para desktop.
+Enquanto trabalhávamos nisso, consertamos alguns vazamentos de memória, melhoramos as estatísticas de atividade de publicação e resolvemos um problema em que o app não funcionava para alguns usuários depois de abrir.
+
+Também consertamos diversos problemas causados ao enviar sugestões de publicação, seguir sites no Leitor e excluir o app do WordPress após uma migração bem-sucedida.
