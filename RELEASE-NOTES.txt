@@ -6,6 +6,8 @@
 * [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
 * [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
 * [*] Fix an issue with unstable order of assets on the media screen [#21210]
+* [*] Fix an issue with media screen flashing when opened [#21211]
+
 
 22.9
 -----
