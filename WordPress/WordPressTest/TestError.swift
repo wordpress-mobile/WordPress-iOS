@@ -1,12 +1,3 @@
-struct TestError: Error {
-
-    let id: Int
-
-    init(id: Int = 1) {
-        self.id = id
-    }
-}
-
 // There must be a way to make this as an Error extension.
 // However, when I try to do so I get the following errors.
 //
