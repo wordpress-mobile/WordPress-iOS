@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: hu */
 
 /* Empty Post Title */
@@ -115,6 +115,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen

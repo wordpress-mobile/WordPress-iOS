@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -541,6 +541,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -3022,7 +3023,8 @@
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Sublinhado";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation

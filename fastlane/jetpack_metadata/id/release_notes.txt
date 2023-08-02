@@ -1,3 +1,5 @@
-Kami menonaktifkan pengingat blogging untuk situs yang dihosting sendiri dan tidak terhubung ke Jetpack karena fitur ini hanya tersedia di aplikasi Jetpack.
+Kami telah membuat perubahan besar pada editor blok, termasuk gaya, warna, dan ikon. Anda juga bisa melihat lebih banyak tombol dan pilihan blok di bilah peralatan header, termasuk tombol urungkan dan ulangi. Tepat sekali, kini Anda memiliki lebih banyak peralatan dibandingkan sabuk serbaguna Batman.
 
-Blok pakai ulang sekarang disebut sebagai pola tersinkron, sama seperti yang ada di editor desktop.
+Di saat yang sama, kami telah menyumbat sebagian kebocoran memori, meningkatkan statistik aktivitas posting, dan memecahkan masalah di mana aplikasi tidak bisa bekerja pada beberapa pengguna setelah dibuka.
+
+Kami juga telah memperbaiki sebagian crash akibat mengetuk prompt blogging, mengikuti situs-situs di Pembaca, dan menghapus aplikasi WordPress setelah migrasi yang berhasil.

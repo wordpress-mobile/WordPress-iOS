@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-18 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-28 17:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "이미지 또는 비디오 추가";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "링크 추가";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "미디어 추가";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "링크 생성";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "첫 번째 글 작성";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "다음 글 작성";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "사이트 작성";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "글을 미리 보려면 두 번 누르세요.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "마지막 변경을 다시 실행하려면 두 번 탭하세요.";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "선택하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "설정을 전환하려면 두 번 탭하세요.";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "마지막 변경을 취소하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "임베드 옵션을 보려면 두 번 누릅니다.";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "삽입 %@:";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "오디오 블록 삽입";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "갤러리 블록 삽입";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "가로 눈금자 삽입";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "이미지 블록 삽입";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "미디어 삽입";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "비디오 블록 삽입";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "교차 글 삽입";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "외부";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "재정의";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "전화";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "게시 활동";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "정기적으로 글을 작성하면 잠재 고객 유치에 도움이 됩니다!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "게시물과 페이지";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "글은 시간 역순으로 블로그 페이지에 표시됩니다. 전 세계와 아이디어를 공유할 때가 되었습니다!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "글 페이지";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "다시 연결됨";
+
+/* Action button to redo last change */
+"Redo" = "다시 실행";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "참조자";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "밑줄";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "무시";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "생성";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "아직 캠페인을 생성하지 않았습니다. 시작하려면 홍보를 클릭하세요.";
+"blaze.campaigns.empty.subtitle" = "아직 캠페인을 만들지 않았습니다. 시작하려면 만들기를 클릭합니다.";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "캠페인이 없습니다.";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "캠페인 로드 중...";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "홍보";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Blaze 캠페인";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "더 알아보기";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Blaze로 콘텐츠 홍보";
@@ -9811,6 +9807,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "노출";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "더 알아보기";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Blaze 캠페인";
 
@@ -9838,6 +9837,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "통계 보기";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "기능 플래그";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "일반";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "체크 표시가 재정의된 파라미터에 표시됩니다.";
 
@@ -9849,12 +9854,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "원격 구성";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "로컬 기능 플래그";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "원격 기능 플래그";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "찾고 공유하고 팔로우하기 쉬운 사이트 주소로 자신에게 유리하게 웹에 대한 권리를 주장하세요.";
@@ -10539,11 +10538,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "더 많은 정보를 공유하려면 지금 구독하세요";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "%1$d\/%2$d  소셜 공유 잔량";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " 향후 30일 이내에";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "남은 소셜 공유 %1$d";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "%1$d개 계정과 공유 중";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "소셜 계정과 공유 안 함";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "%1$d\/%2$d개 계정과 공유 중";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "%1$@과(와) 공유 중";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "소셜 공유 %1$d\/%2$d회 남음";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "모든 응답 보기";

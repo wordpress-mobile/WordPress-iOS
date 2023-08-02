@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-19 11:54:08+0000 */
+/* Translation-Revision-Date: 2023-07-27 11:54:25+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.6 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -414,9 +414,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "画像または動画を追加";
-
-/* No comment provided by engineer. */
-"ADD LINK" = "リンクを追加";
 
 /* No comment provided by engineer. */
 "ADD MEDIA" = "メディアを追加";
@@ -1632,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -2157,12 +2155,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Create link" = "リンクを作成";
 
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "最初の投稿を作成";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "次の投稿を作成";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "サイトを作成";
 
@@ -2591,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "ダブルタップで投稿をプレビューできます。";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "ダブルタップして前回の変更をやり直す";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "ダブルタップして選択";
 
 /* No comment provided by engineer. */
@@ -2616,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "ダブルタップして設定を切り替え";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "ダブルタップして前回の変更を元に戻す";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "ダブルタップして埋め込みオプションを表示します。";
@@ -3811,8 +3797,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "%@個を挿入";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "音声ブロックを挿入";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "ギャラリーブロックを挿入";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "水平線を挿入";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "画像ブロックを挿入";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3816,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "メディアを挿入";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "動画ブロックを挿入";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "クロスポストを挿入";
@@ -5343,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "外側";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "上書き済み";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "電話";
 
@@ -5757,9 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "投稿アクティビティ";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "定期的に投稿することで、読者を増やすことができます。";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5775,9 +5767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "投稿とページ";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "投稿はブログページに新しいものから順に表示されます。 あなたのアイデアを世界中のユーザーとシェアしましょう !";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "投稿ページ";
@@ -6047,6 +6036,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "再連携完了";
+
+/* Action button to redo last change */
+"Redo" = "やり直す";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "リファラ";
@@ -8324,7 +8316,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "下線";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -9628,8 +9621,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "削除";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "作成";
+
 /* Text displayed when there are no Blaze campaigns to display. */
-"blaze.campaigns.empty.subtitle" = "まだキャンペーンを作成していません。 開始するには「宣伝」をクリックしてください。";
+"blaze.campaigns.empty.subtitle" = "まだキャンペーンを作成していません。 開始するには「作成」をクリックしてください。";
 
 /* Title displayed when there are no Blaze campaigns to display. */
 "blaze.campaigns.empty.title" = "キャンペーンがありません";
@@ -9643,9 +9639,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "キャンペーンを読み込んでいます…";
 
-/* Button title for the button that shows the Blaze flow when tapped. */
-"blaze.campaigns.promote.button.title" = "宣伝";
-
 /* Title for the screen that allows users to manage their Blaze campaigns. */
 "blaze.campaigns.title" = "Blaze キャンペーン";
 
@@ -9654,6 +9647,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "非表示";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "さらに詳しく";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Blaze を使ってコンテンツを宣伝";
@@ -9808,6 +9804,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for impressions stats view */
 "dashboardCard.blazeCampaigns.impressions" = "インプレッション";
 
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "さらに詳しく";
+
 /* Title for the card displaying blaze campaigns. */
 "dashboardCard.blazeCampaigns.title" = "Blaze キャンペーン";
 
@@ -9835,6 +9834,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "統計情報を表示する";
 
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "機能フラグ";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "一般";
+
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "上書きした変数はチェックマークで表示されます。";
 
@@ -9846,12 +9851,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "リモート設定";
-
-/* Title of the Local Feature Flags screen used in debug builds of the app */
-"debugMenu.section.localFeatureFlags" = "ローカル機能フラグ";
-
-/* Title of the Remote Feature Flags screen used in debug builds of the app */
-"debugMenu.section.remoteFeatureFlags" = "リモート機能フラグ";
 
 /* Description for the Domains dashboard card. */
 "domain.dashboard.card.description" = "見つけやすく、共有やフォローがしやすいサイトアドレスを使って自分のサイトであることを示しましょう。";
@@ -10536,11 +10535,42 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
 
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. %2$d is their share limit. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.remainingshares.text.format" = "残りのソーシャルシェア数は%1$d\/%2$dです";
-
 /* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
 "postsettings.social.remainingshares.text.part" = " 30日以内";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "残りのソーシャルシェア数は%1$d件です";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "%1$d件のアカウントにシェアしています";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "ソーシャルにシェアしていません";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "%2$d件中%1$d件のアカウントにシェアしています";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "%1$@ にシェアしています";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+%2$d is a placeholder for the maximum shares allowed for the user's blog.
+Example: 27/30 social shares remaining */
+"prepublishing.social.remainingShares" = "残りのソーシャルシェア数は%1$d\/%2$dです";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "すべての回答を表示";
@@ -10613,7 +10643,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新規";
 
 /* Information of what related post are and how they are presented */
-"relatedPostsSettings.optionsFooter" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します";
+"relatedPostsSettings.optionsFooter" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します。";
 
 /* Text for related post cell preview */
 "relatedPostsSettings.preview1.details" = "「モバイル」カテゴリー";
