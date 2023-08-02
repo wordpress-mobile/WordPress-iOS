@@ -142,7 +142,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // simulate a failed request
         progress.completedUnitCount = 0
 
-        mediaProgressCoordinator.attach(error: .testError(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: TestError(), toMediaID: "1")
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
 
@@ -165,7 +165,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // Fail all the requests
         mediaProgressCoordinator.mediaInProgress.values.enumerated().forEach({ index, progress in
             progress.completedUnitCount = 0
-            mediaProgressCoordinator.attach(error: .testError(), toMediaID: "\(index+1)")
+            mediaProgressCoordinator.attach(error: TestError(), toMediaID: "\(index+1)")
         })
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
@@ -190,8 +190,8 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         mediaProgressCoordinator.mediaInProgress["1"]!.completedUnitCount = 0
         mediaProgressCoordinator.mediaInProgress["2"]!.completedUnitCount = 0
 
-        mediaProgressCoordinator.attach(error: .testError(), toMediaID: "1")
-        mediaProgressCoordinator.attach(error: .testError(), toMediaID: "2")
+        mediaProgressCoordinator.attach(error: TestError(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: TestError(), toMediaID: "2")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
 
