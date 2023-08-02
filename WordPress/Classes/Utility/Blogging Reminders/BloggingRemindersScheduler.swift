@@ -277,16 +277,16 @@ class BloggingRemindersScheduler {
         }
 
         pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
-            guard let self = self else {
-                return
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                guard allowed else {
+                    completion(.failure(Error.needsPermissionForPushNotifications))
+                    return
+                }
+                self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
             }
-
-            guard allowed else {
-                completion(.failure(Error.needsPermissionForPushNotifications))
-                return
-            }
-
-            self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
         }
     }
 
