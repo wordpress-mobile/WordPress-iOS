@@ -32,7 +32,7 @@ class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
         guard let siteURL = blog.displayURL else {
             return nil
         }
-        let urlString = String(format: Constants.campaignDetailsURLFormat, siteURL, campaignID, source.description)
+        let urlString = String(format: Constants.campaignDetailsURLFormat, campaignID, siteURL, source.description)
         return URL(string: urlString)
     }
 
@@ -111,6 +111,6 @@ private extension BlazeCampaignDetailsWebViewModel {
     enum Constants {
         // TODO: Replace these constants with remote config params
         static let baseURLFormat = "https://wordpress.com/advertising/%@"
-        static let campaignDetailsURLFormat = "https://wordpress.com/advertising/%@/campaigns/%d?source=%@"
+        static let campaignDetailsURLFormat = "https://wordpress.com/advertising/campaigns/%d/%@?source=%@"
     }
 }
