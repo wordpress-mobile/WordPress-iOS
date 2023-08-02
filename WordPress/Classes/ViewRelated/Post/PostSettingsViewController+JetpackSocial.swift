@@ -133,7 +133,7 @@ private extension PostSettingsViewController {
 
     func availableServices() -> [PublicizeService] {
         let context = apost.managedObjectContext ?? ContextManager.shared.mainContext
-        let services = try? PublicizeService.allPublicizeServices(in: context)
+        let services = try? PublicizeService.allSupportedServices(in: context)
         return services ?? []
     }
 
