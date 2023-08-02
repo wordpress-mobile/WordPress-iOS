@@ -1,1 +1,3 @@
-Abbiamo disattivato i promemoria relativi al blog per i siti ospitati personalmente che non sono connessi a Jetpack, poiché questa funzionalità è disponibile solo nell'app Jetpack. Breve e gradevole.
+Abbiamo apportato alcune grandi modifiche all'editor a blocchi, inclusi stili, colori e icone. Troverai anche ulteriori pulsanti e opzioni del blocco nella barra degli strumenti dell'intestazione, inclusi i pulsanti Annulla e Ripeti. Esatto, ora disponi di ulteriori strumenti della cintura multiuso di Batman.
+
+Già che c'eravamo, abbiamo tamponato alcune perdite di memoria e risolto un problema che non permetteva il corretto funzionamento dell'app per alcuni utenti dopo l'apertura.

@@ -1,1 +1,0 @@
-Bu özellik yalnızca Jetpack uygulamasında sunulduğu için, kullanıcı tarafından barındırılan siteler için blog hatırlatıcılarını devre dışı bıraktık. Kısa ve öz.
