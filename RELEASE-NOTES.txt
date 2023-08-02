@@ -1,4 +1,4 @@
-23.0
+23.1
 -----
 * [**] [internal] Refactor fetching a post with id. [#21163]
 
