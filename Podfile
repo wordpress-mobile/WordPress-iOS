@@ -428,4 +428,21 @@ post_install do |installer|
   yellow_marker = "\033[33m"
   reset_marker = "\033[0m"
   puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
+
+  # Fix a compiling issue in Xcode 15 beta.
+  # This line in particular https://github.com/mrackwitz/MRProgress/blob/0.8.3/src/Components/MRProgressOverlayView.m#L811
+  # The error message is "Multiple methods named 'setProgress:' found with mismatched result, parameter type or attributes"
+  # We are going to replace the `id` with `MRProgressView *` (or any other type that has a method `setProgress:` that takes a float argument).
+  mrprogress_filepath = "#{project_root}/Pods/MRProgress/src/Components/MRProgressOverlayView.m"
+  original_line = "        [((id)self.modeView) setProgress:self.progress];\n"
+  replacement_line = "        [((MRProgressView *)self.modeView) setProgress:self.progress];\n"
+  File.chmod(0644, mrprogress_filepath)
+  File.open(mrprogress_filepath, 'r+') do |file|
+    lines = file.each_line.to_a
+    if lines[810] == original_line
+      lines[810] = replacement_line
+      file.rewind
+      file.puts(lines)
+    end
+  end
 end
