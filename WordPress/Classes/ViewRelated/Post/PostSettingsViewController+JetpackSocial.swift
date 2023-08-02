@@ -125,9 +125,30 @@ private extension PostSettingsViewController {
             }
             let webViewController = WebViewControllerFactory.controller(url: url,
                                                                         blog: blog,
-                                                                        source: "post_settings_remaining_shares_subscribe_now")
+                                                                        source: "post_settings_remaining_shares_subscribe_now") {
+                self?.checkoutDismissed()
+            }
             let navigationController = UINavigationController(rootViewController: webViewController)
             self?.present(navigationController, animated: true)
+        }
+    }
+
+    func checkoutDismissed() {
+        let coreDataStack = ContextManager.shared
+        let service = BlogService(coreDataStack: coreDataStack)
+        service.syncBlog(apost.blog) { [weak self] in
+            let sharingLimit: PublicizeInfo.SharingLimit? = coreDataStack.performQuery { context in
+                guard let dotComID = self?.apost.blog.dotComID,
+                      let blog = Blog.lookup(withID: dotComID, in: context) else {
+                    return nil
+                }
+                return blog.sharingLimit
+            }
+            if sharingLimit == nil {
+                self?.reloadData()
+            }
+        } failure: { error in
+            DDLogError("Failed to sync blog after dismissing checkout webview due to error: \(error)")
         }
     }
 
