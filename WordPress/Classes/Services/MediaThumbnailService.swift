@@ -191,7 +191,7 @@ class MediaThumbnailService: NSObject {
             return
         }
 
-        let download = AuthenticatedImageDownload(url: imageURL, blogObjectID: media.blog.objectID, callbackQueue: callbackQueue, onSuccess: onCompletion, onFailure: onError)
+        let download = AuthenticatedImageDownload(url: imageURL, mediaHost: MediaHost(with: media.blog), callbackQueue: callbackQueue, onSuccess: onCompletion, onFailure: onError)
 
         download.start()
     }
