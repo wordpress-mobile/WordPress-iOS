@@ -83,8 +83,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             }
 
             cell.configureForPostDetails(with: comment) { _ in
-                try? WPException.objcTry {
-                    tableView.performBatchUpdates({})
+                do {
+                    try WPException.objcTry {
+                        tableView.performBatchUpdates({})
+                    }
+                } catch {
+                    WordPressAppDelegate.crashLogging?.logError(error)
                 }
             }
 
