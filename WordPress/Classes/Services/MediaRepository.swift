@@ -59,4 +59,31 @@ final class MediaRepository {
 
         return nil
     }
+
+}
+
+extension MediaServiceRemote {
+
+    func getMediaLibraryCount(forMediaTypes types: [MediaType]) async throws -> Int {
+        try await getMediaLibraryCount(forMediaTypes: types.map(Media.string(from:)))
+    }
+
+    func getMediaLibraryCount(forMediaTypes mediaTypes: [String]) async throws -> Int {
+        var total = 0
+        for type in mediaTypes {
+            total += try await self.getMediaLibraryCount(forMediaType: type)
+        }
+        return total
+    }
+
+    private func getMediaLibraryCount(forMediaType type: String) async throws -> Int {
+        try await withCheckedThrowingContinuation { continuation in
+            self.getMediaLibraryCount(
+                forType: type,
+                withSuccess: continuation.resume(returning:),
+                failure: { continuation.resume(throwing: $0!) }
+            )
+        }
+    }
+
 }

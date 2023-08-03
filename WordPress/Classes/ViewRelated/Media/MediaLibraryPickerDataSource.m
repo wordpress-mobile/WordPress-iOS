@@ -615,16 +615,14 @@
     }
 
     __weak __typeof__(self) weakSelf = self;
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-        [mediaService getMediaLibraryServerCountForBlog:self.blog forMediaTypes:mediaTypes success:^(NSInteger count) {
-            weakSelf.itemsCount = count;
-            completionHandler(count, nil);
-        } failure:^(NSError * _Nonnull error) {
-            DDLogError(@"%@", [error localizedDescription]);
-            weakSelf.itemsCount = count;
-            completionHandler(count, error);
-        }];
+
+    [self getMediaLibraryCountForMediaTypes:mediaTypes ofBlog:self.blog success:^(NSInteger count) {
+        weakSelf.itemsCount = count;
+        completionHandler(count, nil);
+    } failure:^(NSError *error) {
+        DDLogError(@"%@", [error localizedDescription]);
+        weakSelf.itemsCount = count;
+        completionHandler(count, error);
     }];
 
     return self.itemsCount;
