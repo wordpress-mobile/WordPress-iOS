@@ -7,7 +7,10 @@
 * [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
 * [*] Fix an issue with unstable order of assets on the media screen [#21210]
 * [*] Fix an issue with media screen flashing when opened [#21211]
-
+* [*] Block editor: Remove visual gap in mobile toolbar when a Gallery block is selected [https://github.com/WordPress/gutenberg/pull/52966]
+* [*] Block editor: Remove Gallery caption button on mobile [https://github.com/WordPress/gutenberg/pull/53010]
+* [*] Block editor: Fix Gallery block selection when adding media [https://github.com/WordPress/gutenberg/pull/53127]
+* [**] Block editor: Fix iOS Focus loop for RichText components [https://github.com/WordPress/gutenberg/pull/53217]
 
 22.9
 -----
