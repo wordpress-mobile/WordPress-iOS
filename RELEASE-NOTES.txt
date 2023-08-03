@@ -10,7 +10,6 @@
 * [*] Block editor: Remove visual gap in mobile toolbar when a Gallery block is selected [https://github.com/WordPress/gutenberg/pull/52966]
 * [*] Block editor: Remove Gallery caption button on mobile [https://github.com/WordPress/gutenberg/pull/53010]
 * [*] Block editor: Fix Gallery block selection when adding media [https://github.com/WordPress/gutenberg/pull/53127]
-* [**] Block editor: Fix iOS Focus loop for RichText components [https://github.com/WordPress/gutenberg/pull/53217]
 * [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
 
 22.9
