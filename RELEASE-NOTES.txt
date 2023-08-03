@@ -1,5 +1,6 @@
 23.0
 -----
+* [**] [Jetpack-only] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
 * [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
 * [**] [internal] Upgrade React Native to 0.71.11 [#20956]
 * [*] Fix incorrect WordPress Media images count in Media Picker. [#21181]
