@@ -497,6 +497,7 @@ import Foundation
     case jetpackSocialUpgradeLinkTapped
     case jetpackSocialNoConnectionCardDisplayed
     case jetpackSocialNoConnectionCTATapped
+    case jetpackSocialNoConnectionCardDismissed
 
     // Free to Paid Plans Dashboard Card
     case freeToPaidPlansDashboardCardShown
@@ -1361,6 +1362,8 @@ import Foundation
             return "jetpack_social_add_connection_cta_displayed"
         case .jetpackSocialNoConnectionCTATapped:
             return "jetpack_social_add_connection_tapped"
+        case .jetpackSocialNoConnectionCardDismissed:
+            return "jetpack_social_add_connection_dismissed"
 
         // Free to Paid Plans Dashboard Card
         case .freeToPaidPlansDashboardCardShown:

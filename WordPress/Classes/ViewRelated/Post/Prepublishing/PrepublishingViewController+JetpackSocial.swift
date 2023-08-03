@@ -164,6 +164,8 @@ private extension PrepublishingViewController {
                 return
             }
 
+            WPAnalytics.track(.jetpackSocialNoConnectionCardDismissed, properties: ["source": Constants.trackingSource])
+
             self.isNoConnectionDismissed = true
             self.refreshOptions()
 
