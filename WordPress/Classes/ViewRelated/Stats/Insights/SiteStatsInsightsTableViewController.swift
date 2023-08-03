@@ -373,7 +373,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         Task { @MainActor in
             do {
                 let postObjectID = try await postRepository.getPost(withID: postID, from: .ofSaved(blog))
-                let apost = try postObjectID.existingObject(in: coreDataStack.mainContext)
+                let apost = try coreDataStack.mainContext.existingObject(with: postObjectID)
 
                 guard let post = apost as? Post else {
                     DDLogInfo("Failed to get post with id \(postID)")

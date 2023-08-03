@@ -488,11 +488,14 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
 
         return CoreDataObjectIdentifier<T>(objectID: object.objectID)
     }
+}
+
+extension NSManagedObjectContext {
 
     /// Find the object associated with this object id in the given `context`.
     ///
     /// - SeeAlso: `NSManagedObjectContext.existingObject(with:)`
-    func existingObject(in context: NSManagedObjectContext) throws -> Model {
+    func existingObject<Model>(with id: CoreDataObjectIdentifier<Model>) throws -> Model {
         do {
             var result: Result<Model, Error>!
 
@@ -500,7 +503,7 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
             // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
             try WPException.objcTry {
                 result = Result {
-                    let object = try context.existingObject(with: objectID)
+                    let object = try self.existingObject(with: id.objectID)
                     return object as! Model
                 }
             }
@@ -510,4 +513,5 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
             throw error
         }
     }
+
 }

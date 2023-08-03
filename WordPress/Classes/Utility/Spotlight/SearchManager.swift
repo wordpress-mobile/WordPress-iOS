@@ -263,7 +263,7 @@ fileprivate extension SearchManager {
         Task { @MainActor in
             do {
                 let postObjectID = try await postRepository.getPost(withID: postID, from: .ofSaved(blog))
-                let post = try postObjectID.existingObject(in: coreDataStack.mainContext)
+                let post = try coreDataStack.mainContext.existingObject(with: postObjectID)
                 onSuccess(post)
             } catch {
                 onFailure()
@@ -285,7 +285,7 @@ fileprivate extension SearchManager {
         Task { @MainActor in
             do {
                 let postObjectID = try await postRepository.getPost(withID: postID, from: .ofSaved(blog))
-                let post = try postObjectID.existingObject(in: coreDataStack.mainContext)
+                let post = try coreDataStack.mainContext.existingObject(with: postObjectID)
                 onSuccess(post)
             } catch {
                 onFailure()

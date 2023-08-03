@@ -23,7 +23,7 @@ final class PostRepository {
     /// - Returns: The stored post object id.
     func getPost(withID postID: NSNumber, from blogID: CoreDataObjectIdentifier<Blog>) async throws -> CoreDataObjectIdentifier<AbstractPost> {
         let remote = try await coreDataStack.performQuery { [remoteFactory] in
-            let blog = try blogID.existingObject(in: $0)
+            let blog = try $0.existingObject(with: blogID)
             return remoteFactory.forBlog(blog)
         }
 
@@ -44,7 +44,7 @@ final class PostRepository {
         }
 
         return try await coreDataStack.performAndSave { context in
-            let blog = try blogID.existingObject(in: context)
+            let blog = try context.existingObject(with: blogID)
 
             let post: AbstractPost
             if let existingPost = blog.lookupPost(withID: postID, in: context) {

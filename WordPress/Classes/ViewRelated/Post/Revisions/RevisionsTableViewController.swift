@@ -159,7 +159,7 @@ private extension RevisionsTableViewController {
         Task { @MainActor in
             do {
                 let postID = try await postRepository.getPost(withID: revision.revisionId, from: .ofSaved(blog))
-                let post = try postID.existingObject(in: coreDataStack.mainContext)
+                let post = try coreDataStack.mainContext.existingObject(with: postID)
 
                 await SVProgressHUD.dismiss()
                 WPAnalytics.track(.postRevisionsRevisionLoaded)
