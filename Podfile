@@ -435,9 +435,9 @@ post_install do |installer|
   # We are going to replace the `id` with `MRProgressView *` (or any other type that has a method `setProgress:` that takes a float argument).
   mrprogress_filepath = "#{project_root}/Pods/MRProgress/src/Components/MRProgressOverlayView.m"
   File.chmod(0o644, mrprogress_filepath)
-  lines = IO.readlines(mrprogress_filepath)
+  lines = File.readlines(mrprogress_filepath)
   if lines[810] == "        [((id)self.modeView) setProgress:self.progress];\n"
     lines[810] = "        [((MRProgressView *)self.modeView) setProgress:self.progress];\n"
-    IO.write(mrprogress_filepath, lines.join)
+    File.write(mrprogress_filepath, lines.join)
   end
 end
