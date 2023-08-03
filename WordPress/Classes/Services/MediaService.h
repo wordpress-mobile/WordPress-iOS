@@ -117,21 +117,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
             failure:(nullable void (^)(void))failure;
 
 /**
- *  Retrieves the metadata of a VideoPress video.
- *
- *  The metadata parameters can be found in the API reference:
- *  https://developer.wordpress.com/docs/api/1.1/get/videos/%24guid/
- *
- *  @param videoPressID ID of the video in VideoPress.
- *  @param success a block to be executed when the metadata is fetched successfully.
- *  @param failure a block to be executed when the metadata can't be fetched.
- */
-- (void)getMetadataFromVideoPressID:(nonnull NSString *)videoPressID
-                             inBlog:(nonnull Blog *)blog
-                            success:(nullable void (^)(RemoteVideoPressVideo * _Nonnull metadata))success
-                            failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
-/**
  * Sync all Media objects from the server to local database
  
  * @param blog
