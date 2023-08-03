@@ -136,7 +136,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .compliancePopover:
             return true
         case .domainFocus:
-            return true
+            return false
         }
     }
 
