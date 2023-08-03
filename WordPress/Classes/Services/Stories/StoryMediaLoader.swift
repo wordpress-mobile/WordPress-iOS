@@ -58,7 +58,7 @@ final class StoryMediaLoader {
                 let media: Media
                 do {
                     let mediaID = try await mediaRepository.getMedia(withID: NSNumber(value: Double(file.id) ?? 0), in: blogID)
-                    media = try mediaID.existingObject(in: coreDataStack.mainContext)
+                    media = try coreDataStack.mainContext.existingObject(with: mediaID)
                 } catch {
                     DDLogWarn("Stories media fetch error \(error)")
                     return

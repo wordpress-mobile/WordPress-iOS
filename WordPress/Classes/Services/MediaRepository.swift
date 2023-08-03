@@ -19,7 +19,7 @@ final class MediaRepository {
     /// Get the Media object from the server using the blog and the mediaID as the identifier of the resource
     func getMedia(withID mediaID: NSNumber, in blogID: CoreDataObjectIdentifier<Blog>) async throws -> CoreDataObjectIdentifier<Media> {
         let remote = try await coreDataStack.performQuery { [remoteFactory] context in
-            let blog = try blogID.existingObject(in: context)
+            let blog = try context.existingObject(with: blogID)
             return remoteFactory.remote(for: blog)
         }
         guard let remote else {
@@ -36,7 +36,7 @@ final class MediaRepository {
         }
 
         return try await coreDataStack.performAndSave { context in
-            let blog = try blogID.existingObject(in: context)
+            let blog = try context.existingObject(with: blogID)
             let media = Media.existingMediaWith(mediaID: mediaID, inBlog: blog) ?? Media.makeMedia(blog: blog)
             MediaHelper.update(media: media, with: remoteMedia)
             return try .ofUnsaved(media)

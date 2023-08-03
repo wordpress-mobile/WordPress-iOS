@@ -311,8 +311,8 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate 
         Task { @MainActor in
             let media: Media
             do {
-                let mediaID = try await mediaRepository.getMedia(withID:mediaID, in: blogID)
-                media = try mediaID.existingObject(in: mainContext)
+                let mediaID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)
+                media = try mainContext.existingObject(with: mediaID)
             } catch {
                 DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
                 return

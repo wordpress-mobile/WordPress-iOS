@@ -84,7 +84,7 @@ class MediaThumbnailCoordinator: NSObject {
             do {
                 let mediaID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)
                 // FIXME: Pass media object identifier to the completion block instead.
-                let loadedMedia = try mediaID.existingObject(in: coreDataStack.mainContext)
+                let loadedMedia = try coreDataStack.mainContext.existingObject(with: mediaID)
                 onCompletion(loadedMedia, nil)
             } catch {
                 onCompletion(nil, error)
