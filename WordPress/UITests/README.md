@@ -24,7 +24,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [ ] Email Sign Up - Link to Self-Hosted Site
 3. NUX
     - [ ] Create New Site - Skip Quick Start
-    - [ ] Create New Site - Follow Quick Start
+    - [x] Create New Site - Follow Quick Start (Only checking the first item from the list)
     - [ ] Set Up Blogging Reminders on First Post
 4. Posting/Editing/Gutenberg
     - [ ] Post:

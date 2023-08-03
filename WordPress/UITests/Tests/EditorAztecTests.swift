@@ -7,9 +7,8 @@ class EditorAztecTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(
-            email: WPUITestCredentials.testWPcomUserEmail
-        )
+        try LoginFlow
+            .login(email: WPUITestCredentials.testWPcomUserEmail)
         try EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()

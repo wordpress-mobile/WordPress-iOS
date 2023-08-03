@@ -7,7 +7,47 @@ public class LoginEpilogueScreen: ScreenObject {
         $0.tables["login-epilogue-table"]
     }
 
+    private let createNewSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Create a new site"]
+    }
+
+    private let siteTopicSkipButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Site Topic"].buttons["Skip"]
+    }
+
+    private let chooseThemeSkipButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Choose a theme"].buttons["Skip"]
+    }
+
+    private let siteNameSearchFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.searchFields["Type a name for your site"]
+    }
+
+    private let createSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Create Site"]
+    }
+
+    private let siteCreatedMessageGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["Your site has been created!"]
+    }
+
+    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Done"]
+    }
+
+    private let showMeAroundButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Show me around"]
+    }
+
+    var chooseThemeSkipButton: XCUIElement { chooseThemeSkipButtonGetter(app) }
+    var createNewSiteButton: XCUIElement { createNewSiteButtonGetter(app) }
+    var createSiteButton: XCUIElement { createSiteButtonGetter(app) }
+    var doneButton: XCUIElement { doneButtonGetter(app) }
     var loginEpilogueTable: XCUIElement { loginEpilogueTableGetter(app) }
+    var showMeAroundButton: XCUIElement { showMeAroundButtonGetter(app) }
+    var siteCreatedMessage: XCUIElement { siteCreatedMessageGetter(app) }
+    var siteNameSearchField: XCUIElement { siteNameSearchFieldGetter(app) }
+    var siteTopicSkipButton: XCUIElement { siteTopicSkipButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -53,6 +93,45 @@ public class LoginEpilogueScreen: ScreenObject {
         XCTAssertEqual(expectedSiteUrl, actualSiteUrl, "Site URL displayed is \(actualSiteUrl) but should be \(expectedSiteUrl)")
 
         return self
+    }
+
+    public func tapCreateNewSite() throws -> Self {
+        createNewSiteButton.tap()
+
+        return self
+    }
+
+    public func skipSiteTopicAndTheme() -> Self {
+        siteTopicSkipButton.tap()
+        chooseThemeSkipButton.tap()
+
+        return self
+    }
+
+    public func chooseDomainName(_ domainName: String) -> Self {
+        siteNameSearchField.tap()
+        siteNameSearchField.typeText(domainName)
+        app.staticTexts[domainName] .tap()
+        createSiteButton.tap()
+
+        return self
+    }
+
+    public func verifySiteCreated() -> Self {
+        XCTAssertTrue(siteCreatedMessage.waitForExistence(timeout: 10))
+        XCTAssertTrue(doneButton.waitForExistence(timeout: 10))
+
+        return self
+    }
+
+    public func tapDoneButton() -> Self {
+        doneButton.tap()
+
+        return self
+    }
+
+    public func proceedToCustomizeYourSite() {
+        showMeAroundButton.tap()
     }
 
     private func getDisplayUrl(for siteUrl: String) -> String {

@@ -7,7 +7,6 @@ class ReaderTests: XCTestCase {
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
-
         try TabNavComponent()
             .goToReaderScreen()
     }

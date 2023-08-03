@@ -13,7 +13,7 @@
     "jsonBody": {
       "ID": 106707880,
       "name": "Tri-County Real Estate",
-      "description": "",
+      "description": "Site on Personal Plan",
       "URL": "http://tricountyrealestate.wordpress.com",
       "capabilities": {
         "edit_pages": true,

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/rest/v1.1/sites/181977606",
+    "urlPath": "/rest/v1.1/sites/221670093",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -11,10 +11,10 @@
   "response": {
     "status": 200,
     "jsonBody": {
-      "ID": 181977606,
-      "name": "Weekend Bakes",
-      "description": "Site on Pro Plan",
-      "URL": "https://weekendbakesblog.wordpress.com",
+      "ID": 221670093,
+      "name": "New Testing Site",
+      "description": "Newly created site",
+      "URL": "https://domainexample.blog",
       "user_can_manage": false,
       "capabilities": {
         "edit_pages": true,
@@ -1748,11 +1748,11 @@
       "jetpack_modules": null,
       "meta": {
         "links": {
-          "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606",
-          "help": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/help",
-          "posts": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/",
-          "comments": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/",
-          "xmlrpc": "https://weekendbakesblog.wordpress.com/xmlrpc.php"
+          "self": "https://public-api.wordpress.com/rest/v1.1/sites/221670093",
+          "help": "https://public-api.wordpress.com/rest/v1.1/sites/221670093/help",
+          "posts": "https://public-api.wordpress.com/rest/v1.1/sites/221670093/posts/",
+          "comments": "https://public-api.wordpress.com/rest/v1.1/sites/221670093/comments/",
+          "xmlrpc": "https://domainexample.blog/xmlrpc.php"
         }
       },
       "quota": {
