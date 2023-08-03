@@ -3,20 +3,27 @@ import SwiftUI
 struct DashboardGoogleDomainsCardView: View {
     var body: some View {
         VStack(spacing: Length.Padding.double) {
-            contentTitleHStack
-            Text(Strings.contentDescription)
-                .foregroundColor(.gray)
-                .font(.callout)
+            titleHStack
+            descriptionHStack
             transferDomainsButton
         }
         .padding()
     }
 
-    private var contentTitleHStack: some View {
+    private var titleHStack: some View {
         HStack(spacing: Length.Padding.double) {
             Image("wp-domains-icon")
             Text(Strings.contentTitle)
                 .font(.headline)
+            Spacer()
+        }
+    }
+
+    private var descriptionHStack: some View {
+        HStack(spacing: 0) {
+            Text(Strings.contentDescription)
+                .foregroundColor(.gray)
+                .font(.callout)
             Spacer()
         }
     }
