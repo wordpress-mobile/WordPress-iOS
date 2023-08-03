@@ -47,13 +47,13 @@ private extension DashboardGoogleDomainsCardView {
 
         static let contentTitle = NSLocalizedString(
             "mySite.domain.focus.card.title",
-            value: "Move your Google Domains to WordPress.com",
+            value: "Reclaim your Google Domains",
             comment: "Title of the domain focus card on My Site"
         )
 
         static let contentDescription = NSLocalizedString(
             "mySite.domain.focus.card.description",
-            value: "Bring your Google domains to WordPress.com, and we'll cover the transfer fees and throw in an extra year of registration on us.",
+            value: "As you may know, Google Domains has been sold to Squarespace. Transfer your domains to WordPress.com now, and we'll pay all transfer fees plus an extra year of your domain registration.",
             comment: "Description of the domain focus card on My Site"
         )
 
