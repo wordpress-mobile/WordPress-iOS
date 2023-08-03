@@ -59,9 +59,9 @@
         "package": "ScreenObject",
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {
-          "branch": "add-retry-to-waitforscreen",
-          "revision": "9521833fd7ab5429e0600eebcb8611921403bbe0",
-          "version": null
+          "branch": null,
+          "revision": "328db56c62aab91440ec5e07cc9f7eef6e26a26e",
+          "version": "0.2.3"
         }
       },
       {

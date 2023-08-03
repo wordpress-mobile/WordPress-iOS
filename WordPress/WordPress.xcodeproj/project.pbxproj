@@ -30843,8 +30843,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/ScreenObject";
 			requirement = {
-				branch = "add-retry-to-waitforscreen";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
 			};
 		};
 		EA14532629AD874C001F3143 /* XCRemoteSwiftPackageReference "test-collector-swift" */ = {
