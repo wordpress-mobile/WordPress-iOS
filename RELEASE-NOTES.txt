@@ -7,7 +7,7 @@
 * [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
 * [*] Fix an issue with unstable order of assets on the media screen [#21210]
 * [*] Fix an issue with media screen flashing when opened [#21211]
-
+* [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
 
 22.9
 -----
@@ -22,6 +22,7 @@
 * [**] [internal] Fix a few potential Core Data issues in Blogging Prompts & Reminders. [#21016]
 * [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21140]
+* [*] Fix an issue with avatars not loading in mentions [#21169]
 * [*] [Jetpack-only] Fixed a crash that could occur when the user deletes the WordPress app upon a successful migration. [#21167]
 * [*] Fixed a crash that occurs in Weekly Roundup Background task due to a Core Data Concurrency violation. [#21076]
 * [***] Block editor: Editor UX improvements with new icons, colors and additional design enhancements. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5985]

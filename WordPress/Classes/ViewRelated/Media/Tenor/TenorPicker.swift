@@ -48,23 +48,23 @@ final class TenorPicker: NSObject {
         return options
     }()
 
-    private lazy var picker: WPNavigationMediaPickerViewController = {
-        let picker = WPNavigationMediaPickerViewController(options: pickerOptions)
-        picker.delegate = self
-        picker.startOnGroupSelector = false
-        picker.showGroupSelector = false
-        picker.dataSource = dataSource
-        picker.cancelButtonTitle = .closePicker
-        picker.mediaPicker.registerClass(forReusableCellOverlayViews: CachedAnimatedImageView.self)
-        return picker
-    }()
-
     func presentPicker(origin: UIViewController, blog: Blog) {
         NoResultsTenorConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
+        let picker: WPNavigationMediaPickerViewController = {
+            let picker = WPNavigationMediaPickerViewController(options: pickerOptions)
+            picker.delegate = self
+            picker.startOnGroupSelector = false
+            picker.showGroupSelector = false
+            picker.dataSource = dataSource
+            picker.cancelButtonTitle = .closePicker
+            picker.mediaPicker.registerClass(forReusableCellOverlayViews: CachedAnimatedImageView.self)
+            return picker
+        }()
+
         origin.present(picker, animated: true) {
-            self.picker.mediaPicker.searchBar?.becomeFirstResponder()
+            picker.mediaPicker.searchBar?.becomeFirstResponder()
         }
 
         observeDataSource()
