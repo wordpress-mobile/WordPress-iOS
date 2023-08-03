@@ -458,23 +458,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }];
 }
 
-- (void)getMetadataFromVideoPressID:(NSString *)videoPressID
-                             inBlog:(Blog *)blog
-                            success:(void (^)(RemoteVideoPressVideo *metadata))success
-                            failure:(void (^)(NSError *error))failure
-{
-    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getMetadataFromVideoPressID:videoPressID isSitePrivate:blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
-        if (success) {
-            success(metadata);
-        }
-    } failure:^(NSError * error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (void)syncMediaLibraryForBlog:(Blog *)blog
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
