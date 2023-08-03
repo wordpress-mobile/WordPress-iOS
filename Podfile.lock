@@ -41,7 +41,7 @@ PODS:
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
   - Gutenberg (1.100.1)
-  - JTAppleCalendar (8.0.3)
+  - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.4)
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
@@ -261,7 +261,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Gutenberg: 07c2bf2c4d7543fa3cf3388c1353eae43f14707d
-  JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
+  JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
