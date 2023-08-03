@@ -9,8 +9,8 @@ import Foundation
 enum DashboardCard: String, CaseIterable {
     case jetpackInstall
     case quickStart
-    case googleDomains
     case prompts
+    case googleDomains
     case blaze
     case domainsDashboardCard
     case freeToPaidPlansDashboardCard
