@@ -7,7 +7,7 @@ struct DashboardGoogleDomainsCardView: View {
             descriptionHStack
             transferDomainsButton
         }
-        .padding()
+        .padding([.leading, .trailing, .bottom], Length.Padding.double)
     }
 
     private var titleHStack: some View {
