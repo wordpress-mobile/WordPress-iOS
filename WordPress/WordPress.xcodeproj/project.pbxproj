@@ -2031,6 +2031,8 @@
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
+		835771352A7C2755006B2A3E /* JetpackSocialNoSharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */; };
+		835771362A7C2755006B2A3E /* JetpackSocialNoSharesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */; };
 		836498C828172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */; };
 		836498C928172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */; };
 		836498CB2817301800A2C170 /* BloggingPromptsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836498CA2817301800A2C170 /* BloggingPromptsHeaderView.xib */; };
@@ -7349,6 +7351,7 @@
 		8350E49511D2C71E00A7B073 /* Media.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8355D7D811D260AA00A61362 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialNoSharesView.swift; sourceTree = "<group>"; };
 		835E2402126E66E50085940B /* AssetsLibrary.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+BloggingPrompts.swift"; sourceTree = "<group>"; };
 		836498CA2817301800A2C170 /* BloggingPromptsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BloggingPromptsHeaderView.xib; sourceTree = "<group>"; };
@@ -13244,6 +13247,7 @@
 			isa = PBXGroup;
 			children = (
 				83914BD02A2E89F30017A588 /* JetpackSocialNoConnectionView.swift */,
+				835771342A7C2755006B2A3E /* JetpackSocialNoSharesView.swift */,
 				83DC5C452A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift */,
 			);
 			path = Social;
@@ -22395,6 +22399,7 @@
 				C395FB232821FE4400AE7C11 /* SiteDesignSection.swift in Sources */,
 				FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */,
 				FEA6517B281C491C002EA086 /* BloggingPromptsService.swift in Sources */,
+				835771352A7C2755006B2A3E /* JetpackSocialNoSharesView.swift in Sources */,
 				436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */,
 				D8212CC320AA7F57008E8AE8 /* ReaderBlockSiteAction.swift in Sources */,
 				FA8E1F7725EEFA7300063673 /* ReaderPostService+RelatedPosts.swift in Sources */,
@@ -23681,6 +23686,7 @@
 				80EF672027F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */,
 				FABB21132602FC2C00C8785C /* AuthenticationService.swift in Sources */,
 				FABB21142602FC2C00C8785C /* JetpackSiteRef.swift in Sources */,
+				835771362A7C2755006B2A3E /* JetpackSocialNoSharesView.swift in Sources */,
 				FABB21152602FC2C00C8785C /* WPStyleGuide+Reply.swift in Sources */,
 				836498CF281735CC00A2C170 /* BloggingPromptsHeaderView.swift in Sources */,
 				FABB21162602FC2C00C8785C /* WPBlogTableViewCell.m in Sources */,
