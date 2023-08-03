@@ -260,6 +260,8 @@ private extension PrepublishingSocialAccountsViewController {
 
         lastToggledRow = index
         toggleInteractivityIfNeeded()
+
+        WPAnalytics.track(.jetpackSocialConnectionToggled, properties: ["source": Constants.trackingSource, "value": value])
     }
 
     func toggleInteractivityIfNeeded() {
@@ -284,6 +286,8 @@ private extension PrepublishingSocialAccountsViewController {
         guard let checkoutViewController = makeCheckoutViewController() else {
             return
         }
+
+        WPAnalytics.track(.jetpackSocialUpgradeLinkTapped, properties: ["source": Constants.trackingSource])
 
         let navigationController = UINavigationController(rootViewController: checkoutViewController)
         show(navigationController, sender: nil)
@@ -362,6 +366,7 @@ private extension PrepublishingSocialAccountsViewController {
         static let messageCellIdentifier = "MessageCell"
 
         static let webViewSource = "prepublishing_social_accounts_subscribe"
+        static let trackingSource = "pre_publishing"
 
         static let navigationTitle = NSLocalizedString(
             "prepublishing.socialAccounts.navigationTitle",
