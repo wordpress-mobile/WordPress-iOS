@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import CoreData
+import Tagged
 
 // MARK: - NSManagedObject Default entityName Helper
 //
@@ -454,8 +455,9 @@ extension CoreDataStack {
 ///
 /// Now the type `Blog` is built into the function signature, and Swift compiler would report an error if we call it using
 /// `getPost(fromBlogID: themeObjectID)`.
-struct CoreDataObjectIdentifier<Model: NSManagedObject> {
-    var objectID: NSManagedObjectID
+typealias CoreDataObjectIdentifier<T: NSManagedObject> = Tagged<T, NSManagedObjectID>
+
+extension Tagged where Tag: NSManagedObject, RawValue == NSManagedObjectID {
 
     // This initialzer is declared as `private`, because we want to prevent mismatch between `Model` and the type
     // that the `objectID` represents.
@@ -465,7 +467,7 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
     // - The model associated with the given `objectID` is indeed `Model`.
     private init(objectID: NSManagedObjectID) {
         precondition(!objectID.isTemporaryID, "The `objectID` is not a permanent id. Call `obtainPermanentIDs` first.")
-        self.objectID = objectID
+        self.init(objectID)
     }
 
     /// Create an `CoreDataObjectIdentifier` instance of an object that's not yet saved.
@@ -492,16 +494,16 @@ struct CoreDataObjectIdentifier<Model: NSManagedObject> {
     /// Find the object associated with this object id in the given `context`.
     ///
     /// - SeeAlso: `NSManagedObjectContext.existingObject(with:)`
-    func existingObject(in context: NSManagedObjectContext) throws -> Model {
+    func existingObject(in context: NSManagedObjectContext) throws -> Tag {
         do {
-            var result: Result<Model, Error>!
+            var result: Result<Tag, Error>!
 
             // Catch an Objective-C `NSInvalidArgumentException` exception from `existingObject(with:)`.
             // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
             try WPException.objcTry {
                 result = Result {
-                    let object = try context.existingObject(with: objectID)
-                    return object as! Model
+                    let object = try context.existingObject(with: rawValue)
+                    return object as! Tag
                 }
             }
 

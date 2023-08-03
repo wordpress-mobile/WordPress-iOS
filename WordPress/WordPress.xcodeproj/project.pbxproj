@@ -1211,8 +1211,10 @@
 		4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
 		4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
+		4A48DC5C2A7B3DD50063A1BD /* Tagged in Frameworks */ = {isa = PBXBuildFile; productRef = 4A48DC5B2A7B3DD50063A1BD /* Tagged */; };
 		4A526BDF296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
+		4A6D7E902A7B3C3800861A8E /* Tagged in Frameworks */ = {isa = PBXBuildFile; productRef = 4A6D7E8F2A7B3C3800861A8E /* Tagged */; };
 		4A76A4BB29D4381100AABF4B /* CommentService+LikesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */; };
 		4A76A4BD29D43BFD00AABF4B /* CommentService+MorderationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */; };
 		4A76A4BF29D4F0A500AABF4B /* reader-post-comments-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */; };
@@ -9452,6 +9454,7 @@
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
+				4A6D7E902A7B3C3800861A8E /* Tagged in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
 				3F2B62DC284F4E0B0008CD59 /* Charts in Frameworks */,
 				E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */,
@@ -9609,6 +9612,7 @@
 				17A8858F2757BEC00071FCA3 /* AutomatticAbout in Frameworks */,
 				FABB263A2602FC2C00C8785C /* WebKit.framework in Frameworks */,
 				FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */,
+				4A48DC5C2A7B3DD50063A1BD /* Tagged in Frameworks */,
 				FABB263C2602FC2C00C8785C /* libiconv.dylib in Frameworks */,
 				FABB263D2602FC2C00C8785C /* libz.dylib in Frameworks */,
 				3F2B62DE284F4E310008CD59 /* Charts in Frameworks */,
@@ -18244,6 +18248,7 @@
 				17A8858C2757B97F0071FCA3 /* AutomatticAbout */,
 				3F2B62DB284F4E0B0008CD59 /* Charts */,
 				3F411B6E28987E3F002513AE /* Lottie */,
+				4A6D7E8F2A7B3C3800861A8E /* Tagged */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -18539,6 +18544,7 @@
 				17A8858E2757BEC00071FCA3 /* AutomatticAbout */,
 				3F2B62DD284F4E310008CD59 /* Charts */,
 				3F44DD57289C379C006334CD /* Lottie */,
+				4A48DC5B2A7B3DD50063A1BD /* Tagged */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -18766,6 +18772,7 @@
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
 				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
+				4A6D7E8E2A7B3C3800861A8E /* XCRemoteSwiftPackageReference "swift-tagged" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -30478,6 +30485,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		4A6D7E8E2A7B3C3800861A8E /* XCRemoteSwiftPackageReference "swift-tagged" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-tagged";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
 		EA14532629AD874C001F3143 /* XCRemoteSwiftPackageReference "test-collector-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/buildkite/test-collector-swift";
@@ -30552,6 +30567,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */;
 			productName = ScreenObject;
+		};
+		4A48DC5B2A7B3DD50063A1BD /* Tagged */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A6D7E8E2A7B3C3800861A8E /* XCRemoteSwiftPackageReference "swift-tagged" */;
+			productName = Tagged;
+		};
+		4A6D7E8F2A7B3C3800861A8E /* Tagged */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A6D7E8E2A7B3C3800861A8E /* XCRemoteSwiftPackageReference "swift-tagged" */;
+			productName = Tagged;
 		};
 		EA14532529AD874C001F3143 /* BuildkiteTestCollector */ = {
 			isa = XCSwiftPackageProductDependency;
