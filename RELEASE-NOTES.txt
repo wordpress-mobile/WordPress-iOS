@@ -13,6 +13,7 @@
 * [*] Block editor: Fix Gallery block selection when adding media [https://github.com/WordPress/gutenberg/pull/53127]
 * [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
 * [*] Fix occasional crashes when updating Notification, Posts, and Reader content [#21250]
+* [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
 
 22.9
 -----
