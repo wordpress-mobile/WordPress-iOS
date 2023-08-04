@@ -14,7 +14,7 @@
 * [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
 * [*] Fix occasional crashes when updating Notification, Posts, and Reader content [#21250]
 * [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
-* [***] [Jetpack-only] Jetpack Social: UI improvements to access and control your social sharing from more locations throughout the app [#]
+* [***] [Jetpack-only] Jetpack Social: UI improvements to access and control your social sharing from more locations throughout the app [#21258]
 
 22.9
 -----
