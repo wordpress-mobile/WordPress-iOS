@@ -64,7 +64,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .siteEditorMVP:
             return true
         case .jetpackSocialImprovements:
-            return AppConfiguration.isJetpack && BuildConfiguration.current == .localDeveloper
+            return AppConfiguration.isJetpack
         }
     }
 
