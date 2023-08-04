@@ -20,6 +20,8 @@ extension PostSettingsViewController {
     }
 
     @objc func createNoConnectionView() -> UIView {
+        WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed,
+                          properties: ["source": Constants.trackingSource])
         let services = availableServices()
         let viewModel = JetpackSocialNoConnectionViewModel(services: services,
                                                            onConnectTap: onConnectTap(),
@@ -54,6 +56,8 @@ extension PostSettingsViewController {
             CrashLogging.main.logError(error, userInfo: ["source": "post_settings"])
             return UIView()
         }
+        WPAnalytics.track(.jetpackSocialShareLimitDisplayed,
+                          properties: ["source": Constants.trackingSource])
 
         let shouldDisplayWarning = publicizeConnections.count > sharingLimit.remaining
         let viewModel = JetpackSocialRemainingSharesViewModel(remaining: sharingLimit.remaining,
@@ -98,6 +102,8 @@ private extension PostSettingsViewController {
 
     func onConnectTap() -> () -> Void {
         return { [weak self] in
+            WPAnalytics.track(.jetpackSocialNoConnectionCTATapped,
+                              properties: ["source": Constants.trackingSource])
             guard let blog = self?.apost.blog,
                   let controller = SharingViewController(blog: blog, delegate: nil) else {
                 return
@@ -108,6 +114,8 @@ private extension PostSettingsViewController {
 
     func onNotNowTap() -> () -> Void {
         return { [weak self] in
+            WPAnalytics.track(.jetpackSocialNoConnectionCardDismissed,
+                              properties: ["source": Constants.trackingSource])
             guard let key = self?.hideNoConnectionViewKey() else {
                 return
             }
@@ -118,6 +126,8 @@ private extension PostSettingsViewController {
 
     func onSubscribeTap() -> () -> Void {
         return { [weak self] in
+            WPAnalytics.track(.jetpackSocialUpgradeLinkTapped,
+                              properties: ["source": Constants.trackingSource])
             guard let blog = self?.apost.blog,
                   let hostname = blog.hostname,
                   let url = URL(string: "https://wordpress.com/checkout/\(hostname)/jetpack_social_basic_yearly") else {
@@ -162,6 +172,7 @@ private extension PostSettingsViewController {
 
     struct Constants {
         static let hideNoConnectionViewKey = "post-settings-social-no-connection-view-hidden"
+        static let trackingSource = "post_settings"
     }
 
 }
