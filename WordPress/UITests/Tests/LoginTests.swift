@@ -20,7 +20,7 @@ class LoginTests: XCTestCase {
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(
                 username: WPUITestCredentials.testWPcomUsername,
-                siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
+                siteUrl: WPUITestCredentials.testWPcomPaidSite
             )
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
@@ -52,7 +52,7 @@ class LoginTests: XCTestCase {
     func testSelfHostedLoginLogout() throws {
         try PrologueScreen()
             .selectSiteAddress()
-            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .proceedWith(siteAddress: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWithSelfHosted(
                 username: WPUITestCredentials.selfHostedUsername,
                 password: WPUITestCredentials.selfHostedPassword
@@ -80,7 +80,7 @@ class LoginTests: XCTestCase {
             .proceedWithValidPassword()
             .verifyEpilogueDisplays(
                 username: WPUITestCredentials.testWPcomUsername,
-                siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress
+                siteUrl: WPUITestCredentials.testWPcomPaidSite
             )
             .continueWithSelectedSite() //returns MySite screen
 
@@ -89,7 +89,7 @@ class LoginTests: XCTestCase {
             .addSelfHostedSite()
 
             // Then, go through the self-hosted login flow:
-            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .proceedWith(siteAddress: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWithSelfHostedSiteAddedFromSitesList(
                 username: WPUITestCredentials.selfHostedUsername,
                 password: WPUITestCredentials.selfHostedPassword

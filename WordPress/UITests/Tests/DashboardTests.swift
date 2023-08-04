@@ -6,20 +6,17 @@ class DashboardTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+        try LoginFlow
+            .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
     }
 
-    // Disabled for investigation/maintenance: https://github.com/wordpress-mobile/WordPress-iOS/pull/21132
     func testFreeToPaidCardNavigation() throws {
-        try MySiteScreen()
+        try LoginEpilogueScreen()
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomFreeSite)
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
@@ -30,7 +27,8 @@ class DashboardTests: XCTestCase {
     }
 
     func testPagesCardHeaderNavigation() throws {
-        try MySiteScreen()
+        try LoginEpilogueScreen()
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
             .scrollToPagesCard()
             .verifyPagesCard()
             .verifyPagesCard(hasPage: "Blog")
@@ -44,7 +42,8 @@ class DashboardTests: XCTestCase {
     }
 
     func testActivityLogCardHeaderNavigation() throws {
-        try MySiteScreen()
+        try LoginEpilogueScreen()
+            .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
             .scrollToActivityLogCard()
             .verifyActivityLogCard()
             .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")

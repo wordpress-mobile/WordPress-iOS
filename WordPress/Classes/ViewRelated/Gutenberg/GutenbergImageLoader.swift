@@ -1,5 +1,6 @@
 import Foundation
 import Gutenberg
+import React
 
 class GutenbergImageLoader: NSObject, RCTImageURLLoader {
 

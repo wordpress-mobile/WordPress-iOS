@@ -5,11 +5,8 @@ class EditorGutenbergTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
-        try LoginFlow.login(
-            siteUrl: WPUITestCredentials.testWPcomSiteAddress,
-            email: WPUITestCredentials.testWPcomUserEmail,
-            password: WPUITestCredentials.testWPcomPassword
-        )
+        try LoginFlow
+            .login(email: WPUITestCredentials.testWPcomUserEmail)
 
         try TabNavComponent()
             .goToBlockEditorScreen()
@@ -32,7 +29,7 @@ class EditorGutenbergTests: XCTestCase {
             .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
             .publish()
             .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
     }
 
@@ -51,7 +48,7 @@ class EditorGutenbergTests: XCTestCase {
             .closePostSettings()
             .publish()
             .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
     }
 

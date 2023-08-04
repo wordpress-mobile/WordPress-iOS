@@ -33,6 +33,7 @@ class StatsRevampStore: QueryStore<StatsRevampStoreState, StatsRevampStoreQuery>
 
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
+    private let cache: StatsPediodCache = .shared
 
     // MARK: - Query Store
 
@@ -179,23 +180,17 @@ private extension StatsRevampStore {
     }
 
     private func loadViewsAndVisitorsCache(date: Date) {
-        guard
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                return
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
         }
-
-        let summary = StatsRecord.timeIntervalData(for: blog, type: .blogVisitsSummary, period: StatsRecordPeriodType(remoteStatus: .day), date: date)
-        let referrers = StatsRecord.timeIntervalData(for: blog, type: .referrers, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
-        let countries = StatsRecord.timeIntervalData(for: blog, type: .countryViews, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
-
-        DDLogInfo("Stats Revamp Store: Finished loading Period data from Core Data.")
-
+        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record, period: StatsPeriodUnit) -> T? {
+            cache.getValue(record: record, date: date, period: period, siteID: siteID)
+        }
         transaction { state in
-            state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topReferrers = referrers.flatMap { StatsTopReferrersTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
-            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from Core Data.")
+            state.summary = getValue(.summary, period: .day)
+            state.topReferrers = getValue(.topReferrers, period: .week)
+            state.topCountries = getValue(.topCountries, period: .week)
+            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from cache")
         }
     }
 }
@@ -251,21 +246,16 @@ private extension StatsRevampStore {
     }
 
     private func loadLikesTotalsCache(date: Date) {
-        guard
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                return
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
         }
-
-        let summary = StatsRecord.timeIntervalData(for: blog, type: .blogVisitsSummary, period: StatsRecordPeriodType(remoteStatus: .day), date: date)
-        let posts = StatsRecord.timeIntervalData(for: blog, type: .topViewedPost, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
-
-        DDLogInfo("Stats Revamp Store: Finished loading Period data from Core Data.")
-
+        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record, period: StatsPeriodUnit) -> T? {
+            cache.getValue(record: record, date: date, period: period, siteID: siteID)
+        }
         transaction { state in
-            state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topPostsAndPages = posts.flatMap { StatsTopPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
-            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from Core Data.")
+            state.summary = getValue(.summary, period: .day)
+            state.topPostsAndPages = getValue(.topPostsAndPages, period: .week)
+            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from cache.")
         }
     }
 }
@@ -340,7 +330,7 @@ private extension StatsRevampStore {
             }
         }
 
-        persistData(state.topReferrers)
+        persistData(state.topReferrers, record: .topReferrers)
     }
 
     func receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?) {
@@ -352,7 +342,7 @@ private extension StatsRevampStore {
             }
         }
 
-        persistData(state.topCountries)
+        persistData(state.topCountries, record: .topCountries)
     }
 
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
@@ -364,7 +354,7 @@ private extension StatsRevampStore {
             }
         }
 
-        persistData(state.topPostsAndPages)
+        persistData(state.topPostsAndPages, record: .topPostsAndPages)
     }
 
     func receivedSummary(_ summaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
@@ -376,26 +366,15 @@ private extension StatsRevampStore {
             }
         }
 
-        persistData(state.summary)
+        persistData(state.summary, record: .summary)
     }
 }
 
 private extension StatsRevampStore {
-    func persistData<TimeIntervalType: StatsTimeIntervalData & TimeIntervalStatsRecordValueConvertible>(_ data: TimeIntervalType?) {
-        guard
-            let data,
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+    func persistData<T: StatsTimeIntervalData>(_ data: T?, record: StatsPediodCache.Record) {
+        guard let data, let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
-
-        _ = StatsRecord.record(from: data, for: blog)
-
-        do {
-            try ContextManager.shared.mainContext.save()
-            DDLogInfo("Stats Revamp Store: finished persisting stats to disk.")
-        } catch {
-            DDLogError("Stats Revamp Store: failed persisting stats to disk.")
-        }
+        cache.setValue(data, record: record, siteID: siteID)
     }
 }

@@ -23,7 +23,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        try LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
+        try LoginFlow.login(siteAddress: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
     }
 
     override func tearDown() {
@@ -89,7 +89,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
-            .switchTo(mode: .months)
+            .switchTo(mode: "months")
             .thenTakeScreenshot(3, named: "Stats")
 
         // Get Discover screenshot

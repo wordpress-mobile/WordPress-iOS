@@ -42,7 +42,7 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.12.5'
+  pod 'WordPressUI', '~> 1.14'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
@@ -50,9 +50,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 8.5'
+  # pod 'WordPressKit', '~> 8.5'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
@@ -124,6 +124,7 @@ abstract_target 'Apps' do
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.2'
   pod 'CropViewController', '2.5.3'
+  pod 'SDWebImage', '~> 5.11.1'
 
   ## Automattic libraries
   ## ====================
@@ -340,6 +341,8 @@ pre_install do |installer|
 end
 
 post_install do |installer|
+  gutenberg_post_install(installer: installer)
+
   project_root = File.dirname(__FILE__)
 
   ## Convert the 3rd-party license acknowledgements markdown into html for use in the app

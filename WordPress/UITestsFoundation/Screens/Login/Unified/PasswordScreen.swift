@@ -26,6 +26,7 @@ public class PasswordScreen: ScreenObject {
         )
     }
 
+    @discardableResult
     public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
         try tryProceed(password: "pw")
 
