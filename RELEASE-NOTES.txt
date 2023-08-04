@@ -1,3 +1,7 @@
+23.1
+-----
+* [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
+
 23.0
 -----
 * [**] [Jetpack-only] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
