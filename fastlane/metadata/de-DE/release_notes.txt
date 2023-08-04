@@ -1,0 +1,3 @@
+Wir haben umfassende Änderungen am Block-Editor vorgenommen, die u. a. Stile, Farben und Icons betreffen. Zudem gibt es in der Header-Toolbar jetzt mehr Buttons und Blockoption, darunter die Buttons zum Rückgängigmachen und Wiederherstellen. Dir stehen jetzt also mehr Tools zur Verfügung als in Batmans Werkzeuggürtel vorhanden sind.
+
+Darüber hinaus haben wir Verluste beim Arbeitsspeicher sowie ein Problem behoben, das zur Folge hatte, dass die App für einige Benutzer nach dem Öffnen nicht funktionierte.

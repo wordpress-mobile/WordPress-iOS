@@ -1,0 +1,3 @@
+We hebben enkele grote wijzigingen doorgevoerd in de blokeditor, onder andere aan stijlen, kleuren en pictogrammen. Je zult ook meer opties voor knoppen en blokken tegenkomen in de taakbalk bovenaan, waaronder de knoppen Ongedaan maken en Opnieuw uitvoeren. Jazeker, je hebt nu meer keuze dan Batman spullen aan zijn riem heeft hangen.
+
+En nu we toch bezig zijn, hebben we een paar geheugenlekken gedicht en een probleem opgelost waarbij de app voor sommige gebruikers niet werkte na het openen.
