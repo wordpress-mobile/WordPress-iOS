@@ -167,15 +167,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             bgTask = .invalid
         }
 
-        bgTask = app.beginBackgroundTask(expirationHandler: {
-            // Synchronize the cleanup call on the main thread in case
-            // the task actually finishes at around the same time.
-            DispatchQueue.main.async { [weak self] in
-                if let task = self?.bgTask, task != .invalid {
-                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
-                    app.endBackgroundTask(task)
-                    self?.bgTask = .invalid
-                }
+        bgTask = app.beginBackgroundTask(expirationHandler: { [weak self] in
+            // WARNING: The task has to be terminated immediately on expiration
+            if let task = self?.bgTask, task != .invalid {
+                DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
+                app.endBackgroundTask(task)
+                self?.bgTask = .invalid
             }
         })
 
