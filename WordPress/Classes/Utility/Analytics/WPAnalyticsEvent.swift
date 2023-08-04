@@ -491,6 +491,14 @@ import Foundation
     // Jetpack Social - Twitter Deprecation Notice
     case jetpackSocialTwitterNoticeLinkTapped
 
+    // Jetpack Social Improvements v1
+    case jetpackSocialConnectionToggled
+    case jetpackSocialShareLimitDisplayed
+    case jetpackSocialUpgradeLinkTapped
+    case jetpackSocialNoConnectionCardDisplayed
+    case jetpackSocialNoConnectionCTATapped
+    case jetpackSocialNoConnectionCardDismissed
+
     // Free to Paid Plans Dashboard Card
     case freeToPaidPlansDashboardCardShown
     case freeToPaidPlansDashboardCardTapped
@@ -1343,6 +1351,19 @@ import Foundation
         // Jetpack Social - Twitter Deprecation Notice
         case .jetpackSocialTwitterNoticeLinkTapped:
             return "twitter_notice_link_tapped"
+
+        case .jetpackSocialConnectionToggled:
+            return "jetpack_social_auto_sharing_connection_toggled"
+        case .jetpackSocialShareLimitDisplayed:
+            return "jetpack_social_share_limit_displayed"
+        case .jetpackSocialUpgradeLinkTapped:
+            return "jetpack_social_upgrade_link_tapped"
+        case .jetpackSocialNoConnectionCardDisplayed:
+            return "jetpack_social_add_connection_cta_displayed"
+        case .jetpackSocialNoConnectionCTATapped:
+            return "jetpack_social_add_connection_tapped"
+        case .jetpackSocialNoConnectionCardDismissed:
+            return "jetpack_social_add_connection_dismissed"
 
         // Free to Paid Plans Dashboard Card
         case .freeToPaidPlansDashboardCardShown:

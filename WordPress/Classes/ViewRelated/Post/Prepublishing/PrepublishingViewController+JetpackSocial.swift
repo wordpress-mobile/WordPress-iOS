@@ -102,6 +102,10 @@ private extension PrepublishingViewController {
         ])
 
         cell.accessoryType = .disclosureIndicator
+
+        if let _ = viewModel.sharingLimit {
+            WPAnalytics.track(.jetpackSocialShareLimitDisplayed, properties: ["source": Constants.trackingSource])
+        }
     }
 
     // MARK: - No Connection View
@@ -114,6 +118,8 @@ private extension PrepublishingViewController {
 
         cell.contentView.addSubview(viewToEmbed)
         cell.contentView.pinSubviewToSafeArea(viewToEmbed)
+
+        WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed, properties: ["source": Constants.trackingSource])
     }
 
     func makeNoConnectionView() -> UIView {
@@ -143,7 +149,7 @@ private extension PrepublishingViewController {
                 return
             }
 
-            // TODO: Set up delegate to react to changes when a new connection is set up.
+            WPAnalytics.track(.jetpackSocialNoConnectionCTATapped, properties: ["source": Constants.trackingSource])
 
             let navigationController = UINavigationController(rootViewController: controller)
             self.show(navigationController, sender: nil)
@@ -157,6 +163,8 @@ private extension PrepublishingViewController {
                   let autoSharingRowIndex = filteredIdentifiers.firstIndex(of: .autoSharing) else {
                 return
             }
+
+            WPAnalytics.track(.jetpackSocialNoConnectionCardDismissed, properties: ["source": Constants.trackingSource])
 
             self.isNoConnectionDismissed = true
             self.refreshOptions()
@@ -224,6 +232,7 @@ private extension PrepublishingViewController {
     // MARK: - Constants
 
     enum Constants {
+        static let trackingSource = "pre_publishing"
         static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
     }
 }
