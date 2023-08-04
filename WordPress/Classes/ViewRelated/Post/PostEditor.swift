@@ -145,7 +145,7 @@ extension PostEditor {
     }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        if FeatureFlag.jetpackSocial.enabled {
+        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
             return [.visibility, .schedule, .tags, .categories, .autoSharing]
         }
 

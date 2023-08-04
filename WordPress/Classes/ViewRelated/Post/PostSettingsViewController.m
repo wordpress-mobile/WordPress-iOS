@@ -886,7 +886,7 @@ FeaturedImageViewControllerDelegate>
                                       canEditSharing:(BOOL)canEditSharing
                                              section:(NSInteger)section
 {
-    BOOL isJetpackSocialEnabled = [Feature enabled:FeatureFlagJetpackSocial];
+    BOOL isJetpackSocialEnabled = [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements];
     UITableViewCell *cell = [self getWPTableViewImageAndAccessoryCell];
     UIImage *image = [WPStyleGuide socialIconFor:connection.service];
     if (isJetpackSocialEnabled) {
@@ -942,7 +942,7 @@ FeaturedImageViewControllerDelegate>
 
     if (indexPath.row < connections.count) {
         PublicizeConnection *connection = connections[indexPath.row];
-        if ([Feature enabled:FeatureFlagJetpackSocial]) {
+        if ([RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements]) {
             BOOL hasRemainingShares = self.enabledConnections.count < [self remainingSocialShares];
             BOOL isSwitchOn = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
             canEditSharing = canEditSharing && (hasRemainingShares || isSwitchOn);
@@ -1174,7 +1174,7 @@ FeaturedImageViewControllerDelegate>
 - (void)toggleShareConnectionForIndexPath:(NSIndexPath *) indexPath
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    BOOL isJetpackSocialEnabled = [Feature enabled:FeatureFlagJetpackSocial];
+    BOOL isJetpackSocialEnabled = [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements];
     if (indexPath.row < self.publicizeConnections.count) {
         PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
         if (connection.isBroken) {

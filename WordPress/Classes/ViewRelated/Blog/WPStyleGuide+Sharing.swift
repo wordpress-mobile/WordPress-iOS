@@ -70,7 +70,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func socialIcon(for service: NSString) -> UIImage {
-        guard FeatureFlag.jetpackSocial.enabled else {
+        guard RemoteFeatureFlag.jetpackSocialImprovements.enabled() else {
             return iconForService(service)
         }
 

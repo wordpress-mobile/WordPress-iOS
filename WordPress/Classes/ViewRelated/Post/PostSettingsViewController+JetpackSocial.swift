@@ -6,7 +6,7 @@ extension PostSettingsViewController {
     // MARK: - No connection view
 
     @objc func showNoConnection() -> Bool {
-        let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
+        let isJetpackSocialEnabled = RemoteFeatureFlag.jetpackSocialImprovements.enabled()
         let isNoConnectionViewHidden = UserPersistentStoreFactory.instance().bool(forKey: hideNoConnectionViewKey())
         let blogSupportsPublicize = apost.blog.supportsPublicize()
         let blogHasNoConnections = publicizeConnections.count == 0
@@ -36,7 +36,7 @@ extension PostSettingsViewController {
     // MARK: - Remaining shares view
 
     @objc func showRemainingShares() -> Bool {
-        let isJetpackSocialEnabled = FeatureFlag.jetpackSocial.enabled
+        let isJetpackSocialEnabled = RemoteFeatureFlag.jetpackSocialImprovements.enabled()
         let blogSupportsPublicize = apost.blog.supportsPublicize()
         let blogHasConnections = publicizeConnections.count > 0
         let blogHasSharingLimit = apost.blog.sharingLimit != nil
@@ -75,7 +75,7 @@ extension PostSettingsViewController {
         guard let post = self.apost as? Post else {
             return false
         }
-        guard FeatureFlag.jetpackSocial.enabled else {
+        guard RemoteFeatureFlag.jetpackSocialImprovements.enabled() else {
             return post.canEditPublicizeSettings()
         }
 

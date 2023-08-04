@@ -110,7 +110,7 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
     // MARK: - Functions
 
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard FeatureFlag.jetpackSocial.enabled else {
+        guard RemoteFeatureFlag.jetpackSocialImprovements.enabled() else {
             return false
         }
         // TODO: Show when user is out of shares
