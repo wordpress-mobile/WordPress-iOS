@@ -626,7 +626,18 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self.tableView endUpdates];
+    
+    // Catch unexpected expections when ending tableView updates to prevent crashes
+    NSError *error;
+    [WPException objcTryBlock:^{
+        [self.tableView endUpdates];
+    } error:&error];
+    
+    if (error) {
+        DDLogError(@"TableViewHandler: Error ending updates %@", error);
+        [self refreshTableView];
+        return;
+    }
 
     // Prevent crashes in iOS 14 if the row is negative
     // See http://git.io/JIKIB
