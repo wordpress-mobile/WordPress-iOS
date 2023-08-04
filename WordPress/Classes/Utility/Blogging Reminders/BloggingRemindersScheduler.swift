@@ -17,7 +17,7 @@ extension InteractiveNotificationsManager: PushNotificationAuthorizer {
 
 /// Main interface for scheduling blogging reminders
 ///
-class BloggingRemindersScheduler {
+final class BloggingRemindersScheduler {
 
     // MARK: - Convenience Typealiases
 
@@ -276,16 +276,20 @@ class BloggingRemindersScheduler {
             return
         }
 
+        let blogObjectID = blog.objectID
         pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
             DispatchQueue.main.async {
-                guard let self = self else {
-                    return
-                }
+                guard let self else { return }
                 guard allowed else {
                     completion(.failure(Error.needsPermissionForPushNotifications))
                     return
                 }
-                self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
+                do {
+                    let blog = try self.coreDataStack.mainContext.existingObject(with: blogObjectID) as! Blog
+                    self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
+                } catch {
+                    completion(.failure(error))
+                }
             }
         }
     }
