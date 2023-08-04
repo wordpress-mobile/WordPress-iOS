@@ -894,8 +894,11 @@ FeaturedImageViewControllerDelegate>
                               interpolationQuality:kCGInterpolationDefault];
     }
     [cell.imageView setImage:image];
+    cell.imageView.alpha = 1.0;
     if (canEditSharing && !isJetpackSocialEnabled) {
         cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
+    } else if (!canEditSharing && isJetpackSocialEnabled) {
+        cell.imageView.alpha = 0.36;
     }
     cell.textLabel.text = connection.externalDisplay;
     cell.textLabel.enabled = canEditSharing;
