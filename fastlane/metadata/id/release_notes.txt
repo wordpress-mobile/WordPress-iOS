@@ -1,3 +1,3 @@
-Kami telah membuat perubahan besar pada editor blok, termasuk gaya, warna, dan ikon. Anda juga bisa melihat lebih banyak tombol dan pilihan blok di bilah peralatan header, termasuk tombol urungkan dan ulangi. Tepat sekali, kini Anda memiliki lebih banyak peralatan dibandingkan sabuk serbaguna Batman.
+Kami menerapkan perubahan besar pada editor blok, termasuk gaya, warna, dan ikon. Kini ada lebih banyak tombol dan pilihan blok di bilah peralatan header, termasuk tombol batalkan dan ulangi. Ya, kini Anda memiliki lebih banyak peralatan dibandingkan sabuk serbaguna Batman.
 
-Di saat yang sama, kami telah menyumbat sebagian kebocoran memori dan memecahkan masalah di mana aplikasi tidak bisa bekerja pada beberapa pengguna setelah dibuka.
+Masih tentang topik yang sama, kami telah memperbaiki sejumlah kebocoran memori dan memecahkan masalah di mana aplikasi tidak bisa bekerja setelah dibuka oleh beberapa pengguna.
