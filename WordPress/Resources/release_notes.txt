@@ -1,3 +1,17 @@
-We made some big changes to the block editor, including styles, colors, and icons. You’ll also find more buttons and block options in the header toolbar, including the undo and redo buttons. That’s right, you now have more tools than Batman’s utility belt.
+* [**] [Jetpack-only] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
+* [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
+* [**] [internal] Upgrade React Native to 0.71.11 [#20956]
+* [*] Fix incorrect WordPress Media images count in Media Picker. [#21181]
+* [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
+* [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
+* [*] Fix an issue with unstable order of assets on the media screen [#21210]
+* [*] Fix an issue with media screen flashing when opened [#21211]
+* [*] Block editor: Remove visual gap in mobile toolbar when a Gallery block is selected [https://github.com/WordPress/gutenberg/pull/52966]
+* [*] Block editor: Remove Gallery caption button on mobile [https://github.com/WordPress/gutenberg/pull/53010]
+* [*] Block editor: Fix Gallery block selection when adding media [https://github.com/WordPress/gutenberg/pull/53127]
+* [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
+* [*] Fix occasional crashes when updating Notification, Posts, and Reader content [#21250]
+* [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
+* [*] [internal] Fix incorrectly terminated background task [#21254]
+* [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Edtiror. [#21227]
 
-While we were at it, we plugged a few memory leaks and solved an issue where the app wouldn’t work for some users after opening.
