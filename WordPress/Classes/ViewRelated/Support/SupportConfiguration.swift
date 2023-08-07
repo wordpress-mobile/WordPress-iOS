@@ -12,7 +12,7 @@ enum SupportConfiguration {
             return .forum
         }
 
-        if isWordPress && RemoteFeatureFlag.wordPressSupportForum.enabled(using: featureFlagStore) {
+        if isWordPress {
             return .forum
         } else {
             return .zendesk

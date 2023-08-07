@@ -10,7 +10,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackFeaturesRemovalPhaseSelfHosted
     case jetpackFeaturesRemovalStaticPosters
     case jetpackMigrationPreventDuplicateNotifications
-    case wordPressSupportForum
     case blaze
     case blazeManageCampaigns
     case wordPressIndividualPluginSupport
@@ -40,8 +39,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .jetpackFeaturesRemovalStaticPosters:
             return false
-        case .wordPressSupportForum:
-            return true
         case .blaze:
             return false
         case .blazeManageCampaigns:
@@ -84,8 +81,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "jp_removal_static_posters"
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
-        case .wordPressSupportForum:
-            return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
         case .blazeManageCampaigns:
@@ -127,8 +122,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
         case .jetpackFeaturesRemovalStaticPosters:
             return "Jetpack Features Removal Static Screens Phase"
-        case .wordPressSupportForum:
-            return "Provide support through a forum"
         case .blaze:
             return "Blaze"
         case .blazeManageCampaigns:
