@@ -55,9 +55,13 @@ public class NotificationsScreen: ScreenObject {
             XCTAssertTrue(notificationsDetailsTable.exists, file: file, line: line)
         }
 
+        // If on iPhone, tap back to return to notifications list
+        if XCUIDevice.isPhone {
+            navigateBack()
+        }
+
         return self
     }
-
 
     public static func isLoaded() -> Bool {
         (try? NotificationsScreen().isLoaded) ?? false
