@@ -4,7 +4,7 @@ extension PrepublishingViewController {
 
     /// Determines whether the account and the post's blog is eligible to see the Jetpack Social row.
     func canDisplaySocialRow(isJetpack: Bool = AppConfiguration.isJetpack,
-                             isFeatureEnabled: Bool = FeatureFlag.jetpackSocial.enabled) -> Bool {
+                             isFeatureEnabled: Bool = RemoteFeatureFlag.jetpackSocialImprovements.enabled()) -> Bool {
         guard isJetpack && isFeatureEnabled else {
             return false
         }
