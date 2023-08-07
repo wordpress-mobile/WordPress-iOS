@@ -1896,6 +1896,8 @@
 		8096218E28E55F8600940A5D /* JetpackDraftActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8096218528E55C9400940A5D /* JetpackDraftActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8096219328E5613700940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		8096219428E561A800940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABB286B2603086900C8785C /* AppImages.xcassets */; };
+		809A91032A7A4C710063D4FA /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809A91022A7A4C710063D4FA /* NotificationTests.swift */; };
+		809A91042A7A4C710063D4FA /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809A91022A7A4C710063D4FA /* NotificationTests.swift */; };
 		80A2153D29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */; };
 		80A2153E29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */; };
 		80A2154029CA68D5002FE8EB /* RemoteFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */; };
@@ -7267,6 +7269,7 @@
 		8096218828E55D2400940A5D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8096218928E55D2400940A5D /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		8096218A28E55D2400940A5D /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
+		809A91022A7A4C710063D4FA /* NotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticScreensTabBarWrapper.swift; sourceTree = "<group>"; };
 		80A2153F29CA68D5002FE8EB /* RemoteFeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlag.swift; sourceTree = "<group>"; };
 		80A2154229D1177A002FE8EB /* RemoteConfigDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugViewController.swift; sourceTree = "<group>"; };
@@ -15567,6 +15570,7 @@
 				FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */,
 				01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */,
 				808DB70B2A710EFE00EA1645 /* NUXTests.swift */,
+				809A91022A7A4C710063D4FA /* NotificationTests.swift */,
 				80379C6D2A5C0D8F00D924AC /* PostTests.swift */,
 				EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */,
 				CC7CB97222B1510900642EE9 /* SignupTests.swift */,
@@ -23536,6 +23540,7 @@
 				EA14532929AD874C001F3143 /* MainNavigationTests.swift in Sources */,
 				80379C6F2A5C0D8F00D924AC /* PostTests.swift in Sources */,
 				EA14532A29AD874C001F3143 /* ReaderTests.swift in Sources */,
+				809A91042A7A4C710063D4FA /* NotificationTests.swift in Sources */,
 				EA14532B29AD874C001F3143 /* EditorAztecTests.swift in Sources */,
 				D82E087629EEB0B00098F500 /* DashboardTests.swift in Sources */,
 				EA14532C29AD874C001F3143 /* EditorGutenbergTests.swift in Sources */,
@@ -25459,6 +25464,7 @@
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				80379C6E2A5C0D8F00D924AC /* PostTests.swift in Sources */,
 				EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */,
+				809A91032A7A4C710063D4FA /* NotificationTests.swift in Sources */,
 				BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */,
 				D82E087529EEB0B00098F500 /* DashboardTests.swift in Sources */,
 				3F2F856326FAF612000FCDA5 /* EditorGutenbergTests.swift in Sources */,
