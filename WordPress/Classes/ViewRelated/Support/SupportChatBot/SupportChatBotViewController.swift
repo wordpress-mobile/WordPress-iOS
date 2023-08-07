@@ -1,9 +1,9 @@
 import WebKit
 
 final class SupportChatBotViewController: WebKitViewController {
-    private let viewModel: SupportChartBotViewModel
+    private let viewModel: SupportChatBotViewModel
 
-    init(viewModel: SupportChartBotViewModel) {
+    init(viewModel: SupportChatBotViewModel) {
         self.viewModel = viewModel
         let configuration = WebViewControllerConfiguration(url: viewModel.url)
         configuration.secureInteraction = true
