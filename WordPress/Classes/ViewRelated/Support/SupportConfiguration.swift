@@ -5,7 +5,6 @@ enum SupportConfiguration {
     case forum
 
     static func current(
-        featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
         isWordPress: Bool = AppConfiguration.isWordPress,
         zendeskEnabled: Bool = ZendeskUtils.zendeskEnabled) -> SupportConfiguration {
         guard zendeskEnabled else {
