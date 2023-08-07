@@ -494,6 +494,7 @@ import Foundation
     // Jetpack Social Improvements v1
     case jetpackSocialConnectionToggled
     case jetpackSocialShareLimitDisplayed
+    case jetpackSocialShareLimitDismissed
     case jetpackSocialUpgradeLinkTapped
     case jetpackSocialNoConnectionCardDisplayed
     case jetpackSocialNoConnectionCTATapped
@@ -1356,6 +1357,8 @@ import Foundation
             return "jetpack_social_auto_sharing_connection_toggled"
         case .jetpackSocialShareLimitDisplayed:
             return "jetpack_social_share_limit_displayed"
+        case .jetpackSocialShareLimitDismissed:
+            return "jetpack_social_share_limit_dismissed"
         case .jetpackSocialUpgradeLinkTapped:
             return "jetpack_social_upgrade_link_tapped"
         case .jetpackSocialNoConnectionCardDisplayed:

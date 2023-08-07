@@ -53,7 +53,8 @@ Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 ENV['PROJECT_NAME'] = 'WordPress'
-ENV['PUBLIC_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
 ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['PROJECT_ROOT_FOLDER'] = "#{PROJECT_ROOT_FOLDER}/"
 ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
@@ -65,6 +66,9 @@ def get_required_env(key)
   ENV.fetch(key, nil)
 end
 
+def get_app_version(xcconfig_path: PUBLIC_CONFIG_FILE)
+  ios_get_app_version(public_version_xcconfig_file: xcconfig_path)
+end
 
 ########################################################################
 # Group buildkite logs by action

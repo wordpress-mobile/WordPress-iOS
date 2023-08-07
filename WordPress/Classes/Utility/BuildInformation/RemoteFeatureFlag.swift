@@ -21,6 +21,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case sdkLessGoogleSignIn
     case bloggingPromptsSocial
     case siteEditorMVP
+    case jetpackSocialImprovements
 
     var defaultValue: Bool {
         switch self {
@@ -62,6 +63,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .siteEditorMVP:
             return true
+        case .jetpackSocialImprovements:
+            return AppConfiguration.isJetpack
         }
     }
 
@@ -106,6 +109,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "blogging_prompts_social_enabled"
         case .siteEditorMVP:
             return "site_editor_mvp"
+        case .jetpackSocialImprovements:
+            return "jetpack_social_improvements_v1"
         }
     }
 
@@ -149,6 +154,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Blogging Prompts Social"
         case .siteEditorMVP:
             return "Site Editor MVP"
+        case .jetpackSocialImprovements:
+            return "Jetpack Social Improvements v1"
         }
     }
 
