@@ -16,8 +16,8 @@ platform :ios do
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release(skip_deliver: true)
-    new_version = ios_get_app_version
+    ios_bump_version_release
+    new_version = get_app_version
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
     extract_release_notes_for_version(
@@ -121,8 +121,7 @@ platform :ios do
     prev_ver = ios_hotfix_prechecks(options)
     ios_bump_version_hotfix(
       previous_version: prev_ver,
-      version: options[:version],
-      skip_deliver: true
+      version: options[:version]
     )
   end
 
@@ -169,7 +168,7 @@ platform :ios do
     ios_bump_version_beta
 
     # Wrap up
-    version = ios_get_app_version
+    version = get_app_version
     removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
@@ -286,5 +285,5 @@ def prompt_for_confirmation(message:, bypass:)
 end
 
 def release_branch_name
-  "release/#{ios_get_app_version}"
+  "release/#{get_app_version}"
 end

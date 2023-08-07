@@ -102,12 +102,12 @@ private struct DateAndTimeRow: ImmuTableRow {
    let title: String
    let detail: String
    let action: ImmuTableAction?
-   let accessibilityIdentifer: String
+   let accessibilityIdentifier: String
 
    init(title: String, detail: String, accessibilityIdentifier: String, action: @escaping ImmuTableAction) {
        self.title = title
        self.detail = detail
-       self.accessibilityIdentifer = accessibilityIdentifier
+       self.accessibilityIdentifier = accessibilityIdentifier
        self.action = action
    }
 
@@ -116,7 +116,7 @@ private struct DateAndTimeRow: ImmuTableRow {
        cell.detailTextLabel?.text = detail
        cell.selectionStyle = .none
        cell.accessoryType = .none
-       cell.accessibilityIdentifier = accessibilityIdentifer
+       cell.accessibilityIdentifier = accessibilityIdentifier
 
        WPStyleGuide.configureTableViewCell(cell)
    }

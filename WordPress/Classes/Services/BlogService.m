@@ -159,7 +159,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
 
-    if ([Feature enabled:FeatureFlagJetpackSocial] && blog.dotComID != nil) {
+    if ([RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements] && blog.dotComID != nil) {
         JetpackSocialService *jetpackSocialService = [[JetpackSocialService alloc] initWithContextManager:ContextManager.sharedInstance];
         dispatch_group_enter(syncGroup);
         [jetpackSocialService syncSharingLimitWithDotComID:blog.dotComID success:^{

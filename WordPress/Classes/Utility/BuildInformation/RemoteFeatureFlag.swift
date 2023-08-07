@@ -10,7 +10,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackFeaturesRemovalPhaseSelfHosted
     case jetpackFeaturesRemovalStaticPosters
     case jetpackMigrationPreventDuplicateNotifications
-    case wordPressSupportForum
     case blaze
     case blazeManageCampaigns
     case wordPressIndividualPluginSupport
@@ -22,6 +21,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case bloggingPromptsSocial
     case siteEditorMVP
     case contactSupport
+    case jetpackSocialImprovements
 
     var defaultValue: Bool {
         switch self {
@@ -41,8 +41,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .jetpackFeaturesRemovalStaticPosters:
             return false
-        case .wordPressSupportForum:
-            return true
         case .blaze:
             return false
         case .blazeManageCampaigns:
@@ -65,6 +63,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .contactSupport:
             return false
+        case .jetpackSocialImprovements:
+            return AppConfiguration.isJetpack
         }
     }
 
@@ -87,8 +87,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "jp_removal_static_posters"
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
-        case .wordPressSupportForum:
-            return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
         case .blazeManageCampaigns:
@@ -111,6 +109,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "site_editor_mvp"
         case .contactSupport:
             return "contact_support"
+        case .jetpackSocialImprovements:
+            return "jetpack_social_improvements_v1"
         }
     }
 
@@ -132,8 +132,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
         case .jetpackFeaturesRemovalStaticPosters:
             return "Jetpack Features Removal Static Screens Phase"
-        case .wordPressSupportForum:
-            return "Provide support through a forum"
         case .blaze:
             return "Blaze"
         case .blazeManageCampaigns:
@@ -156,6 +154,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Site Editor MVP"
         case .contactSupport:
             return "Contact Support via DocsBot"
+        case .jetpackSocialImprovements:
+            return "Jetpack Social Improvements v1"
         }
     }
 

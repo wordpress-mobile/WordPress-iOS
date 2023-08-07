@@ -38,8 +38,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
         - [ ] Create Page from Layout
         - [ ] Create Blank Page
 5. Notifications
-    - [ ] Browse/Scroll Through Notifications
-    - [ ] View Notification
+    - [x] View Notification - Comment, Follow and Like Notifications
     - [ ] Reply from Notification
     - [ ] Like Notification
 6. Blogging Reminders
