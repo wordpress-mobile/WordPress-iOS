@@ -44,15 +44,15 @@ public class NotificationsScreen: ScreenObject {
 
     @discardableResult
     public func verifyNotification(ofType type: String, file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(app.navigationBars.containing(NSPredicate(format: "label CONTAINS[c] %@", type)).firstMatch.exists, file: file, line: line)
+        XCTAssertTrue(app.navigationBars.containing(NSPredicate(format: "label CONTAINS[c] %@", type)).firstMatch.waitForExistence(timeout: 5), file: file, line: line)
 
         switch type {
         case "Comment":
-            XCTAssertTrue(replyCommentButton.exists, file: file, line: line)
-            XCTAssertTrue(likeCommentButton.exists, file: file, line: line)
-            XCTAssertTrue(trashCommentButton.exists, file: file, line: line)
+            XCTAssertTrue(replyCommentButton.waitForExistence(timeout: 5), file: file, line: line)
+            XCTAssertTrue(likeCommentButton.waitForExistence(timeout: 5), file: file, line: line)
+            XCTAssertTrue(trashCommentButton.waitForExistence(timeout: 5), file: file, line: line)
         default:
-            XCTAssertTrue(notificationsDetailsTable.exists, file: file, line: line)
+            XCTAssertTrue(notificationsDetailsTable.waitForExistence(timeout: 5), file: file, line: line)
         }
 
         // If on iPhone, tap back to return to notifications list
