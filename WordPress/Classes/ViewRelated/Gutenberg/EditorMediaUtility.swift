@@ -8,66 +8,24 @@ final class AuthenticatedImageDownload: AsyncOperation {
     }
 
     let url: URL
-    let blogObjectID: NSManagedObjectID
+    let mediaHost: MediaHost
     private let callbackQueue: DispatchQueue
     private let onSuccess: (UIImage) -> ()
     private let onFailure: (Error) -> ()
 
-    init(url: URL, blogObjectID: NSManagedObjectID, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
-        assert(!blogObjectID.isTemporaryID)
+    init(url: URL, mediaHost: MediaHost, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
         self.url = url
-        self.blogObjectID = blogObjectID
+        self.mediaHost = mediaHost
         self.callbackQueue = callbackQueue
         self.onSuccess = onSuccess
         self.onFailure = onFailure
     }
 
     override func main() {
-        let result = ContextManager.shared.performQuery { context in
-            Result {
-                // Can't fetch the blog using a temporary ID. This check is added as an attempt to prevent this crash:
-                // https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
-                guard !self.blogObjectID.isTemporaryID else {
-                    throw DownloadError.blogNotFound
-                }
-
-                var blog: Result<Blog, Error> = .failure(DownloadError.blogNotFound)
-                do {
-                    // Catch an Objective-C `NSInvalidArgumentException` exception from `existingObject(with:)`.
-                    // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
-                    try WPException.objcTry {
-                        blog = Result {
-                            try context.existingObject(with: self.blogObjectID) as! Blog
-                        }
-                    }
-                } catch {
-                    // Send Objective-C exceptions to Sentry for further diagnosis.
-                    WordPressAppDelegate.crashLogging?.logError(error)
-                    throw error
-                }
-
-                return try MediaHost(with: blog.get()) { error in
-                    // We'll log the error, so we know it's there, but we won't halt execution.
-                    WordPressAppDelegate.crashLogging?.logError(error)
-                }
-            }
-        }
-
-        let host: MediaHost
-        do {
-            host = try result.get()
-        } catch {
-            self.state = .isFinished
-            self.callbackQueue.async {
-                self.onFailure(error)
-            }
-            return
-        }
-
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         mediaRequestAuthenticator.authenticatedRequest(
             for: url,
-            from: host,
+            from: mediaHost,
             onComplete: { request in
                 ImageDownloader.shared.downloadImage(for: request) { (image, error) in
                     self.state = .isFinished
@@ -165,38 +123,82 @@ class EditorMediaUtility {
         success: @escaping (UIImage) -> Void,
         onFailure failure: @escaping (Error) -> Void
     ) -> ImageDownloaderTask {
+        let postObjectID = post.objectID
+        let result = ContextManager.shared.performQuery { context in
+            Result {
+                try EditorMediaUtility.prepareForDownloading(url: url, size: requestSize, scale: scale, postObjectID: postObjectID, in: context)
+            }
+        }
+
+        let callbackQueue = DispatchQueue.main
+        switch result {
+        case let .failure(error):
+            callbackQueue.async {
+                failure(error)
+            }
+            return EmptyImageDownloaderTask()
+        case let .success((requestURL, mediaHost)):
+            let imageDownload = AuthenticatedImageDownload(
+                url: requestURL,
+                mediaHost: mediaHost,
+                callbackQueue: callbackQueue,
+                onSuccess: success,
+                onFailure: failure
+            )
+            imageDownload.start()
+            return imageDownload
+        }
+    }
+
+    private static func prepareForDownloading(
+        url: URL,
+        size requestSize: CGSize,
+        scale: CGFloat,
+        postObjectID: NSManagedObjectID,
+        in context: NSManagedObjectContext
+    ) throws -> (URL, MediaHost) {
+        // This function is added to debug the issue linked below.
+        let safeExistingObject: (NSManagedObjectID) throws -> NSManagedObject = { objectID in
+            var object: Result<NSManagedObject, Error> = .failure(AuthenticatedImageDownload.DownloadError.blogNotFound)
+            do {
+                // Catch an Objective-C `NSInvalidArgumentException` exception from `existingObject(with:)`.
+                // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
+                try WPException.objcTry {
+                    object = Result {
+                        try context.existingObject(with: objectID)
+                    }
+                }
+            } catch {
+                // Send Objective-C exceptions to Sentry for further diagnosis.
+                WordPressAppDelegate.crashLogging?.logError(error)
+                throw error
+            }
+
+            return try object.get()
+        }
+
+        let post = try safeExistingObject(postObjectID) as! Post
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
         var size = CGSize(width: imageMaxDimension, height: 0)
-        let (requestURL, blogObjectID) = workaroundCoreDataConcurrencyIssue(accessing: post) {
-            let requestURL: URL
-            if url.isFileURL {
-                requestURL = url
-            } else if post.isPrivateAtWPCom() && url.isHostedAtWPCom {
-                // private wpcom image needs special handling.
-                // the size that WPImageHelper expects is pixel size
-                size.width = size.width * scale
-                requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
-            } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
-                size.width = size.width * scale
-                requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
-            } else {
-                // the size that PhotonImageURLHelper expects is points size
-                requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            }
-            return (requestURL, post.blog.objectID)
+        let requestURL: URL
+        if url.isFileURL {
+            requestURL = url
+        } else if post.isPrivateAtWPCom() && url.isHostedAtWPCom {
+            // private wpcom image needs special handling.
+            // the size that WPImageHelper expects is pixel size
+            size.width = size.width * scale
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
+        } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
+            size.width = size.width * scale
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
+        } else {
+            // the size that PhotonImageURLHelper expects is points size
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
         }
 
-        let imageDownload = AuthenticatedImageDownload(
-            url: requestURL,
-            blogObjectID: blogObjectID,
-            callbackQueue: .main,
-            onSuccess: success,
-            onFailure: failure)
-
-        imageDownload.start()
-        return imageDownload
+        return (requestURL, MediaHost(with: post.blog))
     }
 
     static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, withToken: Bool = false, completion: @escaping ( Result<(URL), Error> ) -> Void) {
@@ -245,5 +247,11 @@ class EditorMediaUtility {
             DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
             completion(Result.failure(error))
         })
+    }
+}
+
+private class EmptyImageDownloaderTask: ImageDownloaderTask {
+    func cancel() {
+        // Do nothing
     }
 }
