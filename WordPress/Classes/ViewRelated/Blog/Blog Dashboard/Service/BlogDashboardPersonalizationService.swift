@@ -59,7 +59,7 @@ private func makeKey(for card: DashboardCard) -> String? {
     case .domainRegistration:
         return "register-domain-dashboard-card"
     case .googleDomains:
-        return "google-domains-enabled-site-settings"
+        return "google-domains-card-enabled-site-settings"
     case .activityLog:
         return "activity-log-card-enabled-site-settings"
     case .pages:

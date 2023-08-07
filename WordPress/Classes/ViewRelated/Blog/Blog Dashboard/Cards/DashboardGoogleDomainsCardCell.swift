@@ -19,7 +19,10 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         if let presentingViewController, !didConfigureHostingController {
-            let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView())
+            let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView(buttonClosure: { [weak self] in
+                self?.presentGoogleDomainsWebView()
+            }))
+
             guard let cardView = hostingController.view else {
                 return
             }
@@ -33,6 +36,8 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
             contentView.addSubview(frameView)
             contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
             hostingController.didMove(toParent: presentingViewController)
+            configureMoreButton(with: blog)
+
             didConfigureHostingController = true
         }
     }
@@ -41,8 +46,27 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
         frameView.setTitle(Strings.cardTitle)
         frameView.onEllipsisButtonTap = { }
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        // TODO: Assign menu
-        // frameView.ellipsisButton.menu = contextMenu
+    }
+
+    private func configureMoreButton(with blog: Blog) {
+        frameView.addMoreMenu(
+            items:
+                [UIMenu(options: .displayInline, children: [BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)])],
+            card: .googleDomains
+        )
+    }
+
+    private func presentGoogleDomainsWebView() {
+        guard let url = URL(string: Constants.transferDomainsURL) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(
+            url: url,
+            source: "domain_focus_card"
+        )
+        let navController = UINavigationController(rootViewController: webViewController)
+        presentingViewController?.present(navController, animated: true)
     }
 }
 
@@ -53,5 +77,9 @@ private extension DashboardGoogleDomainsCardCell {
             value: "News",
             comment: "Title for the domain focus card on My Site"
         )
+    }
+
+    enum Constants {
+        static let transferDomainsURL = "https://wordpress.com/transfer-google-domains/"
     }
 }
