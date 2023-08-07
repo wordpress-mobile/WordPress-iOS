@@ -9,4 +9,4 @@
 * [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
 * [*] Fix occasional crashes when updating Posts content [#21250]
 * [*] [internal] Fix incorrectly terminated background task [#21254]
-* [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Edtiror. [#21227]
+* [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Editor. [#21227]

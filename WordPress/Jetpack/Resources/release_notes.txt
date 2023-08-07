@@ -13,4 +13,4 @@
 * [*] Fix occasional crashes when updating Notification, Posts, and Reader content [#21250]
 * [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
 * [*] [internal] Fix incorrectly terminated background task [#21254]
-* [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Edtiror. [#21227]
+* [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Editor. [#21227]
