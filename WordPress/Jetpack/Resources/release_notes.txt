@@ -1,8 +1,8 @@
-* [**] [Jetpack-only] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
-* [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
+* [**] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
+* [**] Made significant performance improvements for Total Likes stats card. [#21168]
 * [**] [internal] Upgrade React Native to 0.71.11 [#20956]
 * [*] Fix incorrect WordPress Media images count in Media Picker. [#21181]
-* [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
+* [*] Fix app hangs on the Stats screen [#21067]
 * [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
 * [*] Fix an issue with unstable order of assets on the media screen [#21210]
 * [*] Fix an issue with media screen flashing when opened [#21211]
@@ -14,4 +14,3 @@
 * [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
 * [*] [internal] Fix incorrectly terminated background task [#21254]
 * [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Edtiror. [#21227]
-
