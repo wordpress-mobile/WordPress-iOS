@@ -3,10 +3,12 @@ import SwiftUI
 
 final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
     private let frameView = BlogDashboardCardFrameView()
+    private weak var presentingViewController: UIViewController?
+    private var didConfigureHostingController = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        setupFrameView()
     }
 
     required init?(coder: NSCoder) {
@@ -14,26 +16,33 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
     }
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        // TODO: Implement update configuration
+        self.presentingViewController = viewController
+
+        if let presentingViewController, !didConfigureHostingController {
+            let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView())
+            guard let cardView = hostingController.view else {
+                return
+            }
+
+            frameView.add(subview: cardView)
+
+            presentingViewController.addChild(hostingController)
+
+            cardView.backgroundColor = .clear
+            frameView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(frameView)
+            contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
+            hostingController.didMove(toParent: presentingViewController)
+            didConfigureHostingController = true
+        }
     }
 
-    private func setupView() {
-        let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView())
-        guard let cardView = hostingController.view else {
-            return
-        }
-
+    private func setupFrameView() {
         frameView.setTitle(Strings.cardTitle)
-        frameView.add(subview: cardView)
         frameView.onEllipsisButtonTap = { }
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         // TODO: Assign menu
         // frameView.ellipsisButton.menu = contextMenu
-
-        cardView.backgroundColor = .clear
-        frameView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(frameView)
-        contentView.pinSubviewToAllEdges(frameView, priority: .defaultHigh)
     }
 }
 
