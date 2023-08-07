@@ -42,6 +42,7 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case jetpackSocial
     case compliancePopover
+    case domainFocus
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -134,6 +135,8 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack && BuildConfiguration.current == .localDeveloper
         case .compliancePopover:
             return true
+        case .domainFocus:
+            return false
         }
     }
 
@@ -236,6 +239,8 @@ extension FeatureFlag {
             return "Jetpack Social"
         case .compliancePopover:
             return "Compliance Popover"
+        case .domainFocus:
+            return "Domain Focus"
         }
     }
 }
