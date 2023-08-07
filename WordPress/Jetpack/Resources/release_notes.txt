@@ -1,3 +1,4 @@
+* [***] UI improvements to access and control your social sharing from more locations throughout the app [#21258]
 * [**] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
 * [**] Made significant performance improvements for Total Likes stats card. [#21168]
 * [**] [internal] Upgrade React Native to 0.71.11 [#20956]
