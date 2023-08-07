@@ -143,14 +143,14 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.8'
+  pod 'WPMediaPicker', '~> 1.8', '>= 1.8.9'
   ## while PR is in review:
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 6.3-beta'
+  pod 'WordPressAuthenticator', '~> 6.3'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -428,4 +428,16 @@ post_install do |installer|
   yellow_marker = "\033[33m"
   reset_marker = "\033[0m"
   puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
+
+  # Fix a compiling issue in Xcode 15 beta.
+  # This line in particular https://github.com/mrackwitz/MRProgress/blob/0.8.3/src/Components/MRProgressOverlayView.m#L811
+  # The error message is "Multiple methods named 'setProgress:' found with mismatched result, parameter type or attributes"
+  # We are going to replace the `id` with `MRProgressView *` (or any other type that has a method `setProgress:` that takes a float argument).
+  mrprogress_filepath = "#{project_root}/Pods/MRProgress/src/Components/MRProgressOverlayView.m"
+  File.chmod(0o644, mrprogress_filepath)
+  lines = File.readlines(mrprogress_filepath)
+  if lines[810] == "        [((id)self.modeView) setProgress:self.progress];\n"
+    lines[810] = "        [((MRProgressView *)self.modeView) setProgress:self.progress];\n"
+    File.write(mrprogress_filepath, lines.join)
+  end
 end
