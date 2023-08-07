@@ -17,7 +17,7 @@ final class SupportChatBotViewController: WebKitViewController {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { (result, error) in
             if let error = error {
-                print("Failed to initialize docs bot code: \(error)")
+                DDLogError("Failed to initialize docs bot code: \(error)")
             }
         })
     }
