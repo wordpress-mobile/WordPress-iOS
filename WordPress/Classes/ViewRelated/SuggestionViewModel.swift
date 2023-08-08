@@ -23,7 +23,7 @@ import Foundation
         self.imageURL = suggestion.blavatarURL
     }
 
-    private static func preprocessAvatarURL(_ url: URL) -> URL {
+    static func preprocessAvatarURL(_ url: URL) -> URL {
         guard url.host?.contains("gravatar.com") ?? false else {
             return url
         }
