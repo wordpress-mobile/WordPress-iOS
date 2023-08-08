@@ -44,8 +44,17 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
 
     private func setupFrameView() {
         frameView.setTitle(Strings.cardTitle)
-        frameView.onEllipsisButtonTap = { }
+        frameView.onEllipsisButtonTap = {
+            WPAnalytics.track(.domainTransferMoreTapped)
+        }
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        frameView.onViewTap = { [weak self] in
+            guard let self else {
+                return
+            }
+
+            self.presentGoogleDomainsWebView()
+        }
     }
 
     private func configureMoreButton(with blog: Blog) {
@@ -67,6 +76,8 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
         )
         let navController = UINavigationController(rootViewController: webViewController)
         presentingViewController?.present(navController, animated: true)
+
+        WPAnalytics.track(.domainTransferButtonTapped)
     }
 }
 

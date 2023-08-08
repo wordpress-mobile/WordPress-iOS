@@ -14,6 +14,9 @@ struct DashboardGoogleDomainsCardView: View {
             transferDomainsButton
         }
         .padding([.leading, .trailing, .bottom], Length.Padding.double)
+        .onAppear {
+            WPAnalytics.track(.domainTransferShown)
+        }
     }
 
     private var titleHStack: some View {
