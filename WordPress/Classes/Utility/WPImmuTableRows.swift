@@ -11,7 +11,7 @@ struct NavigationItemRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction?
     let accessoryType: UITableViewCell.AccessoryType
-    let accessibilityIdentifer: String?
+    let accessibilityIdentifier: String?
     let loading: Bool
 
     init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
@@ -20,7 +20,7 @@ struct NavigationItemRow: ImmuTableRow {
         self.icon = icon
         self.accessoryType = accessoryType
         self.action = action
-        self.accessibilityIdentifer = accessibilityIdentifier
+        self.accessibilityIdentifier = accessibilityIdentifier
         self.loading = loading
     }
 
@@ -28,7 +28,7 @@ struct NavigationItemRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = detail
         cell.imageView?.image = icon
-        cell.accessibilityIdentifier = accessibilityIdentifer
+        cell.accessibilityIdentifier = accessibilityIdentifier
 
         if loading {
             let indicator: UIActivityIndicatorView

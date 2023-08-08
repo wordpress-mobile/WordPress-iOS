@@ -135,7 +135,7 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
     // MARK: - Functions
 
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard FeatureFlag.jetpackSocial.enabled else {
+        guard RemoteFeatureFlag.jetpackSocialImprovements.enabled() else {
             return false
         }
         return showNoConnectionView(for: blog) || showNoSharesView(for: blog)
@@ -157,6 +157,7 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
                                                 comment: "Title for a menu action in the context menu on the Jetpack Social dashboard card.")
         static let hideThisImage = UIImage(systemName: "minus.circle")
         static let cardInsets = EdgeInsets(top: 8.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
+        static let trackingSource = "home_dashboard"
     }
 
     enum DisplayState {
@@ -235,9 +236,11 @@ private extension DashboardJetpackSocialCardCell {
             // `showNoConnectionView`. This scenario *shouldn't* be possible.
             assertionFailure("No managed object context or publicize services")
             let error = JetpackSocialError.noConnectionViewInvalidState
-            CrashLogging.main.logError(error, userInfo: ["source": "social_dashboard_card"])
+            CrashLogging.main.logError(error, userInfo: ["source": Constants.trackingSource])
             return nil
         }
+        WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed,
+                          properties: ["source": Constants.trackingSource])
         let card = cardFrameView
         let viewModel = JetpackSocialNoConnectionViewModel(services: services,
                                                            padding: Constants.cardInsets,
@@ -251,6 +254,8 @@ private extension DashboardJetpackSocialCardCell {
 
     func onConnectTap() -> () -> Void {
         return { [weak self] in
+            WPAnalytics.track(.jetpackSocialNoConnectionCTATapped,
+                              properties: ["source": Constants.trackingSource])
             guard let self,
                   let blog = self.blog,
                   let controller = SharingViewController(blog: blog, delegate: self) else {
@@ -284,6 +289,8 @@ private extension DashboardJetpackSocialCardCell {
             CrashLogging.main.logError(error, userInfo: ["source": "social_dashboard_card"])
             return nil
         }
+        WPAnalytics.track(.jetpackSocialShareLimitDisplayed,
+                          properties: ["source": Constants.trackingSource])
         let card = cardFrameView
         let filteredConnections = connections.filter { !$0.requiresUserAction() }
         let services = filteredConnections.reduce(into: [PublicizeService.ServiceName]()) { partialResult, connection in
@@ -304,6 +311,8 @@ private extension DashboardJetpackSocialCardCell {
 
     func onSubscribeTap() -> () -> Void {
         return { [weak self] in
+        WPAnalytics.track(.jetpackSocialUpgradeLinkTapped,
+                          properties: ["source": Constants.trackingSource])
             guard let blog = self?.blog,
                   let hostname = blog.hostname,
                   let url = URL(string: "https://wordpress.com/checkout/\(hostname)/jetpack_social_basic_yearly") else {
@@ -352,8 +361,12 @@ private extension DashboardJetpackSocialCardCell {
         switch state {
         case .noConnections:
             isNoConnectionViewHidden = true
+            WPAnalytics.track(.jetpackSocialNoConnectionCardDismissed,
+                              properties: ["source": Constants.trackingSource])
         case .noShares:
             isNoSharesViewHidden = true
+            WPAnalytics.track(.jetpackSocialShareLimitDismissed,
+                              properties: ["source": Constants.trackingSource])
         default:
             break
         }

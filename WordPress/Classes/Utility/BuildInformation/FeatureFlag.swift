@@ -40,7 +40,6 @@ enum FeatureFlag: Int, CaseIterable {
     case readerUserBlocking
     case personalizeHomeTab
     case commentModerationUpdate
-    case jetpackSocial
     case compliancePopover
     case domainFocus
 
@@ -131,8 +130,6 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .commentModerationUpdate:
             return false
-        case .jetpackSocial:
-            return AppConfiguration.isJetpack && BuildConfiguration.current == .localDeveloper
         case .compliancePopover:
             return true
         case .domainFocus:
@@ -235,8 +232,6 @@ extension FeatureFlag {
             return "Personalize Home Tab"
         case .commentModerationUpdate:
             return "Comments Moderation Update"
-        case .jetpackSocial:
-            return "Jetpack Social"
         case .compliancePopover:
             return "Compliance Popover"
         case .domainFocus:

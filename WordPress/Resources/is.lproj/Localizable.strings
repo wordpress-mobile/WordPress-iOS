@@ -120,9 +120,6 @@
 "Add a Category" = "Bæta við flokki";
 
 /* No comment provided by engineer. */
-"Add alt text" = "Bæta við alt texta";
-
-/* No comment provided by engineer. */
 "Add menu item above" = "Bæta valmyndaratriði fyrir ofan";
 
 /* No comment provided by engineer. */
@@ -2736,9 +2733,6 @@
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Óvistaðar breytingar";
-
-/* No comment provided by engineer. */
-"Unsupported" = "Óstutt";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Atburðaskrá er geymd í allt að sjö daga.";

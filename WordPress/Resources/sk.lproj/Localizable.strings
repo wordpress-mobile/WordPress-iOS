@@ -221,9 +221,6 @@
 "Add a Profile Photo" = "Pridať Profilovú fotografiu";
 
 /* No comment provided by engineer. */
-"Add alt text" = "Pridať alt text";
-
-/* No comment provided by engineer. */
 "Add menu item above" = "Pridať položku menu vyššie";
 
 /* No comment provided by engineer. */
@@ -240,9 +237,6 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Pridať značky";
-
-/* No comment provided by engineer. */
-"Add title" = "Pridať názov";
 
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
@@ -1580,9 +1574,6 @@
 /* Cancel */
 "Give Up" = "Vzdať sa";
 
-/* No comment provided by engineer. */
-"Go back" = "Späť";
-
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Prejsť na nasledujúce";
 
@@ -1663,9 +1654,6 @@
 
 /* Hide All Sites */
 "Hide All Sites" = "Skryť všetky webové stránky";
-
-/* No comment provided by engineer. */
-"Hide keyboard" = "Skryť klávesnicu";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -1813,9 +1801,6 @@
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Neplatná URL adresa, skontrolujte, či ste napísali platnú adresu webu.";
-
-/* No comment provided by engineer. */
-"Invalid URL." = "Nesprávna URL adresa";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Neplatné používateľske meno";
@@ -2878,9 +2863,6 @@
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
 "Preview %@" = "Náhľad %@";
 
-/* No comment provided by engineer. */
-"Preview post" = "Predchádzajúce články";
-
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Prezrite si svoje webové stránky, aby ste videli to, čo uvidia vaši návštevníci.";
 
@@ -3316,9 +3298,6 @@
 /* Blog Picker's Title */
 "Select Site" = "Vybrať webovú stránku";
 
-/* No comment provided by engineer. */
-"Select a color" = "Vybrať farbu";
-
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Vybrať súbor.";
 
@@ -3379,9 +3358,6 @@
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Nastaviť Nadradený";
-
-/* No comment provided by engineer. */
-"Set as Featured Image" = "Nastaviť ako ilustračný obrázok";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Nastaviť Jetpack";
@@ -3777,9 +3753,6 @@
 
 /* Title of a button style */
 "Text Only" = "Len text";
-
-/* No comment provided by engineer. */
-"Text color" = "Farba textu";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -4312,9 +4285,6 @@
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Neuložené zmeny";
-
-/* No comment provided by engineer. */
-"Unsupported" = "Nepodporovaný";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Až sedem dní sú uložené prihlasovacie údaje.";

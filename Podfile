@@ -50,9 +50,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 8.5'
+  pod 'WordPressKit', '~> 8.5'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
@@ -143,14 +143,14 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.9-beta.1'
+  pod 'WPMediaPicker', '~> 1.8', '>= 1.8.9'
   ## while PR is in review:
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 6.3-beta'
+  pod 'WordPressAuthenticator', '~> 6.3'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
