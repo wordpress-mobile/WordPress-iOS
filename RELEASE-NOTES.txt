@@ -1,6 +1,6 @@
 23.1
 -----
-
+* [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
 
 23.0
 -----
