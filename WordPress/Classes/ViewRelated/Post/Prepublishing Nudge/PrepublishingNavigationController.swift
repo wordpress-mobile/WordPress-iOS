@@ -59,7 +59,7 @@ class PrepublishingNavigationController: LightNavigationController {
         }
 
         let preferredDrawerPosition: DrawerPosition = {
-            guard FeatureFlag.jetpackSocial.enabled else {
+            guard RemoteFeatureFlag.jetpackSocialImprovements.enabled() else {
                 return .collapsed
             }
 

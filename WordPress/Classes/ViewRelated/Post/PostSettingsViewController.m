@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 static CGFloat CellHeight = 44.0f;
 static CGFloat LoadingIndicatorHeight = 28.0f;
 
+static NSString *const PostSettingsAnalyticsTrackingSource = @"post_settings";
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
@@ -885,7 +886,7 @@ FeaturedImageViewControllerDelegate>
                                       canEditSharing:(BOOL)canEditSharing
                                              section:(NSInteger)section
 {
-    BOOL isJetpackSocialEnabled = [Feature enabled:FeatureFlagJetpackSocial];
+    BOOL isJetpackSocialEnabled = [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements];
     UITableViewCell *cell = [self getWPTableViewImageAndAccessoryCell];
     UIImage *image = [WPStyleGuide socialIconFor:connection.service];
     if (isJetpackSocialEnabled) {
@@ -941,7 +942,7 @@ FeaturedImageViewControllerDelegate>
 
     if (indexPath.row < connections.count) {
         PublicizeConnection *connection = connections[indexPath.row];
-        if ([Feature enabled:FeatureFlagJetpackSocial]) {
+        if ([RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements]) {
             BOOL hasRemainingShares = self.enabledConnections.count < [self remainingSocialShares];
             BOOL isSwitchOn = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
             canEditSharing = canEditSharing && (hasRemainingShares || isSwitchOn);
@@ -1173,6 +1174,7 @@ FeaturedImageViewControllerDelegate>
 - (void)toggleShareConnectionForIndexPath:(NSIndexPath *) indexPath
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    BOOL isJetpackSocialEnabled = [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements];
     if (indexPath.row < self.publicizeConnections.count) {
         PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
         if (connection.isBroken) {
@@ -1185,17 +1187,22 @@ FeaturedImageViewControllerDelegate>
             if (cellSwitch.on) {
                 [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
 
-                if ([Feature enabled:FeatureFlagJetpackSocial]) {
+                if (isJetpackSocialEnabled) {
                     [self.enabledConnections addObject:connection.keyringConnectionID];
                     [self reloadSocialSectionComparingValue:[self remainingSocialShares]];
                 }
             } else {
                 [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
 
-                if ([Feature enabled:FeatureFlagJetpackSocial]) {
+                if (isJetpackSocialEnabled) {
                     [self.enabledConnections removeObject:connection.keyringConnectionID];
                     [self reloadSocialSectionComparingValue:[self remainingSocialShares] - 1];
                 }
+            }
+            if (isJetpackSocialEnabled) {
+                [WPAnalytics trackEvent:WPAnalyticsEventJetpackSocialConnectionToggled
+                             properties:@{@"source": PostSettingsAnalyticsTrackingSource,
+                                          @"value": cellSwitch.on ? @"true" : @"false"}];
             }
         }
     }

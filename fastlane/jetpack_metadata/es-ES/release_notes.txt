@@ -1,5 +1,0 @@
-Hemos realizado algunos cambios importantes en el editor de bloques, incluidos estilos, colores e iconos. También encontrarás más botones y opciones de bloques en la barra de herramientas de la cabecera, incluidos los botones de deshacer y rehacer. Así es, ahora tienes más herramientas que el cinturón de Batman.
-
-Mientras estábamos en ello, detuvimos algunas pérdidas de memoria, mejoramos estadísticas de actividad de publicación y solucionamos un problema por el cual algunos usuarios veían que la aplicación no funcionaba tras su apertura.
-
-También corregimos varios fallos que se producían al tocar sugerencias para bloguear, seguir sitios en el Lector y eliminar la aplicación de WordPress después de una migración correcta.

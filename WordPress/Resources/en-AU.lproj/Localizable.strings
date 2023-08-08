@@ -184,28 +184,6 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li words, %2$li characters";
 
-/* translators: %s: Block name e.g. \"Image block\"
-translators: Block name. %s: The localized block name */
-"%s block" = "%s block";
-
-/* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s block options";
-
-/* translators: accessibility text for the media block empty state. %s: media type */
-"%s block. Empty" = "%s block. Empty";
-
-/* translators: accessibility text for blocks with invalid content. %d: localized block title */
-"%s block. This block has invalid content" = "%s block. This block has invalid content";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
-
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
-
-/* translators: Missing block alert title. %s: The localized block name */
-"'%s' is not fully-supported" = "'%s' is not fully supported";
-
 /* Empty Post Title */
 "(No Title)" = "(No Title)";
 
@@ -293,21 +271,6 @@ translators: Block name. %s: The localized block name */
 /* Label for active Theme browser cell */
 "ACTIVE" = "ACTIVE";
 
-/* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
-
-/* No comment provided by engineer. */
-"ADD BLOCK HERE" = "ADD BLOCK HERE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE" = "ADD IMAGE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "ADD IMAGE OR VIDEO";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "ADD VIDEO";
-
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Address";
 
@@ -378,26 +341,11 @@ translators: Block name. %s: The localized block name */
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Add %@";
 
-/* No comment provided by engineer. */
-"Add Block After" = "Add Block After";
-
-/* No comment provided by engineer. */
-"Add Block Before" = "Add Block Before";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Add Contents to Post";
 
-/* No comment provided by engineer. */
-"Add To Beginning" = "Add To Beginning";
-
-/* No comment provided by engineer. */
-"Add To End" = "Add To End";
-
 /* Button Title. Tapping subscribes the user to a new topic. */
 "Add Topic" = "Add Topic";
-
-/* No comment provided by engineer. */
-"Add URL" = "Add URL";
 
 /* The title on the add category screen */
 "Add a Category" = "Add a Category";
@@ -414,9 +362,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Add a self-hosted site";
 
-/* No comment provided by engineer. */
-"Add a shortcode…" = "Add a shortcode…";
-
 /* No Tags View Button Label */
 "Add a site" = "Add a Site";
 
@@ -426,20 +371,11 @@ translators: Block name. %s: The localized block name */
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Add account image";
 
-/* No comment provided by engineer. */
-"Add alt text" = "Add alt text";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Add any topic";
 
-/* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
-
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adds image, or avatar, to represent this new account.";
-
-/* No comment provided by engineer. */
-"Add link text" = "Add link text";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Add menu item above";
@@ -462,9 +398,6 @@ translators: Block name. %s: The localized block name */
 /* Voiceover accessibility label for the tags field in blog post settings. */
 "Add new tags, separated by commas." = "Add new tags, separated by commas.";
 
-/* No comment provided by engineer. */
-"Add paragraph block" = "Add Paragraph Block";
-
 /* Add self-hosted site button */
 "Add self-hosted site" = "Add self-hosted site";
 
@@ -474,18 +407,6 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Add tags";
-
-/* No comment provided by engineer. */
-"Add this email link" = "Add this email link";
-
-/* No comment provided by engineer. */
-"Add this link" = "Add this link";
-
-/* No comment provided by engineer. */
-"Add this telephone link" = "Add this telephone link";
-
-/* No comment provided by engineer. */
-"Add title" = "Add title";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Adding site features";
@@ -656,9 +577,6 @@ translators: Block name. %s: The localized block name */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication.";
 
-/* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
-
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Apply";
 
@@ -747,15 +665,6 @@ translators: Block name. %s: The localized block name */
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Attach File as Link";
-
-/* No comment provided by engineer. */
-"Audio Player" = "Audio Player";
-
-/* translators: accessibility text. %s: Audio caption. */
-"Audio caption. %s" = "Audio caption. %s";
-
-/* translators: accessibility text. Empty Audio caption. */
-"Audio caption. Empty" = "Audio caption. Empty";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -890,29 +799,11 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Block Quote";
 
-/* translators: displayed right after the block is copied. */
-"Block copied" = "Block copied";
-
-/* translators: displayed right after the block is cut. */
-"Block cut" = "Block cut";
-
-/* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Block duplicated";
-
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block editor enabled";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Block malicious login attempts";
-
-/* translators: displayed right after the block is pasted. */
-"Block pasted" = "Block pasted";
-
-/* translators: displayed right after the block is removed. */
-"Block removed" = "Block removed";
-
-/* No comment provided by engineer. */
-"Block settings" = "Block settings";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Block this site";
@@ -946,12 +837,6 @@ translators: Block name. %s: The localized block name */
 /* Books site intent topic */
 "Books" = "Books";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Border Radius";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Border Settings";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Break comment threads into multiple pages.";
 
@@ -969,9 +854,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Busy";
-
-/* No comment provided by engineer. */
-"Button Link URL" = "Button Link URL";
 
 /* Title for a list of different button styles. */
 "Button Style" = "Button Style";
@@ -994,12 +876,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "By signing up, you agree to our _Terms of Service_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
-
-/* No comment provided by engineer. */
-"CUSTOMIZE" = "CUSTOMISE";
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Calculating...";
@@ -1132,9 +1008,6 @@ translators: Block name. %s: The localized block name */
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Change Visibility";
 
-/* No comment provided by engineer. */
-"Change block position" = "Change block position";
-
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Change failed";
 
@@ -1149,9 +1022,6 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
-
-/* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Changing display name";
@@ -1223,32 +1093,14 @@ translators: Block name. %s: The localized block name */
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Choose a topic from the list below or type your own";
 
-/* No comment provided by engineer. */
-"Choose audio" = "Choose audio";
-
 /* Title to choose date range in a calendar */
 "Choose date range" = "Choose date range";
-
-/* No comment provided by engineer. */
-"Choose file" = "Choose file";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Choose from My Device";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Choose from a home page that displays your latest posts (classic blog) or a fixed \/ static page.";
-
-/* No comment provided by engineer. */
-"Choose from device" = "Choose from device";
-
-/* No comment provided by engineer. */
-"Choose image" = "Choose image";
-
-/* No comment provided by engineer. */
-"Choose image or video" = "Choose image or video";
-
-/* No comment provided by engineer. */
-"Choose images" = "Choose images";
 
 /* Shortened version of the main title to be used in back navigation */
 "Choose layout" = "Choose layout";
@@ -1258,9 +1110,6 @@ translators: Block name. %s: The localized block name */
 
 /* Restorable items: general section title */
 "Choose the items to restore" = "Choose the items to restore";
-
-/* No comment provided by engineer. */
-"Choose video" = "Choose video";
 
 /* Register Domain - Address information field City */
 "City" = "City";
@@ -1328,9 +1177,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Collect information";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
@@ -1537,17 +1383,8 @@ translators: Block name. %s: The localized block name */
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Contribute";
 
-/* No comment provided by engineer. */
-"Convert to link" = "Convert to link";
-
-/* No comment provided by engineer. */
-"Copied block" = "Copied block";
-
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copy Link to Comment";
-
-/* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copy the version from this app";
@@ -1745,9 +1582,6 @@ translators: Block name. %s: The localized block name */
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "Current period: %1$@ to %2$@";
 
-/* translators: %s: current cell value. */
-"Current value is %s" = "Current value is %s";
-
 /* Title for the Jetpack Backup Status message. */
 "Currently creating a downloadable backup of your site" = "Currently creating a downloadable backup of your site";
 
@@ -1767,14 +1601,8 @@ translators: Block name. %s: The localized block name */
    Theme Customize action title */
 "Customize" = "Customise";
 
-/* No comment provided by engineer. */
-"Customize Gradient" = "Customise Gradient";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Customise Your Site";
-
-/* No comment provided by engineer. */
-"Customize blocks" = "Customise blocks";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "Customise the message";
@@ -1787,9 +1615,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Customise your site settings for Likes, Comments, Follows, and more.";
-
-/* No comment provided by engineer. */
-"Cut block" = "Cut block";
 
 /* DIY site intent topic */
 "DIY" = "DIY";
@@ -2030,74 +1855,8 @@ translators: Block name. %s: The localized block name */
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Don’t worry about a thing";
 
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "Double tap and hold to edit";
-
-/* No comment provided by engineer. */
-"Double tap to add a block" = "Double tap to add a block";
-
-/* No comment provided by engineer. */
-"Double tap to add a link." = "Double tap to add a link.";
-
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Double tap to dismiss";
-
-/* translators: accessibility text */
-"Double tap to edit this value" = "Double tap to edit this value";
-
-/* translators: accessibility text (hint for moving to color settings) */
-"Double tap to go to color settings" = "Double tap to go to colour settings";
-
-/* No comment provided by engineer. */
-"Double tap to listen the audio file" = "Double tap to listen to the audio file";
-
-/* No comment provided by engineer. */
-"Double tap to move the block down" = "Double tap to move the block down";
-
-/* No comment provided by engineer. */
-"Double tap to move the block to the left" = "Double tap to move the block to the left";
-
-/* No comment provided by engineer. */
-"Double tap to move the block to the right" = "Double tap to move the block to the right";
-
-/* No comment provided by engineer. */
-"Double tap to move the block up" = "Double tap to move the block up";
-
-/* No comment provided by engineer. */
-"Double tap to open Action Sheet with available options" = "Double tap to open Action Sheet with available options";
-
-/* No comment provided by engineer. */
-"Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
-
-/* No comment provided by engineer. */
-"Double tap to preview page." = "Double tap to preview page.";
-
-/* No comment provided by engineer. */
-"Double tap to preview post." = "Double tap to preview post.";
-
-/* No comment provided by engineer. */
-"Double tap to select" = "Double tap to select";
-
-/* No comment provided by engineer. */
-"Double tap to select a video" = "Double tap to select a video";
-
-/* No comment provided by engineer. */
-"Double tap to select an audio file" = "Double tap to select an audio file";
-
-/* No comment provided by engineer. */
-"Double tap to select an image" = "Double tap to select an image";
-
-/* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
-
-/* translators: accessibility text (hint for selecting option) */
-"Double tap to select the option" = "Double tap to select the option";
-
-/* translators: accessibility text (hint for switches) */
-"Double tap to toggle setting" = "Double tap to toggle setting";
-
-/* No comment provided by engineer. */
-"Double tap to view embed options." = "Double tap to view embed options.";
 
 /* Download button title */
 "Download" = "Download";
@@ -2126,9 +1885,6 @@ translators: Block name. %s: The localized block name */
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Duplicate";
 
-/* No comment provided by engineer. */
-"Duplicate block" = "Duplicate block";
-
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "Eg. Fashion, Poetry, Politics";
 
@@ -2149,9 +1905,6 @@ translators: Block name. %s: The localized block name */
 /* Button that displays the media editor to the user */
 "Edit %@" = "Edit %@";
 
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "Edit %@ block";
-
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edit Blocklist Word";
 
@@ -2169,15 +1922,6 @@ translators: Block name. %s: The localized block name */
    Opens the editor to edit an existing post. */
 "Edit Post" = "Edit Post";
 
-/* No comment provided by engineer. */
-"Edit cover media" = "Edit cover media";
-
-/* No comment provided by engineer. */
-"Edit file" = "Edit file";
-
-/* No comment provided by engineer. */
-"Edit media" = "Edit media";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
 
@@ -2186,12 +1930,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "Edit the post first";
-
-/* No comment provided by engineer. */
-"Edit using web editor" = "Edit using web editor";
-
-/* No comment provided by engineer. */
-"Edit video" = "Edit video";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
@@ -2247,15 +1985,6 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email sent!";
-
-/* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
-
-/* No comment provided by engineer. */
-"Embed media" = "Embed media";
-
-/* No comment provided by engineer. */
-"Embed options" = "Embed options";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2436,9 +2165,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Excerpt";
 
-/* No comment provided by engineer. */
-"Excerpt length (words)" = "Excerpt length (words)";
-
 /* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
 "Excerpt. %@." = "Excerpt. %@.";
 
@@ -2490,20 +2216,11 @@ translators: Block name. %s: The localized block name */
    The action failed */
 "Failed" = "Failed";
 
-/* No comment provided by engineer. */
-"Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
-
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
 
-/* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
-
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Failed to serialise request to the REST API.";
-
-/* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
 
 /* Fashion site intent topic */
 "Fashion" = "Fashion";
@@ -2549,9 +2266,6 @@ translators: Block name. %s: The localized block name */
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "File Downloads";
-
-/* No comment provided by engineer. */
-"File block settings" = "File block settings";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "File name";
@@ -2655,9 +2369,6 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Follows the tag.";
 
-/* No comment provided by engineer. */
-"Font Size" = "Font Size";
-
 /* Food site intent topic */
 "Food" = "Food";
 
@@ -2693,9 +2404,6 @@ translators: Block name. %s: The localized block name */
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
-
-/* translators: accessibility text. %s: gallery caption. */
-"Gallery caption. %s" = "Gallery caption. %s";
 
 /* Gaming site intent topic */
 "Gaming" = "Gaming";
@@ -2743,17 +2451,11 @@ translators: Block name. %s: The localized block name */
 /* Cancel */
 "Give Up" = "Give Up";
 
-/* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Go Back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Go to Following";
@@ -2777,9 +2479,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Grabbing site URL";
-
-/* No comment provided by engineer. */
-"Gradient Type" = "Gradient Type";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Great!\n We love to hear from happy users \n😁";
@@ -2875,12 +2574,6 @@ translators: Block name. %s: The localized block name */
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Help & Support";
 
-/* No comment provided by engineer. */
-"Help button" = "Help button";
-
-/* No comment provided by engineer. */
-"Help icon" = "Help icon";
-
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Here's how the post performed so far.";
 
@@ -2896,9 +2589,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hide All Sites */
 "Hide All Sites" = "Hide All Sites";
-
-/* No comment provided by engineer. */
-"Hide keyboard" = "Hide keyboard";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -2993,9 +2683,6 @@ translators: Block name. %s: The localized block name */
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Image Size";
 
-/* translators: accessibility text. %s: image caption. */
-"Image caption. %s" = "Image caption. %s";
-
 /* Hint for image title on image settings. */
 "Image title" = "Image title";
 
@@ -3066,9 +2753,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Insert media";
 
-/* No comment provided by engineer. */
-"Insert mention" = "Insert mention";
-
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Insert selected";
 
@@ -3125,9 +2809,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Invalid URL, please check if you wrote a valid site address.";
-
-/* No comment provided by engineer. */
-"Invalid URL." = "Invalid URL.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Invalid endpoint";
@@ -3335,9 +3016,6 @@ translators: Block name. %s: The localized block name */
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.";
 
-/* No comment provided by engineer. */
-"Line Height" = "Line Height";
-
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
 "Link" = "Link";
@@ -3359,12 +3037,6 @@ translators: Block name. %s: The localized block name */
 
 /* Image link option title. */
 "Link To" = "Link To";
-
-/* No comment provided by engineer. */
-"Link inserted" = "Link inserted";
-
-/* No comment provided by engineer. */
-"Link text" = "Link text";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link to existing content";
@@ -3469,9 +3141,6 @@ translators: Block name. %s: The localized block name */
 "Location unknown" = "Location unknown";
 
 /* No comment provided by engineer. */
-"Lock icon" = "Lock icon";
-
-/* No comment provided by engineer. */
 "Log Files By Created Date" = "Log Files By Created Date";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3530,9 +3199,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Main Navigation";
-
-/* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3721,36 +3387,6 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Most Popular Time";
 
-/* No comment provided by engineer. */
-"Move Image Backward" = "Move Image Backward";
-
-/* No comment provided by engineer. */
-"Move Image Forward" = "Move Image Forward";
-
-/* No comment provided by engineer. */
-"Move block down" = "Move block down";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block down from row %1$s to row %2$s" = "Move block down from row %1$s to row %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Move block left";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block left from position %1$s to position %2$s" = "Move block left from position %1$s to position %2$s";
-
-/* No comment provided by engineer. */
-"Move block right" = "Move block right";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block right from position %1$s to position %2$s" = "Move block right from position %1$s to position %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "Move block up";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block up from row %1$s to row %2$s" = "Move block up from row %1$s to row %2$s";
-
 /* Option to move Insight down in the view. */
 "Move down" = "Move down";
 
@@ -3768,12 +3404,6 @@ translators: Block name. %s: The localized block name */
    Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Move to Trash";
-
-/* No comment provided by engineer. */
-"Move to bottom" = "Move to bottom";
-
-/* No comment provided by engineer. */
-"Move to top" = "Move to top";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Move up";
@@ -3807,18 +3437,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error to be displayed when a tag is empty */
 "Name Required" = "Name Required";
-
-/* No comment provided by engineer. */
-"Navigate Up" = "Navigate Up";
-
-/* No comment provided by engineer. */
-"Navigates to custom color picker" = "Navigates to custom colour picker";
-
-/* No comment provided by engineer. */
-"Navigates to customize the gradient" = "Navigates to customise the gradient";
-
-/* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Navigates to the previous content sheet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Need Help?";
@@ -3931,12 +3549,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "No activity yet";
 
-/* No comment provided by engineer. */
-"No application can handle this request." = "No application can handle this request.";
-
-/* No comment provided by engineer. */
-"No application can handle this request. Please install a Web browser." = "No application can handle this request. Please install a Web browser.";
-
 /* A short message that informs the user no WordPress.com sites could be found. */
 "No available WordPress.com sites" = "No available WordPress.com sites";
 
@@ -3945,9 +3557,6 @@ translators: Block name. %s: The localized block name */
 
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "No available sites";
-
-/* No comment provided by engineer. */
-"No blocks found" = "No blocks found";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "No comments";
@@ -4119,9 +3728,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Note:";
 
-/* No comment provided by engineer. */
-"Note: Column layout may vary between themes and screen sizes" = "Note: Column layout may vary between themes and screen sizes";
-
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nothing found.";
 
@@ -4166,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field Number */
 "Number" = "Number";
 
-/* No comment provided by engineer. */
-"Number of columns" = "Number of columns";
-
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Numbered List";
 
@@ -4195,9 +3798,6 @@ translators: Block name. %s: The localized block name */
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
 
-/* No comment provided by engineer. */
-"OPEN" = "OPEN";
-
 /* Disabled */
 "Off" = "Off";
 
@@ -4219,17 +3819,11 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Oldest first" = "Oldest first";
 
-/* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
-
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Once you create a WordPress.com site, you can reblog content that you like to your own site.";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Only see the most relevant stats. Add insights to fit your needs.";
-
-/* No comment provided by engineer. */
-"Only show excerpt" = "Only show excerpt";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
@@ -4244,9 +3838,6 @@ translators: Block name. %s: The localized block name */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Oops!";
-
-/* No comment provided by engineer. */
-"Open Block Actions Menu" = "Open Block Actions Menu";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Open Device Settings";
@@ -4270,9 +3861,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Open in browser";
-
-/* No comment provided by engineer. */
-"Open link in a browser" = "Open link in a browser";
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Open link in new window\/tab";
@@ -4357,9 +3945,6 @@ translators: Block name. %s: The localized block name */
    The title of the Page Settings screen. */
 "Page Settings" = "Page Settings";
 
-/* translators: accessibility text. %s: Page break text. */
-"Page break block. %s" = "Page break block. %s";
-
 /* Notice that a page with content has been created */
 "Page created" = "Page created";
 
@@ -4380,12 +3965,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Page scheduled";
-
-/* translators: accessibility text. %s: text content of the page title. */
-"Page title. %s" = "Page title. %s";
-
-/* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Page title. Empty";
 
 /* Noun. Title for pages button.
    Noun. Title. Links to the blog's Pages screen.
@@ -4426,12 +4005,6 @@ translators: Block name. %s: The localized block name */
 
 /* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
 "Password protected" = "Password protected";
-
-/* No comment provided by engineer. */
-"Paste URL" = "Paste URL";
-
-/* No comment provided by engineer. */
-"Paste block after" = "Paste block after";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Paste without Formatting";
@@ -4691,12 +4264,6 @@ translators: Block name. %s: The localized block name */
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
 "Post sync conflict" = "Post sync conflict";
 
-/* translators: accessibility text. %s: text content of the post title. */
-"Post title. %s" = "Post title. %s";
-
-/* translators: accessibility text. empty post title. */
-"Post title. Empty" = "Post title. Empty";
-
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
 
@@ -4771,12 +4338,6 @@ translators: Block name. %s: The localized block name */
 /* Title on display preview error */
 "Preview Unavailable" = "Preview Unavailable";
 
-/* No comment provided by engineer. */
-"Preview page" = "Preview page";
-
-/* No comment provided by engineer. */
-"Preview post" = "Preview post";
-
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Preview your site to see what your visitors will see.";
 
@@ -4817,12 +4378,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problem loading sites";
-
-/* No comment provided by engineer. */
-"Problem opening the audio" = "Problem opening the audio";
-
-/* No comment provided by engineer. */
-"Problem opening the video" = "Problem opening the video";
 
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "Problem purchasing your domain. Please try again.";
@@ -5040,9 +4595,6 @@ translators: Block name. %s: The localized block name */
 /* Remove site icon button */
 "Remove Site Icon" = "Remove Site Icon";
 
-/* No comment provided by engineer. */
-"Remove block" = "Remove block";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
 
@@ -5072,21 +4624,6 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Removing Next Steps will hide all tours on this site. This action cannot be undone.";
-
-/* No comment provided by engineer. */
-"Replace Current Block" = "Replace Current Block";
-
-/* No comment provided by engineer. */
-"Replace audio" = "Replace audio";
-
-/* No comment provided by engineer. */
-"Replace file" = "Replace file";
-
-/* No comment provided by engineer. */
-"Replace image or video" = "Replace image or video";
-
-/* No comment provided by engineer. */
-"Replace video" = "Replace video";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Replies to a comment.";
@@ -5236,9 +4773,6 @@ translators: Block name. %s: The localized block name */
 /* Post Rich content */
 "Rich Content" = "Rich Content";
 
-/* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
-
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Right";
 
@@ -5357,12 +4891,6 @@ translators: Block name. %s: The localized block name */
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Scheduling...";
 
-/* No comment provided by engineer. */
-"Scrollable block menu closed." = "Scrollable block menu closed.";
-
-/* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
-
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
@@ -5382,9 +4910,6 @@ translators: Block name. %s: The localized block name */
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Search for a domain";
-
-/* No comment provided by engineer. */
-"Search or type URL" = "Search or type URL";
 
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Search pages";
@@ -5462,14 +4987,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Select State";
 
-/* No comment provided by engineer. */
-"Select a color" = "Select a colour";
-
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Select a few to continue";
-
-/* No comment provided by engineer. */
-"Select a layout" = "Select a layout";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Select media.";
@@ -5558,9 +5077,6 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Set Parent";
-
-/* No comment provided by engineer. */
-"Set as Featured Image" = "Set as Featured Image";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Set as Home page";
@@ -5653,9 +5169,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Show password";
-
-/* No comment provided by engineer. */
-"Show post content" = "Show post content";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Show themes:";
@@ -5823,9 +5336,6 @@ translators: Block name. %s: The localized block name */
    Title of Stats section that shows social followers. */
 "Social" = "Social";
 
-/* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
-
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?";
 
@@ -5939,9 +5449,6 @@ translators: Block name. %s: The localized block name */
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Start Over";
-
-/* No comment provided by engineer. */
-"Start writing…" = "Start writing…";
 
 /* Accessibility hint for stat not available to add to Insights. */
 "Stat is already displayed in Insights." = "Stat is already displayed in Insights.";
@@ -6108,23 +5615,11 @@ translators: Block name. %s: The localized block name */
 /* Menu option for taking an image or video with the device's camera. */
 "Take Photo or Video" = "Take Photo or Video";
 
-/* No comment provided by engineer. */
-"Take a Photo" = "Take a Photo";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Take a Photo or Video";
-
-/* No comment provided by engineer. */
-"Take a Video" = "Take a Video";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Tap [bookmark-outline] to save a post to your list.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Tap for more detail.";
-
-/* No comment provided by engineer. */
-"Tap here to show help" = "Tap here to show help";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tap to cancel uploading.";
@@ -6144,9 +5639,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Tap to enter a custom value";
-
-/* No comment provided by engineer. */
-"Tap to hide the keyboard" = "Tap to hide the keyboard";
 
 /* Accessibility hint for referrer action row. */
 "Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
@@ -6195,9 +5687,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a button style */
 "Text Only" = "Text Only";
-
-/* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -6610,9 +6099,6 @@ translators: Block name. %s: The localized block name */
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once.";
 
-/* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
-
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "To use stats on your site, you'll need to install the Jetpack plugin.";
 
@@ -6914,9 +6400,6 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Unfollows the blog.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "Ungroup";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Unhide";
 
@@ -6956,9 +6439,6 @@ translators: Block name. %s: The localized block name */
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Unsaved Changes";
-
-/* No comment provided by engineer. */
-"Unsupported" = "Unsupported";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Untitled";
@@ -7001,9 +6481,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Updates the bar chart to show visitors.";
-
-/* No comment provided by engineer. */
-"Updates the title." = "Updates the title.";
 
 /* Describes a status of a plugin */
 "Updating" = "Updating";
@@ -7124,12 +6601,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Video Preview Unavailable";
-
-/* translators: accessibility text. %s: video caption. */
-"Video caption. %s" = "Video caption. %s";
-
-/* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Video caption. Empty";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Video export cancelled.";
@@ -7258,9 +6729,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "We are having trouble loading data";
-
-/* No comment provided by engineer. */
-"We are working hard to add more blocks with each release." = "We are working hard to add more blocks with each release.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "We couldn't complete this action, and didn't publish this page.";
@@ -7498,9 +6966,6 @@ translators: Block name. %s: The localized block name */
 /* A message title */
 "Welcome to the Reader" = "Welcome to the Reader";
 
-/* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Welcome to the world of blocks";
-
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "We’ll always send important emails regarding your account, but you can get some helpful extras, too.";
 
@@ -7703,9 +7168,6 @@ translators: Block name. %s: The localized block name */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?";
-
-/* No comment provided by engineer. */
-"You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a link like the one you just used, but you can also set up a password if you prefer.";

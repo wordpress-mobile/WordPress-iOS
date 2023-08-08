@@ -1,5 +1,0 @@
-Wir haben umfassende Änderungen am Block-Editor vorgenommen, die u. a. Stile, Farben und Icons betreffen. Zudem gibt es in der Header-Toolbar jetzt mehr Buttons und Blockoption, darunter die Buttons zum Rückgängigmachen und Wiederherstellen. Dir stehen jetzt also mehr Tools zur Verfügung als in Batmans Werkzeuggürtel vorhanden sind.
-
-Darüber hinaus haben wir Verluste beim Arbeitsspeicher behoben, das Veröffentlichen von Aktivitätsstatistiken verbessert und ein Problem beseitigt, das zur Folge hatte, dass die App für einige Benutzer nach dem Öffnen nicht funktionierte.
-
-Wir haben auch mehrere Abstürze behoben, die durch das Tippen von Blog-Schreibanregungen, das Abonnieren von Websites im Reader und das Löschen der WordPress-App nach erfolgreicher Migration verursacht wurden.

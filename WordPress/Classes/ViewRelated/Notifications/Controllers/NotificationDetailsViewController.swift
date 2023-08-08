@@ -407,7 +407,8 @@ extension NotificationDetailsViewController {
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
+        tableView.accessibilityIdentifier   = .notificationDetailsTableAccessibilityId
+        tableView.accessibilityLabel        = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
         tableView.backgroundColor           = note.isBadge ? .ungroupedListBackground : .listBackground
     }
 
@@ -459,7 +460,8 @@ extension NotificationDetailsViewController {
 
         replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
         replyTextView.text = previousReply
-        replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyTextView.accessibilityIdentifier = .replyTextViewAccessibilityId
+        replyTextView.accessibilityLabel = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
         replyTextView.onReply = { [weak self] content in
             let group = self?.note.contentGroup(ofKind: .comment)
@@ -1492,4 +1494,11 @@ extension NotificationDetailsViewController {
         let properties = ["notification_type": note.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }
+}
+
+// MARK: - Accessibility Id Strings
+//
+private extension String {
+    static let notificationDetailsTableAccessibilityId = "notifications-details-table"
+    static let replyTextViewAccessibilityId = "reply-text-view"
 }
