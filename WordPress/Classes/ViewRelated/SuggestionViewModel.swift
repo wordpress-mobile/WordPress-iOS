@@ -12,7 +12,7 @@ import Foundation
             self.title = "\(SuggestionType.mention.trigger)\(username)"
         }
         self.subtitle = suggestion.displayName
-        self.imageURL = suggestion.imageURL
+        self.imageURL = suggestion.imageURL.map(SuggestionViewModel.preprocessAvatarURL)
     }
 
     init(suggestion: SiteSuggestion) {
@@ -21,5 +21,22 @@ import Foundation
         }
         self.subtitle = suggestion.title
         self.imageURL = suggestion.blavatarURL
+    }
+
+    private static func preprocessAvatarURL(_ url: URL) -> URL {
+        guard url.host?.contains("gravatar.com") ?? false else {
+            return url
+        }
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            return url
+        }
+        if let index = components.queryItems?.firstIndex(where: { $0.name == "s" }) {
+            components.queryItems![index].value = String(Constants.avatarSize)
+        }
+        return components.url ?? url
+    }
+
+    private struct Constants {
+        static let avatarSize = 96
     }
 }
