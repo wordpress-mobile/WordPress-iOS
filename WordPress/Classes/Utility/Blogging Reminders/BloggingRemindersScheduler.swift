@@ -17,7 +17,7 @@ extension InteractiveNotificationsManager: PushNotificationAuthorizer {
 
 /// Main interface for scheduling blogging reminders
 ///
-final class BloggingRemindersScheduler {
+class BloggingRemindersScheduler {
 
     // MARK: - Convenience Typealiases
 
@@ -92,9 +92,7 @@ final class BloggingRemindersScheduler {
     ///
     private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
-    private var coreDataStack: CoreDataStackSwift {
-        ContextManager.shared
-    }
+    private let coreDataStack: CoreDataStackSwift
 
     /// The time of the day when blogging reminders will be received for the given blog
     /// - Parameter blog: the given blog
@@ -238,11 +236,13 @@ final class BloggingRemindersScheduler {
     init(
         store: BloggingRemindersStore,
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
-        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
-
-        self.store = store
-        self.notificationScheduler = notificationCenter
-        self.pushNotificationAuthorizer = pushNotificationAuthorizer
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) {
+            self.store = store
+            self.notificationScheduler = notificationCenter
+            self.pushNotificationAuthorizer = pushNotificationAuthorizer
+            self.coreDataStack = coreDataStack
     }
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
@@ -254,11 +254,13 @@ final class BloggingRemindersScheduler {
     ///
     init(
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
-        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) throws {
-
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) throws {
         self.store = try Self.defaultStore()
         self.notificationScheduler = notificationCenter
         self.pushNotificationAuthorizer = pushNotificationAuthorizer
+        self.coreDataStack = coreDataStack
     }
 
     // MARK: - Scheduling

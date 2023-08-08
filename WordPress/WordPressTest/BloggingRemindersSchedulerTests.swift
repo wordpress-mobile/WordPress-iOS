@@ -73,10 +73,15 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         let scheduler = BloggingRemindersScheduler(
             store: store,
             notificationCenter: notificationCenter,
-            pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
+            pushNotificationAuthorizer: PushNotificationsAuthorizerMock(),
+            coreDataStack: contextManager
+        )
 
+        let expectation = self.expectation(description: "schedule-updated")
         scheduler.schedule(schedule, for: blog) { _ in
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual(scheduler.schedule(for: blog), schedule)
     }
@@ -114,7 +119,9 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         let scheduler = BloggingRemindersScheduler(
             store: store,
             notificationCenter: notificationCenter,
-            pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
+            pushNotificationAuthorizer: PushNotificationsAuthorizerMock(),
+            coreDataStack: contextManager
+        )
 
         let storeHasRemindersExpectation = expectation(description: "The notifications are in the store")
         let storeIsEmptyExpectation = expectation(description: "The notifications have been cleared from the store")
@@ -123,15 +130,14 @@ class BloggingRemindersSchedulerTests: XCTestCase {
             if store.scheduledReminders(for: blog.objectID.uriRepresentation()) != .none {
                 storeHasRemindersExpectation.fulfill()
             }
-        }
-
-        scheduler.schedule(.none, for: blog) { _ in
-            if store.scheduledReminders(for: blog.objectID.uriRepresentation()) == .none {
-                storeIsEmptyExpectation.fulfill()
+            scheduler.schedule(.none, for: blog) { _ in
+                if store.scheduledReminders(for: blog.objectID.uriRepresentation()) == .none {
+                    storeIsEmptyExpectation.fulfill()
+                }
             }
         }
 
-        waitForExpectations(timeout: 0.1) { error in
+        waitForExpectations(timeout: 1) { error in
             if let error = error {
                 XCTFail(error.localizedDescription)
             }
