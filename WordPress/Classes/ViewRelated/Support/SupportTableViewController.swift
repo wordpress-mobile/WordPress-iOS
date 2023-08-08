@@ -244,9 +244,15 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                if identityUpdated {
-                    self?.reloadViewModel()
+            if RemoteFeatureFlag.contactSupport.enabled() {
+                let chatBotViewController = SupportChatBotViewController(viewModel: .init())
+                let chatBotNavigationController = UINavigationController(rootViewController: chatBotViewController)
+                self.present(chatBotNavigationController, animated: true)
+            } else {
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
+                    if identityUpdated {
+                        self?.reloadViewModel()
+                    }
                 }
             }
         }
