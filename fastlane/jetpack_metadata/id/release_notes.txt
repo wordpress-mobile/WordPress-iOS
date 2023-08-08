@@ -1,5 +1,0 @@
-Kami menerapkan perubahan besar pada editor blok, termasuk gaya, warna, dan ikon. Kini ada lebih banyak tombol dan pilihan blok di bilah peralatan header, termasuk tombol batalkan dan ulangi. Ya, kini Anda memiliki lebih banyak peralatan dibandingkan sabuk serbaguna Batman.
-
-Masih tentang topik yang sama, kami telah memperbaiki sejumlah kebocoran memori, meningkatkan statistik aktivitas posting, dan memecahkan masalah di mana aplikasi tidak bisa bekerja setelah dibuka oleh beberapa pengguna.
-
-Kami juga telah memperbaiki sejumlah crash akibat mengetuk prompt blogging, mengikuti situs-situs di Pembaca, dan menghapus aplikasi WordPress setelah berhasil bermigrasi.
