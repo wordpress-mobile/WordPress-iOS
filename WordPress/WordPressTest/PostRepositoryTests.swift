@@ -31,9 +31,9 @@ class PostRepositoryTests: CoreDataTestCase {
         post?.type = "post"
         remoteMock.remotePostToReturnOnGetPostWithID = post
         let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try postID.existingObject(in: $0) is Page }
-        let title = try await contextManager.performQuery { try postID.existingObject(in: $0).postTitle }
-        let content = try await contextManager.performQuery { try postID.existingObject(in: $0).content }
+        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
+        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
+        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
         XCTAssertFalse(isPage)
         XCTAssertEqual(title, "Post: Test")
         XCTAssertEqual(content, "This is a test post")
@@ -44,9 +44,9 @@ class PostRepositoryTests: CoreDataTestCase {
         post?.type = "page"
         remoteMock.remotePostToReturnOnGetPostWithID = post
         let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try postID.existingObject(in: $0) is Page }
-        let title = try await contextManager.performQuery { try postID.existingObject(in: $0).postTitle }
-        let content = try await contextManager.performQuery { try postID.existingObject(in: $0).content }
+        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
+        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
+        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
         XCTAssertTrue(isPage)
         XCTAssertEqual(title, "Post: Test")
         XCTAssertEqual(content, "This is a test post")

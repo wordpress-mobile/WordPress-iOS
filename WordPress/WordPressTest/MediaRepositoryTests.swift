@@ -30,7 +30,7 @@ class MediaRepositoryTests: CoreDataTestCase {
         remote.getMediaResult = .success(remoteMedia)
 
         let mediaID = try await repository.getMedia(withID: 1, in: blogID)
-        let caption = try await contextManager.performQuery { try mediaID.existingObject(in: $0).caption }
+        let caption = try await contextManager.performQuery { try $0.existingObject(with: mediaID).caption }
         XCTAssertEqual(caption, "This is a test image")
     }
 
