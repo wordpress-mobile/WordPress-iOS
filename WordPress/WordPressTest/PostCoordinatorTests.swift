@@ -24,7 +24,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(image: "test.jpeg", status: .failed)
             .with(remoteStatus: .local)
             .build()
-        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError.testInstance()))
+        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
         let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
 
         postCoordinator.save(post)
@@ -121,7 +121,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(image: "test.jpeg", status: .failed)
             .with(remoteStatus: .local)
             .build()
-        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError.testInstance()))
+        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
         let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
         var returnedError: Error?
 
@@ -366,7 +366,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
 
-            let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError.testInstance()))
+        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
         let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
 
@@ -403,7 +403,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .build()
 
         let onUpdateParameters = post.media.reduce(into: [Media: MediaCoordinator.MediaState]()) { dict, media in
-            dict[media] = MediaCoordinator.MediaState.failed(error: NSError.testInstance())
+            dict[media] = MediaCoordinator.MediaState.failed(error: .testInstance())
         }
         let mediaCoordinatorMock = MediaCoordinatorMock(onUpdateParameters: onUpdateParameters)
 

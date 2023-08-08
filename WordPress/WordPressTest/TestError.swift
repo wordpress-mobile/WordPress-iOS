@@ -14,7 +14,7 @@ func testError(id: Int = 1, description: String = "A test error") -> Error {
 // Usage: Error.testError()
 // Error: Static member 'testError' cannot be used on protocol metatype '(any Error).Type'
 //
-// In the meantime, we can call this via NSError.testInstance() in the tests.
+// In the meantime, we can call this via testError() in the tests.
 extension Error {
 
     static func testError(

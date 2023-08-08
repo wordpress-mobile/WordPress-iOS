@@ -99,7 +99,7 @@ final class WPComJetpackRemoteInstallViewModelTests: CoreDataTestCase {
 
         // act
         viewModel.installJetpack(for: blog, isRetry: false)
-        api.failureBlockPassedIn?(NSError.testInstance(), nil) // call the failure block to trigger Result.failure
+        api.failureBlockPassedIn?(.testInstance(), nil) // call the failure block to trigger Result.failure
 
         // assert
         guard case .failure(let error) = viewModel.state else {

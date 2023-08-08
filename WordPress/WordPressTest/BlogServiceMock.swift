@@ -12,7 +12,7 @@ class BlogServiceMock: BlogService {
             success()
         }
         else {
-            failure(NSError.testInstance())
+            failure(testError())
         }
 
     }

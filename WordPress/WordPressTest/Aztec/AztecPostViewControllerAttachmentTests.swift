@@ -17,7 +17,7 @@ class AztecPostViewControllerAttachmentTests: CoreDataTestCase {
         expect(attachment.overlayImage).to(beNil())
 
         // Act
-        vc.mediaObserver(media: media, state: .failed(error: NSError.testInstance()))
+        vc.mediaObserver(media: media, state: .failed(error: .testInstance()))
 
         // Assert
         expect(attachment.message).notTo(beNil())
@@ -34,7 +34,7 @@ class AztecPostViewControllerAttachmentTests: CoreDataTestCase {
         let attachment = vc.findAttachment(withUploadID: media.uploadID)!
 
         // Trigger an error
-        vc.mediaObserver(media: media, state: .failed(error: NSError.testInstance()))
+        vc.mediaObserver(media: media, state: .failed(error: .testInstance()))
 
         // Act
         // Simulate the restarting of uploads
