@@ -1,3 +1,10 @@
+/// Global free function only available for the unit test target to make creating general purpose errors in the test DRY and self-documenting.
+///
+/// The Swift API guidelines reccomend against free functions, but the improved ergonomics and limited scope make the approach worth the trade off in this case.
+func testError(id: Int = 1, description: String = "A test error") -> Error {
+    NSError.testInstance(description: description, code: id)
+}
+
 // There must be a way to make this as an Error extension.
 // However, when I try to do so I get the following errors.
 //
@@ -18,39 +25,4 @@ extension Error {
         // This would be discouraged if it wasn't for the facts that we know that NSError converts to Error.
         NSError.testInstance(description: description, domain: domain, code: code) as! Self
     }
-}
-
-extension NSError {
-
-    static func testInstance(
-        description: String = "A test error",
-        domain: String = "org.wordpress.unit-tests",
-        code: Int = 1
-    ) -> NSError {
-        .init(code: code, domain: domain, description: description)
-    }
-}
-
-extension NSError {
-
-    convenience init(
-        code: Int,
-        domain: String,
-        description: String
-    ) {
-        self.init(
-            domain: domain,
-            code: code,
-            userInfo: [
-                NSLocalizedDescriptionKey: description
-            ]
-        )
-    }
-}
-
-/// Global free function only available for the unit test target to make creating general purpose errors in the test DRY and self-documenting.
-///
-/// The Swift API guidelines reccomend against free functions, but the improved ergonomics and limited scope make the approach worth the trade off in this case.
-func testError(id: Int = 0, description: String = "A test error") -> Error {
-    NSError.testInstance(description: description, code: id)
 }
