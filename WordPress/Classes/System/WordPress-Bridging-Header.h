@@ -94,7 +94,6 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPAuthTokenIssueSolver.h"
-#import "WPAvatarSource.h"
 #import "WPBlogTableViewCell.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
