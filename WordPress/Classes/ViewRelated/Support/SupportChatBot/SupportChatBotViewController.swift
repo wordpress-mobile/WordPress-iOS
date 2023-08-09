@@ -2,7 +2,15 @@ import WebKit
 
 final class SupportChatBotViewController: UIViewController {
     private let viewModel: SupportChatBotViewModel
-    private lazy var webView = WKWebView()
+    private lazy var webView: WKWebView = {
+        let contentController = WKUserContentController()
+        contentController.add(self, name: Constants.supportCallback)
+        let config = WKWebViewConfiguration()
+        config.userContentController = contentController
+        let webView = WKWebView(frame: .zero, configuration: config)
+        webView.navigationDelegate = self
+        return webView
+    }()
 
     init(viewModel: SupportChatBotViewModel) {
         self.viewModel = viewModel
@@ -10,7 +18,6 @@ final class SupportChatBotViewController: UIViewController {
     }
 
     override func loadView() {
-        webView.navigationDelegate = self
         self.view = webView
     }
 
@@ -39,9 +46,14 @@ final class SupportChatBotViewController: UIViewController {
         (function() {
             DocsBotAI.init({
                 id: '\(viewModel.id)',
+                 supportCallback: function (event, history) {
+                    event.preventDefault()
+                    window.webkit.messageHandlers.supportCallback.postMessage(history)
+                  },
                 options: {
                     horizontalMargin: 40,
                     verticalMargin: 60,
+                    supportLink: "#"
                 },
             })
             setTimeout(() => {
@@ -62,8 +74,22 @@ extension SupportChatBotViewController: WKNavigationDelegate {
     }
 }
 
+// MARK: - Support Callback
+
+extension SupportChatBotViewController: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == Constants.supportCallback, let messages = message.body as? [[String]] {
+            viewModel.contactSupport(including: SupportChatHistory(messages: messages))
+        }
+    }
+}
+
 extension SupportChatBotViewController {
     private enum Strings {
         static let title = NSLocalizedString("support.chatBot.title", value: "Contact Support", comment: "Title of the view that shows support chat bot.")
+    }
+
+    private enum Constants {
+        static let supportCallback = "supportCallback"
     }
 }
