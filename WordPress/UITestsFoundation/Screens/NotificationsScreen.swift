@@ -93,11 +93,11 @@ public class NotificationsScreen: ScreenObject {
 
     @discardableResult
     public func verifyReplySent(file: StaticString = #file, line: UInt = #line) -> Self {
-        let expectedLabel = NSLocalizedString("You replied to this comment.", comment: "Text to look for")
-        let actualLabel = replyIndicatorText.label.trimmingCharacters(in: .whitespaces)
-
         XCTAssertTrue(replyIndicatorCell.waitForExistence(timeout: 5), file: file, line: line)
-        XCTAssertEqual(actualLabel, expectedLabel, file: file, line: line)
+
+        let expectedReplyIndicatorLabel = NSLocalizedString("You replied to this comment.", comment: "Text to look for")
+        let actualReplyIndicatorLabel = replyIndicatorText.label.trimmingCharacters(in: .whitespaces)
+        XCTAssertEqual(actualReplyIndicatorLabel, expectedReplyIndicatorLabel, file: file, line: line)
 
         return self
     }
