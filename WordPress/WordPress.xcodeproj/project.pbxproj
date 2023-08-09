@@ -186,6 +186,14 @@
 		014ACD142A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */; };
 		014ACD152A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */; };
 		015BA4EB29A788A300920F4B /* StatsTotalInsightsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */; };
+		018635842A8109DE00915532 /* SupportChatBotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018635832A8109DE00915532 /* SupportChatBotViewController.swift */; };
+		018635852A8109DE00915532 /* SupportChatBotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018635832A8109DE00915532 /* SupportChatBotViewController.swift */; };
+		018635872A8109F900915532 /* SupportChatBotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018635862A8109F900915532 /* SupportChatBotViewModel.swift */; };
+		018635882A8109F900915532 /* SupportChatBotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018635862A8109F900915532 /* SupportChatBotViewModel.swift */; };
+		0186358A2A810A9600915532 /* support_chat_widget.html in Resources */ = {isa = PBXBuildFile; fileRef = 018635892A810A9600915532 /* support_chat_widget.html */; };
+		0186358B2A810A9600915532 /* support_chat_widget.html in Resources */ = {isa = PBXBuildFile; fileRef = 018635892A810A9600915532 /* support_chat_widget.html */; };
+		0186358D2A810ABA00915532 /* support_chat_widget.js in Resources */ = {isa = PBXBuildFile; fileRef = 0186358C2A810ABA00915532 /* support_chat_widget.js */; };
+		0186358E2A810ABA00915532 /* support_chat_widget.js in Resources */ = {isa = PBXBuildFile; fileRef = 0186358C2A810ABA00915532 /* support_chat_widget.js */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
@@ -5824,6 +5832,10 @@
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
 		014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebKitViewController+SandboxStore.swift"; sourceTree = "<group>"; };
 		015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalInsightsCellTests.swift; sourceTree = "<group>"; };
+		018635832A8109DE00915532 /* SupportChatBotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatBotViewController.swift; sourceTree = "<group>"; };
+		018635862A8109F900915532 /* SupportChatBotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatBotViewModel.swift; sourceTree = "<group>"; };
+		018635892A810A9600915532 /* support_chat_widget.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = support_chat_widget.html; sourceTree = "<group>"; };
+		0186358C2A810ABA00915532 /* support_chat_widget.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = support_chat_widget.js; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -9710,6 +9722,17 @@
 				0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		018635822A81098300915532 /* SupportChatBot */ = {
+			isa = PBXGroup;
+			children = (
+				018635832A8109DE00915532 /* SupportChatBotViewController.swift */,
+				018635862A8109F900915532 /* SupportChatBotViewModel.swift */,
+				018635892A810A9600915532 /* support_chat_widget.html */,
+				0186358C2A810ABA00915532 /* support_chat_widget.js */,
+			);
+			path = SupportChatBot;
 			sourceTree = "<group>";
 		};
 		019D699C2A5EA950003B676D /* Coordinators */ = {
@@ -14044,6 +14067,7 @@
 		98077B58207555E400109F95 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				018635822A81098300915532 /* SupportChatBot */,
 				98077B592075561800109F95 /* SupportTableViewController.swift */,
 				F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */,
 				F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */,
@@ -18899,6 +18923,7 @@
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				FE43DAB126DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
+				0186358A2A810A9600915532 /* support_chat_widget.html in Resources */,
 				433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */,
 				3F4EB39228AC561600B8DD86 /* JetpackWordPressLogoAnimation_rtl.json in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
@@ -19039,6 +19064,7 @@
 				1761F17426209AEE000815EF /* open-source-dark-icon-app-76x76.png in Resources */,
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				1761F18326209AEE000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png in Resources */,
+				0186358D2A810ABA00915532 /* support_chat_widget.js in Resources */,
 				9801E685274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */,
@@ -19671,6 +19697,7 @@
 				F41E4ED928F2424B001880C6 /* dark-glow-icon-app-60@2x.png in Resources */,
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
 				FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */,
+				0186358E2A810ABA00915532 /* support_chat_widget.js in Resources */,
 				F465977C28E6598900D5F49A /* black-on-white-icon-app-60@2x.png in Resources */,
 				F41E4EED28F247D3001880C6 /* white-on-green-icon-app-60@3x.png in Resources */,
 				FABB20B52602FC2C00C8785C /* richEmbedScript.js in Resources */,
@@ -19691,6 +19718,7 @@
 				982D9A0126F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */,
 				FABB20BF2602FC2C00C8785C /* DetailDataCell.xib in Resources */,
 				F465980028E66A1100D5F49A /* white-on-black-icon-app-83.5@2x.png in Resources */,
+				0186358B2A810A9600915532 /* support_chat_widget.html in Resources */,
 				F41E4ECC28F23E00001880C6 /* green-on-white-icon-app-60@2x.png in Resources */,
 				FABB20C02602FC2C00C8785C /* StatsGhostTwoColumnCell.xib in Resources */,
 				17C1D6F626711ED0006C8970 /* Emoji.txt in Resources */,
@@ -21251,6 +21279,7 @@
 				803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
 				D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */,
 				178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */,
+				018635872A8109F900915532 /* SupportChatBotViewModel.swift in Sources */,
 				3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
 				FAB8AB5F25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				FE1E20172A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */,
@@ -21522,6 +21551,7 @@
 				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
 				93F7214F271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
+				018635842A8109DE00915532 /* SupportChatBotViewController.swift in Sources */,
 				FE29EFCD29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */,
 				8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
@@ -23746,6 +23776,7 @@
 				4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */,
 				FABB21302602FC2C00C8785C /* PostCardStatusViewModel.swift in Sources */,
 				03216EC7279946CA00D444CA /* SchedulingDatePickerViewController.swift in Sources */,
+				018635852A8109DE00915532 /* SupportChatBotViewController.swift in Sources */,
 				FAD2544226116CEA00EDAF88 /* AppStyleGuide.swift in Sources */,
 				FABB21312602FC2C00C8785C /* SharingAuthorizationHelper.m in Sources */,
 				FABB21332602FC2C00C8785C /* TwoColumnCell.swift in Sources */,
@@ -24040,6 +24071,7 @@
 				FABB22062602FC2C00C8785C /* PluginListRow.swift in Sources */,
 				FABB22072602FC2C00C8785C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				FABB22082602FC2C00C8785C /* PostSearchHeader.swift in Sources */,
+				018635882A8109F900915532 /* SupportChatBotViewModel.swift in Sources */,
 				FABB22092602FC2C00C8785C /* ReaderPostCardContentLabel.swift in Sources */,
 				FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */,
 				80A2153E29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */,
