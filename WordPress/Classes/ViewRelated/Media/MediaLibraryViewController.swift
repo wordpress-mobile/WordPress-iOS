@@ -523,7 +523,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
-        guard let assets = assets as? [PHAsset],
+        // TODO: Assert? Rework the protocol? Surely `ExportableAsset` is not enough for this to work.
+        guard let assets = assets as? [ExportableAsset],
             assets.count > 0 else { return }
 
         for asset in assets {
