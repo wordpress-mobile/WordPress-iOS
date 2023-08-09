@@ -1,0 +1,26 @@
+{
+  "scenarioName": "comment_flow",
+	"requiredScenarioState": "Started",
+  "newScenarioState": "initial list",
+  "request": {
+    "method": "GET",
+    "urlPath": "/wp/v2/sites/181977606/comments",
+    "queryParameters": {
+      "locale": {
+        "equalTo": "en"
+      },
+      "parent": {
+        "equalTo": "2"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json; charset=UTF-8",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0, no-store, private"
+    },
+    "jsonBody": []
+  }
+}

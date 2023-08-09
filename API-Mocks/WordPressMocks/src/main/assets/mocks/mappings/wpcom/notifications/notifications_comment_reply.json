@@ -1,0 +1,78 @@
+{
+  "scenarioName": "comment_flow",
+	"requiredScenarioState": "initial list",
+	"newScenarioState": "replied",
+  "request": {
+    "method": "POST",
+    "urlPath": "/rest/v1.1/sites/181977606/comments/2/replies/new",
+    "queryParameters": {
+      "locale": {
+        "equalTo": "en"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "content": "Reply to comment from app",
+          "context": "edit"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0, no-store, private"
+    },    
+    "jsonBody": {
+      "ID": 3,
+      "post": {
+        "ID": 56,
+        "title": "My Top 10 Pastry Recipes",
+        "type": "post",
+        "link": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/56"
+      },
+      "author": {
+        "ID": 152748359,
+        "login": "e2eflowtestingmobile",
+        "email": "e2eflowtestingmobile@example.com",
+        "name": "e2eflowtestingmobile",
+        "first_name": "",
+        "last_name": "",
+        "nice_name": "e2eflowtestingmobile",
+        "URL": "https://infocusphotographers.com",
+        "avatar_URL": "https://0.gravatar.com/avatar/9c0a19481e160f45c5e7d77576c91310f902d9cd321aedc33253b8a801bd9f48?s=96&d=identicon&r=G",
+        "profile_URL": "https://en.gravatar.com/c0a1e46923d6e5d6da20e746a7bfd1bc",
+        "ip_address": "192.0.0.1"
+      },
+      "date": "{{now}}",
+      "URL": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-3",
+      "short_URL": "https://wp.me/pc82cg-sp%23comment-3",
+      "content": "<p>Reply to comment from app</p>\n",
+      "raw_content": "Reply to comment from app",
+      "status": "approved",
+      "parent": {
+        "ID": 2,
+        "type": "comment",
+        "link": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/2"
+      },
+      "type": "comment",
+      "like_count": 0,
+      "i_like": false,
+      "meta": {
+        "links": {
+          "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/3",
+          "help": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/3/help",
+          "site": "https://public-api.wordpress.com/rest/v1.1/sites/181977606",
+          "post": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/56",
+          "replies": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/3/replies/",
+          "likes": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/3/likes/"
+        }
+      },
+      "can_moderate": true,
+      "i_replied": false
+    }
+  }
+}

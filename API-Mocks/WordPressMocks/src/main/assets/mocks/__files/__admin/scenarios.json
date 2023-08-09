@@ -1,0 +1,8 @@
+{
+  "scenarios" : [ {
+    "id" : "comment_flow",
+    "name" : "comment_flow",
+    "state" : "Started",
+    "possibleStates" : [ "initial list", "replied", "new list" ]
+  } ]
+}

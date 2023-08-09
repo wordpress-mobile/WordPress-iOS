@@ -1,0 +1,73 @@
+{
+	"scenarioName": "comment_flow",
+	"requiredScenarioState": "replied",
+	"newScenarioState": "new list",
+	"request": {
+		"method": "GET",
+		"urlPath": "/wp/v2/sites/181977606/comments",
+		"queryParameters": {
+			"locale": {
+				"equalTo": "en"
+			},
+			"parent": {
+				"equalTo": "2"
+			}
+		}
+	},
+	"response": {
+		"status": 200,
+		"jsonBody": [{
+			"id": 3,
+			"post": 56,
+			"parent": 2,
+			"author": 152748359,
+			"author_name": "e2eflowtestingmobile",
+			"author_url": "https://infocusphotographers.com",
+			"date": "2023-08-08T22:38:31",
+			"date_gmt": "2023-08-09T03:38:31",
+			"content": {
+				"rendered": "<p>Reply to comment from app</p>\n"
+			},
+			"link": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-3",
+			"status": "approved",
+			"type": "comment",
+			"author_avatar_urls": {
+				"24": "https://secure.gravatar.com/avatar/c0a1e46923d6e5d6da20e746a7bfd1bc?s=24&d=identicon&r=g",
+				"48": "https://secure.gravatar.com/avatar/c0a1e46923d6e5d6da20e746a7bfd1bc?s=48&d=identicon&r=g",
+				"96": "https://secure.gravatar.com/avatar/c0a1e46923d6e5d6da20e746a7bfd1bc?s=96&d=identicon&r=g"
+			},
+			"meta": [],
+			"_links": {
+				"self": [
+					{
+						"href": "https://public-api.wordpress.com/wp/v2/sites/181977606/comments/3"
+					}
+				],
+				"collection": [
+					{
+						"href": "https://public-api.wordpress.com/wp/v2/sites/181977606/comments"
+					}
+				],
+				"author": [
+					{
+						"embeddable": true,
+						"href": "https://public-api.wordpress.com/wp/v2/sites/181977606/users/191794483"
+					}
+				],
+				"up": [
+					{
+						"embeddable": true,
+						"post_type": "post",
+						"href": "https://public-api.wordpress.com/wp/v2/sites/181977606/posts/56"
+					}
+				],
+				"in-reply-to": [
+					{
+						"embeddable": true,
+						"href": "https://public-api.wordpress.com/wp/v2/sites/181977606/comments/2"
+					}
+				]
+			}
+		}]
+	}
+}
