@@ -92,9 +92,7 @@ class BloggingRemindersScheduler {
     ///
     private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
-    private var coreDataStack: CoreDataStackSwift {
-        ContextManager.shared
-    }
+    private let coreDataStack: CoreDataStackSwift
 
     /// The time of the day when blogging reminders will be received for the given blog
     /// - Parameter blog: the given blog
@@ -238,11 +236,13 @@ class BloggingRemindersScheduler {
     init(
         store: BloggingRemindersStore,
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
-        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
-
-        self.store = store
-        self.notificationScheduler = notificationCenter
-        self.pushNotificationAuthorizer = pushNotificationAuthorizer
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) {
+            self.store = store
+            self.notificationScheduler = notificationCenter
+            self.pushNotificationAuthorizer = pushNotificationAuthorizer
+            self.coreDataStack = coreDataStack
     }
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
@@ -254,11 +254,13 @@ class BloggingRemindersScheduler {
     ///
     init(
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
-        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) throws {
-
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) throws {
         self.store = try Self.defaultStore()
         self.notificationScheduler = notificationCenter
         self.pushNotificationAuthorizer = pushNotificationAuthorizer
+        self.coreDataStack = coreDataStack
     }
 
     // MARK: - Scheduling
@@ -276,17 +278,21 @@ class BloggingRemindersScheduler {
             return
         }
 
+        let blogObjectID = blog.objectID
         pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
-            guard let self = self else {
-                return
+            DispatchQueue.main.async {
+                guard let self else { return }
+                guard allowed else {
+                    completion(.failure(Error.needsPermissionForPushNotifications))
+                    return
+                }
+                do {
+                    let blog = try self.coreDataStack.mainContext.existingObject(with: blogObjectID) as! Blog
+                    self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
+                } catch {
+                    completion(.failure(error))
+                }
             }
-
-            guard allowed else {
-                completion(.failure(Error.needsPermissionForPushNotifications))
-                return
-            }
-
-            self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
         }
     }
 

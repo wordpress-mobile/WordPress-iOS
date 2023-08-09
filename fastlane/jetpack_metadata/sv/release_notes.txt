@@ -1,5 +1,0 @@
-Vi har gjort några stora ändringar av blockredigeraren, inklusive stilar, färger och ikoner. Du hittar även fler knappar och blockalternativ i rubrikverktygsfältet, inklusive knapparna ångra och gör om. Så är det, nu har du fler verktyg än i Batmanbältet att jobba med.
-
-När vi ändå höll på så har vi även åtgärdat några minnesläckor, förbättrat publicering av aktivitetsstatistik och löst ett problem där appen inte fungerade för vissa användare efter att den öppnades.
-
-Vi har även åtgärdat flera krascher som orsakades av att trycka på bloggningsdialoger, följa webbplatser i läsaren och att ta bort WordPress-appen efter en lyckad migrering.
