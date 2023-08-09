@@ -79,7 +79,11 @@ extension SupportChatBotViewController: WKNavigationDelegate {
 extension SupportChatBotViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == Constants.supportCallback, let messages = message.body as? [[String]] {
-            viewModel.contactSupport(including: SupportChatHistory(messages: messages))
+
+            // TODO: Loading indicators
+            viewModel.contactSupport(including: SupportChatHistory(messages: messages)) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }

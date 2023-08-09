@@ -316,6 +316,36 @@ extension NSNotification.Name {
 
 }
 
+// MARK: - Create Request
+
+extension ZendeskUtils {
+    func createNewRequest(description: String, completion: @escaping () -> ()) {
+        ZendeskUtils.createIdentity { [weak self] success, newIdentity in
+            guard let self, success else {
+                completion()
+                return
+            }
+
+            self.createRequest() { requestConfig in
+                let provider = ZDKRequestProvider()
+                let request = ZDKCreateRequest()
+                request.customFields = requestConfig.customFields
+                request.tags = requestConfig.tags
+                request.ticketFormId = requestConfig.ticketFormID
+                request.subject = requestConfig.subject
+                request.requestDescription = description
+
+                provider.createRequest(request) { _, error in
+                    if let error {
+                        DDLogError("Creating new request failed: \(error)")
+                    }
+                    completion()
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Private Extension
 
 private extension ZendeskUtils {
