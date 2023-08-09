@@ -16,6 +16,8 @@ extension XCTestCase {
         continueAfterFailure = false
 
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing", "-logout-at-launch"]
+        // Reset scenarios for Wiremock's stateful behavior
+        resetScenarios()
 
         if crashOnCoreDataConcurrencyIssues {
             app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
@@ -30,6 +32,18 @@ extension XCTestCase {
         // Media permissions alert handler
         let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
+
+        // Fetch scenarios for Wiremock's stateful behavior
+        fetchScenarios { (data, error) in
+            guard error == nil else {
+                print("Error fetching scenarios: \(error!)")
+                return
+            }
+
+            guard data != nil else {
+                return
+            }
+        }
     }
 
     public func takeScreenshotOfFailedTest() {
@@ -84,5 +98,57 @@ extension XCTestCase {
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
+    }
+
+    private func fetchScenarios(completion: @escaping ([String: Any]?, Error?) -> Void) {
+        guard let url = URL(string: "http://localhost:8282/__admin/scenarios") else {
+            completion(nil, NSError(domain: "InvalidURL", code: -1, userInfo: nil))
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+
+            guard let data = data else {
+                completion(nil, NSError(domain: "NoData", code: -1, userInfo: nil))
+                return
+            }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    completion(json, nil)
+                }
+            } catch {
+                completion(nil, error)
+            }
+        }
+
+        task.resume()
+    }
+
+    private func resetScenarios() {
+        let url = URL(string: "http://localhost:8282/__admin/scenarios/reset")!
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = Data()
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil else {
+                print("Error resetting scenarios: \(error!)")
+                return
+            }
+
+            guard response is HTTPURLResponse else {
+                return
+            }
+
+        }
+
+        task.resume()
     }
 }
