@@ -1,7 +1,13 @@
 import WebKit
+import WordPressFlux
+
+protocol SupportChatBotCreatedTicketDelegate: class {
+    func onTicketCreated()
+}
 
 final class SupportChatBotViewController: UIViewController {
     private let viewModel: SupportChatBotViewModel
+    private weak var delegate: SupportChatBotCreatedTicketDelegate?
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
         contentController.add(self, name: Constants.supportCallback)
@@ -12,8 +18,9 @@ final class SupportChatBotViewController: UIViewController {
         return webView
     }()
 
-    init(viewModel: SupportChatBotViewModel) {
+    init(viewModel: SupportChatBotViewModel, delegate: SupportChatBotCreatedTicketDelegate) {
         self.viewModel = viewModel
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -79,11 +86,8 @@ extension SupportChatBotViewController: WKNavigationDelegate {
 extension SupportChatBotViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == Constants.supportCallback, let messages = message.body as? [[String]] {
-
-            // TODO: Loading indicators
-            viewModel.contactSupport(including: SupportChatHistory(messages: messages)) { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            }
+            let history = SupportChatHistory(messages: messages)
+            createTicket(with: history)
         }
     }
 }
@@ -91,9 +95,46 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
 extension SupportChatBotViewController {
     private enum Strings {
         static let title = NSLocalizedString("support.chatBot.title", value: "Contact Support", comment: "Title of the view that shows support chat bot.")
+        static let ticketCreationSuccessMessage = NSLocalizedString("support.chatBot.ticketCreationSuccess", value: "Ticket created", comment: "Notice informing user that their support ticket has been created.")
+        static let ticketCreationFailureMessage = NSLocalizedString("support.chatBot.ticketCreationFailure", value: "Error submitting support ticket", comment: "Notice informing user that there was an error submitting their support ticket.")
     }
 
     private enum Constants {
         static let supportCallback = "supportCallback"
+    }
+}
+
+// MARK: - Helpers
+
+extension SupportChatBotViewController {
+    func createTicket(with history: SupportChatHistory) {
+        // TODO: Loading indicators
+        viewModel.contactSupport(including: history) { [weak self] success in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                if success {
+                    self.showTicketCreatedSuccessNotice()
+                } else {
+                    self.showTicketCreatedFailureNotice()
+                }
+            }
+        }
+    }
+
+    func showTicketCreatedSuccessNotice() {
+        let notice = Notice(title: Strings.ticketCreationSuccessMessage,
+                            feedbackType: .success,
+                            actionTitle: "See ticket",
+                            actionHandler: { [weak self] _ in
+            guard let self else { return }
+
+            self.delegate?.onTicketCreated()
+        })
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showTicketCreatedFailureNotice() {
+        let notice = Notice(title: Strings.ticketCreationFailureMessage, feedbackType: .error)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }

@@ -319,10 +319,10 @@ extension NSNotification.Name {
 // MARK: - Create Request
 
 extension ZendeskUtils {
-    func createNewRequest(description: String, completion: @escaping () -> ()) {
+    func createNewRequest(description: String, completion: @escaping (Bool) -> ()) {
         ZendeskUtils.createIdentity { [weak self] success, newIdentity in
             guard let self, success else {
-                completion()
+                completion(false)
                 return
             }
 
@@ -338,8 +338,11 @@ extension ZendeskUtils {
                 provider.createRequest(request) { _, error in
                     if let error {
                         DDLogError("Creating new request failed: \(error)")
+                        completion(false)
+                    } else {
+                        completion(true)
                     }
-                    completion()
+
                 }
             }
         }

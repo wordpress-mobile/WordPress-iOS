@@ -245,7 +245,7 @@ private extension SupportTableViewController {
                 return
             }
             if RemoteFeatureFlag.contactSupport.enabled() {
-                let chatBotViewController = SupportChatBotViewController(viewModel: .init())
+                let chatBotViewController = SupportChatBotViewController(viewModel: .init(), delegate: self)
                 self.navigationController?.pushViewController(chatBotViewController, animated: true)
             } else {
                 ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
@@ -260,16 +260,20 @@ private extension SupportTableViewController {
     func myTicketsSelected() -> ImmuTableAction {
         return { [weak self] row in
             guard let self = self else { return }
-            ZendeskUtils.pushNotificationRead()
-            self.tableView.deselectSelectedRowWithAnimation(true)
+            showTicketView()
+        }
+    }
 
-            guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                return
-            }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                if identityUpdated {
-                    self?.reloadViewModel()
-                }
+    func showTicketView() {
+        ZendeskUtils.pushNotificationRead()
+        tableView.deselectSelectedRowWithAnimation(true)
+
+        guard let controllerToShowFrom = controllerToShowFrom() else {
+            return
+        }
+        ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: sourceTag) { [weak self] identityUpdated in
+            if identityUpdated {
+                self?.reloadViewModel()
             }
         }
     }
@@ -540,6 +544,13 @@ private extension SupportTableViewController {
 
         static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
+    }
+}
+
+extension SupportTableViewController: SupportChatBotCreatedTicketDelegate {
+    func onTicketCreated() {
+        navigationController?.popViewController(animated: true)
+        showTicketView()
     }
 }
 
