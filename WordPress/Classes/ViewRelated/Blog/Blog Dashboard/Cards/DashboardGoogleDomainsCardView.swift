@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct DashboardGoogleDomainsCardView: View {
-    private var buttonClosure: () -> ()
+    private var buttonAction: () -> ()
 
     init(buttonClosure: @escaping () -> ()) {
-        self.buttonClosure = buttonClosure
+        self.buttonAction = buttonAction
     }
 
     var body: some View {
@@ -40,8 +40,7 @@ struct DashboardGoogleDomainsCardView: View {
     private var transferDomainsButton: some View {
         HStack {
             Button {
-                print("Transfer your domains tapped")
-                buttonClosure()
+                buttonAction()
             } label: {
                 Text(Strings.buttonTitle)
                     .foregroundColor(Color(UIColor.primary))
