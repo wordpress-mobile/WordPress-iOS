@@ -19,7 +19,7 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         if let presentingViewController, !didConfigureHostingController {
-            let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView(buttonClosure: { [weak self] in
+            let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView(buttonAction: { [weak self] in
                 self?.presentGoogleDomainsWebView()
             }))
 

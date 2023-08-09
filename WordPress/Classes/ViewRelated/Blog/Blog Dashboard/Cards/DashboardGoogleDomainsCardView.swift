@@ -3,7 +3,7 @@ import SwiftUI
 struct DashboardGoogleDomainsCardView: View {
     private var buttonAction: () -> ()
 
-    init(buttonClosure: @escaping () -> ()) {
+    init(buttonAction: @escaping () -> ()) {
         self.buttonAction = buttonAction
     }
 
