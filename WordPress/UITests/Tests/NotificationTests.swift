@@ -14,7 +14,6 @@ private extension String {
 
 class NotificationTests: XCTestCase {
     override func setUpWithError() throws {
-        try super.setUpWithError()
         setUpTestSuite()
 
         try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
@@ -22,7 +21,6 @@ class NotificationTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        try super.tearDownWithError()
     }
 
     func testViewNotification() throws {
