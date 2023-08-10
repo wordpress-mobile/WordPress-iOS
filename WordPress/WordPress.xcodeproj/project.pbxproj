@@ -3309,8 +3309,6 @@
 		E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */; };
 		E1E49CE41C4902EE002393A4 /* ImmuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E49CE31C4902EE002393A4 /* ImmuTableViewController.swift */; };
 		E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0517739FAB00430844 /* test-image.jpg */; };
-		E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */; };
-		E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */; };
 		E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0E1774531500430844 /* misteryman.jpg */; };
 		E1E5EE37231E47A80018E9E3 /* ContextManager+ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E5EE36231E47A80018E9E3 /* ContextManager+ErrorHandling.swift */; };
 		E1E89C6C1FD80E74006E7A33 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E89C6B1FD80E74006E7A33 /* Plugin.swift */; };
@@ -4756,7 +4754,6 @@
 		FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */; };
 		FABB23932602FC2C00C8785C /* LoadMoreCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E684383D221F535900752258 /* LoadMoreCounter.swift */; };
 		FABB23942602FC2C00C8785C /* LoginEpilogueUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */; };
-		FABB23952602FC2C00C8785C /* WPAvatarSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */; };
 		FABB23962602FC2C00C8785C /* StatsTableFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983DBBA922125DD300753988 /* StatsTableFooter.swift */; };
 		FABB23972602FC2C00C8785C /* BlogSyncFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */; };
 		FABB23982602FC2C00C8785C /* PrepublishingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0732F1242BF97B00E7FBD3 /* PrepublishingNavigationController.swift */; };
@@ -8655,9 +8652,6 @@
 		E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PagedViewController.xib; sourceTree = "<group>"; };
 		E1E49CE31C4902EE002393A4 /* ImmuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmuTableViewController.swift; sourceTree = "<group>"; };
 		E1E4CE0517739FAB00430844 /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image.jpg"; sourceTree = "<group>"; };
-		E1E4CE091773C59B00430844 /* WPAvatarSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAvatarSource.h; sourceTree = "<group>"; };
-		E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSource.m; sourceTree = "<group>"; };
-		E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSourceTest.m; sourceTree = "<group>"; };
 		E1E4CE0E1774531500430844 /* misteryman.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = misteryman.jpg; sourceTree = "<group>"; };
 		E1E5EE36231E47A80018E9E3 /* ContextManager+ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContextManager+ErrorHandling.swift"; sourceTree = "<group>"; };
 		E1E89C6B1FD80E74006E7A33 /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
@@ -13353,7 +13347,6 @@
 				F4394D202A3B6F43003955C6 /* Crash Logging */,
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
-				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
 				82301B8E1E787420009C9C4E /* AppRatingUtilityTests.swift */,
 				F551E7F623FC9A5C00751212 /* Collection+RotateTests.swift */,
@@ -13489,8 +13482,6 @@
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
 				594399911B45091000539E21 /* WPAuthTokenIssueSolver.h */,
 				594399921B45091000539E21 /* WPAuthTokenIssueSolver.m */,
-				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
-				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
 				0807CB711CE670A800CDBDAC /* WPContentSearchHelper.swift */,
 				5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */,
 				E114D798153D85A800984182 /* WPError.h */,
@@ -21758,7 +21749,6 @@
 				B58C4ECA207C5E1A00E32E4D /* UIImage+Assets.swift in Sources */,
 				E684383E221F535900752258 /* LoadMoreCounter.swift in Sources */,
 				E6158ACA1ECDF518005FA441 /* LoginEpilogueUserInfo.swift in Sources */,
-				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				C3234F5427EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */,
 				983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */,
 				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
@@ -23566,7 +23556,6 @@
 				F4D9AF4F288AD2E300803D40 /* SuggestionViewModelTests.swift in Sources */,
 				D81C2F6A20F8B449002AE1F1 /* NotificationActionParserTest.swift in Sources */,
 				F15D1FBA265C41A900854EE5 /* BloggingRemindersStoreTests.swift in Sources */,
-				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
 				D88A64A2208D8F05008AE9BC /* StockPhotosMediaTests.swift in Sources */,
 				B55F1AA21C107CE200FD04D4 /* BlogSettingsDiscussionTests.swift in Sources */,
 			);
@@ -24610,7 +24599,6 @@
 				FABB23932602FC2C00C8785C /* LoadMoreCounter.swift in Sources */,
 				FABB23942602FC2C00C8785C /* LoginEpilogueUserInfo.swift in Sources */,
 				086F2483284F52DF00032F39 /* Tooltip.swift in Sources */,
-				FABB23952602FC2C00C8785C /* WPAvatarSource.m in Sources */,
 				8313B9FB2995A03C000AF26E /* JetpackRemoteInstallCardView.swift in Sources */,
 				FABB23962602FC2C00C8785C /* StatsTableFooter.swift in Sources */,
 				FABB23972602FC2C00C8785C /* BlogSyncFacade.m in Sources */,
