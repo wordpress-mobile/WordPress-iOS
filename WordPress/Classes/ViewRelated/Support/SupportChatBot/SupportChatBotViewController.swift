@@ -1,5 +1,6 @@
 import WebKit
 import WordPressFlux
+import SVProgressHUD
 
 protocol SupportChatBotCreatedTicketDelegate: class {
     func onTicketCreated()
@@ -85,8 +86,8 @@ extension SupportChatBotViewController: WKNavigationDelegate {
 
 extension SupportChatBotViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == Constants.supportCallback, let messages = message.body as? [[String]] {
-            let history = SupportChatHistory(messages: messages)
+        if message.name == Constants.supportCallback, let messageHistory = message.body as? [[String]] {
+            let history = SupportChatHistory(messageHistory: messageHistory)
             createTicket(with: history)
         }
     }
@@ -95,6 +96,7 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
 extension SupportChatBotViewController {
     private enum Strings {
         static let title = NSLocalizedString("support.chatBot.title", value: "Contact Support", comment: "Title of the view that shows support chat bot.")
+        static let ticketCreationLoadingMessage = NSLocalizedString("support.chatBot.ticketCreationLoading", value: "Creating support ticket...", comment: "Notice informing user that their support ticket is being created.")
         static let ticketCreationSuccessMessage = NSLocalizedString("support.chatBot.ticketCreationSuccess", value: "Ticket created", comment: "Notice informing user that their support ticket has been created.")
         static let ticketCreationFailureMessage = NSLocalizedString("support.chatBot.ticketCreationFailure", value: "Error submitting support ticket", comment: "Notice informing user that there was an error submitting their support ticket.")
     }
@@ -108,8 +110,11 @@ extension SupportChatBotViewController {
 
 extension SupportChatBotViewController {
     func createTicket(with history: SupportChatHistory) {
-        // TODO: Loading indicators
+        SVProgressHUD.show(withStatus: Strings.ticketCreationLoadingMessage)
+
         viewModel.contactSupport(including: history) { [weak self] success in
+            SVProgressHUD.dismiss()
+
             guard let self else { return }
             DispatchQueue.main.async {
                 if success {
