@@ -39,6 +39,23 @@ class Post: AbstractPost {
         static let publicizeEnabledValue = "0"
     }
 
+    enum PublicizeMetadataSkipPrefix: String {
+        case keyring = "_wpas_skip_"
+        case connection = "_wpas_skip_publicize_"
+
+        /// Determines the prefix type from the given key.
+        ///
+        /// - Parameter key: String.
+        /// - Returns: A `PublicizeMetadataSkipPrefix` value, or nil if nothing matched.
+        static func prefix(of key: String) -> PublicizeMetadataSkipPrefix? {
+            // try to match the `keyring` format first, since it's a substring of the `connection` format.
+            guard key.hasPrefix(Self.keyring.rawValue) else {
+                return nil
+            }
+            return key.hasPrefix(Self.connection.rawValue) ? .connection : .keyring
+        }
+    }
+
     // MARK: - Properties
 
     fileprivate var storedContentPreviewForDisplay = ""

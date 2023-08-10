@@ -1,19 +1,7 @@
 extension PostService {
     typealias StringDictionary = [String: String]
     typealias Keys = Post.Constants
-
-    // TODO: Move to Post.
-    enum PublicizeMetadataSkipPrefix: String {
-        case keyring = "_wpas_skip_"
-        case connection = "_wpas_skip_publicize_"
-
-        static func prefix(of key: String) -> PublicizeMetadataSkipPrefix? {
-            guard key.hasPrefix(Self.keyring.rawValue) else {
-                return nil
-            }
-            return key.hasPrefix(Self.connection.rawValue) ? .connection : .keyring
-        }
-    }
+    typealias SkipPrefix = Post.PublicizeMetadataSkipPrefix
 
     /// Returns a dictionary format for the `Post`'s `disabledPublicizeConnection` property based on the given metadata.
     ///
@@ -37,27 +25,27 @@ extension PostService {
         }
 
         return metadata
-            .filter { $0[Keys.publicizeKeyKey]?.hasPrefix(PublicizeMetadataSkipPrefix.keyring.rawValue) ?? false }
+            .filter { $0[Keys.publicizeKeyKey]?.hasPrefix(SkipPrefix.keyring.rawValue) ?? false }
             .reduce(into: [NSNumber: StringDictionary]()) { partialResult, entry in
                 guard let key = entry[Post.Constants.publicizeKeyKey] else {
                     return
                 }
 
                 func getConnectionID() -> Int? {
-                    guard let prefixType = PublicizeMetadataSkipPrefix.prefix(of: key) else {
+                    guard let prefixType = SkipPrefix.prefix(of: key) else {
                         return nil
                     }
 
                     switch prefixType {
                     case .connection:
                         // If the key already uses the new format, then return the `connectionID` segment.
-                        return Int(key.removingPrefix(PublicizeMetadataSkipPrefix.connection.rawValue))
+                        return Int(key.removingPrefix(SkipPrefix.connection.rawValue))
 
                     case .keyring:
                         // If the key uses a keyring format, try to find an existing `PublicizeConnection` that
                         // matches the `keyringID`, and get its connectionID.
                         guard let connections = post.blog.connections as? Set<PublicizeConnection>,
-                              let keyringID = Int(key.removingPrefix(PublicizeMetadataSkipPrefix.keyring.rawValue)) else {
+                              let keyringID = Int(key.removingPrefix(SkipPrefix.keyring.rawValue)) else {
                             return nil
                         }
 
@@ -73,7 +61,7 @@ extension PostService {
 
                 // Fall back to the previous implementation if the keyring is not found on the blog's connections.
                 // The previous implementation only reads the `id` and `value`, and uses `keyringID` as the dictionary key.
-                if let entryKeyringID = Int(key.removingPrefix(PublicizeMetadataSkipPrefix.keyring.rawValue)) {
+                if let entryKeyringID = Int(key.removingPrefix(SkipPrefix.keyring.rawValue)) {
                     var connectionDictionary = StringDictionary()
                     connectionDictionary[Keys.publicizeIdKey] = entry[Keys.publicizeIdKey]
                     connectionDictionary[Keys.publicizeValueKey] = entry[Keys.publicizeValueKey]
@@ -114,10 +102,10 @@ extension PostService {
                       let connections = post.blog.connections as? Set<PublicizeConnection>,
                       let connection = connections.first(where: { $0.keyringConnectionID == id }) else {
                     // Fall back to the old keyring format.
-                    return "\(PublicizeMetadataSkipPrefix.keyring.rawValue)\(id)"
+                    return "\(SkipPrefix.keyring.rawValue)\(id)"
                 }
 
-                return "\(PublicizeMetadataSkipPrefix.connection.rawValue)\(connection.connectionID)"
+                return "\(SkipPrefix.connection.rawValue)\(connection.connectionID)"
             }()
 
             return entry.merging([Keys.publicizeKeyKey: keyMetadata]) { _, newValue in newValue }
