@@ -6,11 +6,13 @@ final class SupportChatBotViewModelTests: XCTestCase {
     private var zendeskUtils: ZendeskUtilsSpy!
 
     override func setUpWithError() throws {
+        super.setUpWithError()
         zendeskUtils = ZendeskUtilsSpy()
         sut = SupportChatBotViewModel(zendeskUtils: zendeskUtils)
     }
 
     override func tearDownWithError() throws {
+        super.tearDownWithError()
         zendeskUtils = nil
         sut = nil
     }
