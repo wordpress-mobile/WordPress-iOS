@@ -34,6 +34,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Analyzer"
+               BuildableName = "Analyzer"
+               BlueprintName = "Analyzer"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -78,11 +92,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--derived-data-path"
+            argument = "--data-store-path"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/Users/tonyli/Projects/WordPress-iOS/static-analyser-sourcekit/derived_data"
+            argument = "/Users/tonyli/Projects/WordPress-iOS/static-analyser-sourcekit/derived_data/Index.noindex/DataStore"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

@@ -28,6 +28,20 @@ let package = Package(
                 .product(name: "IndexStoreDB", package: "indexstore-db"),
                 .product(name: "SourceKittenFramework", package: "SourceKitten"),
                 .product(name: "TSCBasic", package: "swift-tools-support-core"),
+                "Analyzer",
+            ],
+            swiftSettings: [
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
+        ),
+        .target(
+            name: "Analyzer",
+            dependencies: [
+                .product(name: "SwiftParser", package: "swift-syntax"),
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "IndexStoreDB", package: "indexstore-db"),
+                .product(name: "SourceKittenFramework", package: "SourceKitten"),
+                .product(name: "TSCBasic", package: "swift-tools-support-core"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("BareSlashRegexLiterals")
