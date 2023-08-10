@@ -194,6 +194,7 @@
 		0186358B2A810A9600915532 /* support_chat_widget.html in Resources */ = {isa = PBXBuildFile; fileRef = 018635892A810A9600915532 /* support_chat_widget.html */; };
 		0186358D2A810ABA00915532 /* support_chat_widget.js in Resources */ = {isa = PBXBuildFile; fileRef = 0186358C2A810ABA00915532 /* support_chat_widget.js */; };
 		0186358E2A810ABA00915532 /* support_chat_widget.js in Resources */ = {isa = PBXBuildFile; fileRef = 0186358C2A810ABA00915532 /* support_chat_widget.js */; };
+		018635922A85376700915532 /* SupportChatBotViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018635912A85376700915532 /* SupportChatBotViewModelTests.swift */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
@@ -5833,6 +5834,7 @@
 		018635862A8109F900915532 /* SupportChatBotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatBotViewModel.swift; sourceTree = "<group>"; };
 		018635892A810A9600915532 /* support_chat_widget.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = support_chat_widget.html; sourceTree = "<group>"; };
 		0186358C2A810ABA00915532 /* support_chat_widget.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = support_chat_widget.js; sourceTree = "<group>"; };
+		018635912A85376700915532 /* SupportChatBotViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatBotViewModelTests.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -9727,6 +9729,22 @@
 				0186358C2A810ABA00915532 /* support_chat_widget.js */,
 			);
 			path = SupportChatBot;
+			sourceTree = "<group>";
+		};
+		0186358F2A85374E00915532 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				018635902A85375600915532 /* SupportChatBot */,
+			);
+			name = Support;
+			sourceTree = "<group>";
+		};
+		018635902A85375600915532 /* SupportChatBot */ = {
+			isa = PBXGroup;
+			children = (
+				018635912A85376700915532 /* SupportChatBotViewModelTests.swift */,
+			);
+			name = SupportChatBot;
 			sourceTree = "<group>";
 		};
 		019D699C2A5EA950003B676D /* Coordinators */ = {
@@ -16343,6 +16361,7 @@
 				73178C2021BEE09300E37C9A /* SiteCreation */,
 				40E7FEC32211DF490032834E /* Stats */,
 				D88A6490208D79F1008AE9BC /* Stock Photos */,
+				0186358F2A85374E00915532 /* Support */,
 				BEA0E4821BD8353B000AEE81 /* System */,
 				59B48B601B99E0B0008EBB84 /* TestUtilities */,
 				852416D01A12ED2D0030700C /* Utility */,
@@ -23542,6 +23561,7 @@
 				F4426FD3287E08C300218003 /* SuggestionServiceMock.swift in Sources */,
 				436D55F02115CB6800CEAA33 /* RegisterDomainDetailsSectionTests.swift in Sources */,
 				4A17C1A4281A823E0001FFE5 /* NSManagedObject+Fixture.swift in Sources */,
+				018635922A85376700915532 /* SupportChatBotViewModelTests.swift in Sources */,
 				0C896DE72A3A832B00D7D4E7 /* SiteVisibilityTests.swift in Sources */,
 				E1B921BC1C0ED5A3003EA3CB /* MediaSizeSliderCellTest.swift in Sources */,
 				C314543B262770BE005B216B /* BlogServiceAuthorTests.swift in Sources */,
