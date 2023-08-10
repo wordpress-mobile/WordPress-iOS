@@ -1,0 +1,27 @@
+import Foundation
+
+class ViewController {
+
+}
+
+struct Model {
+    enum Error: Swift.Error {
+        case invalid
+    }
+
+    var id: UUID
+    var name: String
+
+    func validate() throws {}
+}
+
+class Service {
+    enum Error: Swift.Error {
+        case notFound
+    }
+
+    func get(id: UUID) -> Model {
+        fatalError("Unimplemented")
+    }
+
+}

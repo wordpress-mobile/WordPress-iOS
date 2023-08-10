@@ -1,7 +1,7 @@
 import Foundation
 import IndexStoreDB
 
-public extension SymbolNavigator {
+public extension SourceNavigator {
 
     func lookupCoreDataAPIs() -> [Symbol] {
         let functions = [

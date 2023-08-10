@@ -48,6 +48,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "static-analyzer_AnalyzerTests"
+               BuildableName = "static-analyzer_AnalyzerTests"
+               BlueprintName = "static-analyzer_AnalyzerTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -64,6 +78,16 @@
                BlueprintIdentifier = "static-analyzerTests"
                BuildableName = "static-analyzerTests"
                BlueprintName = "static-analyzerTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AnalyzerTests"
+               BuildableName = "AnalyzerTests"
+               BlueprintName = "AnalyzerTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

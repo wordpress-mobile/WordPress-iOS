@@ -1,5 +1,3 @@
-import TSCBasic
-
 public struct CompilerInvocations {
 
     var invocations: [String: [[String]]]

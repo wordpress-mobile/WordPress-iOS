@@ -46,6 +46,13 @@ let package = Package(
             swiftSettings: [
                 .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
+        ),
+        .testTarget(
+            name: "AnalyzerTests",
+            dependencies: [
+                "Analyzer"
+            ],
+            resources: [.copy("TestData")]
         )
     ]
 )
