@@ -1,10 +1,16 @@
 import UIKit
 import SwiftUI
 
+protocol DashboardGoogleDomainsCardCellProtocol: AnyObject {
+    func presentGoogleDomainsWebView(with url: URL)
+}
+
 final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
     private let frameView = BlogDashboardCardFrameView()
     private weak var presentingViewController: UIViewController?
     private var didConfigureHostingController = false
+
+    var viewModel: DashboardGoogleDomainsViewModel?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,8 +25,11 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
         self.presentingViewController = viewController
 
         if let presentingViewController, !didConfigureHostingController {
+            self.viewModel = DashboardGoogleDomainsViewModel()
+            self.viewModel?.cell = self
+
             let hostingController = UIHostingController(rootView: DashboardGoogleDomainsCardView(buttonAction: { [weak self] in
-                self?.presentGoogleDomainsWebView()
+                self?.viewModel?.didTapTransferDomains()
             }))
 
             guard let cardView = hostingController.view else {
@@ -38,14 +47,16 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
             hostingController.didMove(toParent: presentingViewController)
             configureMoreButton(with: blog)
 
+            viewModel?.didShowCard()
+
             didConfigureHostingController = true
         }
     }
 
     private func setupFrameView() {
         frameView.setTitle(Strings.cardTitle)
-        frameView.onEllipsisButtonTap = {
-            WPAnalytics.track(.domainTransferMoreTapped)
+        frameView.onEllipsisButtonTap = { [weak self] in
+            self?.viewModel?.didTapMore()
         }
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.onViewTap = { [weak self] in
@@ -53,7 +64,7 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
                 return
             }
 
-            self.presentGoogleDomainsWebView()
+            self.viewModel?.didTapTransferDomains()
         }
     }
 
@@ -64,11 +75,10 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
             card: .googleDomains
         )
     }
+}
 
-    private func presentGoogleDomainsWebView() {
-        guard let url = URL(string: Constants.transferDomainsURL) else {
-            return
-        }
+extension DashboardGoogleDomainsCardCell: DashboardGoogleDomainsCardCellProtocol {
+    func presentGoogleDomainsWebView(with url: URL) {
 
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(
             url: url,
@@ -76,8 +86,6 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
         )
         let navController = UINavigationController(rootViewController: webViewController)
         presentingViewController?.present(navController, animated: true)
-
-        WPAnalytics.track(.domainTransferButtonTapped)
     }
 }
 
@@ -88,9 +96,5 @@ private extension DashboardGoogleDomainsCardCell {
             value: "News",
             comment: "Title for the domain focus card on My Site"
         )
-    }
-
-    enum Constants {
-        static let transferDomainsURL = "https://wordpress.com/transfer-google-domains/"
     }
 }
