@@ -46,7 +46,7 @@ extension PostService {
                         guard let connections = post.blog.connections as? Set<PublicizeConnection>,
                               let connectionID = entryConnectionID,
                               let connection = connections.first(where: { $0.connectionID.intValue == connectionID }) else {
-                            // otherwise, fall back to the connection ID extracted from the metadata key.
+                            // otherwise, fall back to the connectionID extracted from the metadata key.
                             return entryConnectionID
                         }
 
@@ -55,7 +55,6 @@ extension PostService {
                 }
 
                 if let id = getDictionaryID() {
-                    // If the connectionID exists, then we'll use that as the dictionary key.
                     partialResult[NSNumber(value: id)] = entry
                 }
             }
