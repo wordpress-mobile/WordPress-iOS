@@ -1,6 +1,12 @@
 import SwiftUI
 
 struct DashboardGoogleDomainsCardView: View {
+    private var buttonAction: () -> ()
+
+    init(buttonAction: @escaping () -> ()) {
+        self.buttonAction = buttonAction
+    }
+
     var body: some View {
         VStack(spacing: Length.Padding.double) {
             titleHStack
@@ -8,6 +14,9 @@ struct DashboardGoogleDomainsCardView: View {
             transferDomainsButton
         }
         .padding([.leading, .trailing, .bottom], Length.Padding.double)
+        .onAppear {
+            WPAnalytics.track(.domainTransferShown)
+        }
     }
 
     private var titleHStack: some View {
@@ -31,7 +40,7 @@ struct DashboardGoogleDomainsCardView: View {
     private var transferDomainsButton: some View {
         HStack {
             Button {
-                print("Transfer your domains tapped")
+                buttonAction()
             } label: {
                 Text(Strings.buttonTitle)
                     .foregroundColor(Color(UIColor.primary))
