@@ -17,10 +17,14 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+protocol ZendeskUtilsProtocol {
+    func createNewRequest(description: String, tags: [String], completion: @escaping (Bool) -> ())
+}
+
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
 ///
-@objc class ZendeskUtils: NSObject {
+@objc class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
 
     // MARK: - Public Properties
 
