@@ -319,7 +319,7 @@ extension NSNotification.Name {
 // MARK: - Create Request
 
 extension ZendeskUtils {
-    func createNewRequest(description: String, completion: @escaping (Bool) -> ()) {
+    func createNewRequest(description: String, tags: [String], completion: @escaping (Bool) -> ()) {
         ZendeskUtils.createIdentity { [weak self] success, newIdentity in
             guard let self, success else {
                 completion(false)
@@ -329,6 +329,7 @@ extension ZendeskUtils {
             self.createRequest() { requestConfig in
                 let provider = ZDKRequestProvider()
                 let request = ZDKCreateRequest()
+                requestConfig.tags += tags
                 request.customFields = requestConfig.customFields
                 request.tags = requestConfig.tags
                 request.ticketFormId = requestConfig.ticketFormID
