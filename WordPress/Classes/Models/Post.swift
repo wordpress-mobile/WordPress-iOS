@@ -34,6 +34,7 @@ class Post: AbstractPost {
     struct Constants {
         static let publicizeIdKey = "id"
         static let publicizeValueKey = "value"
+        static let publicizeKeyKey = "key"
         static let publicizeDisabledValue = "1"
         static let publicizeEnabledValue = "0"
     }
