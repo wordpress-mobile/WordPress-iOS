@@ -39,14 +39,19 @@ extension PostService {
                         return Int(key.removingPrefix(SkipPrefix.keyring.rawValue))
 
                     case .connection:
-                        // If the key uses the new format, try to find an existing `PublicizeConnection` that
-                        // matches the connectionID, and return its keyringID.
+                        // If the key uses the new format, try to find an existing `PublicizeConnection` matching
+                        // the connectionID, and return its keyringID.
                         let entryConnectionID = Int(key.removingPrefix(SkipPrefix.connection.rawValue))
 
                         guard let connections = post.blog.connections as? Set<PublicizeConnection>,
                               let connectionID = entryConnectionID,
                               let connection = connections.first(where: { $0.connectionID.intValue == connectionID }) else {
-                            // otherwise, fall back to the connectionID extracted from the metadata key.
+                            /// Otherwise, fall back to the connectionID extracted from the metadata key.
+                            /// Note that entries with `connectionID` won't be detected by the Post's
+                            /// `publicizeConnectionDisabledForKeyringID` method.
+                            ///
+                            /// However, the Publicize methods in `Post.swift` will attempt to update the key into
+                            /// its `keyringID`, since the `PublicizeConnection` object is guaranteed to exist.
                             return entryConnectionID
                         }
 
