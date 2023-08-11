@@ -3,6 +3,6 @@
     "id" : "comment_flow",
     "name" : "comment_flow",
     "state" : "Started",
-    "possibleStates" : [ "initial list", "replied", "new list" ]
+    "possibleStates" : [ "Started", "initial_list", "replied", "new_list" ]
   } ]
 }
