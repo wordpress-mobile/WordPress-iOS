@@ -66,15 +66,15 @@ final class TestSupport {
         let xcodebuildLogPath = projectDir.appending(component: "xcodebuild.log")
 
         let shell = "xcodebuild -scheme \(projectName) -destination platform=macOS -derivedDataPath \(derivedDataPath.pathString) build | tee \(xcodebuildLogPath.pathString)"
+        let stdout: FileHandle = verbose ? .standardOutput : .nullDevice
+        let stderr: FileHandle = verbose ? .standardError : .nullDevice
         let build = TSCBasic.Process(
             arguments: ["/bin/bash", "-euco", "pipefail", shell],
             workingDirectory: projectDir,
-            outputRedirection: verbose
-                ? .stream(
-                    stdout: { try? FileHandle.standardOutput.write(contentsOf: $0) },
-                    stderr: { try? FileHandle.standardError.write(contentsOf: $0) }
-                )
-                : .none,
+            outputRedirection: .stream(
+                stdout: { try? stdout.write(contentsOf: $0) },
+                stderr: { try? stderr.write(contentsOf: $0) }
+            ),
             loggingHandler: { print("[\(self.projectName)] \($0)") }
         )
         try build.launch()

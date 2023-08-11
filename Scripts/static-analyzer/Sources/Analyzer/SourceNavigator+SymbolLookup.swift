@@ -34,35 +34,15 @@ extension SourceNavigator {
 
         let superclasses = superclasses(of: symbol)
         let conformedProtocols = conformedProtocols(of: symbol)
-        let usrsToLookUp = Set(([symbol] + superclasses + conformedProtocols).map { $0.usr })
+        let allTypes = [symbol] + superclasses + conformedProtocols
 
-        return indexStore.canonicalOccurrences(ofName: symbolName)
-            .filter { (occurrence: SymbolOccurrence) in
-                guard occurrence.symbol.kind == .instanceMethod else {
-                    return false
-                }
-
-                let parents = occurrence.relations.compactMap { $0.roles.contains(.childOf) ? $0.symbol : nil }
-                assert(parents.count == 1)
-
-                var parent = parents[0]
-                if parent.kind.isTypeDefinition {
-                    // Do nothing
-                } else if parent.kind == .extension {
-                    let extensions = indexStore.occurrences(relatedToUSR: parent.usr, roles: .extendedBy)
-                    // TODO: Sometimes this assertion is false. Maybe an IndexStoreDB issue?
-                    assert(extensions.count == 1)
-                    parent = extensions[0].symbol
-                } else {
-                    assertionFailure("Unexpected \(parent)")
-                    return false
-                }
-
-                assert(parent.kind.isTypeDefinition)
-                return usrsToLookUp.contains(parent.usr)
+        let allFuncs = allTypes
+            .reduce(into: [Symbol]()) { partialResult, type in
+                partialResult += indexStore.occurrences(relatedToUSR: type.usr, roles: .receivedBy)
+                    .filter { $0.symbol.kind == .instanceMethod }
+                    .map(\.symbol)
             }
-            .map { $0.symbol }
-            .removingDuplicates(by: \.usr)
+        return allFuncs.filter { $0.name == symbolName }.removingDuplicates(by: \.usr)
     }
 
     public func conformedProtocols(of symbol: Symbol) -> [Symbol] {

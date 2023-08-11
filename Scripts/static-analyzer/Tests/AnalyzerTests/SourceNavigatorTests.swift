@@ -65,6 +65,9 @@ class SourceNavigatorTests: XCTestCase {
             func bar(p: ProtocolA) {
               _ = p.map("")
             }
+            func baz() {
+              _ = [1, 2, 3].map { $0 * 2}
+            }
             """
         let navigator = try support.navigator(forSourceCode: code)
 
@@ -78,6 +81,35 @@ class SourceNavigatorTests: XCTestCase {
         XCTAssertEqual(mapCallSites.count, 2)
         let lines = mapCallSites.map { $0.line }
         XCTAssertEqual(Set(lines), [5, 8])
+    }
+
+    func testLookupInstanceMethod_InComplexTypes() throws {
+        let support = TestSupport()
+        let code = """
+            func foo() {
+              _ = [1, 2, 3].map { $0 * 2}
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+        let arrayType = try navigator.resolveType(named: "Array")
+        let mapFuncs = navigator.lookupInstanceMethods(named: "map(_:)", of: arrayType)
+        XCTAssertFalse(mapFuncs.isEmpty)
+
+        let callSites = mapFuncs.flatMap { navigator.callSites(of: $0) }
+        XCTAssertEqual(callSites.count, 1)
+    }
+
+    func testLookupInstanceMethod_UnusedFunction() throws {
+        let support = TestSupport()
+        let code = """
+            func foo() {
+              _ = [1, 2, 3].map { $0 * 2}
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+        let arrayType = try navigator.resolveType(named: "Array")
+        let mapFuncs = navigator.lookupInstanceMethods(named: "flatMap(_:)", of: arrayType)
+        XCTAssertTrue(mapFuncs.isEmpty)
     }
 
     func testLookupConformance() throws {
