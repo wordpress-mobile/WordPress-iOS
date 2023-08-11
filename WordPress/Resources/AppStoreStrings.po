@@ -15,12 +15,14 @@ msgstr ""
 
 #. translators: The application name in the Apple App Store. Please keep the brand name ('WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
 msgctxt "app_store_name"
-msgid "WordPress – Website Builder"
+msgid "WordPress – Website Builder
+"
 msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Design a site, build a blog"
+msgid "Design a site, build a blog
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -36,20 +38,34 @@ msgid ""
 "\n"
 "Need help with the app? Visit the forums at https://wordpress.org/support/forum/mobile/ or tweet us @WordPressiOS.\n"
 "\n"
-"View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
+"View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa."
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
 #. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
+msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs
+"
 msgstr ""
 
-msgctxt "v22.9-whats-new"
+msgctxt "v23.0-whats-new"
 msgid ""
-"We made some big changes to the block editor, including styles, colors, and icons. You’ll also find more buttons and block options in the header toolbar, including the undo and redo buttons. That’s right, you now have more tools than Batman’s utility belt.\n"
+"Version 23.0 is here! Do we look older?\n"
 "\n"
-"While we were at it, we plugged a few memory leaks and solved an issue where the app wouldn’t work for some users after opening.\n"
+"To celebrate, we made some Gallery block updates in the block editor.\n"
+"\n"
+"- We removed the visual gap that appears between selected gallery blocks and the toolbar.\n"
+"- The gallery caption button is no longer visible on mobile devices.\n"
+"- The correct gallery block will stay selected while you’re adding media.\n"
+"\n"
+"We also squashed several bugs in the media picker.\n"
+"\n"
+"- Your screen won’t flash anymore when you open the media picker.\n"
+"- Media files have stopped rearranging themselves and will now behave.\n"
+"- The image count no longer includes other media types.\n"
+"- Thumbnail image sizes are now smaller. Faster loading, less memory—what’s not to love?\n"
+"\n"
+"Finally, the app should no longer crash when you update a post. (But wear a helmet anyway. Safety first.)\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -73,7 +89,7 @@ msgctxt "standard-whats-new-4"
 msgid ""
 "It may look the same,\n"
 "but we shined and buffed the code.\n"
-"Small changes add up!\n"
+"Small changes add up!"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
@@ -82,7 +98,7 @@ msgctxt "app_store_screenshot-1"
 msgid ""
 "The world’s most\n"
 "popular website\n"
-"builder\n"
+"builder"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
@@ -90,7 +106,7 @@ msgstr ""
 msgctxt "app_store_screenshot-2"
 msgid ""
 "Create a site or\n"
-"start a blog\n"
+"start a blog"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
@@ -98,7 +114,7 @@ msgstr ""
 msgctxt "app_store_screenshot-3"
 msgid ""
 "Discover\n"
-"new reads\n"
+"new reads"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
@@ -106,7 +122,7 @@ msgstr ""
 msgctxt "app_store_screenshot-4"
 msgid ""
 "Build an\n"
-"audience\n"
+"audience"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
@@ -114,7 +130,7 @@ msgstr ""
 msgctxt "app_store_screenshot-5"
 msgid ""
 "Keep tabs on\n"
-"your site\n"
+"your site"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
@@ -122,7 +138,7 @@ msgstr ""
 msgctxt "app_store_screenshot-6"
 msgid ""
 "Reply in\n"
-"real time\n"
+"real time"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
@@ -130,7 +146,7 @@ msgstr ""
 msgctxt "app_store_screenshot-7"
 msgid ""
 "Upload\n"
-"on the go\n"
+"on the go"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
