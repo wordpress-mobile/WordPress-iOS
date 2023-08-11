@@ -11,8 +11,12 @@ func reportUnsafeCoreDataAPIUsages(indexStore: IndexStoreDB, compilerInvocations
         for callSite in navigator.callSites(of: USR(rawValue: symbol.usr)!) {
             print("\(symbol.name) is called at \(callSite)")
 
-            let expression = try navigator.typecheck(location: callSite)
-            let closure = try ASTHelper.parseFunctionParameterType(at: 1, function: expression)
+            let expressions = try navigator.expressions(at: callSite)
+            guard let expression = expressions.min(by: { $0.byteRange.count < $1.byteRange.count }) else {
+                throw AnyError(message: "Can't find the expression at \(callSite)")
+            }
+
+            let closure = try ASTHelper.parseFunctionParameterType(at: 1, function: expression.type)
             let returnType = try ASTHelper.parseFunctionReturnType(function: closure)
 
             let typeIdentifiers = ASTHelper.extractTypeIdentifier(returnType)

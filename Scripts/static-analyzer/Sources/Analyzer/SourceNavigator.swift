@@ -24,7 +24,7 @@ public class SourceNavigator {
             .map(\.location)
     }
 
-    public func typecheck(location: SymbolLocation) throws -> String {
+    public func expressions(at location: SymbolLocation) throws -> [Expression] {
         let compilerArguments = compilerInvocations.compilerArguments(forFileAt: location.path)
         let targetByteOffset = try Int64(StringView(String(contentsOfFile: location.path)).byteOffset(forLine: Int64(location.line), bytePosition: Int64(location.utf8Column))!.value)
 
@@ -35,24 +35,10 @@ public class SourceNavigator {
             throw SourceKitResponseError.unexpectedType(key: "key.expression_type_list")
         }
 
-        let found = try expressionTypeList
-            .filter { expression in
-                let offset: Int64 = try expression.get("key.expression_offset")
-                let length: Int64 = try expression.get("key.expression_length")
-
-                return targetByteOffset >= offset && targetByteOffset < (offset + length)
-            }
-            .min { lhs, rhs in
-                let lhsLength: Int64 = try lhs.get("key.expression_length")
-                let rhsLength: Int64 = try rhs.get("key.expression_length")
-                return lhsLength < rhsLength
-            }
-
-        guard let found else {
-            throw AnyError(message: "Can't find the expression at \(location)")
-        }
-
-        return try found.get("key.expression_type")
+        return try expressionTypeList
+            .map { try Expression(sourceKitExpressionTypeResponse: $0) }
+            .filter { $0.byteRange.contains(targetByteOffset) }
+            .sorted { $0.byteRange.count < $1.byteRange.count }
     }
 
     public func isInheritence(subclass subclassName: String, superclass superclassName: String, usedAt location: SymbolLocation? = nil) throws -> Bool {

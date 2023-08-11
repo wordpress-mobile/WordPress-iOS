@@ -26,14 +26,14 @@ enum SourceKitResponseError: Error {
     case unexpectedType(key: String)
 }
 
-struct AnyError: Error, CustomStringConvertible {
+public struct AnyError: Error, CustomStringConvertible {
     var message: String
 
-    init(message: String, file: StaticString = #file, line: Int = #line) {
+    public init(message: String, file: StaticString = #file, line: Int = #line) {
         self.message = [message, "This error is reported from \(file):\(line)"].joined(separator: "\n")
     }
 
-    var description: String {
+    public var description: String {
         message
     }
 }

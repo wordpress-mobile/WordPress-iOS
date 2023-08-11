@@ -50,6 +50,7 @@ extension SourceNavigator {
                     // Do nothing
                 } else if parent.kind == .extension {
                     let extensions = indexStore.occurrences(relatedToUSR: parent.usr, roles: .extendedBy)
+                    // TODO: Sometimes this assertion is false. Maybe an IndexStoreDB issue?
                     assert(extensions.count == 1)
                     parent = extensions[0].symbol
                 } else {

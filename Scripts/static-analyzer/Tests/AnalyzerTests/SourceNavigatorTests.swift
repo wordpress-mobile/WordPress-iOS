@@ -49,8 +49,8 @@ class SourceNavigatorTests: XCTestCase {
         XCTAssertEqual(callSites.count, 1)
 
         let location = SymbolLocation(path: support.sourceFile.pathString, moduleName: "", line: 6, utf8Column: 10)
-        let expression = try navigator.typecheck(location: location)
-        XCTAssertEqual(expression, "(Int, Bool, String, Double) -> NSArray")
+        let expressions = try navigator.expressions(at: location).map { $0.type }
+        XCTAssertTrue(expressions.contains("(Int, Bool, String, Double) -> NSArray"))
     }
 
     func testLookupInstanceMethod() throws {
@@ -123,6 +123,22 @@ class SourceNavigatorTests: XCTestCase {
         let inner2 = try navigator.resolveType(named: "Class2.Inner")
         XCTAssertEqual(navigator.fullTypename(of: inner1), "Class1.Inner")
         XCTAssertEqual(navigator.fullTypename(of: inner2), "Class2.Inner")
+    }
+
+    func testExpressions() throws {
+        let support = TestSupport()
+        let code = """
+            func foo() {
+              let result = [1, 2, 3].map { $0 * 2 }
+              print(result)
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        let location = SymbolLocation(path: support.sourceFile.pathString, moduleName: "", line: 2, utf8Column: 27)
+        let types = try navigator.expressions(at: location).map { $0.type }
+        XCTAssertTrue(types.contains("[Int]"))
+        XCTAssertTrue(types.contains("([Int]) -> ((Int) throws -> Int) throws -> [Int]"))
     }
 
     func testInheritenceCheck() throws {
