@@ -15,14 +15,12 @@ msgstr ""
 
 #. translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
 msgctxt "app_store_name"
-msgid "Jetpack – Website Builder
-"
+msgid "Jetpack – Website Builder"
 msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Supercharge your WordPress
-"
+msgid "Supercharge your WordPress"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -74,7 +72,7 @@ msgid ""
 "\n"
 "Learn more at https://jetpack.com/mobile\n"
 "\n"
-"California users privacy notice: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa"
+"California users privacy notice: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa\n"
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
@@ -115,7 +113,7 @@ msgctxt "screenshot-text-1"
 msgid ""
 "Create and\n"
 "manage your site\n"
-"on the go"
+"on the go\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
