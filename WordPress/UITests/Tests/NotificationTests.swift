@@ -16,10 +16,18 @@ class NotificationTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
 
+        WireMock.fetchScenarios { (data, error) in
+            guard error == nil else {
+                print("Error fetching scenarios: \(error!)")
+                return
+            }
+        }
+
         try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDownWithError() throws {
+        WireMock.resetScenario()
         takeScreenshotOfFailedTest()
     }
 
