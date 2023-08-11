@@ -53,6 +53,60 @@ class SourceNavigatorTests: XCTestCase {
         XCTAssertEqual(expression, "(Int, Bool, String, Double) -> NSArray")
     }
 
+    func testLookupInstanceMethod() throws {
+        let support = TestSupport()
+        let code = """
+            protocol ProtocolA {
+                func map(_ transform: Any) -> Any
+            }
+            func foo(p: ProtocolA) {
+              _ = p.map(0)
+            }
+            func bar(p: ProtocolA) {
+              _ = p.map("")
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        let types = navigator.lookupSymbols(name: "ProtocolA", kind: .protocol)
+        XCTAssertEqual(types.count, 1)
+        let proto = try XCTUnwrap(types.first)
+
+        let mapFuncs = navigator.lookupInstanceMethods(named: "map(_:)", of: proto)
+        XCTAssertEqual(mapFuncs.count, 1)
+        let mapFunc = try XCTUnwrap(mapFuncs.first)
+
+        let mapCallSites = navigator.callSites(of: mapFunc)
+        XCTAssertEqual(mapCallSites.count, 2)
+        let lines = mapCallSites.map { $0.line }
+        XCTAssertEqual(Set(lines), [5, 8])
+    }
+
+    func testLookupConformance() throws {
+        let support = TestSupport()
+        let code = """
+            protocol ProtocolA {}
+            protocol ProtocolB {}
+            protocol ProtocolC {}
+            protocol ProtocolD {}
+            protocol ProtocolE: ProtocolD {}
+            struct Foo: ProtocolA, ProtocolB {}
+            extension Foo: ProtocolC, ProtocolE {}
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        let fooTypes = navigator.lookupSymbols(name: "Foo", kind: .struct)
+        XCTAssertEqual(fooTypes.count, 1)
+        let fooType = try XCTUnwrap(fooTypes.first)
+
+        let protocols = navigator.conformedProtocols(of: fooType).map { $0.name }
+        XCTAssertTrue(protocols.contains("ProtocolA"))
+        XCTAssertTrue(protocols.contains("ProtocolB"))
+        XCTAssertTrue(protocols.contains("ProtocolC"))
+        XCTAssertTrue(protocols.contains("ProtocolD"))
+        XCTAssertTrue(protocols.contains("ProtocolE"))
+    }
+
     func testInheritenceCheck() throws {
         let support = TestSupport()
 

@@ -15,15 +15,8 @@ public class SourceNavigator {
         self.indexStore = indexStore
     }
 
-    public func lookupSymbols(name: String, kind: IndexSymbolKind? = nil, in file: AbsolutePath) -> [Symbol] {
-        var symbols = indexStore.symbols(inFilePath: file.pathString)
-            .filter { $0.name == name }
-
-        if let kind {
-            symbols.removeAll { $0.kind != kind }
-        }
-
-        return symbols
+    public func callSites(of symbol: Symbol) -> [SymbolLocation] {
+        callSites(of: USR(rawValue: symbol.usr)!)
     }
 
     public func callSites(of usr: USR) -> [SymbolLocation] {
@@ -64,9 +57,9 @@ public class SourceNavigator {
 
     public func isInheritence(subclass subclassName: String, superclass superclassName: String, usedAt location: SymbolLocation? = nil) throws -> Bool {
         do {
-            let subclass = try indexStore.resolve(classNamed: subclassName)
-            let superclass = try indexStore.resolve(classNamed: superclassName)
-            return indexStore.is(subclass, kindOf: superclass)
+            let subclass = try resolve(classNamed: subclassName)
+            let superclass = try resolve(classNamed: superclassName)
+            return superclasses(of: subclass).map { $0.usr }.contains(superclass.usr)
         } catch {
             print(error)
         }
@@ -148,105 +141,17 @@ private extension String {
 
 private extension IndexStoreDB {
 
-    func resolve(classNamed name: String) throws -> Symbol {
-        try resolve(classNamed: name, original: name)
-    }
 
-    func resolve(classNamed name: String, original: String) throws -> Symbol {
-        let parts = name.split(separator: ".")
-        if parts.count > 1, let last = parts.last {
-            return try resolve(classNamed: String(last), original: original)
-        }
 
-        let candidates = canonicalOccurrences(ofName: name)
-            .removingDuplicates(by: \.symbol.usr)
-            .map(\.symbol)
-            .filter { symbol in
-                if symbol.kind != .class {
-                    return false
-                }
+}
 
-                // Don't consider a C macro as a candidate.
-                if symbol.usr.hasPrefix("c:@macro@") {
-                    return false
-                }
-
-                return fullTypename(of: symbol) == original
-            }
-
-        guard candidates.count == 1 else {
-            throw AnalyzerError.symbolResolution(name: name, candidates: candidates)
-        }
-
-        return candidates[0]
-    }
-
-    func superclass(of symbol: Symbol) -> Symbol? {
-        guard symbol.kind == .class else {
-            return nil
-        }
-
-        let bases = occurrences(relatedToUSR: symbol.usr, roles: .baseOf)
-            .filter { $0.symbol.kind == .class }
-            .removingDuplicates(by: \.symbol.usr)
-        if bases.count > 1 {
-            print("Warning: Found \(bases.count) superclass of \(symbol.name)")
-            for clazz in bases {
-                print("  - \(clazz.symbol.name) in \(clazz.location.path)")
-            }
-        }
-
-        return bases.first?.symbol
-    }
-
-    func `is`(_ symbol: Symbol, kindOf base: Symbol) -> Bool {
-        var clazz: Symbol? = symbol
-        while true {
-            guard let local = clazz else {
-                return false
-            }
-
-            if local == base {
-                return true
-            }
-
-            clazz = superclass(of: local)
+extension IndexSymbolKind {
+    var isTypeDefinition: Bool {
+        switch self {
+        case .enum, .struct, .class, .protocol:
+            return true
+        default:
+            return false
         }
     }
-
-    func fullTypename(of symbol: Symbol) -> String? {
-        let allowed: Set<IndexSymbolKind> = [
-            .enum,
-            .struct,
-            .class,
-            .protocol,
-            .extension,
-            .typealias
-        ]
-        guard allowed.contains(symbol.kind) else {
-            return nil
-        }
-
-        let parents = occurrences(ofUSR: symbol.usr, roles: .childOf)
-            .map { $0.relations }
-            .flatMap { $0 }
-            .reduce(into: [Symbol]()) { partialResult, relation in
-                if relation.roles.contains(.childOf) {
-                    partialResult.append(relation.symbol)
-                } else {
-                    print("What is this?")
-                }
-            }
-
-        if parents.count > 1 {
-            print("❌")
-        }
-
-        if let parent = parents.first, let parentName = fullTypename(of: parent) {
-            return parentName + "." + symbol.name
-        }
-
-        return symbol.name
-    }
-
 }

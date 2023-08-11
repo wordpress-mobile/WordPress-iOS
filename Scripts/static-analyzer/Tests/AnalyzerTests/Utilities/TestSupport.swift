@@ -67,7 +67,7 @@ final class TestSupport {
 
         let shell = "xcodebuild -scheme \(projectName) -destination platform=macOS -derivedDataPath \(derivedDataPath.pathString) build | tee \(xcodebuildLogPath.pathString)"
         let build = TSCBasic.Process(
-            arguments: ["/bin/bash", "-c", shell],
+            arguments: ["/bin/bash", "-euco", "pipefail", shell],
             workingDirectory: projectDir,
             outputRedirection: verbose
                 ? .stream(
