@@ -24,11 +24,11 @@ public class WireMock {
         task.resume()
     }
 
-    public static func resetScenario() {
-        let url = Foundation.URL(string: "\(WireMock.URL())__admin/scenarios/reset")!
+    public static func resetScenario(scenario: String) {
+        let url = Foundation.URL(string: "\(WireMock.URL())__admin/scenarios/\(scenario)/state")!
 
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = Data()
 

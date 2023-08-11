@@ -15,7 +15,7 @@ private extension String {
 class NotificationTests: XCTestCase {
     override func setUpWithError() throws {
         setUpTestSuite()
-
+        WireMock.resetScenario(scenario: "comment_flow")
         WireMock.fetchScenarios { (data, error) in
             guard error == nil else {
                 print("Error fetching scenarios: \(error!)")
@@ -27,7 +27,6 @@ class NotificationTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        WireMock.resetScenario()
         takeScreenshotOfFailedTest()
     }
 
