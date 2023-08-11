@@ -62,8 +62,7 @@ final class SupportChatBotViewController: UIViewController {
                     window.webkit.messageHandlers.supportCallback.postMessage(history)
                   },
                 options: {
-                    horizontalMargin: 40,
-                    verticalMargin: 60,
+                    color: "#9dd977",
                     supportLink: "#"
                 },
             })
