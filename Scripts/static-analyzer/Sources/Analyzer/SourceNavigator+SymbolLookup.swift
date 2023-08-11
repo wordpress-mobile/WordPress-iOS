@@ -115,21 +115,21 @@ extension SourceNavigator {
 
 extension SourceNavigator {
 
-    func resolve(classNamed name: String) throws -> Symbol {
-        try resolve(classNamed: name, original: name)
+    func resolveType(named name: String) throws -> Symbol {
+        try resolveType(named: name, original: name)
     }
 
-    func resolve(classNamed name: String, original: String) throws -> Symbol {
+    private func resolveType(named name: String, original: String) throws -> Symbol {
         let parts = name.split(separator: ".")
         if parts.count > 1, let last = parts.last {
-            return try resolve(classNamed: String(last), original: original)
+            return try resolveType(named: String(last), original: original)
         }
 
         let candidates = indexStore.canonicalOccurrences(ofName: name)
             .removingDuplicates(by: \.symbol.usr)
             .map(\.symbol)
             .filter { symbol in
-                if symbol.kind != .class {
+                guard symbol.kind.isTypeDefinition else {
                     return false
                 }
 
@@ -190,9 +190,7 @@ extension SourceNavigator {
                 }
             }
 
-        if parents.count > 1 {
-            print("❌")
-        }
+        assert(parents.count <= 1)
 
         if let parent = parents.first, let parentName = fullTypename(of: parent) {
             return parentName + "." + symbol.name

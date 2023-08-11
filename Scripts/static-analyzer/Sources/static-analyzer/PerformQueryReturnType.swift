@@ -5,7 +5,7 @@ import IndexStoreDB
 func reportUnsafeCoreDataAPIUsages(indexStore: IndexStoreDB, compilerInvocations: CompilerInvocations) throws -> [Violation] {
     let navigator = SourceNavigator(compilerInvocations: compilerInvocations, indexStore: indexStore)
 
-    let symbols = navigator.lookupCoreDataAPIs()
+    let symbols = try navigator.lookupCoreDataAPIs()
     var violations = [Violation]()
     for symbol in symbols {
         for callSite in navigator.callSites(of: USR(rawValue: symbol.usr)!) {

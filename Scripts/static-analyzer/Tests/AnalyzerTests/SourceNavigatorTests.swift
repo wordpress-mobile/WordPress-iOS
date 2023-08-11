@@ -68,9 +68,7 @@ class SourceNavigatorTests: XCTestCase {
             """
         let navigator = try support.navigator(forSourceCode: code)
 
-        let types = navigator.lookupSymbols(name: "ProtocolA", kind: .protocol)
-        XCTAssertEqual(types.count, 1)
-        let proto = try XCTUnwrap(types.first)
+        let proto = try navigator.resolveType(named: "ProtocolA")
 
         let mapFuncs = navigator.lookupInstanceMethods(named: "map(_:)", of: proto)
         XCTAssertEqual(mapFuncs.count, 1)
@@ -95,9 +93,7 @@ class SourceNavigatorTests: XCTestCase {
             """
         let navigator = try support.navigator(forSourceCode: code)
 
-        let fooTypes = navigator.lookupSymbols(name: "Foo", kind: .struct)
-        XCTAssertEqual(fooTypes.count, 1)
-        let fooType = try XCTUnwrap(fooTypes.first)
+        let fooType = try navigator.resolveType(named: "Foo")
 
         let protocols = navigator.conformedProtocols(of: fooType).map { $0.name }
         XCTAssertTrue(protocols.contains("ProtocolA"))
@@ -107,9 +103,30 @@ class SourceNavigatorTests: XCTestCase {
         XCTAssertTrue(protocols.contains("ProtocolE"))
     }
 
+    func testTypenameResolution() throws {
+        let support = TestSupport()
+        let code = """
+            class Class1 {
+                struct Inner {}
+            }
+            class Class2: Class1 {
+                struct Inner {}
+            }
+            class Class3: Class2 {}
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        try XCTAssertEqual(navigator.resolveType(named: "Class1").name, "Class1")
+        XCTAssertNil(try? navigator.resolveType(named: "Inner"))
+
+        let inner1 = try navigator.resolveType(named: "Class1.Inner")
+        let inner2 = try navigator.resolveType(named: "Class2.Inner")
+        XCTAssertEqual(navigator.fullTypename(of: inner1), "Class1.Inner")
+        XCTAssertEqual(navigator.fullTypename(of: inner2), "Class2.Inner")
+    }
+
     func testInheritenceCheck() throws {
         let support = TestSupport()
-
         let code = """
             import Foundation
             class Class1 {}

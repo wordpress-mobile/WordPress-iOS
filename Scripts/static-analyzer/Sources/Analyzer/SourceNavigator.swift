@@ -57,8 +57,8 @@ public class SourceNavigator {
 
     public func isInheritence(subclass subclassName: String, superclass superclassName: String, usedAt location: SymbolLocation? = nil) throws -> Bool {
         do {
-            let subclass = try resolve(classNamed: subclassName)
-            let superclass = try resolve(classNamed: superclassName)
+            let subclass = try resolveType(named: subclassName)
+            let superclass = try resolveType(named: superclassName)
             return superclasses(of: subclass).map { $0.usr }.contains(superclass.usr)
         } catch {
             print(error)
