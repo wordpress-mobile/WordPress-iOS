@@ -52,7 +52,7 @@ struct BlazeCampaignStatusViewModel {
         self.title = status.localizedTitle
 
         switch status {
-        case .created, .processing, .scheduled, .canceled:
+        case .created, .processing:
             self.textColor = UIColor(
                 light: .muriel(name: .yellow, .shade80),
                 dark: .muriel(name: .yellow, .shade10)
@@ -61,7 +61,7 @@ struct BlazeCampaignStatusViewModel {
                 light: .muriel(name: .yellow, .shade5),
                 dark: .muriel(name: .yellow, .shade90)
             )
-        case .rejected:
+        case .canceled, .rejected:
             self.textColor = UIColor(
                 light: .muriel(name: .red, .shade70),
                 dark: .muriel(name: .red, .shade10)
@@ -79,7 +79,7 @@ struct BlazeCampaignStatusViewModel {
                 light: .muriel(name: .green, .shade5),
                 dark: .muriel(name: .green, .shade90)
             )
-        case .finished:
+        case .scheduled, .finished:
             self.textColor = UIColor(
                 light: .muriel(name: .blue, .shade80),
                 dark: .muriel(name: .blue, .shade10).lightVariant() /// Explicitly using the light variant of blue

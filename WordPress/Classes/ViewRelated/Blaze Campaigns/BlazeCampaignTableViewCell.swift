@@ -70,6 +70,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     private lazy var featuredImageView: CachedAnimatedImageView = {
         let imageView = CachedAnimatedImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Metrics.featuredImageCornerRadius
         return imageView
