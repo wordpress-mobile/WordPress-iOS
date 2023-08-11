@@ -42,3 +42,110 @@ DocsBotAI.init = function (c) {
     });
   });
 };
+
+/**
+ * Prepares the DocsBot for presentation by altering its appearance and behavior.
+ */
+window.prepareDocsBotForPresentation = function () {
+  var chatBotSelector = "#docsbotai-root";
+  var headerSelector = "div > div > div > div.docsbot-chat-header";
+  var closeButtonSelector = "div > div > div > a";
+  var floatingButtonSelector = "a.floating-button";
+
+  // Begin observation once chat bot is mounted
+  onElementMounted(chatBotSelector, document, function (element) {
+    waitForShadowRoot(element, function (shadowRoot) {
+      resetDocsBotConversation();
+      openDocsBot();
+
+      // Hide various elements once they're mounted
+      onElementMounted(headerSelector, shadowRoot, function () {
+        hideElement(shadowRoot, headerSelector);
+      });
+
+      onElementMounted(closeButtonSelector, shadowRoot, function () {
+        hideElement(shadowRoot, closeButtonSelector);
+      });
+
+      onElementMounted(floatingButtonSelector, shadowRoot, function () {
+        hideElement(shadowRoot, floatingButtonSelector);
+      });
+    });
+  });
+
+  /**
+   * Hides a DOM element based on a given selector.
+   *
+   * @param {HTMLElement} root - The root DOM element to begin the search from.
+   * @param {string} selector - The CSS selector of the element to hide.
+   */
+  function hideElement(root, selector) {
+    var element = root.querySelector(selector);
+    if (element) {
+      element.style.display = "none";
+    }
+  }
+
+  /**
+   * Clears the DocsBot conversation history.
+   */
+  function resetDocsBotConversation() {
+    localStorage.removeItem("docsbot_chat_history");
+  }
+
+  /**
+   * Opens the DocsBot chat.
+   */
+  function openDocsBot() {
+    DocsBotAI.open();
+  }
+
+  /**
+   * Observes for an element's appearance in the DOM and triggers a callback once it's found.
+   *
+   * @param {string} selector - The CSS selector of the element to watch for.
+   * @param {function} callback - Function to call when the element is found.
+   * @param {HTMLElement} root - The root DOM element to begin the search from (default is 'document').
+   */
+  function onElementMounted(selector, root, callback) {
+    var element = root.querySelector(selector);
+    if (element) {
+      callback(element);
+      return;
+    }
+
+    var observer = new MutationObserver(function (mutations, observer) {
+      var element = root.querySelector(selector);
+      if (element) {
+        callback(element);
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(root, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  /**
+   * Waits for an element to have its shadow root loaded and triggers a callback once it's ready.
+   *
+   * @param {HTMLElement} element - The element with a shadow root.
+   * @param {function} callback - Function to call when the shadow root is loaded.
+   */
+  function waitForShadowRoot(element, callback) {
+    var observer = new MutationObserver(function (mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        var mutation = mutations[i];
+        if (mutation.type === "childList" && element.shadowRoot) {
+          callback(element.shadowRoot);
+          observer.disconnect();
+          return;
+        }
+      }
+    });
+
+    observer.observe(element, { childList: true });
+  }
+};

@@ -52,6 +52,9 @@ final class SupportChatBotViewController: UIViewController {
     private func createDocsBotInitCode() -> String {
         """
         (function() {
+            // support_chat_widget.js
+            window.prepareDocsBotForPresentation();
+
             DocsBotAI.init({
                 id: '\(viewModel.id)',
                  supportCallback: function (event, history) {
@@ -64,9 +67,6 @@ final class SupportChatBotViewController: UIViewController {
                     supportLink: "#"
                 },
             })
-            setTimeout(() => {
-                DocsBotAI.open()
-            }, 200);
         })();
         """
     }
