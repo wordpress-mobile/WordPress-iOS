@@ -202,14 +202,15 @@ class Post: AbstractPost {
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections as? Set<PublicizeConnection>,
            let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
-           let connectionEntry = disabledPublicizeConnections?[connectionID] {
+           let _ = disabledPublicizeConnections?[connectionID] {
             disablePublicizeConnection(keyedBy: connectionID)
 
             // additionally, if the keyring entry doesn't exist, there's no need create both formats.
             // we can just update the dictionary's key from connectionID to keyringID instead.
-            if disabledPublicizeConnections?[keyringID] == nil {
+            if disabledPublicizeConnections?[keyringID] == nil,
+               let updatedEntry = disabledPublicizeConnections?[connectionID] {
                 disabledPublicizeConnections?.removeValue(forKey: connectionID)
-                disabledPublicizeConnections?[keyringID] = connectionEntry
+                disabledPublicizeConnections?[keyringID] = updatedEntry
                 return
             }
         }
