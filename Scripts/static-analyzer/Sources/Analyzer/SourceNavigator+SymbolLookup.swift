@@ -29,6 +29,7 @@ extension SourceNavigator {
         return symbols
     }
 
+    // TODO: Refactor this into look up callers, because this implementation only returns used instance methods, not all instance methods
     public func lookupInstanceMethods(named symbolName: String, of symbol: Symbol) -> [Symbol] {
         assert(symbol.kind.isTypeDefinition)
 

@@ -58,3 +58,25 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
         }
     }
 }
+
+extension Structure {
+
+    public func substructure(matching byteRange: ClosedRange<Int64>) throws -> [String: SourceKitRepresentable]? {
+        let dict = dictionary
+        let offset: Int64 = try dict.get("key.offset")
+        let length: Int64 = try dict.get("key.length")
+        if offset == byteRange.lowerBound && length == byteRange.count {
+            return dict
+        }
+
+        let substructures: [[String: SourceKitRepresentable]] = (try? dict.get("key.substructure")) ?? []
+        for sub in substructures {
+            if let found = try Structure(sourceKitResponse: sub).substructure(matching: byteRange) {
+                return found
+            }
+        }
+
+        return nil
+    }
+
+}

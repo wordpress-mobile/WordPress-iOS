@@ -125,12 +125,6 @@ private extension String {
     }
 }
 
-private extension IndexStoreDB {
-
-
-
-}
-
 extension IndexSymbolKind {
     var isTypeDefinition: Bool {
         switch self {
