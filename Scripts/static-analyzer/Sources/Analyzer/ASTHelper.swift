@@ -3,12 +3,13 @@ import SwiftSyntax
 import SwiftParser
 
 public enum ASTHelper {
+
     /// Parse a "Function Type" expression and return its parameter and return type.
     ///
     /// - SeeAlso: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/types#Function-Type
     /// - Parameter expression: The function's type expression.
     /// - Returns: The function's parameter and return type.
-    public static func parseFunctionType(_ expression: String) throws -> (parameterType: String, returnType: String) {
+    public static func parseFunctionType(_ expression: String) throws -> (parameterType: [String], returnType: String) {
         let visitor = FunctionTypeVisitor(viewMode: .sourceAccurate)
         visitor.walk(Parser.parse(source: "let f: " + expression))
 
@@ -20,7 +21,7 @@ public enum ASTHelper {
         }
 
         return (
-            parameter.description,
+            parameter.map { $0.withTrailingComma(nil).description },
             returnType.description
         )
     }
@@ -33,11 +34,26 @@ public enum ASTHelper {
     ///   - function: The function's type expression.
     /// - Returns: The return type.
     public static func parseFunctionParameterType(at position: UInt, function: String) throws -> String {
-        let (parameter, returnType) = try parseFunctionType(function)
-        if position > 0 {
-            return try parseFunctionParameterType(at: position - 1, function: returnType)
+        // There are two possible function expression format:
+        // 1. (Arg1, Arg2, Arg3) -> ReturnType
+        // 2. (Arg1) -> (Arg2) -> (Arg3) -> ReturnType
+        // The first one typically represents a global function, whereas the second one typically represents a instance method
+
+        let (parameters, returnType) = try parseFunctionType(function)
+        if parameters.count > 1 {
+            // Parse the first format
+            if position < parameters.count {
+                return parameters[Int(position)]
+            } else {
+                throw AnyError(message: "Can't find argument at \(position) in \(function)")
+            }
         } else {
-            return parameter
+            // Parse the second format
+            if position > 0 {
+                return try parseFunctionParameterType(at: position - 1, function: returnType)
+            } else {
+                return parameters[0]
+            }
         }
     }
 
