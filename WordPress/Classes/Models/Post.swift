@@ -171,15 +171,18 @@ class Post: AbstractPost {
     // MARK: - PublicizeConnections
 
     @objc func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
+        let isKeyringEntryDisabled = disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+
         // try to check in case there's an entry for the PublicizeConnection that's keyed by the connectionID.
         guard let connections = blog.connections as? Set<PublicizeConnection>,
               let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
               let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey] else {
             // fall back to keyringID if there is no such entry with the connectionID.
-            return disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+            return isKeyringEntryDisabled
         }
 
-        return existingValue == Constants.publicizeDisabledValue
+        let isConnectionEntryDisabled = existingValue == Constants.publicizeDisabledValue
+        return isConnectionEntryDisabled || isKeyringEntryDisabled
     }
 
     @objc func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
@@ -198,9 +201,17 @@ class Post: AbstractPost {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections as? Set<PublicizeConnection>,
-           let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
-           let _ = disabledPublicizeConnections?[connection.connectionID] {
-            disablePublicizeConnection(keyedBy: connection.connectionID)
+           let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
+           let connectionEntry = disabledPublicizeConnections?[connectionID] {
+            disablePublicizeConnection(keyedBy: connectionID)
+
+            // additionally, if the keyring entry doesn't exist, there's no need create both formats.
+            // we can just update the dictionary's key from connectionID to keyringID instead.
+            if disabledPublicizeConnections?[keyringID] == nil {
+                disabledPublicizeConnections?.removeValue(forKey: connectionID)
+                disabledPublicizeConnections?[keyringID] = connectionEntry
+                return
+            }
         }
 
         disablePublicizeConnection(keyedBy: keyringID)
@@ -216,7 +227,7 @@ class Post: AbstractPost {
 
         // if the auto-sharing settings is not yet synced to remote,
         // we can just remove the entry since all connections are enabled by default.
-        guard connection[Constants.publicizeIdKey] != nil else {
+        guard let _ = connection[Constants.publicizeIdKey] else {
             _ = disabledPublicizeConnections?.removeValue(forKey: id)
             return
         }

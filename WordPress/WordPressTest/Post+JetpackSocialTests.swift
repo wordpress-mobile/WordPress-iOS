@@ -3,23 +3,6 @@ import XCTest
 @testable import WordPress
 
 class Post_JetpackSocialTests: CoreDataTestCase {
-    /**
-     - Checking for publicize:
-         - Normal case
-         - keyring not exist, connection exists
-         - both exists
-     - enabling:
-         - normal enabling, non-existing keyringID
-         - normal enabling, with existing keyringID
-         - enabling existing keyring id with existing connectionID entry.
-         - enabling NON-existing keyring id with existing connectionID entry.
-     - disabling:
-         - normal disabling, non-existing keyringID
-         - normal disabling, with existing keyringID
-         - disable existing keyring id with existing connectionID entry.
-         - disable NON-existing keyring id with existing connectionID entry.
-
-     */
 
     private let keyringAndConnectionIDPairs = [
         (100, 200),
@@ -179,7 +162,7 @@ class Post_JetpackSocialTests: CoreDataTestCase {
 
         // Then
         // Calling the enable method should do nothing.
-        XCTAssertNil(post.disabledPublicizeConnections)
+        XCTAssertNil(post.disabledPublicizeConnections?[keyringID])
     }
 
     func testEnableConnectionWithLocalKeyringEntry() {
@@ -194,7 +177,7 @@ class Post_JetpackSocialTests: CoreDataTestCase {
 
         // Then
         // if the entry hasn't been synced yet, the entry will be deleted since all connections are enabled by default.
-        XCTAssertNil(post.disabledPublicizeConnections)
+        XCTAssertNil(post.disabledPublicizeConnections?[keyringID])
     }
 
     func testEnableConnectionWithSyncedKeyringEntry() throws {
