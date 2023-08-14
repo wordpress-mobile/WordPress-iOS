@@ -177,7 +177,7 @@ class EditorMediaUtility {
             return try object.get()
         }
 
-        let post = try safeExistingObject(postObjectID) as! Post
+        let post = try safeExistingObject(postObjectID) as! AbstractPost
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
