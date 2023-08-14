@@ -151,7 +151,7 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    testflight(
+    upload_to_testflight(
       skip_waiting_for_build_processing: true,
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH
@@ -201,7 +201,7 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    testflight(
+    upload_to_testflight(
       skip_waiting_for_build_processing: true,
       team_id: '299112',
       api_key_path: APP_STORE_CONNECT_KEY_PATH
