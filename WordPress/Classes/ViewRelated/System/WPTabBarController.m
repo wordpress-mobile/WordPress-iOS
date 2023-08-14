@@ -20,6 +20,7 @@ static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 
 static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
 static NSString * const WPNotificationsSplitViewRestorationID = @"WPNotificationsSplitViewRestorationID";
+static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
 
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
@@ -55,7 +56,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 
+@property (nonatomic, strong) MeViewController *meViewController;
+@property (nonatomic, strong) UINavigationController *meNavigationController;
+
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
+@property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
@@ -213,6 +218,32 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _notificationsNavigationController;
 }
 
+- (UINavigationController *)meNavigationController
+{
+    if (!_meNavigationController) {
+        _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+        self.meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
+        self.meTabBarImageUnreadUnselected = [UIImage imageNamed:@"icon-tab-me-unread-unselected"];
+        self.meTabBarImageUnreadSelected = [UIImage imageNamed:@"icon-tab-me-unread-selected"];
+        _meNavigationController.tabBarItem.image = self.meTabBarImage;
+        _meNavigationController.tabBarItem.selectedImage = self.meTabBarImage;
+        _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
+        _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+        _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
+        _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+    }
+
+    return _meNavigationController;
+}
+
+- (MeViewController *)meViewController {
+    if (!_meViewController) {
+        _meViewController = [[MeViewController alloc] init];
+    }
+
+    return _meViewController;
+}
+
 - (UIEdgeInsets)tabBarIconImageInsets
 {
     CGFloat offset = 0;
@@ -250,11 +281,27 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _notificationsSplitViewController;
 }
 
+- (UISplitViewController *)meSplitViewController
+{
+    if (!_meSplitViewController) {
+        _meSplitViewController = [WPSplitViewController new];
+        _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
+        [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+        _meSplitViewController.fullscreenDisplayEnabled = NO;
+        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
+
+        _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
+    }
+
+    return _meSplitViewController;
+}
+
 - (void)reloadSplitViewControllers
 {
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
+    _meSplitViewController = nil;
     
     [self setViewControllers:[self tabViewControllers]];
     
@@ -297,14 +344,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return @[
             self.mySitesCoordinator.rootViewController,
             self.readerNavigationController,
-            self.notificationsNavigationController
+            self.notificationsNavigationController,
+            self.meSplitViewController
         ];
     }
 
     return @[
         self.mySitesCoordinator.rootViewController,
         self.readerNavigationController,
-        self.notificationsSplitViewController
+        self.notificationsSplitViewController,
+        self.meSplitViewController
     ];
 }
 
@@ -321,6 +370,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)showNotificationsTab
 {
     [self setSelectedIndex:WPTabNotifications];
+}
+
+- (void)showMeTab
+{
+    [self setSelectedIndex:WPTabMe];
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
