@@ -9,7 +9,7 @@ struct MainCommand: AsyncParsableCommand {
     @Option(help: "Path to the data store directory, which is typically located at '<derived-data>/Index.noindex/DataStore'")
     var dataStorePath: String
 
-    @Option
+    @Option(help: "Path to the .log file where you stored the xcodebuild invocation logs")
     var xcodebuildLogPath: String
 
     func run() async throws {
