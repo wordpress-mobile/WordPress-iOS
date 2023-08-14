@@ -399,7 +399,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self observeManagedObjectContextObjectsDidChangeNotification];
 
     [self startObservingQuickStart];
-    [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
 }
 
 - (void)viewWillAppear:(BOOL)animated

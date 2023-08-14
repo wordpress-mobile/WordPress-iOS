@@ -585,8 +585,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        addMeButtonToNavigationBar(email: defaultAccount()?.email, meScenePresenter: meScenePresenter)
-
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
@@ -775,8 +773,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         hideNoSites()
 
         let blogDetailsViewController = self.blogDetailsViewController(for: blog)
-
-        addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
         embedChildInStackView(blogDetailsViewController)
 
