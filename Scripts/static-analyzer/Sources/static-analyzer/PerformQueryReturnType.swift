@@ -22,7 +22,7 @@ func reportUnsafeCoreDataAPIUsages(indexStore: IndexStoreDB, compilerInvocations
 
             let typeIdentifiers = ASTHelper.extractTypeIdentifier(returnType)
             let illegalTypes = try typeIdentifiers.reduce(into: [String]()) { partialResult, typename in
-                if try navigator.isInheritence(subclass: typename, superclass: "NSManagedObject", usedAt: callSite) {
+                if try navigator.isInheritance(subclass: typename, superclass: "NSManagedObject", usedAt: callSite) {
                     print("❌ \(typename) is a NSManagedObject")
                     partialResult.append(typename)
                 }

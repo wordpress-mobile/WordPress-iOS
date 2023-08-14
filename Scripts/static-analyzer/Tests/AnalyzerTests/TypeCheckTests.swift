@@ -77,10 +77,10 @@ class TypeCheckTests: XCTestCase {
             """
         let navigator = try support.navigator(forSourceCode: code)
 
-        try XCTAssertTrue(navigator.isInheritence(subclass: "Class2", superclass: "Class1"))
-        try XCTAssertTrue(navigator.isInheritence(subclass: "Class3", superclass: "Class1"))
-        try XCTAssertFalse(navigator.isInheritence(subclass: "Class2", superclass: "Class3"))
-        try XCTAssertFalse(navigator.isInheritence(subclass: "Class2", superclass: "NSObject"))
+        try XCTAssertTrue(navigator.isInheritance(subclass: "Class2", superclass: "Class1"))
+        try XCTAssertTrue(navigator.isInheritance(subclass: "Class3", superclass: "Class1"))
+        try XCTAssertFalse(navigator.isInheritance(subclass: "Class2", superclass: "Class3"))
+        try XCTAssertFalse(navigator.isInheritance(subclass: "Class2", superclass: "NSObject"))
 
     }
 

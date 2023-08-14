@@ -64,7 +64,7 @@ public class SourceNavigator {
             .sorted { $0.byteRange.count < $1.byteRange.count }
     }
 
-    public func isInheritence(subclass subclassName: String, superclass superclassName: String, usedAt location: SymbolLocation? = nil) throws -> Bool {
+    public func isInheritance(subclass subclassName: String, superclass superclassName: String, usedAt location: SymbolLocation? = nil) throws -> Bool {
         do {
             let subclass = try resolveType(named: subclassName)
             let superclass = try resolveType(named: superclassName)
