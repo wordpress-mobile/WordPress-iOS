@@ -3,7 +3,7 @@ import Foundation
 struct SupportChatBotViewModel {
     private let zendeskUtils: ZendeskUtilsProtocol
 
-    let id = "" // TODO: Update ApiCredentials
+    let id = ApiCredentials.docsBotId
     let url = Bundle.main.url(forResource: "support_chat_widget", withExtension: "html")
 
     init(zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance) {
