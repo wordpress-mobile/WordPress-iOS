@@ -70,11 +70,11 @@ public class SourceNavigator {
             let superclass = try resolveType(named: superclassName)
             return superclasses(of: subclass).map { $0.usr }.contains(superclass.usr)
         } catch {
-            print(error)
+            print("Failed to resolve type(s) for subclass \(subclassName) and superclass \(superclassName). Failed with: \(error))
         }
 
         if let location {
-            print("Try SourceKit")
+            print("Trying SourceKit to check inheritance...")
             return try isInheritence(subclass: subclassName, superclass: superclassName, usedAt: location, compilerArguments: compilerInvocations.compilerArguments(forFileAt: location.path))
         }
 
