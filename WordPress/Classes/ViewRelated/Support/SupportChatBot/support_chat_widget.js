@@ -56,9 +56,7 @@ window.prepareDocsBotForPresentation = function () {
       openDocsBot();
 
       // Inject a custom css to hide unnecessary elements
-      shadowRoot.innerHTML += `
-          <link rel="stylesheet" href="support_chat_widget.css" />
-      `;
+      shadowRoot.innerHTML += `<link rel="stylesheet" href="support_chat_widget.css" />`;
     });
   });
 
