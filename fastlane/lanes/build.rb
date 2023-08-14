@@ -173,7 +173,7 @@ platform :ios do
     create_release(
       repository: GITHUB_REPO,
       version: version,
-      release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+      release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
     )

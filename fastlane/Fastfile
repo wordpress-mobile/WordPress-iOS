@@ -16,6 +16,8 @@ PROJECT_ROOT_FOLDER = File.dirname(File.expand_path(__dir__))
 WORKSPACE_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcworkspace')
 DERIVED_DATA_PATH = File.join(PROJECT_ROOT_FOLDER, 'DerivedData')
 BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
+WORDPRESS_RELEASE_NOTES_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
+JETPACK_RELEASE_NOTES_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
 
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'

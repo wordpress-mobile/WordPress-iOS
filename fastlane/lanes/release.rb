@@ -251,8 +251,8 @@ end
 #
 def extracted_release_notes_file_path(app:)
   paths = {
-    wordpress: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-    jetpack: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+    wordpress: WORDPRESS_RELEASE_NOTES_PATH,
+    jetpack: JETPACK_RELEASE_NOTES_PATH
   }
   paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
 end
