@@ -12,6 +12,11 @@ func reportUnsafeCoreDataAPIUsages(indexStore: IndexStoreDB, compilerInvocations
         for callSite in navigator.callSites(of: USR(rawValue: symbol.usr)!) {
             print("\(symbol.name) is called at \(callSite)")
 
+            guard callSite.path.hasSuffix(".swift") else {
+                print("Skip this call site as we can only check swift files")
+                continue
+            }
+
             let expressions = try navigator.expressions(at: callSite)
             guard let expression = expressions.min(by: { $0.byteRange.count < $1.byteRange.count }) else {
                 throw AnyError(message: "Can't find the expression at \(callSite)")
