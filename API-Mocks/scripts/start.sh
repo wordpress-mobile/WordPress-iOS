@@ -20,5 +20,4 @@ PORT="${1:-8282}"
 # Start WireMock server. See http://wiremock.org/docs/running-standalone/
 java -jar "${WIREMOCK_JAR}" --root-dir "${SCRIPT_DIR}/../WordPressMocks/src/main/assets/mocks" \
                             --port "$PORT" \
-                            --verbose true \
-                            --global-response-templating true
+                            --global-response-templating
