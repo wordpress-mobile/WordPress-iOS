@@ -3,3 +3,14 @@
 a.floating-button {
     display: none !important;
 }
+
+.docsbot-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    max-height: none !important;
+}
