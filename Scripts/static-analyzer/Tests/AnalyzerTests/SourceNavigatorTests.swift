@@ -108,8 +108,8 @@ class SourceNavigatorTests: XCTestCase {
             """
         let navigator = try support.navigator(forSourceCode: code)
         let arrayType = try navigator.resolveType(named: "Array")
-        let mapFuncs = navigator.lookupInstanceMethods(named: "flatMap(_:)", of: arrayType)
-        XCTAssertTrue(mapFuncs.isEmpty)
+        let unusedFuncs = navigator.lookupInstanceMethods(named: "flatMap(_:)", of: arrayType)
+        XCTAssertTrue(unusedFuncs.isEmpty)
     }
 
     func testLookupConformance() throws {
