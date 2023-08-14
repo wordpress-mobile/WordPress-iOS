@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-26 12:54:08+0000 */
+/* Translation-Revision-Date: 2023-08-09 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -8820,6 +8820,15 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personaliseer je startpagina";
 
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "Dit verbergen";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "Delen op je sociale netwerken";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "Je hebt geen mogelijkheden meer om te delen!";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Alle activiteit";
 
@@ -9593,6 +9602,18 @@ Indicates the blog post will be shared to a social media account.
 Example: Sharing to @wordpress */
 "prepublishing.social.label.singleConnection" = "Delen naar %1$@";
 
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "Bericht aanpassen";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "%1$d keer delen op social media resterend voor de komende 30 dagen";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "Social";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
 
@@ -9765,11 +9786,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Body text for the Jetpack Social no connection view */
 "social.noconnection.body" = "Krijg meer bezoekers door je berichten automatisch te delen met je vrienden op social media.";
 
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "Accounts koppelen";
+
 /* Accessibility label for the social media icons in the Jetpack Social no connection view */
 "social.noconnection.icons.accessibility.label" = "Social media-pictogrammen";
 
 /* Title for the not now button to hide the Jetpack Social no connection view */
 "social.noconnection.notnow" = "Niet nu";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "Je berichten worden niet gedeeld op je %1$d social media-accounts.";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "Je berichten worden niet gedeeld op je social media-account.";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "Social media-pictogrammen";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";

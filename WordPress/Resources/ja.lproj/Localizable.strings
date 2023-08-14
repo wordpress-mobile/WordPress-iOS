@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-27 11:54:25+0000 */
+/* Translation-Revision-Date: 2023-08-10 11:54:29+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -8823,6 +8823,15 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "ホームタブをパーソナライズ";
 
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "非表示";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "ソーシャルネットワーク全体で共有する";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "シェアできなくなりました。";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "すべてのアクティビティ";
 
@@ -9602,6 +9611,37 @@ Indicates the blog post will be shared to a social media account.
 Example: Sharing to @wordpress */
 "prepublishing.social.label.singleConnection" = "%1$@ にシェアしています";
 
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "残りのソーシャルシェア数は%1$d件です";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "警告";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "メッセージをカスタマイズする";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "購読してさらにシェア";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "今後30日間の残りのソーシャルシェア数は%1$d件です";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "メッセージ";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "ソーシャル";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "すべての回答を表示";
 
@@ -9780,11 +9820,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Body text for the Jetpack Social no connection view */
 "social.noconnection.body" = "ソーシャルメディアで自分の投稿を友人に自動共有してトラフィックを増やします。";
 
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "アカウントを接続する";
+
 /* Accessibility label for the social media icons in the Jetpack Social no connection view */
 "social.noconnection.icons.accessibility.label" = "ソーシャルメディアアイコン";
 
 /* Title for the not now button to hide the Jetpack Social no connection view */
 "social.noconnection.notnow" = "後で";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "投稿は%1$d個のソーシャルアカウントに共有されません。";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "投稿はソーシャルアカウントに共有されません。";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "ソーシャルメディアアイコン";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "購読してさらにシェア";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
@@ -9887,6 +9942,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "アクティビティが足りません。 サイトの訪問者数が増えたら後でもう一度確認してください。";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+"stats.insights.totalLikes.guideText.singular" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "削除";

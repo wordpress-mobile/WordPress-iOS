@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-26 14:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-09 16:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -8823,6 +8823,15 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "对您的“首页”选项卡进行个性化";
 
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "隐藏此内容";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "在您的社交网络上分享";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "您的分享机会已用完！";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "所有动态";
 
@@ -9602,6 +9611,37 @@ Indicates the blog post will be shared to a social media account.
 Example: Sharing to @wordpress */
 "prepublishing.social.label.singleConnection" = "正在共享到 %1$@";
 
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "还剩 %1$d 次社交分享机会";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "警告";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "定制消息";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "订阅以分享更多";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "在接下来的 30 天内还剩 %1$d 次社交分享机会";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "消息";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "社交";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "查看所有回复";
 
@@ -9783,11 +9823,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Body text for the Jetpack Social no connection view */
 "social.noconnection.body" = "过在社交媒体上自动与好友分享文章来增加流量。";
 
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "连接账户";
+
 /* Accessibility label for the social media icons in the Jetpack Social no connection view */
 "social.noconnection.icons.accessibility.label" = "社交媒体图标";
 
 /* Title for the not now button to hide the Jetpack Social no connection view */
 "social.noconnection.notnow" = "现在不行";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "您的文章不会分享至您的 %1$d 个社交账户。";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "您的文章不会分享至您的社交账户。";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "社交媒体图标";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "订阅以分享更多";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
@@ -9890,6 +9945,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+"stats.insights.totalLikes.guideText.singular" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "忽略";
