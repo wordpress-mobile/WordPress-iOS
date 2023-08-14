@@ -52,4 +52,42 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
             XCTAssertFalse(service.isEnabled(card))
         }
     }
+
+    func testSetEnabledSiteAgnosticReturnsFalseForTheSameSite() {
+        // Given
+        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+            .setEnabledSiteAgnostic(false, for: .googleDomains)
+
+        // When new service is created
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // Then settings are retained
+        XCTAssertFalse(service.isEnabled(.googleDomains))
+    }
+
+    func testSetEnabledSiteAgnosticReturnsFalseForDifferentSite() {
+        // Given
+        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+            .setEnabledSiteAgnostic(false, for: .googleDomains)
+
+        // When new service is created
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
+
+        // Then settings are retained
+        XCTAssertFalse(service.isEnabled(.googleDomains))
+    }
+
+    func testSetEnabledReturnsTrueWhenSiteAgnosticBoolIsTrue() {
+        // Given
+        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+            .setEnabled(true, for: .googleDomains)
+        BlogDashboardPersonalizationService(repository: repository, siteID: 9)
+            .setEnabledSiteAgnostic(true, for: .googleDomains)
+
+        // When new service is created
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // Then settings are retained
+        XCTAssert(service.isEnabled(.googleDomains))
+    }
 }
