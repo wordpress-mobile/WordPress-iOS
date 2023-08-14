@@ -151,11 +151,7 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_to_testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
+    upload_build_to_testflight(whats_new_path: WORDPRESS_RELEASE_NOTES_PATH)
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -201,11 +197,7 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_to_testflight(
-      skip_waiting_for_build_processing: true,
-      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
+    upload_build_to_testflight(whats_new_path: JETPACK_RELEASE_NOTES_PATH)
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -428,5 +420,14 @@ platform :ios do
 
   def buildkite_ci?
     ENV.fetch('BUILDKITE', false)
+  end
+
+  def upload_build_to_testflight(whats_new_path:)
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
+      api_key_path: APP_STORE_CONNECT_KEY_PATH,
+      changelog: File.read(whats_new_path)
+    )
   end
 end
