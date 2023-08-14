@@ -8,7 +8,18 @@ public class WireMock {
         return Foundation.URL(string: "http://\(host):\(port)/")!
     }
 
-    public static func fetchScenarios(completion: @escaping ([String: Any]?, Error?) -> Void) {
+    public static func setUpScenario(scenario: String) {
+        resetScenario(scenario: scenario)
+
+        fetchScenarios { (data, error) in
+            guard error == nil else {
+                print("Error fetching scenarios: \(error!)")
+                return
+            }
+        }
+    }
+
+    private static func fetchScenarios(completion: @escaping ([String: Any]?, Error?) -> Void) {
         let url = Foundation.URL(string: "\(WireMock.URL())__admin/scenarios")!
 
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -24,7 +35,7 @@ public class WireMock {
         task.resume()
     }
 
-    public static func resetScenario(scenario: String) {
+    private static func resetScenario(scenario: String) {
         let url = Foundation.URL(string: "\(WireMock.URL())__admin/scenarios/\(scenario)/state")!
 
         var request = URLRequest(url: url)
