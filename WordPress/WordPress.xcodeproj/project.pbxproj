@@ -198,6 +198,8 @@
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
+		01A8508B2A8A126400BD8A97 /* support_chat_widget.css in Resources */ = {isa = PBXBuildFile; fileRef = 01A8508A2A8A126400BD8A97 /* support_chat_widget.css */; };
+		01A8508C2A8A126400BD8A97 /* support_chat_widget.css in Resources */ = {isa = PBXBuildFile; fileRef = 01A8508A2A8A126400BD8A97 /* support_chat_widget.css */; };
 		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5008290A88BD00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
 		01CE500C290A88BF00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
@@ -5841,6 +5843,7 @@
 		018635912A85376700915532 /* SupportChatBotViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatBotViewModelTests.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
+		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNativeConnectionService.swift; sourceTree = "<group>"; };
@@ -9735,6 +9738,7 @@
 				018635862A8109F900915532 /* SupportChatBotViewModel.swift */,
 				018635892A810A9600915532 /* support_chat_widget.html */,
 				0186358C2A810ABA00915532 /* support_chat_widget.js */,
+				01A8508A2A8A126400BD8A97 /* support_chat_widget.css */,
 			);
 			path = SupportChatBot;
 			sourceTree = "<group>";
@@ -19021,6 +19025,7 @@
 				FA6FAB4725EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib in Resources */,
 				17222DA5261DDDF90047B163 /* spectrum-icon-app-60x60@3x.png in Resources */,
 				1761F18926209AEE000815EF /* pride-icon-app-76x76@2x.png in Resources */,
+				01A8508B2A8A126400BD8A97 /* support_chat_widget.css in Resources */,
 				9826AE8C21B5CC8D00C851FA /* PostingActivityMonth.xib in Resources */,
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */,
@@ -19471,6 +19476,7 @@
 				FABB1FC92602FC2C00C8785C /* reader.css in Resources */,
 				F41E4EE428F24623001880C6 /* 3d-icon-app-60@2x.png in Resources */,
 				F46597F328E669D400D5F49A /* spectrum-on-white-icon-app-83.5@2x.png in Resources */,
+				01A8508C2A8A126400BD8A97 /* support_chat_widget.css in Resources */,
 				FABB1FCC2602FC2C00C8785C /* SiteStatsTableHeaderView.xib in Resources */,
 				F41E4EEF28F247D3001880C6 /* white-on-green-icon-app-60@2x.png in Resources */,
 				FABB1FCD2602FC2C00C8785C /* Posts.storyboard in Resources */,

@@ -48,9 +48,6 @@ DocsBotAI.init = function (c) {
  */
 window.prepareDocsBotForPresentation = function () {
   var chatBotSelector = "#docsbotai-root";
-  var headerSelector = "div > div > div > div.docsbot-chat-header";
-  var closeButtonSelector = "div > div > div > a";
-  var floatingButtonSelector = "a.floating-button";
 
   // Begin observation once chat bot is mounted
   onElementMounted(chatBotSelector, document, function (element) {
@@ -58,33 +55,12 @@ window.prepareDocsBotForPresentation = function () {
       resetDocsBotConversation();
       openDocsBot();
 
-      // Hide various elements once they're mounted
-      onElementMounted(headerSelector, shadowRoot, function () {
-        hideElement(shadowRoot, headerSelector);
-      });
-
-      onElementMounted(closeButtonSelector, shadowRoot, function () {
-        hideElement(shadowRoot, closeButtonSelector);
-      });
-
-      onElementMounted(floatingButtonSelector, shadowRoot, function () {
-        hideElement(shadowRoot, floatingButtonSelector);
-      });
+      // Inject a custom css to hide unnecessary elements
+      shadowRoot.innerHTML += `
+          <link rel="stylesheet" href="support_chat_widget.css" />
+      `;
     });
   });
-
-  /**
-   * Hides a DOM element based on a given selector.
-   *
-   * @param {HTMLElement} root - The root DOM element to begin the search from.
-   * @param {string} selector - The CSS selector of the element to hide.
-   */
-  function hideElement(root, selector) {
-    var element = root.querySelector(selector);
-    if (element) {
-      element.style.display = "none";
-    }
-  }
 
   /**
    * Clears the DocsBot conversation history.
