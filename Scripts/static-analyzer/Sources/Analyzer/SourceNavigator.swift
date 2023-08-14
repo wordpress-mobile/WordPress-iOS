@@ -5,11 +5,15 @@ import SourceKittenFramework
 
 private let appModuleName = "WordPress"
 
+/// A type that include high level IDE-like features. For example, looking up types, finding call sites of a given function, etc.
 public class SourceNavigator {
 
     let compilerInvocations: CompilerInvocations
     let indexStore: IndexStoreDB
 
+    /// Similar to opening a project in Xcode, a `SourceNavigator` instance is bound to a given project.
+    /// To create a new instance, we need to provide a compiled history of the project, which typically are included in
+    /// the project's derived data.
     public init(compilerInvocations: CompilerInvocations, indexStore: IndexStoreDB) {
         self.compilerInvocations = compilerInvocations
         self.indexStore = indexStore
@@ -24,6 +28,25 @@ public class SourceNavigator {
             .map(\.location)
     }
 
+
+    ///Return all type-checked expressions at the given source code location.
+    ///
+    /// Take a simple map function call expression as an example.
+    ///
+    /// ```
+    /// [1, 2, 3].map { $0.description }
+    ///           -1-
+    /// ------2------
+    /// ---------------3----------------
+    /// ```
+    ///
+    /// As indicated in the code above, given a `SymbolLocation` at the `map` function call, this function returns
+    /// three expressions. The expressions are (the dash lines in the example are each expression's "byte range"):
+    /// 1. The `map` function: `([Int]) -> ((Int) throws -> String) throws -> [String]`.
+    /// 2. The `Array.map` function: `((Int) throws -> String) throws -> [String]`.
+    /// 3. The return type of the whole `map` function call: `[String]`.
+    ///
+    /// Note that all of the above are specialized signature, rather than the declared generic type.
     public func expressions(at location: SymbolLocation) throws -> [Expression] {
         let compilerArguments = compilerInvocations.compilerArguments(forFileAt: location.path)
         let targetByteOffset = try Int64(StringView(String(contentsOfFile: location.path)).byteOffset(forLine: Int64(location.line), bytePosition: Int64(location.utf8Column))!.value)

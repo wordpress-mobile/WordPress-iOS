@@ -1,6 +1,7 @@
 import Foundation
 import Analyzer
 import IndexStoreDB
+import SourceKittenFramework
 
 func reportUnsafeCoreDataAPIUsages(indexStore: IndexStoreDB, compilerInvocations: CompilerInvocations) throws -> [Violation] {
     let navigator = SourceNavigator(compilerInvocations: compilerInvocations, indexStore: indexStore)

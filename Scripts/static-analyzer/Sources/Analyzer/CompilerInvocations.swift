@@ -1,3 +1,4 @@
+/// This type represents a project's build history. It's mainly used for lookup Swift compiler arguments for a given file.
 public struct CompilerInvocations {
 
     var invocations: [String: [[String]]]
@@ -13,7 +14,7 @@ public struct CompilerInvocations {
             }
     }
 
-    func compilerArguments(forFileAt path: String) -> [String] {
+    public func compilerArguments(forFileAt path: String) -> [String] {
         invocations[path]?.first ?? []
     }
 

@@ -4,6 +4,8 @@ import TSCBasic
 
 extension SourceNavigator {
 
+    /// Similar to Xcode's "Go to definition" feature, this function can be used to find the code that defines a type
+    /// or a function that's represented by the given USR.
     public func definition(ofUSR usr: USR) -> Symbol? {
         let definitions = indexStore.occurrences(ofUSR: usr.rawValue, roles: .definition)
         if definitions.count > 1 {
@@ -12,12 +14,9 @@ extension SourceNavigator {
         return definitions.first?.symbol
     }
 
-    public func lookupSymbols(name: String, kind: IndexSymbolKind) -> [Symbol] {
-        indexStore.canonicalOccurrences(ofName: name)
-            .filter { $0.symbol.kind == kind }
-            .map { $0.symbol }
-    }
-
+    /// Find the given symbol name in the given file.
+    ///
+    /// You can find out what symbol name's format by using Xcode's "Copy Symbol Name" feature.
     public func lookupSymbols(name: String, kind: IndexSymbolKind? = nil, in file: AbsolutePath) -> [Symbol] {
         var symbols = indexStore.symbols(inFilePath: file.pathString)
             .filter { $0.name == name }
@@ -29,8 +28,11 @@ extension SourceNavigator {
         return symbols
     }
 
-    // TODO: Refactor this into look up callers, because this implementation only returns used instance methods, not all instance methods
+    /// Find all instances method of given type used in the project.
+    ///
+    /// - Note This function does not return all the instance methods. It only returns the ones that are used in the current project.
     public func lookupInstanceMethods(named symbolName: String, of symbol: Symbol) -> [Symbol] {
+        // TODO: Refactor this into look up callers, because this implementation only returns used instance methods, not all instance methods
         assert(symbol.kind.isTypeDefinition)
 
         let superclasses = superclasses(of: symbol)
@@ -46,13 +48,14 @@ extension SourceNavigator {
         return allFuncs.filter { $0.name == symbolName }.removingDuplicates(by: \.usr)
     }
 
+    /// Similar to Xcode's "Type Hierarchy" feature, this function can be used to find all the protocol to which the given type conforms.
     public func conformedProtocols(of symbol: Symbol) -> [Symbol] {
         var all = [String: Symbol]()
         conformedProtocols(of: symbol, all: &all)
         return Array(all.values)
     }
 
-    public func conformedProtocols(of symbol: Symbol, all: inout [String: Symbol]) {
+    private func conformedProtocols(of symbol: Symbol, all: inout [String: Symbol]) {
         guard let definition = definition(ofUSR: USR(rawValue: symbol.usr)!)?.usr else {
             return
         }
@@ -77,6 +80,7 @@ extension SourceNavigator {
         }
     }
 
+    /// Similar to Xcode's "Type Hierarchy" feature, this function can be used to find all the super classes from which the given type extends.
     public func superclasses(of symbol: Symbol) -> [Symbol] {
         var result = [Symbol]()
 
@@ -97,6 +101,9 @@ extension SourceNavigator {
 
 extension SourceNavigator {
 
+    /// Find the type definiton of given symbol name.
+    ///
+    /// The symbol name needs to be a full type name excluding the module. i.e. `FooService.Model`.
     func resolveType(named name: String) throws -> Symbol {
         try resolveType(named: name, original: name)
     }
@@ -148,6 +155,12 @@ extension SourceNavigator {
         return bases.first?.symbol
     }
 
+    /// Name of the given symbol, including the "namespace" types.
+    ///
+    /// For type declaration like `enum Foo { class Bar {} }`, the name property value of `class Bar`'s `Symbol`
+    /// instance  is `Bar`. This function returns the "full type name" as `Foo.Bar`.
+    ///
+    /// - Parameter symbol: A `Symbol` instance representing type declaration.
     func fullTypename(of symbol: Symbol) -> String? {
         let allowed: Set<IndexSymbolKind> = [
             .enum,

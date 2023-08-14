@@ -41,14 +41,3 @@ extension IndexStoreDB {
     }
 
 }
-
-extension Sequence {
-    func removingDuplicates<Value: Hashable>(by keyPath: KeyPath<Element, Value>) -> [Element] {
-        reduce(into: [Value: Element]()) { uniq, element in
-            let key = element[keyPath: keyPath]
-            uniq[key] = element
-        }
-        .values
-        .map { $0 }
-    }
-}

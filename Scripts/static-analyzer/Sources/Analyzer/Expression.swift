@@ -1,6 +1,8 @@
 import Foundation
 import SourceKittenFramework
 
+/// This type represents an type-checked expression at a specific location of a source code. It's typically created from
+/// a SourceKit Expression Type request: https://github.com/apple/swift/blob/main/tools/SourceKit/docs/Protocol.md#expression-type
 public struct Expression {
     public let byteRange: ClosedRange<Int64>
     public let type: String
@@ -18,6 +20,8 @@ public struct Expression {
 }
 
 extension String {
+
+    /// Highlight the given byte range for printing on terminal, including line numbers of the highlighted part.
     func highlight(byteRange: ClosedRange<Int64>) -> String {
         var data = data(using: .utf8)!
 

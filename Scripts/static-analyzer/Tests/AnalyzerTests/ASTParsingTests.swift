@@ -107,3 +107,8 @@ class ASTParsingTests: XCTestCase {
     }
 
 }
+
+func foo() {
+  let result = [1, 2, 3].map { $0.description }
+  print(result)
+}

@@ -2,8 +2,11 @@ import Foundation
 import SourceKittenFramework
 
 extension Request {
+
+    /// Create a "Expression Type" SourceKit request
+    ///
+    /// - SeeAlso https://github.com/apple/swift/blob/main/tools/SourceKit/docs/Protocol.md#expression-type
     static func expressionType(file: String, compilerArguments: [String]) -> Request {
-        // https://github.com/apple/swift/blob/main/tools/SourceKit/docs/Protocol.md#expression-type
         Request.customRequest(request: [
             "key.request": UID("source.request.expression.type"),
             "key.sourcefile": file,
@@ -11,6 +14,7 @@ extension Request {
             "key.expectedtypes": [String](),
         ])
     }
+    
 }
 
 public enum SourceKitHelper {
@@ -37,7 +41,7 @@ public enum SourceKitHelper {
 }
 
 extension Dictionary where Key == String, Value == SourceKitRepresentable {
-    func toJSON() -> String {
+    public func toJSON() -> String {
         let data = try! JSONSerialization.data(withJSONObject: self)
         return String(data: data, encoding: .utf8)!
     }
@@ -61,6 +65,7 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 
 extension Structure {
 
+    /// Find the structure whose byte range exactly matches the given one.
     public func substructure(matching byteRange: ClosedRange<Int64>) throws -> [String: SourceKitRepresentable]? {
         let dict = dictionary
         let offset: Int64 = try dict.get("key.offset")
