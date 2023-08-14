@@ -5,14 +5,14 @@ import SourceKittenFramework
 
 private let appModuleName = "WordPress"
 
-/// A type that include high level IDE-like features. For example, looking up types, finding call sites of a given function, etc.
+/// A type that includes high level IDE-like features. For example, looking up types, finding call sites of a given function, etc.
 public class SourceNavigator {
 
     let compilerInvocations: CompilerInvocations
     let indexStore: IndexStoreDB
 
     /// Similar to opening a project in Xcode, a `SourceNavigator` instance is bound to a given project.
-    /// To create a new instance, we need to provide a compiled history of the project, which typically are included in
+    /// To create a new instance, we need to provide a compiled history of the project, which typically is included in
     /// the project's derived data.
     public init(compilerInvocations: CompilerInvocations, indexStore: IndexStoreDB) {
         self.compilerInvocations = compilerInvocations
@@ -29,7 +29,7 @@ public class SourceNavigator {
     }
 
 
-    ///Return all type-checked expressions at the given source code location.
+    /// Return all type-checked expressions at the given source code location.
     ///
     /// Take a simple map function call expression as an example.
     ///
