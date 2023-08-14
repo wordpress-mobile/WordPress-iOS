@@ -81,7 +81,7 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
         case .wordPressPluginOverlayMaxShown:
             return 3
         case .phaseFourOverlayFrequency:
-            return 0
+            return -1
         }
     }
 
