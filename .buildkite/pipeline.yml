@@ -11,6 +11,10 @@ common_params:
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
     IMAGE_ID: xcode-14.3.1
 
+agents:
+  queue: mac
+  hostname: MV-MKE-X64-002
+
 # This is the default pipeline – it will build and test the app
 steps:
 
