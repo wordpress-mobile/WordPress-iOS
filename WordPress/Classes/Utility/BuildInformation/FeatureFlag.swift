@@ -123,7 +123,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
         case .siteCreationDomainPurchasing:
-            return true
+            return false
         case .readerUserBlocking:
             return true
         case .personalizeHomeTab:
