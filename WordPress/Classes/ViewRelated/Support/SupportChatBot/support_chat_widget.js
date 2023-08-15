@@ -56,7 +56,10 @@ window.prepareDocsBotForPresentation = function () {
       openDocsBot();
 
       // Inject a custom css to hide unnecessary elements
-      shadowRoot.innerHTML += `<link rel="stylesheet" href="support_chat_widget.css" />`;
+      var linkElem = document.createElement("link");
+      linkElem.setAttribute("rel", "stylesheet");
+      linkElem.setAttribute("href", "support_chat_widget.css");
+      shadowRoot.appendChild(linkElem);
     });
   });
 
