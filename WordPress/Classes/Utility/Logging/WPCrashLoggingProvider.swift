@@ -11,6 +11,7 @@ struct WPLoggingStack {
     let eventLogging: EventLogging
 
     private let eventLoggingDataProvider = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
+    // swiftlint:disable:next weak_delegate
     private let eventLoggingDelegate = EventLoggingDelegate()
 
     private let enterForegroundObserver: AnyCancellable
