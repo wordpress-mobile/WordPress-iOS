@@ -2,7 +2,7 @@ import WebKit
 import WordPressFlux
 import SVProgressHUD
 
-protocol SupportChatBotCreatedTicketDelegate: class {
+protocol SupportChatBotCreatedTicketDelegate: AnyObject {
     func onTicketCreated()
 }
 
