@@ -79,6 +79,22 @@ extension SupportChatBotViewController: WKNavigationDelegate {
             }
         })
     }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated:
+            if let url = navigationAction.request.url {
+                // Open links tapped from within the chat in the system browser
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+            }
+        default:
+            decisionHandler(.allow)
+        }
+    }
+
 }
 
 // MARK: - Support Callback
