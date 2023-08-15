@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
+// Original source code: https://github.com/realm/SwiftLint/blob/0.52.4/Source/swiftlint/Helpers/CompilerArgumentsExtractor.swift
+
 import Foundation
 
 struct CompilerArgumentsExtractor {
