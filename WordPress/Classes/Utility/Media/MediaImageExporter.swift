@@ -1,4 +1,6 @@
 import Foundation
+import CoreGraphics
+import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
 
