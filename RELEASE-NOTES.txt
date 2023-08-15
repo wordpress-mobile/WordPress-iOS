@@ -2,6 +2,7 @@
 -----
 * [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
 * [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
+* [*] Fixed a crash that could occur when following sites in Reader. [#21341]
 
 23.0
 -----
