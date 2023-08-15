@@ -42,6 +42,7 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case domainFocus
+    case nativePhotoPicker
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -133,6 +134,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .compliancePopover:
             return true
         case .domainFocus:
+            return false
+        case .nativePhotoPicker:
             return false
         }
     }
@@ -236,6 +239,8 @@ extension FeatureFlag {
             return "Compliance Popover"
         case .domainFocus:
             return "Domain Focus"
+        case .nativePhotoPicker:
+            return "Native Photo Picker"
         }
     }
 }
