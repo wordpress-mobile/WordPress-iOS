@@ -15,9 +15,9 @@ extension PostService {
     ///   - metadata: The metadata dictionary for the post. Optional because Obj-C shouldn't be trusted.
     /// - Returns: A dictionary for the `Post`'s `disabledPublicizeConnections` property.
     @objc(disabledPublicizeConnectionsForPost:andMetadata:)
-    func disabledPublicizeConnections(for post: AbstractPost?, metadata: [StringDictionary]?) -> [NSNumber: StringDictionary] {
+    func disabledPublicizeConnections(for post: AbstractPost?, metadata: [[String: Any]]?) -> [NSNumber: StringDictionary] {
         guard let post,
-              let metadata else {
+              let metadata = metadata as? [[String: String]] else {
             return [:]
         }
 

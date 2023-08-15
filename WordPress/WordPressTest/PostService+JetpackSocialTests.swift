@@ -69,6 +69,25 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         XCTAssertEqual(result[NSNumber(value: 500)], metadataEntry)
     }
 
+    func testMetadataEntriesWithNonStringValues() {
+        // Given
+        let connections = makeConnections(with: [(connectionId, keyringId)])
+        let blog = makeBlog(connections: connections)
+        let post = makePost(for: blog)
+        let metadataEntry: [String: Any] = [
+            "id": "10",
+            "key": "sharing_disabled",
+            "value": [123]
+        ]
+
+        // When
+        let result = service.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
+
+        // Then
+        // invalid entries should be ignored.
+        XCTAssertTrue(result.isEmpty)
+    }
+
     // MARK: - Post -> RemotePost tests
 
     func testDisabledConnectionsWithId() throws {
