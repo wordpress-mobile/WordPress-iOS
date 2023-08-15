@@ -22,7 +22,8 @@ struct BlogDashboardPersonalizationService {
     }
 
     func hasPreference(for card: DashboardCard) -> Bool {
-        getSettings(for: card)[siteID] != nil
+        let settings = getSettings(for: card)
+        return (settings[siteID] != nil) || (settings[Constants.siteAgnosticVisibilityKey] != nil)
     }
 
     /// Sets the enabled state for a given DashboardCard.

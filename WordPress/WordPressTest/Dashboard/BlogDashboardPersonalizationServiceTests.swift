@@ -88,4 +88,32 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
         // Then settings are retained
         XCTAssert(service1.isEnabled(.googleDomains))
     }
+
+    func testHasPreferenceReturnsTrueWhenValueSetForAllSites() {
+        // Given
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // When
+        service.setEnabled(false, for: .googleDomains, forAllSites: true)
+
+        // Then
+        XCTAssert(service.hasPreference(for: .googleDomains))
+    }
+
+    func testHasPreferenceReturnsTrueWhenValueSetForASite() {
+        // Given
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // When
+        service.setEnabled(false, for: .googleDomains)
+
+        // Then
+        XCTAssert(service.hasPreference(for: .googleDomains))
+    }
+
+    func testHasPreferenceReturnsFalseWhenNoPreferenceIsSet() {
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        XCTAssertFalse(service.hasPreference(for: .googleDomains))
+    }
 }
