@@ -25,23 +25,25 @@ struct BlogDashboardPersonalizationService {
         getSettings(for: card)[siteID] != nil
     }
 
-    func setEnabled(_ isEnabled: Bool, for card: DashboardCard) {
+    /// Sets the enabled state for a given DashboardCard.
+    ///
+    /// This function updates the enabled state of a `DashboardCard`. Depending on the `forAllSites` flag,
+    /// it either sets the state for a specific site or sets it agnostically for all sites. After updating
+    /// the settings, a notification is posted to inform other parts of the application about this change.
+    ///
+    /// - Parameters:
+    ///   - isEnabled: A Boolean value indicating whether the `DashboardCard` should be enabled or disabled.
+    ///   - card: The `DashboardCard` whose setting needs to be updated.
+    ///   - forAllSites: A Boolean flag that determines if the setting should be applied site-agnostically.
+    ///                  Default is `false`, meaning the setting will be applied for a specific site.
+    ///                  If set to `true`, the setting will be applied irrespective of the site.
+    func setEnabled(_ isEnabled: Bool, for card: DashboardCard, forAllSites: Bool = false) {
         guard let key = makeKey(for: card) else { return }
-
         var settings = getSettings(for: card)
-        settings[siteID] = isEnabled
-        repository.set(settings, forKey: key)
 
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
-        }
-    }
+        let keyValue = forAllSites ? Constants.siteAgnosticVisibilityKey : siteID
+        settings[keyValue] = isEnabled
 
-    func setEnabledSiteAgnostic(_ isEnabled: Bool, for card: DashboardCard) {
-        guard let key = makeKey(for: card) else { return }
-
-        var settings = getSettings(for: card)
-        settings[Constants.siteAgnosticVisibilityKey] = isEnabled
         repository.set(settings, forKey: key)
 
         DispatchQueue.main.async {

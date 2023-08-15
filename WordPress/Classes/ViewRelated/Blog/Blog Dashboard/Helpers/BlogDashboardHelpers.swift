@@ -8,13 +8,8 @@ struct BlogDashboardHelpers {
             attributes: [.destructive],
             handler: { _ in
                 BlogDashboardAnalytics.trackHideTapped(for: card)
-                if isSiteAgnostic {
-                    BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
-                        .setEnabledSiteAgnostic(false, for: card)
-                } else {
-                    BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
-                        .setEnabled(false, for: card)
-                }
+                BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
+                    .setEnabled(false, for: card, forAllSites: isSiteAgnostic)
             })
     }
 

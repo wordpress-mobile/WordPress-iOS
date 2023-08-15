@@ -53,41 +53,39 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
         }
     }
 
-    func testSetEnabledSiteAgnosticReturnsFalseForTheSameSite() {
+    func testSetEnabledForAllSitesReturnsFalseForTheSameSite() {
         // Given
-        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
-            .setEnabledSiteAgnostic(false, for: .googleDomains)
-
-        // When new service is created
         let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
 
-        // Then settings are retained
+        // When
+        service.setEnabled(false, for: .googleDomains, forAllSites: true)
+
+        // Then
         XCTAssertFalse(service.isEnabled(.googleDomains))
     }
 
-    func testSetEnabledSiteAgnosticReturnsFalseForDifferentSite() {
+    func testSetEnabledForAllSitesReturnsFalseForDifferentSite() {
         // Given
-        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
-            .setEnabledSiteAgnostic(false, for: .googleDomains)
+        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
 
-        // When new service is created
-        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
+        // When
+        service1.setEnabled(false, for: .googleDomains, forAllSites: true)
 
         // Then settings are retained
-        XCTAssertFalse(service.isEnabled(.googleDomains))
+        XCTAssertFalse(service2.isEnabled(.googleDomains))
     }
 
-    func testSetEnabledReturnsTrueWhenSiteAgnosticBoolIsTrue() {
+    func testSetEnabledReturnsTrueWhenForAllSitesBoolIsTrue() {
         // Given
-        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
-            .setEnabled(true, for: .googleDomains)
-        BlogDashboardPersonalizationService(repository: repository, siteID: 9)
-            .setEnabledSiteAgnostic(true, for: .googleDomains)
+        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
 
-        // When new service is created
-        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        // When
+        service1.setEnabled(true, for: .googleDomains)
+        service2.setEnabled(true, for: .googleDomains, forAllSites: true)
 
         // Then settings are retained
-        XCTAssert(service.isEnabled(.googleDomains))
+        XCTAssert(service1.isEnabled(.googleDomains))
     }
 }
