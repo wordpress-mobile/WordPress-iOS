@@ -64,7 +64,17 @@ final class SupportChatBotViewController: UIViewController {
                 options: {
                     color: "#9dd977",
                     supportLink: "#",
-                    questions: \(encodedQuestions())
+                    questions: \(encodedQuestions()),
+                    labels: {
+                        inputPlaceholder: "\(Strings.inputPlaceholder)",
+                        firstMessage: "\(Strings.firstMessage)",
+                        sources: "\(Strings.sources)",
+                        helpful: "\(Strings.helpful)",
+                        unhelpful: "\(Strings.unhelpful)",
+                        getSupport: "\(Strings.getSupport)",
+                        suggestions: "\(Strings.suggestions)",
+                        thinking: "\(Strings.thinking)",
+                      },
                 },
             })
         })();
@@ -118,6 +128,31 @@ extension SupportChatBotViewController {
             NSLocalizedString("support.chatBot.questionFive", value: "I forgot my login information", comment: "An example question shown to a user seeking support"),
             NSLocalizedString("support.chatBot.questionSix", value: "How can I use my custom domain in the app?", comment: "An example question shown to a user seeking support"),
         ]
+        static let inputPlaceholder = NSLocalizedString("support.chatBot.inputPlaceholder",
+                                                        value: "Send a message...",
+                                                        comment: "Placeholder text for the chat input field.")
+        static let firstMessage = NSLocalizedString("support.chatBot.firstMessage",
+                                                    value: "What can I help you with? If I can't answer your question I'll help you open a support ticket with our team!",
+                                                    comment: "Initial message shown to the user when the chat starts.")
+        static let sources = NSLocalizedString("support.chatBot.sources",
+                                               value: "Sources",
+                                               comment: "Button title referring to the sources of information.")
+        static let helpful = NSLocalizedString("chat.rateHelpful",
+                                               value: "Rate as helpful",
+                                               comment: "Option for users to rate a chat bot answer as helpful.")
+        static let unhelpful = NSLocalizedString("support.chatBot.reportInaccuracy",
+                                                 value: "Report as innacurate",
+                                                 comment: "Option for users to report a chat bot answer as inaccurate.")
+        static let getSupport = NSLocalizedString("support.chatBot.contactSupport",
+                                                  value: "Contact support",
+                                                  comment: "Button for users to contact the support team directly.")
+        static let suggestions = NSLocalizedString("support.chatBot.suggestionsPrompt",
+                                                   value: "Not sure what to ask?",
+                                                   comment: "Prompt for users suggesting to select a default question from the list to start a support chat.")
+        static let thinking = NSLocalizedString("support.chatBot.botThinkingIndicator",
+                                                value: "Thinking...",
+                                                comment: "Indicator that the chat bot is processing user's input.")
+
     }
 
     private enum Constants {
