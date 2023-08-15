@@ -63,11 +63,23 @@ final class SupportChatBotViewController: UIViewController {
                   },
                 options: {
                     color: "#9dd977",
-                    supportLink: "#"
+                    supportLink: "#",
+                    questions: \(encodedQuestions())
                 },
             })
         })();
         """
+    }
+
+    /// Encoding array of Swift strings into JS string representing an array
+    private func encodedQuestions() -> String {
+        do {
+            let encodedQuestions = try JSONEncoder().encode(Strings.questions)
+            return String(data: encodedQuestions, encoding: .utf8) ?? ""
+        } catch {
+            DDLogError("Couldn't encode default questions for support chat bot: \(error)")
+            return ""
+        }
     }
 }
 
@@ -98,6 +110,14 @@ extension SupportChatBotViewController {
         static let ticketCreationLoadingMessage = NSLocalizedString("support.chatBot.ticketCreationLoading", value: "Creating support ticket...", comment: "Notice informing user that their support ticket is being created.")
         static let ticketCreationSuccessMessage = NSLocalizedString("support.chatBot.ticketCreationSuccess", value: "Ticket created", comment: "Notice informing user that their support ticket has been created.")
         static let ticketCreationFailureMessage = NSLocalizedString("support.chatBot.ticketCreationFailure", value: "Error submitting support ticket", comment: "Notice informing user that there was an error submitting their support ticket.")
+        static let questions: [String] = [
+            NSLocalizedString("support.chatBot.questionOne", value: "What is my site address?", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionTwo", value: "Help, my site is down!", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionThree", value: "I can't upload photos/videos", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionFour", value: "Why can't I login?", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionFive", value: "I forgot my login information", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionSix", value: "How can I use my custom domain in the app?", comment: "An example question shown to a user seeking support"),
+        ]
     }
 
     private enum Constants {
