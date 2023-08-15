@@ -142,15 +142,10 @@ extension SupportChatBotViewController {
     }
 
     func showTicketCreatedSuccessNotice() {
-        let notice = Notice(title: Strings.ticketCreationSuccessMessage,
-                            feedbackType: .success,
-                            actionTitle: "See ticket",
-                            actionHandler: { [weak self] _ in
-            guard let self else { return }
-
-            self.delegate?.onTicketCreated()
-        })
+        let notice = Notice(title: Strings.ticketCreationSuccessMessage, feedbackType: .success)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        delegate?.onTicketCreated()
     }
 
     func showTicketCreatedFailureNotice() {
