@@ -5,7 +5,6 @@ final class ItemProviderMediaExporter: MediaExporter {
     var mediaDirectoryType: MediaDirectory = .uploads
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
-    var allowableFileExtensions = Set<String>()
 
     private let provider: NSItemProvider
 
@@ -34,6 +33,7 @@ final class ItemProviderMediaExporter: MediaExporter {
             progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         }
 
+        // `MediaImageExporter` doesn't support GIF, so it requires special handling.
         func processGIF(at url: URL) throws {
             let pixelSize = url.pixelSize
             let media = MediaExport(url: url, fileSize: url.fileSize, width: pixelSize.width, height: pixelSize.height, duration: nil)
@@ -55,16 +55,16 @@ final class ItemProviderMediaExporter: MediaExporter {
                 onError(ExportError.underlyingError(error))
                 return
             }
+            // Retaining `self` on purpose.
             do {
-                // Retaining `self` on purpose.
                 let copyURL = try self.mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent, fileExtension: url.pathExtension)
                 try FileManager.default.copyItem(at: url, to: copyURL)
-                if self.provider.hasItemConformingToTypeIdentifier(UTType.gif.identifier) {
+
+                if self.hasConformingType(.gif) {
                     try processGIF(at: copyURL)
-                } else if self.provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                } else if self.hasConformingType(.image) {
                     try processImage(at: copyURL)
-                } else if self.provider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) ||
-                            self.provider.hasItemConformingToTypeIdentifier(UTType.video.identifier) {
+                } else if self.hasConformingType(.movie) || self.hasConformingType(.video) {
                     try processVideo(at: copyURL)
                 } else {
                     onError(ExportError.underlyingError(URLError(.unknown)))
@@ -75,20 +75,6 @@ final class ItemProviderMediaExporter: MediaExporter {
         }
         progress.addChild(loadProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         return progress
-    }
-
-#warning("make sure this works and handles image types that ImageIO doesn't support for encoding, e.g. webp")
-#warning("update to support https://wordpress.com/support/accepted-filetypes/")
-    private func preferedExportTypeFor(uti: String) -> String? {
-        guard !allowableFileExtensions.isEmpty,
-              let extensionType = UTType(uti)?.preferredFilenameExtension else {
-            return nil
-        }
-        if allowableFileExtensions.contains(extensionType) {
-            return uti
-        } else {
-            return UTType.jpeg.identifier
-        }
     }
 
     #warning("should it be heif or heic?")
@@ -109,6 +95,10 @@ final class ItemProviderMediaExporter: MediaExporter {
         UTType.heic,
         UTType.svg
     ].map(\.identifier))
+
+    private func hasConformingType(_ type: UTType) -> Bool {
+        provider.hasItemConformingToTypeIdentifier(type.identifier)
+    }
 
     enum ExportError: MediaExportError {
         case underlyingError(Error?)

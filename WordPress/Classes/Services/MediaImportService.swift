@@ -281,7 +281,6 @@ class MediaImportService: NSObject {
             let exporter = ItemProviderMediaExporter(provider: provider)
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
-            exporter.allowableFileExtensions = allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : allowableFileExtensions
             return exporter
         case let image as UIImage:
             let exporter = MediaImageExporter(image: image, filename: nil)
