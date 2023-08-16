@@ -53,48 +53,50 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
         }
     }
 
-    func testSetEnabledForAllSitesReturnsFalseForTheSameSite() {
+    func testSetEnabledForAllSites() {
         // Given
-        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: nil)
 
         // When
-        service.setEnabled(false, for: .googleDomains, forAllSites: true)
+        service.setEnabled(false, for: .googleDomains)
 
         // Then
         XCTAssertFalse(service.isEnabled(.googleDomains))
     }
 
+    // TODO: Remove this test. It's irrelevant since services are no longer tied to sites.
     func testSetEnabledForAllSitesReturnsFalseForDifferentSite() {
         // Given
-        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
-        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
+        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: nil)
+        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: nil)
 
         // When
-        service1.setEnabled(false, for: .googleDomains, forAllSites: true)
+        service1.setEnabled(false, for: .googleDomains)
 
         // Then settings are retained
         XCTAssertFalse(service2.isEnabled(.googleDomains))
     }
 
-    func testSetEnabledReturnsTrueWhenForAllSitesBoolIsTrue() {
-        // Given
-        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
-        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
-
-        // When
-        service1.setEnabled(true, for: .googleDomains)
-        service2.setEnabled(true, for: .googleDomains, forAllSites: true)
-
-        // Then settings are retained
-        XCTAssert(service1.isEnabled(.googleDomains))
-    }
+    // TODO: Remove this test. It's redundant, if we update it, it will be equivalent to testThatSettingsAreSavedPersistently + testSetEnabledForAllSites
+//    func testSetEnabledReturnsTrueWhenForAllSitesBoolIsTrue() {
+//        // Given
+//        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+//        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
+//
+//        // When
+//        service1.setEnabled(true, for: .googleDomains)
+//        service2.setEnabled(true, for: .googleDomains, forAllSites: true)
+//
+//        // Then settings are retained
+//        XCTAssert(service1.isEnabled(.googleDomains))
+//    }
 
     func testHasPreferenceReturnsTrueWhenValueSetForAllSites() {
         // Given
-        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: nil)
 
         // When
-        service.setEnabled(false, for: .googleDomains, forAllSites: true)
+        service.setEnabled(false, for: .googleDomains)
 
         // Then
         XCTAssert(service.hasPreference(for: .googleDomains))
