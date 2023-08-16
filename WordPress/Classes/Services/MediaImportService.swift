@@ -277,8 +277,8 @@ class MediaImportService: NSObject {
             exporter.videoOptions = self.exporterVideoOptions
             exporter.allowableFileExtensions = allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : allowableFileExtensions
             return exporter
-        case let itemProvider as NSItemProvider:
-            let exporter = ItemProviderMediaExporter(itemProvider: itemProvider)
+        case let provider as NSItemProvider:
+            let exporter = ItemProviderMediaExporter(provider: provider)
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
             exporter.allowableFileExtensions = allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : allowableFileExtensions
