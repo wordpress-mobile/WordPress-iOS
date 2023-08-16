@@ -190,7 +190,7 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    branch = options[:branch] || release_branch_name
+    branch = compute_release_branch_name(options: options)
     trigger_buildkite_release_build(branch: branch, beta: true)
   end
 
@@ -199,7 +199,7 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    branch = options[:branch] || release_branch_name
+    branch = compute_release_branch_name(options: options)
     trigger_buildkite_release_build(branch: branch, beta: false)
   end
 end
@@ -282,6 +282,18 @@ def prompt_for_confirmation(message:, bypass:)
   return true if bypass
 
   UI.confirm(message)
+end
+
+def compute_release_branch_name(options:)
+  branch_option = :branch
+  branch_name = options[branch_option]
+
+  if branch_name.nil?
+    branch_name = release_branch_name
+    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
+  end
+
+  branch_name
 end
 
 def release_branch_name
