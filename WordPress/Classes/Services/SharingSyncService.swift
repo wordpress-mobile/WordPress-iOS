@@ -33,15 +33,11 @@ import WordPressKit
             failure?(Error.siteWithNoRemote as NSError)
             return
         }
-        let onComplete = {
-            success?()
-            NotificationCenter.default.post(name: .jetpackSocialUpdated, object: nil)
-        }
 
         remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
 
             // Process the results
-            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: onComplete)
+            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
         },
         failure: failure)
     }

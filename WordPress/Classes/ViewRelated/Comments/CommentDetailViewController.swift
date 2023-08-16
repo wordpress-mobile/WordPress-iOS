@@ -95,6 +95,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
         cell.textLabel?.attributedText = attributedString
         cell.textLabel?.numberOfLines = 0
+        cell.accessibilityIdentifier = .replyIndicatorCellIdentifier
 
         // setup constraints for textLabel to match the spacing specified in the design.
         if let textLabel = cell.textLabel {
@@ -105,6 +106,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                 textLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: Constants.replyIndicatorVerticalSpacing),
                 textLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -Constants.replyIndicatorVerticalSpacing)
             ])
+            textLabel.accessibilityIdentifier = .replyIndicatorTextIdentifier
         }
 
         return cell
@@ -740,8 +742,8 @@ private extension CommentDetailViewController {
 
 private extension String {
     // MARK: Constants
-    static let replyIndicatorCellIdentifier = "replyIndicatorCell"
-    static let textCellIdentifier = "textCell"
+    static let replyIndicatorCellIdentifier = "reply-indicator-cell"
+    static let replyIndicatorTextIdentifier = "reply-indicator-text"
     static let moderationCellIdentifier = "moderationCell"
     static let trashButtonAccessibilityId = "trash-comment-button"
     static let deleteButtonAccessibilityId = "delete-comment-button"

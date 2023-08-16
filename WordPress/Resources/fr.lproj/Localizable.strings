@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-07-26 14:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-11 11:54:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: fr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -8823,6 +8823,15 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personnaliser l’onglet Accueil";
 
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "Masquer ceci";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "Partager sur vos réseaux sociaux";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "Vous n’avez plus aucun partage.";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Toute l’activité";
 
@@ -9599,6 +9608,37 @@ Indicates the blog post will be shared to a social media account.
 Example: Sharing to @wordpress */
 "prepublishing.social.label.singleConnection" = "Partage sur %1$@";
 
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "%1$d partages sur les réseaux sociaux restants";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "Attention";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "Personnaliser le message";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "S’abonner pour partager plus";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "%1$d partages sur les réseaux sociaux restant dans les 30 prochains jours.";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Attention";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "Message";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "Réseaux sociaux";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Afficher toutes les réponses";
 
@@ -9780,11 +9820,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Body text for the Jetpack Social no connection view */
 "social.noconnection.body" = "Augmentez votre trafic en partageant automatiquement vos articles avec vos amis sur les réseaux sociaux.";
 
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "Connecter des comptes";
+
 /* Accessibility label for the social media icons in the Jetpack Social no connection view */
 "social.noconnection.icons.accessibility.label" = "Icônes des réseaux sociaux";
 
 /* Title for the not now button to hide the Jetpack Social no connection view */
 "social.noconnection.notnow" = "Pas maintenant";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "Vos articles ne seront pas partagés sur vos %1$d comptes de réseau social.";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "Vos articles ne seront pas partagés sur votre compte de réseau social.";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "Icônes des réseaux sociaux";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "S’abonner pour partager plus";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Le partage automatique sur Twitter n’est plus disponible";
@@ -9887,6 +9942,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Pas assez d’activité. Revenez lorsque votre site aura plus de visiteurs !";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "Votre dernier article %1$@ a reçu %2$@ mentions J’aime.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+"stats.insights.totalLikes.guideText.singular" = "Votre dernier article %1$@ a reçu %2$@ mentions J’aime.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Ignorer";

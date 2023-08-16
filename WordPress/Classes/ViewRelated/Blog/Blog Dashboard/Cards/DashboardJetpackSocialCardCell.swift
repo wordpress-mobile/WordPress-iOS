@@ -111,13 +111,13 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
     override init(frame: CGRect) {
         self.repository = UserPersistentStoreFactory.instance()
         super.init(frame: frame)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNotification), name: .jetpackSocialUpdated, object: nil)
+        observeManagedObjectsChange()
     }
 
     init(repository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.repository = repository
         super.init(frame: .zero)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNotification), name: .jetpackSocialUpdated, object: nil)
+        observeManagedObjectsChange()
     }
 
     required init?(coder: NSCoder) {
@@ -373,6 +373,27 @@ private extension DashboardJetpackSocialCardCell {
         dashboardViewController?.reloadCardsLocally()
     }
 
+    func observeManagedObjectsChange() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleObjectsChange),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: ContextManager.shared.mainContext
+        )
+    }
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let blog else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(blog) || refreshed.contains(blog) {
+            updateDisplayState(for: blog)
+        }
+    }
+
 }
 
 // MARK: - SharingViewControllerDelegate
@@ -382,13 +403,5 @@ extension DashboardJetpackSocialCardCell: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
         dashboardViewController?.reloadCardsLocally()
     }
-
-}
-
-// MARK: - Notification
-
-extension NSNotification.Name {
-
-    static let jetpackSocialUpdated = NSNotification.Name(rawValue: "JetpackSocialUpdated")
 
 }

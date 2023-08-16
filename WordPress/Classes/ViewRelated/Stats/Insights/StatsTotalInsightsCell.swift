@@ -110,7 +110,7 @@ struct StatsTotalInsightsData {
         static let likesTotalGuideTextSingular = NSLocalizedString(
             "stats.insights.totalLikes.guideText.singular",
             value: "Your latest post %1$@ has received %2$@ like.",
-            comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number.")
+            comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one.")
         static let likesTotalGuideTextPlural = NSLocalizedString(
             "stats.insights.totalLikes.guideText.plural",
             value: "Your latest post %1$@ has received %2$@ likes.",

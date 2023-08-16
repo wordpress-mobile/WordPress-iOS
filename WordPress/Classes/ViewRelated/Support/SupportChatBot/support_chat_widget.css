@@ -1,0 +1,5 @@
+.docsbot-chat-header,
+.mobile-close-button,
+a.floating-button {
+    display: none !important;
+}
