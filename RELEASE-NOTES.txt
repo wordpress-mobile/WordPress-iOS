@@ -1,5 +1,6 @@
 23.1
 -----
+* [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
 * [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
 * [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
 
