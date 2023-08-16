@@ -17,7 +17,12 @@ extension WPTabBarController {
             return
         }
 
-        meNavigationController?.tabBarItem.downloadGravatarImage(with: account.email, placeholderImage: placeholderImage)
+        ImageDownloader.shared.downloadGravatarImage(with: account.email) { [weak self] image in
+            guard let image else {
+                return
+            }
+            self?.meNavigationController?.tabBarItem.updateGravatarImage(image)
+        }
     }
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
@@ -26,7 +31,7 @@ extension WPTabBarController {
                 return
         }
 
-        meNavigationController?.tabBarItem.resizeAndUpdateGravatarImage(image)
+        meNavigationController?.tabBarItem.updateGravatarImage(image)
     }
 }
 
