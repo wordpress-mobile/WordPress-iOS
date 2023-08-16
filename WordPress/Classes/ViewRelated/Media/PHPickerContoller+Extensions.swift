@@ -7,7 +7,7 @@ extension PHPickerConfiguration {
         var configuration = PHPickerConfiguration(photoLibrary: .shared())
         configuration.preferredAssetRepresentationMode = .compatible
         configuration.selection = .ordered
-        configuration.selectionLimit = 100
+        configuration.selectionLimit = 0 // Unlimited
         return configuration
     }
 }
