@@ -2,7 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 
-class MySiteViewController: UIViewController, NoResultsViewHost {
+class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDelegate {
 
     enum Section: Int, CaseIterable {
         case dashboard
@@ -40,6 +40,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.refreshControl = refreshControl
+        scrollView.delegate = self
         return scrollView
     }()
 
@@ -397,10 +398,22 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
         scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
         scrollEdgeAppearance?.configureWithTransparentBackground()
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     private func resetNavBarAppearance() {
         navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBar.appearance().scrollEdgeAppearance
+
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= 60 {
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        } else {
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
     }
 
     // MARK: - Account
