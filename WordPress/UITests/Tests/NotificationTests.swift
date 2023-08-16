@@ -13,9 +13,9 @@ private extension String {
 }
 
 class NotificationTests: XCTestCase {
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         setUpTestSuite()
-        WireMock.setUpScenario(scenario: "comment_flow")
+        try await WireMock.setUpScenario(scenario: "comment_flow")
 
         try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
     }
