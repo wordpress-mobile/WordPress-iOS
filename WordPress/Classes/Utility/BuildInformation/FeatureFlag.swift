@@ -40,8 +40,8 @@ enum FeatureFlag: Int, CaseIterable {
     case readerUserBlocking
     case personalizeHomeTab
     case commentModerationUpdate
-    case jetpackSocial
     case compliancePopover
+    case domainFocus
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -123,17 +123,17 @@ enum FeatureFlag: Int, CaseIterable {
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
         case .siteCreationDomainPurchasing:
-            return true
+            return false
         case .readerUserBlocking:
             return true
         case .personalizeHomeTab:
             return AppConfiguration.isJetpack
         case .commentModerationUpdate:
             return false
-        case .jetpackSocial:
-            return AppConfiguration.isJetpack && BuildConfiguration.current == .localDeveloper
         case .compliancePopover:
             return true
+        case .domainFocus:
+            return false
         }
     }
 
@@ -232,10 +232,10 @@ extension FeatureFlag {
             return "Personalize Home Tab"
         case .commentModerationUpdate:
             return "Comments Moderation Update"
-        case .jetpackSocial:
-            return "Jetpack Social"
         case .compliancePopover:
             return "Compliance Popover"
+        case .domainFocus:
+            return "Domain Focus"
         }
     }
 }

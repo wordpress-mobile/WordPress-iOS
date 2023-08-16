@@ -20,7 +20,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.4.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (2.2.0):
+  - Automattic-Tracks-iOS (2.3.0):
     - Sentry (~> 8.0)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
@@ -41,7 +41,7 @@ PODS:
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
   - Gutenberg (1.101.0)
-  - JTAppleCalendar (8.0.5)
+  - JTAppleCalendar (8.0.3)
   - Kanvas (1.4.4)
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
@@ -93,12 +93,12 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - Sentry (8.9.2):
-    - Sentry/Core (= 8.9.2)
-    - SentryPrivate (= 8.9.2)
-  - Sentry/Core (8.9.2):
-    - SentryPrivate (= 8.9.2)
-  - SentryPrivate (8.9.2)
+  - Sentry (8.9.4):
+    - Sentry/Core (= 8.9.4)
+    - SentryPrivate (= 8.9.4)
+  - Sentry/Core (8.9.4):
+    - SentryPrivate (= 8.9.4)
+  - SentryPrivate (8.9.4)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -115,7 +115,7 @@ PODS:
     - WordPressKit (~> 8.0-beta)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (8.5.0):
+  - WordPressKit (8.5.1):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -123,7 +123,7 @@ PODS:
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
   - WordPressUI (1.14.0)
-  - WPMediaPicker (1.8.8)
+  - WPMediaPicker (1.8.9)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
   - ZendeskCoreSDK (2.5.1)
@@ -168,11 +168,11 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 6.3-beta)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `trunk`)
+  - WordPressAuthenticator (~> 6.3)
+  - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.14)
-  - WPMediaPicker (~> 1.8.8)
+  - WPMediaPicker (>= 1.8.9, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -213,6 +213,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -232,17 +233,15 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.101.0.podspec
-  WordPressKit:
-    :branch: trunk
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  WordPressKit:
-    :commit: 586cfa63e0c44f85ea7d158f379ce57bdc839bd2
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  Gutenberg:
+    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :submodules: true
+    :tag: v1.100.2
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -250,7 +249,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
-  Automattic-Tracks-iOS: a1b020ab02f0e5a39c5d4e6870a498273f286158
+  Automattic-Tracks-iOS: 310a9b65615d03db838fad6e58823effb4f385bf
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
@@ -261,7 +260,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Gutenberg: 8394de90eb2d8b5f87310277d1a9594b7cedc36f
-  JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
+  JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -271,8 +270,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  Sentry: 4fe92c018ba6ed61ce1fc652dd1ccac34505a4c6
-  SentryPrivate: b58fc25b3a0ac7e3d4ec229be63d583e3314a47a
+  Sentry: 56c76eed917f7dffd46db50906afbf5c9aa2673a
+  SentryPrivate: f3be34b5deb9fe676fdfb1f1ad5cdb1b740c5688
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -281,10 +280,10 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 9bfb316cb165e1997b73aa94d92fadc991cc9725
-  WordPressKit: f6943a6e927e9f57bc8793938af1e3a4c3adb614
+  WordPressKit: f33a89b148d9cce96933f0900701aff592a796f7
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: 09b5477f8678446f27e651cccb6b6401bd19d9a3
-  WPMediaPicker: 0d40b8d66b6dfdaa2d6a41e3be51249ff5898775
+  WPMediaPicker: 0ec0ee22f68e8cb9d83e71bdcf2e76d931ef7f91
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -295,6 +294,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 5c2fa7da0e1ba62456989088eb7d68160fb6d1bd
+PODFILE CHECKSUM: 7c2cb3345b7f74a702dad5416d46a9c446e9cf13
 
 COCOAPODS: 1.12.1

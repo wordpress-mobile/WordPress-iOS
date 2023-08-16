@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -174,19 +174,6 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li ord, %2$li tegn";
 
-/* translators: %s: Block name e.g. \"Image block\"
-translators: Block name. %s: The localized block name */
-"%s block" = "%s-blokk";
-
-/* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s blokk-alternativer";
-
-/* translators: accessibility text for the media block empty state. %s: media type */
-"%s block. Empty" = "%s-blokk. Tom";
-
-/* translators: accessibility text for blocks with invalid content. %d: localized block title */
-"%s block. This block has invalid content" = "%s-blokk. Denne blokken har ugyldig innhold";
-
 /* Empty Post Title */
 "(No Title)" = "(Ingen tittel)";
 
@@ -268,21 +255,6 @@ translators: Block name. %s: The localized block name */
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTIV";
 
-/* No comment provided by engineer. */
-"ADD AUDIO" = "LEGG TIL LYD";
-
-/* No comment provided by engineer. */
-"ADD BLOCK HERE" = "Legg til blokk her";
-
-/* No comment provided by engineer. */
-"ADD IMAGE" = "LEGG TIL BILDE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "LEGG TIL BILDE ELLER VIDEO";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "LEGG TIL VIDEO";
-
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
@@ -344,26 +316,11 @@ translators: Block name. %s: The localized block name */
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Legg til %@";
 
-/* No comment provided by engineer. */
-"Add Block After" = "Legg til blokk etter";
-
-/* No comment provided by engineer. */
-"Add Block Before" = "Legg til blokk foran";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Legg til innhold i innlegg";
 
-/* No comment provided by engineer. */
-"Add To Beginning" = "Legg til i begynnelsen";
-
-/* No comment provided by engineer. */
-"Add To End" = "Legg til på slutten";
-
 /* Button Title. Tapping subscribes the user to a new topic. */
 "Add Topic" = "Legg til emne";
-
-/* No comment provided by engineer. */
-"Add URL" = "Legg til URL";
 
 /* The title on the add category screen */
 "Add a Category" = "Legg til en kategori";
@@ -377,9 +334,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Legg til et selvbetjent nettsted";
 
-/* No comment provided by engineer. */
-"Add a shortcode…" = "Legg til en korkode...";
-
 /* No Tags View Button Label */
 "Add a site" = "Legg til et nettsted";
 
@@ -389,20 +343,11 @@ translators: Block name. %s: The localized block name */
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Legg til kontobilde.";
 
-/* No comment provided by engineer. */
-"Add alt text" = "Legg til alt-tekst";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Legg ethvert emne";
 
-/* No comment provided by engineer. */
-"Add button text" = "Legg til knappetekst";
-
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Legger til bilde, eller avatar, for å representere den nye kontoen.";
-
-/* No comment provided by engineer. */
-"Add link text" = "Legg til lenketekst";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Legg til menyobjekt over";
@@ -422,9 +367,6 @@ translators: Block name. %s: The localized block name */
 /* Voiceover accessibility label for the tags field in blog post settings. */
 "Add new tags, separated by commas." = "Legg til nye stikkord, separert med komma.";
 
-/* No comment provided by engineer. */
-"Add paragraph block" = "Legg til en avsnittsblokk";
-
 /* Add self-hosted site button */
 "Add self-hosted site" = "Legg til side på webhotell";
 
@@ -434,9 +376,6 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Legg til stikkord";
-
-/* No comment provided by engineer. */
-"Add title" = "Legg til tittel";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Legger til funksjoner";
@@ -796,29 +735,11 @@ translators: Block name. %s: The localized block name */
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blokksitat";
 
-/* translators: displayed right after the block is copied. */
-"Block copied" = "Blokk kopiert";
-
-/* translators: displayed right after the block is cut. */
-"Block cut" = "Blokk kuttet";
-
-/* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Blokk duplisert";
-
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blokkredigering aktivert";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokker fiendtlige innloggingsforsøk";
-
-/* translators: displayed right after the block is pasted. */
-"Block pasted" = "Blokk limt inn";
-
-/* translators: displayed right after the block is removed. */
-"Block removed" = "Blokk fjernet";
-
-/* No comment provided by engineer. */
-"Block settings" = "Blokkinnstillinger";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blokker dette nettstedet";
@@ -849,12 +770,6 @@ translators: Block name. %s: The localized block name */
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Uthevet";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Kantradius";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Kantinnstillinger";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Del opp kommentar i flere sider.";
 
@@ -869,9 +784,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Opptatt";
-
-/* No comment provided by engineer. */
-"Button Link URL" = "Lenke-URL for knapp";
 
 /* Title for a list of different button styles. */
 "Button Style" = "Knappestil";
@@ -891,9 +803,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Ved å registrere deg, godtar du våre _Tjenestevilkår_.";
-
-/* No comment provided by engineer. */
-"CUSTOMIZE" = "TILPASS";
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Kalkulerer...";
@@ -978,9 +887,6 @@ translators: Block name. %s: The localized block name */
 
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "Avbryt mediaopplastning";
-
-/* No comment provided by engineer. */
-"Cancel search" = "Avbryt søk";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Avbryt deling";
@@ -1093,23 +999,8 @@ translators: Block name. %s: The localized block name */
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Velg fra min enhet";
 
-/* No comment provided by engineer. */
-"Choose from device" = "Velg fra enheten";
-
-/* No comment provided by engineer. */
-"Choose image" = "Velg bilde";
-
-/* No comment provided by engineer. */
-"Choose image or video" = "Velg bilde eller video";
-
-/* No comment provided by engineer. */
-"Choose images" = "Velg bilder";
-
 /* Shortened version of the main title to be used in back navigation */
 "Choose layout" = "Velg oppsett";
-
-/* No comment provided by engineer. */
-"Choose video" = "Velg video";
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Velg dine emner";
@@ -1131,9 +1022,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Tøm Spotlight-indeks";
-
-/* No comment provided by engineer. */
-"Clear search" = "Rensk søk";
 
 /* Title of a button. */
 "Clear search history" = "Slett søkehistorikk";
@@ -1180,9 +1068,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Fargerike bakgrunner";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Kolonneinnstillinger";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Tegneserier";
@@ -1349,9 +1234,6 @@ translators: Block name. %s: The localized block name */
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Matlaging";
 
-/* No comment provided by engineer. */
-"Copied block" = "Kopierte blokk";
-
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Kopier lenke";
@@ -1513,9 +1395,6 @@ translators: Block name. %s: The localized block name */
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "Gjeldende periode: %1$@ til %2$@";
 
-/* translators: %s: current cell value. */
-"Current value is %s" = "Nåværende verdi er %s";
-
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Ditt nettsted tilbakestilles nå";
 
@@ -1537,9 +1416,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Tilpass sideinnstillinger for liker, kommentarer, følgere og mer.";
-
-/* No comment provided by engineer. */
-"Cut block" = "Kutt blokk";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Mørk";
@@ -1757,50 +1633,8 @@ translators: Block name. %s: The localized block name */
    Title of the Done button on the me page */
 "Done" = "Ferdig";
 
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "Dobbelttrykk og hold for å redigere";
-
-/* No comment provided by engineer. */
-"Double tap to add a block" = "Dobbelttrykk for å legge til en blokk";
-
-/* No comment provided by engineer. */
-"Double tap to add a link." = "Dobbelttrykk for å legge til lenke.";
-
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Dobbelttrykk for å lukke";
-
-/* translators: accessibility text */
-"Double tap to edit this value" = "Dobbelttrykk for å redigere denne verdien";
-
-/* No comment provided by engineer. */
-"Double tap to move the block down" = "Dobbelttrykk for å flytte blokken ned";
-
-/* No comment provided by engineer. */
-"Double tap to move the block to the left" = "Dobbelttrykk for å flytte blokken mot venstre";
-
-/* No comment provided by engineer. */
-"Double tap to move the block to the right" = "Dobbelttrykk for å flytte blokken mot høyre";
-
-/* No comment provided by engineer. */
-"Double tap to move the block up" = "Dobbelttrykk for å flytte blokken opp";
-
-/* No comment provided by engineer. */
-"Double tap to preview page." = "Dobbelttrykk for å forhåndsvise side.";
-
-/* No comment provided by engineer. */
-"Double tap to preview post." = "Dobbelttrykk for å forhåndsvise innlegget.";
-
-/* No comment provided by engineer. */
-"Double tap to select" = "Dobbelttrykk for å velge";
-
-/* No comment provided by engineer. */
-"Double tap to select a video" = "Dobbelttrykk for å velge en video";
-
-/* No comment provided by engineer. */
-"Double tap to select an image" = "Dobbelttrykk for å velge et bilde";
-
-/* translators: accessibility text (hint for switches) */
-"Double tap to toggle setting" = "Dobbelttrykk for å veksle innstilling";
 
 /* Download button title */
 "Download" = "Last ned";
@@ -1814,9 +1648,6 @@ translators: Block name. %s: The localized block name */
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Kladder";
-
-/* No comment provided by engineer. */
-"Duplicate block" = "Dupliser blokk";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
    Edit the post.
@@ -1835,9 +1666,6 @@ translators: Block name. %s: The localized block name */
 /* Button that displays the media editor to the user */
 "Edit %@" = "Rediger %@";
 
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "Rediger %@-blokk";
-
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Rediger blokkeringslisteord";
 
@@ -1855,20 +1683,11 @@ translators: Block name. %s: The localized block name */
    Opens the editor to edit an existing post. */
 "Edit Post" = "Rediger innlegg";
 
-/* No comment provided by engineer. */
-"Edit file" = "Rediger fil";
-
-/* No comment provided by engineer. */
-"Edit media" = "Rediger media";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Rediger nye innlegg og sider med det blokkbaserte redigeringsverktøyet.";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Rediger delingsknapper";
-
-/* No comment provided by engineer. */
-"Edit video" = "Rediger video";
 
 /* Title for the editor settings section */
 "Editor" = "Redigerer";
@@ -1915,12 +1734,6 @@ translators: Block name. %s: The localized block name */
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "Epost sendt!";
-
-/* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Innbyggingsundertekst. %s";
-
-/* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Innbyggingsundertekst. Tom.";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2079,9 +1892,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Utdrag";
-
-/* No comment provided by engineer. */
-"Excerpt length (words)" = "Lengde på utdrag (ord)";
 
 /* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
 "Excerpt. %@." = "Utdrag. %@";
@@ -2275,9 +2085,6 @@ translators: Block name. %s: The localized block name */
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
-/* translators: accessibility text. %s: gallery caption. */
-"Gallery caption. %s" = "Galleritekst. %s";
-
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Hagestell";
 
@@ -2314,9 +2121,6 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Gå tilbake";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Gå til fulgte";
@@ -2425,9 +2229,6 @@ translators: Block name. %s: The localized block name */
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjelp & støtte";
 
-/* No comment provided by engineer. */
-"Help icon" = "Hjelp-ikon";
-
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Her er hvordan innlegget har gjort det så langt.";
 
@@ -2443,9 +2244,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hide All Sites */
 "Hide All Sites" = "Skjul alle sider";
-
-/* No comment provided by engineer. */
-"Hide keyboard" = "Skjul tastatur";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -2504,9 +2302,6 @@ translators: Block name. %s: The localized block name */
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Bildestørrelse";
 
-/* translators: accessibility text. %s: image caption. */
-"Image caption. %s" = "Bildetekst. %s";
-
 /* Hint for image title on image settings. */
 "Image title" = "Bildetittel";
 
@@ -2562,14 +2357,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Sett inn medier";
 
-/* No comment provided by engineer. */
-"Insert mention" = "Sett inn omtale";
-
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Sett inn valgte";
-
-/* No comment provided by engineer. */
-"Inside" = "Inne";
 
 /* Title of Insights stats filter. */
 "Insights" = "Innsikt";
@@ -2615,9 +2404,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Ugyldig URL, vennligst sjekk om du skrev en gyldig sideadresse.";
-
-/* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Ugyldig URL. Vennligst oppgi en gyldig URL.";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Ugyldig brukernavn";
@@ -2788,12 +2574,6 @@ translators: Block name. %s: The localized block name */
 
 /* Image link option title. */
 "Link To" = "Lenke til";
-
-/* No comment provided by engineer. */
-"Link inserted" = "Lenke satt inn";
-
-/* No comment provided by engineer. */
-"Link text" = "Lenketekst";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Lenke til eksisterende innhold";
@@ -3028,9 +2808,6 @@ translators: Block name. %s: The localized block name */
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Mediefilstørrelsen (%1$@) er for stor til å laste opp. Maksimum tillatt er %2$@";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Media options" = "Media-innstillinger";
-
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Medieforhåndsvisning feilet.";
 
@@ -3042,9 +2819,6 @@ translators: Block name. %s: The localized block name */
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
-
-/* No comment provided by engineer. */
-"Mention" = "Nevne";
 
 /* The default text used for filling the name of a menu when creating it.
    The segmented control item to select during a guided tour.
@@ -3101,36 +2875,6 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Mest populære tidspunkt";
 
-/* No comment provided by engineer. */
-"Move Image Backward" = "Flytt bilde bakover";
-
-/* No comment provided by engineer. */
-"Move Image Forward" = "Flytt bilde forover";
-
-/* No comment provided by engineer. */
-"Move block down" = "Flytt blokk ned";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block down from row %1$s to row %2$s" = "Flytt blokk ned fra rad %1$s til rad %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Flytt blokken mot venstre";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block left from position %1$s to position %2$s" = "Flytt blokken mot venstre fra posisjon %1$s til posisjon %2$s";
-
-/* No comment provided by engineer. */
-"Move block right" = "Flytt blokken mot høyre";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block right from position %1$s to position %2$s" = "Flytt blokken mot høyre fra posisjon %1$s til posisjon %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "Flytt blokk opp";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block up from row %1$s to row %2$s" = "Flytt blokk opp fra rad %1$s til rad %2$s";
-
 /* Option to move Insight down in the view. */
 "Move down" = "Flytt ned";
 
@@ -3179,12 +2923,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error to be displayed when a tag is empty */
 "Name Required" = "Navn påkrevd";
-
-/* No comment provided by engineer. */
-"Navigate Up" = "Naviger opp";
-
-/* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Navigerer til det forrige innholdspanelet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hjelp?";
@@ -3287,17 +3025,11 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Ingen aktivitet ennå";
 
-/* No comment provided by engineer. */
-"No application can handle this request. Please install a Web browser." = "Ingen app kan håndtere denne forespørselen. Vennligst installer en nettleser.";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Ingen tilgjengelige adresser tilsvarer ditt søk";
 
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "Ingen tilgjengelige sider";
-
-/* No comment provided by engineer. */
-"No blocks found" = "Ingen blokker funnet";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Ingen kommentarer";
@@ -3483,9 +3215,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field Number */
 "Number" = "Nummer";
 
-/* No comment provided by engineer. */
-"Number of columns" = "Antall kolonner";
-
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Nummerert liste";
 
@@ -3512,9 +3241,6 @@ translators: Block name. %s: The localized block name */
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
 
-/* No comment provided by engineer. */
-"OPEN" = "ÅPNE";
-
 /* Disabled */
 "Off" = "Av";
 
@@ -3538,9 +3264,6 @@ translators: Block name. %s: The localized block name */
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Se bare den mest relevante statistikken. Legg til innsikter tilpasset dine behov.";
-
-/* No comment provided by engineer. */
-"Only show excerpt" = "Vis bare utdrag";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
@@ -3578,9 +3301,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Åpne i nettleser";
-
-/* No comment provided by engineer. */
-"Open link in a browser" = "Åpne lenke i en nettleser";
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Åpne lenke i nytt vindu\/ny fane";
@@ -3635,9 +3355,6 @@ translators: Block name. %s: The localized block name */
    Other Sites Notification Settings Title */
 "Other Sites" = "Andre sider";
 
-/* No comment provided by engineer. */
-"Outside" = "Utenfor";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
 
@@ -3658,9 +3375,6 @@ translators: Block name. %s: The localized block name */
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Sideinnstillinger";
-
-/* translators: accessibility text. %s: Page break text. */
-"Page break block. %s" = "Sideskilleblokk. %s";
 
 /* Notice that a page with content has been created */
 "Page created" = "Side opprettet";
@@ -3716,9 +3430,6 @@ translators: Block name. %s: The localized block name */
 
 /* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
 "Password protected" = "Passordbeskyttet";
-
-/* No comment provided by engineer. */
-"Paste URL" = "Lim inn URL";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Lim inn uten formattering";
@@ -3958,12 +3669,6 @@ translators: Block name. %s: The localized block name */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Innlegg planlagt";
 
-/* translators: accessibility text. %s: text content of the post title. */
-"Post title. %s" = "Overskrift. %s";
-
-/* translators: accessibility text. empty post title. */
-"Post title. Empty" = "Overskrift. Tom";
-
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postnummer";
 
@@ -4032,12 +3737,6 @@ translators: Block name. %s: The localized block name */
 /* Title on display preview error */
 "Preview Unavailable" = "Forhåndsvisning ikke tilgjengelig";
 
-/* No comment provided by engineer. */
-"Preview page" = "Forhåndsvis side";
-
-/* No comment provided by engineer. */
-"Preview post" = "Forhåndsvis innlegg";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Forrige varsel";
 
@@ -4075,9 +3774,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problem med å laste nettsteder";
-
-/* No comment provided by engineer. */
-"Problem opening the video" = "Problem under åpning av videoen";
 
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "Problemer med å kjøpe ditt domene. Vennligst prøv igjen.";
@@ -4276,9 +3972,6 @@ translators: Block name. %s: The localized block name */
 /* Remove site icon button */
 "Remove Site Icon" = "Fjern sideikon";
 
-/* No comment provided by engineer. */
-"Remove block" = "Fjern blokk";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Fjern fra innsikter";
 
@@ -4308,15 +4001,6 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Fjerning av Videre trinn vil skjule alle veiledninger for dette nettstedet. Denne handlingen kan ikke angres.";
-
-/* No comment provided by engineer. */
-"Replace Current Block" = "Erstatt nåværende blokk";
-
-/* No comment provided by engineer. */
-"Replace image or video" = "Erstatt bilde eller video";
-
-/* No comment provided by engineer. */
-"Replace video" = "Erstatt video";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Svar på en kommentar.";
@@ -4417,9 +4101,6 @@ translators: Block name. %s: The localized block name */
 
 /* Post Rich content */
 "Rich Content" = "Rikt innhold";
-
-/* No comment provided by engineer. */
-"Rich text editing" = "Rik tekstredigering";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Høyre";
@@ -4526,17 +4207,11 @@ translators: Block name. %s: The localized block name */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Søk WordPress";
 
-/* No comment provided by engineer. */
-"Search blocks" = "Søk blokker";
-
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Søk sider";
 
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Søk i innlegg";
-
-/* No comment provided by engineer. */
-"Search settings" = "Søkeinnstillinger";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Søk for å finne GIF-bilder du kan legge til i Mediebiblioteket ditt!";
@@ -4599,14 +4274,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Velg delstat";
 
-/* No comment provided by engineer. */
-"Select a color" = "Velg en farge";
-
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Velg noen for å fortsette";
-
-/* No comment provided by engineer. */
-"Select a layout" = "Velg et oppsett";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Velge medier.";
@@ -4778,9 +4447,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Vis passord";
-
-/* No comment provided by engineer. */
-"Show post content" = "Vis innhold av innlegg";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Vis temaer:";
@@ -5038,9 +4704,6 @@ translators: Block name. %s: The localized block name */
    Title of Start Over settings page */
 "Start Over" = "Start på nytt";
 
-/* No comment provided by engineer. */
-"Start writing…" = "Start å skrive...";
-
 /* Accessibility hint for stat not available to add to Insights. */
 "Stat is already displayed in Insights." = "Statistikken vises allerede i innsikter.";
 
@@ -5194,23 +4857,11 @@ translators: Block name. %s: The localized block name */
 /* Menu option for taking an image or video with the device's camera. */
 "Take Photo or Video" = "Ta et bilde eller video";
 
-/* No comment provided by engineer. */
-"Take a Photo" = "Ta et bilde";
-
-/* No comment provided by engineer. */
-"Take a Photo or Video" = "Ta et bilde eller en video";
-
-/* No comment provided by engineer. */
-"Take a Video" = "Ta en video";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Trykk på [bookmark-outline] for å lagre et innlegg i listen din.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Trykk for flere detaljer";
-
-/* No comment provided by engineer. */
-"Tap here to show help" = "Trykk her for å vise hjelp";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Trykk for å avbryte opplasting.";
@@ -5221,9 +4872,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Trykk for å skrive inn en egendefinert verdi";
-
-/* No comment provided by engineer. */
-"Tap to hide the keyboard" = "Trykk for å skjule tatstaturet";
 
 /* Label for a button to retry loading posts */
 "Tap to retry" = "Trykk for å prøve igjen";
@@ -5660,12 +5308,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafikk";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Omform %s til";
-
-/* No comment provided by engineer. */
-"Transform block…" = "Omform blokk...";
-
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
    Trashes a comment
@@ -5701,9 +5343,6 @@ translators: Block name. %s: The localized block name */
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Prøv igjen";
-
-/* No comment provided by engineer. */
-"Try another search term" = "Prøv et annet søkeord";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Prøv nå";
@@ -5758,9 +5397,6 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Kunne ikke slette medieobjekt.";
-
-/* No comment provided by engineer. */
-"Unable to embed media" = "Kunne ikke bygge inn media";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Kan ikke laste inn sider akkurat nå.";
@@ -5871,9 +5507,6 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Avfølger nettstedet.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "Avgrupper";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Slutt å skjule";
 
@@ -5913,9 +5546,6 @@ translators: Block name. %s: The localized block name */
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Ikke-lagrede endringer";
-
-/* No comment provided by engineer. */
-"Unsupported" = "Ikke støttet";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Uten tittel";
@@ -6075,9 +5705,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Videoforhåndsvisning ikke tilgjengelig";
-
-/* translators: accessibility text. %s: video caption. */
-"Video caption. %s" = "Bildetekst for video. %s";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Videoeksport avbrutt.";
@@ -6367,17 +5994,11 @@ translators: Block name. %s: The localized block name */
 /* A message title */
 "Welcome to the Reader" = "Velkommen til leseren";
 
-/* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Velkommen til blokkenes verden";
-
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vil vil alltid sende viktige meldinger om din konto, men du kan også få noen hjelpsomme esktraeposter.";
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Hva vil du gjøre med denne filen: laste den opp og legge til en lenke til filen i innlegge ditt, eller legge til innholdet i filen direkte i innlegget?";
-
-/* No comment provided by engineer. */
-"What is a block?" = "Hva er en blokk?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Hva er nytt";
@@ -6723,9 +6344,6 @@ translators: Block name. %s: The localized block name */
 
 /* The menu item to select during a guided tour. */
 "connections" = "tilkoblinger";
-
-/* No comment provided by engineer. */
-"double-tap to change unit" = "dobbelttrykk for endre enhet";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "f.eks. 12345678";

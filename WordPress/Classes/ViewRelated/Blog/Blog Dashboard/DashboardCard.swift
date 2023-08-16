@@ -10,6 +10,7 @@ enum DashboardCard: String, CaseIterable {
     case jetpackInstall
     case quickStart
     case prompts
+    case googleDomains
     case blaze
     case domainsDashboardCard
     case freeToPaidPlansDashboardCard
@@ -67,6 +68,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardActivityLogCardCell.self
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.self
+        case .googleDomains:
+            return DashboardGoogleDomainsCardCell.self
         }
     }
 
@@ -117,6 +120,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
+        case .googleDomains:
+            return FeatureFlag.domainFocus.enabled && AppConfiguration.isJetpack
         }
     }
 

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -10,12 +10,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d sviđanja";
-
-/* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s ima postavljen URL";
-
-/* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s nema postavljen URL";
 
 /* Empty Post Title */
 "(No Title)" = "(bez naslova)";
@@ -29,12 +23,6 @@
 
 /* The title on the add category screen */
 "Add a Category" = "Dodaj Kategoriju";
-
-/* No comment provided by engineer. */
-"Add image or video" = "Dodaj sliku ili video";
-
-/* translators: %s: social link name e.g: \"Instagram\". */
-"Add link to %s" = "Dodaj poveznicu na %s";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Napredno";
@@ -82,9 +70,6 @@
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Podebljano";
-
-/* No comment provided by engineer. */
-"Button position" = "Položaj gumba";
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
@@ -280,9 +265,6 @@
    Title of the Done button on the me page */
 "Done" = "Završeno";
 
-/* No comment provided by engineer. */
-"Double tap to add a link." = "Dodirnite dva puta da biste dodali poveznicu.";
-
 /* Name for the status of a draft post. */
 "Draft" = "Skica";
 
@@ -304,9 +286,6 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Uredi Post";
-
-/* No comment provided by engineer. */
-"Edit focal point" = "ažuriraj žarišno mjesto";
 
 /* Title for the editor settings section */
 "Editor" = "Uređivač";
@@ -370,14 +349,8 @@
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Umetni %@";
 
-/* No comment provided by engineer. */
-"Inside" = "Unutar";
-
 /* The Jetpack view title used while the is installing */
 "Installing Jetpack" = "Instaliraj Jetpack";
-
-/* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Neispravan URL. Audio datoteka nije pronađena.";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Neispravno korisničko ime";
@@ -478,9 +451,6 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Srednje";
 
-/* No comment provided by engineer. */
-"Mention" = "Spominjanje";
-
 /* Title of Months stats filter. */
 "Months" = "Mjeseci";
 
@@ -564,9 +534,6 @@
 /* Indicates a video will use its original size when uploaded.
    Indicates an image will use its original size when uploaded. */
 "Original" = "Original";
-
-/* No comment provided by engineer. */
-"Outside" = "Izvana";
 
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Stranica ažurirana";
@@ -781,9 +748,6 @@
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "Pojmovi pretraživanja";
 
-/* No comment provided by engineer. */
-"Search blocks" = "Pretraži blokove";
-
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
 "See Instructions" = "Pogledajte upute";
 
@@ -932,9 +896,6 @@
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Pokušajte ponovno";
 
-/* No comment provided by engineer. */
-"Type a URL" = "Unesite URL";
-
 /* URL text field placeholder */
 "URL" = "URL";
 
@@ -1046,12 +1007,6 @@
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Dobro došli u WordPress";
 
-/* No comment provided by engineer. */
-"What is alt text?" = "Što je alternativni tekst?";
-
-/* No comment provided by engineer. */
-"Width Settings" = "Postavke širine";
-
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPressov blog";
 
@@ -1090,9 +1045,6 @@
 
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Ikona vašeg web mjesta se pojavljuje na karticama web preglednika, pretpregledima web stranica na društvenim mrežama i na WordPress.com čitaču. ";
-
-/* translators: displays audio file extension. e.g. MP3 audio file */
-"audio file" = "Zvučna datoteka";
 
 /* Label displayed on image media items. */
 "image" = "slika";

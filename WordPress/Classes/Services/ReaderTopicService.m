@@ -216,7 +216,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)preserveSavedPostsFromTopic:(ReaderAbstractTopic *)topic
 {
-    [topic.posts enumerateObjectsUsingBlock:^(ReaderPost * _Nonnull post, NSUInteger __unused idx, BOOL * _Nonnull __unused stop) {
+    // Copy posts so that `post.topic = nil` doesn't mutate `topic.posts` collection.
+    NSMutableArray *posts = [[NSMutableArray alloc] initWithCapacity:topic.posts.count];
+    for (id post in topic.posts) {
+        [posts addObject:post];
+    }
+
+    // Now it's safe to update `post.topic`.
+    [posts enumerateObjectsUsingBlock:^(ReaderPost * _Nonnull post, NSUInteger __unused idx, BOOL * _Nonnull __unused stop) {
         if (post.isSavedForLater) {
             DDLogInfo(@"Preserving saved post: %@", post.titleForDisplay);
             post.topic = nil;

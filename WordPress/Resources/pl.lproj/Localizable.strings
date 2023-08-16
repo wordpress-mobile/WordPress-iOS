@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-07-24 20:13:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.6 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: pl */
 
 /* Per-year postfix shown after a domain's cost. */
@@ -17,9 +17,6 @@
 
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d odpowiedzi";
-
-/* translators:  %1$s: Select control button label e.g. \"Button width\". %2$s: Select control option value e.g: \"Auto, 25%\". */
-"%1$s. Currently selected: %2$s" = "%1$s. Aktualnie wybrano: %2$s";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliard";
@@ -83,9 +80,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d lat";
-
-/* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s opcje bloku";
 
 /* Empty Post Title */
 "(No Title)" = "(Brak tytułu)";
@@ -166,12 +160,6 @@
    Remove asset from media picker list */
 "Add" = "Dodaj";
 
-/* No comment provided by engineer. */
-"Add To Beginning" = "Dodaj na początku";
-
-/* No comment provided by engineer. */
-"Add To End" = "Dodaj na końcu";
-
 /* Button Title. Tapping subscribes the user to a new topic. */
 "Add Topic" = "Dodaj temat";
 
@@ -202,9 +190,6 @@
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adres";
-
-/* No comment provided by engineer. */
-"Address Settings" = "Ustawienia adresu";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
@@ -362,24 +347,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Cytat blokowy";
 
-/* translators: displayed right after the block is copied. */
-"Block copied" = "Blok został skopiowany";
-
-/* translators: displayed right after the block is cut. */
-"Block cut" = "Blok został wycięty";
-
-/* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Blok został powielony";
-
-/* translators: displayed right after the block is pasted. */
-"Block pasted" = "Blok został wklejony";
-
-/* translators: displayed right after the block is removed. */
-"Block removed" = "Blok został usunięty";
-
-/* No comment provided by engineer. */
-"Block settings" = "Ustawienia bloku";
-
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Zablokuj witrynę";
 
@@ -408,9 +375,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Styl przycisku";
-
-/* No comment provided by engineer. */
-"CUSTOMIZE" = "DOSTOSUJ";
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Obliczanie…";
@@ -568,15 +532,6 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Wybierz stronę główną, która wyświetla ostatnie wpisy (blog klasyczny) lub statyczną.";
 
-/* No comment provided by engineer. */
-"Choose image" = "Wybierz obrazek";
-
-/* No comment provided by engineer. */
-"Choose image or video" = "Wybierz obrazek lub film";
-
-/* No comment provided by engineer. */
-"Choose video" = "Wybierz film";
-
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Klasyczny blog";
 
@@ -607,12 +562,6 @@
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kod";
-
-/* translators: %d: column index. */
-"Column %d" = "Kolumna %d";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Ustawienia kolumn";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Komiksy";
@@ -732,15 +681,9 @@
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Gotowanie";
 
-/* No comment provided by engineer. */
-"Copied block" = "Blok został skopiowany";
-
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Skopiuj odnośnik";
-
-/* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Skopiuj adres URL ze schowka, %s";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Nie można śledzić tematu";
@@ -827,12 +770,6 @@
 "Create a site icon" = "Utwórz ikonkę witryny";
 
 /* No comment provided by engineer. */
-"Create embed" = "Utwórz osadzoną treść";
-
-/* No comment provided by engineer. */
-"Create link" = "Stwórz odnośnik";
-
-/* No comment provided by engineer. */
 "Current" = "Obecnie";
 
 /* Label title. Refers to the current WordPress.com plan for a user's site. */
@@ -841,18 +778,9 @@
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Bieżący motyw";
 
-/* No comment provided by engineer. */
-"Custom URL" = "Własny adres URL";
-
 /* Customize button that appears in Theme Browser Header
    Theme Customize action title */
 "Customize" = "Dostosuj";
-
-/* No comment provided by engineer. */
-"Customize Gradient" = "Dostosuj gradient";
-
-/* No comment provided by engineer. */
-"Cut block" = "Wytnij blok";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Ciemny";
@@ -976,45 +904,12 @@
    Title of the Done button on the me page */
 "Done" = "Gotowe";
 
-/* translators: accessibility text (hint for moving to color settings) */
-"Double tap to go to color settings" = "Stuknij dwukrotnie, by przejść do ustawień kolorów";
-
-/* No comment provided by engineer. */
-"Double tap to move the block to the left" = "Stuknij dwukrotnie, aby przesunąć blok w lewo";
-
-/* No comment provided by engineer. */
-"Double tap to move the block to the right" = "Stuknij dwukrotnie, aby przesunąć blok w prawo";
-
-/* No comment provided by engineer. */
-"Double tap to open Action Sheet with available options" = "Stuknij dwukrotnie aby otworzyć zakładkę działań z dostępnymi opcjami";
-
-/* No comment provided by engineer. */
-"Double tap to open Bottom Sheet with available options" = "Stuknij dwukrotnie aby otworzyć dolną zakładkę z dostępnymi opcjami";
-
-/* No comment provided by engineer. */
-"Double tap to select an image" = "Stuknij dwukrotnie aby wybrać obrazek";
-
-/* No comment provided by engineer. */
-"Double tap to select default font size" = "Stuknij dwukrotnie aby wybrać domyślną wielkość liter";
-
-/* No comment provided by engineer. */
-"Double tap to select font size" = "Stuknij dwukrotnie aby wybrać wielkość liter";
-
-/* translators: accessibility text (hint for selecting option) */
-"Double tap to select the option" = "Stuknij dwukrotnie aby wybrać opcję";
-
-/* translators: accessibility text (hint for switches) */
-"Double tap to toggle setting" = "Stuknij dwukrotnie aby przełączyć ustawienie";
-
 /* Name for the status of a draft post. */
 "Draft" = "Szkic";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Szkice";
-
-/* No comment provided by engineer. */
-"Duplicate block" = "Powiel blok";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
    Edit the post.
@@ -1049,15 +944,6 @@
 
 /* Accessibility label for button to edit a comment from a notification */
 "Edit comment" = "Edytuj komentarz";
-
-/* No comment provided by engineer. */
-"Edit cover media" = "Edytuj okładkę";
-
-/* No comment provided by engineer. */
-"Edit file" = "Edytuj plik";
-
-/* No comment provided by engineer. */
-"Edit media" = "Edytuj media";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Edytuj przyciski udostępniania";
@@ -1146,9 +1032,6 @@
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Zajawka";
-
-/* No comment provided by engineer. */
-"Excerpt length (words)" = "Długość zajawki (liczba słów)";
 
 /* Title for the error view when the user scanned an expired log in code */
 "Expired log in code" = "Wygasł kod logowania";
@@ -1255,9 +1138,6 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Śledź tag.";
 
-/* No comment provided by engineer. */
-"Font Size" = "Wielkość liter";
-
 /* Food site intent topic */
 "Food" = "Jedzenie";
 
@@ -1276,9 +1156,6 @@
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Najczęściej zadawane pytania";
 
-/* No comment provided by engineer. */
-"From clipboard" = "Ze schowka";
-
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Pełny rozmiar";
 
@@ -1290,9 +1167,6 @@
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Rozpocznij od wybrania układu z katalogu gotowych. Albo zacznij z czystą stroną.";
-
-/* No comment provided by engineer. */
-"Get support" = "Uzyskaj pomoc";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Poznaj aplikację Jetpack";
@@ -1332,9 +1206,6 @@
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Rozumiem!";
-
-/* No comment provided by engineer. */
-"Gradient Type" = "Typ gradientu";
 
 /* This value is used to set the accessibility hint text for setting the site title. */
 "Guides you through the process of setting a title for your site." = "Przeprowadza przez proces ustawienia tytułu dla twojej witryny.";
@@ -1388,9 +1259,6 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Pomoc i wsparcie";
 
-/* No comment provided by engineer. */
-"Help icon" = "Ikonka pomocy";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Ukryty";
 
@@ -1403,9 +1271,6 @@
 
 /* Hide All Sites */
 "Hide All Sites" = "Ukryj wszystkie witryny";
-
-/* No comment provided by engineer. */
-"Hide keyboard" = "Schowaj klawiature";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -1439,9 +1304,6 @@
 /* Hint for image description on image settings. */
 "Image Description" = "Opis obrazka";
 
-/* No comment provided by engineer. */
-"Image file not found." = "Nie znaleziono obrazka.";
-
 /* Hint for image title on image settings. */
 "Image title" = "Tytuł obrazka";
 
@@ -1459,28 +1321,13 @@
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Wstaw %@";
 
-/* No comment provided by engineer. */
-"Insert Audio Block" = "Wstaw blok audio";
-
-/* No comment provided by engineer. */
-"Insert Gallery Block" = "Wstaw blok galerii";
-
-/* No comment provided by engineer. */
-"Insert Image Block" = "Wstaw blok obrazka";
-
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
    Label action for inserting a link on the editor */
 "Insert Link" = "Wstaw odnośnik";
 
-/* No comment provided by engineer. */
-"Insert Video Block" = "Wstaw blok filmu";
-
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Wstaw media";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Wstaw wzmiankę";
 
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
@@ -1505,9 +1352,6 @@
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
 "Invalid Email Address" = "Nieprawidłowy adres e-mail";
-
-/* No comment provided by engineer. */
-"Invalid URL." = "Nieprawidłowy adres URL";
 
 /* Error message shown when the input URL is invalid. */
 "Invalid URL. Please double-check and try again." = "Nieprawidłowy adres URL. Sprawdź dokładnie i spróbuj ponownie.";
@@ -1792,18 +1636,6 @@
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Przenieś %@";
 
-/* No comment provided by engineer. */
-"Move block left" = "Przesuń blok w lewo";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block left from position %1$s to position %2$s" = "Przesuń blok w lewo z pozycji %1$s na pozycję %2$s";
-
-/* No comment provided by engineer. */
-"Move block right" = "Przesuń blok w prawo";
-
-/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block right from position %1$s to position %2$s" = "Przesuń blok w prawo z pozycji %1$s na pozycję %2$s";
-
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Title for button on the comment details page that moves the comment to trash when tapped.
@@ -1830,15 +1662,6 @@
 
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Moje witryny na WordPress";
-
-/* No comment provided by engineer. */
-"Navigates to custom color picker" = "Przechodzi do wyboru koloru";
-
-/* No comment provided by engineer. */
-"Navigates to customize the gradient" = "Przechodzi do dostosowania gradientu";
-
-/* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Przechodzi do poprzedniego arkusza z treściami";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Potrzebujesz pomocy?";
@@ -1968,9 +1791,6 @@
 /* Body text of alert announcing new Create Button feature. */
 "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Mamy teraz mniej kart, za to uporządkowanych, skrótów służących do publikowania wpisów i wiele innych, aby  szybko znaleźć, to czego potrzeba.";
 
-/* No comment provided by engineer. */
-"Number of columns" = "Liczba kolumn";
-
 /* A button title for closing the dialog.
    A button title.
    Accept Action
@@ -2015,9 +1835,6 @@
 /* Sort Order */
 "Oldest first" = "Najstarsze na początku";
 
-/* No comment provided by engineer. */
-"Only show excerpt" = "Pokaż tylko zajawkę";
-
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -2028,21 +1845,12 @@
    Title for the view when there's an error loading time zones */
 "Oops" = "Ups";
 
-/* No comment provided by engineer. */
-"Open Block Actions Menu" = "Otwórz menu działań na blokach";
-
-/* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Otwórz ustawienia zabezpieczeń Jetpacka";
-
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otwórz ustawienia";
 
 /* No comment provided by engineer. */
 "Open in Safari" = "Otwórz w Safari";
-
-/* No comment provided by engineer. */
-"Open link in a browser" = "Otwórz odnośnik w przeglądarce";
 
 /* Placeholder to indicate that filling out the field is optional. */
 "Optional" = "Opcjonalnie";
@@ -2063,19 +1871,10 @@
 /* Caption for the recommended sections in site designs. */
 "PICKED FOR YOU" = "WYBRANE DLA CIEBIE";
 
-/* No comment provided by engineer. */
-"Padding" = "Dopełnienie";
-
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Strona";
-
-/* translators: accessibility text. %s: text content of the page title. */
-"Page title. %s" = "Tytuł strony. %s";
-
-/* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Tytuł strony. Pusty";
 
 /* Noun. Title for pages button.
    Noun. Title. Links to the blog's Pages screen.
@@ -2102,9 +1901,6 @@
 
 /* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
 "Password protected" = "Zabezpieczono hasłem";
-
-/* No comment provided by engineer. */
-"Paste block after" = "Wklej blok po";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Wklej bez formatowania";
@@ -2243,12 +2039,6 @@
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Podgląd";
-
-/* No comment provided by engineer. */
-"Preview page" = "Podgląd strony";
-
-/* No comment provided by engineer. */
-"Preview post" = "Podgląd wpisu";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Poprzedni miesiąc";
@@ -2404,20 +2194,11 @@
 /* Title for the alert to confirm a plugin removal */
 "Remove Plugin?" = "Usunąć wtyczkę?";
 
-/* No comment provided by engineer. */
-"Remove block" = "Usuń blok";
-
 /* Prompt when removing a featured image from a post */
 "Remove this Featured Image?" = "Czy usunąć obrazek wyróżniający?";
 
 /* User action to remove video. */
 "Remove video" = "Usuń film";
-
-/* No comment provided by engineer. */
-"Replace image or video" = "Zamień obrazek lub film";
-
-/* No comment provided by engineer. */
-"Replace video" = "Zamień film";
 
 /* Accessibility label for the reply button
    Reply to a comment (verb)
@@ -2570,21 +2351,11 @@
 /* Blog Picker's Title */
 "Select Site" = "Wybierz witrynę";
 
-/* No comment provided by engineer. */
-"Select a color" = "Wybierz kolor";
-
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Wybierz kilka, aby kontynuować";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Wybierz domenę";
-
-/* translators: %s: Select font size option value e.g: \"Selected: Large\".
-translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Wybrano: %s";
-
-/* No comment provided by engineer. */
-"Selected: Default" = "Wybrano: domyślne";
 
 /* The button title text for sending a magic link. */
 "Send Link by Email" = "Wyślij odnośnik w wiadomości e-mail";
@@ -2655,9 +2426,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Pokaż przycisk reblogowania";
-
-/* No comment provided by engineer. */
-"Show post content" = "Pokaż treść wpisu";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Pokaż motywy:";
@@ -2811,9 +2579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of Start Over settings page */
 "Start Over" = "Zacznij od nowa";
 
-/* No comment provided by engineer. */
-"Start writing…" = "Rozpocznij pisanie...";
-
 /* Name of setting configured when a site uses a static page as its homepage */
 "Static Homepage" = "Statyczna strona główna";
 
@@ -2901,9 +2666,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Tylko tekst";
 
 /* No comment provided by engineer. */
-"Text color" = "Kolor tekstu";
-
-/* No comment provided by engineer. */
 "That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Podany adres e-mail został już użyty. Proszę sprawdzić czy dostarczona została wiadomość z możliwością potwierdzenia. Ponowne użycie tego adresu będzie możliwe za kilka dni.";
 
 /* No comment provided by engineer. */
@@ -2933,9 +2695,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikacja nie może uzyskać odpowiedzi serwera. Sprawdź konfigurację swojej witryny.";
-
-/* No comment provided by engineer. */
-"The basics" = "Podstawy";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certyfikat tego serwera jest nieprawidłowy. Być może łączysz się z serwerem, który podszywa się pod “%@”, co może być zagrożeniem dla twoich prywatnych informacji.";
@@ -3084,9 +2843,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nazwa użytkownika na Twitterze";
 
-/* No comment provided by engineer. */
-"Two" = "Dwa";
-
 /* Type menu item in share extension. */
 "Type" = "Rodzaj";
 
@@ -3147,9 +2903,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of unreplied Comments filter. */
 "Unreplied" = "Bez odpowiedzi";
 
-/* No comment provided by engineer. */
-"Unsupported" = "Niewspierane";
-
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Bez tytułu";
 
@@ -3164,9 +2917,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Zaktualizuj zdjęcie profilowe";
-
-/* No comment provided by engineer. */
-"Updates the title." = "Uaktualnia tytuł.";
 
 /* Describes a status of a plugin */
 "Updating" = "Aktualizacja";
@@ -3233,9 +2983,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Version of a plugin to install
    Version of an installed plugin */
 "Version %@" = "Wersja %@";
-
-/* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Napisy do filmu. Puste";
 
 /* Period Stats 'Videos' header */
 "Videos" = "Filmy";
@@ -3466,12 +3213,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Twoje witryny";
-
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Twój ostatni wpis <a href=\"\">%1$@<\/a> otrzymał <strong>%2$d<\/strong> polubień.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Twój ostatni wpis <a href=\"\">%@<\/a> otrzymał <strong>jedno<\/strong> polubienie.";
 
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Wpis jest właśnie aktualizowany. Proszę poczekać na zakończenie.";

@@ -38,7 +38,7 @@
           "featured": "{{request.requestLine.baseUrl}}/rest/v1.2/read/sites/53424024/featured"
         }
       },
-      "launch_status": false,
+      "launch_status": "launched",
       "capabilities": {
         "edit_pages": false,
         "edit_posts": false,

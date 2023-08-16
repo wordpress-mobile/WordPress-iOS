@@ -232,6 +232,9 @@ import Foundation
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
     case domainsPurchaseSucceeded
+    case domainTransferShown
+    case domainTransferMoreTapped
+    case domainTransferButtonTapped
 
     // My Site
     case mySitePullToRefresh
@@ -494,6 +497,7 @@ import Foundation
     // Jetpack Social Improvements v1
     case jetpackSocialConnectionToggled
     case jetpackSocialShareLimitDisplayed
+    case jetpackSocialShareLimitDismissed
     case jetpackSocialUpgradeLinkTapped
     case jetpackSocialNoConnectionCardDisplayed
     case jetpackSocialNoConnectionCTATapped
@@ -915,6 +919,12 @@ import Foundation
             return "domains_purchase_webview_viewed"
         case .domainsPurchaseSucceeded:
             return "domains_purchase_domain_success"
+        case .domainTransferShown:
+            return "dashboard_card_domain_transfer_shown"
+        case .domainTransferMoreTapped:
+            return "dashboard_card_domain_transfer_more_menu_tapped"
+        case .domainTransferButtonTapped:
+            return "dashboard_card_domain_transfer_button_tapped"
 
         // My Site
         case .mySitePullToRefresh:
@@ -1356,6 +1366,8 @@ import Foundation
             return "jetpack_social_auto_sharing_connection_toggled"
         case .jetpackSocialShareLimitDisplayed:
             return "jetpack_social_share_limit_displayed"
+        case .jetpackSocialShareLimitDismissed:
+            return "jetpack_social_share_limit_dismissed"
         case .jetpackSocialUpgradeLinkTapped:
             return "jetpack_social_upgrade_link_tapped"
         case .jetpackSocialNoConnectionCardDisplayed:

@@ -1,5 +1,22 @@
-Fizemos grandes mudanças no editor de blocos, inclusive nas opções de estilos, cores e ícones. Você também encontrará mais botões e opções de blocos na barra de ferramentas do cabeçalho, incluindo os botões de desfazer e refazer. Isso mesmo. Agora você tem mais ferramentas do que o cinto de utilidades do Batman.
+Chegou a versão 23.0! Parecemos mais velhos?
 
-Enquanto trabalhávamos nisso, consertamos alguns vazamentos de memória, melhoramos as estatísticas de atividade de publicação e resolvemos um problema em que o app não funcionava para alguns usuários depois de abrir.
+Para comemorar, fizemos melhorias no design do aplicativo para facilitar ainda mais o compartilhamento nas redes sociais. O nosso foco é a socialização.
 
-Também consertamos diversos problemas causados ao enviar sugestões de publicação, seguir sites no Leitor e excluir o app do WordPress após uma migração bem-sucedida.
+Observe que agora tem um cartão de campanha do Blaze no seu painel. Nele, você verá a campanha mais recente, uma tela com detalhes e uma tela listando as campanhas. Legal, não é?
+
+Fizemos algumas atualizações no bloco de galeria do editor de blocos.
+
+- Removemos uma falha visual que aparecia entre blocos de galeria selecionados e a barra de ferramentas.
+- O botão de legenda da galeria não fica mais visível em dispositivos móveis.
+- O bloco de galeria certo ficará selecionado enquanto você adicionar mídia.
+
+Talvez você goste de saber que eliminamos vários bugs no seletor de mídia.
+
+- A tela não pisca mais quando você abre o seletor de mídia.
+- Arquivos de mídia não ficam mais mudando de posição. Agora eles se comportam.
+- A contagem de imagens não inclui mais outros tipos de mídia.
+- Os tamanhos das miniaturas agora são menores. Carregamento mais rápido e menos memória em uso. O que pode ser melhor?
+
+Além disso, aceleramos o tempo de carregamento do cartão de estatísticas Total de curtidas e corrigimos um problema que fazia a tela de estatísticas travar o aplicativo.
+
+Por fim, quando você atualizar o conteúdo do leitor, posts ou notificações ou limpar os tópicos seguidos no leitor, não verá falhas no aplicativo. (Mas é bom se precaver assim mesmo. Segurança em primeiro lugar.)

@@ -14,6 +14,7 @@
 
 @property (nonnull, nonatomic, strong, readonly) AbstractPost *apost;
 @property (nonnull, nonatomic, strong, readonly) NSArray *publicizeConnections;
+@property (nonnull, nonatomic, strong, readonly) NSArray *unsupportedConnections;
 
 @property (nonatomic, weak, nullable) id<FeaturedImageDelegate> featuredImageDelegate;
 

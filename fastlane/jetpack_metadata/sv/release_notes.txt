@@ -1,5 +1,22 @@
-Vi har gjort några stora ändringar av blockredigeraren, inklusive stilar, färger och ikoner. Du hittar även fler knappar och blockalternativ i rubrikverktygsfältet, inklusive knapparna ångra och gör om. Så är det, nu har du fler verktyg än i Batmanbältet att jobba med.
+Version 23.0 är här. Ser vi äldre ut?
 
-När vi ändå höll på så har vi även åtgärdat några minnesläckor, förbättrat publicering av aktivitetsstatistik och löst ett problem där appen inte fungerade för vissa användare efter att den öppnades.
+För att fira det har vi gjort designförbättringar i hela appen, så att du lättare kan dela innehåll på sociala medier. För oss handlar allt om det sociala livet.
 
-Vi har även åtgärdat flera krascher som orsakades av att trycka på bloggningsdialoger, följa webbplatser i läsaren och att ta bort WordPress-appen efter en lyckad migrering.
+Du kommer att hitta ett nytt Blaze-kampanjkort i din adminpanel, med vilket du kan se din senaste kampanj, en kampanjlisteskärm och en kampanjinformationsskärm. Helt perfekt.
+
+Vi gjort ett antal uppdateringar av galleriblocket i blockredigeraren.
+
+- Vi har tagit bort det synliga mellanrummet mellan de valda galleriblocken och verktygsfältet.
+- Vi har dolt knappen Bildtext för galleri på mobila enheter.
+- Vi har sett till att rätt galleriblock förblir valt medan du lägger till media.
+
+Något som kanske kan komma att glädja dig är att vi har åtgärdat flertalet buggar i mediaväljaren.
+
+- Din skärm kommer inte längre att blinka när du öppnar mediaväljaren.
+- Mediafilerna har slutat att arrangera om sig själva och kommer nu att sköta sig.
+- Bildantalet inkluderar inte längre andra mediatyper.
+- Miniatyrbildsstorlekarna är nu mindre. Snabbare inläsning, mindre minnesåtgång – fantastiskt, eller hur?
+
+Vi har också snabbat upp inläsningstiden för statistikkortet Gillamarkeringar totalt och åtgärdat ett problem som gjorde att statistikskärmen stoppade appen.
+
+Slutligen, appen kommer inte att krascha när du uppdaterar notiser, inlägg eller läsarinnehåll, eller när du rensar bland följda ämnen i läsaren. (Men använd hjälm ändå. Tänk på säkerheten.)

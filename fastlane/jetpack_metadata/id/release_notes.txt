@@ -1,5 +1,22 @@
-Kami telah membuat perubahan besar pada editor blok, termasuk gaya, warna, dan ikon. Anda juga bisa melihat lebih banyak tombol dan pilihan blok di bilah peralatan header, termasuk tombol urungkan dan ulangi. Tepat sekali, kini Anda memiliki lebih banyak peralatan dibandingkan sabuk serbaguna Batman.
+Inilah versi 23.0. Kami sudah makin matang.
 
-Di saat yang sama, kami telah menyumbat sebagian kebocoran memori, meningkatkan statistik aktivitas posting, dan memecahkan masalah di mana aplikasi tidak bisa bekerja pada beberapa pengguna setelah dibuka.
+Dan, untuk merayakannya, kami memperbaiki desain pada aplikasi sehingga Anda lebih mudah membagikan konten di media sosial. Versi ini mendukung kehidupan sosial.
 
-Kami juga telah memperbaiki sebagian crash akibat mengetuk prompt blogging, mengikuti situs-situs di Pembaca, dan menghapus aplikasi WordPress setelah migrasi yang berhasil.
+Ada kartu Kampanye Blaze baru di dasbor. Di sana, Anda dapat melihat kampanye terbaru, layar daftar kampanye, dan layar detail kampanye. Keren, kan?
+
+Kami memperbarui blok Galeri di editor blok.
+
+- Kami menghapus celah visual yang muncul antara bilah peralatan dan blok galeri yang dipilih.
+- Tombol keterangan galeri tidak lagi terlihat pada perangkat seluler.
+- Blok galeri yang tepat akan tetap dipilih selama Anda menambahkan media.
+
+Anda pasti senang karena kami sudah membasmi beberapa bug di pemilih media.
+
+- Layar tidak akan berkedip lagi jika Anda membuka pemilih media.
+- Berkas media telah berhenti menyusun ulang dan akan berfungsi.
+- Jumlah gambar tidak lagi meliputi jenis media lainnya.
+- Ukuran gambar thumbnail kini lebih kecil. Memuat lebih cepat, memori lebih hemat—semua pasti suka.
+
+Kami juga mempercepat waktu pemuatan kartu statistik Total Suka. Selain itu, kami menyelesaikan masalah yang menyebabkan layar statistik memperlambat aplikasi.
+
+Aplikasi tidak akan mengalami crash ketika Anda memperbarui pemberitahuan, pos, atau konten pembaca, atau ketika Anda membersihkan topik yang diikuti di pembaca. (Meski tidak akan crash, tetap gunakan helm. Utamakan keselamatan

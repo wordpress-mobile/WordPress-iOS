@@ -1,3 +1,16 @@
-Hemos realizado algunos cambios importantes en el editor de bloques, incluidos estilos, colores e iconos. También encontrarás más botones y opciones de bloques en la barra de herramientas de la cabecera, incluidos los botones de deshacer y rehacer. Así es, ahora tienes más herramientas que el cinturón de herramientas de Batman.
+¡Ya está aquí la versión 23.0! ¿Parecemos mayores?
 
-Mientras estábamos en ello, detuvimos algunas pérdidas de memoria y solucionamos un problema por el cual algunos usuarios veían que la aplicación no funcionaba tras su apertura.
+Para celebrarlo, hemos actualizado algunos bloques de la Galería en el editor de bloques.
+
+- Hemos eliminado el hueco visual que aparece entre los bloques de galería seleccionados y la barra de herramientas.
+- El botón de pie de foto de la galería ya no es visible en los dispositivos móviles.
+- El bloque de galería correcto permanecerá seleccionado mientras añades contenido multimedia.
+
+También hemos eliminado varios errores en el selector de medios.
+
+- Tu pantalla ya no parpadeará cuando abras el selector de medios.
+- Los archivos multimedia han dejado de reorganizarse y ahora se comportan.
+- El recuento de imágenes ya no incluye otros tipos de medios.
+- El tamaño de las imágenes en miniatura es ahora menor. Carga más rápida, menos memoria: ¿qué más se puede pedir?
+
+Por último, la aplicación ya no debería bloquearse cuando actualizas una entrada. (Pero lleva casco de todos modos, la seguridad es lo primero).
