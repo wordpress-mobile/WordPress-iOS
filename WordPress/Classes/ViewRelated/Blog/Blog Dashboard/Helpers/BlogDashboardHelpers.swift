@@ -8,8 +8,9 @@ struct BlogDashboardHelpers {
             attributes: [.destructive],
             handler: { _ in
                 BlogDashboardAnalytics.trackHideTapped(for: card)
-                BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
-                    .setEnabled(false, for: card, forAllSites: isSiteAgnostic)
+                let siteID = isSiteAgnostic ? nil : blog.dotComID?.intValue
+                BlogDashboardPersonalizationService(siteID: siteID)
+                    .setEnabled(false, for: card)
             })
     }
 
