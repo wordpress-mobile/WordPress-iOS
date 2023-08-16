@@ -88,6 +88,34 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         XCTAssertEqual(media.width, 640)
         XCTAssertEqual(media.duration ?? 0.0, 3.47, accuracy: 0.01)
     }
+
+    // MARK: - Error Handling
+
+    func testThatExportFailsWithUnsupportedData() throws {
+        // GIVEN
+        let provider = NSItemProvider()
+        provider.registerDataRepresentation(forTypeIdentifier: UTType.exe.identifier, visibility: .all) { completion in
+            completion(Data(), nil)
+            return nil
+        }
+
+        // WHEN
+        let exporter = ItemProviderMediaExporter(provider: provider)
+        exporter.mediaDirectoryType = .temporary
+
+        do {
+            let media = try exportedMedia(from: exporter)
+            XCTFail("Expected the export to fail")
+        } catch {
+            // THEN
+            let error = try XCTUnwrap(error as? ItemProviderMediaExporter.ExportError)
+            if case .unsupportedContentType = error {
+                // Expected
+            } else {
+                XCTFail("Unexpected error: \(error)")
+            }
+        }
+    }
 }
 
 // MARK: - ItemProviderMediaExporterTests (Helpers)

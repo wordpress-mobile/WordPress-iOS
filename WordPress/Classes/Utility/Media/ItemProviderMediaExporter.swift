@@ -1,6 +1,7 @@
 import Foundation
 import PhotosUI
 
+/// Manages export of media assets: images and video.
 final class ItemProviderMediaExporter: MediaExporter {
     var mediaDirectoryType: MediaDirectory = .uploads
     var imageOptions: MediaImageExporter.Options?
@@ -55,6 +56,8 @@ final class ItemProviderMediaExporter: MediaExporter {
                 onError(ExportError.underlyingError(error))
                 return
             }
+            DDLogDebug("Loaded file representation (filename: '\(url.lastPathComponent)', types: \(self.provider.registeredTypeIdentifiers)")
+
             // Retaining `self` on purpose.
             do {
                 let copyURL = try self.mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent, fileExtension: url.pathExtension)
@@ -67,7 +70,7 @@ final class ItemProviderMediaExporter: MediaExporter {
                 } else if self.hasConformingType(.movie) || self.hasConformingType(.video) {
                     try processVideo(at: copyURL)
                 } else {
-                    onError(ExportError.underlyingError(URLError(.unknown)))
+                    onError(ExportError.unsupportedContentType)
                 }
             } catch {
                 onError(ExportError.underlyingError(error))
@@ -76,8 +79,6 @@ final class ItemProviderMediaExporter: MediaExporter {
         progress.addChild(loadProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         return progress
     }
-
-    #warning("should it be heif or heic?")
 
     /// The list of image formats supported by the backend.
     /// See https://wordpress.com/support/accepted-filetypes/.
@@ -101,11 +102,16 @@ final class ItemProviderMediaExporter: MediaExporter {
     }
 
     enum ExportError: MediaExportError {
+        case unsupportedContentType
         case underlyingError(Error?)
 
-        #warning("implement proper error handling")
         var description: String {
-            return "Something went wrong"
+            switch self {
+            case .unsupportedContentType:
+                return NSLocalizedString("mediaExporter.error.unsupportedContentType", value: "Unsupported content type", comment: "An error message the app shows if media import fails")
+            case .underlyingError(let error):
+                return error?.localizedDescription ?? NSLocalizedString("mediaExporter.error.unknown", value: "The item could not be added to the Media library", comment: "An error message the app shows if media import fails")
+            }
         }
     }
 }
