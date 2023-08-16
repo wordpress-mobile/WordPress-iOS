@@ -1,0 +1,22 @@
+Versie 23.0 is hier! Lijken we ouder?
+
+Om dit te vieren, hebben we overal in de app verbeteringen doorgevoerd, zodat je content eenvoudiger kunt delen op social media. We houden van social media.
+
+Je hebt een nieuwe Blaze Campaign-kaart in je dashboard, waar je de meest recente campagne, een campagnelijst en campagnedetails kunt bekijken. Erg cool.
+
+We hebben wat Galerijblok-updates doorgevoerd in de blokeditor.
+
+- We hebben de zichtbare ruimte tussen de geselecteerde galerijblokken en de toolbar verwijderd.
+- De galerijbijschriftknop is niet langer zichtbaar op mobiele apparaten.
+- Het juiste galerijblok blijft geselecteerd wanneer je media toevoegt.
+
+We hebben meerdere problemen verholpen in de mediakiezer.
+
+- Je scherm knippert niet meer wanneer je de mediakiezer opent.
+- Mediabestanden ordenen zichzelf niet meer opnieuw en zullen zich nu gedragen.
+- Het aantal afbeeldingen omvat niet langer andere mediasoorten.
+- Thumbnails zijn nu kleiner. Sneller laden, minder geheugen – geweldig toch?
+
+De laadtijd voor de Totaal aantal likes-statistiekkaart is korter en we hebben een probleem verholpen waarbij het statistiekenscherm de app verhinderde.
+
+Ten slotte zal de app niet crashen wanneer je meldingen, berichten of lezerscontent bijwerkt, of wanneer je gevolgde onderwerpen opschoont in de lezer. (Maar draag toch maar een helm. Veiligheid voorop.)

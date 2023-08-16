@@ -1,0 +1,16 @@
+Inilah versi 23.0. Kami sudah makin matang.
+
+Dan, untuk merayakannya, kami memperbarui blok Galeri di editor blok.
+
+- Kami menghapus celah visual yang muncul antara bilah peralatan dan blok galeri yang dipilih.
+- Tombol keterangan galeri tidak lagi terlihat pada perangkat seluler.
+- Blok galeri yang tepat akan tetap dipilih selama Anda menambahkan media.
+
+Kami juga membasmi beberapa bug di pemilih media.
+
+- Layar tidak akan berkedip lagi jika Anda membuka pemilih media.
+- Berkas media tak lagi berubah susunan sendiri dan telah berfungsi normal.
+- Jumlah gambar tidak lagi meliputi jenis media lainnya.
+- Ukuran gambar poster kini lebih kecil. Memuat lebih cepat, memori lebih hemat—semua pasti suka.
+
+Aplikasi tidak akan mengalami crash ketika Anda memperbarui pos. (Meski tidak akan crash, tetap gunakan helm. Utamakan keselamatan.)
