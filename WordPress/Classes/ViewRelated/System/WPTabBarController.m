@@ -134,6 +134,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                       forKeyPath:WPTabBarFrameKeyPath
                          options:NSKeyValueObservingOptionNew
                          context:nil];
+
+        [self observeGravatarImageUpdate];
     }
     return self;
 }
@@ -222,11 +224,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        self.meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-        self.meTabBarImageUnreadUnselected = [UIImage imageNamed:@"icon-tab-me-unread-unselected"];
-        self.meTabBarImageUnreadSelected = [UIImage imageNamed:@"icon-tab-me-unread-selected"];
-        _meNavigationController.tabBarItem.image = self.meTabBarImage;
-        _meNavigationController.tabBarItem.selectedImage = self.meTabBarImage;
+        [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
