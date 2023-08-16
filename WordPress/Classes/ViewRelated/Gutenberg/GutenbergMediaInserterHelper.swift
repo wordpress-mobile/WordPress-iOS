@@ -38,6 +38,16 @@ class GutenbergMediaInserterHelper: NSObject {
         callback(formattedMedia)
     }
 
+    func insertFromDevice(_ selection: [Any], callback: @escaping MediaPickerDidPickMediaCallback) {
+        if let assets = selection as? [PHAsset] {
+            insertFromDevice(assets: assets, callback: callback)
+        } else if let providers = selection as? [NSItemProvider] {
+            insertItemProviders(providers, callback: callback)
+        } else {
+            callback(nil)
+        }
+    }
+
     func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
         guard (assets as [AsyncImage]).filter({ $0.isEdited }).isEmpty else {
             insertFromMediaEditor(assets: assets, callback: callback)
@@ -91,6 +101,22 @@ class GutenbergMediaInserterHelper: NSObject {
                 return
             }
         }
+    }
+
+    private func insertItemProviders(_ providers: [NSItemProvider], callback: @escaping MediaPickerDidPickMediaCallback) {
+        let media: [MediaInfo] = providers.compactMap {
+            // WARNING: Media is a CoreData entity and has to be thread-confined
+            guard let media = insert(exportableAsset: $0, source: .deviceLibrary) else {
+                return nil
+            }
+            // Gutenberg fails to add an image if the preview `url` is `nil`. But
+            // it doesn't need to point anywhere. The placeholder gets displayed
+            // as soon as `MediaImportService` generated it (see `MediaState.thumbnailReady`).
+            // This way we, dramatically cut CPU and especially memory usage.
+            let previewURL = URL(fileURLWithPath: NSTemporaryDirectory() + "\(media.gutenbergUploadID)")
+            return MediaInfo(id: media.gutenbergUploadID, url: previewURL.absoluteString, type: media.mediaTypeString)
+        }
+        callback(media)
     }
 
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -154,9 +180,6 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func syncUploads() {
-        if mediaObserverReceipt != nil {
-            registerMediaObserver()
-        }
         for media in post.media {
             if media.remoteStatus == .failed {
                 gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .uploading, progress: 0, url: media.absoluteThumbnailLocalURL, serverID: nil)
@@ -302,4 +325,18 @@ extension Media {
     var gutenbergUploadID: Int32 {
         return Int32(truncatingIfNeeded: objectID.uriRepresentation().absoluteString.hash)
     }
+}
+
+private func makeThumbnail(data: Data) -> UIImage? {
+    guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary) else {
+        return nil
+    }
+    let side = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+    let options = [
+        kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
+        kCGImageSourceThumbnailMaxPixelSize: side] as [CFString: Any]
+    guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+        return nil
+    }
+    return UIImage(cgImage: image)
 }
