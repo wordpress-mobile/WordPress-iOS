@@ -1,0 +1,16 @@
+Versie 23.0 is hier! Lijken we ouder?
+
+Om dit te vieren hebben we wat Galerijblok-updates doorgevoerd in de blokeditor.
+
+- We hebben de zichtbare ruimte tussen de geselecteerde galerijblokken en de toolbar verwijderd.
+- De galerijbijschriftknop is niet langer zichtbaar op mobiele apparaten.
+- Het juiste galerijblok blijft geselecteerd wanneer je media toevoegt.
+
+Ook hebben we meerdere problemen verholpen in de mediakiezer.
+
+- Je scherm knippert niet meer wanneer je de mediakiezer opent.
+- Mediabestanden ordenen zichzelf niet meer opnieuw en zullen zich nu gedragen.
+- Het aantal afbeeldingen omvat niet langer andere mediasoorten.
+- Thumbnails zijn nu kleiner. Sneller laden, minder geheugen – geweldig toch?
+
+Ten slotte zal de app niet meer crashen wanneer je een bericht bijwerkt. (Maar draag toch maar een helm. Veiligheid voorop.)
