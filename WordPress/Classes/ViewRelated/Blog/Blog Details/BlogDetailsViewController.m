@@ -1355,6 +1355,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+    
+    if ([self shouldAddMeRow]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Me", @"Noun. Title. Links to the Me screen.")
+                                        image:[UIImage gridiconOfType:GridiconTypeUserCircle]
+                                     callback:^{
+                                         [weakSelf showMe];
+                                     }];
+        [self downloadGravatarImageFor:row];
+        [rows addObject:row];
+    }
 
     if ([self shouldAddSharingRow]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
@@ -1873,6 +1883,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
+}
+
+- (void)showMe
+{
+    UIViewController *controller = [[MeViewController alloc] init];
+    [self.presentationDelegate presentBlogDetailsViewController:controller];
 }
 
 - (void)showPeople

@@ -5424,6 +5424,8 @@
 		FADC40A62A8BBA4200C19997 /* WPTabBarController+MeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40A42A8BBA4200C19997 /* WPTabBarController+MeTab.swift */; };
 		FADC40A82A8BC2A200C19997 /* UIImage+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */; };
 		FADC40A92A8BC2A200C19997 /* UIImage+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */; };
+		FADC40AB2A8D093900C19997 /* BlogDetailsViewController+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */; };
+		FADC40AC2A8D093900C19997 /* BlogDetailsViewController+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */; };
 		FADC40AE2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */; };
 		FADC40AF2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */; };
 		FADFBD26265F580500039C41 /* MultilineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADFBD25265F580500039C41 /* MultilineButton.swift */; };
@@ -9248,6 +9250,7 @@
 		FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusFailedViewController.swift; sourceTree = "<group>"; };
 		FADC40A42A8BBA4200C19997 /* WPTabBarController+MeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeTab.swift"; sourceTree = "<group>"; };
 		FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Gravatar.swift"; sourceTree = "<group>"; };
+		FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Me.swift"; sourceTree = "<group>"; };
 		FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageDownloader+Gravatar.swift"; sourceTree = "<group>"; };
 		FADFBD25265F580500039C41 /* MultilineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineButton.swift; sourceTree = "<group>"; };
 		FADFBD3A265F5B2E00039C41 /* WPStyleGuide+Jetpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Jetpack.swift"; sourceTree = "<group>"; };
@@ -11263,6 +11266,7 @@
 				4349BFF4221205540084F200 /* BlogDetailsSectionHeaderView.xib */,
 				F53FF3A623EA722F001AD596 /* Detail Header */,
 				F4D9188529D78C9100974A71 /* BlogDetailsViewController+Strings.swift */,
+				FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */,
 			);
 			path = "Blog Details";
 			sourceTree = "<group>";
@@ -21873,6 +21877,7 @@
 				08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */,
 				F1112AB2255C2D4600F1F746 /* BlogDetailHeaderView.swift in Sources */,
 				B5EB19EC20C6DACC008372B9 /* ImageDownloader.swift in Sources */,
+				FADC40AB2A8D093900C19997 /* BlogDetailsViewController+Me.swift in Sources */,
 				8B0CE7D12481CFE8004C4799 /* ReaderDetailHeaderView.swift in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				4A1E77CC2989F2F7006281CC /* WPAccount+DeduplicateBlogs.swift in Sources */,
@@ -25469,6 +25474,7 @@
 				FABB25F32602FC2C00C8785C /* MenusSelectionDetailView.m in Sources */,
 				FABB25F42602FC2C00C8785C /* Blog+Title.swift in Sources */,
 				C34E94BA28EDF7D900D27A16 /* InfiniteScrollerView.swift in Sources */,
+				FADC40AC2A8D093900C19997 /* BlogDetailsViewController+Me.swift in Sources */,
 				FABB25F52602FC2C00C8785C /* FilterableCategoriesViewController.swift in Sources */,
 				FABB25F62602FC2C00C8785C /* Post+CoreDataProperties.swift in Sources */,
 				FABB25F72602FC2C00C8785C /* BasePost.swift in Sources */,

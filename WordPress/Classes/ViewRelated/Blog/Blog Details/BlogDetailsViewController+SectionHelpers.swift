@@ -94,6 +94,10 @@ extension BlogDetailsViewController {
         return blog.supports(.themeBrowsing) || blog.supports(.menus)
     }
 
+    @objc func shouldAddMeRow() -> Bool {
+        return JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified
+    }
+
     @objc func shouldAddSharingRow() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
