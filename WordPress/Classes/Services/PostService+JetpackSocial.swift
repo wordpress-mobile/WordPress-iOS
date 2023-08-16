@@ -16,12 +16,12 @@ extension PostService {
     /// - Returns: A dictionary for the `Post`'s `disabledPublicizeConnections` property.
     @objc(disabledPublicizeConnectionsForPost:andMetadata:)
     func disabledPublicizeConnections(for post: AbstractPost?, metadata: [[String: Any]]?) -> [NSNumber: StringDictionary] {
-        guard let post,
-              let metadata = metadata as? [[String: String]] else {
+        guard let post, let metadata else {
             return [:]
         }
 
         return metadata
+            .compactMap { $0 as? [String: String] }
             .filter { $0[Keys.publicizeKeyKey]?.hasPrefix(SkipPrefix.keyring.rawValue) ?? false }
             .reduce(into: [NSNumber: StringDictionary]()) { partialResult, entry in
                 // every metadata entry should have a key.
