@@ -60,8 +60,10 @@ class GutenbergMediaPickerHelper: NSObject {
 
         var configuration = PHPickerConfiguration(photoLibrary: .shared())
         configuration.preferredAssetRepresentationMode = .compatible
-        configuration.selection = .ordered
-        configuration.selectionLimit = allowMultipleSelection ? 0 : 1
+        if allowMultipleSelection {
+            configuration.selection = .ordered
+            configuration.selectionLimit = 0
+        }
         configuration.filter = PHPickerFilter(filter)
 
         let picker = PHPickerViewController(configuration: configuration)
