@@ -79,6 +79,22 @@ extension SupportChatBotViewController: WKNavigationDelegate {
             }
         })
     }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated:
+            if let url = navigationAction.request.url {
+                // Open links tapped from within the chat in the system browser
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+            }
+        default:
+            decisionHandler(.allow)
+        }
+    }
+
 }
 
 // MARK: - Support Callback
@@ -126,15 +142,10 @@ extension SupportChatBotViewController {
     }
 
     func showTicketCreatedSuccessNotice() {
-        let notice = Notice(title: Strings.ticketCreationSuccessMessage,
-                            feedbackType: .success,
-                            actionTitle: "See ticket",
-                            actionHandler: { [weak self] _ in
-            guard let self else { return }
-
-            self.delegate?.onTicketCreated()
-        })
+        let notice = Notice(title: Strings.ticketCreationSuccessMessage, feedbackType: .success)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        delegate?.onTicketCreated()
     }
 
     func showTicketCreatedFailureNotice() {
