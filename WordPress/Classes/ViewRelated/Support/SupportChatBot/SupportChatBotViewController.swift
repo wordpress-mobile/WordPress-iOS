@@ -34,6 +34,8 @@ final class SupportChatBotViewController: UIViewController {
 
         title = Strings.title
         loadChatBot()
+
+        WPAnalytics.track(.supportChatbotStarted)
     }
 
     private func loadChatBot() {
@@ -45,6 +47,11 @@ final class SupportChatBotViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        WPAnalytics.track(.supportChatbotEnded)
     }
 
     /// Creating DocsBotAI JavaScript code so we could tweak configuration from within Swift code
@@ -188,8 +195,10 @@ extension SupportChatBotViewController {
             guard let self else { return }
             DispatchQueue.main.async {
                 if success {
+                    WPAnalytics.track(.supportChatbotTicketSuccess)
                     self.showTicketCreatedSuccessNotice()
                 } else {
+                    WPAnalytics.track(.supportChatbotTicketFailure)
                     self.showTicketCreatedFailureNotice()
                 }
             }
