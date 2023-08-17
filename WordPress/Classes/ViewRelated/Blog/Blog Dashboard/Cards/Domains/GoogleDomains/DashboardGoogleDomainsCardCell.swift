@@ -75,7 +75,7 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
                     UIMenu(
                         options: .displayInline,
                         children: [
-                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog, isSiteAgnostic: true)
+                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)
                         ]
                     )
                 ],
