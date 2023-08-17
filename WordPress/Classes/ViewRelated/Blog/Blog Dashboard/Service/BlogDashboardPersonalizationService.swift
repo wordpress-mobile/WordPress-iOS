@@ -7,42 +7,35 @@ struct BlogDashboardPersonalizationService {
     }
 
     private let repository: UserPersistentRepository
-    private let lookUpKey: String
+    private let siteID: String
 
     init(repository: UserPersistentRepository = UserDefaults.standard,
-         siteID: Int?) {
+         siteID: Int) {
         self.repository = repository
-        if let siteID {
-            self.lookUpKey = String(siteID)
-        } else {
-            self.lookUpKey = Constants.siteAgnosticVisibilityKey
-        }
+        self.siteID = String(siteID)
     }
 
     func isEnabled(_ card: DashboardCard) -> Bool {
-        return getSettings(for: card)[lookUpKey] ?? true
+        let key = lookUpKey(for: card)
+        return getSettings(for: card)[key] ?? true
     }
 
     func hasPreference(for card: DashboardCard) -> Bool {
-        getSettings(for: card)[lookUpKey] != nil
+        let key = lookUpKey(for: card)
+        return getSettings(for: card)[key] != nil
     }
 
     /// Sets the enabled state for a given DashboardCard.
     ///
-    /// This function updates the enabled state of a `DashboardCard`. Depending on the `forAllSites` flag,
-    /// it either sets the state for a specific site or sets it agnostically for all sites. After updating
+    /// This function updates the enabled state of a `DashboardCard`. After updating
     /// the settings, a notification is posted to inform other parts of the application about this change.
-    ///
     /// - Parameters:
     ///   - isEnabled: A Boolean value indicating whether the `DashboardCard` should be enabled or disabled.
     ///   - card: The `DashboardCard` whose setting needs to be updated.
-    ///   - forAllSites: A Boolean flag that determines if the setting should be applied site-agnostically.
-    ///                  Default is `false`, meaning the setting will be applied for a specific site.
-    ///                  If set to `true`, the setting will be applied irrespective of the site.
     func setEnabled(_ isEnabled: Bool, for card: DashboardCard) {
         guard let key = makeKey(for: card) else { return }
         var settings = getSettings(for: card)
-
+        let lookUpKey = lookUpKey(for: card)
         settings[lookUpKey] = isEnabled
 
         repository.set(settings, forKey: key)
@@ -55,6 +48,15 @@ struct BlogDashboardPersonalizationService {
     private func getSettings(for card: DashboardCard) -> [String: Bool] {
         guard let key = makeKey(for: card) else { return [:] }
         return repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
+    }
+
+    private func lookUpKey(for card: DashboardCard) -> String {
+        switch card.settingsType {
+        case .siteSpecific:
+            return siteID
+        case .siteGeneric:
+            return Constants.siteAgnosticVisibilityKey
+        }
     }
 }
 
