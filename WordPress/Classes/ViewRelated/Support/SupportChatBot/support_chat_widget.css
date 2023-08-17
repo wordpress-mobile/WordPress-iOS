@@ -3,3 +3,9 @@
 a.floating-button {
     display: none !important;
 }
+
+.docsbot-wrapper {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+}
