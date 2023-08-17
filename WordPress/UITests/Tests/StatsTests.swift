@@ -2,6 +2,8 @@ import UITestsFoundation
 import XCTest
 
 class StatsTests: XCTestCase {
+
+    @MainActor
     override func setUpWithError() throws {
         setUpTestSuite()
 

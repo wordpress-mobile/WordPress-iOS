@@ -2,6 +2,8 @@ import UITestsFoundation
 import XCTest
 
 class NUXTests: XCTestCase {
+
+    @MainActor
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite()
