@@ -326,17 +326,3 @@ extension Media {
         return Int32(truncatingIfNeeded: objectID.uriRepresentation().absoluteString.hash)
     }
 }
-
-private func makeThumbnail(data: Data) -> UIImage? {
-    guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary) else {
-        return nil
-    }
-    let side = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-    let options = [
-        kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
-        kCGImageSourceThumbnailMaxPixelSize: side] as [CFString: Any]
-    guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
-        return nil
-    }
-    return UIImage(cgImage: image)
-}
