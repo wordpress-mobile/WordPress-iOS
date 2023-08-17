@@ -236,26 +236,26 @@ lane :gutenberg_dep_check do
 
   begin
     config = YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
-
-    source = config[:ref]
-
-    UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
-
-    case [source[:tag], source[:commit]]
-    when [nil, nil]
-      UI.user_error!('Could not find any Gutenberg version reference.')
-    when [nil, commit = source[:commit]]
-      if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
-        UI.message("Gutenberg version: #{commit}")
-      else
-        UI.user_error!('Aborting...')
-      end
-    else
-      # If a tag is present, the commit value is ignored
-      UI.message("Gutenberg version: #{source[:tag]}")
-    end
-  rescue ArgumentError => e
+  rescue StandardError => e
     UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
+  end
+
+  source = config[:ref]
+
+  UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
+
+  case [source[:tag], source[:commit]]
+  when [nil, nil]
+    UI.user_error!('Could not find any Gutenberg version reference.')
+  when [nil, commit = source[:commit]]
+    if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
+      UI.message("Gutenberg version: #{commit}")
+    else
+      UI.user_error!('Aborting...')
+    end
+  else
+    # If a tag is present, the commit value is ignored
+    UI.message("Gutenberg version: #{source[:tag]}")
   end
 end
 
