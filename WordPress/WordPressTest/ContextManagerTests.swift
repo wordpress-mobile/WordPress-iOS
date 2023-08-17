@@ -193,14 +193,15 @@ class ContextManagerTests: XCTestCase {
         }
         XCTAssertEqual(numberOfAccounts(), 1)
 
+        let expectedError = NSError.testInstance()
         do {
             try await contextManager.performAndSave { context in
                 _ = WPAccount.fixture(context: context, userID: 100)
-                throw NSError(domain: "save", code: 1)
+                throw expectedError
             }
             XCTFail("The above call should throw")
         } catch {
-            XCTAssertEqual((error as NSError).domain, "save")
+            XCTAssertEqual(error as NSError, expectedError)
         }
         XCTAssertEqual(numberOfAccounts(), 1)
 
