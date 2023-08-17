@@ -13,6 +13,13 @@ private extension String {
 }
 
 class NotificationTests: XCTestCase {
+
+    // @MainActor annotation because setUpTestSuite() calls app.terminate and app.launch which
+    // require running on the main thread.
+    //
+    // It would be more appropriate to make setUpTestSuite() require @MainActor itself, but that
+    // necessitates a bigger restructuring of the code.
+    @MainActor
     override func setUp() async throws {
         setUpTestSuite()
         try await WireMock.setUpScenario(scenario: "comment_flow")
