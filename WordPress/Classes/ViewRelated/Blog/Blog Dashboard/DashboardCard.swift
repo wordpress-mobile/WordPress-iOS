@@ -84,8 +84,8 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    // TODO: Consider removing the default case to force defining this var for all future cards
-    // TODO: Add documentation
+    /// Specifies whether the card settings should be applied across
+    /// different sites or only to a particular site.
     var settingsType: SettingsType {
         switch self {
         case .googleDomains:
