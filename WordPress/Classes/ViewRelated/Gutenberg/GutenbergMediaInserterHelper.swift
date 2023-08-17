@@ -154,9 +154,6 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func syncUploads() {
-        if mediaObserverReceipt != nil {
-            registerMediaObserver()
-        }
         for media in post.media {
             if media.remoteStatus == .failed {
                 gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .uploading, progress: 0, url: media.absoluteThumbnailLocalURL, serverID: nil)
