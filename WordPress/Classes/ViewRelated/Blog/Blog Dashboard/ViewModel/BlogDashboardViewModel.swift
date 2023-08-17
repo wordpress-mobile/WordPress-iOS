@@ -168,6 +168,12 @@ private extension BlogDashboardViewModel {
     }
 
     func applySnapshot(for cards: [DashboardCardModel]) {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.applySnapshot(for: cards)
+            }
+            return
+        }
         let snapshot = createSnapshot(from: cards)
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
