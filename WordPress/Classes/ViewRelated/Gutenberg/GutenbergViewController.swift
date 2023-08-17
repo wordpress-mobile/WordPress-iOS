@@ -49,6 +49,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }()
 
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
+    }()
+
     // MARK: - Aztec
 
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -1100,7 +1104,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestContactCustomerSupport() {
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+        coordinator.showSupport()
     }
 
     func gutenbergDidRequestGotoCustomerSupportOptions() {
