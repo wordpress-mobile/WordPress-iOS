@@ -24,7 +24,7 @@ final class SupportCoordinator {
 
         ZendeskUtils.sharedInstance.setPresentingViewController(controllerToShowFrom)
 
-        if RemoteFeatureFlag.contactSupport.enabled() {
+        if RemoteFeatureFlag.contactSupportChatbot.enabled() {
             let chatBotViewController = SupportChatBotViewController(viewModel: .init(), delegate: self)
             if let navigationController = navigationController {
                 navigationController.pushViewController(chatBotViewController, animated: true)
