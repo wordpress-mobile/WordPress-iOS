@@ -14,7 +14,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case selfHosted = "self_hosted"
         case staticScreens = "static_screens"
 
-        var frequencyConfig: OverlayFrequencyTracker.FrequencyConfig {
+        func frequencyConfig(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) -> OverlayFrequencyTracker.FrequencyConfig {
             switch self {
             case .one:
                 fallthrough
@@ -22,6 +22,9 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
                 return .init(featureSpecificInDays: 7, generalInDays: 2)
             case .three:
                 return .init(featureSpecificInDays: 4, generalInDays: 1)
+            case .four:
+                let frequency: Int? = RemoteConfigParameter.phaseFourOverlayFrequency.value(using: remoteConfigStore)
+                return .init(featureSpecificInDays: 0, generalInDays: frequency ?? -1)
             default:
                 return .defaultConfig
             }
@@ -43,6 +46,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case login
         case appOpen = "app_open"
         case disabledEntryPoint = "disabled_entry_point"
+        case phaseFourOverlay = "phase_four_overlay"
 
         /// Used to differentiate between last saved dates for different phases.
         /// Should return a dynamic value if each phase should be treated differently.
@@ -78,6 +82,8 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
                 fallthrough
             case .appOpen:
                 return .showOnce
+            case .phaseFourOverlay:
+                return .respectFrequencyConfig
             }
         }
     }
@@ -229,7 +235,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
                                        onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                        onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = generalPhase()
-        let frequencyConfig = phase.frequencyConfig
+        let frequencyConfig = phase.frequencyConfig()
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
 
         let coordinator = JetpackDefaultOverlayCoordinator()
