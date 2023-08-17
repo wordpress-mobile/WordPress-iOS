@@ -51,6 +51,10 @@ private class AccountSettingsController: SettingsController {
     }
     private let alertHelper = DestructiveAlertHelper()
 
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: UIApplication.shared.leafViewController, tag: .closeAccount)
+    }()
+
     init(accountSettingsService: AccountSettingsService,
          accountService: AccountService = AccountService(coreDataStack: ContextManager.sharedInstance())) {
         self.accountSettingsService = accountSettingsService
@@ -365,16 +369,11 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        return { action in
+        return { [weak self] action in
             if ZendeskUtils.zendeskEnabled {
-                guard let leafViewController = UIApplication.shared.leafViewController else {
-                    return
-                }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) { [weak self] identityUpdated in
-                    if identityUpdated {
-                        self?.refreshModel()
-                    }
-                }
+                self?.coordinator.showSupport(onIdentityUpdated: { [weak self] in
+                    self?.refreshModel()
+                })
             } else {
                 guard let url = Constants.forumsURL else {
                     return
