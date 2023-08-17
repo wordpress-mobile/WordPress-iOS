@@ -141,7 +141,7 @@ extension SupportChatBotViewController {
                                                value: "Rate as helpful",
                                                comment: "Option for users to rate a chat bot answer as helpful.")
         static let unhelpful = NSLocalizedString("support.chatBot.reportInaccuracy",
-                                                 value: "Report as innacurate",
+                                                 value: "Report as inaccurate",
                                                  comment: "Option for users to report a chat bot answer as inaccurate.")
         static let getSupport = NSLocalizedString("support.chatBot.contactSupport",
                                                   value: "Contact support",
