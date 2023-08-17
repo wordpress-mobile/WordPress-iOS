@@ -4,10 +4,11 @@ import WPMediaPicker
 import WordPressShared
 import MobileCoreServices
 import UniformTypeIdentifiers
+import PhotosUI
 
 /// Encapsulates the interactions required to capture a new site icon image, crop it and resize it.
 ///
-class SiteIconPickerPresenter: NSObject {
+final class SiteIconPickerPresenter: NSObject {
 
     // MARK: - Public Properties
 
@@ -68,8 +69,17 @@ class SiteIconPickerPresenter: NSObject {
     /// Presents a new WPMediaPickerViewController instance.
     ///
     @objc func presentPickerFrom(_ viewController: UIViewController) {
-        viewController.present(mediaPickerViewController, animated: true)
-        registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
+        if FeatureFlag.nativePhotoPicker.enabled {
+            var configuration = PHPickerConfiguration()
+            configuration.filter = .images
+
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            viewController.present(picker, animated: true)
+        } else {
+            viewController.present(mediaPickerViewController, animated: true)
+            registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
+        }
     }
 
     // MARK: - Private Methods
@@ -87,7 +97,7 @@ class SiteIconPickerPresenter: NSObject {
 
     /// Shows a new ImageCropViewController for the given image.
     ///
-    fileprivate func showImageCropViewController(_ image: UIImage) {
+    fileprivate func showImageCropViewController(_ image: UIImage, picker: PHPickerViewController? = nil) {
         DispatchQueue.main.async {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
@@ -131,7 +141,17 @@ class SiteIconPickerPresenter: NSObject {
                     }
                 }
             }
-            self.mediaPickerViewController.show(after: imageCropViewController)
+            if let picker {
+                imageCropViewController.shouldShowCancelButton = true
+                imageCropViewController.onCancel = { [weak picker] in
+                    // Dismiss the crop controller but not the picker
+                    picker?.dismiss(animated: true)
+                }
+                let navigationController = UINavigationController(rootViewController: imageCropViewController)
+                picker.present(navigationController, animated: true)
+            } else {
+                self.mediaPickerViewController.show(after: imageCropViewController)
+            }
         }
     }
 
@@ -169,6 +189,25 @@ class SiteIconPickerPresenter: NSObject {
             }
         } else {
             mediaPicker.hideSearchBar()
+        }
+    }
+}
+
+extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard let result = results.first else {
+            picker.presentingViewController?.dismiss(animated: true)
+            return
+        }
+        WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
+        self.showLoadingMessage()
+        self.originalMedia = nil
+        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
+            if let image = image as? UIImage {
+                self?.showImageCropViewController(image, picker: picker)
+            } else {
+                self?.showErrorLoadingImageMessage()
+            }
         }
     }
 }
