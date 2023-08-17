@@ -4,7 +4,7 @@ struct SupportChatBotViewModel {
     private let zendeskUtils: ZendeskUtilsProtocol
 
     let id = ApiCredentials.docsBotId
-    let url = Bundle.main.url(forResource: "support_chat_widget", withExtension: "html")
+    let url = Bundle.main.url(forResource: "support_chat_widget_page", withExtension: "html")
 
     init(zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance) {
         self.zendeskUtils = zendeskUtils
