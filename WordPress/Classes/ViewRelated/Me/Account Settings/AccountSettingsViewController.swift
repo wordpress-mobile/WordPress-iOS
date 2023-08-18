@@ -51,10 +51,6 @@ private class AccountSettingsController: SettingsController {
     }
     private let alertHelper = DestructiveAlertHelper()
 
-    private lazy var coordinator: SupportCoordinator = {
-        SupportCoordinator(controllerToShowFrom: UIApplication.shared.leafViewController, tag: .closeAccount)
-    }()
-
     init(accountSettingsService: AccountSettingsService,
          accountService: AccountService = AccountService(coreDataStack: ContextManager.sharedInstance())) {
         self.accountSettingsService = accountSettingsService
@@ -369,11 +365,16 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        return { [weak self] action in
+        return { action in
             if ZendeskUtils.zendeskEnabled {
-                self?.coordinator.showSupport(onIdentityUpdated: { [weak self] in
-                    self?.refreshModel()
-                })
+                guard let leafViewController = UIApplication.shared.leafViewController else {
+                    return
+                }
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) { [weak self] identityUpdated in
+                    if identityUpdated {
+                        self?.refreshModel()
+                    }
+                }
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -421,6 +422,6 @@ private class AccountSettingsController: SettingsController {
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
-        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
+        static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
     }
 }
