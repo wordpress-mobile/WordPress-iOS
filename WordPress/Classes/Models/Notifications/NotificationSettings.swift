@@ -15,6 +15,19 @@ open class NotificationSettings {
     ///
     public let streams: [Stream]
 
+    /// Retrieves the associated `Blog` instance from the provided managed object context.
+    ///
+    /// Utilizes the `blogManagedObjectID` to safely fetch the associated `Blog` entity
+    /// from the given context. Always ensure that you are accessing the managed object
+    /// on the same thread or queue that the `NSManagedObjectContext` is associated with
+    /// to avoid potential threading issues.
+    func blog(in context: NSManagedObjectContext) -> Blog? {
+        guard let objectID = blogManagedObjectID else {
+            return nil
+        }
+        return try? context.existingObject(with: objectID) as? Blog
+    }
+
     /// The associated blog. This property is not thread-safe.
     ///
     /// If you need to access this property from a thread different from the one it was created on, don't access it directly. Instead, use the `blogManagedObjectID`
