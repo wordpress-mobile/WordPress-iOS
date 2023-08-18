@@ -27,8 +27,9 @@ struct BlogDashboardPersonalizationService {
 
     /// Sets the enabled state for a given DashboardCard.
     ///
-    /// This function updates the enabled state of a `DashboardCard`. After updating
-    /// the settings, a notification is posted to inform other parts of the application about this change.
+    /// This function updates the enabled state of a `DashboardCard`. `DashboardCard.settingsType`,
+    /// the enabled state can be either site-specific or site-agnostic.
+    /// After updating the settings, a notification is posted to inform other parts of the application about this change.
     /// - Parameters:
     ///   - isEnabled: A Boolean value indicating whether the `DashboardCard` should be enabled or disabled.
     ///   - card: The `DashboardCard` whose setting needs to be updated.
