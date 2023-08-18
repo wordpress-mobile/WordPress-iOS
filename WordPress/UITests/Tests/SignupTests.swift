@@ -3,6 +3,7 @@ import XCTest
 
 class SignupTests: XCTestCase {
 
+    @MainActor
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite()
