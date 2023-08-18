@@ -39,27 +39,40 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     /// Returns the name of the current site, if any
     ///
-    private var siteName: String {
-        switch settings!.channel {
-        case .wordPressCom:
-            return NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
-        case .other:
-            return NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
-        default:
-            return settings?.blog?.settings?.name ?? NSLocalizedString("Unnamed Site", comment: "Displayed when a site has no name")
-        }
+    private let siteName: String
+
+    // MARK: - Dependencies
+
+    private let contextManager: CoreDataStackSwift
+
+    // MARK: - Init
+
+    convenience init(settings: NotificationSettings, contextManager: CoreDataStackSwift = ContextManager.shared) {
+        self.init(settings: settings, stream: settings.streams.first!, contextManager: contextManager)
     }
 
-
-
-    convenience init(settings: NotificationSettings) {
-        self.init(settings: settings, stream: settings.streams.first!)
-    }
-
-    convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
-        self.init(style: .grouped)
+    init(settings: NotificationSettings,
+         stream: NotificationSettings.Stream,
+         contextManager: CoreDataStackSwift = ContextManager.shared) {
+        self.contextManager = contextManager
         self.settings = settings
         self.stream = stream
+        self.siteName = contextManager.performQuery { context -> String in
+            switch settings.channel {
+            case .wordPressCom:
+                return NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+            case .other:
+                return NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
+            default:
+                let blog = settings.blog(in: context)
+                return blog?.settings?.name ?? NSLocalizedString("Unnamed Site", comment: "Displayed when a site has no name")
+            }
+        }
+        super.init(style: .grouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -93,7 +106,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     private func setupTitle() {
-        title = stream?.kind.description()
+        title = stream.kind.description()
     }
 
     private func setupTableView() {
@@ -114,7 +127,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
             sections = sectionsForDisabledDeviceStream()
         } else if isDeviceStreamUnknown() {
             sections = sectionsForUnknownDeviceStream()
-        } else if let settings = settings, let stream = stream {
+        } else {
             sections = sectionsForSettings(settings, stream: stream)
         }
         tableView.reloadData()
@@ -143,9 +156,9 @@ class NotificationSettingDetailsViewController: UITableViewController {
             // Switch on stream type to provide descriptive text in footer for more context
             switch stream.kind {
             case .Device:
-                if Feature.enabled(.bloggingReminders), JetpackNotificationMigrationService.shared.shouldPresentNotifications(), let blog = settings.blog {
+                if Feature.enabled(.bloggingReminders), JetpackNotificationMigrationService.shared.shouldPresentNotifications(), let blogID = settings.blogManagedObjectID {
                     // This should only be added for the device push notifications settings view
-                    rows.append(TextSettingsRow(kind: .Text, description: NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting"), value: schedule(for: blog), onTap: { [weak self] in
+                    rows.append(TextSettingsRow(kind: .Text, description: NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting"), value: schedule(forBlogWithID: blogID), onTap: { [weak self] in
                         self?.presentBloggingRemindersFlow()
                     }))
                 }
@@ -352,22 +365,28 @@ class NotificationSettingDetailsViewController: UITableViewController {
     // MARK: - Blogging Reminders
 
     func presentBloggingRemindersFlow() {
-        guard let blog = settings?.blog else {
-            return
-        }
-
-        BloggingRemindersFlow.present(from: self, for: blog, source: .notificationSettings) { [weak self] in
-            self?.reloadTable()
+        let mainContext = contextManager.mainContext
+        mainContext.perform { [weak self] in
+            guard let self, let blog = self.settings.blog(in: mainContext) else {
+                return
+            }
+            BloggingRemindersFlow.present(from: self, for: blog, source: .notificationSettings) { [weak self] in
+                self?.reloadTable()
+            }
         }
     }
 
-    private func schedule(for blog: Blog) -> String {
-        guard let scheduler = try? ReminderScheduleCoordinator() else {
-            return NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
+    private func schedule(forBlogWithID blogID: NSManagedObjectID) -> String {
+        return contextManager.performQuery { [weak self] context -> String in
+            guard let self,
+                  let scheduler = try? ReminderScheduleCoordinator(),
+                  let blog = settings.blog(in: context)
+            else {
+                return NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
+            }
+            let formatter = BloggingRemindersScheduleFormatter()
+            return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
         }
-
-        let formatter = BloggingRemindersScheduleFormatter()
-        return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
     }
 
     private struct Analytics {
