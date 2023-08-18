@@ -35,7 +35,7 @@ final class SupportChatBotViewController: UIViewController {
         title = Strings.title
         loadChatBot()
 
-        WPAnalytics.track(.supportChatbotStarted)
+        viewModel.track(.supportChatbotStarted)
     }
 
     private func loadChatBot() {
@@ -51,7 +51,7 @@ final class SupportChatBotViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        WPAnalytics.track(.supportChatbotEnded)
+        viewModel.track(.supportChatbotEnded)
     }
 
     /// Creating DocsBotAI JavaScript code so we could tweak configuration from within Swift code
@@ -63,7 +63,7 @@ final class SupportChatBotViewController: UIViewController {
             window.prepareDocsBotForPresentation();
 
             DocsBotAI.init({
-                id: '\(viewModel.id)',
+                id: '\(viewModel.docsBotId)',
                  supportCallback: function (event, history) {
                     event.preventDefault()
                     window.webkit.messageHandlers.supportCallback.postMessage(history)
@@ -195,10 +195,10 @@ extension SupportChatBotViewController {
             guard let self else { return }
             DispatchQueue.main.async {
                 if success {
-                    WPAnalytics.track(.supportChatbotTicketSuccess)
+                    self.viewModel.track(.supportChatbotTicketSuccess)
                     self.showTicketCreatedSuccessNotice()
                 } else {
-                    WPAnalytics.track(.supportChatbotTicketFailure)
+                    self.viewModel.track(.supportChatbotTicketFailure)
                     self.showTicketCreatedFailureNotice()
                 }
             }

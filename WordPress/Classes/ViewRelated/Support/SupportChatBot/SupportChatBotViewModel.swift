@@ -2,8 +2,9 @@ import Foundation
 
 struct SupportChatBotViewModel {
     private let zendeskUtils: ZendeskUtilsProtocol
+    private let chatId = UUID()
 
-    let id = ApiCredentials.docsBotId
+    let docsBotId = ApiCredentials.docsBotId
     let url = Bundle.main.url(forResource: "support_chat_widget_page", withExtension: "html")
 
     init(zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance) {
@@ -37,6 +38,12 @@ struct SupportChatBotViewModel {
             .joined(separator: "\n>\n")
 
         return messageHistoryDescription
+    }
+
+    // MARK: - Tracking
+
+    func track(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["chat_id": chatId.uuidString])
     }
 }
 
