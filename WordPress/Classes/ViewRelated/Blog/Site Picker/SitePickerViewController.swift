@@ -22,7 +22,7 @@ final class SitePickerViewController: UIViewController {
     let mediaService: MediaService
 
     private(set) lazy var blogDetailHeaderView: BlogDetailHeaderView = {
-        let headerView = BlogDetailHeaderView(items: [])
+        let headerView = BlogDetailHeaderView(items: [], delegate: self)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
@@ -51,7 +51,6 @@ final class SitePickerViewController: UIViewController {
 
     private func setupHeaderView() {
         blogDetailHeaderView.blog = blog
-        blogDetailHeaderView.delegate = self
         view.addSubview(blogDetailHeaderView)
         view.pinSubviewToAllEdges(blogDetailHeaderView)
     }
@@ -70,25 +69,6 @@ final class SitePickerViewController: UIViewController {
 // MARK: - BlogDetailHeaderViewDelegate
 
 extension SitePickerViewController: BlogDetailHeaderViewDelegate {
-
-    func siteIconTapped() {
-        guard siteIconShouldAllowDroppedImages() else {
-            // Gracefully ignore the tap for users that can not upload files or
-            // blogs that do not have capabilities since those will not support the REST API icon update
-            return
-        }
-
-        WPAnalytics.track(.siteSettingsSiteIconTapped)
-
-        NoticesDispatch.lock()
-
-        guard FeatureFlag.siteIconCreator.enabled else {
-            showUpdateSiteIconAlert()
-            return
-        }
-
-        showSiteIconSelectionAlert()
-    }
 
     func siteIconReceivedDroppedImage(_ image: UIImage?) {
         if !siteIconShouldAllowDroppedImages() {

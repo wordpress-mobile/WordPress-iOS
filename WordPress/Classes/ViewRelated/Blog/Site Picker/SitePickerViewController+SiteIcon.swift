@@ -3,71 +3,84 @@ import WordPressFlux
 import WordPressShared
 import SwiftUI
 import SVProgressHUD
+import Gridicons
 
 extension SitePickerViewController {
 
-    func showSiteIconSelectionAlert() {
-        let alert = UIAlertController(title: SiteIconAlertStrings.title,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
-
-        alert.popoverPresentationController?.sourceView = blogDetailHeaderView.blavatarImageView.superview
-        alert.popoverPresentationController?.sourceRect = blogDetailHeaderView.blavatarImageView.frame
-        alert.popoverPresentationController?.permittedArrowDirections = .any
-
-        alert.addDefaultActionWithTitle(SiteIconAlertStrings.Actions.chooseImage) { [weak self] _ in
-            NoticesDispatch.unlock()
-            self?.updateSiteIcon()
+    func makeSiteIconMenu() -> UIMenu? {
+        guard siteIconShouldAllowDroppedImages() else {
+            return nil
         }
-
-        alert.addDefaultActionWithTitle(SiteIconAlertStrings.Actions.createWithEmoji) { [weak self] _ in
-            NoticesDispatch.unlock()
-            self?.showEmojiPicker()
-        }
-
-        alert.addDestructiveActionWithTitle(SiteIconAlertStrings.Actions.removeSiteIcon) { [weak self] _ in
-            NoticesDispatch.unlock()
-            self?.removeSiteIcon()
-        }
-
-        alert.addCancelActionWithTitle(SiteIconAlertStrings.Actions.cancel) { [weak self] _ in
-            NoticesDispatch.unlock()
-            self?.startAlertTimer()
-        }
-
-        present(alert, animated: true)
+        return UIMenu(children: [
+            UIDeferredMenuElement.uncached { [weak self] in
+                $0(self?.makeUpdateSiteIconActions() ?? [])
+            }
+        ])
     }
 
-    func showUpdateSiteIconAlert() {
-        let alert = UIAlertController(title: nil,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
-
-        alert.popoverPresentationController?.sourceView = blogDetailHeaderView.blavatarImageView.superview
-        alert.popoverPresentationController?.sourceRect = blogDetailHeaderView.blavatarImageView.frame
-        alert.popoverPresentationController?.permittedArrowDirections = .any
-
-        alert.addDefaultActionWithTitle(SiteIconAlertStrings.Actions.changeSiteIcon) { [weak self] _ in
-            NoticesDispatch.unlock()
-            self?.updateSiteIcon()
-        }
-
-        if blog.hasIcon {
-            alert.addDestructiveActionWithTitle(SiteIconAlertStrings.Actions.removeSiteIcon) { [weak self] _ in
-                NoticesDispatch.unlock()
-                self?.removeSiteIcon()
+    func didShowSiteIconMenu() {
+        if QuickStartTourGuide.shared.isCurrentElement(.siteIcon) {
+            // There is no good way to determine when `UIMenu` is cancelled,
+            // so we wait until nothing is presented by the site picker.
+            NoticesDispatch.lock()
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                if self.presentedViewController == nil {
+                    NoticesDispatch.unlock()
+                    self.showNoticeAsNeeded()
+                    timer.invalidate()
+                }
             }
         }
-
-        alert.addCancelActionWithTitle(SiteIconAlertStrings.Actions.cancel) { [weak self] _ in
-            NoticesDispatch.unlock()
-            self?.startAlertTimer()
-        }
-
-        present(alert, animated: true)
+        QuickStartTourGuide.shared.visited(.siteIcon)
     }
 
-    func updateSiteIcon() {
+    private func makeUpdateSiteIconActions() -> [UIAction] {
+        var actions: [UIAction] = []
+        if FeatureFlag.nativePhotoPicker.enabled {
+            actions += [
+                MediaPickerMenu.makePickFromPhotosAction { [weak self] in
+                    self?.updateSiteIcon(source: .photosLibrary)
+                },
+                MediaPickerMenu.makeTakePhotoAction { [weak self] in
+                    self?.updateSiteIcon(source: .camera)
+                },
+                MediaPickerMenu.makePickFromMediaAction { [weak self] in
+                    self?.updateSiteIcon(source: .mediaLibrary)
+                }
+            ]
+        } else {
+            actions.append(UIAction(
+                title: SiteIconAlertStrings.Actions.changeSiteIcon,
+                image: UIImage(systemName: "photo.on.rectangle"),
+                handler: { [weak self] _ in self?.updateSiteIcon(source: .combined) }
+            ))
+        }
+        if FeatureFlag.siteIconCreator.enabled {
+            actions.append(UIAction(
+                title: SiteIconAlertStrings.Actions.createWithEmoji,
+                image: UIImage(systemName: "face.smiling"),
+                handler: { [weak self] _ in self?.showEmojiPicker() }
+            ))
+        }
+        if blog.hasIcon {
+            actions.append(UIAction(
+                title: SiteIconAlertStrings.Actions.removeSiteIcon,
+                image: UIImage(systemName: "trash"),
+                attributes: [.destructive],
+                handler: { [weak self] _ in self?.removeSiteIcon() }
+            ))
+        }
+        return actions
+    }
+
+    enum SiteIconSource {
+        case photosLibrary
+        case camera
+        case mediaLibrary
+        case combined // legacy option
+    }
+
+    func updateSiteIcon(source: SiteIconSource = .combined) {
         siteIconPickerPresenter = SiteIconPickerPresenter(blog: blog)
         siteIconPickerPresenter?.onCompletion = { [ weak self] media, error in
             if error != nil {
@@ -88,7 +101,16 @@ extension SitePickerViewController {
             self?.dismiss(animated: true)
         }
 
-        siteIconPickerPresenter?.presentPickerFrom(self)
+        switch source {
+        case .photosLibrary:
+            siteIconPickerPresenter?.presentPhotosPicker(from: self)
+        case .camera:
+            siteIconPickerPresenter?.presentCamera(from: self)
+        case .mediaLibrary:
+            siteIconPickerPresenter?.presentMediaLibraryPicker(from: self)
+        case .combined:
+            siteIconPickerPresenter?.presentPickerFrom(self)
+        }
     }
 
     func showEmojiPicker() {

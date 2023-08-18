@@ -49,6 +49,9 @@ final class SiteIconPickerPresenter: NSObject {
         return pickerViewController
     }()
 
+    private var dataSource: AnyObject?
+    private var mediaCapturePresenter: AnyObject?
+
     // MARK: - Public methods
 
     /// Designated Initializer
@@ -66,20 +69,56 @@ final class SiteIconPickerPresenter: NSObject {
         unregisterChangeObserver()
     }
 
+    func presentPhotosPicker(from presentingViewController: UIViewController) {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .images
+
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        presentingViewController.present(picker, animated: true)
+    }
+
+    func presentCamera(from presentingViewController: UIViewController) {
+        let picker = WPMediaCapturePresenter(presenting: presentingViewController)
+        picker.completionBlock = { [weak self] info in
+            if let image = info?[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                self?.showImageCropViewController(image, presentingViewController: presentingViewController)
+            }
+        }
+        picker.mediaType = .image
+        picker.presentCapture()
+        mediaCapturePresenter = picker // Retain
+    }
+
+    func presentMediaLibraryPicker(from presentingViewController: UIViewController) {
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.image]
+        options.allowMultipleSelection = false
+        options.showSearchBar = true
+        options.badgedUTTypes = [UTType.gif.identifier]
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
+        options.allowCaptureOfMedia = false
+
+        let pickerViewController = WPNavigationMediaPickerViewController(options: options)
+
+        let dataSource = MediaLibraryPickerDataSource(blog: blog)
+        dataSource.ignoreSyncErrors = true
+        self.dataSource = dataSource
+
+        pickerViewController.showGroupSelector = false
+        pickerViewController.dataSource = dataSource
+        pickerViewController.delegate = self
+        pickerViewController.modalPresentationStyle = .formSheet
+
+        presentingViewController.present(pickerViewController, animated: true)
+    }
+
     /// Presents a new WPMediaPickerViewController instance.
     ///
     @objc func presentPickerFrom(_ viewController: UIViewController) {
-        if FeatureFlag.nativePhotoPicker.enabled {
-            var configuration = PHPickerConfiguration()
-            configuration.filter = .images
-
-            let picker = PHPickerViewController(configuration: configuration)
-            picker.delegate = self
-            viewController.present(picker, animated: true)
-        } else {
-            viewController.present(mediaPickerViewController, animated: true)
-            registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
-        }
+        viewController.present(mediaPickerViewController, animated: true)
+        registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
     }
 
     // MARK: - Private Methods
@@ -97,7 +136,7 @@ final class SiteIconPickerPresenter: NSObject {
 
     /// Shows a new ImageCropViewController for the given image.
     ///
-    fileprivate func showImageCropViewController(_ image: UIImage, picker: PHPickerViewController? = nil) {
+    fileprivate func showImageCropViewController(_ image: UIImage, presentingViewController: UIViewController? = nil) {
         DispatchQueue.main.async {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
@@ -141,14 +180,14 @@ final class SiteIconPickerPresenter: NSObject {
                     }
                 }
             }
-            if let picker {
+            if let presentingViewController {
                 imageCropViewController.shouldShowCancelButton = true
-                imageCropViewController.onCancel = { [weak picker] in
+                imageCropViewController.onCancel = { [weak presentingViewController] in
                     // Dismiss the crop controller but not the picker
-                    picker?.dismiss(animated: true)
+                    presentingViewController?.dismiss(animated: true)
                 }
                 let navigationController = UINavigationController(rootViewController: imageCropViewController)
-                picker.present(navigationController, animated: true)
+                presentingViewController.present(navigationController, animated: true)
             } else {
                 self.mediaPickerViewController.show(after: imageCropViewController)
             }
@@ -204,13 +243,15 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
         self.originalMedia = nil
         result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
             if let image = image as? UIImage {
-                self?.showImageCropViewController(image, picker: picker)
+                self?.showImageCropViewController(image, presentingViewController: picker)
             } else {
                 self?.showErrorLoadingImageMessage()
             }
         }
     }
 }
+
+extension SiteIconPickerPresenter: UINavigationControllerDelegate {}
 
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
@@ -245,6 +286,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
     ///
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
+        dataSource = nil
         mediaLibraryDataSource.searchCancelled()
         if assets.isEmpty {
             return
@@ -279,7 +321,11 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
                     self?.showErrorLoadingImageMessage()
                     return
                 }
-                self?.showImageCropViewController(image)
+                if FeatureFlag.nativePhotoPicker.enabled {
+                    self?.showImageCropViewController(image, presentingViewController: picker)
+                } else {
+                    self?.showImageCropViewController(image)
+                }
             })
         default:
             break
