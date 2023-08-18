@@ -18,7 +18,7 @@ extension NSNotification.Name {
 }
 
 protocol ZendeskUtilsProtocol {
-    func createNewRequest(description: String, tags: [String], completion: @escaping (Bool) -> ())
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ())
 }
 
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
@@ -323,7 +323,8 @@ protocol ZendeskUtilsProtocol {
 // MARK: - Create Request
 
 extension ZendeskUtils {
-    func createNewRequest(description: String, tags: [String], completion: @escaping (Bool) -> ()) {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ()) {
+        presentInController = viewController
         ZendeskUtils.createIdentity { [weak self] success, newIdentity in
             guard let self, success else {
                 completion(false)

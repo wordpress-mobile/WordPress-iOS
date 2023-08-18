@@ -45,7 +45,7 @@ final class SupportChatBotViewModelTests: XCTestCase {
         Please contact support
         """
 
-        sut.contactSupport(including: history) { _ in }
+        sut.contactSupport(including: history, in: UIViewController()) { _ in }
 
         XCTAssertEqual(zendeskUtils.description, expectedDescription)
         XCTAssertEqual(zendeskUtils.tags, ["DocsBot"])
@@ -56,7 +56,7 @@ private class ZendeskUtilsSpy: ZendeskUtilsProtocol {
     var description: String?
     var tags: [String]?
 
-    func createNewRequest(description: String, tags: [String], completion: @escaping (Bool) -> ()) {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ()) {
         self.description = description
         self.tags = tags
     }

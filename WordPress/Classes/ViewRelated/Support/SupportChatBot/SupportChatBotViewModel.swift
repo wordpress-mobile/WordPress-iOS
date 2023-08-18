@@ -10,8 +10,9 @@ struct SupportChatBotViewModel {
         self.zendeskUtils = zendeskUtils
     }
 
-    func contactSupport(including history: SupportChatHistory, completion: @escaping (Bool) -> ()) {
+    func contactSupport(including history: SupportChatHistory, in viewController: UIViewController, completion: @escaping (Bool) -> ()) {
         zendeskUtils.createNewRequest(
+            in: viewController,
             description: formattedMessageHistory(from: history),
             tags: ["DocsBot"],
             completion: completion
