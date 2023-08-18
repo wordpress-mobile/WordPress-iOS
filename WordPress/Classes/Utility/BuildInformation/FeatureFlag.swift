@@ -41,6 +41,7 @@ enum FeatureFlag: Int, CaseIterable {
     case personalizeHomeTab
     case commentModerationUpdate
     case compliancePopover
+    case domainFocus
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -122,7 +123,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
         case .siteCreationDomainPurchasing:
-            return true
+            return false
         case .readerUserBlocking:
             return true
         case .personalizeHomeTab:
@@ -131,6 +132,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .compliancePopover:
             return true
+        case .domainFocus:
+            return false
         }
     }
 
@@ -231,6 +234,8 @@ extension FeatureFlag {
             return "Comments Moderation Update"
         case .compliancePopover:
             return "Compliance Popover"
+        case .domainFocus:
+            return "Domain Focus"
         }
     }
 }

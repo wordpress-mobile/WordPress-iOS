@@ -58,14 +58,18 @@ NSInteger const SuggestionsTableViewCellIconSize = 24;
                             @"title": _titleLabel,
                             @"subtitle": _subtitleLabel,
                             @"icon": _iconImageView };
-        
-    NSDictionary *metrics = @{@"iconsize": @(SuggestionsTableViewCellIconSize) };
-        
+
     // Horizontal spacing
-    NSArray *horizConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[icon(iconsize)]-16-[title]-[subtitle]-|"
+    NSArray *horizConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[icon]-16-[title]-[subtitle]-|"
                                                                         options:0
-                                                                        metrics:metrics
+                                                                        metrics:nil
                                                                           views:views];
+
+    [NSLayoutConstraint activateConstraints:@[
+            [_iconImageView.heightAnchor constraintEqualToConstant:SuggestionsTableViewCellIconSize],
+            [_iconImageView.widthAnchor constraintEqualToConstant:SuggestionsTableViewCellIconSize],
+    ]];
+
     [self.contentView addConstraints:horizConstraints];
                 
     // Vertically constrain centers of each element

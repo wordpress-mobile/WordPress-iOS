@@ -511,6 +511,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
         presentEditingModeSwitchedNotice()
+
+        navigationBarManager.undoButton.isHidden = mode == .html
+        navigationBarManager.redoButton.isHidden = mode == .html
     }
 
     private func presentEditingModeSwitchedNotice() {

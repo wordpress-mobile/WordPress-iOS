@@ -96,11 +96,10 @@ final class WPComJetpackRemoteInstallViewModelTests: CoreDataTestCase {
     func test_installJetpack_givenValidSite_AndRequestFails_shouldUpdateStateToFailure() {
         // arrange
         let blog = makeBlog(with: .selfHostedWithIndividualPluginViaWPCom)
-        let mockError = NSError(domain: "error.domain", code: 500)
 
         // act
         viewModel.installJetpack(for: blog, isRetry: false)
-        api.failureBlockPassedIn?(mockError, nil) // call the failure block to trigger Result.failure
+        api.failureBlockPassedIn?(.testInstance(), nil) // call the failure block to trigger Result.failure
 
         // assert
         guard case .failure(let error) = viewModel.state else {
@@ -122,16 +121,6 @@ private extension WPComJetpackRemoteInstallViewModelTests {
         case selfHostedViaSiteAddress
         case atomic
         case hostedAtWPCom
-    }
-
-    class MockEventTracker: EventTracker {
-        func track(_ event: WordPress.WPAnalyticsEvent) {
-            // no op
-        }
-
-        func track(_ event: WordPress.WPAnalyticsEvent, properties: [AnyHashable: Any]) {
-            // no op
-        }
     }
 
     func makeBlog(with type: BlogType) -> Blog {

@@ -17,10 +17,14 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+protocol ZendeskUtilsProtocol {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ())
+}
+
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
 ///
-@objc class ZendeskUtils: NSObject {
+@objc class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
 
     // MARK: - Public Properties
 
@@ -314,6 +318,41 @@ extension NSNotification.Name {
         }
     }
 
+}
+
+// MARK: - Create Request
+
+extension ZendeskUtils {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ()) {
+        presentInController = viewController
+        ZendeskUtils.createIdentity { [weak self] success, newIdentity in
+            guard let self, success else {
+                completion(false)
+                return
+            }
+
+            self.createRequest() { requestConfig in
+                let provider = ZDKRequestProvider()
+                let request = ZDKCreateRequest()
+                requestConfig.tags += tags
+                request.customFields = requestConfig.customFields
+                request.tags = requestConfig.tags
+                request.ticketFormId = requestConfig.ticketFormID
+                request.subject = requestConfig.subject
+                request.requestDescription = description
+
+                provider.createRequest(request) { _, error in
+                    if let error {
+                        DDLogError("Creating new request failed: \(error)")
+                        completion(false)
+                    } else {
+                        completion(true)
+                    }
+
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Private Extension

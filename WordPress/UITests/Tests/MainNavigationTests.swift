@@ -2,6 +2,8 @@ import UITestsFoundation
 import XCTest
 
 class MainNavigationTests: XCTestCase {
+
+    @MainActor
     override func setUpWithError() throws {
         setUpTestSuite()
 

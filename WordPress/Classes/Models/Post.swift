@@ -34,8 +34,26 @@ class Post: AbstractPost {
     struct Constants {
         static let publicizeIdKey = "id"
         static let publicizeValueKey = "value"
+        static let publicizeKeyKey = "key"
         static let publicizeDisabledValue = "1"
         static let publicizeEnabledValue = "0"
+    }
+
+    enum PublicizeMetadataSkipPrefix: String {
+        case keyring = "_wpas_skip_"
+        case connection = "_wpas_skip_publicize_"
+
+        /// Determines the prefix type from the given key.
+        ///
+        /// - Parameter key: String.
+        /// - Returns: A `PublicizeMetadataSkipPrefix` value, or nil if nothing matched.
+        static func prefix(of key: String) -> PublicizeMetadataSkipPrefix? {
+            // try to match the `keyring` format first, since it's a substring of the `connection` format.
+            guard key.hasPrefix(Self.keyring.rawValue) else {
+                return nil
+            }
+            return key.hasPrefix(Self.connection.rawValue) ? .connection : .keyring
+        }
     }
 
     // MARK: - Properties
@@ -153,32 +171,86 @@ class Post: AbstractPost {
     // MARK: - PublicizeConnections
 
     @objc func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
-        return disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+        let isKeyringEntryDisabled = disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+
+        // try to check in case there's an entry for the PublicizeConnection that's keyed by the connectionID.
+        guard let connections = blog.connections as? Set<PublicizeConnection>,
+              let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
+              let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey] else {
+            // fall back to keyringID if there is no such entry with the connectionID.
+            return isKeyringEntryDisabled
+        }
+
+        let isConnectionEntryDisabled = existingValue == Constants.publicizeDisabledValue
+        return isConnectionEntryDisabled || isKeyringEntryDisabled
     }
 
     @objc func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
-        guard var connection = disabledPublicizeConnections?[keyringID] else {
+        // if there's another entry keyed by connectionID references to the same connection,
+        // we need to make sure that the values are kept in sync.
+        if let connections = blog.connections as? Set<PublicizeConnection>,
+           let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
+           let _ = disabledPublicizeConnections?[connection.connectionID] {
+            enablePublicizeConnection(keyedBy: connection.connectionID)
+        }
+
+        enablePublicizeConnection(keyedBy: keyringID)
+    }
+
+    @objc func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+        // if there's another entry keyed by connectionID references to the same connection,
+        // we need to make sure that the values are kept in sync.
+        if let connections = blog.connections as? Set<PublicizeConnection>,
+           let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
+           let _ = disabledPublicizeConnections?[connectionID] {
+            disablePublicizeConnection(keyedBy: connectionID)
+
+            // additionally, if the keyring entry doesn't exist, there's no need create both formats.
+            // we can just update the dictionary's key from connectionID to keyringID instead.
+            if disabledPublicizeConnections?[keyringID] == nil,
+               let updatedEntry = disabledPublicizeConnections?[connectionID] {
+                disabledPublicizeConnections?.removeValue(forKey: connectionID)
+                disabledPublicizeConnections?[keyringID] = updatedEntry
+                return
+            }
+        }
+
+        disablePublicizeConnection(keyedBy: keyringID)
+    }
+
+    /// Marks the Publicize connection with the given id as enabled.
+    ///
+    /// - Parameter id: The dictionary key for `disabledPublicizeConnections`.
+    private func enablePublicizeConnection(keyedBy id: NSNumber) {
+        guard var connection = disabledPublicizeConnections?[id] else {
             return
         }
 
-        guard connection[Constants.publicizeIdKey] != nil else {
-            _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
+        // if the auto-sharing settings is not yet synced to remote,
+        // we can just remove the entry since all connections are enabled by default.
+        guard let _ = connection[Constants.publicizeIdKey] else {
+            _ = disabledPublicizeConnections?.removeValue(forKey: id)
             return
         }
 
         connection[Constants.publicizeValueKey] = Constants.publicizeEnabledValue
-        disabledPublicizeConnections?[keyringID] = connection
+        disabledPublicizeConnections?[id] = connection
     }
 
-    @objc func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
-        if let _ = disabledPublicizeConnections?[keyringID] {
-            disabledPublicizeConnections![keyringID]![Constants.publicizeValueKey] = Constants.publicizeDisabledValue
-        } else {
-            if disabledPublicizeConnections == nil {
-                disabledPublicizeConnections = [NSNumber: [String: String]]()
-            }
-            disabledPublicizeConnections?[keyringID] = [Constants.publicizeValueKey: Constants.publicizeDisabledValue]
+    /// Marks the Publicize connection with the given id as disabled.
+    ///
+    /// - Parameter id: The dictionary key for `disabledPublicizeConnections`.
+    private func disablePublicizeConnection(keyedBy id: NSNumber) {
+        if let _ = disabledPublicizeConnections?[id] {
+            disabledPublicizeConnections?[id]?[Constants.publicizeValueKey] = Constants.publicizeDisabledValue
+            return
         }
+
+        if disabledPublicizeConnections == nil {
+            disabledPublicizeConnections = [NSNumber: [String: String]]()
+        }
+
+        disabledPublicizeConnections?[id] = [Constants.publicizeValueKey: Constants.publicizeDisabledValue]
     }
 
     // MARK: - Comments

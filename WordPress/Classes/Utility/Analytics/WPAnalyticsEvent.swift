@@ -232,6 +232,9 @@ import Foundation
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
     case domainsPurchaseSucceeded
+    case domainTransferShown
+    case domainTransferMoreTapped
+    case domainTransferButtonTapped
 
     // My Site
     case mySitePullToRefresh
@@ -916,6 +919,12 @@ import Foundation
             return "domains_purchase_webview_viewed"
         case .domainsPurchaseSucceeded:
             return "domains_purchase_domain_success"
+        case .domainTransferShown:
+            return "dashboard_card_domain_transfer_shown"
+        case .domainTransferMoreTapped:
+            return "dashboard_card_domain_transfer_more_menu_tapped"
+        case .domainTransferButtonTapped:
+            return "dashboard_card_domain_transfer_button_tapped"
 
         // My Site
         case .mySitePullToRefresh:
