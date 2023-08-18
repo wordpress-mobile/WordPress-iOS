@@ -1,0 +1,22 @@
+La version 23.0 est sortie ! Est-ce qu’on a l’air plus vieux ?
+
+Pour fêter cela, nous avons amélioré le design de l’application afin de simplifier le partage de contenu sur les réseaux sociaux. La vie sociale occupe une place centrale pour nous.
+
+Vous constaterez l’apparition de la nouvelle carte de campagne Blaze dans votre tableau de bord. Cette carte vous permettra d’accéder à la campagne la plus récente, à un écran listant l’ensemble des campagnes, ainsi qu’à un écran fournissant en détail les informations spécifiques de chaque campagne. C’est incroyable !
+
+Nous avons apporté quelques modifications sur le bloc Galerie dans l’éditeur de blocs.
+
+- Suppression de l’écart visuel entre les blocs de Galerie sélectionnés et la barre d’outils.
+- Suppression du bouton de légende de la Galerie sur les appareils mobiles.
+- Maintient de la sélection du bon bloc Galerie lors de l’ajout de médias.
+
+Nous avons également résolu divers bugs dans le sélecteur de médias.
+
+- Votre écran ne clignotera plus lorsque vous ouvrirez le sélecteur de médias.
+- Les fichiers média ne se réorganiseront plus d’eux-mêmes et seront plus maniables.
+- Le décompte des images exclut désormais les autres types de médias.
+- Les tailles de l’image de couverture sont désormais plus petites. Un chargement plus rapide et moins de mémoire, que demander de plus ?
+
+Le temps de chargement de la carte de statistiques pour le total des Mentions « J’aime » est également plus rapide et nous avons résolu un problème qui provoquait le blocage de l’application lors de l’affichage de l’écran de statistiques.
+
+Enfin, l’application ne bloquera plus lors de la mise à jour des notifications, des articles ou du contenu du lecteur, ni lors du nettoyage des sujets suivis dans le lecteur. (Mais quoiqu’il en soit, restez vigilant. La sécurité avant tout.)
