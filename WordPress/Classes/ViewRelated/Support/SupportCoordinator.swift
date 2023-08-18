@@ -22,8 +22,6 @@ final class SupportCoordinator {
     func showSupport(onIdentityUpdated: (() -> ())? = nil) {
         guard let controllerToShowFrom = controllerToShowFrom else { return }
 
-        ZendeskUtils.sharedInstance.setPresentingViewController(controllerToShowFrom)
-
         if AppConfiguration.isJetpack && RemoteFeatureFlag.contactSupportChatbot.enabled() {
             let chatBotViewController = SupportChatBotViewController(viewModel: .init(), delegate: self)
             if let navigationController = navigationController {

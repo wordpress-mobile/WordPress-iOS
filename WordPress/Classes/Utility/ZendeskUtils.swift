@@ -353,10 +353,6 @@ extension ZendeskUtils {
             }
         }
     }
-
-    func setPresentingViewController(_ presentInController: UIViewController) {
-        self.presentInController = presentInController
-    }
 }
 
 // MARK: - Private Extension
