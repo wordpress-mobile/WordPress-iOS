@@ -189,15 +189,16 @@ extension SupportChatBotViewController {
     func createTicket(with history: SupportChatHistory) {
         SVProgressHUD.show(withStatus: Strings.ticketCreationLoadingMessage)
 
-        viewModel.contactSupport(including: history, in: self) { [weak self] success in
+        viewModel.contactSupport(including: history, in: self) { [weak self] result in
             SVProgressHUD.dismiss()
 
             guard let self else { return }
             DispatchQueue.main.async {
-                if success {
-                    self.viewModel.track(.supportChatbotTicketSuccess)
+                switch result {
+                case let .success(request):
+                    self.viewModel.track(.supportChatbotTicketSuccess, ticketNumber: request.requestId)
                     self.showTicketCreatedSuccessNotice()
-                } else {
+                case .failure:
                     self.viewModel.track(.supportChatbotTicketFailure)
                     self.showTicketCreatedFailureNotice()
                 }

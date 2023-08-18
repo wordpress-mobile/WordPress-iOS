@@ -11,7 +11,7 @@ struct SupportChatBotViewModel {
         self.zendeskUtils = zendeskUtils
     }
 
-    func contactSupport(including history: SupportChatHistory, in viewController: UIViewController, completion: @escaping (Bool) -> ()) {
+    func contactSupport(including history: SupportChatHistory, in viewController: UIViewController, completion: @escaping ZendeskUtils.ZendeskNewRequestCompletion) {
         zendeskUtils.createNewRequest(
             in: viewController,
             description: formattedMessageHistory(from: history),
@@ -44,6 +44,10 @@ struct SupportChatBotViewModel {
 
     func track(_ event: WPAnalyticsEvent) {
         WPAnalytics.track(event, properties: ["chat_id": chatId.uuidString])
+    }
+
+    func track(_ event: WPAnalyticsEvent, ticketNumber: String) {
+        WPAnalytics.track(event, properties: ["chat_id": chatId.uuidString, "ticket_number": ticketNumber])
     }
 }
 
