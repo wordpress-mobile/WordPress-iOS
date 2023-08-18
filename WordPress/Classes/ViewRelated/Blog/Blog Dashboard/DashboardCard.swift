@@ -84,6 +84,17 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
+    /// Specifies whether the card settings should be applied across
+    /// different sites or only to a particular site.
+    var settingsType: SettingsType {
+        switch self {
+        case .googleDomains:
+            return .siteGeneric
+        default:
+            return .siteSpecific
+        }
+    }
+
     func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
         switch self {
         case .jetpackInstall:
@@ -177,6 +188,11 @@ enum DashboardCard: String, CaseIterable {
                 return DashboardActivityLogCardCell.shouldShowCard(for: blog)
             }
         }
+    }
+
+    enum SettingsType {
+        case siteSpecific
+        case siteGeneric
     }
 }
 

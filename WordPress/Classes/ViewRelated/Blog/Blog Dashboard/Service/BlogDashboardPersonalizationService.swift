@@ -2,6 +2,10 @@ import Foundation
 
 /// Manages dashboard settings such as card visibility.
 struct BlogDashboardPersonalizationService {
+    private enum Constants {
+        static let siteAgnosticVisibilityKey = "siteAgnosticVisibilityKey"
+    }
+
     private let repository: UserPersistentRepository
     private let siteID: String
 
@@ -12,18 +16,28 @@ struct BlogDashboardPersonalizationService {
     }
 
     func isEnabled(_ card: DashboardCard) -> Bool {
-        getSettings(for: card)[siteID] ?? true
+        let key = lookUpKey(for: card)
+        return getSettings(for: card)[key] ?? true
     }
 
     func hasPreference(for card: DashboardCard) -> Bool {
-        getSettings(for: card)[siteID] != nil
+        let key = lookUpKey(for: card)
+        return getSettings(for: card)[key] != nil
     }
 
+    /// Sets the enabled state for a given DashboardCard.
+    ///
+    /// This function updates the enabled state of a `DashboardCard`. After updating
+    /// the settings, a notification is posted to inform other parts of the application about this change.
+    /// - Parameters:
+    ///   - isEnabled: A Boolean value indicating whether the `DashboardCard` should be enabled or disabled.
+    ///   - card: The `DashboardCard` whose setting needs to be updated.
     func setEnabled(_ isEnabled: Bool, for card: DashboardCard) {
         guard let key = makeKey(for: card) else { return }
-
         var settings = getSettings(for: card)
-        settings[siteID] = isEnabled
+        let lookUpKey = lookUpKey(for: card)
+        settings[lookUpKey] = isEnabled
+
         repository.set(settings, forKey: key)
 
         DispatchQueue.main.async {
@@ -34,6 +48,15 @@ struct BlogDashboardPersonalizationService {
     private func getSettings(for card: DashboardCard) -> [String: Bool] {
         guard let key = makeKey(for: card) else { return [:] }
         return repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
+    }
+
+    private func lookUpKey(for card: DashboardCard) -> String {
+        switch card.settingsType {
+        case .siteSpecific:
+            return siteID
+        case .siteGeneric:
+            return Constants.siteAgnosticVisibilityKey
+        }
     }
 }
 
