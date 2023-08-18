@@ -15,11 +15,11 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     /// NotificationSettings being rendered
     ///
-    private var settings: NotificationSettings?
+    private let settings: NotificationSettings
 
     /// Notification Stream to be displayed
     ///
-    private var stream: NotificationSettings.Stream?
+    private let stream: NotificationSettings.Stream
 
     /// TableView Sections to be rendered
     ///
@@ -283,11 +283,11 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
-        return stream?.kind == .Device && pushNotificationsAuthorized == .denied
+        return stream.kind == .Device && pushNotificationsAuthorized == .denied
     }
 
     private func isDeviceStreamUnknown() -> Bool {
-        return stream?.kind == .Device && pushNotificationsAuthorized == .notDetermined
+        return stream.kind == .Device && pushNotificationsAuthorized == .notDetermined
     }
 
     private func openApplicationSettings() {
@@ -313,14 +313,14 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     // MARK: - Service Helpers
     private func saveSettingsIfNeeded() {
-        if newValues.count == 0 || settings == nil {
+        if newValues.count == 0 {
             return
         }
 
         let service = NotificationSettingsService(coreDataStack: ContextManager.shared)
 
-        service.updateSettings(settings!,
-            stream: stream!,
+        service.updateSettings(settings,
+            stream: stream,
             newValues: newValues,
             success: {
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": true])
