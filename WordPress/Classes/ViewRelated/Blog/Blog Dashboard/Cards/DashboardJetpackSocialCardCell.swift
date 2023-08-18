@@ -217,15 +217,14 @@ private extension DashboardJetpackSocialCardCell {
         default:
             card = nil
         }
+
+        for subview in contentView.subviews {
+            subview.removeFromSuperview()
+        }
         if let card {
-            for subview in contentView.subviews {
-                subview.removeFromSuperview()
-            }
             contentView.addSubview(card)
             contentView.pinSubviewToAllEdges(card)
             contentView.layoutIfNeeded()
-        } else {
-            dashboardViewController?.reloadCardsLocally()
         }
     }
 

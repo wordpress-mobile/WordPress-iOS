@@ -28,6 +28,7 @@
 * [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
 * [*] [internal] Fix incorrectly terminated background task [#21254]
 * [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Editor. [#21227]
+* [**] Fixed an occassional crash when reloading Media picker. [#21337]
 
 22.9
 -----
