@@ -13,11 +13,11 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
     /// NotificationSettings being rendered
     ///
-    private var settings: NotificationSettings?
+    private let settings: NotificationSettings
 
     /// Notification Streams
     ///
-    private var sortedStreams: [NotificationSettings.Stream]?
+    private var sortedStreams: [NotificationSettings.Stream] = []
 
     /// Indicates whether push notifications have been disabled, in the device, or not.
     ///
@@ -31,20 +31,28 @@ class NotificationSettingStreamsViewController: UITableViewController {
     ///
     private let reuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
 
-    /// Number of Sections
-    ///
-    private let emptySectionCount = 0
-
     /// Number of Rows
     ///
     private let rowsCount = 1
 
+    // MARK: - Dependencies
 
+    private let contextManager: CoreDataStackSwift
 
-    convenience init(settings: NotificationSettings) {
-        self.init(style: .grouped)
-        setupWithSettings(settings)
+    // MARK: - Init
+
+    init(settings: NotificationSettings, contextManager: CoreDataStackSwift = ContextManager.shared) {
+        self.settings = settings
+        self.contextManager = contextManager
+        super.init(style: .grouped)
+        self.setupWithSettings(settings)
     }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,8 +105,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
         }
 
         // Structures
-        settings       = streamSettings
-        sortedStreams  = streamSettings.streams.sorted {  $0.kind.description() > $1.kind.description() }
+        self.sortedStreams  = streamSettings.streams.sorted {  $0.kind.description() > $1.kind.description() }
 
         tableView.reloadData()
     }
@@ -106,7 +113,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
     // MARK: - UITableView Delegate Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sortedStreams?.count ?? emptySectionCount
+        return sortedStreams.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -137,7 +144,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
     // MARK: - UITableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let stream = streamAtSection(indexPath.section)
-        let detailsViewController = NotificationSettingDetailsViewController(settings: settings!, stream: stream)
+        let detailsViewController = NotificationSettingDetailsViewController(settings: settings, stream: stream)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
 
@@ -158,7 +165,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
     }
 
     private func streamAtSection(_ section: Int) -> NotificationSettings.Stream {
-        return sortedStreams![section]
+        return sortedStreams[section]
     }
 
     private func imageForStreamKind(_ streamKind: NotificationSettings.Stream.Kind) -> UIImage? {
