@@ -100,8 +100,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var onClose: ((Bool, Bool) -> Void)?
 
-    var isOpenedDirectlyForPhotoPost: Bool = false
-
     var postIsReblogged: Bool = false
 
     var isEditorClosing: Bool = false
@@ -138,29 +136,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
         }
         mediaToInsertOnPost = []
-    }
-
-    private func showMediaSelectionOnStart() {
-        isOpenedDirectlyForPhotoPost = false
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: .image,
-                                                       dataSourceType: .device,
-                                                       allowMultipleSelection: false,
-                                                       callback: {(asset) in
-                                                        guard let phAsset = asset as? [PHAsset] else {
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
-                                                            guard let media = media,
-                                                                let mediaInfo = media.first,
-                                                                let mediaID = mediaInfo.id,
-                                                                let mediaURLString = mediaInfo.url,
-                                                                let mediaURL = URL(string: mediaURLString) else {
-                                                                return
-                                                            }
-                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
-                                                        })
-        })
     }
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -969,9 +944,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         if isFirstGutenbergLayout {
             insertPrePopulatedMedia()
-            if isOpenedDirectlyForPhotoPost {
-                showMediaSelectionOnStart()
-            }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
         }
