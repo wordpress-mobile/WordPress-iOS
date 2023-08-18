@@ -182,7 +182,7 @@ extension SupportChatBotViewController {
     func createTicket(with history: SupportChatHistory) {
         SVProgressHUD.show(withStatus: Strings.ticketCreationLoadingMessage)
 
-        viewModel.contactSupport(including: history) { [weak self] success in
+        viewModel.contactSupport(including: history, in: self) { [weak self] success in
             SVProgressHUD.dismiss()
 
             guard let self else { return }
