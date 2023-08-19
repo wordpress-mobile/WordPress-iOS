@@ -9,6 +9,10 @@ import WordPressShared
 ///
 class NotificationSettingsViewController: UIViewController {
 
+    // MARK: - Dependencies
+
+    private let contextManager: CoreDataStackSwift
+
     // MARK: - Properties
 
     private lazy var tableView: UITableView = {
@@ -55,14 +59,24 @@ class NotificationSettingsViewController: UIViewController {
 
     private var notificationsEnabled = false
 
+    // MARK: - Init
+
+    init(contextManager: CoreDataStackSwift = ContextManager.shared) {
+        self.contextManager = contextManager
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
+
     override func loadView() {
         mainView.pinSubviewToAllEdges(tableView)
         mainView.pinSubviewAtCenter(activityIndicatorView)
 
         view = mainView
     }
-
-    // MARK: - View Lifecycle
 
     open override func viewDidLoad() {
         super.viewDidLoad()
