@@ -9,6 +9,10 @@ import WordPressShared
 ///
 class NotificationSettingsViewController: UIViewController {
 
+    // MARK: - Dependencies
+
+    private let contextManager: CoreDataStackSwift
+
     // MARK: - Properties
 
     private lazy var tableView: UITableView = {
@@ -55,14 +59,25 @@ class NotificationSettingsViewController: UIViewController {
 
     private var notificationsEnabled = false
 
+    // MARK: - Init
+
+    init(contextManager: CoreDataStackSwift = ContextManager.shared) {
+        self.contextManager = contextManager
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
+
     override func loadView() {
         mainView.pinSubviewToAllEdges(tableView)
         mainView.pinSubviewAtCenter(activityIndicatorView)
 
         view = mainView
     }
-
-    // MARK: - View Lifecycle
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,7 +188,7 @@ class NotificationSettingsViewController: UIViewController {
         for setting in settings {
             switch setting.channel {
             case let .blog(blogId):
-                guard setting.blog != nil else {
+                guard setting.blogManagedObjectID != nil else {
                     continue
                 }
                 // Make sure that the Primary Blog is the first one in its category
@@ -409,14 +424,18 @@ private extension NotificationSettingsViewController {
 
         switch settings.channel {
         case .blog:
-            cell.textLabel?.text = settings.blog?.settings?.name ?? settings.channel.description()
-            cell.detailTextLabel?.text = settings.blog?.displayURL as String? ?? String()
-            cell.accessoryType = .disclosureIndicator
 
-            if let blog = settings.blog {
-                cell.imageView?.downloadSiteIcon(for: blog)
-            } else {
-                cell.imageView?.image = .siteIconPlaceholder
+            let mainContext = contextManager.mainContext
+            mainContext.performAndWait {
+                let blog = settings.blog(in: mainContext)
+                cell.textLabel?.text = blog?.settings?.name ?? settings.channel.description()
+                cell.detailTextLabel?.text = blog?.displayURL as String? ?? String()
+                cell.accessoryType = .disclosureIndicator
+                if let blog {
+                    cell.imageView?.downloadSiteIcon(for: blog)
+                } else {
+                    cell.imageView?.image = .siteIconPlaceholder
+                }
             }
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
