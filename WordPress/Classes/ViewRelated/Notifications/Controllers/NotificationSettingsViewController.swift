@@ -63,6 +63,7 @@ class NotificationSettingsViewController: UIViewController {
 
     init(contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.contextManager = contextManager
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -187,7 +188,7 @@ class NotificationSettingsViewController: UIViewController {
         for setting in settings {
             switch setting.channel {
             case let .blog(blogId):
-                guard setting.blog != nil else {
+                guard setting.blogManagedObjectID != nil else {
                     continue
                 }
                 // Make sure that the Primary Blog is the first one in its category
@@ -423,14 +424,18 @@ private extension NotificationSettingsViewController {
 
         switch settings.channel {
         case .blog:
-            cell.textLabel?.text = settings.blog?.settings?.name ?? settings.channel.description()
-            cell.detailTextLabel?.text = settings.blog?.displayURL as String? ?? String()
-            cell.accessoryType = .disclosureIndicator
 
-            if let blog = settings.blog {
-                cell.imageView?.downloadSiteIcon(for: blog)
-            } else {
-                cell.imageView?.image = .siteIconPlaceholder
+            let mainContext = contextManager.mainContext
+            mainContext.performAndWait {
+                let blog = settings.blog(in: mainContext)
+                cell.textLabel?.text = blog?.settings?.name ?? settings.channel.description()
+                cell.detailTextLabel?.text = blog?.displayURL as String? ?? String()
+                cell.accessoryType = .disclosureIndicator
+                if let blog {
+                    cell.imageView?.downloadSiteIcon(for: blog)
+                } else {
+                    cell.imageView?.image = .siteIconPlaceholder
+                }
             }
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
