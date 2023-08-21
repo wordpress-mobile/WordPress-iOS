@@ -147,8 +147,6 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-  pod 'Gridicons', '~> 1.1.0'
-
   pod 'WordPressAuthenticator', '~> 6.3'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
@@ -160,6 +158,7 @@ abstract_target 'Apps' do
 
   aztec
   wordpress_ui
+  shared_style_pods
 
   ## WordPress App iOS
   ## =================
