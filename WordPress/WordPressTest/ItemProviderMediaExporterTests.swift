@@ -22,6 +22,8 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         XCTAssertEqual(media.width, 1024.0)
         XCTAssertEqual(media.height, 772.0)
         XCTAssertNotNil(UIImage(data: try Data(contentsOf: media.url)))
+
+        MediaExporterTests.cleanUpExportedMedia(atURL: media.url)
     }
 
     func testThatGPSDataIsRemoved() throws {
@@ -50,6 +52,8 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         // THEN but GPS data was removed
         let properties = try getImageProperties(for: media.url)
         XCTAssertNil(properties[kCGImagePropertyGPSDictionary])
+
+        MediaExporterTests.cleanUpExportedMedia(atURL: media.url)
     }
 
     func testThatGIFIsExported() throws {
@@ -66,6 +70,8 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         XCTAssertEqual(media.url.pathExtension, "gif")
         XCTAssertEqual(media.height, 360)
         XCTAssertEqual(media.width, 360)
+
+        MediaExporterTests.cleanUpExportedMedia(atURL: media.url)
     }
 
     // MARK: - Video
@@ -87,6 +93,8 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         XCTAssertEqual(media.height, 360)
         XCTAssertEqual(media.width, 640)
         XCTAssertEqual(media.duration ?? 0.0, 3.47, accuracy: 0.01)
+
+        MediaExporterTests.cleanUpExportedMedia(atURL: media.url)
     }
 
     // MARK: - Error Handling
@@ -104,7 +112,7 @@ final class ItemProviderMediaExporterTests: XCTestCase {
         exporter.mediaDirectoryType = .temporary
 
         do {
-            let media = try exportedMedia(from: exporter)
+            let _ = try exportedMedia(from: exporter)
             XCTFail("Expected the export to fail")
         } catch {
             // THEN
