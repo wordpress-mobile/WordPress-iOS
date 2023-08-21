@@ -2,6 +2,7 @@ import Foundation
 import MobileCoreServices
 import UniformTypeIdentifiers
 import AVFoundation
+import Photos
 
 /// Media export handling of PHAssets
 ///
