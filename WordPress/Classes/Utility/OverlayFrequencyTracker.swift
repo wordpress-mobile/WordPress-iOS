@@ -76,6 +76,9 @@ class OverlayFrequencyTracker {
         guard let lastSavedGenericDate = lastSavedGenericDate else {
             return true // First overlay ever
         }
+        if frequencyConfig.generalInDays < 0 {
+            return false // Negative frequency means overlay should be shown once
+        }
         let secondsSinceLastSavedGenericDate = -lastSavedGenericDate.timeIntervalSinceNow
         let generalFreqPassed = secondsSinceLastSavedGenericDate > frequencyConfig.generalInSeconds
         if generalFreqPassed == false {
@@ -86,6 +89,9 @@ class OverlayFrequencyTracker {
             return true // This specific overlay was never shown, so we can show it
         }
 
+        if frequencyConfig.featureSpecificInDays < 0 {
+            return false // Negative frequency means overlay should be shown once
+        }
         let secondsSinceLastSavedSourceDate = -lastSavedSourceDate.timeIntervalSinceNow
         let featureSpecificFreqPassed = secondsSinceLastSavedSourceDate > frequencyConfig.featureSpecificInSeconds
         // Check if this specific overlay was shown recently

@@ -1,8 +1,9 @@
 import WebKit
 import WordPressFlux
 import SVProgressHUD
+import WordPressShared
 
-protocol SupportChatBotCreatedTicketDelegate: class {
+protocol SupportChatBotCreatedTicketDelegate: AnyObject {
     func onTicketCreated()
 }
 
@@ -33,6 +34,7 @@ final class SupportChatBotViewController: UIViewController {
         super.viewDidLoad()
 
         title = Strings.title
+        setupNavigationBar()
         loadChatBot()
     }
 
@@ -63,11 +65,48 @@ final class SupportChatBotViewController: UIViewController {
                   },
                 options: {
                     color: "#9dd977",
-                    supportLink: "#"
+                    supportLink: "#",
+                    questions: \(encodedQuestions()),
+                    labels: {
+                        inputPlaceholder: "\(Strings.inputPlaceholder)",
+                        firstMessage: "\(Strings.firstMessage)",
+                        sources: "\(Strings.sources)",
+                        helpful: "\(Strings.helpful)",
+                        unhelpful: "\(Strings.unhelpful)",
+                        getSupport: "\(Strings.getSupport)",
+                        suggestions: "\(Strings.suggestions)",
+                        thinking: "\(Strings.thinking)",
+                      },
                 },
             })
         })();
         """
+    }
+
+    /// Encoding array of Swift strings into JS string representing an array
+    private func encodedQuestions() -> String {
+        do {
+            let encodedQuestions = try JSONEncoder().encode(Strings.questions)
+            return String(data: encodedQuestions, encoding: .utf8) ?? ""
+        } catch {
+            DDLogError("Couldn't encode default questions for support chat bot: \(error)")
+            return ""
+        }
+    }
+}
+
+private extension SupportChatBotViewController {
+    func setupNavigationBar() {
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.closeButton,
+                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+                                                               target: self,
+                                                               action: #selector(closeTapped))
+        }
+    }
+
+    @objc private func closeTapped() {
+        dismiss(animated: true)
     }
 }
 
@@ -79,6 +118,22 @@ extension SupportChatBotViewController: WKNavigationDelegate {
             }
         })
     }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated:
+            if let url = navigationAction.request.url {
+                // Open links tapped from within the chat in the system browser
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+            }
+        default:
+            decisionHandler(.allow)
+        }
+    }
+
 }
 
 // MARK: - Support Callback
@@ -95,9 +150,43 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
 extension SupportChatBotViewController {
     private enum Strings {
         static let title = NSLocalizedString("support.chatBot.title", value: "Contact Support", comment: "Title of the view that shows support chat bot.")
+        static let closeButton = NSLocalizedString("support.chatBot.close.title", value: "Close", comment: "Dismiss the current view")
         static let ticketCreationLoadingMessage = NSLocalizedString("support.chatBot.ticketCreationLoading", value: "Creating support ticket...", comment: "Notice informing user that their support ticket is being created.")
         static let ticketCreationSuccessMessage = NSLocalizedString("support.chatBot.ticketCreationSuccess", value: "Ticket created", comment: "Notice informing user that their support ticket has been created.")
         static let ticketCreationFailureMessage = NSLocalizedString("support.chatBot.ticketCreationFailure", value: "Error submitting support ticket", comment: "Notice informing user that there was an error submitting their support ticket.")
+        static let questions: [String] = [
+            NSLocalizedString("support.chatBot.questionOne", value: "What is my site address?", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionTwo", value: "Help, my site is down!", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionThree", value: "I can't upload photos/videos", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionFour", value: "Why can't I login?", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionFive", value: "I forgot my login information", comment: "An example question shown to a user seeking support"),
+            NSLocalizedString("support.chatBot.questionSix", value: "How can I use my custom domain in the app?", comment: "An example question shown to a user seeking support"),
+        ]
+        static let inputPlaceholder = NSLocalizedString("support.chatBot.inputPlaceholder",
+                                                        value: "Send a message...",
+                                                        comment: "Placeholder text for the chat input field.")
+        static let firstMessage = NSLocalizedString("support.chatBot.firstMessage",
+                                                    value: "What can I help you with? If I can't answer your question I'll help you open a support ticket with our team!",
+                                                    comment: "Initial message shown to the user when the chat starts.")
+        static let sources = NSLocalizedString("support.chatBot.sources",
+                                               value: "Sources",
+                                               comment: "Button title referring to the sources of information.")
+        static let helpful = NSLocalizedString("chat.rateHelpful",
+                                               value: "Rate as helpful",
+                                               comment: "Option for users to rate a chat bot answer as helpful.")
+        static let unhelpful = NSLocalizedString("support.chatBot.reportInaccuracy",
+                                                 value: "Report as inaccurate",
+                                                 comment: "Option for users to report a chat bot answer as inaccurate.")
+        static let getSupport = NSLocalizedString("support.chatBot.contactSupport",
+                                                  value: "Contact support",
+                                                  comment: "Button for users to contact the support team directly.")
+        static let suggestions = NSLocalizedString("support.chatBot.suggestionsPrompt",
+                                                   value: "Not sure what to ask?",
+                                                   comment: "Prompt for users suggesting to select a default question from the list to start a support chat.")
+        static let thinking = NSLocalizedString("support.chatBot.botThinkingIndicator",
+                                                value: "Thinking...",
+                                                comment: "Indicator that the chat bot is processing user's input.")
+
     }
 
     private enum Constants {
@@ -111,7 +200,7 @@ extension SupportChatBotViewController {
     func createTicket(with history: SupportChatHistory) {
         SVProgressHUD.show(withStatus: Strings.ticketCreationLoadingMessage)
 
-        viewModel.contactSupport(including: history) { [weak self] success in
+        viewModel.contactSupport(including: history, in: self) { [weak self] success in
             SVProgressHUD.dismiss()
 
             guard let self else { return }
@@ -126,15 +215,10 @@ extension SupportChatBotViewController {
     }
 
     func showTicketCreatedSuccessNotice() {
-        let notice = Notice(title: Strings.ticketCreationSuccessMessage,
-                            feedbackType: .success,
-                            actionTitle: "See ticket",
-                            actionHandler: { [weak self] _ in
-            guard let self else { return }
-
-            self.delegate?.onTicketCreated()
-        })
+        let notice = Notice(title: Strings.ticketCreationSuccessMessage, feedbackType: .success)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        delegate?.onTicketCreated()
     }
 
     func showTicketCreatedFailureNotice() {

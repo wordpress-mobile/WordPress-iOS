@@ -179,5 +179,26 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         XCTAssertTrue(readerTracker.shouldShow(forced: false)) // After generic frequency have passed
     }
 
+    func testNegativeFrequencyIsTreatedAsShowOnce() {
+        // Given
+        let key = OverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-phase_four_overlay"
+        let genericKey = OverlayFrequencyTracker.Constants.lastDateKeyPrefix
+        let tracker = OverlayFrequencyTracker(source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource.phaseFourOverlay,
+                                              type: .featuresRemoval,
+                                              frequencyConfig: .init(featureSpecificInDays: 0, generalInDays: -1),
+                                              persistenceStore: mockUserDefaults)
+
+        // When & Then
+        XCTAssertTrue(tracker.shouldShow(forced: false))
+
+        // Given
+        let distantDate = Date.distantPast
+        mockUserDefaults.set(distantDate, forKey: key)
+        mockUserDefaults.set(distantDate, forKey: genericKey)
+
+        // When & Then
+        XCTAssertFalse(tracker.shouldShow(forced: false))
+    }
+
 
 }

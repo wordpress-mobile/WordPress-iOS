@@ -176,7 +176,7 @@
             "percent_used": 2.338182895133893,
             "space_available": 3145907329
           },
-          "launch_status": "unlaunched",
+          "launch_status": "launched",
           "site_migration": null,
           "is_fse_active": false,
           "is_fse_eligible": false,
@@ -347,7 +347,7 @@
             "percent_used": 0.1395534723997116,
             "space_available": 3216730140
           },
-          "launch_status": "unlaunched",
+          "launch_status": "launched",
           "site_migration": null,
           "is_fse_active": false,
           "is_fse_eligible": false,
@@ -358,7 +358,7 @@
           "name": "Weekend Bakes",
           "description": "Site on Free Plan",
           "URL": "https://weekendbakesblog.wordpress.com",
-          "user_can_manage": false,
+          "user_can_manage": true,
           "capabilities": {
             "edit_pages": true,
             "edit_posts": true,
@@ -386,7 +386,7 @@
           "jetpack": false,
           "jetpack_connection": false,
           "is_multisite": true,
-          "site_owner": 214071396,
+          "site_owner": 152748359,
           "post_count": 2,
           "subscribers_count": 1,
           "lang": "en-gb",
@@ -397,7 +397,7 @@
           },
           "visible": true,
           "is_private": false,
-          "is_coming_soon": true,
+          "is_coming_soon": false,
           "single_user_site": true,
           "is_vip": false,
           "is_following": true,
@@ -543,7 +543,7 @@
             "percent_used": 0.12550903484225273,
             "space_available": 3217182543
           },
-          "launch_status": "unlaunched",
+          "launch_status": "launched",
           "site_migration": null,
           "is_fse_active": false,
           "is_fse_eligible": false,

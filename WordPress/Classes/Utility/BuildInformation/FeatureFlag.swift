@@ -134,7 +134,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .compliancePopover:
             return true
         case .domainFocus:
-            return false
+            return true
         case .nativePhotoPicker:
             return false
         }

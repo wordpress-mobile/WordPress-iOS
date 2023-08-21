@@ -89,7 +89,6 @@ import CoreData
             switch result {
             case .success:
                 success?()
-                NotificationCenter.default.post(name: .jetpackSocialUpdated, object: nil)
             case .failure(let error):
                 failure?(error as NSError)
             }

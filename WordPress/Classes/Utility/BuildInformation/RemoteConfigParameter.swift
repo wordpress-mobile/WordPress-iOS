@@ -33,6 +33,7 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
     case blazeNonDismissibleStep
     case blazeFlowCompletedStep
     case wordPressPluginOverlayMaxShown
+    case phaseFourOverlayFrequency
 
     var key: String {
         switch self {
@@ -54,6 +55,8 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "blaze_completed_step_hash"
         case .wordPressPluginOverlayMaxShown:
             return "wp_plugin_overlay_max_shown"
+        case .phaseFourOverlayFrequency:
+            return "phase_four_overlay_frequency_in_days"
         }
     }
 
@@ -77,6 +80,8 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "step-5"
         case .wordPressPluginOverlayMaxShown:
             return 3
+        case .phaseFourOverlayFrequency:
+            return -1
         }
     }
 
@@ -100,6 +105,8 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "Blaze Completed Step"
         case .wordPressPluginOverlayMaxShown:
             return "WP Plugin Overlay Max Frequency"
+        case .phaseFourOverlayFrequency:
+            return "Phase Four Overlay Frequency"
         }
     }
 }

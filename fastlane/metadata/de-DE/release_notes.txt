@@ -1,0 +1,16 @@
+Version 23.0 ist da! Sehen wir älter aus?
+
+Um diesen Anlass gebührend zu feiern, haben wir einige Galerie-Block-Updates im Block-Editor vorgenommen.
+
+- Wir haben die visuelle Lücke entfernt, die zwischen ausgewählten Galerie-Blöcken und der Toolbar angezeigt wurde.
+- Der Button für Bildunterschriften in der Galerie ist auf Mobilgeräten nicht länger sichtbar.
+- Der korrekte Galerie-Block bleibt ausgewählt, während du Medien hinzufügst.
+
+Außerdem haben wir einige Fehler in der Medienauswahl behoben.
+
+- Dein Bildschirm blitzt nicht mehr, wenn du die Medienauswahl öffnest.
+- Mediendateien ordnen sich nicht mehr selbst neu an, sondern benehmen sich jetzt.
+- Die Bildanzahl enthält keine anderen Medientypen mehr.
+- Vorschaubilder sind nun kleiner. Schnelleres Laden, geringere Speichernutzung – was will man mehr?
+
+Zu guter Letzt sollte die App nicht mehr abstürzen, wenn du einen Beitrag aktualisierst. (Aber setz dir trotzdem einen Helm auf. Sicherheit geht schließlich vor.)

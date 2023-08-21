@@ -16,8 +16,12 @@ extension ReaderSiteTopic {
     ///
     /// - Parameter siteID: The site id of the topic
     @objc(lookupWithSiteID:inContext:)
-    static func objc_lookup(withSiteID siteID: NSNumber, in context: NSManagedObjectContext) -> ReaderSiteTopic? {
-        try? lookup(withSiteID: siteID, in: context)
+    static func objc_lookup(withSiteID siteID: NSNumber?, in context: NSManagedObjectContext) -> ReaderSiteTopic? {
+        guard let siteID else {
+            DDLogError("Obj-C lookupWithSiteID called with a nil siteID")
+            return nil
+        }
+        return try? lookup(withSiteID: siteID, in: context)
     }
 
     /// Find a site topic by its feed id

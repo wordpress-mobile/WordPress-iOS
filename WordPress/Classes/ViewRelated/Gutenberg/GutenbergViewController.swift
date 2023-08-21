@@ -49,6 +49,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }()
 
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
+    }()
+
     // MARK: - Aztec
 
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -511,6 +515,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
         presentEditingModeSwitchedNotice()
+
+        navigationBarManager.undoButton.isHidden = mode == .html
+        navigationBarManager.redoButton.isHidden = mode == .html
     }
 
     private func presentEditingModeSwitchedNotice() {
@@ -1097,7 +1104,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestContactCustomerSupport() {
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+        coordinator.showSupport()
     }
 
     func gutenbergDidRequestGotoCustomerSupportOptions() {
