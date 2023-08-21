@@ -42,7 +42,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
-        tableViewHandler.listensForContentChanges = false
         tableViewHandler.updateRowAnimation = .none
         return tableViewHandler
     }()
