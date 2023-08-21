@@ -73,7 +73,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - NSObject-SafeExpectations (0.0.4)
+  - NSObject-SafeExpectations (0.0.6)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
   - OHHTTPStubs/Core (9.1.0)
@@ -264,7 +264,7 @@ SPEC CHECKSUMS:
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
+  NSObject-SafeExpectations: c01c8881cbd97efad6f668286b913cd0b7d62ab5
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
