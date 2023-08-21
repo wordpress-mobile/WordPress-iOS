@@ -4,6 +4,7 @@ import WordPressShared
 import SwiftUI
 import SVProgressHUD
 import Gridicons
+import PhotosUI
 
 extension SitePickerViewController {
 
@@ -35,24 +36,23 @@ extension SitePickerViewController {
     }
 
     private func makeUpdateSiteIconActions() -> [UIAction] {
+        let presenter = makeSiteIconPresenter()
+        let mediaMenu = MediaPickerMenu(viewConroller: self, filter: .images)
         var actions: [UIAction] = []
         if FeatureFlag.nativePhotoPicker.enabled {
             actions += [
-                MediaPickerMenu.makePickFromPhotosAction { [weak self] in
-                    self?.updateSiteIcon(source: .photosLibrary)
-                },
-                MediaPickerMenu.makeTakePhotoAction { [weak self] in
-                    self?.updateSiteIcon(source: .camera)
-                },
-                MediaPickerMenu.makePickFromMediaAction { [weak self] in
-                    self?.updateSiteIcon(source: .mediaLibrary)
-                }
+                mediaMenu.makePhotosAction(delegate: presenter),
+                mediaMenu.makeCameraAction(delegate: presenter),
+                mediaMenu.makeMediaAction(blog: blog, delegate: presenter)
             ]
         } else {
             actions.append(UIAction(
                 title: SiteIconAlertStrings.Actions.changeSiteIcon,
                 image: UIImage(systemName: "photo.on.rectangle"),
-                handler: { [weak self] _ in self?.updateSiteIcon(source: .combined) }
+                handler: { [weak self] _ in
+                    guard let self else { return }
+                    presenter.presentPickerFrom(self)
+                }
             ))
         }
         if FeatureFlag.siteIconCreator.enabled {
@@ -73,16 +73,9 @@ extension SitePickerViewController {
         return actions
     }
 
-    enum SiteIconSource {
-        case photosLibrary
-        case camera
-        case mediaLibrary
-        case combined // legacy option
-    }
-
-    func updateSiteIcon(source: SiteIconSource = .combined) {
-        siteIconPickerPresenter = SiteIconPickerPresenter(blog: blog)
-        siteIconPickerPresenter?.onCompletion = { [ weak self] media, error in
+    private func makeSiteIconPresenter() -> SiteIconPickerPresenter {
+        let presenter = SiteIconPickerPresenter(blog: blog)
+        presenter.onCompletion = { [ weak self] media, error in
             if error != nil {
                 self?.showErrorForSiteIconUpdate()
             } else if let media = media {
@@ -95,22 +88,12 @@ extension SitePickerViewController {
             self?.siteIconPickerPresenter = nil
             self?.startAlertTimer()
         }
-
-        siteIconPickerPresenter?.onIconSelection = { [weak self] in
+        presenter.onIconSelection = { [weak self] in
             self?.blogDetailHeaderView.updatingIcon = true
             self?.dismiss(animated: true)
         }
-
-        switch source {
-        case .photosLibrary:
-            siteIconPickerPresenter?.presentPhotosPicker(from: self)
-        case .camera:
-            siteIconPickerPresenter?.presentCamera(from: self)
-        case .mediaLibrary:
-            siteIconPickerPresenter?.presentMediaLibraryPicker(from: self)
-        case .combined:
-            siteIconPickerPresenter?.presentPickerFrom(self)
-        }
+        self.siteIconPickerPresenter = presenter
+        return presenter
     }
 
     func showEmojiPicker() {

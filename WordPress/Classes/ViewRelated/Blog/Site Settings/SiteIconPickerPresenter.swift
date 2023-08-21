@@ -69,51 +69,6 @@ final class SiteIconPickerPresenter: NSObject {
         unregisterChangeObserver()
     }
 
-    func presentPhotosPicker(from presentingViewController: UIViewController) {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        presentingViewController.present(picker, animated: true)
-    }
-
-    func presentCamera(from presentingViewController: UIViewController) {
-        let picker = WPMediaCapturePresenter(presenting: presentingViewController)
-        picker.completionBlock = { [weak self] info in
-            if let image = info?[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self?.showImageCropViewController(image, presentingViewController: presentingViewController)
-            }
-        }
-        picker.mediaType = .image
-        picker.presentCapture()
-        mediaCapturePresenter = picker // Retain
-    }
-
-    func presentMediaLibraryPicker(from presentingViewController: UIViewController) {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.image]
-        options.allowMultipleSelection = false
-        options.showSearchBar = true
-        options.badgedUTTypes = [UTType.gif.identifier]
-        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
-        options.allowCaptureOfMedia = false
-
-        let pickerViewController = WPNavigationMediaPickerViewController(options: options)
-
-        let dataSource = MediaLibraryPickerDataSource(blog: blog)
-        dataSource.ignoreSyncErrors = true
-        self.dataSource = dataSource
-
-        pickerViewController.showGroupSelector = false
-        pickerViewController.dataSource = dataSource
-        pickerViewController.delegate = self
-        pickerViewController.modalPresentationStyle = .formSheet
-
-        presentingViewController.present(pickerViewController, animated: true)
-    }
-
     /// Presents a new WPMediaPickerViewController instance.
     ///
     @objc func presentPickerFrom(_ viewController: UIViewController) {
@@ -136,7 +91,7 @@ final class SiteIconPickerPresenter: NSObject {
 
     /// Shows a new ImageCropViewController for the given image.
     ///
-    fileprivate func showImageCropViewController(_ image: UIImage, presentingViewController: UIViewController? = nil) {
+    func showImageCropViewController(_ image: UIImage, presentingViewController: UIViewController? = nil) {
         DispatchQueue.main.async {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
@@ -241,17 +196,29 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
         self.showLoadingMessage()
         self.originalMedia = nil
-        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
-            if let image = image as? UIImage {
+        MediaPickerMenu.loadImage(for: result) { [weak self] image, error in
+            if let image {
                 self?.showImageCropViewController(image, presentingViewController: picker)
             } else {
+                DDLogError("Failed to load image: \(String(describing: error))")
                 self?.showErrorLoadingImageMessage()
             }
         }
     }
 }
 
-extension SiteIconPickerPresenter: UINavigationControllerDelegate {}
+extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let presentingViewController = picker.presentingViewController else {
+            return
+        }
+        presentingViewController.dismiss(animated: true) {
+            if let image = info[.originalImage] as? UIImage {
+                self.showImageCropViewController(image, presentingViewController: presentingViewController)
+            }
+        }
+    }
+}
 
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
