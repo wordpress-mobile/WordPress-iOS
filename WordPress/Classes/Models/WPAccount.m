@@ -173,7 +173,10 @@
                 [weakSelf setAuthToken:nil];
                 [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
                 if (weakSelf.isDefaultWordPressComAccount) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:weakSelf];
+                    // According to WordPressAppDelegate.handleDefaultAccountChangedNotification(_:), passing a
+                    // non-nil object indicates this notification is sent from log in flow. However, this workflow here,
+                    // where the current account's OAuth token becomes invalid, is more closer to a log out than log in.
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
                 }
             }];
         } else {
