@@ -5,5 +5,4 @@
 * [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
 * [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21341]
-* [**] [Jetpack-only] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]
-
+* [**] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]
