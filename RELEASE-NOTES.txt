@@ -1,3 +1,7 @@
+23.2
+-----
+
+
 23.1
 -----
 * [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
