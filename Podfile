@@ -90,7 +90,7 @@ def shared_with_extension_pods
 end
 
 def shared_style_pods
-  pod 'Gridicons', '~> 1.1.0'
+  pod 'Gridicons', '~> 1.2'
 end
 
 abstract_target 'Apps' do
