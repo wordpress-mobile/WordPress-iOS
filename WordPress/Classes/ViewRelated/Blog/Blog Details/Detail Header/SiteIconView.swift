@@ -42,10 +42,10 @@ class SiteIconView: UIView {
 
     /// Set the menu to be displayed when the button is tapped. The menu replaces
     /// teh default on tap action.
-    func setMenu(_ menu: UIMenu, onMenuTriggerd: @escaping () -> Void) {
+    func setMenu(_ menu: UIMenu, onMenuTriggered: @escaping () -> Void) {
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
-        button.addAction(UIAction { _ in onMenuTriggerd() }, for: .menuActionTriggered)
+        button.addAction(UIAction { _ in onMenuTriggered() }, for: .menuActionTriggered)
     }
 
     private let button: UIButton = {
