@@ -386,6 +386,8 @@
 		0A9610F928B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */; };
 		0A9610FA28B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */; };
 		0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */; };
+		0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
+		0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C2C83FA2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
@@ -6082,6 +6084,7 @@
 		0A69300A28B5AA5E00E98DE1 /* FullScreenCommentReplyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelTests.swift; sourceTree = "<group>"; };
 		0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+Comparable.swift"; sourceTree = "<group>"; };
 		0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelMock.swift; sourceTree = "<group>"; };
+		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodCache.swift; sourceTree = "<group>"; };
 		0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInsightsCache.swift; sourceTree = "<group>"; };
@@ -12398,6 +12401,7 @@
 				D80BC7A3207487F200614A59 /* MediaLibraryPicker.swift */,
 				0C8FC9A02A8BC8630059DCE4 /* PHPickerController+Extensions.swift */,
 				0C8FC9A62A8BFAAD0059DCE4 /* NSItemProvider+Exportable.swift */,
+				0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */,
 				7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */,
 				7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */,
 			);
@@ -21366,6 +21370,7 @@
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				98F93182239AF64800E4E96E /* ThisWeekWidgetStats.swift in Sources */,
+				0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */,
 				F16C35DA23F3F76C00C81331 /* PostAutoUploadMessageProvider.swift in Sources */,
 				91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */,
 				F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */,
@@ -24727,6 +24732,7 @@
 				FABB23AC2602FC2C00C8785C /* ReachabilityUtils.m in Sources */,
 				FABB23AD2602FC2C00C8785C /* TenorDataSource.swift in Sources */,
 				FABB23AE2602FC2C00C8785C /* ReaderTopicService+Subscriptions.swift in Sources */,
+				0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */,
 				98517E5A28220411001FFD45 /* BloggingPromptTableViewCell.swift in Sources */,
 				FAC1B81F29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */,
 				FABB23B02602FC2C00C8785C /* Data.swift in Sources */,
