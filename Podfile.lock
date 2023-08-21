@@ -10,15 +10,15 @@ PODS:
   - AppAuth/Core (1.6.2)
   - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
-  - AppCenter (4.4.1):
-    - AppCenter/Analytics (= 4.4.1)
-    - AppCenter/Crashes (= 4.4.1)
-  - AppCenter/Analytics (4.4.1):
+  - AppCenter (5.0.3):
+    - AppCenter/Analytics (= 5.0.3)
+    - AppCenter/Crashes (= 5.0.3)
+  - AppCenter/Analytics (5.0.3):
     - AppCenter/Core
-  - AppCenter/Core (4.4.1)
-  - AppCenter/Crashes (4.4.1):
+  - AppCenter/Core (5.0.3)
+  - AppCenter/Crashes (5.0.3):
     - AppCenter/Core
-  - AppCenter/Distribute (4.4.1):
+  - AppCenter/Distribute (5.0.3):
     - AppCenter/Core
   - Automattic-Tracks-iOS (2.3.0):
     - Sentry (~> 8.0)
@@ -144,8 +144,8 @@ DEPENDENCIES:
   - Alamofire (= 4.8.0)
   - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
-  - AppCenter (~> 4.1)
-  - AppCenter/Distribute (~> 4.1)
+  - AppCenter (~> 5.0)
+  - AppCenter/Distribute (~> 5.0)
   - Automattic-Tracks-iOS (~> 2.2)
   - CocoaLumberjack/Swift (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -248,7 +248,7 @@ SPEC CHECKSUMS:
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
-  AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
+  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   Automattic-Tracks-iOS: 310a9b65615d03db838fad6e58823effb4f385bf
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
@@ -294,6 +294,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 91e6d9b1f76f7e82a99373169d8c164b236bde2a
+PODFILE CHECKSUM: 16541c0d5d2e11700786894b4a1ad4f70f4481ed
 
 COCOAPODS: 1.12.1
