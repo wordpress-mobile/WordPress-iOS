@@ -110,7 +110,7 @@ abstract_target 'Apps' do
   ##
   pod 'Gifu', '3.3.1'
 
-  app_center_version = '~> 4.1'
+  app_center_version = '~> 5.0'
   app_center_configurations = %w[Release-Internal Release-Alpha]
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
