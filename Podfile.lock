@@ -35,7 +35,7 @@ PODS:
     - AppAuth (~> 1.4)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Gridicons (1.1.0)
+  - Gridicons (1.2.0)
   - GTMAppAuth (1.3.1):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
@@ -152,7 +152,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
-  - Gridicons (~> 1.1.0)
+  - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.102.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
@@ -256,7 +256,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
-  Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
+  Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Gutenberg: 315b07b2b9307335c0424b06626fae5e58b16729
@@ -294,6 +294,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: b27bb53370f0bbf6dfb011577e1198a701eac872
+PODFILE CHECKSUM: 1bcf1f88096998ad32654f2e96204960e16f29b2
 
 COCOAPODS: 1.12.1
