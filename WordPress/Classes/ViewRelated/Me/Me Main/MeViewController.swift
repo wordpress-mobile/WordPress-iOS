@@ -512,9 +512,9 @@ class MeViewController: UITableViewController {
 
 extension MeViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        // If we're not logged in yet, return app settings
+
         guard let _ = defaultAccount() else {
-            return AppSettingsViewController()
+            return nil
         }
 
         return myProfileViewController
