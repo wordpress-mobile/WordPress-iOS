@@ -2,12 +2,13 @@ import Foundation
 import CoreServices
 import UIKit
 import Photos
+import PhotosUI
 import WordPressShared
 import WPMediaPicker
 import Gutenberg
 import UniformTypeIdentifiers
 
-public typealias GutenbergMediaPickerHelperCallback = ([WPMediaAsset]?) -> Void
+public typealias GutenbergMediaPickerHelperCallback = ([Any]?) -> Void
 
 class GutenbergMediaPickerHelper: NSObject {
 
@@ -47,7 +48,33 @@ class GutenbergMediaPickerHelper: NSObject {
                                       dataSourceType: MediaPickerDataSourceType = .device,
                                       allowMultipleSelection: Bool,
                                       callback: @escaping GutenbergMediaPickerHelperCallback) {
+        if dataSourceType == .device, FeatureFlag.nativePhotoPicker.enabled {
+            presentNativePicker(filter: filter, allowMultipleSelection: allowMultipleSelection, completion: callback)
+        } else {
+            presentLegacyPicker(filter: filter, dataSourceType: dataSourceType, allowMultipleSelection: allowMultipleSelection, callback: callback)
+        }
+    }
 
+    private func presentNativePicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
+        didPickMediaCallback = completion
+
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
+        configuration.preferredAssetRepresentationMode = .compatible
+        if allowMultipleSelection {
+            configuration.selection = .ordered
+            configuration.selectionLimit = 0
+        }
+        configuration.filter = PHPickerFilter(filter)
+
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        context.present(picker, animated: true)
+    }
+
+    private func presentLegacyPicker(filter: WPMediaType,
+                                     dataSourceType: MediaPickerDataSourceType = .device,
+                                     allowMultipleSelection: Bool,
+                                     callback: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = callback
 
         let mediaPickerOptions = WPMediaPickerOptions.withDefaults(filter: filter, allowMultipleSelection: allowMultipleSelection)
@@ -213,6 +240,15 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         noResultsView.configureForNoAssets(userCanUploadMedia: false)
     }
 
+}
+
+extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        context.dismiss(animated: true)
+
+        didPickMediaCallback?(results.map(\.itemProvider))
+        didPickMediaCallback = nil
+    }
 }
 
 // MARK: - Media Editing

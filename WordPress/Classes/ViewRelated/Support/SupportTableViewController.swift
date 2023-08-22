@@ -22,6 +22,10 @@ class SupportTableViewController: UITableViewController {
     ///
     private var dismissTapped: (() -> ())?
 
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: controllerToShowFrom(), tag: sourceTag)
+    }()
+
     // MARK: - Init
 
     init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
@@ -241,19 +245,10 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                return
-            }
-            if RemoteFeatureFlag.contactSupport.enabled() {
-                let chatBotViewController = SupportChatBotViewController(viewModel: .init(), delegate: self)
-                self.navigationController?.pushViewController(chatBotViewController, animated: true)
-            } else {
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                    if identityUpdated {
-                        self?.reloadViewModel()
-                    }
-                }
-            }
+
+            self.coordinator.showSupport(onIdentityUpdated: {  [weak self] in
+                self?.reloadViewModel()
+            })
         }
     }
 
@@ -268,14 +263,9 @@ private extension SupportTableViewController {
         ZendeskUtils.pushNotificationRead()
         tableView.deselectSelectedRowWithAnimation(true)
 
-        guard let controllerToShowFrom = controllerToShowFrom() else {
-            return
-        }
-        ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: sourceTag) { [weak self] identityUpdated in
-            if identityUpdated {
-                self?.reloadViewModel()
-            }
-        }
+        self.coordinator.showTicketView(onIdentityUpdated: {  [weak self] in
+            self?.reloadViewModel()
+        })
     }
 
     func supportEmailSelected() -> ImmuTableAction {

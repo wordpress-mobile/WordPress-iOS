@@ -71,7 +71,14 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
     private func configureMoreButton(with blog: Blog) {
         frameView.addMoreMenu(
             items:
-                [UIMenu(options: .displayInline, children: [BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)])],
+                [
+                    UIMenu(
+                        options: .displayInline,
+                        children: [
+                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)
+                        ]
+                    )
+                ],
             card: .googleDomains
         )
     }

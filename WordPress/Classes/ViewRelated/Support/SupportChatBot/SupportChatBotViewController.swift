@@ -1,6 +1,7 @@
 import WebKit
 import WordPressFlux
 import SVProgressHUD
+import WordPressShared
 
 protocol SupportChatBotCreatedTicketDelegate: AnyObject {
     func onTicketCreated()
@@ -33,6 +34,7 @@ final class SupportChatBotViewController: UIViewController {
         super.viewDidLoad()
 
         title = Strings.title
+        setupNavigationBar()
         loadChatBot()
 
         viewModel.track(.supportChatbotStarted)
@@ -100,6 +102,21 @@ final class SupportChatBotViewController: UIViewController {
     }
 }
 
+private extension SupportChatBotViewController {
+    func setupNavigationBar() {
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.closeButton,
+                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+                                                               target: self,
+                                                               action: #selector(closeTapped))
+        }
+    }
+
+    @objc private func closeTapped() {
+        dismiss(animated: true)
+    }
+}
+
 extension SupportChatBotViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { (result, error) in
@@ -140,6 +157,7 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
 extension SupportChatBotViewController {
     private enum Strings {
         static let title = NSLocalizedString("support.chatBot.title", value: "Contact Support", comment: "Title of the view that shows support chat bot.")
+        static let closeButton = NSLocalizedString("support.chatBot.close.title", value: "Close", comment: "Dismiss the current view")
         static let ticketCreationLoadingMessage = NSLocalizedString("support.chatBot.ticketCreationLoading", value: "Creating support ticket...", comment: "Notice informing user that their support ticket is being created.")
         static let ticketCreationSuccessMessage = NSLocalizedString("support.chatBot.ticketCreationSuccess", value: "Ticket created", comment: "Notice informing user that their support ticket has been created.")
         static let ticketCreationFailureMessage = NSLocalizedString("support.chatBot.ticketCreationFailure", value: "Error submitting support ticket", comment: "Notice informing user that there was an error submitting their support ticket.")

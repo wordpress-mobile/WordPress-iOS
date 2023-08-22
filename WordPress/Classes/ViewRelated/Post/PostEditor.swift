@@ -26,10 +26,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     ///
     var post: AbstractPost { get set }
 
-    /// Whether the editor should open directly to the media picker.
-    ///
-    var isOpenedDirectlyForPhotoPost: Bool { get set }
-
     /// Initializer
     ///
     /// - Parameters:

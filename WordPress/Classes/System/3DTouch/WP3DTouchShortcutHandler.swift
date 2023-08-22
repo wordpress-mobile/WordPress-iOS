@@ -5,7 +5,6 @@ open class WP3DTouchShortcutHandler: NSObject {
     enum ShortcutIdentifier: String {
         case LogIn
         case NewPost
-        case NewPhotoPost
         case Stats
         case Notifications
 
@@ -33,11 +32,7 @@ open class WP3DTouchShortcutHandler: NSObject {
                 return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.shortcutNewPost)
-                rootViewPresenter.showPostTab(animated: false, toMedia: false)
-                return true
-            case ShortcutIdentifier.NewPhotoPost.type:
-                WPAnalytics.track(.shortcutNewPhotoPost)
-                rootViewPresenter.showPostTab(animated: false, toMedia: true)
+                rootViewPresenter.showPostTab(animated: false)
                 return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.shortcutStats)

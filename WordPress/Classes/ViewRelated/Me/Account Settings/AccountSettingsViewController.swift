@@ -422,6 +422,6 @@ private class AccountSettingsController: SettingsController {
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
-        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
+        static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
     }
 }
