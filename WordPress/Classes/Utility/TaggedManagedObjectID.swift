@@ -27,18 +27,7 @@ import Foundation
 ///
 /// - SeeAlso: swift-tagged: https://github.com/pointfreeco/swift-tagged
 struct TaggedManagedObjectID<Model: NSManagedObject>: Equatable {
-    var objectID: NSManagedObjectID
-
-    // This initialzer is declared as `private`, because we want to prevent mismatch between `Model` and the type
-    // that the `objectID` represents.
-    //
-    // When this private initialzer is called, we need to ensure the following requirements are satisfied at runtime:
-    // - The `objectID` is a permanent id.
-    // - The model associated with the given `objectID` is indeed `Model`.
-    private init(objectID: NSManagedObjectID) {
-        precondition(!objectID.isTemporaryID, "The `objectID` is not a permanent id. Call `obtainPermanentIDs` first.")
-        self.objectID = objectID
-    }
+    let objectID: NSManagedObjectID
 
     /// Create an `TaggedManagedObjectID` instance of an object that's already saved.
     init(saved object: Model) {
@@ -55,6 +44,17 @@ struct TaggedManagedObjectID<Model: NSManagedObject>: Equatable {
         }
 
         self = TaggedManagedObjectID<Model>(objectID: objectID)
+    }
+
+    // This initialzer is declared as `private`, because we want to prevent mismatch between `Model` and the type
+    // that the `objectID` represents.
+    //
+    // When this private initialzer is called, we need to ensure the following requirements are satisfied at runtime:
+    // - The `objectID` is a permanent id.
+    // - The model associated with the given `objectID` is indeed `Model`.
+    private init(objectID: NSManagedObjectID) {
+        precondition(!objectID.isTemporaryID, "The `objectID` is not a permanent id. Call `obtainPermanentIDs` first.")
+        self.objectID = objectID
     }
 }
 
