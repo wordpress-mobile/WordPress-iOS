@@ -40,13 +40,7 @@ class TaggedManagedObjectIDTests: CoreDataTestCase {
 
         let newContext = contextManager.newDerivedContext()
 
-        let expectation = expectation(description: "The query should fail because the model is not saved")
-        do {
-            _ = try newContext.existingObject(with: id)
-        } catch {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertThrowsError(try newContext.existingObject(with: id), "The query should fail because the model is not saved")
     }
 
     func testEqutable() throws {
