@@ -6,7 +6,7 @@
 
 @implementation PostService (PostHelper)
 
-- (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
+- (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     // Used to populate author information for self-hosted sites.
@@ -62,7 +62,7 @@
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         postPost.postType = remotePost.type;
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
-        [self updatePost:postPost withRemoteCategories:remotePost.categories];
+        [self updatePost:postPost withRemoteCategories:remotePost.categories inContext:managedObjectContext];
 
         NSString *publicID = nil;
         NSString *publicizeMessage = nil;
@@ -92,14 +92,14 @@
     post.statusAfterSync = post.status;
 }
 
-- (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories {
+- (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectID *blogObjectID = post.blog.objectID;
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
     for (RemotePostCategory *remoteCategory in remoteCategories) {
-        PostCategory *category = [PostCategory lookupWithBlogObjectID:blogObjectID categoryID:remoteCategory.categoryID inContext:self.managedObjectContext];
+        PostCategory *category = [PostCategory lookupWithBlogObjectID:blogObjectID categoryID:remoteCategory.categoryID inContext:managedObjectContext];
         if (!category) {
-            category = [PostCategory createWithBlogObjectID:blogObjectID inContext:self.managedObjectContext];
+            category = [PostCategory createWithBlogObjectID:blogObjectID inContext:managedObjectContext];
             category.categoryID = remoteCategory.categoryID;
             category.categoryName = remoteCategory.name;
             category.parentID = remoteCategory.parentID;

@@ -62,7 +62,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                   }
                               }
                               
-                              [self updatePost:post withRemotePost:remotePost];
+                              [self updatePost:post withRemotePost:remotePost inContext:self.managedObjectContext];
                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
                               if (success) {
@@ -219,7 +219,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                 }
                 
                 postInContext.isFirstTimePublish = isFirstTimePublish;
-                [self updatePost:postInContext withRemotePost:post];
+                [self updatePost:postInContext withRemotePost:post inContext:self.managedObjectContext];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
                 [self updateMediaForPost:postInContext success:^{
@@ -521,7 +521,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             if (!remotePost || [remotePost.status isEqualToString:PostStatusDeleted]) {
                 [self.managedObjectContext deleteObject:post];
             } else {
-                [self updatePost:postInContext withRemotePost:remotePost];
+                [self updatePost:postInContext withRemotePost:remotePost inContext:self.managedObjectContext];
                 postInContext.latest.statusAfterSync = postInContext.statusAfterSync;
                 postInContext.latest.status = postInContext.status;
             }
@@ -593,7 +593,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             DDLogError(@"%@", err);
         }
         if (postInContext) {
-            [self updatePost:postInContext withRemotePost:remotePost];
+            [self updatePost:postInContext withRemotePost:remotePost inContext:self.managedObjectContext];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
         if (success) {
@@ -654,7 +654,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 post = [blog createPost];
             }
         }
-        [self updatePost:post withRemotePost:remotePost];
+        [self updatePost:post withRemotePost:remotePost inContext:self.managedObjectContext];
         [posts addObject:post];
     }
     

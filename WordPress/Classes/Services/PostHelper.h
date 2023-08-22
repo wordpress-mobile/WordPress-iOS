@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PostService (PostHelper)
 
-- (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost;
+- (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end
 
