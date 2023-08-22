@@ -102,12 +102,13 @@ public class NotificationsScreen: ScreenObject {
         return self
     }
 
-    public func getNumberOfLikesForNotification() -> Int {
-        if let totalLikes = Int(likeCommentButton.label.prefix(1)) {
-            return totalLikes
-        }
-        return 0
+    public func getNumberOfLikesForNotification() -> (NotificationsScreen, Int) {
+        let totalLikesInString = likeCommentButton.label.prefix(1)
+        let totalLikes = Int(totalLikesInString) ?? 0
+
+        return (self, totalLikes)
     }
+
 
     public func likeComment() -> Self {
         likeCommentButton.tap()
@@ -116,9 +117,9 @@ public class NotificationsScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyCommentLiked(likes previousTotalLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
-        let updatedTotalLikes = getNumberOfLikesForNotification()
-        XCTAssertEqual(updatedTotalLikes, previousTotalLikes + 1, file: file, line: line)
+    public func verifyCommentLiked(likes previousLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
+        let (_, updatedLikes) = getNumberOfLikesForNotification()
+        XCTAssertEqual(updatedLikes, previousLikes + 1, file: file, line: line)
 
         return self
     }
