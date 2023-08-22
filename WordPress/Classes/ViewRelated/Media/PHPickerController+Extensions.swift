@@ -11,3 +11,21 @@ extension PHPickerConfiguration {
         return configuration
     }
 }
+
+extension PHPickerFilter {
+    init?(_ type: WPMediaType) {
+        switch type {
+        case .image:
+            self = .images
+        case .video:
+            self = .videos
+        case .audio, .other:
+            assertionFailure("Unsupported media type: \(type)")
+            return nil
+        case .all:
+            return nil
+        default:
+            return nil
+        }
+    }
+}
