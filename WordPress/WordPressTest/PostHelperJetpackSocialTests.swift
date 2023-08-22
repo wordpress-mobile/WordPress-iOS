@@ -2,7 +2,7 @@ import XCTest
 
 @testable import WordPress
 
-class PostService_JetpackSocialTests: CoreDataTestCase {
+class PostHelperJetpackSocialTests: CoreDataTestCase {
     let connectionId = 123
     let keyringId = 456
 
