@@ -6,10 +6,6 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
     let connectionId = 123
     let keyringId = 456
 
-    private lazy var service: PostService = {
-        .init(managedObjectContext: mainContext)
-    }()
-
     // MARK: - RemotePost -> Post tests
 
     func testMetadataWithConnectionIDKey() {
@@ -24,7 +20,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         ]
 
         // When
-        let result = service.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
+        let result = PostHelper.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
 
         // Then
         // the keyring ID should be used as the key, while keeping the entry intact.
@@ -43,7 +39,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         ]
 
         // When
-        let result = service.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
+        let result = PostHelper.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
 
         // Then
         // the keyring ID should be used as the key, while keeping the entry intact.
@@ -62,7 +58,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         ]
 
         // When
-        let result = service.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
+        let result = PostHelper.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
 
         // Then
         // the connection ID should be used as key.
@@ -81,7 +77,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         ]
 
         // When
-        let result = service.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
+        let result = PostHelper.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
 
         // Then
         // invalid entries should be ignored.
@@ -103,7 +99,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         let post = makePost(for: blog, disabledConnections: presetDisabledConnections)
 
         // When
-        let entries = service.publicizeMetadataEntries(for: post)
+        let entries = PostHelper.publicizeMetadataEntries(for: post)
 
         // Then
         XCTAssertEqual(entries.count, 2)
@@ -129,7 +125,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         let post = makePost(for: blog, disabledConnections: presetDisabledConnections)
 
         // When
-        let entries = service.publicizeMetadataEntries(for: post)
+        let entries = PostHelper.publicizeMetadataEntries(for: post)
 
         // Then
         XCTAssertEqual(entries.count, 2)
@@ -150,7 +146,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         let post = makePost(for: blog, disabledConnections: presetDisabledConnections)
 
         // When
-        let entries = service.publicizeMetadataEntries(for: post)
+        let entries = PostHelper.publicizeMetadataEntries(for: post)
 
         // Then
         XCTAssertEqual(entries.count, 1)
@@ -166,7 +162,7 @@ class PostService_JetpackSocialTests: CoreDataTestCase {
         let post = makePost(for: blog, disabledConnections: presetDisabledConnections)
 
         // When
-        let entries = service.publicizeMetadataEntries(for: post)
+        let entries = PostHelper.publicizeMetadataEntries(for: post)
 
         // Then
         // Dictionary entries keyed by 0 should be ignored. This is a bug from previous implementation.
