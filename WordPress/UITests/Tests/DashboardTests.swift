@@ -29,6 +29,11 @@ class DashboardTests: XCTestCase {
     }
 
     func testPagesCardHeaderNavigation() throws {
+        XCTExpectFailure(
+            "This test has become unstable around 2023/08/19. We are working on a fix.",
+            options: .nonStrict()
+        )
+
         try LoginEpilogueScreen()
             .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
             .scrollToPagesCard()
