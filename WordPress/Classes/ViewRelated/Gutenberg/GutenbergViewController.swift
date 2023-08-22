@@ -1086,7 +1086,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
-        post.managedObjectContext!.perform {
+        post.managedObjectContext?.perform {
             WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
         }
     }
