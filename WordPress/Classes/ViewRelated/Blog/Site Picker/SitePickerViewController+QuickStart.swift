@@ -40,7 +40,7 @@ extension SitePickerViewController {
         blogDetailHeaderView.toggleSpotlightOnSiteIcon()
     }
 
-    private func showNoticeAsNeeded() {
+    func showNoticeAsNeeded() {
         if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }

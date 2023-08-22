@@ -5,6 +5,7 @@ import WordPressShared
 import WPMediaPicker
 import MobileCoreServices
 import UniformTypeIdentifiers
+import PhotosUI
 
 /// Displays the user's media library in a grid
 ///
@@ -470,6 +471,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func stopObservingNavigationBarClipsToBounds() {
         kvoTokens?.forEach({ $0.invalidate() })
+    }
+}
+
+extension MediaLibraryViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true)
+
+        for result in results {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
+            MediaCoordinator.shared.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+        }
     }
 }
 
