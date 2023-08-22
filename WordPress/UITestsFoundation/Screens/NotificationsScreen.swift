@@ -49,7 +49,7 @@ public class NotificationsScreen: ScreenObject {
     var replyTextView: XCUIElement { replyTextViewGetter(app) }
     var trashCommentButton: XCUIElement { trashCommentButtonGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ notificationsTableGetter ],
             app: app
@@ -98,6 +98,24 @@ public class NotificationsScreen: ScreenObject {
         let expectedReplyIndicatorLabel = NSLocalizedString("You replied to this comment.", comment: "Text to look for")
         let actualReplyIndicatorLabel = replyIndicatorText.label.trimmingCharacters(in: .whitespaces)
         XCTAssertEqual(actualReplyIndicatorLabel, expectedReplyIndicatorLabel, file: file, line: line)
+
+        return self
+    }
+
+    public func getNumberOfLikesForNotification() -> Int {
+        return Int(likeCommentButton.label.prefix(1))!
+    }
+
+    public func likeComment() -> Self {
+        likeCommentButton.tap()
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyCommentLiked(likes previousTotalLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
+        let updatedTotalLikes = getNumberOfLikesForNotification()
+        XCTAssertEqual(updatedTotalLikes, previousTotalLikes + 1, file: file, line: line)
 
         return self
     }

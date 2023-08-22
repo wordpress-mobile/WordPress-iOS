@@ -44,4 +44,15 @@ class NotificationTests: XCTestCase {
             .replyToComment(withText: .commentText)
             .verifyReplySent()
     }
+
+    func testLikeNotification() throws {
+        let numberOfLikes = try TabNavComponent()
+            .goToNotificationsScreen()
+            .openNotification(withSubstring: .commentNotificationString)
+            .getNumberOfLikesForNotification()
+
+        try NotificationsScreen()
+            .likeComment()
+            .verifyCommentLiked(likes: numberOfLikes)
+    }
 }
