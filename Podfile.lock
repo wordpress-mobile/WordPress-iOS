@@ -122,7 +122,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
-  - WordPressUI (1.14.0)
+  - WordPressUI (1.14.2-beta.1)
   - WPMediaPicker (1.8.9)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -171,7 +171,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 6.3)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
-  - WordPressUI (~> 1.14)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `task/refactor-gravatar`)
   - WPMediaPicker (>= 1.8.9, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -215,7 +215,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressKit
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -233,6 +232,9 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.101.0.podspec
+  WordPressUI:
+    :branch: task/refactor-gravatar
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -242,6 +244,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
+  WordPressUI:
+    :commit: c98f22c458b8eb562e484be7e585f268485bb93e
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -282,7 +287,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 9bfb316cb165e1997b73aa94d92fadc991cc9725
   WordPressKit: f33a89b148d9cce96933f0900701aff592a796f7
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
-  WordPressUI: 09b5477f8678446f27e651cccb6b6401bd19d9a3
+  WordPressUI: 26130fbb5d7012f9ff7c76ad0d5b046f592ddfaf
   WPMediaPicker: 0ec0ee22f68e8cb9d83e71bdcf2e76d931ef7f91
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -294,6 +299,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 7c2cb3345b7f74a702dad5416d46a9c446e9cf13
+PODFILE CHECKSUM: b44c13cca4f63c107b6b29e1bb6360e8932f6546
 
 COCOAPODS: 1.12.1
