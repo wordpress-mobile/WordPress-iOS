@@ -1,8 +1,70 @@
 import Foundation
 import Photos
+import PhotosUI
 import WordPressFlux
+import WPMediaPicker
+
+// MARK: - PostSettingsViewController (Featured Image Menu)
+
+extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate {
+    @objc func makeSetFeaturedImageCell() -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.selectionStyle = .none
+
+        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = Strings.buttonSetFeaturedImage
+        configuration.baseForegroundColor = UIColor.primary
+        button.configuration = configuration
+        button.menu = makeSetFeaturedImageMenu()
+        button.showsMenuAsPrimaryAction = true
+
+        cell.contentView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.pinSubviewToAllEdges(button)
+
+        cell.accessibilityIdentifier = "SetFeaturedImage"
+        return cell
+    }
+
+    private func makeSetFeaturedImageMenu() -> UIMenu {
+        let menu = MediaPickerMenu(viewConroller: self, filter: .images)
+        return UIMenu(children: [
+            menu.makePhotosAction(delegate: self),
+            menu.makeCameraAction(delegate: self),
+            menu.makeMediaAction(blog: self.apost.blog, delegate: self)
+        ])
+    }
+
+    // MARK: PHPickerViewControllerDelegate
+
+    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        self.dismiss(animated: true) {
+            if let result = results.first {
+                self.setFeaturedImage(with: result.itemProvider)
+            }
+        }
+    }
+
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        self.dismiss(animated: true) {
+            if let image = info[.originalImage] as? UIImage {
+                self.setFeaturedImage(with: image)
+            }
+        }
+    }
+}
+
+// MARK: - PostSettingsViewController (Featured Image Upload)
 
 extension PostSettingsViewController {
+    func setFeaturedImage(with asset: ExportableAsset) {
+        guard let media = MediaCoordinator.shared.addMedia(from: asset, to: apost) else {
+            return
+        }
+        self.apost.featuredImage = media
+        self.setupObservingOf(media: media)
+    }
 
     @objc func setFeaturedImage(asset: PHAsset) {
         guard let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost) else {
@@ -13,7 +75,7 @@ extension PostSettingsViewController {
     }
 
     @objc func setFeaturedImage(media: Media) {
-       apost.featuredImage = media
+        apost.featuredImage = media
         if !media.hasRemote {
             MediaCoordinator.shared.retryMedia(media)
             setupObservingOf(media: media)
@@ -39,7 +101,7 @@ extension PostSettingsViewController {
         })
         let progress = MediaCoordinator.shared.progress(for: media)
         if let url = media.absoluteThumbnailLocalURL, let data = try? Data(contentsOf: url) {
-          progress?.setUserInfoObject(UIImage(data: data), forKey: .WPProgressImageThumbnailKey)
+            progress?.setUserInfoObject(UIImage(data: data), forKey: .WPProgressImageThumbnailKey)
         }
         featuredImageProgress = progress
     }
@@ -84,7 +146,7 @@ extension PostSettingsViewController {
         }
     }
 
-      @objc func showFeaturedImageRemoveOrRetryAction(atIndexPath indexPath: IndexPath) {
+    @objc func showFeaturedImageRemoveOrRetryAction(atIndexPath indexPath: IndexPath) {
         guard let media = apost.featuredImage else {
             return
         }
@@ -97,14 +159,14 @@ extension PostSettingsViewController {
         alertController.addActionWithTitle(FeaturedImageActionSheet.retryUploadActionTitle,
                                            style: .default,
                                            handler: { (action) in
-                                                self.setFeaturedImage(media: media)
+            self.setFeaturedImage(media: media)
         })
 
         alertController.addActionWithTitle(FeaturedImageActionSheet.removeActionTitle,
                                            style: .destructive,
                                            handler: { (action) in
-                                                self.apost.featuredImage = nil
-                                                self.apost.removeMediaObject(media)
+            self.apost.featuredImage = nil
+            self.apost.removeMediaObject(media)
         })
         if let error = media.error {
             alertController.message = error.localizedDescription
@@ -139,5 +201,8 @@ extension PostSettingsViewController {
             comment: "User action to remove featured media."
         )
     }
+}
 
+private enum Strings {
+    static let buttonSetFeaturedImage = NSLocalizedString("postSettings.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
 }
