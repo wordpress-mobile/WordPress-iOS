@@ -1,8 +1,8 @@
 import Foundation
 
-/// `TaggedManagedObjectID` is a `NSManagedObjectID` wrapper that also contains the model type of the `NSManagedObjectID`.
+/// `TaggedManagedObjectID` is an `NSManagedObjectID` wrapper that also contains the model type of the `NSManagedObjectID`.
 ///
-/// By using this strongly typed `NSManagedObjectID`, we can declare APIs that're bound to specific model types, thus
+/// By using this strongly typed `NSManagedObjectID`, we can declare APIs that are bound to specific model types, thus
 /// preventing an incorrect object id being used as argument.
 ///
 /// Take the following function as an example,
@@ -18,12 +18,12 @@ import Foundation
 /// func getPost(fromBlogID: TaggedManagedObjectID<Blog>)
 /// ```
 ///
-/// Now the type `Blog` is built into the function signature, and Swift compiler would report an error if we call it using
-/// `getPost(fromBlogID: themeObjectID)`.
+/// Now the type `Blog` is built into the function signature, and the Swift compiler would report an error if we call it
+/// using `getPost(fromBlogID: themeObjectID)`.
 ///
 /// The type name is inspired by the swift-tagged library. The reason we don't use that library is the library exposes
 /// a public initliaser `init(rawValue:)` which is not what we want. With this public initialiser available for all users,
-/// We can't perform the validation described in `init(objectID:)`.
+/// we can't perform the validation described in `init(objectID:)`.
 ///
 /// - SeeAlso: swift-tagged: https://github.com/pointfreeco/swift-tagged
 struct TaggedManagedObjectID<Model: NSManagedObject>: Equatable {
