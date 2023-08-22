@@ -11,10 +11,6 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
     }
 
-    fileprivate func makeTestError() -> NSError {
-        return NSError(domain: "org.wordpress.media-tests", code: 1, userInfo: nil)
-    }
-
     override func setUp() {
         super.setUp()
         mediaProgressCoordinator = MediaProgressCoordinator()
@@ -146,7 +142,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // simulate a failed request
         progress.completedUnitCount = 0
 
-        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: .testInstance(), toMediaID: "1")
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
 
@@ -169,7 +165,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // Fail all the requests
         mediaProgressCoordinator.mediaInProgress.values.enumerated().forEach({ index, progress in
             progress.completedUnitCount = 0
-            mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "\(index+1)")
+            mediaProgressCoordinator.attach(error: .testInstance(), toMediaID: "\(index+1)")
         })
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
@@ -194,8 +190,8 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         mediaProgressCoordinator.mediaInProgress["1"]!.completedUnitCount = 0
         mediaProgressCoordinator.mediaInProgress["2"]!.completedUnitCount = 0
 
-        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "1")
-        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "2")
+        mediaProgressCoordinator.attach(error: .testInstance(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: .testInstance(), toMediaID: "2")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
 

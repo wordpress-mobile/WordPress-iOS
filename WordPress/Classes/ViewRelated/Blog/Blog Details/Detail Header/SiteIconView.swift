@@ -40,6 +40,14 @@ class SiteIconView: UIView {
 
     private var dropInteraction: UIDropInteraction?
 
+    /// Set the menu to be displayed when the button is tapped. The menu replaces
+    /// teh default on tap action.
+    func setMenu(_ menu: UIMenu, onMenuTriggered: @escaping () -> Void) {
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        button.addAction(UIAction { _ in onMenuTriggered() }, for: .menuActionTriggered)
+    }
+
     private let button: UIButton = {
         let button = UIButton(frame: .zero)
         button.backgroundColor = UIColor.secondaryButtonBackground

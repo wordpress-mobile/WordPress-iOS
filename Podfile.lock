@@ -40,7 +40,7 @@ PODS:
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
-  - Gutenberg (1.101.0)
+  - Gutenberg (1.102.0)
   - JTAppleCalendar (8.0.3)
   - Kanvas (1.4.4)
   - MediaEditor (1.2.2):
@@ -123,7 +123,7 @@ PODS:
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
   - WordPressUI (1.14.0)
-  - WPMediaPicker (1.8.9)
+  - WPMediaPicker (1.8.10-beta.1)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
   - ZendeskCoreSDK (2.5.1)
@@ -153,7 +153,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.1.0)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.101.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.102.0.podspec`)
   - JTAppleCalendar (~> 8.0.2)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -172,7 +172,7 @@ DEPENDENCIES:
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
   - WordPressUI (~> 1.14)
-  - WPMediaPicker (>= 1.8.9, ~> 1.8)
+  - WPMediaPicker (>= 1.8.10-beta.1, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -232,7 +232,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.101.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.102.0.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -259,7 +259,7 @@ SPEC CHECKSUMS:
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  Gutenberg: 8394de90eb2d8b5f87310277d1a9594b7cedc36f
+  Gutenberg: 315b07b2b9307335c0424b06626fae5e58b16729
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -283,7 +283,7 @@ SPEC CHECKSUMS:
   WordPressKit: f33a89b148d9cce96933f0900701aff592a796f7
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
   WordPressUI: 09b5477f8678446f27e651cccb6b6401bd19d9a3
-  WPMediaPicker: 0ec0ee22f68e8cb9d83e71bdcf2e76d931ef7f91
+  WPMediaPicker: d669d11c38f78597edcb338a58a0d973ae51912a
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -294,6 +294,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 7c2cb3345b7f74a702dad5416d46a9c446e9cf13
+PODFILE CHECKSUM: 25832366684a36de2e9c20ef39f83bb599f54b63
 
 COCOAPODS: 1.12.1

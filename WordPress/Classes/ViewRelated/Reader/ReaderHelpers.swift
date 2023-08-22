@@ -366,18 +366,23 @@ struct ReaderPostMenuButtonTitles {
     }
 
     class func dispatchToggleFollowSiteMessage(post: ReaderPost, follow: Bool, success: Bool) {
+        guard let siteID = post.siteID else {
+            /// This is a workaround to prevent a crash from occurring when trying to pass a `nil` site ID to dispatchToggleFollowSiteMessage.
+            /// The root issue is that post.siteID should never be nil when this method is called.
+            CrashLogging.main.logMessage("Expected siteID to exist", level: .error)
+            return
+        }
+
         let blogName = {
             guard let blogNameForDisplay = post.blogNameForDisplay() else {
-                if let siteID = post.siteID, let postID = post.postID {
-                    CrashLogging.main.logMessage("Expected blogNameForDisplay() to exist",
-                                                 properties: ["siteID": siteID, "postID": postID],
+                CrashLogging.main.logMessage("Expected blogNameForDisplay() to exist",
+                                                 properties: ["siteID": siteID, "postID": post.postID ?? "nil"],
                                                  level: .error)
-                }
                 return NoticeMessages.unknownSiteText
             }
             return blogNameForDisplay
         }()
-        dispatchToggleFollowSiteMessage(siteTitle: blogName, siteID: post.siteID, follow: follow, success: success)
+        dispatchToggleFollowSiteMessage(siteTitle: blogName, siteID: siteID, follow: follow, success: success)
     }
 
     class func dispatchToggleFollowSiteMessage(site: ReaderSiteTopic, follow: Bool, success: Bool) {

@@ -3,6 +3,8 @@ import XCTest
 
 // These tests are Jetpack only.
 class DashboardTests: XCTestCase {
+
+    @MainActor
     override func setUpWithError() throws {
         setUpTestSuite()
 

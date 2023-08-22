@@ -171,6 +171,11 @@ class PostBuilder {
         return self
     }
 
+    func with(disabledConnections: [NSNumber: [String: String]]) -> PostBuilder {
+        post.disabledPublicizeConnections = disabledConnections
+        return self
+    }
+
     func `is`(sticked: Bool) -> PostBuilder {
         post.isStickyPost = sticked
         return self

@@ -49,6 +49,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }()
 
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
+    }()
+
     // MARK: - Aztec
 
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -96,8 +100,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var onClose: ((Bool, Bool) -> Void)?
 
-    var isOpenedDirectlyForPhotoPost: Bool = false
-
     var postIsReblogged: Bool = false
 
     var isEditorClosing: Bool = false
@@ -134,29 +136,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
         }
         mediaToInsertOnPost = []
-    }
-
-    private func showMediaSelectionOnStart() {
-        isOpenedDirectlyForPhotoPost = false
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: .image,
-                                                       dataSourceType: .device,
-                                                       allowMultipleSelection: false,
-                                                       callback: {(asset) in
-                                                        guard let phAsset = asset as? [PHAsset] else {
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
-                                                            guard let media = media,
-                                                                let mediaInfo = media.first,
-                                                                let mediaID = mediaInfo.id,
-                                                                let mediaURLString = mediaInfo.url,
-                                                                let mediaURL = URL(string: mediaURLString) else {
-                                                                return
-                                                            }
-                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
-                                                        })
-        })
     }
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -511,6 +490,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
         presentEditingModeSwitchedNotice()
+
+        navigationBarManager.undoButton.isHidden = mode == .html
+        navigationBarManager.redoButton.isHidden = mode == .html
     }
 
     private func presentEditingModeSwitchedNotice() {
@@ -962,9 +944,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         if isFirstGutenbergLayout {
             insertPrePopulatedMedia()
-            if isOpenedDirectlyForPhotoPost {
-                showMediaSelectionOnStart()
-            }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
         }
@@ -1097,7 +1076,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestContactCustomerSupport() {
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+        coordinator.showSupport()
     }
 
     func gutenbergDidRequestGotoCustomerSupportOptions() {
