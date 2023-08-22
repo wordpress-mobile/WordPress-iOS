@@ -103,7 +103,10 @@ public class NotificationsScreen: ScreenObject {
     }
 
     public func getNumberOfLikesForNotification() -> Int {
-        return Int(likeCommentButton.label.prefix(1))!
+        if let totalLikes = Int(likeCommentButton.label.prefix(1)) {
+            return totalLikes
+        }
+        return 0
     }
 
     public func likeComment() -> Self {
