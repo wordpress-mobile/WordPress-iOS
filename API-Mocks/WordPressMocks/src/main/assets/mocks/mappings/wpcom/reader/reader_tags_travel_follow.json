@@ -1,0 +1,33 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/rest/v1.1/read/tags/travel/mine/new",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "subscribed": true,
+      "tags": [
+        {
+          "ID": "123",
+          "slug": "travel",
+          "title": "Travel",
+          "display_name": "travel",
+          "description": null,
+          "URL": "https://public-api.wordpress.com/rest/v1.1/read/tags/travel/posts"
+        }
+      ],
+      "added_tag": "123"
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

@@ -40,4 +40,13 @@ class ReaderTests: XCTestCase {
             .replyToPost(commentContent)
             .verifyCommentSent(commentContent)
     }
+
+    func testFollowNewTopicOnDiscover() throws {
+        try ReaderScreen()
+            .openDiscover()
+            .selectTopic()
+            .verifyTopicLoaded()
+            .followTopic()
+            .verifyTopicFollowed()
+    }
 }
