@@ -4,9 +4,9 @@
 
 @import WordPressKit;
 
-@implementation PostService (PostHelper)
+@implementation PostHelper
 
-- (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
++ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     // Used to populate author information for self-hosted sites.
@@ -92,7 +92,7 @@
     post.statusAfterSync = post.status;
 }
 
-- (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
++ (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectID *blogObjectID = post.blog.objectID;
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
@@ -108,14 +108,14 @@
     }
 }
 
-- (void)updateCommentsForPost:(AbstractPost *)post
++ (void)updateCommentsForPost:(AbstractPost *)post
 {
     NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
     NSSet *allComments = [post.blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID = %@", post.postID]];
     [currentComments unionSet:allComments];
 }
 
-- (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {
++ (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {
     NSArray *matchingEntries = [metadata filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %@", key]];
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
     // In any case, they should be sorted by id, so `lastObject` should have the newer value
