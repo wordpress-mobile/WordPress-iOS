@@ -53,6 +53,45 @@ class TaggedManagedObjectIDTests: CoreDataTestCase {
         XCTAssertEqual(TaggedManagedObjectID(saved: post), savedID)
     }
 
+}
+
+// MARK: – Covariance workaround demo
+
+extension TaggedManagedObjectIDTests {
+
+    // Covariance is the ability to use a more derived type (a subclass) in place of a less derived type (a superclass).
+    //
+    // When we declare a generic type like `TaggedManagedObjectID<Model>`, we lose type-hierarchy information of the
+    // generic parameter `Model`. That means the compiler will not accept a `TaggedManagedObjectID<Post>` instance for
+    // a parameter defined as `TaggedManagedObjectID<AbstractPost>` even though `Post` is a subtype of `AbstractPost`.
+    //
+    // However, Swift compiler has special treatment for its standard library types like `Array` and `Set`: You can pass
+    // an `Array<Post>` instance for a parameter defined as `Array<AbstractPost>`.
+    //
+    // Here is a `swift repl` output to demostrate this Swift feature:
+    //
+    // ```
+    // $ swift repl
+    // Welcome to Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100).
+    // Type :help for assistance.
+    //   1> class Parent {}
+    //   2> class Child: Parent {}
+    //   3> print(Child() is Parent)
+    // true
+    //   4> struct Foo<T> {}
+    //   5> print(Foo<Child>() is Foo<Parent>)
+    // false
+    //   6> print(Array<Child>() is Array<Parent>)
+    // true
+    // ```
+    //
+    // We don't get any special treatment from Swift compiler, so we'll have to make our own workaround, since it's
+    // not uncommon to declare a function which accepts `NSManagedObjectID` instances of a certain type and its subtypes.
+    //
+    // Below is a demonstration of how to work around this limitation by using a generic function.
+
+    // If this test compiles, then the overload definition (see below) works.
+
     // This is not really a test. More like a demostration of how to workaround Swift compiler's covariance support.
     func testCovariance() throws {
         let post = PostBuilder(contextManager.mainContext).with(author: "WordPress.com").build()
