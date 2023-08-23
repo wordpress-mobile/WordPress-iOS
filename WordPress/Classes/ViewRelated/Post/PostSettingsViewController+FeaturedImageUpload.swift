@@ -28,7 +28,7 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     }
 
     private func makeSetFeaturedImageMenu() -> UIMenu {
-        let menu = MediaPickerMenu(viewConroller: self, filter: .images)
+        let menu = MediaPickerMenu(viewController: self, filter: .images)
         return UIMenu(children: [
             menu.makePhotosAction(delegate: self),
             menu.makeCameraAction(delegate: self),
