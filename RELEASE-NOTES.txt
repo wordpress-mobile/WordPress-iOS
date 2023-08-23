@@ -2,6 +2,7 @@
 -----
 * [*] Remove the "New Photo Post" app quick action [#21369](https://github.com/wordpress-mobile/WordPress-iOS/pull/21369)
 * [*] (Internal) Fix unbounded growth of number media observers in Post Editor (performance issue) [#21352](https://github.com/wordpress-mobile/WordPress-iOS/pull/21352)
+* [**] [internal] Fix a crash when disconnecting the app from the "Connected Applications" on WordPress.com. [#21375]
 
 23.1
 -----
