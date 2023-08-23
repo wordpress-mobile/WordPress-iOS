@@ -474,6 +474,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 }
 
+// MARK: - PHPickerViewControllerDelegate
+
 extension MediaLibraryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
@@ -484,6 +486,42 @@ extension MediaLibraryViewController: PHPickerViewControllerDelegate {
         }
     }
 }
+
+// MARK: - ImagePickerControllerDelegate
+
+extension MediaLibraryViewController: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        dismiss(animated: true)
+
+        func addAsset(from exportableAsset: ExportableAsset) {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker)
+            MediaCoordinator.shared.addMedia(from: exportableAsset, to: blog, analyticsInfo: info)
+        }
+
+        guard let mediaType = info[.mediaType] as? String else {
+            return
+        }
+        switch mediaType {
+        case UTType.image.identifier:
+            if let image = info[.originalImage] as? UIImage {
+                addAsset(from: image)
+            }
+
+        case UTType.movie.identifier:
+            guard let videoURL = info[.mediaURL] as? URL else {
+                return
+            }
+            guard self.blog.canUploadVideo(from: videoURL) else {
+                self.presentVideoLimitExceededAfterCapture(on: self)
+                return
+            }
+            addAsset(from: videoURL as NSURL)
+        default:
+            break
+        }
+    }
+}
+
 
 // MARK: - UIDocumentPickerDelegate
 

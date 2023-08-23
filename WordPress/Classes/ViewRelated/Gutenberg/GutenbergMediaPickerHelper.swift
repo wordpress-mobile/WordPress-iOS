@@ -128,14 +128,14 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
                 }
 
             case UTType.movie.identifier:
-                guard let mediaURL = info[.mediaURL] as? URL else {
+                guard let videoURL = info[.mediaURL] as? URL else {
                     return
                 }
-                guard self.post.blog.canUploadVideo(from: mediaURL) else {
+                guard self.post.blog.canUploadVideo(from: videoURL) else {
                     self.presentVideoLimitExceededAfterCapture(on: self.context)
                     return
                 }
-                self.didPickMediaCallback?([mediaURL])
+                self.didPickMediaCallback?([videoURL])
                 self.didPickMediaCallback = nil
             default:
                 break
