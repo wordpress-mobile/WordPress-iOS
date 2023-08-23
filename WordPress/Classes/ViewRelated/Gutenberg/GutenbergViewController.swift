@@ -650,12 +650,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .mediaLibrary,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: {(assets) in
-                                                        guard let media = assets as? [Media] else {
-                                                            callback(nil)
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
+                                                       callback: { [weak self] assets in
+            guard let self, let media = assets as? [Media] else {
+                callback(nil)
+                return
+            }
+            self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
         })
     }
 
@@ -665,8 +665,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .device,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: { assets in
-            guard let assets, !assets.isEmpty else {
+                                                       callback: { [weak self] assets in
+            guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
             }
             self.mediaInserterHelper.insertFromDevice(assets, callback: callback)
