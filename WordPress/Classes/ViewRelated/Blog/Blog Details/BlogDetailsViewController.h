@@ -167,6 +167,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
 @property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
+@property (nonatomic, strong, nullable) BlogDetailsRow *meRow;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;

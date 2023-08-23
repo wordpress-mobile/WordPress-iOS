@@ -18,8 +18,21 @@ extension BlogDetailsViewController {
         }
     }
 
-    private func showMe() {
-        let controller = MeViewController()
-        presentationDelegate?.presentBlogDetailsViewController(controller)
+    @objc func observeGravatarImageUpdate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
+    }
+
+    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+            let email = userInfo["email"] as? String,
+            let image = userInfo["image"] as? UIImage,
+            let url = Gravatar.gravatarUrl(for: email),
+            let gravatarIcon = image.gravatarIcon() else {
+                return
+        }
+
+        ImageCache.shared.setImage(image, forKey: url.absoluteString)
+        meRow?.image = gravatarIcon
+        tableView.reloadData()  // FIXME: only reload Me row
     }
 }

@@ -399,6 +399,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self observeManagedObjectContextObjectsDidChangeNotification];
 
     [self startObservingQuickStart];
+    
+    [self observeGravatarImageUpdate];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1363,6 +1365,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                          [weakSelf showMe];
                                      }];
         [self downloadGravatarImageFor:row];
+        self.meRow = row;
         [rows addObject:row];
     }
 

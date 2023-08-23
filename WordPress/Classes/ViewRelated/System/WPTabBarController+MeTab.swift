@@ -21,20 +21,19 @@ extension WPTabBarController {
             guard let image else {
                 return
             }
-            self?.meNavigationController?.tabBarItem.updateGravatarImage(image)
+            self?.meNavigationController?.tabBarItem.image = image.gravatarIcon()
         }
     }
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-            let image = userInfo["image"] as? UIImage else {
+            let email = userInfo["email"] as? String,
+            let image = userInfo["image"] as? UIImage,
+            let url = Gravatar.gravatarUrl(for: email) else {
                 return
         }
 
-        meNavigationController?.tabBarItem.updateGravatarImage(image)
+        ImageCache.shared.setImage(image, forKey: url.absoluteString)
+        meNavigationController?.tabBarItem.image = image.gravatarIcon()
     }
-}
-
-extension NSNotification.Name {
-    static let GravatarImageUpdateNotification = NSNotification.Name(rawValue: "GravatarImageUpdateNotification")
 }
