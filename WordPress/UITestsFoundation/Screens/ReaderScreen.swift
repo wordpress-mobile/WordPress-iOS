@@ -147,7 +147,8 @@ public class ReaderScreen: ScreenObject {
 
     @discardableResult
     public func verifyTopicFollowed() -> Self {
-        XCTAssertTrue(followingButton.waitForExistence(timeout: 3) && followingButton.isSelected)
+        XCTAssertTrue(followingButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(followingButton.isSelected)
 
         return self
     }
