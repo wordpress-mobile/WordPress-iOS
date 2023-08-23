@@ -99,7 +99,7 @@ extension DashboardGoogleDomainsCardCell: DashboardGoogleDomainsCardCellProtocol
 private extension DashboardGoogleDomainsCardCell {
     enum Strings {
         static let cardTitle = NSLocalizedString(
-            "mySite.domain.focus.card.title",
+            "mySite.domain.focus.cardCell.title",
             value: "News",
             comment: "Title for the domain focus card on My Site"
         )

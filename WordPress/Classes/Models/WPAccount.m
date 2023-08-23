@@ -173,7 +173,13 @@
                 [weakSelf setAuthToken:nil];
                 [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
                 if (weakSelf.isDefaultWordPressComAccount) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:weakSelf];
+                    // At the time of writing, there is an implicit assumption on what the object parameter value means.
+                    // For example, the WordPressAppDelegate.handleDefaultAccountChangedNotification(_:) subscriber inspects the object parameter to decide whether the notification was sent as a result of a login.
+                    // If the object is non-nil, then the method considers the source a login.
+                    //
+                    // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
+                    // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
                 }
             }];
         } else {

@@ -1241,6 +1241,9 @@
 		4A2172FF28F688890006F4F1 /* Blog+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172FD28F688890006F4F1 /* Blog+Media.swift */; };
 		4A266B8F282B05210089CF3D /* JSONObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B8E282B05210089CF3D /* JSONObjectTests.swift */; };
 		4A266B91282B13A70089CF3D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */; };
+		4A2C73E12A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */; };
+		4A2C73E22A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */; };
+		4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */; };
 		4A358DE629B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
@@ -6820,6 +6823,8 @@
 		4A2172FD28F688890006F4F1 /* Blog+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Media.swift"; sourceTree = "<group>"; };
 		4A266B8E282B05210089CF3D /* JSONObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectTests.swift; sourceTree = "<group>"; };
 		4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
+		4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedManagedObjectID.swift; sourceTree = "<group>"; };
+		4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedManagedObjectIDTests.swift; sourceTree = "<group>"; };
 		4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeService+Lookup.swift"; sourceTree = "<group>"; };
 		4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharingButton+Lookup.swift"; sourceTree = "<group>"; };
 		4A526BDD296BE9A50007B5BA /* CoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataService.m; sourceTree = "<group>"; };
@@ -15341,6 +15346,7 @@
 			children = (
 				93E9050319E6F242005513C9 /* ContextManagerTests.swift */,
 				B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */,
+				4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */,
 				931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */,
 				FE320CC4294705990046899B /* ReaderPostBackupTests.swift */,
 			);
@@ -15488,6 +15494,7 @@
 				4A9B81E22921AE02007A05D1 /* ContextManager.swift */,
 				E1E5EE36231E47A80018E9E3 /* ContextManager+ErrorHandling.swift */,
 				B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */,
+				4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */,
 				24F3789725E6E62100A27BB7 /* NSManagedObject+Lookup.swift */,
 			);
 			name = CoreData;
@@ -21345,6 +21352,7 @@
 				F48D44B6298992C30051EAA6 /* BlockedSite.swift in Sources */,
 				FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */,
 				D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */,
+				4A2C73E12A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				E64384831C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift in Sources */,
 				F504D2B025D60C5900A2764C /* StoryPoster.swift in Sources */,
@@ -23508,6 +23516,7 @@
 				8B6BD55024293FBE00DB8F28 /* PrepublishingNudgesViewControllerTests.swift in Sources */,
 				DC13DB7E293FD09F00E33561 /* StatsInsightsStoreTests.swift in Sources */,
 				ACACE3AE28D729FA000992F9 /* NoResultsViewControllerTests.swift in Sources */,
+				4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */,
 				8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */,
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				F543AF5723A84E4D0022F595 /* PublishSettingsControllerTests.swift in Sources */,
@@ -24560,6 +24569,7 @@
 				FABB232A2602FC2C00C8785C /* SharingButton.swift in Sources */,
 				0CED95612A460F4B0020F420 /* DebugFeatureFlagsView.swift in Sources */,
 				FABB232B2602FC2C00C8785C /* PostActionSheet.swift in Sources */,
+				4A2C73E22A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */,
 				FABB232C2602FC2C00C8785C /* PublicizeConnection.swift in Sources */,
 				FABB232D2602FC2C00C8785C /* TenorPageable.swift in Sources */,
 				FABB232E2602FC2C00C8785C /* AccountService+MergeDuplicates.swift in Sources */,
