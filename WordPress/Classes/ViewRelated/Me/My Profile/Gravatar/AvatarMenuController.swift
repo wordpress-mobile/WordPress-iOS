@@ -90,6 +90,6 @@ final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerCon
 }
 
 private enum Strings {
-    static let errorTitle = NSLocalizedString("avatarMenu.failedToSetAvatarAlertMessage", value: "Unable to load the image. Please choose a different one or try again later", comment: "Alert message when something goes wrong with the selected iamge.")
+    static let errorTitle = NSLocalizedString("avatarMenu.failedToSetAvatarAlertMessage", value: "Unable to load the image. Please choose a different one or try again later.", comment: "Alert message when something goes wrong with the selected image.")
     static let menuTitle = NSLocalizedString("avatarMenu.title", value: "Update Gravatar", comment: "Title for menu that is shown when you tap your gravatar")
 }
