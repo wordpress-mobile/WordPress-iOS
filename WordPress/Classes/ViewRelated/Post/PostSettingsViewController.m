@@ -624,6 +624,10 @@ FeaturedImageViewControllerDelegate>
 
 - (NSInteger)numberOfRowsForShareSection
 {
+    if ([self.apost.status isEqualToString:@"private"]) {
+        return 0;
+    }
+    
     if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;

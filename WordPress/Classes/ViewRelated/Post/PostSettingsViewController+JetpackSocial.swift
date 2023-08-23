@@ -17,6 +17,7 @@ extension PostSettingsViewController {
         && blogSupportsPublicize
         && blogHasNoConnections
         && blogHasServices
+        && !isPostPrivate
     }
 
     @objc func createNoConnectionView() -> UIView {
@@ -45,6 +46,7 @@ extension PostSettingsViewController {
         && blogSupportsPublicize
         && blogHasConnections
         && blogHasSharingLimit
+        && !isPostPrivate
     }
 
     @objc func createRemainingSharesView() -> UIView {
@@ -91,6 +93,10 @@ extension PostSettingsViewController {
 // MARK: - Private methods
 
 private extension PostSettingsViewController {
+
+    var isPostPrivate: Bool {
+        apost.status == .publishPrivate
+    }
 
     func hideNoConnectionViewKey() -> String {
         guard let dotComID = apost.blog.dotComID?.stringValue else {

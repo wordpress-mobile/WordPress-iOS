@@ -5,7 +5,7 @@ extension PrepublishingViewController {
     /// Determines whether the account and the post's blog is eligible to see the Jetpack Social row.
     func canDisplaySocialRow(isJetpack: Bool = AppConfiguration.isJetpack,
                              isFeatureEnabled: Bool = RemoteFeatureFlag.jetpackSocialImprovements.enabled()) -> Bool {
-        guard isJetpack && isFeatureEnabled else {
+        guard isJetpack && isFeatureEnabled && !isPostPrivate else {
             return false
         }
 
@@ -83,6 +83,15 @@ private extension PrepublishingViewController {
                 return false
             }
             return !connections.isEmpty
+        }
+    }
+
+    var isPostPrivate: Bool {
+        coreDataStack.performQuery { [postObjectID = post.objectID] context in
+            guard let post = (try? context.existingObject(with: postObjectID)) as? Post else {
+                return false
+            }
+            return post.status == .publishPrivate
         }
     }
 
