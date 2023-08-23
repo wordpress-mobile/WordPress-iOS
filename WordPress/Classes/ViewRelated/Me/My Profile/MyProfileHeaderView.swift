@@ -5,7 +5,9 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
 
-    var onAddUpdatePhoto: (() -> Void)?
+    // A fake button displayed on top of gravatarImageView.
+    let imageViewButton = UIButton(type: .system)
+
     let activityIndicator = UIActivityIndicatorView(style: .medium)
     var showsActivityIndicator: Bool {
         get {
@@ -48,10 +50,6 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         configureGravatarButton()
     }
 
-    @IBAction func onProfileWasPressed(_ sender: UIButton) {
-        onAddUpdatePhoto?()
-    }
-
     /// Overrides the current Gravatar Image (set via Email) with a given image reference.
     /// Plus, the internal image cache is updated, to prevent undesired glitches upon refresh.
     ///
@@ -79,8 +77,9 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         gravatarImageView.pinSubviewAtCenter(activityIndicator)
         layoutIfNeeded()
 
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(onProfileWasPressed(_:)))
-        gravatarImageView.addGestureRecognizer(recognizer)
+        gravatarImageView.addSubview(imageViewButton)
+        imageViewButton.translatesAutoresizingMaskIntoConstraints = false
+        imageViewButton.pinSubviewToAllEdges(gravatarImageView)
     }
 
     private func configureGravatarButton() {

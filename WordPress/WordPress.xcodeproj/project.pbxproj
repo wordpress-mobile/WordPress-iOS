@@ -435,6 +435,8 @@
 		0C8FC9A82A8BFAAE0059DCE4 /* NSItemProvider+Exportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8FC9A62A8BFAAD0059DCE4 /* NSItemProvider+Exportable.swift */; };
 		0C8FC9AA2A8C57000059DCE4 /* ItemProviderMediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8FC9A92A8C57000059DCE4 /* ItemProviderMediaExporterTests.swift */; };
 		0C8FC9AC2A8C57930059DCE4 /* test-webp.webp in Resources */ = {isa = PBXBuildFile; fileRef = 0C8FC9AB2A8C57930059DCE4 /* test-webp.webp */; };
+		0CA1C8C12A940EE300F691EE /* AvatarMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */; };
+		0CA1C8C22A940EE300F691EE /* AvatarMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */; };
 		0CB4056B29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056C29C78F06008EED0A /* BlogDashboardPersonalizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */; };
 		0CB4056E29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */; };
@@ -6118,6 +6120,7 @@
 		0C8FC9A62A8BFAAD0059DCE4 /* NSItemProvider+Exportable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSItemProvider+Exportable.swift"; sourceTree = "<group>"; };
 		0C8FC9A92A8C57000059DCE4 /* ItemProviderMediaExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProviderMediaExporterTests.swift; sourceTree = "<group>"; };
 		0C8FC9AB2A8C57930059DCE4 /* test-webp.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-webp.webp"; sourceTree = "<group>"; };
+		0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarMenuController.swift; sourceTree = "<group>"; };
 		0CB4056A29C78F06008EED0A /* BlogDashboardPersonalizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationService.swift; sourceTree = "<group>"; };
 		0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationServiceTests.swift; sourceTree = "<group>"; };
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
@@ -11108,6 +11111,7 @@
 			children = (
 				B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */,
 				43FF64EE20DAA0840060A69A /* GravatarUploader.swift */,
+				0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */,
 			);
 			path = Gravatar;
 			sourceTree = "<group>";
@@ -22361,6 +22365,7 @@
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
 				465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */,
 				8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */,
+				0CA1C8C12A940EE300F691EE /* AvatarMenuController.swift in Sources */,
 				931215E8267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift in Sources */,
 				F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				F1450CF32437DA3E00A28BFE /* MediaRequestAuthenticator.swift in Sources */,
@@ -24287,6 +24292,7 @@
 				93CDC72226CD342900C8A3A8 /* DestructiveAlertHelper.swift in Sources */,
 				DC76668426FD9AC9009254DD /* TimeZoneRow.swift in Sources */,
 				8B8E50B727A4692000C89979 /* DashboardPostListErrorCell.swift in Sources */,
+				0CA1C8C22A940EE300F691EE /* AvatarMenuController.swift in Sources */,
 				FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */,
 				46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
 				FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */,
