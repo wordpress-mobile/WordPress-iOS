@@ -9,6 +9,11 @@ extension ImageDownloader {
             return
         }
 
+        if let cachedImage = ImageCache.shared.getImage(forKey: url.absoluteString) {
+            completion(cachedImage)
+            return
+        }
+
         downloadImage(at: url) { image, _ in
             DispatchQueue.main.async {
 
@@ -17,6 +22,7 @@ extension ImageDownloader {
                     return
                 }
 
+                ImageCache.shared.setImage(image, forKey: url.absoluteString)
                 completion(image)
             }
         }
