@@ -51,7 +51,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [x] View Last Post
     - [x] View Last Post in Safari
     - [x] Add Comment to Post
-    - [ ] Follow New Topics on Discover Tab
+    - [x] Follow New Topic on Discover Tab
     - [ ] Save a Post
     - [ ] Like a Post 
 9. Jetpack Settings

@@ -11,6 +11,10 @@ public class ReaderScreen: ScreenObject {
         $0.tables["Reader"]
     }
 
+    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Reader"]
+    }
+
     private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Visit"]
     }
@@ -23,10 +27,31 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Dismiss"]
     }
 
+    private let followButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Follow"]
+    }
+
+    private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Following"]
+    }
+
+    private let topicNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Topic"]
+    }
+
+    private let topicCellButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["topics-card-cell-button"]
+    }
+
     var backButton: XCUIElement { backButtonGetter(app) }
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
     var dismissButton: XCUIElement { dismissButtonGetter(app) }
+    var followButton: XCUIElement { followButtonGetter(app) }
+    var followingButton: XCUIElement { followingButtonGetter(app) }
+    var readerButton: XCUIElement { readerButtonGetter(app) }
     var readerTable: XCUIElement { readerTableGetter(app) }
+    var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
+    var topicNavigationBar: XCUIElement { topicNavigationBarGetter(app) }
     var visitButton: XCUIElement { visitButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
@@ -94,8 +119,36 @@ public class ReaderScreen: ScreenObject {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func openDiscover() -> ReaderScreen {
+    public func openDiscover() -> Self {
         discoverButton.tap()
+
+        return self
+    }
+
+    public func selectTopic() -> Self {
+        topicCellButton.firstMatch.tap()
+
+        return self
+    }
+
+    public func verifyTopicLoaded() -> Self {
+        XCTAssertTrue(topicNavigationBar.waitForExistence(timeout: 3))
+        XCTAssertTrue(readerButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(followButton.waitForExistence(timeout: 3))
+
+        return self
+    }
+
+    public func followTopic() -> Self {
+        followButton.tap()
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyTopicFollowed() -> Self {
+        XCTAssertTrue(followingButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(followingButton.isSelected)
 
         return self
     }
