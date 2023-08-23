@@ -21,10 +21,10 @@ extension XCUIApplication {
     /// Scrolls down to element until it becomes hittable.
     /// After that attempts to scroll it to the screen top.
     func scrollDownToElement(element: XCUIElement, maxScrolls: Int = 10) {
-        for _ in 0..<maxScrolls {
-            if !element.isFullyVisibleOnScreen() {
-                scrollDown()
-            }
+        var scrollCount = 0
+        while !element.isWithinVisibleArea() && scrollCount < maxScrolls {
+            scrollDown()
+            scrollCount += 1
         }
     }
 
