@@ -1,9 +1,10 @@
 import MobileCoreServices
 import WPMediaPicker
+import PhotosUI
 
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate
+    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate & PHPickerViewControllerDelegate
     private weak var delegate: PickersDelegate?
     private var tenor: TenorPicker?
 
@@ -117,7 +118,13 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {
-        mediaLibrary.presentPicker(origin: origin, blog: blog)
+        if FeatureFlag.nativePhotoPicker.enabled {
+            let picker = PHPickerViewController(configuration: .make())
+            picker.delegate = self
+            origin.present(picker, animated: true)
+        } else {
+            mediaLibrary.presentPicker(origin: origin, blog: blog)
+        }
     }
 }
 
@@ -132,5 +139,11 @@ extension MediaLibraryMediaPickingCoordinator: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         delegate?.stockPhotosPicker(picker, didFinishPicking: assets)
         stockPhotos = nil
+    }
+}
+
+extension MediaLibraryMediaPickingCoordinator: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        delegate?.picker(picker, didFinishPicking: results)
     }
 }

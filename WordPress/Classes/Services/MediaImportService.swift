@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import PhotosUI
 
 /// Encapsulates importing assets such as PHAssets, images, videos, or files at URLs to Media objects.
 ///
@@ -275,6 +276,11 @@ class MediaImportService: NSObject {
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
             exporter.allowableFileExtensions = allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : allowableFileExtensions
+            return exporter
+        case let provider as NSItemProvider:
+            let exporter = ItemProviderMediaExporter(provider: provider)
+            exporter.imageOptions = self.exporterImageOptions
+            exporter.videoOptions = self.exporterVideoOptions
             return exporter
         case let image as UIImage:
             let exporter = MediaImageExporter(image: image, filename: nil)
