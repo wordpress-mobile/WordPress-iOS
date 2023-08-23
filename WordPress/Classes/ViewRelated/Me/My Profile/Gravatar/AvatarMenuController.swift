@@ -17,7 +17,7 @@ final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerCon
             assertionFailure("Presenting view controller missing")
             return UIMenu()
         }
-        let mediaPickerMenu = MediaPickerMenu(viewConroller: presentingViewController, filter: .images)
+        let mediaPickerMenu = MediaPickerMenu(viewController: presentingViewController, filter: .images)
         return UIMenu(title: Strings.menuTitle, children: [
             mediaPickerMenu.makePhotosAction(delegate: self),
             mediaPickerMenu.makeCameraAction(camera: .front, delegate: self)
