@@ -116,12 +116,19 @@ class GutenbergMediaPickerHelper: NSObject {
     func presentCameraCaptureFullScreen(animated: Bool,
                                         filter: WPMediaType,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
-
-        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-            callback(nil)
+        guard FeatureFlag.nativePhotoPicker.enabled else {
+            presentLegacyCameraCaptureFullScreen(animated: animated, filter: filter, callback: callback)
             return
         }
 
+        didPickMediaCallback = callback
+        MediaPickerMenu(viewConroller: context, filter: .init(filter))
+            .showCamera(delegate: self)
+    }
+
+    private func presentLegacyCameraCaptureFullScreen(animated: Bool,
+                                                      filter: WPMediaType,
+                                                      callback: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = callback
         //reset the selected assets from previous uses
         cameraPicker.resetState(false)
@@ -130,6 +137,36 @@ class GutenbergMediaPickerHelper: NSObject {
         cameraPicker.options.filter = filter
         cameraPicker.options.allowMultipleSelection = false
         cameraPicker.showCapture()
+    }
+}
+
+extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        context.dismiss(animated: true) {
+            guard let mediaType = info[.mediaType] as? String else {
+                return
+            }
+            switch mediaType {
+            case UTType.image.identifier:
+                if let image = info[.originalImage] as? UIImage {
+                    self.didPickMediaCallback?([image])
+                    self.didPickMediaCallback = nil
+                }
+
+            case UTType.movie.identifier:
+                guard let mediaURL = info[.mediaURL] as? URL else {
+                    return
+                }
+                guard self.post.blog.canUploadVideo(from: mediaURL) else {
+                    self.presentVideoLimitExceededAfterCapture(on: self.context)
+                    return
+                }
+                self.didPickMediaCallback?([mediaURL])
+                self.didPickMediaCallback = nil
+            default:
+                break
+            }
+        }
     }
 }
 

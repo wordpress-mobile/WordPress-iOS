@@ -674,15 +674,18 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
-                                                         filter: filter,
-                                                         callback: {(assets) in
-                                                            guard let phAsset = assets?.first as? PHAsset else {
-                                                                callback(nil)
-                                                                return
-                                                            }
-                                                            self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
-        })
+        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
+            guard let self, let asset = assets?.first else {
+                return callback(nil)
+            }
+            if let asset = asset as? PHAsset {
+                self.mediaInserterHelper.insertFromDevice(asset: asset, callback: callback)
+            } else if let image = asset as? UIImage {
+                self.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .camera)
+            } else if let url = asset as? URL {
+                self.mediaInserterHelper.insertFromDevice(url: url, callback: callback, source: .camera)
+            }
+        }
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
