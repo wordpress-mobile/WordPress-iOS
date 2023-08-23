@@ -24,8 +24,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate var selectedAsset: Media? = nil
 
-    fileprivate var capturePresenter: WPMediaCapturePresenter?
-
     // After 99% progress, we'll count a media item as being uploaded, and we'll
     // show an indeterminate spinner as the server processes it.
     fileprivate static let uploadCompleteProgress: Double = 0.99
