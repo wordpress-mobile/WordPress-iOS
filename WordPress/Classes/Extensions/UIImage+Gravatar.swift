@@ -29,10 +29,3 @@ extension UIImage {
         }
     }
 }
-
-extension UITabBarItem {
-
-    func updateGravatarImage(_ image: UIImage) {
-        self.image = image.gravatarIcon()
-    }
-}
