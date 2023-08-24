@@ -66,10 +66,13 @@ final class SupportChatBotViewController: UIViewController {
 
             DocsBotAI.init({
                 id: '\(viewModel.docsBotId)',
-                 supportCallback: function (event, history) {
+                identify: {
+                    chatId: '\(viewModel.chatId)',
+                },
+                supportCallback: function (event, history) {
                     event.preventDefault()
                     window.webkit.messageHandlers.supportCallback.postMessage(history)
-                  },
+                },
                 options: {
                     color: "#9dd977",
                     supportLink: "#",
@@ -213,11 +216,11 @@ extension SupportChatBotViewController {
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case let .success(request):
-                    self.viewModel.track(.supportChatbotTicketSuccess, ticketNumber: request.requestId)
+                case .success:
+                    self.viewModel.track(.supportChatbotTicketSuccess)
                     self.showTicketCreatedSuccessNotice()
-                case .failure:
-                    self.viewModel.track(.supportChatbotTicketFailure)
+                case .failure(let failure):
+                    self.viewModel.track(.supportChatbotTicketFailure, errorMessage: failure.localizedDescription)
                     self.showTicketCreatedFailureNotice()
                 }
             }
