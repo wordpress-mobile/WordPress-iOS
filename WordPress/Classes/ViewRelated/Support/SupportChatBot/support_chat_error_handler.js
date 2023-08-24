@@ -1,5 +1,5 @@
 window.onerror = function (msg, url, line, column, error) {
-  let message = {
+  var message = {
     message: msg,
     url: url,
     line: line,
