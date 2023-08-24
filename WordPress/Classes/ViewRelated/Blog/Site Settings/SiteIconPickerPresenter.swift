@@ -196,7 +196,7 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
         self.showLoadingMessage()
         self.originalMedia = nil
-        MediaPickerMenu.loadImage(for: result) { [weak self] image, error in
+        PHPickerResult.loadImage(for: result) { [weak self] image, error in
             if let image {
                 self?.showImageCropViewController(image, presentingViewController: picker)
             } else {
