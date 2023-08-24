@@ -84,6 +84,14 @@ public class BlockEditorScreen: ScreenObject {
         $0.staticTexts["You have unsaved changes."]
     }
 
+    private let noticeViewTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["notice_title_and_message"]
+    }
+
+    private let noticeViewButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["View"]
+    }
+
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
     var applyButton: XCUIElement { applyButtonGetter(app) }
     var chooseFromDeviceButton: XCUIElement { chooseFromDeviceButtonGetter(app) }
@@ -104,6 +112,8 @@ public class BlockEditorScreen: ScreenObject {
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
     var unsavedChangesLabel: XCUIElement { unsavedChangesLabelGetter(app) }
+    var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
+    var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
@@ -234,17 +244,34 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
-    public func publish() throws -> EditorNoticeComponent {
-        return try post(action: "Publish")
+    private enum postAction: String {
+        case publish = "Publish"
+        case schedule = "Schedule"
     }
 
-    public func schedulePost() throws -> EditorNoticeComponent {
-        return try post(action: "Schedule")
+    public func publish() throws {
+        return try post(action: .publish)
     }
 
-    private func post(action: String) throws -> EditorNoticeComponent {
-        let postButton = app.buttons[action]
-        let postNowButton = app.buttons["\(action) Now"]
+    public func publishAndViewEpilogue() throws -> EditorPublishEpilogueScreen {
+        try publish()
+        waitAndTap(noticeViewButton)
+        return try EditorPublishEpilogueScreen()
+    }
+
+    public func schedulePost() throws {
+        try post(action: .schedule)
+    }
+
+    public func schedulePostAndViewEpilogue() throws -> EditorPublishEpilogueScreen {
+        try schedulePost()
+        waitAndTap(noticeViewButton)
+        return try EditorPublishEpilogueScreen()
+    }
+
+    private func post(action: postAction) throws {
+        let postButton = app.buttons[action.rawValue]
+        let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
         // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
         // The tests would fail sometimes in the pipeline with no apparent reason.
@@ -252,19 +279,8 @@ public class BlockEditorScreen: ScreenObject {
             postButton.tap()
             tries += 1
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
-        try confirmPost(button: postNowButton)
 
-        let actionInNotice: String
-
-        if action == "Schedule" {
-            actionInNotice = "scheduled"
-        } else if action == "Publish" {
-            actionInNotice = "published"
-        } else {
-            throw NSError(domain: "InvalidAction", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid action: \(action)"])
-        }
-
-        return try EditorNoticeComponent(withNotice: "Post \(actionInNotice)")
+        try confirmPost(button: postNowButton, action: action)
     }
 
     @discardableResult
@@ -402,13 +418,10 @@ public class BlockEditorScreen: ScreenObject {
                     .selectAlbum(atIndex: 0)
     }
 
-    private func confirmPost(button: XCUIElement) throws {
-        if FancyAlertComponent.isLoaded() {
-            try FancyAlertComponent().acceptAlert()
-        } else {
-            button.tap()
-            dismissBloggingRemindersAlertIfNeeded()
-        }
+    private func confirmPost(button: XCUIElement, action: postAction) throws {
+        button.tap()
+        guard action == .publish else { return }
+        dismissBloggingRemindersAlertIfNeeded()
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {

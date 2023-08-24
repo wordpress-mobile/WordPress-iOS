@@ -29,8 +29,7 @@ class EditorGutenbergTests: XCTestCase {
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
             .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
-            .publish()
-            .viewPublishedPost(withTitle: postTitle)
+            .publishAndViewEpilogue()
             .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
     }
@@ -48,8 +47,7 @@ class EditorGutenbergTests: XCTestCase {
             .selectCategory(name: category)
             .addTag(name: tag)
             .closePostSettings()
-            .publish()
-            .viewPublishedPost(withTitle: postTitle)
+            .publishAndViewEpilogue()
             .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
     }

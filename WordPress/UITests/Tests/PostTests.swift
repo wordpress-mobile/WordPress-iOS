@@ -31,8 +31,7 @@ class PostTests: XCTestCase {
             .updatePublishDateToFutureDate()
             .closePublishDateSelector()
             .closePostSettings()
-            .schedulePost()
-            .viewPublishedPost(withTitle: postTitle)
+            .schedulePostAndViewEpilogue()
             .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSiteForScheduledPost)
             .tapDone()
     }
