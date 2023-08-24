@@ -31,7 +31,7 @@ final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerCon
             presentingViewController?.dismiss(animated: true)
             return
         }
-        MediaPickerMenu.loadImage(for: result) { [weak self] image, _ in
+        PHPickerResult.loadImage(for: result) { [weak self] image, _ in
             if let image {
                 self?.showCropViewController(with: image)
             } else {
