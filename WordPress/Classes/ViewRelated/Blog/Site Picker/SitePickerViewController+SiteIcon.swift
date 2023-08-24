@@ -37,7 +37,7 @@ extension SitePickerViewController {
 
     private func makeUpdateSiteIconActions() -> [UIAction] {
         let presenter = makeSiteIconPresenter()
-        let mediaMenu = MediaPickerMenu(viewConroller: self, filter: .images)
+        let mediaMenu = MediaPickerMenu(viewController: self, filter: .images)
         var actions: [UIAction] = []
         if FeatureFlag.nativePhotoPicker.enabled {
             actions += [
