@@ -137,7 +137,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failedMediaDescription: String {
-        if isPostMedia {
+        if !isPostMedia {
             return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
                              singular: NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
                              plural: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
