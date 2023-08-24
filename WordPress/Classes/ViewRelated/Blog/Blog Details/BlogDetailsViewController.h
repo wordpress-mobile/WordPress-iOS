@@ -38,6 +38,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionPages,
     BlogDetailsSubsectionActivity,
     BlogDetailsSubsectionJetpackSettings,
+    BlogDetailsSubsectionMe,
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
@@ -171,6 +172,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
+- (NSIndexPath * _Nonnull)indexPathForSubsection:(BlogDetailsSubsection)subsection;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;

@@ -14,7 +14,7 @@ extension BlogDetailsViewController {
             }
 
             row.image = gravatarIcon
-            self?.tableView.reloadData()  // FIXME: only reload Me row
+            self?.reloadMeRow()
         }
     }
 
@@ -33,6 +33,11 @@ extension BlogDetailsViewController {
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
         meRow?.image = gravatarIcon
-        tableView.reloadData()  // FIXME: only reload Me row
+        reloadMeRow()
+    }
+
+    private func reloadMeRow() {
+        let meIndexPath = indexPath(for: .me)
+        tableView.reloadRows(at: [meIndexPath], with: .automatic)
     }
 }

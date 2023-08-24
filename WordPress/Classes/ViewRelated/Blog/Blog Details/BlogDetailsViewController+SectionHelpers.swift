@@ -21,7 +21,7 @@ extension BlogDetailsSubsection {
             return .content
         case .themes, .customize:
             return .personalize
-        case .sharing, .people, .plugins:
+        case .me, .sharing, .people, .plugins:
             return .configure
         case .home:
             return .home

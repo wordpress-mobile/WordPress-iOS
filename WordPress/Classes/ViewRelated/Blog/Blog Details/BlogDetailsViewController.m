@@ -567,6 +567,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             [self showCommentsFromSource:BlogDetailsNavigationSourceLink];
             break;
+        case BlogDetailsSubsectionMe:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showMe];
+            break;
         case BlogDetailsSubsectionSharing:
             if ([self.blog supports:BlogFeatureSharing]) {
                 self.restorableSelectedIndexPath = indexPath;
@@ -631,6 +638,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionComments:
             return [NSIndexPath indexPathForRow:3 inSection:section];
+        case BlogDetailsSubsectionMe:
         case BlogDetailsSubsectionSharing:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionPeople:
