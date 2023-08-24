@@ -216,8 +216,11 @@ class MediaImportService: NSObject {
                         thumbnailCallback?(media, url)
                     }
                 }
-
-                completion(transformed)
+                if let error {
+                    completion(.failure(error)) // Import failed
+                } else {
+                    completion(transformed)
+                }
             }, on: .main)
         }
 
