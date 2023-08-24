@@ -29,10 +29,6 @@ public class FancyAlertComponent: ScreenObject {
     }
 
     public func acceptAlert() {
-        XCTAssert(defaultAlertButton.waitForExistence(timeout: 3))
-        XCTAssert(defaultAlertButton.waitForIsHittable(timeout: 3))
-
-        XCTAssert(defaultAlertButton.isHittable)
         defaultAlertButton.tap()
     }
 

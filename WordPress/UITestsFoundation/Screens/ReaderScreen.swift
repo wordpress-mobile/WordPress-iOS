@@ -180,10 +180,15 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
-    public func saveFirstPost() -> (ReaderScreen, String) {
+    public func saveFirstPost() throws -> (ReaderScreen, String) {
         XCTAssertTrue(readerTable.waitForExistence(timeout: 3))
         let postLabel = readerTable.cells.firstMatch.label
         savePostButton.firstMatch.tap()
+
+        // An alert about saved post is displayed the first time a post is saved
+        if let alert = try? FancyAlertComponent() {
+            alert.acceptAlert()
+        }
 
         return (self, postLabel)
     }

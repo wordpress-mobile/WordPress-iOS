@@ -47,12 +47,14 @@ class ReaderTests: XCTestCase {
     }
 
     func testSavePost() throws {
+        // Get saved post label
         let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
             .openSavedPosts()
             .verifySavedPosts(state: .withoutSavedPosts)
             .openFollowing()
             .saveFirstPost()
 
+        // Open saved posts tab and validate that the correct saved post is displayed
         updatedReaderScreen
             .openSavedPosts()
             .verifySavedPosts(state: .withSavedPosts, postLabel: savedPostLabel)
