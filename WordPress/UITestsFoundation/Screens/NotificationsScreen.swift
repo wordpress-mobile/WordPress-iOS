@@ -117,9 +117,9 @@ public class NotificationsScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyCommentLiked(likes previousLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
-        let (_, updatedLikes) = getNumberOfLikesForNotification()
-        XCTAssertEqual(updatedLikes, previousLikes + 1, file: file, line: line)
+    public func verifyCommentLiked(expectedLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
+        let (_, currentLikes) = getNumberOfLikesForNotification()
+        XCTAssertEqual(currentLikes, expectedLikes, file: file, line: line)
 
         return self
     }
