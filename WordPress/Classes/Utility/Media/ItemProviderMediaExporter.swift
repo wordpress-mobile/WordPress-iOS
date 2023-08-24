@@ -109,6 +109,8 @@ final class ItemProviderMediaExporter: MediaExporter {
         case unsupportedContentType
         case underlyingError(Error?)
 
+        public var errorDescription: String? { description }
+
         var description: String {
             switch self {
             case .unsupportedContentType:

@@ -25,6 +25,8 @@ class MediaAssetExporter: MediaExporter {
         case unavailablePHAssetVideoResource
         case failedRequestingVideoExportSession
 
+        public var errorDescription: String? { description }
+
         var description: String {
             switch self {
             case .unsupportedPHAssetMediaType:

@@ -39,7 +39,7 @@ typealias OnMediaExport = (MediaExport) -> Void
 
 /// Generic Error protocol for detecting and type classifying known errors that occur while exporting.
 ///
-protocol MediaExportError: Error, CustomStringConvertible {
+protocol MediaExportError: Error, LocalizedError, CustomStringConvertible {
     /// Convert an Error to an NSError with a localizedDescription available.
     ///
     func toNSError() -> NSError

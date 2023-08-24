@@ -41,6 +41,8 @@ class MediaVideoExporter: MediaExporter {
         case failedGeneratingVideoPreviewImage
         case videoExportSessionCancelled
 
+        public var errorDescription: String? { description }
+
         var description: String {
             switch self {
             case .failedGeneratingVideoPreviewImage:
