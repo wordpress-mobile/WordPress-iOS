@@ -1,5 +1,5 @@
-window.onerror = (msg, url, line, column, error) => {
-  const message = {
+window.onerror = function (msg, url, line, column, error) {
+  let message = {
     message: msg,
     url: url,
     line: line,
