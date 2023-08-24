@@ -13,6 +13,7 @@ final class SupportChatBotViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
         contentController.add(self, name: Constants.supportCallback)
+        contentController.add(self, name: Constants.errorCallback)
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -153,6 +154,8 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
         if message.name == Constants.supportCallback, let messageHistory = message.body as? [[String]] {
             let history = SupportChatHistory(messageHistory: messageHistory)
             createTicket(with: history)
+        } else if message.name == Constants.errorCallback, let payload = message.body as? [String: Any], let errorMessage = payload["message"] as? String {
+            viewModel.track(.supportChatbotWebViewError, errorMessage: errorMessage)
         }
     }
 }
@@ -201,6 +204,7 @@ extension SupportChatBotViewController {
 
     private enum Constants {
         static let supportCallback = "supportCallback"
+        static let errorCallback = "errorCallback"
     }
 }
 

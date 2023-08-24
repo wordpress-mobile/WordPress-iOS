@@ -483,6 +483,7 @@ import Foundation
 
     // Chatbot Support
     case supportChatbotStarted
+    case supportChatbotWebViewError
     case supportChatbotTicketSuccess
     case supportChatbotTicketFailure
     case supportChatbotEnded
@@ -1351,6 +1352,8 @@ import Foundation
         // Chatbot Support
         case .supportChatbotStarted:
             return "support_chatbot_started"
+        case .supportChatbotWebViewError:
+            return "support_chatbot_webview_error"
         case .supportChatbotTicketSuccess:
             return "support_chatbot_ticket_success"
         case .supportChatbotTicketFailure:
