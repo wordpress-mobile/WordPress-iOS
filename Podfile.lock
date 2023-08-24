@@ -42,7 +42,8 @@ PODS:
   - GTMSessionFetcher/Core (1.7.2)
   - Gutenberg (1.102.0)
   - JTAppleCalendar (8.0.5)
-  - Kanvas (1.4.4)
+  - Kanvas (1.4.9):
+    - CropViewController
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
   - MRProgress (0.8.3):
@@ -261,7 +262,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Gutenberg: 315b07b2b9307335c0424b06626fae5e58b16729
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
-  Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
+  Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   NSObject-SafeExpectations: c01c8881cbd97efad6f668286b913cd0b7d62ab5
