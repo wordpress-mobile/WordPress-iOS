@@ -245,7 +245,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.100.2
   WordPressUI:
-    :commit: c98f22c458b8eb562e484be7e585f268485bb93e
+    :commit: 60416aeb3f7c8f65e98aafe10b3fb5c4fe483129
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
