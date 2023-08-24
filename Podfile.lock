@@ -110,7 +110,7 @@ PODS:
   - ZendeskSupportSDK (5.3.0):
     - ZendeskMessagingSDK (~> 3.8.2)
     - ZendeskSupportProvidersSDK (~> 5.3.0)
-  - ZIPFoundation (0.9.13)
+  - ZIPFoundation (0.9.16)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.0)
@@ -261,7 +261,7 @@ SPEC CHECKSUMS:
   ZendeskSDKConfigurationsSDK: f91f54f3b41aa36ffbc43a37af9956752a062055
   ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
-  ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
+  ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
 PODFILE CHECKSUM: 261cbabbbb8cc0787f67de510ac4db33b9bc72b8
 
