@@ -19,6 +19,10 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Saved"]
     }
 
+    private let likeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["reader-like-button"]
+    }
+
     private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Visit"]
     }
@@ -37,6 +41,10 @@ public class ReaderScreen: ScreenObject {
 
     private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Following"]
+    }
+
+    private let likesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Likes"]
     }
 
     private let topicNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
@@ -60,6 +68,8 @@ public class ReaderScreen: ScreenObject {
     var dismissButton: XCUIElement { dismissButtonGetter(app) }
     var followButton: XCUIElement { followButtonGetter(app) }
     var followingButton: XCUIElement { followingButtonGetter(app) }
+    var likeButton: XCUIElement { likeButtonGetter(app) }
+    var likesTabButton: XCUIElement { likesTabButtonGetter(app) }
     var noResultsView: XCUIElement { noResultsViewGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app) }
     var readerTable: XCUIElement { readerTableGetter(app) }
@@ -166,6 +176,12 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
+    public func openLikes() -> Self {
+        likesTabButton.tap()
+
+        return self
+    }
+
     public func followTopic() -> Self {
         followButton.tap()
 
@@ -207,10 +223,37 @@ public class ReaderScreen: ScreenObject {
 
         return self
     }
+
+    public func likeFirstPost() -> Self {
+        likeButton.firstMatch.waitForIsHittable()
+        XCTAssertTrue(likeButton.firstMatch.label.hasPrefix(.postNotLiked))
+        likeButton.firstMatch.tap()
+
+        return self
+    }
+
+    public func verifyPostLikedOnFollowing(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreatherThanOneError, file: file, line: line)
+        XCTAssertTrue(likeButton.firstMatch.label.hasPrefix(.postLiked), file: file, line: line)
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyPostLikedOnLikesTab(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertEqual(readerTable.cells.count, 1, .postNotEqualOneError, file: file, line: line)
+        XCTAssertTrue(likeButton.firstMatch.label.hasPrefix(.postLiked), file: file, line: line)
+
+        return self
+    }
 }
 
 private extension String {
     static let emptyListLabel = "Empty list"
+    static let postLiked = "This post is in My Likes"
+    static let postNotEqualOneError = "There should only be 1 post!"
+    static let postNotGreatherThanOneError = "There shouldn't only be 1 post!"
+    static let postNotLiked = "This post is not in My Likes"
     static let withoutSavedPosts = "without posts"
     static let withSavedPosts = "with posts"
 }

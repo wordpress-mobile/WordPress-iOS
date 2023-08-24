@@ -59,6 +59,14 @@ class ReaderTests: XCTestCase {
             .openSavedPosts()
             .verifySavedPosts(state: .withSavedPosts, postLabel: savedPostLabel)
     }
+
+    func testLikePost() throws {
+        try ReaderScreen()
+            .likeFirstPost()
+            .verifyPostLikedOnFollowing()
+            .openLikes()
+            .verifyPostLikedOnLikesTab()
+    }
 }
 
 private extension String {

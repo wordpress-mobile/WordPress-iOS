@@ -1,0 +1,570 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.2/read/liked",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      },
+      "before": {
+        "matches": "(.*)"
+      },
+      "meta": {
+        "matches": "(.*)"
+      },
+      "number": {
+        "matches": "(.*)"
+      },
+      "order": {
+        "matches": "DESC"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date_range": {
+        "before": "(.*)",
+        "after": "(.*)"
+      },
+      "number": 1,
+      "posts": [
+        {
+          "ID": 125073,
+          "site_ID": 70135762,
+          "author": {
+            "ID": 7867135,
+            "login": "aarongilbreath",
+            "email": false,
+            "name": "Aaron Gilbreath",
+            "first_name": "Aaron",
+            "last_name": "Gilbreath",
+            "nice_name": "aarongilbreath",
+            "URL": "",
+            "avatar_URL": "https://2.gravatar.com/avatar/e1203cef7aae3855fc3935404fc9f739?s=96&d=identicon&r=G",
+            "profile_URL": "http://en.gravatar.com/aarongilbreath",
+            "site_ID": 7575556,
+            "has_avatar": true
+          },
+          "date": "2019-05-23T13:00:09+00:00",
+          "modified": "2019-05-22T16:44:11-04:00",
+          "title": "Optimizing Meat 2.0",
+          "URL": "http://longreads.com/2019/05/23/optimizing-meat-2-0/",
+          "short_URL": "https://wp.me/p4KhvY-wxj",
+          "content": "<p>The most impossible sounding thing about the Impossible Burger isn&#8217;t the idea of a delicious meatless protein — some of us have been eating delicious meat substitutes for years — it&#8217;s hearing people talk about this food product in terms of scalability, optics, engineering, and &#8220;manufacturable prototypes.&#8221; The future has arrived, and it tastes better than it sounds. <a href=\"https://chrisiptw.wordpress.com/\">Chris Ip</a> writes for <a href=\"https://www.engadget.com/?guccounter=1\"><em>Engadget</em></a> about <a href=\"https://www.engadget.com/2019/05/19/impossible-foods-burger-sausage-empire/?src=longreads\">the brief history, challenges, and ambitions of Impossible Foods&#8217; meat-free technology</a>, and how its success relates to a planet that&#8217;s warming partly because of industrial beef production.</p>\n<blockquote><p>&#8220;Ethical consumerism is a failure and doesn&#8217;t really accomplish what we want it to accomplish,&#8221; said Michael Selden, CEO and founder of Finless Foods, a cell-based seafood startup. &#8220;What you need to do is create things that are ethical and moral as a baseline but make them compete on metrics of taste, price and convenience, which is what people actually buy food on, and Impossible has really embodied that.&#8221;</p>\n<p>There&#8217;s a comparison to sustainable energy here: We all need it and we&#8217;re barely willing to curtail our electricity demands, but if there&#8217;s a price-competitive, clean alternative, then sure. With food, it&#8217;s an acknowledgement that &#8212; solely for the guaranteed sensory enjoyment that those who are food secure might enjoy each day &#8212; taste is the key driver to change our habits.</p>\n<p>This leaves Impossible in a nice position. The global economic demand for meat combined with the swelling cultural-political urgency to curtail it could be great for business if you have a legitimate alternative. And the high-risk-high-reward venture capital system demands startups that can pitch themselves as limitlessly scalable. A worldwide problem of this degree means that Impossible can plausibly &#8212; and not disingenuously &#8212; bridge both a business goal of sky&#8217;s-the-limit growth and a messianic narrative. Brown&#8217;s social mission aligns with his profit-seeking obligation in ways that can make as much sense to private equity as to Katy Perry.</p></blockquote>\n<p><a class=\"button-red\" href=\"https://www.engadget.com/2019/05/19/impossible-foods-burger-sausage-empire/?src=longreads\">Read the story</a></p>\n",
+          "excerpt": "<p>Can Impossible Foods&#8217; meat facsimiles save us from our carnivorous appetites?</p>\n",
+          "slug": "optimizing-meat-2-0",
+          "guid": "http://longreads.com/?p=125073",
+          "status": "publish",
+          "sticky": false,
+          "password": "",
+          "parent": false,
+          "type": "post",
+          "discussion": {
+            "comments_open": false,
+            "comment_status": "closed",
+            "pings_open": true,
+            "ping_status": "open",
+            "comment_count": 0
+          },
+          "likes_enabled": true,
+          "sharing_enabled": true,
+          "like_count": 35,
+          "i_like": true,
+          "is_reblogged": false,
+          "is_following": true,
+          "global_ID": "06ab8cb0a8b05a409928d97bcbf022e0",
+          "featured_image": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg",
+          "post_thumbnail": {
+            "ID": 125103,
+            "URL": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg",
+            "guid": "http://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg",
+            "mime_type": "image/jpeg",
+            "width": 6000,
+            "height": 4000
+          },
+          "format": "standard",
+          "geo": false,
+          "menu_order": 0,
+          "page_template": "",
+          "publicize_URLs": [
+
+          ],
+          "terms": {
+            "category": {
+              "culture": {
+                "ID": 1098,
+                "name": "culture",
+                "slug": "culture",
+                "description": "",
+                "post_count": 88,
+                "parent": 0,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:culture",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:culture/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "Editor's Pick": {
+                "ID": 259543,
+                "name": "Editor's Pick",
+                "slug": "editors-pick",
+                "description": "",
+                "post_count": 1395,
+                "parent": 0,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:editors-pick",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:editors-pick/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "Food": {
+                "ID": 586,
+                "name": "Food",
+                "slug": "food",
+                "description": "",
+                "post_count": 95,
+                "parent": 0,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:food",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:food/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "Nonfiction": {
+                "ID": 35009777,
+                "name": "Nonfiction",
+                "slug": "nonfiction",
+                "description": "",
+                "post_count": 3803,
+                "parent": 0,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:nonfiction",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:nonfiction/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "Quotes": {
+                "ID": 28016040,
+                "name": "Quotes",
+                "slug": "quotes",
+                "description": "",
+                "post_count": 2544,
+                "parent": 0,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:quotes",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:quotes/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              }
+            },
+            "post_tag": {
+              "Chris Ip": {
+                "ID": 89063115,
+                "name": "Chris Ip",
+                "slug": "chris-ip",
+                "description": "",
+                "post_count": 1,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:chris-ip",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:chris-ip/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "Engadget": {
+                "ID": 70021,
+                "name": "Engadget",
+                "slug": "engadget",
+                "description": "",
+                "post_count": 1,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:engadget",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:engadget/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "fake meat": {
+                "ID": 506195,
+                "name": "fake meat",
+                "slug": "fake-meat",
+                "description": "",
+                "post_count": 2,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:fake-meat",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:fake-meat/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "food technology": {
+                "ID": 1272213,
+                "name": "food technology",
+                "slug": "food-technology",
+                "description": "",
+                "post_count": 2,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:food-technology",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:food-technology/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "food writing": {
+                "ID": 93032,
+                "name": "food writing",
+                "slug": "food-writing",
+                "description": "",
+                "post_count": 30,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:food-writing",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:food-writing/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              },
+              "meat industry": {
+                "ID": 231639,
+                "name": "meat industry",
+                "slug": "meat-industry",
+                "description": "",
+                "post_count": 2,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:meat-industry",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:meat-industry/help",
+                    "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                  }
+                }
+              }
+            },
+            "post_format": {
+            },
+            "mentions": {
+            }
+          },
+          "tags": {
+            "Chris Ip": {
+              "ID": 89063115,
+              "name": "Chris Ip",
+              "slug": "chris-ip",
+              "description": "",
+              "post_count": 1,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:chris-ip",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:chris-ip/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              },
+              "display_name": "chris-ip"
+            },
+            "Engadget": {
+              "ID": 70021,
+              "name": "Engadget",
+              "slug": "engadget",
+              "description": "",
+              "post_count": 1,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:engadget",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:engadget/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              },
+              "display_name": "engadget"
+            },
+            "fake meat": {
+              "ID": 506195,
+              "name": "fake meat",
+              "slug": "fake-meat",
+              "description": "",
+              "post_count": 2,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:fake-meat",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:fake-meat/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              },
+              "display_name": "fake-meat"
+            },
+            "food technology": {
+              "ID": 1272213,
+              "name": "food technology",
+              "slug": "food-technology",
+              "description": "",
+              "post_count": 2,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:food-technology",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:food-technology/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              },
+              "display_name": "food-technology"
+            },
+            "food writing": {
+              "ID": 93032,
+              "name": "food writing",
+              "slug": "food-writing",
+              "description": "",
+              "post_count": 30,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:food-writing",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:food-writing/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              },
+              "display_name": "food-writing"
+            },
+            "meat industry": {
+              "ID": 231639,
+              "name": "meat industry",
+              "slug": "meat-industry",
+              "description": "",
+              "post_count": 2,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/tags/slug:meat-industry",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/tags/slug:meat-industry/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              },
+              "display_name": "meat-industry"
+            }
+          },
+          "categories": {
+            "culture": {
+              "ID": 1098,
+              "name": "culture",
+              "slug": "culture",
+              "description": "",
+              "post_count": 88,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:culture",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:culture/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              }
+            },
+            "Editor's Pick": {
+              "ID": 259543,
+              "name": "Editor's Pick",
+              "slug": "editors-pick",
+              "description": "",
+              "post_count": 1395,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:editors-pick",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:editors-pick/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              }
+            },
+            "Food": {
+              "ID": 586,
+              "name": "Food",
+              "slug": "food",
+              "description": "",
+              "post_count": 95,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:food",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:food/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              }
+            },
+            "Nonfiction": {
+              "ID": 35009777,
+              "name": "Nonfiction",
+              "slug": "nonfiction",
+              "description": "",
+              "post_count": 3803,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:nonfiction",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:nonfiction/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              }
+            },
+            "Quotes": {
+              "ID": 28016040,
+              "name": "Quotes",
+              "slug": "quotes",
+              "description": "",
+              "post_count": 2544,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/categories/slug:quotes",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/categories/slug:quotes/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762"
+                }
+              }
+            }
+          },
+          "attachments": {
+            "125103": {
+              "ID": 125103,
+              "URL": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg",
+              "guid": "http://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg",
+              "date": "2019-05-22T15:59:07-04:00",
+              "post_ID": 125073,
+              "author_ID": 7867135,
+              "file": "ap_19093580335314.jpg",
+              "mime_type": "image/jpeg",
+              "extension": "jpg",
+              "title": "The New Meat",
+              "caption": "AP Photo/Nati Harnik",
+              "description": "",
+              "alt": "",
+              "thumbnails": {
+                "thumbnail": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg?w=150",
+                "medium": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg?w=300",
+                "large": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg?w=1024"
+              },
+              "height": 4000,
+              "width": 6000,
+              "exif": {
+                "aperture": "10",
+                "credit": "AP",
+                "camera": "ILCE-7M3",
+                "caption": "FILE- This Jan. 11, 2019, file photo shows the Impossible Burger, a plant-based burger containing wheat protein, coconut oil and potato protein among it's ingredients in Bellevue, Neb. From soy-based sliders to ground lentil sausages, plant-based meat substitutes are surging in popularity. Growing demand for healthier, more sustainable food is one reason people are seeking plant-based meats. (AP Photo/Nati Harnik, File)",
+                "created_timestamp": "1547234932",
+                "copyright": "Copyright 2019 The Associated Press. All rights reserved",
+                "focal_length": "50",
+                "iso": "800",
+                "shutter_speed": "0.01",
+                "title": "The New Meat",
+                "orientation": "1",
+                "keywords": [
+                  "faux meat;fake meat;vegan"
+                ]
+              },
+              "meta": {
+                "links": {
+                  "self": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/media/125103",
+                  "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/media/125103/help",
+                  "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762",
+                  "parent": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/posts/125073"
+                }
+              }
+            }
+          },
+          "attachment_count": 1,
+          "metadata": [
+            {
+              "id": "463770",
+              "key": "geo_public",
+              "value": "0"
+            },
+            {
+              "id": "463900",
+              "key": "_thumbnail_id",
+              "value": "125103"
+            }
+          ],
+          "meta": {
+            "links": {
+              "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/posts/125073",
+              "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/posts/125073/help",
+              "site": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762",
+              "replies": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/posts/125073/replies/",
+              "likes": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/posts/125073/likes/"
+            },
+            "data": {
+              "site": {
+                "ID": 70135762,
+                "name": "Longreads",
+                "description": "The best longform stories on the web",
+                "URL": "http://longreads.com",
+                "jetpack": false,
+                "post_count": 6794,
+                "subscribers_count": 41078065,
+                "locale": "en",
+                "icon": {
+                  "img": "https://secure.gravatar.com/blavatar/e68667ec6ee7cdd0c6b5416a84c52a9c",
+                  "ico": "https://secure.gravatar.com/blavatar/e68667ec6ee7cdd0c6b5416a84c52a9c"
+                },
+                "logo": {
+                  "id": 0,
+                  "sizes": [
+
+                  ],
+                  "url": ""
+                },
+                "visible": true,
+                "is_private": false,
+                "is_following": true,
+                "meta": {
+                  "links": {
+                    "self": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762",
+                    "help": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/help",
+                    "posts": "{{request.requestLine.baseUrl}}/rest/v1.2/sites/70135762/posts/",
+                    "comments": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/70135762/comments/",
+                    "xmlrpc": "https://longreadsblog.wordpress.com/xmlrpc.php"
+                  }
+                }
+              }
+            }
+          },
+          "capabilities": {
+            "publish_post": false,
+            "delete_post": false,
+            "edit_post": false
+          },
+          "other_URLs": {
+          },
+          "pseudo_ID": "06ab8cb0a8b05a409928d97bcbf022e0",
+          "is_external": false,
+          "site_name": "Longreads",
+          "site_URL": "http://longreads.com",
+          "site_is_private": false,
+          "featured_media": {
+            "uri": "https://longreadsblog.files.wordpress.com/2019/05/ap_19093580335314.jpg",
+            "width": 6000,
+            "height": 4000,
+            "type": "image"
+          },
+          "feed_ID": 22973954,
+          "feed_URL": "http://longreads.com",
+          "is_jetpack": false,
+          "use_excerpt": false,
+          "feed_item_ID": 2286928700,
+          "word_count": 327,
+          "is_following_conversation": false
+        }
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}
