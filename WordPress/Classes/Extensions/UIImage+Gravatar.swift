@@ -3,9 +3,8 @@ import UIKit
 
 extension UIImage {
 
-    func gravatarIcon() -> UIImage? {
-        let iconDimension = 24.0
-        let iconSize = CGSize(width: iconDimension, height: iconDimension)
+    func gravatarIcon(size: CGFloat) -> UIImage? {
+        let iconSize = CGSize(width: size, height: size)
         let resizedImage = self.resizedImage(iconSize, interpolationQuality: .default)
         return resizedImage?.cropToCircle().withRenderingMode(.alwaysOriginal)
     }
@@ -27,5 +26,12 @@ extension UIImage {
             ovalPath.addClip()
             draw(at: CGPoint(x: -xOffset, y: -yOffset))
         }
+    }
+
+    func withAlpha(_ alpha: CGFloat) -> UIImage {
+        let imageWithAlpha = UIGraphicsImageRenderer(size: size, format: imageRendererFormat).image { _ in
+            draw(in: CGRect(origin: .zero, size: size), blendMode: .normal, alpha: alpha)
+        }
+        return imageWithAlpha.withRenderingMode(.alwaysOriginal)
     }
 }

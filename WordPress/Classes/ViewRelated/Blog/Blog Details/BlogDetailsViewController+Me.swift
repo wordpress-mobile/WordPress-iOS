@@ -9,7 +9,7 @@ extension BlogDetailsViewController {
 
         ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
             guard let image,
-                  let gravatarIcon = image.gravatarIcon() else {
+                  let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
                 return
             }
 
@@ -27,7 +27,7 @@ extension BlogDetailsViewController {
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
             let url = Gravatar.gravatarUrl(for: email),
-            let gravatarIcon = image.gravatarIcon() else {
+            let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
                 return
         }
 
@@ -39,5 +39,9 @@ extension BlogDetailsViewController {
     private func reloadMeRow() {
         let meIndexPath = indexPath(for: .me)
         tableView.reloadRows(at: [meIndexPath], with: .automatic)
+    }
+
+    private enum Metrics {
+        static let iconSize = 24.0
     }
 }
