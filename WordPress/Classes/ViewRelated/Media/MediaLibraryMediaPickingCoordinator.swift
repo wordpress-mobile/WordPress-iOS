@@ -119,7 +119,12 @@ final class MediaLibraryMediaPickingCoordinator {
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {
         if FeatureFlag.nativePhotoPicker.enabled {
-            let picker = PHPickerViewController(configuration: .make())
+            var configuration = PHPickerConfiguration()
+            configuration.preferredAssetRepresentationMode = .current
+            configuration.selection = .ordered
+            configuration.selectionLimit = 0 // Unlimited
+
+            let picker = PHPickerViewController(configuration: configuration)
             picker.delegate = self
             origin.present(picker, animated: true)
         } else {

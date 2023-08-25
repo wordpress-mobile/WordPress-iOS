@@ -4,6 +4,7 @@
 * [*] (Internal) Fix unbounded growth of number media observers in Post Editor (performance issue) [#21352](https://github.com/wordpress-mobile/WordPress-iOS/pull/21352)
 * [**] [internal] Fix a crash when disconnecting the app from the "Connected Applications" on WordPress.com. [#21375]
 * [*] Fix an issue where the "Take Photo" flow was not working without the "All Photos" access [#21398](https://github.com/wordpress-mobile/WordPress-iOS/pull/21398)
+* [*] Fix a couple of small issues with media uploads error handling [#21411](https://github.com/wordpress-mobile/WordPress-iOS/pull/21411)
 
 23.1
 -----

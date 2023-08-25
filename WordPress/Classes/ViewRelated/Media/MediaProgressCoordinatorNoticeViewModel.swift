@@ -59,6 +59,14 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failureNotice: Notice {
+        var canRetry = failedMedia.allSatisfy(\.canRetry)
+        guard canRetry else {
+            return Notice(title: title,
+                          message: message,
+                          feedbackType: .error,
+                          notificationInfo: notificationInfo,
+                          tag: MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag)
+        }
         return Notice(title: title,
                       message: message,
                       feedbackType: .error,
@@ -66,9 +74,9 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
                       tag: MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag,
                       actionHandler: { _ in
-                        for media in self.failedMedia {
-                            MediaCoordinator.shared.retryMedia(media)
-                        }
+            for media in self.failedMedia {
+                MediaCoordinator.shared.retryMedia(media)
+            }
         })
     }
 
@@ -137,7 +145,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failedMediaDescription: String {
-        if isPostMedia {
+        if !isPostMedia {
             return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
                              singular: NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
                              plural: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
