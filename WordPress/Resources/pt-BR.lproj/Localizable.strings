@@ -8453,7 +8453,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Alterações foram feitas recentemente no post mas não foram salvas. Escolha a versão para carregar:\n\nDeste dispositivo\nSalva em %1$@\n\nDe outro dispositivo\nSalva em %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Você respondeu esse comentário.";
 
 /* No comment provided by engineer. */

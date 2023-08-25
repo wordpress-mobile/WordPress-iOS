@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-07 20:52:38+0000 */
+/* Translation-Revision-Date: 2023-08-23 07:04:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ru */
@@ -8459,7 +8459,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Вы внесли, но не сохранили изменения в эту запись. Выберите вариант для загрузки:\n\nС этого устройства\nСохранено %1$@\n\nС другого устройства\nСохранено %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Вы ответили на этот комментарий.";
 
 /* No comment provided by engineer. */
@@ -8759,6 +8760,9 @@
 
 /* Used when displaying author of a plugin. */
 "by %@" = "автора %@";
+
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Оценить как полезное";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "комментарий";
@@ -9491,6 +9495,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Статистика за сегодня";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Новости";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Перенести домены";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Как вы, возможно, знаете, домены Google были проданы компании Squarespace. Перенесите свои домены на WordPress.com сейчас, и мы оплатим все сборы за перенос плюс дополнительный год регистрации вашего домена.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Заберите ваши домены Google";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Закрыть";
 
@@ -9952,7 +9968,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Ваша последняя запись %1$@ получила %2$@ отметок \"нравится\".";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ваша последняя запись %1$@ получила %2$@ отметку \"нравится\".";
 
 /* Dismiss the AlertView */
@@ -9981,6 +9997,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Посетите WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Думаю...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Закрыть";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Обратиться в поддержку";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "С чем я могу вам помочь? Если я не смогу ответить на ваш вопрос, я помогу вам открыть заявку в службу поддержки с нашей командой!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Отправить сообщение...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Я не помню свои учётные данные";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Почему я не могу войти?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Какой адрес у моего сайта?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Как можно использовать свой пользовательский домен в приложении?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Невозможно загрузить фото\/видео";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Помогите, сайт не работает!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Сообщить как о неточном";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Источники";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Не знаете, что спросить?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Ошибка отправки запроса в поддержку";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Создание запроса в поддержку...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Обращение создано";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Связаться с поддержкой";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Ответ";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Вопрос";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Расшифровка мобильного бота Jetpack";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Задайте вопрос на форуме сообщества, и наши волонтёры вам помогут.";

@@ -8459,7 +8459,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "最近この投稿に変更を加えましたが、それを保存していません。読み込むバージョンを選択してください。\n\nこの端末から\n%1$@に保存\n\n別の端末から\n%2$@に保存\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "このコメントに返信しました。";
 
 /* No comment provided by engineer. */
@@ -9946,7 +9947,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
 
 /* Dismiss the AlertView */

@@ -8459,7 +8459,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "لقد أجريت مؤخرًا تغييرات على هذه المقالة، ولكنك لم تحفظها. اختر نسخة لتحميلها:\n\nمن هذا الجهاز\nتم الحفظ في %1$@\n\nمن جهاز آخر\nتم الحفظ في %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "لقد قمتَ بالرد على هذا التعليق.";
 
 /* No comment provided by engineer. */
@@ -9937,7 +9938,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
 
 /* Dismiss the AlertView */

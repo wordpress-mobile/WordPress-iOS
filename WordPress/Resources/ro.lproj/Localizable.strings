@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-14 04:13:32+0000 */
+/* Translation-Revision-Date: 2023-08-24 14:21:39+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ro */
@@ -4864,7 +4864,7 @@
 "Please enter your credentials" = "Te rog să-ți introduci datele de conectare";
 
 /* Instructions for alert asking for email. */
-"Please enter your email address." = "Te rog să-ți introduci adresa de email.";
+"Please enter your email address." = "Te rog să introduci adresa ta de email.";
 
 /* A short prompt asking the user to properly fill out all login fields. */
 "Please fill out all the fields" = "Te rog să completezi toate câmpurile";
@@ -8459,7 +8459,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Ai făcut recent modificări la acest articol, dar nu le-ai salvat. Alege o versiune pentru a o încărca:\n\nDe pe acest dispozitiv\nSalvată pe %1$@\n\nDe pe alt dispozitiv\nSalvată pe %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Ai răspuns la acest comentariu.";
 
 /* No comment provided by engineer. */
@@ -8759,6 +8760,9 @@
 
 /* Used when displaying author of a plugin. */
 "by %@" = "de %@";
+
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Evaluează ca fiind util";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "comentariu";
@@ -9491,6 +9495,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistici pentru azi";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Noutăți";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Transferă-ți domeniile";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "După cum probabil știi, Google Domains a fost vândut la Squarespace. Transferă-ți domeniile la WordPress.com acum și îți vom plăti toate taxele de transfer, în plus ai un an suplimentar la înregistrarea domeniului.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Revendică-ți domeniile Google";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Închide";
 
@@ -9952,8 +9968,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
+"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut o apreciere.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Refuză";
@@ -9981,6 +9997,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Vizitează WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Gândesc...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Închide";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Contactează suportul";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Cu ce ​​te pot ajuta? Dacă nu îți pot răspunde la întrebare, te voi ajuta să deschizi un tichet pentru suport cu echipa noastră!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Trimite un mesaj...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Am uitat datele de autentificare";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "De ce nu pot să mă autentific?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Care este adresa site-ului meu?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Cum pot să-mi folosesc domeniul personalizat în aplicație?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Nu pot să încarc fotografii\/videouri";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Ajutor, site-ul meu a căzut!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Raportează ca fiind inexact";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Surse";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Nu știi ce să întrebi?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Eroare la trimiterea tichetului pentru suport";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Creez tichetului pentru suport...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Am creat tichetul";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Contactează suportul";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Răspuns";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Întrebare";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Transcriere bot Jetpack Mobile";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Pune o întrebare pe forumul comunității și obține ajutor de la grupul nostru de voluntari.";

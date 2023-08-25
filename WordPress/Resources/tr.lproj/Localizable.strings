@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-08 21:59:03+0000 */
+/* Translation-Revision-Date: 2023-08-23 09:49:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: tr */
@@ -8459,7 +8459,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Kısa süre önce bu yazıda değişiklik yaptınız ancak kaydetmediniz. Yüklemek için bir sürüm seçin:\n\nBu cihazdan\n%1$@ tarihinde\n\nBaşka cihazdan\n%2$@ tarihinde\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Bu yorumu yanıtladınız.";
 
 /* No comment provided by engineer. */
@@ -8759,6 +8760,9 @@
 
 /* Used when displaying author of a plugin. */
 "by %@" = "%@ tarafından";
+
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Faydalı olarak değerlendirin";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "yorum";
@@ -9491,6 +9495,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Bugünün İstatistikleri";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Haberler";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Alan adlarınızı aktarın";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Bildiğiniz gibi Google Domains, Squarespace firmasına satıldı. Alan adlarınızı şimdi WordPress.com'a taşıyın, tüm taşıma masrafları ve ek bir yıllık alan adı kaydı ücretini biz üstlenelim.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Google Domains için harekete geçin";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
 
@@ -9952,7 +9968,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Son yazınız %1$@ %2$@ beğeni aldı.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Son yazınız %1$@ %2$@ beğeni aldı.";
 
 /* Dismiss the AlertView */
@@ -9981,6 +9997,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "WordPress.org adresini ziyaret edin";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Düşünüyorum...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Kapat";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Destek ile iletişim kur";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Size nasıl yardımcı olabilirim? Sorunuzu yanıtlayamazsam ekibimizle bir destek bildirimi açmanıza yardımcı olacağım!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Mesaj gönder...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Giriş bilgilerimi unuttum";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Neden giriş yapamıyorum?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Sitemin adresi ne?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Kendi alan adımı uygulamada nasıl kullanabilirim?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Fotoğraf\/video yükleyemiyorum";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Yardım edin, sitem kapandı!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Hatalı olarak bildir";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Kaynaklar";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Ne soracağınızdan emin değil misiniz?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Destek bileti gönderilirken hata oluştu";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Destek bileti oluşturuluyor…";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Bilet oluşturuldu";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Destek ile iletişim kur";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Cevap";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Soru";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack Mobil Bot transkripti:";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Topluluk forumunda bir soru sorun ve gönüllü grubumuzdan yardım alın.";

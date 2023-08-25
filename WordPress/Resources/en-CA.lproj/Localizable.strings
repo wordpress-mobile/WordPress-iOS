@@ -8426,7 +8426,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %1$@\n\nFrom another device\nSaved on %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "You replied to this comment.";
 
 /* No comment provided by engineer. */

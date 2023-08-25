@@ -4771,7 +4771,8 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Potrebujete overiť účet skôr ako zverejníte článok. \nNemajte obavy, článok sa uloží ako koncept.";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Odpovedali ste na tento komentár.";
 
 /* No comment provided by engineer. */
