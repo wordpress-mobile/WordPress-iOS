@@ -213,8 +213,8 @@ public class ReaderScreen: ScreenObject {
     public func verifySavedPosts(state: String, postLabel: String? = nil, file: StaticString = #file, line: UInt = #line) -> Self {
         if readerTable.cells.count > 0 {
             XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
-            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, "Post displayed does not match saved post!", file: file, line: line)
-            XCTAssertEqual(readerTable.cells.count, 1, "There should only be 1 post!", file: file, line: line)
+            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, .postNotEqualSavedPostError, file: file, line: line)
+            XCTAssertEqual(readerTable.cells.count, 1, .postNotEqualOneError, file: file, line: line)
             XCTAssertEqual(state, .withSavedPosts, file: file, line: line)
         } else {
             XCTAssertTrue(noResultsView.waitForExistence(timeout: 3), file: file, line: line)
@@ -235,7 +235,7 @@ public class ReaderScreen: ScreenObject {
 
     public func verifyPostLikedOnFollowing(file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
-        XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreatherThanOneError, file: file, line: line)
+        XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreaterThanOneError, file: file, line: line)
         XCTAssertTrue(likeButton.firstMatch.label.hasPrefix(.postLiked), file: file, line: line)
 
         return self
@@ -255,7 +255,8 @@ private extension String {
     static let emptyListLabel = "Empty list"
     static let postLiked = "This post is in My Likes"
     static let postNotEqualOneError = "There should only be 1 post!"
-    static let postNotGreatherThanOneError = "There shouldn't only be 1 post!"
+    static let postNotEqualSavedPostError = "Post displayed does not match saved post!"
+    static let postNotGreaterThanOneError = "There shouldn't only be 1 post!"
     static let postNotLiked = "This post is not in My Likes"
     static let withoutSavedPosts = "without posts"
     static let withSavedPosts = "with posts"
