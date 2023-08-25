@@ -13,13 +13,6 @@ extension MeViewController: UIViewControllerRestoration {
 
     override func decodeRestorableState(with coder: NSCoder) {
         super.decodeRestorableState(with: coder)
-        // needs to be done after self has been initialized, so we do it in this method
-        let doneButton = UIBarButtonItem(target: self, action: #selector(dismissHandler))
-        navigationItem.rightBarButtonItem = doneButton
-        if WPDeviceIdentification.isiPad() {
-            navigationController?.modalPresentationStyle = .formSheet
-            navigationController?.modalTransitionStyle = .coverVertical
-        }
     }
 
     @objc
