@@ -4,92 +4,92 @@ import XCUITestHelpers
 
 public class BlockEditorScreen: ScreenObject {
 
-    private let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
-    }
-
-    private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
-    }
-
-    private let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
-    }
-
     private let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["add-block-button"]
-    }
-
-    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["more_post_options"]
-    }
-
-    private let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Insert from URL"]
     }
 
     private let applyButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Apply"]
     }
 
-    private let discardButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Discard"]
-    }
-
-    private let firstParagraphBlockGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["Paragraph Block. Row 1. Empty"]
-    }
-
-    private let postTitleViewGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["Post title. Empty"]
-    }
-
-    private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"]
+    private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Choose from device"]
     }
 
     private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Close"]
     }
 
+    private let discardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Discard"]
+    }
+
     private let dismissPopoverRegionGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements["PopoverDismissRegion"]
     }
 
-    private let keepEditingButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Keep Editing"]
+    private let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     }
 
-    private let postSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Post Settings"]
+    private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"]
     }
 
-    private let switchToHTMLModeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Switch to HTML Mode"]
-    }
-
-    private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Choose from device"]
-    }
-
-    private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Set reminders"]
+    private let firstParagraphBlockGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Paragraph Block. Row 1. Empty"]
     }
 
     private let fullScreenImageGetter: (XCUIApplication) -> XCUIElement = {
         $0.images["Fullscreen view of image. Double tap to dismiss"]
     }
 
-    private let unsavedChangesLabelGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["You have unsaved changes."]
+    private let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Insert from URL"]
+    }
+
+    private let keepEditingButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Keep Editing"]
+    }
+
+    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["more_post_options"]
+    }
+
+    private let noticeViewButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["View"]
     }
 
     private let noticeViewTitleGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements["notice_title_and_message"]
     }
 
-    private let noticeViewButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["View"]
+    private let postSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Post Settings"]
+    }
+
+    private let postTitleViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Post title. Empty"]
+    }
+
+    private let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
+    }
+
+    private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Set reminders"]
+    }
+
+    private let switchToHTMLModeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Switch to HTML Mode"]
+    }
+
+    private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
+    }
+
+    private let unsavedChangesLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["You have unsaved changes."]
     }
 
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
@@ -105,15 +105,15 @@ public class BlockEditorScreen: ScreenObject {
     var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
     var keepEditingButton: XCUIElement { keepEditingButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
+    var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
+    var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
-    var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
+    var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
     var unsavedChangesLabel: XCUIElement { unsavedChangesLabelGetter(app) }
-    var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
-    var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
