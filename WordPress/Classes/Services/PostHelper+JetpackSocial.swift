@@ -1,4 +1,4 @@
-extension PostService {
+extension PostHelper {
     typealias StringDictionary = [String: String]
     typealias Keys = Post.Constants
     typealias SkipPrefix = Post.PublicizeMetadataSkipPrefix
@@ -15,7 +15,7 @@ extension PostService {
     ///   - metadata: The metadata dictionary for the post. Optional because Obj-C shouldn't be trusted.
     /// - Returns: A dictionary for the `Post`'s `disabledPublicizeConnections` property.
     @objc(disabledPublicizeConnectionsForPost:andMetadata:)
-    func disabledPublicizeConnections(for post: AbstractPost?, metadata: [[String: Any]]?) -> [NSNumber: StringDictionary] {
+    static func disabledPublicizeConnections(for post: AbstractPost?, metadata: [[String: Any]]?) -> [NSNumber: StringDictionary] {
         guard let post, let metadata else {
             return [:]
         }
@@ -70,7 +70,7 @@ extension PostService {
     /// - Parameter post: The associated `Post` object.
     /// - Returns: An array of metadata dictionaries representing the `Post`'s disabled connections.
     @objc(publicizeMetadataEntriesForPost:)
-    func publicizeMetadataEntries(for post: Post?) -> [StringDictionary] {
+    static func publicizeMetadataEntries(for post: Post?) -> [StringDictionary] {
         guard let post,
               let disabledConnectionsDictionary = post.disabledPublicizeConnections else {
             return []
