@@ -37,6 +37,11 @@ extension Media {
         return !posts.isEmpty
     }
 
+    /// If `false`, the only course of action is to cancel the upload.
+    var canRetry: Bool {
+        absoluteLocalURL != nil
+    }
+
     // MARK: - Media Type
 
     /// Returns the MIME type, e.g. "image/png".
