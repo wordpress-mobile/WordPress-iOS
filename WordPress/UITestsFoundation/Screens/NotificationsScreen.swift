@@ -111,7 +111,9 @@ public class NotificationsScreen: ScreenObject {
 
 
     public func likeComment() -> Self {
+        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentNotLikedLabel))
         likeCommentButton.tap()
+        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentLikedLabel))
 
         return self
     }
@@ -127,4 +129,9 @@ public class NotificationsScreen: ScreenObject {
     public static func isLoaded() -> Bool {
         (try? NotificationsScreen().isLoaded) ?? false
     }
+}
+
+private extension String {
+    static let commentLikedLabel = "Comment is liked"
+    static let commentNotLikedLabel = "Comment is not liked"
 }
