@@ -2650,6 +2650,8 @@
 		AE2F3129270B6DE200B2A9C2 /* NSMutableAttributedString+ApplyAttributesToQuotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2F3127270B6DE200B2A9C2 /* NSMutableAttributedString+ApplyAttributesToQuotes.swift */; };
 		AE3047AA270B66D300FE9266 /* Scanner+QuotedTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3047A9270B66D300FE9266 /* Scanner+QuotedTextTests.swift */; };
 		AEE0828A2681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */; };
+		B026DAB02A96D9E900995410 /* support_chat_error_handler.js in Resources */ = {isa = PBXBuildFile; fileRef = B026DAAF2A96D9E900995410 /* support_chat_error_handler.js */; };
+		B026DAB12A96D9E900995410 /* support_chat_error_handler.js in Resources */ = {isa = PBXBuildFile; fileRef = B026DAAF2A96D9E900995410 /* support_chat_error_handler.js */; };
 		B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B030FE0927EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift */; };
 		B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9233250BC593000A40AF /* SuggestionService.swift */; };
 		B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9235250BC5FD000A40AF /* Suggestion.swift */; };
@@ -7960,6 +7962,7 @@
 		AE2F3127270B6DE200B2A9C2 /* NSMutableAttributedString+ApplyAttributesToQuotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+ApplyAttributesToQuotes.swift"; sourceTree = "<group>"; };
 		AE3047A9270B66D300FE9266 /* Scanner+QuotedTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scanner+QuotedTextTests.swift"; sourceTree = "<group>"; };
 		AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRefactoredGalleryUploadProcessorTests.swift; sourceTree = "<group>"; };
+		B026DAAF2A96D9E900995410 /* support_chat_error_handler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = support_chat_error_handler.js; sourceTree = "<group>"; };
 		B030FE0927EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationIntentTracksEventTests.swift; sourceTree = "<group>"; };
 		B03B9233250BC593000A40AF /* SuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionService.swift; sourceTree = "<group>"; };
 		B03B9235250BC5FD000A40AF /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
@@ -9776,6 +9779,7 @@
 				0133A7C02A8E4F6100B36E58 /* support_chat_widget_page.css */,
 				0186358C2A810ABA00915532 /* support_chat_widget.js */,
 				01A8508A2A8A126400BD8A97 /* support_chat_widget.css */,
+				B026DAAF2A96D9E900995410 /* support_chat_error_handler.js */,
 			);
 			path = SupportChatBot;
 			sourceTree = "<group>";
@@ -19111,6 +19115,7 @@
 				98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */,
 				172F06BC2865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png in Resources */,
 				17222D82261DDDF90047B163 /* celadon-classic-icon-app-83.5x83.5@2x.png in Resources */,
+				B026DAB02A96D9E900995410 /* support_chat_error_handler.js in Resources */,
 				C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */,
 				C768B5B525828A5D00556E75 /* JetpackScanStatusCell.xib in Resources */,
 				82FC61261FA8ADAD00A1757E /* ActivityTableViewCell.xib in Resources */,
@@ -19568,6 +19573,7 @@
 				FABB1FF22602FC2C00C8785C /* ReaderSavedPostUndoCell.xib in Resources */,
 				F41E4EAB28F20DF9001880C6 /* stroke-light-icon-app-60@2x.png in Resources */,
 				FABB1FF32602FC2C00C8785C /* ReaderPostCardCell.xib in Resources */,
+				B026DAB12A96D9E900995410 /* support_chat_error_handler.js in Resources */,
 				FABB1FF52602FC2C00C8785C /* RevisionsTableViewCell.xib in Resources */,
 				FABB1FF72602FC2C00C8785C /* Revisions.storyboard in Resources */,
 				FABB1FF82602FC2C00C8785C /* ActivityDetailViewController.storyboard in Resources */,
