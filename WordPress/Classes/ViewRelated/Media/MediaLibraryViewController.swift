@@ -356,10 +356,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                     let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary))
                     MediaCoordinator.shared.retryMedia(media, analyticsInfo: info)
                 }
-            } else {
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
-                    MediaCoordinator.shared.delete(media: [media])
-                }
             }
         }
 
