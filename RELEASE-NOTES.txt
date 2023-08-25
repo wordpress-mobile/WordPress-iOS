@@ -1,6 +1,9 @@
 23.1
 -----
 
+23.0.1
+-----
+ * [**] Fix Voice Over and assistive keyboards [https://github.com/WordPress/gutenberg/pull/53895]
 
 23.0
 -----
