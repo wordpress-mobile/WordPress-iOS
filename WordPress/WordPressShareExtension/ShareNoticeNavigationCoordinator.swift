@@ -57,15 +57,21 @@ class ShareNoticeNavigationCoordinator {
                 return
         }
 
-        postService.getPostWithID(postID, for: blog, success: { apost in
-            guard let post = apost as? Post else {
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        let blogID = TaggedManagedObjectID(saved: blog)
+        Task { @MainActor in
+            do {
+                let postObjectID = try await repository.getPost(withID: postID, from: blogID)
+                let postObject = try ContextManager.shared.mainContext.existingObject(with: postObjectID)
+                guard let post = postObject as? Post else {
+                    onFailure()
+                    return
+                }
+                onSuccess(post)
+            } catch {
                 onFailure()
-                return
             }
-            onSuccess(post)
-        }, failure: { error in
-            onFailure()
-        })
+        }
     }
 
     private static func fetchBlog(from userInfo: NSDictionary,
