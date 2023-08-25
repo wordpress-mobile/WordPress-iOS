@@ -210,15 +210,16 @@ public class ReaderScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifySavedPosts(state: String, postLabel: String? = nil) -> Self {
+    public func verifySavedPosts(state: String, postLabel: String? = nil, file: StaticString = #file, line: UInt = #line) -> Self {
         if readerTable.cells.count > 0 {
-            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, "Post displayed does not match saved post!")
-            XCTAssertEqual(readerTable.cells.count, 1, "There should only be 1 post!")
-            XCTAssertEqual(state, .withSavedPosts)
+            XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
+            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, "Post displayed does not match saved post!", file: file, line: line)
+            XCTAssertEqual(readerTable.cells.count, 1, "There should only be 1 post!", file: file, line: line)
+            XCTAssertEqual(state, .withSavedPosts, file: file, line: line)
         } else {
-            XCTAssertTrue(noResultsView.waitForExistence(timeout: 3))
-            XCTAssertTrue(readerTable.label == .emptyListLabel)
-            XCTAssertEqual(state, .withoutSavedPosts)
+            XCTAssertTrue(noResultsView.waitForExistence(timeout: 3), file: file, line: line)
+            XCTAssertTrue(readerTable.label == .emptyListLabel, file: file, line: line)
+            XCTAssertEqual(state, .withoutSavedPosts, file: file, line: line)
         }
 
         return self
@@ -233,6 +234,7 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func verifyPostLikedOnFollowing(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
         XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreatherThanOneError, file: file, line: line)
         XCTAssertTrue(likeButton.firstMatch.label.hasPrefix(.postLiked), file: file, line: line)
 
@@ -241,6 +243,7 @@ public class ReaderScreen: ScreenObject {
 
     @discardableResult
     public func verifyPostLikedOnLikesTab(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
         XCTAssertEqual(readerTable.cells.count, 1, .postNotEqualOneError, file: file, line: line)
         XCTAssertTrue(likeButton.firstMatch.label.hasPrefix(.postLiked), file: file, line: line)
 
