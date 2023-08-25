@@ -142,10 +142,12 @@ platform :ios do
     gutenberg_clone_name = 'Gutenberg-Strings-Clone'
     Dir.mktmpdir do |tempdir|
       Dir.chdir(tempdir) do
-        sh("git clone --depth 1 https://github.com/#{GITHUB_ORG}/#{REPO_NAME} #{gutenberg_clone_name}")
+        repo_url = "https://github.com/#{GITHUB_ORG}/#{REPO_NAME}"
+        UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
+        sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
         Dir.chdir(gutenberg_clone_name) do
           if GUTENBERG_CONFIG[:tag]
-            sh("git fetch origin refs/tags/#{GUTENBERG_CONFIG[:tag]}:refs/tags/#{GUTENBERG_CONFIG[:tag]} --verbose")
+            sh("git fetch origin refs/tags/#{GUTENBERG_CONFIG[:tag]}:refs/tags/#{GUTENBERG_CONFIG[:tag]}")
             sh("git checkout refs/tags/#{GUTENBERG_CONFIG[:tag]}")
           else
             sh("git fetch origin #{ref}")
