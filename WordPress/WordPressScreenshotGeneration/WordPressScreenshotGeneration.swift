@@ -6,6 +6,7 @@ import XCTest
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
 
+    @MainActor
     override func setUpWithError() throws {
         super.setUp()
 

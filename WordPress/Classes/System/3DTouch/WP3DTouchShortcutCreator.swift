@@ -17,7 +17,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     enum LoggedIn3DTouchShortcutIndex: Int {
         case notifications = 0,
         stats,
-        newPhotoPost,
         newPost
     }
 
@@ -27,7 +26,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     fileprivate let logInShortcutIconImageName = "icon-shortcut-signin"
     fileprivate let notificationsShortcutIconImageName = "icon-shortcut-notifications"
     fileprivate let statsShortcutIconImageName = "icon-shortcut-stats"
-    fileprivate let newPhotoPostShortcutIconImageName = "icon-shortcut-new-photo"
     fileprivate let newPostShortcutIconImageName = "icon-shortcut-new-post"
 
     public init(shortcutsProvider: ApplicationShortcutsProvider) {
@@ -92,19 +90,13 @@ open class WP3DTouchShortcutCreator: NSObject {
                                                              icon: UIApplicationShortcutIcon(templateImageName: statsShortcutIconImageName),
                                                          userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.rawValue as NSSecureCoding])
 
-        let newPhotoPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPhotoPost.type,
-                                                          localizedTitle: NSLocalizedString("New Photo Post", comment: "New Photo Post 3D Touch Shortcut"),
-                                                       localizedSubtitle: defaultBlogName,
-                                                                    icon: UIApplicationShortcutIcon(templateImageName: newPhotoPostShortcutIconImageName),
-                                                                userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPhotoPost.rawValue as NSSecureCoding])
-
         let newPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.type,
                                                      localizedTitle: NSLocalizedString("New Post", comment: "New Post 3D Touch Shortcut"),
                                                   localizedSubtitle: defaultBlogName,
                                                                icon: UIApplicationShortcutIcon(templateImageName: newPostShortcutIconImageName),
                                                            userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.rawValue as NSSecureCoding])
 
-        return [notificationsShortcut, statsShortcut, newPhotoPostShortcut, newPostShortcut]
+        return [notificationsShortcut, statsShortcut, newPostShortcut]
     }
 
     @objc fileprivate func createLoggedInShortcuts() {
@@ -126,7 +118,6 @@ open class WP3DTouchShortcutCreator: NSObject {
             }
 
             if AppConfiguration.allowsNewPostShortcut {
-                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
             }
 

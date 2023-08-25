@@ -167,6 +167,8 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
             fallthrough
         case (.appOpen, _):
             fallthrough
+        case (.phaseFourOverlay, _):
+            fallthrough
         case (.disabledEntryPoint, _):
             return Constants.allFeaturesLogosAnimationLtr
         }
@@ -189,6 +191,8 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
         case (.login, _):
             fallthrough
         case (.appOpen, _):
+            fallthrough
+        case (.phaseFourOverlay, _):
             fallthrough
         case (.disabledEntryPoint, _):
             return Constants.allFeaturesLogosAnimationRtl

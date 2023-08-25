@@ -4,6 +4,7 @@ import XCTest
 class EditorAztecTests: XCTestCase {
     private var editorScreen: AztecEditorScreen!
 
+    @MainActor
     override func setUpWithError() throws {
         setUpTestSuite()
 

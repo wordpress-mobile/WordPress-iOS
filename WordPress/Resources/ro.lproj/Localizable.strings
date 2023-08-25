@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-08 09:56:28+0000 */
+/* Translation-Revision-Date: 2023-08-18 12:59:15+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ro */
@@ -4864,7 +4864,7 @@
 "Please enter your credentials" = "Te rog să-ți introduci datele de conectare";
 
 /* Instructions for alert asking for email. */
-"Please enter your email address." = "Te rog să-ți introduci adresa de email.";
+"Please enter your email address." = "Te rog să introduci adresa ta de email.";
 
 /* A short prompt asking the user to properly fill out all login fields. */
 "Please fill out all the fields" = "Te rog să completezi toate câmpurile";

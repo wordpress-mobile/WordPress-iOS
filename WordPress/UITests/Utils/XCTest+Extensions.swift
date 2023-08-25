@@ -3,6 +3,9 @@ import XCTest
 
 extension XCTestCase {
 
+    // Require main actor isolation because of the calls to app.terminate() and app.activate()
+    // which require running on the main thread.
+    @MainActor
     public func setUpTestSuite(
         for app: XCUIApplication = XCUIApplication(),
         removeBeforeLaunching: Bool = false,
@@ -30,6 +33,7 @@ extension XCTestCase {
         // Media permissions alert handler
         let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
+
     }
 
     public func takeScreenshotOfFailedTest() {

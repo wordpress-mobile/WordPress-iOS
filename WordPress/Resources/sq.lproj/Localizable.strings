@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-06-08 09:22:50+0000 */
+/* Translation-Revision-Date: 2023-08-19 09:41:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: sq_AL */
@@ -5276,6 +5276,9 @@
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "I rilidhur";
 
+/* Action button to redo last change */
+"Redo" = "Ribëje";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referues";
 
@@ -8646,11 +8649,35 @@
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Hidhe tej";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Krijoni";
+
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "S’keni krijuar ende ndonjë fushatë. Klikoni mbi “Krijoni”, që t’ia filloni.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "S’keni fushata";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "Pati një gabim gjatë ngarkimit të fushatave.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "Hëm";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Po ngarkohen fushata…";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Fushata Blaze";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Shfaqeni punën tuaj nëpër miliona sajte.";
 
 /* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Fshihe këtë";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Mësoni më tepër";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "Promovoni lëndën tuaj përmes Blaze-it";
@@ -8676,6 +8703,39 @@
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "Promovojeni këtë postim në Blaze";
 
+/* Short status description */
+"blazeCampaign.status.active" = "Aktive";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "E miratuar";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "E anuluar";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "E plotësuar";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "Në Moderim";
+
+/* Short status description */
+"blazeCampaign.status.processing" = "Po përpunohet";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Hedhur poshtë";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Vënë Në Plan";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "Buxhet";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "Klikime";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "Përshtypje";
+
 /* Title for the context menu action that hides the dashboard card. */
 "blogDashboard.contextMenu.hideThis" = "Fshihe këtë";
 
@@ -8690,6 +8750,39 @@
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "koment";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "Me komentet hapur";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "Koment te";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "Përgjigje për %1$@";
+
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Këto <em>cookies<\/em> na lejojnë të bëjmë funksionimin optimal, duke mbledhur hollësi mbi se si ndërveprojnë përdoruesit me sajtet tona.";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "Ruaje";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "Kaloni te Rregullimet";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "I përpunojmë të dhënat tuaja personale që të bëjmë optimal sajtin tonë dhe veprimtari marketingu, bazuar në pranimin nga ana juaj dhe interesin tonë të legjitim.";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "Administroni privatësi";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "Statistika";
 
 /* The menu item to select during a guided tour. */
 "connections" = "lidhje";
@@ -8721,6 +8814,15 @@
 /* Personialize home tab button title */
 "dasboard.personalizeHomeButtonTitle" = "Personalizoni skedën tuaj krye";
 
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "Fshihe këtë";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "Ndani me të tjerët nëpër rrjetet tuaja shoqërore";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "Ju janë mbaruar ndarjet!";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "Krejt veprimtaria";
 
@@ -8732,6 +8834,24 @@
 
 /* Title for the Pages dashboard card. */
 "dashboardCard.Pages.title" = "Faqe";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Klikime";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Krijoni fushatë";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Përshtypje";
+
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Mësoni më tepër";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Fushatë Blaze";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Shihni krejt fushatat";
 
 /* Title of a button that starts the page creation flow. */
 "dashboardCard.pages.add.button.title" = "Shtoni faqe te sajti juaj";
@@ -8750,6 +8870,12 @@
 
 /* Title of a label that encourages the user to create a new page. */
 "dashboardCard.pages.create.description" = "Fillojani me skema të qepura me porosi, të përshtatshme për celular.";
+
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "Shihni statistika";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Të përgjithshme";
 
 /* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
 "debugMenu.remoteConfig.footer" = "Parametrat e anashkaluar tregohen me një shenjë.";
@@ -8802,6 +8928,12 @@
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "në vit";
 
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Hidhe poshtë";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Na ndjeni, përkatësia që po rrekeni të shtoni s’mund të blihet që nga aplikacioni Jetpack në këtë kohë.";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "p.sh., 1122334455";
 
@@ -8816,8 +8948,38 @@
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "Hollësi Fushate";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "ndjekje";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Merrni një përkatësi falas për vitin e parë, hiqni reklama në sajtin tuaj dhe shtoni hapësirë depozitimi.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Fshihe këtë";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Përkatësi falas me një plan vjetor";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "U bë";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Mund të duhen deri në 30 minuta që përkatësia juaj të fillojë të funksionojë si duhet";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Përkatësia juaj e re %@ po ujdiset.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Gati për punë!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "Ndodhi një gabim";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "Riprovoni";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Ujdisni kujtues blogimi";
@@ -9266,6 +9428,9 @@
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Mirë se vini te Jetpack-u!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Aplikacioni Jetpack ka krejt veçoritë e aplikacionit WordPress dhe tanimë edhe hyrje përjashtimore te Statistika, Lexues, Njoftime, etj.";
+
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Kalimi është falas dhe do vetëm një minutë.";
 
@@ -9274,6 +9439,15 @@
 
 /* Title for a button that displays a blog post in a web view. */
 "movedToJetpack.learnMoreButtonTitle" = "Mësoni më tepër, te jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Përdorni WordPress-in me Njoftime në aplikacionin Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Përdorni WordPress-in me Reader në aplikacionin Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Përdorni WordPress-in me Statistika në aplikacionin Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Lëndë";
@@ -9289,6 +9463,12 @@
 
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Merruni me një skicë postimi";
+
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "Shihni krejt skicat";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "Shihni krejt postimet e planifikuar";
 
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistikat e Sotme";
@@ -9317,6 +9497,12 @@
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "Promovojeni me Blaze";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Faqja juaj hyrëse po përdor një gjedhe Teme dhe do të hapet në përpunuesin në internet.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Faqe hyrëse";
+
 /* No comment provided by engineer. */
 "password" = "fjalëkalim";
 
@@ -9331,6 +9517,12 @@
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.draftPosts" = "Hartoni postime";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Njihuni me aplikacionin";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Hapat pasues";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.pages" = "Faqe";
@@ -9362,8 +9554,75 @@
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Mundësi Figure të Zgjedhur";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Ndarja e Automatizuar nga Twitter S’është Më e Përdorshme";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovojeni me Blaze";
+
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " në 30 ditët pasuese";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "Edhe %1$d ndarje me të tjerë në rrjete shoqërorë";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Po ndahet me %1$d llogari";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Pa ndarje në shoqërorë";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Po ndahet në %1$d nga %2$d llogari";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Po ndahet në %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "Edhe %1$d ndarje në shoqërorë";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "Kujdes";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "Përshtateni mesazhin";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "Edhe %1$d ndarje në shoqërorë për 30 ditët pasuese";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Kujdes";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "Mesazh";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "Shoqërore";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
@@ -9382,6 +9641,12 @@
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Jeni i futur!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Kërko";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Rregullime për Reader";
 
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
 Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
@@ -9426,6 +9691,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "I ri";
 
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "Postimet e Afërta shfaqin nën postimet tuaja lëndë të afërt prej sajtit tuaj.";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "te “Celular”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "Gati Tani një Përditësim i Madh për iPhone\/iPad";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "te “Aplikacione”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "Aplikacioni WordPress për Android Ndërron Pamjen Goxha";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "te “Përmirësojeni”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Përmirësoni Focus-in: VideoPress Për Dasma";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "Paraparje";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "Postime të Afërta";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "Përditësimi i rregullimeve dështoi";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "Shfaq Kryet";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "Shfaq Postime të Afërta";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "Shfaq Figura";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "Postime të Afërta";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Hidhe tej";
 
@@ -9450,17 +9757,80 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/emriisajtittuaj.com";
 
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Sajti juaj është krijuar me sukses, por hasëm një problem, teksa përgatisnim përkatësinë tuaj vetjake për blerje. Ju lutemi, riprovoni, ose lidhuni me asistencën për ndihmë.";
+
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Në ngjashmëri me shembullin më sipër, një përkatësi u lejon njerëzve të gjejnë dhe vizitojnë sajtin tuaj që nga shfletuesi.";
 
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "EmriiSajtitTuaj.com";
 
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "Privatësi";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Sajti juaj është i dukshëm për këdo, por u kërkon motorëve të kërkimeve të mos e indeksojnë.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "I fshehur";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "Sajti juaj është i dukshëm vetëm për ju dhe për përdorues që miratoni.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "Privat";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "Sajti juaj është i dukshëm për këdo dhe mund të indeksohet nga motorë kërkimesh.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "Publik";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "E panjohur";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "E panjohur";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Shfaq cytje";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Kujtues";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Shtoni trafikun tuaj, duke ndarë automatikisht postimet tuaja me shokët në tuaja në media shoqërore.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "Lidhni llogari";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Ikona mediash shoqërore";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Jo tani";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "Postimet tuaja s’do të ndahen me të tjerë në %1$d llogari tuajat në shoqërorë.";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "Postimet tuaja s’do të ndahen me të tjerë në llogarinë tuaj në shoqërorë.";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "Ikona mediash shoqërore";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Ndarja e Automatizuar Me të Tjerë Që Nga Twitter S’mund të Përdoret Më";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Mësoni më tepër";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Ndarja e automatizuar me të tjerë që nga Twitter s’mund të përdoret më, për shkak ndryshimesh në kushte dhe çmime nga ana e Twitter-it.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 ditët e fundit";
@@ -9554,6 +9924,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Pa veprimtari të mjaftueshme. Kontrolloni më vonë, kur sajti juaj të ketë më tepër vizitorë!";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "Postimi juaj më i ri %1$@ ka marrë %2$@ pëlqime.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+"stats.insights.totalLikes.guideText.singular" = "Postimi juaj më i ri %1$@ ka marrë %2$@ pëlqime.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";

@@ -11,6 +11,14 @@ public class ReaderScreen: ScreenObject {
         $0.tables["Reader"]
     }
 
+    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Reader"]
+    }
+
+    private let savedButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Saved"]
+    }
+
     private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Visit"]
     }
@@ -23,10 +31,42 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Dismiss"]
     }
 
+    private let followButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Follow"]
+    }
+
+    private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Following"]
+    }
+
+    private let topicNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Topic"]
+    }
+
+    private let topicCellButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["topics-card-cell-button"]
+    }
+
+    private let noResultsViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["no-results-label-stack-view"]
+    }
+
+    private let savePostButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Save post"]
+    }
+
     var backButton: XCUIElement { backButtonGetter(app) }
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
     var dismissButton: XCUIElement { dismissButtonGetter(app) }
+    var followButton: XCUIElement { followButtonGetter(app) }
+    var followingButton: XCUIElement { followingButtonGetter(app) }
+    var noResultsView: XCUIElement { noResultsViewGetter(app) }
+    var readerButton: XCUIElement { readerButtonGetter(app) }
     var readerTable: XCUIElement { readerTableGetter(app) }
+    var savePostButton: XCUIElement { savePostButtonGetter(app) }
+    var savedButton: XCUIElement { savedButtonGetter(app) }
+    var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
+    var topicNavigationBar: XCUIElement { topicNavigationBarGetter(app) }
     var visitButton: XCUIElement { visitButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
@@ -94,9 +134,83 @@ public class ReaderScreen: ScreenObject {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func openDiscover() -> ReaderScreen {
+    public func openDiscover() -> Self {
         discoverButton.tap()
 
         return self
     }
+
+    public func selectTopic() -> Self {
+        topicCellButton.firstMatch.tap()
+
+        return self
+    }
+
+    public func openSavedPosts() -> Self {
+        savedButton.tap()
+
+        return self
+    }
+
+    public func verifyTopicLoaded() -> Self {
+        XCTAssertTrue(topicNavigationBar.waitForExistence(timeout: 3))
+        XCTAssertTrue(readerButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(followButton.waitForExistence(timeout: 3))
+
+        return self
+    }
+
+    public func openFollowing() -> Self {
+        followingButton.tap()
+
+        return self
+    }
+
+    public func followTopic() -> Self {
+        followButton.tap()
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyTopicFollowed() -> Self {
+        XCTAssertTrue(followingButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(followingButton.isSelected)
+
+        return self
+    }
+
+    public func saveFirstPost() throws -> (ReaderScreen, String) {
+        XCTAssertTrue(readerTable.waitForExistence(timeout: 3))
+        let postLabel = readerTable.cells.firstMatch.label
+        savePostButton.firstMatch.tap()
+
+        // An alert about saved post is displayed the first time a post is saved
+        if let alert = try? FancyAlertComponent() {
+            alert.acceptAlert()
+        }
+
+        return (self, postLabel)
+    }
+
+    @discardableResult
+    public func verifySavedPosts(state: String, postLabel: String? = nil) -> Self {
+        if readerTable.cells.count > 0 {
+            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, "Post displayed does not match saved post!")
+            XCTAssertEqual(readerTable.cells.count, 1, "There should only be 1 post!")
+            XCTAssertEqual(state, .withSavedPosts)
+        } else {
+            XCTAssertTrue(noResultsView.waitForExistence(timeout: 3))
+            XCTAssertTrue(readerTable.label == .emptyListLabel)
+            XCTAssertEqual(state, .withoutSavedPosts)
+        }
+
+        return self
+    }
+}
+
+private extension String {
+    static let emptyListLabel = "Empty list"
+    static let withoutSavedPosts = "without posts"
+    static let withSavedPosts = "with posts"
 }

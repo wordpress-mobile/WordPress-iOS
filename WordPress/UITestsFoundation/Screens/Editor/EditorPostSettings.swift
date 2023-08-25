@@ -35,8 +35,8 @@ public class EditorPostSettings: ScreenObject {
         $0.buttons["Next Month"]
     }
 
-    private let firstCalendarDayLabelGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["1"]
+    private let firstCalendarDayButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons.containing(.staticText, identifier: "1").element
     }
 
     private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -48,7 +48,7 @@ public class EditorPostSettings: ScreenObject {
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
     var doneButton: XCUIElement { doneButtonGetter(app) }
     var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
-    var firstCalendarDayLabel: XCUIElement { firstCalendarDayLabelGetter(app) }
+    var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
     var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
     var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
     var settingsTable: XCUIElement { settingsTableGetter(app) }
@@ -137,7 +137,7 @@ public class EditorPostSettings: ScreenObject {
 
         // Selects the first day of the next month
         nextMonthButton.tap()
-        firstCalendarDayLabel.tap()
+        firstCalendarDayButton.tap()
 
         doneButton.tap()
         return self

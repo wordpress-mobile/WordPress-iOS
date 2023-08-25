@@ -464,34 +464,7 @@ class MeViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    fileprivate lazy var headerView: MeHeaderView = {
-        let headerView = MeHeaderView()
-        headerView.onGravatarPress = { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.presentGravatarPicker(from: strongSelf)
-        }
-        headerView.onDroppedImage = { [weak self] image in
-            let imageCropViewController = ImageCropViewController(image: image)
-            imageCropViewController.maskShape = .square
-            imageCropViewController.shouldShowCancelButton = true
-
-            imageCropViewController.onCancel = { [weak self] in
-                self?.dismiss(animated: true)
-                self?.updateGravatarStatus(.idle)
-            }
-            imageCropViewController.onCompletion = { [weak self] image, _ in
-                self?.dismiss(animated: true)
-                self?.uploadGravatarImage(image)
-            }
-
-            let navController = UINavigationController(rootViewController: imageCropViewController)
-            navController.modalPresentationStyle = .formSheet
-            self?.present(navController, animated: true)
-        }
-        return headerView
-    }()
+    fileprivate lazy var headerView = MeHeaderView()
 
     /// Shows an actionsheet with options to Log In or Create a WordPress site.
     /// This is a temporary stop-gap measure to preserve for users only logged
@@ -542,26 +515,6 @@ extension MeViewController: SearchableActivityConvertable {
         }
 
         return Set(keywordArray)
-    }
-}
-
-// MARK: - Gravatar uploading
-//
-extension MeViewController: GravatarUploader {
-    /// Update the UI based on the status of the gravatar upload
-    func updateGravatarStatus(_ status: GravatarUploaderStatus) {
-        switch status {
-        case .uploading(image: let newGravatarImage):
-            headerView.showsActivityIndicator = true
-            headerView.isUserInteractionEnabled = false
-            headerView.overrideGravatarImage(newGravatarImage)
-        case .finished:
-            reloadViewModel()
-            fallthrough
-        default:
-            headerView.showsActivityIndicator = false
-            headerView.isUserInteractionEnabled = true
-        }
     }
 }
 

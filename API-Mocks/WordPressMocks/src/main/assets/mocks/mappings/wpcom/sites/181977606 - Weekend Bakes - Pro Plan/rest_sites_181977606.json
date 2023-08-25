@@ -1761,7 +1761,7 @@
         "percent_used": 0.0403083860874176,
         "space_available": 3219927048
       },
-      "launch_status": false,
+      "launch_status": "launched",
       "site_migration": null,
       "is_fse_active": false,
       "is_fse_eligible": false,

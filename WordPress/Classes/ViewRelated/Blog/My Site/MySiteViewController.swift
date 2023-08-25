@@ -1085,7 +1085,9 @@ private extension MySiteViewController {
         if isViewOnScreen(), !willDisplayPostSignupFlow {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
-                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
+                let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
+                let source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource = phase == .four ? .phaseFourOverlay : .appOpen
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: source, blog: self.blog)
             }
         }
     }

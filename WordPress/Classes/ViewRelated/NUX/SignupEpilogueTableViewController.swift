@@ -17,7 +17,7 @@ protocol SignupEpilogueTableViewControllerDataSource: AnyObject {
     var username: String? { get }
 }
 
-class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfoCellViewControllerProvider {
+class SignupEpilogueTableViewController: UITableViewController {
 
     // MARK: - Properties
 
@@ -103,9 +103,8 @@ class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfo
             }
 
             if let epilogueUserInfo = epilogueUserInfo {
-                cell.configure(userInfo: epilogueUserInfo, showEmail: true, allowGravatarUploads: true)
+                cell.configure(userInfo: epilogueUserInfo, showEmail: true, allowGravatarUploads: true, viewController: self)
             }
-            cell.viewControllerProvider = self
             userInfoCell = cell
             return cell
         }

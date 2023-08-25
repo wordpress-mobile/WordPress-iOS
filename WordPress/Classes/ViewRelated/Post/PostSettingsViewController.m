@@ -58,7 +58,7 @@ static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellId
 
 @interface PostSettingsViewController () <UITextFieldDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
+UIPopoverControllerDelegate,
 PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
 FeaturedImageViewControllerDelegate>
 
@@ -624,6 +624,10 @@ FeaturedImageViewControllerDelegate>
 
 - (NSInteger)numberOfRowsForShareSection
 {
+    if ([self.apost.status isEqualToString:@"private"]) {
+        return 0;
+    }
+    
     if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
@@ -832,6 +836,11 @@ FeaturedImageViewControllerDelegate>
 
 - (UITableViewCell *)cellForSetFeaturedImage
 {
+    if ([Feature enabled:FeatureFlagNativePhotoPicker]) {
+        UITableViewCell *cell = [self makeSetFeaturedImageCell];
+        cell.tag = PostSettingsRowFeaturedImageAdd;
+        return cell;
+    }
     WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
     activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
     activityCell.accessibilityIdentifier = @"SetFeaturedImage";
@@ -1303,6 +1312,9 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showMediaPicker
 {
+    if ([Feature enabled:FeatureFlagNativePhotoPicker]) {
+        return; // Do nothing (showing the menu instead
+    }
     WPMediaPickerOptions *options = [WPMediaPickerOptions new];
     options.showMostRecentFirst = YES;
     options.allowMultipleSelection = NO;
@@ -1485,7 +1497,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    if (assets.count == 0 ){
+    if (assets.count == 0) {
         return;
     }
 

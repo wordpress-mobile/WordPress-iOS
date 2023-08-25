@@ -28,22 +28,27 @@ import WordPressKit
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
     @objc open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
-        let blogObjectID = blog.objectID
-        guard let remote = remoteForBlog(blog) else {
+        guard let remote = remoteForBlog(blog),
+              let blogID = blog.dotComID else {
             failure?(Error.siteWithNoRemote as NSError)
             return
         }
-        let onComplete = {
-            success?()
-            NotificationCenter.default.post(name: .jetpackSocialUpdated, object: nil)
-        }
 
-        remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
+        remote.getPublicizeConnections(blogID, success: { [blogObjectID = blog.objectID] remoteConnections in
+            let currentUserID: NSNumber = self.coreDataStack.performQuery { context in
+                guard let blog = try? context.existingObject(with: blogObjectID) as? Blog,
+                      let accountID = blog.account?.userID else {
+                    return NSNumber(value: 0)
+                }
+                return accountID
+            }
+
+            // Ensure that we're only processing shared or owned connections
+            let authorizedConnections = remoteConnections.filter { $0.shared || $0.userID.isEqual(to: currentUserID) }
 
             // Process the results
-            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: onComplete)
-        },
-        failure: failure)
+            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: authorizedConnections, onComplete: success)
+        }, failure: failure)
     }
 
     /// Called when syncing Publicize connections. Merges synced and cached data, removing

@@ -9,7 +9,7 @@ extension PostSettingsViewController {
         let isJetpackSocialEnabled = RemoteFeatureFlag.jetpackSocialImprovements.enabled()
         let isNoConnectionViewHidden = UserPersistentStoreFactory.instance().bool(forKey: hideNoConnectionViewKey())
         let blogSupportsPublicize = apost.blog.supportsPublicize()
-        let blogHasNoConnections = publicizeConnections.count == 0
+        let blogHasNoConnections = publicizeConnections.count == 0 && unsupportedConnections.count == 0
         let blogHasServices = availableServices().count > 0
 
         return isJetpackSocialEnabled
@@ -17,6 +17,7 @@ extension PostSettingsViewController {
         && blogSupportsPublicize
         && blogHasNoConnections
         && blogHasServices
+        && !isPostPrivate
     }
 
     @objc func createNoConnectionView() -> UIView {
@@ -45,6 +46,7 @@ extension PostSettingsViewController {
         && blogSupportsPublicize
         && blogHasConnections
         && blogHasSharingLimit
+        && !isPostPrivate
     }
 
     @objc func createRemainingSharesView() -> UIView {
@@ -91,6 +93,10 @@ extension PostSettingsViewController {
 // MARK: - Private methods
 
 private extension PostSettingsViewController {
+
+    var isPostPrivate: Bool {
+        apost.status == .publishPrivate
+    }
 
     func hideNoConnectionViewKey() -> String {
         guard let dotComID = apost.blog.dotComID?.stringValue else {
