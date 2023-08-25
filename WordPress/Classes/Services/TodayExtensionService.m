@@ -5,16 +5,29 @@
 
 @implementation TodayExtensionService
 
+- (void)configureTodayWidgetOAuth2Token:(NSString *)oauth2Token {
+    NSParameterAssert(oauth2Token.length > 0);
+
+    NSError *error;
+    [SFHFKeychainUtils storeUsername:AppConfigurationWidgetStats.keychainTokenKey
+                         andPassword:oauth2Token
+                      forServiceName:AppConfigurationWidgetStats.keychainServiceName
+                         accessGroup:WPAppKeychainAccessGroup
+                      updateExisting:YES
+                               error:&error];
+    if (error) {
+        DDLogError(@"Today Widget OAuth2Token error: %@", error);
+    }
+}
+
 - (void)configureTodayWidgetWithSiteID:(NSNumber *)siteID
                               blogName:(NSString *)blogName
                                blogUrl:(NSString *)blogUrl
                           siteTimeZone:(NSTimeZone *)timeZone
-                        andOAuth2Token:(NSString *)oauth2Token
 {
     NSParameterAssert(siteID != nil);
     NSParameterAssert(blogName != nil);
     NSParameterAssert(timeZone != nil);
-    NSParameterAssert(oauth2Token.length > 0);
 
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     
@@ -30,18 +43,6 @@
     [sharedDefaults setObject:siteID forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
     [sharedDefaults setObject:blogName forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
     [sharedDefaults setObject:blogUrl forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
-    
-    NSError *error;
-    
-    [SFHFKeychainUtils storeUsername:AppConfigurationWidgetStats.keychainTokenKey
-                         andPassword:oauth2Token
-                      forServiceName:AppConfigurationWidgetStats.keychainServiceName
-                         accessGroup:WPAppKeychainAccessGroup
-                      updateExisting:YES
-                               error:&error];
-    if (error) {
-        DDLogError(@"Today Widget OAuth2Token error: %@", error);
-    }
 }
 
 - (void)removeTodayWidgetConfiguration

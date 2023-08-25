@@ -159,11 +159,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     TodayExtensionService *service = [TodayExtensionService new];
 
+    [service configureTodayWidgetOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
     [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
                                    blogName:self.blog.settings.name
                                     blogUrl:self.blog.displayURL
-                               siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
-                             andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
+                               siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone];
 }
 
 

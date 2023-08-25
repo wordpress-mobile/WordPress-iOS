@@ -2,11 +2,12 @@
 
 @interface TodayExtensionService : NSObject
 
+- (void)configureTodayWidgetOAuth2Token:(NSString *)oauth2Token;
+
 - (void)configureTodayWidgetWithSiteID:(NSNumber *)siteID
                               blogName:(NSString *)blogName
                                blogUrl:(NSString *)blogUrl
-                          siteTimeZone:(NSTimeZone *)timeZone
-                        andOAuth2Token:(NSString *)oauth2Token;
+                          siteTimeZone:(NSTimeZone *)timeZone;
 
 - (void)removeTodayWidgetConfiguration;
 
