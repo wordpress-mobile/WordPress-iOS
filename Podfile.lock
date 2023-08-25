@@ -171,7 +171,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 6.3)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `task/refactor-gravatar`)
+  - WordPressUI (~> 1.14)
   - WPMediaPicker (>= 1.8.9, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -215,6 +215,7 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressKit
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -232,9 +233,6 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.101.0.podspec
-  WordPressUI:
-    :branch: task/refactor-gravatar
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -244,9 +242,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
-  WordPressUI:
-    :commit: 60416aeb3f7c8f65e98aafe10b3fb5c4fe483129
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -299,6 +294,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: b44c13cca4f63c107b6b29e1bb6360e8932f6546
+PODFILE CHECKSUM: 7c2cb3345b7f74a702dad5416d46a9c446e9cf13
 
 COCOAPODS: 1.12.1
