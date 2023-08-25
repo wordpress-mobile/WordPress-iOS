@@ -59,6 +59,14 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failureNotice: Notice {
+        var canRetry = failedMedia.contains { $0.absoluteLocalURL != nil }
+        guard canRetry else {
+            return Notice(title: title,
+                          message: message,
+                          feedbackType: .error,
+                          notificationInfo: notificationInfo,
+                          tag: MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag)
+        }
         return Notice(title: title,
                       message: message,
                       feedbackType: .error,
@@ -66,9 +74,9 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
                       tag: MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag,
                       actionHandler: { _ in
-                        for media in self.failedMedia {
-                            MediaCoordinator.shared.retryMedia(media)
-                        }
+            for media in self.failedMedia {
+                MediaCoordinator.shared.retryMedia(media)
+            }
         })
     }
 
