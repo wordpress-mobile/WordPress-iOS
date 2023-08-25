@@ -3,14 +3,15 @@ import Foundation
 struct SupportChatBotViewModel {
     private let zendeskUtils: ZendeskUtilsProtocol
 
-    let id = ApiCredentials.docsBotId
+    let chatId = UUID()
+    let docsBotId = ApiCredentials.docsBotId
     let url = Bundle.main.url(forResource: "support_chat_widget_page", withExtension: "html")
 
     init(zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance) {
         self.zendeskUtils = zendeskUtils
     }
 
-    func contactSupport(including history: SupportChatHistory, in viewController: UIViewController, completion: @escaping (Bool) -> ()) {
+    func contactSupport(including history: SupportChatHistory, in viewController: UIViewController, completion: @escaping ZendeskUtils.ZendeskNewRequestCompletion) {
         zendeskUtils.createNewRequest(
             in: viewController,
             description: formattedMessageHistory(from: history),
@@ -37,6 +38,16 @@ struct SupportChatBotViewModel {
             .joined(separator: "\n>\n")
 
         return messageHistoryDescription
+    }
+
+    // MARK: - Tracking
+
+    func track(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["chat_id": chatId.uuidString])
+    }
+
+    func track(_ event: WPAnalyticsEvent, errorMessage: String) {
+        WPAnalytics.track(event, properties: ["chat_id": chatId.uuidString, "error_message": errorMessage])
     }
 }
 

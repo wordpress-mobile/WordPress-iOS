@@ -105,31 +105,42 @@ class GutenbergMediaPickerHelper: NSObject {
         context.present(picker, animated: true)
     }
 
-    private lazy var cameraPicker: WPMediaPickerViewController = {
-        let cameraPicker = WPMediaPickerViewController()
-        cameraPicker.options = WPMediaPickerOptions.withDefaults()
-        cameraPicker.mediaPickerDelegate = self
-        cameraPicker.dataSource = WPPHAssetDataSource.sharedInstance()
-        return cameraPicker
-    }()
-
     func presentCameraCaptureFullScreen(animated: Bool,
                                         filter: WPMediaType,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
-
-        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-            callback(nil)
-            return
-        }
-
         didPickMediaCallback = callback
-        //reset the selected assets from previous uses
-        cameraPicker.resetState(false)
-        cameraPicker.modalPresentationStyle = .currentContext
-        cameraPicker.viewControllerToUseToPresent = context
-        cameraPicker.options.filter = filter
-        cameraPicker.options.allowMultipleSelection = false
-        cameraPicker.showCapture()
+        MediaPickerMenu(viewController: context, filter: .init(filter))
+            .showCamera(delegate: self)
+    }
+}
+
+extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        context.dismiss(animated: true) {
+            guard let mediaType = info[.mediaType] as? String else {
+                return
+            }
+            switch mediaType {
+            case UTType.image.identifier:
+                if let image = info[.originalImage] as? UIImage {
+                    self.didPickMediaCallback?([image])
+                    self.didPickMediaCallback = nil
+                }
+
+            case UTType.movie.identifier:
+                guard let videoURL = info[.mediaURL] as? URL else {
+                    return
+                }
+                guard self.post.blog.canUploadVideo(from: videoURL) else {
+                    self.presentVideoLimitExceededAfterCapture(on: self.context)
+                    return
+                }
+                self.didPickMediaCallback?([videoURL])
+                self.didPickMediaCallback = nil
+            default:
+                break
+            }
+        }
     }
 }
 
@@ -142,14 +153,8 @@ extension GutenbergMediaPickerHelper: VideoLimitsAlertPresenter {}
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        if picker == cameraPicker,
-           let asset = assets.first,
-           !post.blog.canUploadAsset(asset) {
-                presentVideoLimitExceededAfterCapture(on: self.context)
-        } else {
-            invokeMediaPickerCallback(asset: assets)
-            picker.dismiss(animated: true, completion: nil)
-        }
+        invokeMediaPickerCallback(asset: assets)
+        picker.dismiss(animated: true, completion: nil)
     }
 
     open func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
@@ -165,8 +170,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        guard FeatureFlag.mediaPickerPermissionsNotice.enabled,
-              picker !== cameraPicker else {
+        guard FeatureFlag.mediaPickerPermissionsNotice.enabled else {
             return false
         }
 
@@ -189,13 +193,11 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        picker !== cameraPicker && !post.blog.canUploadAsset(asset)
+        !post.blog.canUploadAsset(asset)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        if picker !== cameraPicker,
-            !post.blog.canUploadAsset(asset) {
-
+        if !post.blog.canUploadAsset(asset) {
             presentVideoLimitExceededFromPicker(on: picker)
             return false
         }
