@@ -55,12 +55,15 @@ struct InsightStoreState {
 
     var allTimeStats: StatsAllTimesInsight? {
         didSet {
-            let allTimeWidgetStats = AllTimeWidgetStats(views: allTimeStats?.viewsCount,
-                                                        visitors: allTimeStats?.visitorsCount,
-                                                        posts: allTimeStats?.postsCount,
-                                                        bestViews: allTimeStats?.bestViewsPerDayCount)
-            storeAllTimeWidgetData(data: allTimeWidgetStats)
-            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
+            guard let stats = allTimeStats else {
+                return
+            }
+            let widgetData = AllTimeWidgetStats(views: stats.viewsCount,
+                                                visitors: stats.visitorsCount,
+                                                posts: stats.postsCount,
+                                                bestViews: stats.bestViewsPerDayCount)
+            storeAllTimeWidgetData(data: widgetData)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: widgetData)
         }
     }
     var allTimeStatus: StoreFetchingStatus = .idle
@@ -82,13 +85,16 @@ struct InsightStoreState {
 
     var todaysStats: StatsTodayInsight? {
         didSet {
-            let todayWidgetStats = TodayWidgetStats(views: todaysStats?.viewsCount,
-                                                    visitors: todaysStats?.visitorsCount,
-                                                    likes: todaysStats?.likesCount,
-                                                    comments: todaysStats?.commentsCount)
+            guard let stats = todaysStats else {
+                return
+            }
+            let widgetData = TodayWidgetStats(views: stats.viewsCount,
+                                              visitors: stats.visitorsCount,
+                                              likes: stats.likesCount,
+                                              comments: stats.commentsCount)
 
-            storeTodayWidgetData(data: todayWidgetStats)
-            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
+            storeTodayWidgetData(data: widgetData)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: widgetData)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle

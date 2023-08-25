@@ -1397,13 +1397,14 @@ private extension PeriodStoreState {
         // - The summary period end date is the current date
 
         guard widgetUsingCurrentSite(),
-            summary?.period == .day,
-            summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
+              let summary,
+            summary.period == .day,
+            summary.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
                 return
         }
 
         // Include an extra day. It's needed to get the dailyChange for the last day.
-        let summaryData = Array(summary?.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1) ?? [])
+        let summaryData = Array(summary.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1))
 
         let widgetData = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
         widgetData.saveData()
