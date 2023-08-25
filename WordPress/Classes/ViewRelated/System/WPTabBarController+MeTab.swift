@@ -21,7 +21,8 @@ extension WPTabBarController {
             guard let image else {
                 return
             }
-            self?.meNavigationController?.tabBarItem.image = image.gravatarIcon()
+
+            self?.meNavigationController?.tabBarItem.configureGravatarImage(image)
         }
     }
 
@@ -34,6 +35,15 @@ extension WPTabBarController {
         }
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
-        meNavigationController?.tabBarItem.image = image.gravatarIcon()
+        meNavigationController?.tabBarItem.configureGravatarImage(image)
+    }
+}
+
+extension UITabBarItem {
+
+    func configureGravatarImage(_ image: UIImage) {
+        let gravatarIcon = image.gravatarIcon(size: 28.0)
+        self.image = gravatarIcon?.withAlpha(0.36)
+        self.selectedImage = gravatarIcon
     }
 }
