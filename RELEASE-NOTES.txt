@@ -1,5 +1,6 @@
 23.2
 -----
+* [**] Integrate the native media picker (`PHPickerViewController`), which is familiar to all Apple Photos users. It has a powerful search; you can filter by favorites, zoom in, filter by different media types, and more. And it doesn't require any access permissions or dialogs to work and handles large Photos libaries with ease. [#21190](https://github.com/wordpress-mobile/WordPress-iOS/issues/21190).
 * [*] Remove the "New Photo Post" app quick action [#21369](https://github.com/wordpress-mobile/WordPress-iOS/pull/21369)
 * [*] (Internal) Fix unbounded growth of number media observers in Post Editor (performance issue) [#21352](https://github.com/wordpress-mobile/WordPress-iOS/pull/21352)
 * [**] [internal] Fix a crash when disconnecting the app from the "Connected Applications" on WordPress.com. [#21375]
