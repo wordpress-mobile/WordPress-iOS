@@ -779,7 +779,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         NSString *publicID = nil;
         NSString *publicizeMessage = nil;
         NSString *publicizeMessageID = nil;
-        NSMutableDictionary *disabledPublicizeConnections = [NSMutableDictionary dictionary];
         if (remotePost.metadata) {
             NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
             NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
@@ -795,23 +794,11 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
-
-            NSArray *disabledPublicizeConnectionsArray = [self entriesWithKeyLike:@"_wpas_skip_*" inMetadata:remotePost.metadata];
-            for (NSDictionary *disabledConnectionDictionary in disabledPublicizeConnectionsArray) {
-                NSString *dictKey = [disabledConnectionDictionary stringForKey:@"key"];
-                // We only want to keep the keyringID value from the key
-                NSNumber *keyringConnectionID = @([[dictKey stringByReplacingOccurrencesOfString:@"_wpas_skip_"
-                                                                                      withString:@""]integerValue]);
-                NSMutableDictionary *keyringConnectionData = [NSMutableDictionary dictionaryWithCapacity:2];
-                keyringConnectionData[@"id"] = [disabledConnectionDictionary stringForKey:@"id"];
-                keyringConnectionData[@"value"] = [disabledConnectionDictionary stringForKey:@"value"];
-                disabledPublicizeConnections[keyringConnectionID] = keyringConnectionData;
-            }
         }
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
-        postPost.disabledPublicizeConnections = disabledPublicizeConnections;
+        postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
     }
 
     post.statusAfterSync = post.status;
@@ -902,14 +889,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         [metadata addObject:publicizeMessageDictionary];
     }
 
-    for (NSNumber *keyringConnectionId in post.disabledPublicizeConnections.allKeys) {
-        NSMutableDictionary *disabledConnectionsDictionary = [NSMutableDictionary dictionaryWithCapacity: 3];
-        // We need to compose back the key
-        disabledConnectionsDictionary[@"key"] = [NSString stringWithFormat:@"_wpas_skip_%@",
-                                                                           keyringConnectionId];
-        [disabledConnectionsDictionary addEntriesFromDictionary:post.disabledPublicizeConnections[keyringConnectionId]];
-        [metadata addObject:disabledConnectionsDictionary];
-    }
+    [metadata addObjectsFromArray:[self publicizeMetadataEntriesForPost:post]];
 
     if (post.bloggingPromptID) {
         NSMutableDictionary *promptDictionary = [NSMutableDictionary dictionaryWithCapacity:3];

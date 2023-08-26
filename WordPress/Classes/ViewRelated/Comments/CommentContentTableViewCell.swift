@@ -329,6 +329,7 @@ private extension CommentContentTableViewCell {
         replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         adjustImageAndTitleEdgeInsets(for: replyButton)
         replyButton?.sizeToFit()
+        replyButton?.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton?.tintColor = Style.reactionButtonTextColor
         likeButton?.titleLabel?.font = Style.reactionButtonFont
@@ -341,6 +342,7 @@ private extension CommentContentTableViewCell {
         adjustImageAndTitleEdgeInsets(for: likeButton)
         updateLikeButton(liked: false, numberOfLikes: 0)
         likeButton?.sizeToFit()
+        likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
     }
 
     private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
@@ -515,6 +517,8 @@ private extension CommentContentTableViewCell {
 // MARK: - Localization
 
 private extension String {
+    static let replyButtonAccessibilityId = "reply-comment-button"
+    static let likeButtonAccessibilityId = "like-comment-button"
     static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
     static let noLikes = NSLocalizedString("Like", comment: "Button title to Like a comment.")
     static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. "

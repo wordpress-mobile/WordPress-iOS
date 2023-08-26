@@ -17,7 +17,6 @@ class FloatingActionButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        layer.backgroundColor = UIColor.primary.cgColor
         tintColor = .white
         refreshShadow()
     }
@@ -30,6 +29,7 @@ class FloatingActionButton: UIButton {
         super.draw(rect)
 
         layer.cornerRadius = rect.size.width / 2
+        layer.backgroundColor = UIColor(light: .label, dark: .systemGray2).cgColor
     }
 
     private func refreshShadow() {

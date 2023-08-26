@@ -30,19 +30,6 @@ class SiteCreationAnalyticsHelper {
     // MARK: - Lifecycle
     static func trackSiteCreationAccessed(source: String) {
         WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
-
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
-            let domainPurchasingExperimentProperties: [String: String] = {
-                var dict: [String: String] = [Self.variationKey: ABTest.siteCreationDomainPurchasing.variation.tracksProperty]
-
-                if case let .customTreatment(name) = ABTest.siteCreationDomainPurchasing.variation {
-                    dict[Self.customTreatmentNameKey] = name
-                }
-
-                return dict
-            }()
-            Self.track(.domainPurchasingExperiment, properties: domainPurchasingExperimentProperties)
-        }
     }
 
     // MARK: - Site Intent
@@ -156,10 +143,6 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
-    private static func track(_ event: EnhancedSiteCreationAnalyticsEvent, properties: [String: String] = [:]) {
-        let event = AnalyticsEvent(name: event.rawValue, properties: properties)
-        WPAnalytics.track(event)
-    }
 
     private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
         var result: [AnyHashable: Any] = [:]

@@ -64,6 +64,10 @@ public class BlockEditorScreen: ScreenObject {
         $0.buttons["Post Settings"]
     }
 
+    private let switchToHTMLModeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Switch to HTML Mode"]
+    }
+
     private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Choose from device"]
     }
@@ -94,6 +98,7 @@ public class BlockEditorScreen: ScreenObject {
     var keepEditingButton: XCUIElement { keepEditingButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
+    var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
@@ -270,6 +275,14 @@ public class BlockEditorScreen: ScreenObject {
         return try EditorPostSettings()
     }
 
+    @discardableResult
+    public func switchToHTMLMode() throws -> HTMLEditorScreen {
+        moreButton.tap()
+        switchToHTMLModeButton.tap()
+
+        return try HTMLEditorScreen()
+    }
+
     private func getContentStructure() -> String {
         moreButton.tap()
         let contentStructure = app.staticTexts.element(matching: NSPredicate(format: "label CONTAINS 'Content Structure'")).label
@@ -323,6 +336,13 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     @discardableResult
+    public func verifyUndoIsVisible() throws -> BlockEditorScreen {
+        XCTAssertTrue(undoButton.exists)
+
+        return try BlockEditorScreen()
+    }
+
+    @discardableResult
     public func redo() throws -> BlockEditorScreen {
         redoButton.tap()
 
@@ -332,6 +352,13 @@ public class BlockEditorScreen: ScreenObject {
     @discardableResult
     public func verifyRedoIsDisabled() throws -> BlockEditorScreen {
         XCTAssertFalse(redoButton.isEnabled)
+
+        return try BlockEditorScreen()
+    }
+
+    @discardableResult
+    public func verifyRedoIsVisible() throws -> BlockEditorScreen {
+        XCTAssertTrue(redoButton.exists)
 
         return try BlockEditorScreen()
     }

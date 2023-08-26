@@ -2,6 +2,8 @@ import UITestsFoundation
 import XCTest
 
 class PostTests: XCTestCase {
+
+    @MainActor
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite()

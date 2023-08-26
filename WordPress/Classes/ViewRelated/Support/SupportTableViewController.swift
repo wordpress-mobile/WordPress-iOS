@@ -22,6 +22,10 @@ class SupportTableViewController: UITableViewController {
     ///
     private var dismissTapped: (() -> ())?
 
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: controllerToShowFrom(), tag: sourceTag)
+    }()
+
     // MARK: - Init
 
     init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
@@ -241,32 +245,27 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                return
-            }
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                if identityUpdated {
-                    self?.reloadViewModel()
-                }
-            }
+
+            self.coordinator.showSupport(onIdentityUpdated: {  [weak self] in
+                self?.reloadViewModel()
+            })
         }
     }
 
     func myTicketsSelected() -> ImmuTableAction {
         return { [weak self] row in
             guard let self = self else { return }
-            ZendeskUtils.pushNotificationRead()
-            self.tableView.deselectSelectedRowWithAnimation(true)
-
-            guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                return
-            }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                if identityUpdated {
-                    self?.reloadViewModel()
-                }
-            }
+            showTicketView()
         }
+    }
+
+    func showTicketView() {
+        ZendeskUtils.pushNotificationRead()
+        tableView.deselectSelectedRowWithAnimation(true)
+
+        self.coordinator.showTicketView(onIdentityUpdated: {  [weak self] in
+            self?.reloadViewModel()
+        })
     }
 
     func supportEmailSelected() -> ImmuTableAction {
@@ -535,6 +534,13 @@ private extension SupportTableViewController {
 
         static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
+    }
+}
+
+extension SupportTableViewController: SupportChatBotCreatedTicketDelegate {
+    func onTicketCreated() {
+        navigationController?.popViewController(animated: true)
+        showTicketView()
     }
 }
 

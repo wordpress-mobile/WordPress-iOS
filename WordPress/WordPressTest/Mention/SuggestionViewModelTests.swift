@@ -47,4 +47,15 @@ final class SuggestionViewModelTests: CoreDataTestCase {
         XCTAssertEqual(viewModel.subtitle, "Pied Piper")
         XCTAssertEqual(viewModel.imageURL, URL(string: "https://fakeimg.pl/250x100"))
     }
+
+    func testAvatarURLPreprocessing() {
+        // Given
+        let url = URL(string: "https://0.gravatar.com/avatar/6e010add837aef0e1bc8fd0a762c053e6184883ab9fbc7e92b72fae53c475f6c?s=32&d=identicon&r=G")!
+
+        // When
+        let processedURL = SuggestionViewModel.preprocessAvatarURL(url)
+
+        // Then it changes the size, but keeps all the other query items
+        XCTAssertEqual(processedURL.absoluteString, "https://0.gravatar.com/avatar/6e010add837aef0e1bc8fd0a762c053e6184883ab9fbc7e92b72fae53c475f6c?s=96&d=identicon&r=G")
+    }
 }

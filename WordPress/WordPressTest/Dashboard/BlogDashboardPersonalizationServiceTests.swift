@@ -52,4 +52,55 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
             XCTAssertFalse(service.isEnabled(card))
         }
     }
+
+    func testSetEnabledForAllSitesReturnsFalseForTheSameSite() {
+        // Given
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // When
+        service.setEnabled(false, for: .googleDomains)
+
+        // Then
+        XCTAssertFalse(service.isEnabled(.googleDomains))
+    }
+
+    func testSetEnabledForAllSitesReturnsFalseForDifferentSite() {
+        // Given
+        let service1 = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+        let service2 = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
+
+        // When
+        service1.setEnabled(false, for: .googleDomains)
+
+        // Then settings are retained
+        XCTAssertFalse(service2.isEnabled(.googleDomains))
+    }
+
+    func testHasPreferenceReturnsTrueWhenValueSetForAllSites() {
+        // Given
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // When
+        service.setEnabled(false, for: .googleDomains)
+
+        // Then
+        XCTAssert(service.hasPreference(for: .googleDomains))
+    }
+
+    func testHasPreferenceReturnsTrueWhenValueSetForASite() {
+        // Given
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        // When
+        service.setEnabled(false, for: .blaze)
+
+        // Then
+        XCTAssert(service.hasPreference(for: .blaze))
+    }
+
+    func testHasPreferenceReturnsFalseWhenNoPreferenceIsSet() {
+        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
+
+        XCTAssertFalse(service.hasPreference(for: .googleDomains))
+    }
 }

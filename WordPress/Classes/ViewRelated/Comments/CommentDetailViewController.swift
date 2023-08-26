@@ -95,6 +95,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
         cell.textLabel?.attributedText = attributedString
         cell.textLabel?.numberOfLines = 0
+        cell.accessibilityIdentifier = .replyIndicatorCellIdentifier
 
         // setup constraints for textLabel to match the spacing specified in the design.
         if let textLabel = cell.textLabel {
@@ -105,6 +106,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                 textLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: Constants.replyIndicatorVerticalSpacing),
                 textLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -Constants.replyIndicatorVerticalSpacing)
             ])
+            textLabel.accessibilityIdentifier = .replyIndicatorTextIdentifier
         }
 
         return cell
@@ -121,6 +123,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                        normalColor: Constants.deleteButtonNormalColor,
                        highlightedColor: Constants.deleteButtonHighlightColor,
                        buttonInsets: Constants.deleteButtonInsets)
+        cell.accessibilityIdentifier = .deleteButtonAccessibilityId
         cell.delegate = self
         return cell
     }()
@@ -134,6 +137,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                        borderColor: .clear,
                        buttonInsets: Constants.deleteButtonInsets,
                        backgroundColor: Constants.trashButtonBackgroundColor)
+        cell.accessibilityIdentifier = .trashButtonAccessibilityId
         cell.delegate = self
         return cell
     }()
@@ -738,9 +742,12 @@ private extension CommentDetailViewController {
 
 private extension String {
     // MARK: Constants
-    static let replyIndicatorCellIdentifier = "replyIndicatorCell"
-    static let textCellIdentifier = "textCell"
+    static let replyIndicatorCellIdentifier = "reply-indicator-cell"
+    static let replyIndicatorTextIdentifier = "reply-indicator-text"
     static let moderationCellIdentifier = "moderationCell"
+    static let trashButtonAccessibilityId = "trash-comment-button"
+    static let deleteButtonAccessibilityId = "delete-comment-button"
+    static let replyViewAccessibilityId = "reply-comment-view"
 
     // MARK: Localization
     static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
@@ -1027,7 +1034,8 @@ private extension CommentDetailViewController {
         let replyView = ReplyTextView(width: view.frame.width)
 
         replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyView.accessibilityIdentifier = .replyViewAccessibilityId
+        replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyView.delegate = self
         replyView.onReply = { [weak self] content in
             self?.createReply(content: content)

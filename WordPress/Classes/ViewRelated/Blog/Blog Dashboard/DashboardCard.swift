@@ -10,6 +10,7 @@ enum DashboardCard: String, CaseIterable {
     case jetpackInstall
     case quickStart
     case prompts
+    case googleDomains
     case blaze
     case domainsDashboardCard
     case freeToPaidPlansDashboardCard
@@ -67,6 +68,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardActivityLogCardCell.self
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.self
+        case .googleDomains:
+            return DashboardGoogleDomainsCardCell.self
         }
     }
 
@@ -78,6 +81,17 @@ enum DashboardCard: String, CaseIterable {
             return .promptsDashboardCardViewed
         default:
             return nil
+        }
+    }
+
+    /// Specifies whether the card settings should be applied across
+    /// different sites or only to a particular site.
+    var settingsType: SettingsType {
+        switch self {
+        case .googleDomains:
+            return .siteGeneric
+        default:
+            return .siteSpecific
         }
     }
 
@@ -117,6 +131,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
+        case .googleDomains:
+            return FeatureFlag.domainFocus.enabled && AppConfiguration.isJetpack
         }
     }
 
@@ -172,6 +188,11 @@ enum DashboardCard: String, CaseIterable {
                 return DashboardActivityLogCardCell.shouldShowCard(for: blog)
             }
         }
+    }
+
+    enum SettingsType {
+        case siteSpecific
+        case siteGeneric
     }
 }
 

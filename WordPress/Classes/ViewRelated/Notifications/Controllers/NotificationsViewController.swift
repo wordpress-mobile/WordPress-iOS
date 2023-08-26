@@ -582,7 +582,7 @@ private extension NotificationsViewController {
         tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
 
         // UITableView
-        tableView.accessibilityIdentifier  = "Notifications Table"
+        tableView.accessibilityIdentifier  = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)

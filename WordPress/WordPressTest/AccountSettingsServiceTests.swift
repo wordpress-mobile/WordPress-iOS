@@ -1,8 +1,7 @@
-import XCTest
 import Nimble
 import OHHTTPStubs
-
 @testable import WordPress
+import XCTest
 
 class AccountSettingsServiceTests: CoreDataTestCase {
     private var service: AccountSettingsService!
@@ -47,7 +46,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
         // Since this approach bypasses the entire network stack, the hope is that it'll result in a more robust test.
         let service = AccountSettingsService(
             userID: 1,
-            remote: AccountSettingsRemoteInterfaceStub(updateSettingResult: .failure(TestError())),
+            remote: AccountSettingsRemoteInterfaceStub(updateSettingResult: .failure(testError())),
             coreDataStack: contextManager
         )
 

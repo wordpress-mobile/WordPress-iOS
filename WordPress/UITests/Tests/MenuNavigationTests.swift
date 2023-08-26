@@ -3,6 +3,7 @@ import XCTest
 
 final class MenuNavigationTests: XCTestCase {
 
+    @MainActor
     override func setUpWithError() throws {
         setUpTestSuite()
 

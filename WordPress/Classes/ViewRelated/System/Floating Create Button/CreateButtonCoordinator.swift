@@ -12,7 +12,7 @@ import WordPressFlux
     }
 
     var button: FloatingActionButton = {
-        let button = FloatingActionButton(image: .gridicon(.create))
+        let button = FloatingActionButton(image: .gridicon(.plus))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         return button

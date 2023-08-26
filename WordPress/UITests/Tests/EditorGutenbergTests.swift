@@ -2,6 +2,8 @@ import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
+
+    @MainActor
     override func setUpWithError() throws {
         setUpTestSuite()
 
@@ -66,6 +68,12 @@ class EditorGutenbergTests: XCTestCase {
             .redo()
             .redo()
             .verifyContentStructure(blocks: 1, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
+            .switchToHTMLMode()
+            .verifyUndoIsHidden()
+            .verifyRedoIsHidden()
+            .switchToVisualMode()
+            .verifyUndoIsVisible()
+            .verifyRedoIsVisible()
     }
 
     func testAddRemoveFeaturedImage() throws {

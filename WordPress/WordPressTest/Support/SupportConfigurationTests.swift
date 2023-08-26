@@ -10,7 +10,6 @@ final class SupportConfigurationTests: XCTestCase {
 
     func testSupportConfigurationWhenWordPressWithFeatureFlagEnabled() {
         let configuration = SupportConfiguration.current(
-            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: true),
             isWordPress: true,
             zendeskEnabled: true
         )
@@ -18,52 +17,12 @@ final class SupportConfigurationTests: XCTestCase {
         XCTAssertTrue(configuration == .forum)
     }
 
-    func testSupportConfigurationWhenWordPressWithFeatureFlagDisabled() {
-        let configuration = SupportConfiguration.current(
-            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: false),
-            isWordPress: true,
-            zendeskEnabled: true
-        )
-
-        XCTAssertTrue(configuration == .zendesk)
-    }
-
     func testSupportConfigurationWhenJetpackWithFeatureFlagEnabled() {
         let configuration = SupportConfiguration.current(
-            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: true),
             isWordPress: false,
             zendeskEnabled: true
         )
 
         XCTAssertTrue(configuration == .zendesk)
-    }
-
-    func testSupportConfigurationWhenJetpackWithFeatureFlagDisabled() {
-        let configuration = SupportConfiguration.current(
-            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: false),
-            isWordPress: false,
-            zendeskEnabled: true
-        )
-
-        XCTAssertTrue(configuration == .zendesk)
-    }
-}
-
-private extension SupportConfigurationTests {
-    class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
-        var isSupportForumEnabled = false
-
-        init(isSupportForumEnabled: Bool) {
-            self.isSupportForumEnabled = isSupportForumEnabled
-            super.init()
-        }
-
-        override func value(for flagKey: String) -> Bool? {
-            if flagKey == RemoteFeatureFlag.wordPressSupportForum.remoteKey {
-                return isSupportForumEnabled
-            }
-
-            return false
-        }
     }
 }
