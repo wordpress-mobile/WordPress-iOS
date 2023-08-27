@@ -9,7 +9,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 @interface WPProgressTableViewCell ()
 
-@property (nonatomic, strong) IBOutlet MRActivityIndicatorView * progressView;
+@property (nonatomic, strong) MRActivityIndicatorView * progressView;
 
 @end
 
@@ -26,6 +26,12 @@ NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumb
         self.accessoryView = _progressView;
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    NSAssert(false, @"WPProgressTableViewCell can't be created using a nib");
+    return [super initWithCoder:coder];
 }
 
 - (void)dealloc
