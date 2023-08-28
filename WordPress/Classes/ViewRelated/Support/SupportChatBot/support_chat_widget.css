@@ -9,3 +9,7 @@ a.floating-button {
     width: auto !important;
     height: auto !important;
 }
+
+.docsbot-chat-input-form {
+    margin-bottom: 0px;
+}
