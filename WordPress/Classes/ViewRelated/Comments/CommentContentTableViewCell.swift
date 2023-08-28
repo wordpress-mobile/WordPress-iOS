@@ -407,7 +407,7 @@ private extension CommentContentTableViewCell {
             self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
             self.adjustImageAndTitleEdgeInsets(for: self.likeButton)
             self.likeButton.setTitleColor(liked ? Style.likedTintColor : Style.reactionButtonTextColor, for: .normal)
-            self.likeButton.accessibilityLabel = liked ? "\(numberOfLikes) " + .commentIsLiked : "\(numberOfLikes) " + .commentIsNotLiked
+            self.likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
             completion?()
         }
 
@@ -518,8 +518,8 @@ private extension CommentContentTableViewCell {
 // MARK: - Localization
 
 private extension String {
-    static let commentIsLiked = "likes. Comment is liked"
-    static let commentIsNotLiked = "existing likes. Comment is not liked"
+    static let commentIsLiked = " likes. Comment is liked"
+    static let commentIsNotLiked = " existing likes. Comment is not liked"
     static let replyButtonAccessibilityId = "reply-comment-button"
     static let likeButtonAccessibilityId = "like-comment-button"
     static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
