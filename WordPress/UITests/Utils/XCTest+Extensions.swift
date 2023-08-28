@@ -9,7 +9,9 @@ extension XCTestCase {
     public func setUpTestSuite(
         for app: XCUIApplication = XCUIApplication(),
         removeBeforeLaunching: Bool = false,
-        crashOnCoreDataConcurrencyIssues: Bool = true
+        crashOnCoreDataConcurrencyIssues: Bool = true,
+        logoutAtLaunch: Bool = true,
+        testLanguage: String? = nil
     ) {
         // To ensure that the test starts with a new simulator launch each time
         app.terminate()
@@ -18,7 +20,19 @@ extension XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing", "-logout-at-launch"]
+        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
+
+        if let language = testLanguage {
+            app.launchArguments += ["-AppleLanguages", "(\(language))"]
+            app.launchArguments += ["-AppleLocale", "\(language)_US"]
+        } else {
+            app.launchArguments += ["-AppleLanguages", "(en)"]
+            app.launchArguments += ["-AppleLocale", "en_US"]
+        }
+
+        if logoutAtLaunch {
+            app.launchArguments.append(contentsOf: ["-logout-at-launch"])
+        }
 
         if crashOnCoreDataConcurrencyIssues {
             app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])

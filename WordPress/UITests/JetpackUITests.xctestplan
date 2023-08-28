@@ -2,10 +2,9 @@
   "configurations" : [
     {
       "id" : "6250F91E-8E09-40AF-96F5-C7474EE19AB4",
-      "name" : "Foundation-EN-US",
+      "name" : "Foundation",
       "options" : {
-        "language" : "en",
-        "region" : "US"
+        "language" : ""
       }
     }
   ],
