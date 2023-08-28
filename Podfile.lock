@@ -45,34 +45,6 @@ PODS:
   - Kanvas (1.4.4)
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
-  - MRProgress (0.8.3):
-    - MRProgress/ActivityIndicator (= 0.8.3)
-    - MRProgress/Blur (= 0.8.3)
-    - MRProgress/Circular (= 0.8.3)
-    - MRProgress/Icons (= 0.8.3)
-    - MRProgress/NavigationBarProgress (= 0.8.3)
-    - MRProgress/Overlay (= 0.8.3)
-  - MRProgress/ActivityIndicator (0.8.3):
-    - MRProgress/Stopable
-  - MRProgress/Blur (0.8.3):
-    - MRProgress/Helper
-  - MRProgress/Circular (0.8.3):
-    - MRProgress/Helper
-    - MRProgress/ProgressBaseClass
-    - MRProgress/Stopable
-  - MRProgress/Helper (0.8.3)
-  - MRProgress/Icons (0.8.3)
-  - MRProgress/NavigationBarProgress (0.8.3):
-    - MRProgress/ProgressBaseClass
-  - MRProgress/Overlay (0.8.3):
-    - MRProgress/ActivityIndicator
-    - MRProgress/Blur
-    - MRProgress/Circular
-    - MRProgress/Helper
-    - MRProgress/Icons
-  - MRProgress/ProgressBaseClass (0.8.3)
-  - MRProgress/Stopable (0.8.3):
-    - MRProgress/Helper
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
@@ -157,7 +129,6 @@ DEPENDENCIES:
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
-  - MRProgress (= 0.8.3)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (~> 3.4.3)
@@ -197,7 +168,6 @@ SPEC REPOS:
     - JTAppleCalendar
     - Kanvas
     - MediaEditor
-    - MRProgress
     - NSObject-SafeExpectations
     - "NSURL+IDN"
     - OCMock
@@ -263,7 +233,6 @@ SPEC CHECKSUMS:
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
-  MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -294,6 +263,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: e54eeda47b03e4225509b2162f40d720a5708616
+PODFILE CHECKSUM: 84696d620643641ef8db3ddce7eae79ea144286e
 
 COCOAPODS: 1.12.1
