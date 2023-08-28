@@ -7,6 +7,10 @@
 * [*] Fix an issue where the "Take Photo" flow was not working without the "All Photos" access [#21398](https://github.com/wordpress-mobile/WordPress-iOS/pull/21398)
 * [*] Fix a couple of small issues with media uploads error handling [#21411](https://github.com/wordpress-mobile/WordPress-iOS/pull/21411)
 
+23.0.1
+-----
+ * [**] Fix Voice Over and assistive keyboards [https://github.com/WordPress/gutenberg/pull/53895]
+
 23.1
 -----
 * [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]

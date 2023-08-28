@@ -228,19 +228,7 @@ end
 #
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
 lane :gutenberg_dep_check do
-  require 'yaml'
-
-  gutenberg_config_path = File.join(PROJECT_ROOT_FOLDER, 'Gutenberg', 'config.yml')
-
-  UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
-
-  begin
-    config = YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
-  rescue StandardError => e
-    UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
-  end
-
-  source = config[:ref]
+  source = gutenberg_config![:ref]
 
   UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
 
