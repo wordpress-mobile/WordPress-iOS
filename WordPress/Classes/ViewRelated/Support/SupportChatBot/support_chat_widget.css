@@ -29,3 +29,7 @@ a.floating-button {
 .docsbot-chat-btn-send-icon {
   width: 24px; !important;
 }
+
+.docsbot-chat-bot-message-meta {
+    margin-top: 16px;
+}
