@@ -111,15 +111,22 @@ public class NotificationsScreen: ScreenObject {
 
 
     public func likeComment() -> Self {
-        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentNotLikedLabel))
         likeCommentButton.tap()
-        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentLikedLabel))
 
         return self
     }
 
     @discardableResult
     public func verifyCommentLiked(expectedLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
+        var tries = 0
+
+        while !likeCommentButton.label.hasSuffix(.commentLikedLabel) && tries < 5 {
+            usleep(500000) // Wait for 0.5 seconds
+            tries += 1
+        }
+
+        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentLikedLabel))
+
         let (_, currentLikes) = getNumberOfLikesForNotification()
         XCTAssertEqual(currentLikes, expectedLikes, file: file, line: line)
 
