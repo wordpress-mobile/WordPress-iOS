@@ -15,12 +15,14 @@ msgstr ""
 
 #. translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
 msgctxt "app_store_name"
-msgid "Jetpack – Website Builder"
+msgid "Jetpack – Website Builder
+"
 msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Supercharge your WordPress"
+msgid "Supercharge your WordPress
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -72,7 +74,7 @@ msgid ""
 "\n"
 "Learn more at https://jetpack.com/mobile\n"
 "\n"
-"California users privacy notice: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa\n"
+"California users privacy notice: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa"
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
@@ -81,30 +83,18 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v23.0-whats-new"
+msgctxt "v23.1-whats-new"
 msgid ""
-"Version 23.0 is here! Do we look older?\n"
+"We added a Domain Focus card to your dashboard so you can more easily transfer Google domains. (Don’t want to see this card across multiple sites? Tap the “More” button to hide it.)\n"
 "\n"
-"To celebrate, we made design improvements across the app so you can share content on social media more easily. We’re all about that social life.\n"
+"We also made some changes in the block editor.\n"
 "\n"
-"You’ll notice the new Blaze Campaign card in your dashboard, where you can see the most recent campaign, a campaigns list screen, and a campaign details screen. That’s hot.\n"
+"- The Social Link block now includes an outline so you can see when it’s selected.\n"
+"- We fixed an issue for iOS users where custom font sizes and styles weren’t displaying properly.\n"
+"- The undo and redo buttons are no longer visible in the HTML editor.\n"
+"- You’ll now see hex codes for the selected color when you’re using the Cover Block color picker.\n"
 "\n"
-"We made some Gallery block updates in the block editor.\n"
-"\n"
-"- We removed the visual gap that appears between selected gallery blocks and the toolbar.\n"
-"- The gallery caption button is no longer visible on mobile devices.\n"
-"- The correct gallery block will stay selected while you’re adding media.\n"
-"\n"
-"You might be happy to hear that we squashed several bugs in the media picker.\n"
-"\n"
-"- Your screen won’t flash anymore when you open the media picker.\n"
-"- Media files have stopped rearranging themselves and will now behave.\n"
-"- The image count no longer includes other media types.\n"
-"- Thumbnail image sizes are now smaller. Faster loading, less memory—what’s not to love?\n"
-"\n"
-"We also sped up loading time for the Total Likes stats card and fixed an issue that caused the stats screen to stall the app.\n"
-"\n"
-"Finally, the app won’t crash when you update notifications, posts, or reader content, or when you’re cleaning up followed topics in the reader. (But wear a helmet anyway. Safety first.)\n"
+"Finally, we squashed a bug that could cause the app to crash when following new sites in the Reader.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
@@ -113,7 +103,7 @@ msgctxt "screenshot-text-1"
 msgid ""
 "Create and\n"
 "manage your site\n"
-"on the go\n"
+"on the go"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
