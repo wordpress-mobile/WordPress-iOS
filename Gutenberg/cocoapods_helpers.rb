@@ -7,6 +7,8 @@ require 'yaml'
 
 DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
 
+GUTENBERG_CONFIG_PATH = File.join(__dir__, '..', 'Gutenberg', 'config.yml')
+
 LOCAL_GUTENBERG_KEY = 'LOCAL_GUTENBERG'
 
 # Note that the pods in this array might seem unused if you look for
@@ -36,11 +38,9 @@ def gutenberg_pod
   # We check local_gutenberg first because it should take precedence, being an override set by the user.
   return gutenberg_local_pod if should_use_local_gutenberg
 
-  gutenberg_config_path = File.join(__dir__, '..', 'Gutenberg', 'config.yml')
+  raise "Could not find config YAML at path #{GUTENBERG_CONFIG_PATH}" unless File.exist?(GUTENBERG_CONFIG_PATH)
 
-  raise "Could not find config YAML at path #{gutenberg_config_path}" unless File.exist?(gutenberg_config_path)
-
-  config = YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+  config = YAML.safe_load(File.read(GUTENBERG_CONFIG_PATH), symbolize_names: true)
 
   raise 'Gutenberg config does not contain expected key :ref' if config[:ref].nil?
 
