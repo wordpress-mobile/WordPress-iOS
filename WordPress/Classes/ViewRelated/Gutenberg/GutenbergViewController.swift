@@ -861,10 +861,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
-            let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                self.mediaInserterHelper.retryUploadOf(media: media)
+            if media.canRetry {
+                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                    self.mediaInserterHelper.retryUploadOf(media: media)
+                }
+                alertController.addAction(retryUploadAction)
             }
-            alertController.addAction(retryUploadAction)
         }
 
         alertController.title = title

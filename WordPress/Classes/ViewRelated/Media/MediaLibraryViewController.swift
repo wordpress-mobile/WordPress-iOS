@@ -351,14 +351,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             if let error = media.error {
                 alertController.message = error.localizedDescription
             }
-            if media.absoluteLocalURL != nil {
+            if media.canRetry {
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
                     let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary))
                     MediaCoordinator.shared.retryMedia(media, analyticsInfo: info)
-                }
-            } else {
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
-                    MediaCoordinator.shared.delete(media: [media])
                 }
             }
         }

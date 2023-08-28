@@ -39,6 +39,7 @@ import WordPressAuthenticator
     case mySites
     case reader
     case notifications
+    case me
 }
 
 // MARK: - Localized Strings

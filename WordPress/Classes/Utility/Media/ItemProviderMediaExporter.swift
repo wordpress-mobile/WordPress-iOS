@@ -26,8 +26,8 @@ final class ItemProviderMediaExporter: MediaExporter {
             }
             // If image format is not supported, switch to `.heic`.
             if exporter.options.exportImageType == nil,
-                let type = provider.registeredTypeIdentifiers.first,
-                !ItemProviderMediaExporter.supportedImageTypes.contains(type) {
+               let type = provider.registeredTypeIdentifiers.first,
+               !ItemProviderMediaExporter.supportedImageTypes.contains(type) {
                 exporter.options.exportImageType = UTType.heic.identifier
             }
             let exportProgress = exporter.export(onCompletion: onCompletion, onError: onError)
@@ -51,12 +51,16 @@ final class ItemProviderMediaExporter: MediaExporter {
             progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         }
 
+        let start = CFAbsoluteTimeGetCurrent()
+        DDLogInfo("Will export file for provider: \(ObjectIdentifier(provider)) \(provider.registeredTypeIdentifiers)")
+
         let loadProgress = provider.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, error in
             guard let url else {
-                onError(ExportError.underlyingError(error))
+                DDLogDebug("Loaded file representation for provider: \(ObjectIdentifier(self.provider)), error: \(String(describing: error)))")
                 return
             }
-            DDLogDebug("Loaded file representation (filename: '\(url.lastPathComponent)', types: \(self.provider.registeredTypeIdentifiers)")
+            let diff = CFAbsoluteTimeGetCurrent() - start
+            DDLogInfo("Loaded file representation for provider: \(ObjectIdentifier(self.provider)) \(self.provider.registeredTypeIdentifiers) (\(diff) seconds)")
 
             // Retaining `self` on purpose.
             do {
@@ -104,6 +108,8 @@ final class ItemProviderMediaExporter: MediaExporter {
     enum ExportError: MediaExportError {
         case unsupportedContentType
         case underlyingError(Error?)
+
+        public var errorDescription: String? { description }
 
         var description: String {
             switch self {
