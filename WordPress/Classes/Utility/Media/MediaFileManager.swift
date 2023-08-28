@@ -9,7 +9,10 @@ enum MediaDirectory {
     /// System Caches directory, for creating discardable media files, such as thumbnails.
     case cache
     /// System temporary directory, used for unit testing or temporary media files.
-    case temporary
+    case temporary(id: UUID)
+
+    /// Use a new ID for every test scenario to make sure all tests are isolated.
+    static var temporary: MediaDirectory { .temporary(id: UUID()) }
 
     /// Returns the directory URL for the directory type.
     ///
@@ -22,8 +25,8 @@ enum MediaDirectory {
             parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         case .cache:
             parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        case .temporary:
-            parentDirectory = fileManager.temporaryDirectory
+        case .temporary(let id):
+            parentDirectory = fileManager.temporaryDirectory.appendingPathComponent(id.uuidString)
         }
         return parentDirectory.appendingPathComponent(MediaFileManager.mediaDirectoryName, isDirectory: true)
     }

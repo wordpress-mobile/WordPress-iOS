@@ -228,12 +228,14 @@ end
 #
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
 lane :gutenberg_dep_check do
-  require_relative './../../Gutenberg/version'
+  source = gutenberg_config![:ref]
 
-  case [GUTENBERG_CONFIG[:tag], GUTENBERG_CONFIG[:commit]]
+  UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
+
+  case [source[:tag], source[:commit]]
   when [nil, nil]
     UI.user_error!('Could not find any Gutenberg version reference.')
-  when [nil, commit = GUTENBERG_CONFIG[:commit]]
+  when [nil, commit = source[:commit]]
     if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
       UI.message("Gutenberg version: #{commit}")
     else
@@ -241,7 +243,7 @@ lane :gutenberg_dep_check do
     end
   else
     # If a tag is present, the commit value is ignored
-    UI.message("Gutenberg version: #{GUTENBERG_CONFIG[:tag]}")
+    UI.message("Gutenberg version: #{source[:tag]}")
   end
 end
 

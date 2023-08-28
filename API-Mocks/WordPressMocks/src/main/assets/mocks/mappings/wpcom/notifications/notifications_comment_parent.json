@@ -35,7 +35,7 @@
       "parent": false,
       "type": "comment",
       "like_count": 4,
-      "i_like": true,
+      "i_like": false,
       "meta": {
         "links": {
           "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/comments/2",

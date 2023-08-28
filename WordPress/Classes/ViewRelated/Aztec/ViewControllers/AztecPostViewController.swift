@@ -56,10 +56,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     var editorSession: PostEditorAnalyticsSession
 
-    /// Indicates if Aztec was launched for Photo Posting
-    ///
-    var isOpenedDirectlyForPhotoPost = false
-
     var postIsReblogged: Bool = false
 
     let navigationBarManager = PostEditorNavigationBarManager()
@@ -548,10 +544,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         // Setup Autolayout
         configureConstraints()
         view.setNeedsUpdateConstraints()
-
-        if isOpenedDirectlyForPhotoPost {
-            presentMediaPickerFullScreen(animated: false)
-        }
 
         if !editorSession.started {
             editorSession.start()

@@ -58,7 +58,7 @@ static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellId
 
 @interface PostSettingsViewController () <UITextFieldDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
+UIPopoverControllerDelegate,
 PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
 FeaturedImageViewControllerDelegate>
 
@@ -836,6 +836,11 @@ FeaturedImageViewControllerDelegate>
 
 - (UITableViewCell *)cellForSetFeaturedImage
 {
+    if ([Feature enabled:FeatureFlagNativePhotoPicker]) {
+        UITableViewCell *cell = [self makeSetFeaturedImageCell];
+        cell.tag = PostSettingsRowFeaturedImageAdd;
+        return cell;
+    }
     WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
     activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
     activityCell.accessibilityIdentifier = @"SetFeaturedImage";
@@ -1307,6 +1312,9 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showMediaPicker
 {
+    if ([Feature enabled:FeatureFlagNativePhotoPicker]) {
+        return; // Do nothing (showing the menu instead
+    }
     WPMediaPickerOptions *options = [WPMediaPickerOptions new];
     options.showMostRecentFirst = YES;
     options.allowMultipleSelection = NO;
@@ -1489,7 +1497,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    if (assets.count == 0 ){
+    if (assets.count == 0) {
         return;
     }
 

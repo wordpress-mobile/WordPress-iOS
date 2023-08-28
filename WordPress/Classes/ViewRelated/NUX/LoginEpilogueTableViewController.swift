@@ -133,7 +133,7 @@ extension LoginEpilogueTableViewController {
                 removeSeparatorFor(cell)
                 if let info = epilogueUserInfo {
                     cell.stopSpinner()
-                    cell.configure(userInfo: info)
+                    cell.configure(userInfo: info, viewController: self)
                 } else {
                     cell.startSpinner()
                 }

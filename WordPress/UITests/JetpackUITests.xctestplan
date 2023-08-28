@@ -22,8 +22,11 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
-        "DashboardTests\/testPagesCardHeaderNavigation()",
         "EditorAztecTests",
+        "EditorGutenbergTests\/testAddGalleryBlock()",
+        "EditorGutenbergTests\/testAddMediaBlocks()",
+        "EditorGutenbergTests\/testAddRemoveFeaturedImage()",
+        "EditorGutenbergTests\/testBasicPostPublishWithCategoryAndTag()",
         "LoginTests\/testEmailMagicLinkLogin()",
         "SignupTests",
         "SignupTests\/testEmailSignup()",

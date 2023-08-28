@@ -1,11 +1,36 @@
-extension Blog {
+import CoreMedia
+import AVFoundation
 
-    /// returns true if the blog is allowed to upload the given asset, true otherwise
-    func canUploadAsset(_ asset: WPMediaAsset) -> Bool {
-        return canUploadAsset(asset.exceedsFreeSitesAllowance())
+extension Blog {
+    /// Maximum allowed duration for video uploads on free sites, in seconds (5 mins).
+    static let maximumVideoDurationForFreeSites: TimeInterval = 300
+
+    /// Returns the video duration limit for the blog. If there is no limit, returns `nil`.
+    var videoDurationLimit: TimeInterval? {
+        if hasPaidPlan || !isHostedAtWPcom {
+            return nil
+        }
+        return Blog.maximumVideoDurationForFreeSites
     }
 
-    public func canUploadAsset(_ assetExceedsFreeSitesAllowance: Bool) -> Bool {
-        return hasPaidPlan || !isHostedAtWPcom || !assetExceedsFreeSitesAllowance
+    /// Returns `true` if the blog is allowed to upload the given asset.
+    func canUploadAsset(_ asset: WPMediaAsset) -> Bool {
+        guard asset.assetType() == .video else {
+            return true
+        }
+        guard let limit = videoDurationLimit else {
+            return true
+        }
+        return asset.duration() <= limit
+    }
+
+    /// Returns `true` if the blog is allowed to upload the video at the given URL.
+    func canUploadVideo(from videoURL: URL) -> Bool {
+        guard let limit = videoDurationLimit else {
+            return true
+        }
+        let asset = AVAsset(url: videoURL)
+        let duration = CMTimeGetSeconds(asset.duration)
+        return duration <= limit
     }
 }

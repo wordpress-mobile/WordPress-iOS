@@ -20,7 +20,7 @@ public class TabNavComponent: ScreenObject {
     }
 
     private let meTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars.buttons["meBarButton"]
+        $0.tabBars["Main Navigation"].buttons["meTabButton"]
     }
 
     var meTabButton: XCUIElement { meTabButtonGetter(app) }

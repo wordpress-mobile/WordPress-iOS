@@ -42,7 +42,7 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.14'
+  pod 'WordPressUI', '~> 1.14.2-beta.1'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
@@ -122,7 +122,7 @@ abstract_target 'Apps' do
   pod 'AlamofireImage', '3.5.2'
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-  pod 'JTAppleCalendar', '~> 8.0.2'
+  pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
   pod 'SDWebImage', '~> 5.11.1'
 

@@ -39,6 +39,7 @@ import WordPressKit
     case mySites
     case reader
     case notifications
+    case me
 }
 
 // MARK: - Localized Strings
