@@ -1290,6 +1290,8 @@
 		4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCE7542239FBC709B90EA85 /* Pods_WordPressUITests.framework */; };
 		4BB2296498BE66D515E3D610 /* Pods_JetpackShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23052F0F1F9B2503E33D0A26 /* Pods_JetpackShareExtension.framework */; };
 		4D520D4F22972BC9002F5924 /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D520D4E22972BC9002F5924 /* acknowledgements.html */; };
+		567EA4A62A9CD7E1000585AB /* LanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567EA4A52A9CD7E1000585AB /* LanguageTests.swift */; };
+		567EA4A72A9CD7E1000585AB /* LanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567EA4A52A9CD7E1000585AB /* LanguageTests.swift */; };
 		56885C912A7D15930027C78F /* HTMLEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56885C902A7D15930027C78F /* HTMLEditorScreen.swift */; };
 		570265152298921800F2214C /* PostListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570265142298921800F2214C /* PostListTableViewHandler.swift */; };
 		570265172298960B00F2214C /* PostListTableViewHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570265162298960B00F2214C /* PostListTableViewHandlerTests.swift */; };
@@ -6870,6 +6872,7 @@
 		51A5F017948878F7E26979A0 /* Pods-Apps-WordPress.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-WordPress.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress.release.xcconfig"; sourceTree = "<group>"; };
 		528B9926294302CD0A4EB5C4 /* Pods-WordPressScreenshotGeneration.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		549D51B99FF59CBE21A37CBF /* Pods-JetpackIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackIntents.release.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackIntents/Pods-JetpackIntents.release.xcconfig"; sourceTree = "<group>"; };
+		567EA4A52A9CD7E1000585AB /* LanguageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageTests.swift; sourceTree = "<group>"; };
 		56885C902A7D15930027C78F /* HTMLEditorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLEditorScreen.swift; sourceTree = "<group>"; };
 		56FEDB6A28783D8F00E1EA93 /* WordPress 145.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 145.xcdatamodel"; sourceTree = "<group>"; };
 		570265142298921800F2214C /* PostListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListTableViewHandler.swift; sourceTree = "<group>"; };
@@ -15704,6 +15707,7 @@
 				BED4D82F1FF11DEF00A11345 /* EditorAztecTests.swift */,
 				CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */,
 				FF2716911CAAC87B0006E2D4 /* LoginTests.swift */,
+				567EA4A52A9CD7E1000585AB /* LanguageTests.swift */,
 				FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */,
 				01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */,
 				808DB70B2A710EFE00EA1645 /* NUXTests.swift */,
@@ -23710,6 +23714,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA85B7AF2A688AB00096E097 /* TestObserver.swift in Sources */,
+				567EA4A72A9CD7E1000585AB /* LanguageTests.swift in Sources */,
 				EA14532929AD874C001F3143 /* MainNavigationTests.swift in Sources */,
 				80379C6F2A5C0D8F00D924AC /* PostTests.swift in Sources */,
 				EA14532A29AD874C001F3143 /* ReaderTests.swift in Sources */,
@@ -25649,6 +25654,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA85B7B02A688B1C0096E097 /* TestObserver.swift in Sources */,
+				567EA4A62A9CD7E1000585AB /* LanguageTests.swift in Sources */,
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				80379C6E2A5C0D8F00D924AC /* PostTests.swift in Sources */,
 				EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */,

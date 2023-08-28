@@ -40,8 +40,12 @@ public class BlockEditorScreen: ScreenObject {
         $0.otherElements["Paragraph Block. Row 1. Empty"]
     }
 
-    private let postTitleViewGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["Post title. Empty"]
+    private func postTitleViewGetter(app: XCUIApplication, localizedString: String) -> XCUIElement {
+        return app.otherElements[localizedString]
+    }
+
+    private func addBlockPlaceholderGetter(app: XCUIApplication, localizedString: String) -> XCUIElement {
+        return app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", localizedString)).firstMatch
     }
 
     private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
@@ -99,7 +103,15 @@ public class BlockEditorScreen: ScreenObject {
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
     var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
-    var postTitleView: XCUIElement { postTitleViewGetter(app) }
+    var postTitleView: XCUIElement {
+        return postTitleViewGetter(app: app, localizedString: "Post title. Empty")
+    }
+    var postTitleViewInSpanish: XCUIElement {
+        return postTitleViewGetter(app: app, localizedString: "Título de la entrada. Vacío")
+    }
+    var addBlockPlaceholderInSpanish: XCUIElement {
+        return addBlockPlaceholderGetter(app: app, localizedString: "Empieza a escribir…")
+    }
     var redoButton: XCUIElement { redoButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
@@ -476,5 +488,24 @@ public class BlockEditorScreen: ScreenObject {
         XCTAssertTrue(pasteButton.exists, "Could not find menu item paste button.")
 
         pasteButton.tap()
+    }
+
+    // Localization
+    @discardableResult
+    public func showsPostTitlePlaceholderInSpanish() throws -> BlockEditorScreen {
+        let titleView = postTitleViewInSpanish.firstMatch
+        XCTAssert(titleView.waitForExistence(timeout: 3), "Title View does not exist!")
+        return try BlockEditorScreen()
+    }
+
+    @discardableResult
+    public func showsAddBlockPlaceholderInSpanish() throws -> BlockEditorScreen {
+        let addBlockPlaceholderView = addBlockPlaceholderInSpanish
+        XCTAssert(addBlockPlaceholderView.waitForExistence(timeout: 3), "Add block placeholder View does not exist!")
+        addBlockPlaceholderView.tap()
+
+        let placeholderTextInput = app.staticTexts["Empieza a escribir…"]
+        XCTAssert(placeholderTextInput.waitForExistence(timeout: 3), "Add block placeholder TextInput does not exist!")
+        return try BlockEditorScreen()
     }
 }
