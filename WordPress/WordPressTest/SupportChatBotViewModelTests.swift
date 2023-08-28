@@ -56,7 +56,7 @@ private class ZendeskUtilsSpy: ZendeskUtilsProtocol {
     var description: String?
     var tags: [String]?
 
-    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ()) {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
         self.description = description
         self.tags = tags
     }

@@ -22,6 +22,8 @@ class MediaURLExporter: MediaExporter {
         case unknownFileUTI
         case unsupportedFileType
 
+        public var errorDescription: String? { description }
+
         var description: String {
             switch self {
             default:

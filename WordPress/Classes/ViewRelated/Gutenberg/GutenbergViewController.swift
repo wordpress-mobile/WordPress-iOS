@@ -650,12 +650,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .mediaLibrary,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: {(assets) in
-                                                        guard let media = assets as? [Media] else {
-                                                            callback(nil)
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
+                                                       callback: { [weak self] assets in
+            guard let self, let media = assets as? [Media] else {
+                callback(nil)
+                return
+            }
+            self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
         })
     }
 
@@ -665,8 +665,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .device,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: { assets in
-            guard let assets, !assets.isEmpty else {
+                                                       callback: { [weak self] assets in
+            guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
             }
             self.mediaInserterHelper.insertFromDevice(assets, callback: callback)
@@ -674,15 +674,18 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
-                                                         filter: filter,
-                                                         callback: {(assets) in
-                                                            guard let phAsset = assets?.first as? PHAsset else {
-                                                                callback(nil)
-                                                                return
-                                                            }
-                                                            self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
-        })
+        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
+            guard let self, let asset = assets?.first else {
+                return callback(nil)
+            }
+            if let asset = asset as? PHAsset {
+                self.mediaInserterHelper.insertFromDevice(asset: asset, callback: callback)
+            } else if let image = asset as? UIImage {
+                self.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .camera)
+            } else if let url = asset as? URL {
+                self.mediaInserterHelper.insertFromDevice(url: url, callback: callback, source: .camera)
+            }
+        }
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -858,10 +861,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
-            let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                self.mediaInserterHelper.retryUploadOf(media: media)
+            if media.canRetry {
+                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                    self.mediaInserterHelper.retryUploadOf(media: media)
+                }
+                alertController.addAction(retryUploadAction)
             }
-            alertController.addAction(retryUploadAction)
         }
 
         alertController.title = title

@@ -93,12 +93,12 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - Sentry (8.10.0):
-    - Sentry/Core (= 8.10.0)
-    - SentryPrivate (= 8.10.0)
-  - Sentry/Core (8.10.0):
-    - SentryPrivate (= 8.10.0)
-  - SentryPrivate (8.10.0)
+  - Sentry (8.9.4):
+    - Sentry/Core (= 8.9.4)
+    - SentryPrivate (= 8.9.4)
+  - Sentry/Core (8.9.4):
+    - SentryPrivate (= 8.9.4)
+  - SentryPrivate (8.9.4)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -122,7 +122,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
-  - WordPressUI (1.14.1)
+  - WordPressUI (1.14.2-beta.1)
   - WPMediaPicker (1.8.10)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -171,7 +171,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 6.3)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
-  - WordPressUI (~> 1.14)
+  - WordPressUI (~> 1.14.2-beta.1)
   - WPMediaPicker (>= 1.8.10-beta.1, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -270,8 +270,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  Sentry: 71cd4427146ac56eab6e70401ac7a24384c3d3b5
-  SentryPrivate: 9334613897c85a9e30f2c9d7a331af8aaa4fe71f
+  Sentry: 56c76eed917f7dffd46db50906afbf5c9aa2673a
+  SentryPrivate: f3be34b5deb9fe676fdfb1f1ad5cdb1b740c5688
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -282,7 +282,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 9bfb316cb165e1997b73aa94d92fadc991cc9725
   WordPressKit: f33a89b148d9cce96933f0900701aff592a796f7
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
-  WordPressUI: a29887ef603cecc8f1c168dc3b9880715785482d
+  WordPressUI: 26130fbb5d7012f9ff7c76ad0d5b046f592ddfaf
   WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -294,6 +294,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 91e6d9b1f76f7e82a99373169d8c164b236bde2a
+PODFILE CHECKSUM: e54eeda47b03e4225509b2162f40d720a5708616
 
 COCOAPODS: 1.12.1

@@ -45,6 +45,9 @@ class MediaImageExporter: MediaExporter {
         case imageSourceDestinationWithURLFailed
         case imageSourceThumbnailGenerationFailed
         case imageSourceDestinationWriteFailed
+
+        public var errorDescription: String? { description }
+
         var description: String {
             switch self {
             default:

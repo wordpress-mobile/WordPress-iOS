@@ -220,7 +220,7 @@ fileprivate extension BlogDetailHeaderView {
         }
 
         private enum LayoutSpacing {
-            static let betweenTitleAndSubtitleButtons: CGFloat = 8
+            static let betweenTitleAndSubtitleButtons: CGFloat = 4
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4

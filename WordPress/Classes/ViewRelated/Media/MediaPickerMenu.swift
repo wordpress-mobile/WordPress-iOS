@@ -49,6 +49,7 @@ extension MediaPickerMenu {
 
     func showPhotosPicker(delegate: PHPickerViewControllerDelegate) {
         var configuration = PHPickerConfiguration()
+        configuration.preferredAssetRepresentationMode = .current
         if let filter {
             switch filter {
             case .images:
@@ -105,7 +106,7 @@ extension MediaPickerMenu {
         }
     }
 
-    func showCamera(camera: UIImagePickerController.CameraDevice, delegate: ImagePickerControllerDelegate) {
+    func showCamera(camera: UIImagePickerController.CameraDevice = .rear, delegate: ImagePickerControllerDelegate) {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized, .notDetermined:
             actuallyShowCamera(camera: camera, delegate: delegate)
@@ -213,6 +214,16 @@ extension MediaPickerMenu {
     }
 
     private static var dataSourceAssociatedKey: UInt8 = 0
+}
+
+extension MediaPickerMenu.MediaFilter {
+    init?(_ mediaType: WPMediaType) {
+        switch mediaType {
+        case .image: self = .images
+        case .video: self = .videos
+        default: return nil
+        }
+    }
 }
 
 private enum Strings {
