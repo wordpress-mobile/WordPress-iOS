@@ -11,8 +11,8 @@
 #
 #   LOCAL_GUTENBERG=../my-gutenberg-fork bundle exec pod install
 GUTENBERG_CONFIG = {
-  commit: 'ea2272fc9d98828381f13a7e19750455ea1089ef'
-  # tag: 'v1.102.0'
+  # commit: ''
+  tag: 'v1.102.1'
 }
 
 GITHUB_ORG = 'wordpress-mobile'
