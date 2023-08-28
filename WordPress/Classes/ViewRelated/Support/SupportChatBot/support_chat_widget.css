@@ -13,3 +13,11 @@ a.floating-button {
 .docsbot-chat-input-form {
     margin-bottom: 0px;
 }
+
+.docsbot-chat-bot-message-container span {
+    color: black !important;
+}
+
+.docsbot-user-chat-message-container span {
+    color: black !important;
+}
