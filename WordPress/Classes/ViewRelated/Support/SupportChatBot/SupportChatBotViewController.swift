@@ -1,6 +1,7 @@
 import WebKit
 import WordPressFlux
 import SVProgressHUD
+import WordPressShared
 
 protocol SupportChatBotCreatedTicketDelegate: AnyObject {
     func onTicketCreated()
@@ -12,6 +13,7 @@ final class SupportChatBotViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
         contentController.add(self, name: Constants.supportCallback)
+        contentController.add(self, name: Constants.errorCallback)
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -33,7 +35,10 @@ final class SupportChatBotViewController: UIViewController {
         super.viewDidLoad()
 
         title = Strings.title
+        setupNavigationBar()
         loadChatBot()
+
+        viewModel.track(.supportChatbotStarted)
     }
 
     private func loadChatBot() {
@@ -47,6 +52,11 @@ final class SupportChatBotViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.track(.supportChatbotEnded)
+    }
+
     /// Creating DocsBotAI JavaScript code so we could tweak configuration from within Swift code
     /// https://docsbot.ai/docs/embeddable-chat-widget
     private func createDocsBotInitCode() -> String {
@@ -56,11 +66,14 @@ final class SupportChatBotViewController: UIViewController {
             window.prepareDocsBotForPresentation();
 
             DocsBotAI.init({
-                id: '\(viewModel.id)',
-                 supportCallback: function (event, history) {
+                id: '\(viewModel.docsBotId)',
+                identify: {
+                    chatId: '\(viewModel.chatId)',
+                },
+                supportCallback: function (event, history) {
                     event.preventDefault()
                     window.webkit.messageHandlers.supportCallback.postMessage(history)
-                  },
+                },
                 options: {
                     color: "#9dd977",
                     supportLink: "#",
@@ -90,6 +103,21 @@ final class SupportChatBotViewController: UIViewController {
             DDLogError("Couldn't encode default questions for support chat bot: \(error)")
             return ""
         }
+    }
+}
+
+private extension SupportChatBotViewController {
+    func setupNavigationBar() {
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.closeButton,
+                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+                                                               target: self,
+                                                               action: #selector(closeTapped))
+        }
+    }
+
+    @objc private func closeTapped() {
+        dismiss(animated: true)
     }
 }
 
@@ -126,6 +154,8 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
         if message.name == Constants.supportCallback, let messageHistory = message.body as? [[String]] {
             let history = SupportChatHistory(messageHistory: messageHistory)
             createTicket(with: history)
+        } else if message.name == Constants.errorCallback, let payload = message.body as? [String: Any], let errorMessage = payload["message"] as? String {
+            viewModel.track(.supportChatbotWebViewError, errorMessage: errorMessage)
         }
     }
 }
@@ -133,6 +163,7 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
 extension SupportChatBotViewController {
     private enum Strings {
         static let title = NSLocalizedString("support.chatBot.title", value: "Contact Support", comment: "Title of the view that shows support chat bot.")
+        static let closeButton = NSLocalizedString("support.chatBot.close.title", value: "Close", comment: "Dismiss the current view")
         static let ticketCreationLoadingMessage = NSLocalizedString("support.chatBot.ticketCreationLoading", value: "Creating support ticket...", comment: "Notice informing user that their support ticket is being created.")
         static let ticketCreationSuccessMessage = NSLocalizedString("support.chatBot.ticketCreationSuccess", value: "Ticket created", comment: "Notice informing user that their support ticket has been created.")
         static let ticketCreationFailureMessage = NSLocalizedString("support.chatBot.ticketCreationFailure", value: "Error submitting support ticket", comment: "Notice informing user that there was an error submitting their support ticket.")
@@ -173,6 +204,7 @@ extension SupportChatBotViewController {
 
     private enum Constants {
         static let supportCallback = "supportCallback"
+        static let errorCallback = "errorCallback"
     }
 }
 
@@ -182,14 +214,17 @@ extension SupportChatBotViewController {
     func createTicket(with history: SupportChatHistory) {
         SVProgressHUD.show(withStatus: Strings.ticketCreationLoadingMessage)
 
-        viewModel.contactSupport(including: history) { [weak self] success in
+        viewModel.contactSupport(including: history, in: self) { [weak self] result in
             SVProgressHUD.dismiss()
 
             guard let self else { return }
             DispatchQueue.main.async {
-                if success {
+                switch result {
+                case .success:
+                    self.viewModel.track(.supportChatbotTicketSuccess)
                     self.showTicketCreatedSuccessNotice()
-                } else {
+                case .failure(let failure):
+                    self.viewModel.track(.supportChatbotTicketFailure, errorMessage: failure.localizedDescription)
                     self.showTicketCreatedFailureNotice()
                 }
             }

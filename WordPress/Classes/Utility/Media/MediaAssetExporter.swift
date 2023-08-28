@@ -2,6 +2,7 @@ import Foundation
 import MobileCoreServices
 import UniformTypeIdentifiers
 import AVFoundation
+import Photos
 
 /// Media export handling of PHAssets
 ///
@@ -23,6 +24,8 @@ class MediaAssetExporter: MediaExporter {
         case unavailablePHAssetImageResource
         case unavailablePHAssetVideoResource
         case failedRequestingVideoExportSession
+
+        public var errorDescription: String? { description }
 
         var description: String {
             switch self {

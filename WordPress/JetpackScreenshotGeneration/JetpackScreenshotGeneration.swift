@@ -6,6 +6,7 @@ import XCTest
 class JetpackScreenshotGeneration: XCTestCase {
     let scanWaitTime: UInt32 = 5
 
+    @MainActor
     override func setUpWithError() throws {
         super.setUp()
 

@@ -167,7 +167,7 @@ platform :ios do
     version = options.fetch(:version, get_app_version)
 
     files = {
-      whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+      whats_new: WORDPRESS_RELEASE_NOTES_PATH,
       app_store_name: File.join(source_metadata_folder, 'name.txt'),
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
@@ -203,7 +203,7 @@ platform :ios do
     version = options.fetch(:version, get_app_version)
 
     files = {
-      whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
+      whats_new: JETPACK_RELEASE_NOTES_PATH,
       app_store_name: File.join(source_metadata_folder, 'name.txt'),
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
@@ -271,7 +271,7 @@ platform :ios do
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
     # In the meantime, just copy the file to the right place for `deliver` to find, for the `default` pseudo-locale which is used as fallback
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
+    release_notes_source = WORDPRESS_RELEASE_NOTES_PATH
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'default', 'release_notes.txt'))
 
     # Download metadata translations from GlotPress
@@ -293,7 +293,7 @@ platform :ios do
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
     # In the meantime, just copy the file to the right place for `deliver` to find, for the `default` pseudo-locale which is used as fallback
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+    release_notes_source = JETPACK_RELEASE_NOTES_PATH
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'default', 'release_notes.txt'))
 
     # Download metadata translations from GlotPress

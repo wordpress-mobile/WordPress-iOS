@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import PhotosUI
 
 /// Encapsulates importing assets such as PHAssets, images, videos, or files at URLs to Media objects.
 ///
@@ -215,12 +216,16 @@ class MediaImportService: NSObject {
                         thumbnailCallback?(media, url)
                     }
                 }
-
-                completion(transformed)
+                if let error {
+                    completion(.failure(error)) // Import failed
+                } else {
+                    completion(transformed)
+                }
             }, on: .main)
         }
 
-        return self.import(exportable, to: media, allowableFileExtensions: allowedFileTypes, completion: completion)
+        let options = makeExportOptions(for: blog, allowableFileExtensions: allowedFileTypes)
+        return self.import(exportable, to: media, options: options, completion: completion)
     }
 
     /// Imports media from a PHAsset to the Media object, asynchronously.
@@ -236,10 +241,10 @@ class MediaImportService: NSObject {
     ///
     /// - Returns: a progress object that report the current state of the import process.
     ///
-    private func `import`(_ exportable: ExportableAsset, to media: Media, allowableFileExtensions: Set<String>, completion: @escaping (Error?) -> Void) -> Progress {
+    private func `import`(_ exportable: ExportableAsset, to media: Media, options: ExportOptions, completion: @escaping (Error?) -> Void) -> Progress {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
-            guard let exporter = self.makeExporter(for: exportable, allowableFileExtensions: allowableFileExtensions) else {
+            guard let exporter = self.makeExporter(for: exportable, options: options) else {
                 preconditionFailure("An exporter needs to be availale")
             }
             let exportProgress = exporter.export(
@@ -268,23 +273,28 @@ class MediaImportService: NSObject {
         return progress
     }
 
-    private func makeExporter(for exportable: ExportableAsset, allowableFileExtensions: Set<String>) -> MediaExporter? {
+    private func makeExporter(for exportable: ExportableAsset, options: ExportOptions) -> MediaExporter? {
         switch exportable {
         case let asset as PHAsset:
             let exporter = MediaAssetExporter(asset: asset)
-            exporter.imageOptions = self.exporterImageOptions
-            exporter.videoOptions = self.exporterVideoOptions
-            exporter.allowableFileExtensions = allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : allowableFileExtensions
+            exporter.imageOptions = options.imageOptions
+            exporter.videoOptions = options.videoOptions
+            exporter.allowableFileExtensions = options.allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : options.allowableFileExtensions
+            return exporter
+        case let provider as NSItemProvider:
+            let exporter = ItemProviderMediaExporter(provider: provider)
+            exporter.imageOptions = options.imageOptions
+            exporter.videoOptions = options.videoOptions
             return exporter
         case let image as UIImage:
             let exporter = MediaImageExporter(image: image, filename: nil)
-            exporter.options = self.exporterImageOptions
+            exporter.options = options.imageOptions
             return exporter
         case let url as URL:
             let exporter = MediaURLExporter(url: url)
-            exporter.imageOptions = self.exporterImageOptions
-            exporter.videoOptions = self.exporterVideoOptions
-            exporter.urlOptions = self.exporterURLOptions(allowableFileExtensions: allowableFileExtensions)
+            exporter.imageOptions = options.imageOptions
+            exporter.videoOptions = options.videoOptions
+            exporter.urlOptions = options.urlOptions
             return exporter
         case let stockPhotosMedia as StockPhotosMedia:
             let exporter = MediaExternalExporter(externalAsset: stockPhotosMedia)
@@ -346,6 +356,20 @@ class MediaImportService: NSObject {
 
     // MARK: - Media export configurations
 
+    private func makeExportOptions(for blog: Blog, allowableFileExtensions: Set<String>) -> ExportOptions {
+        ExportOptions(imageOptions: exporterImageOptions,
+                      videoOptions: makeExporterVideoOptions(for: blog),
+                      urlOptions: exporterURLOptions(allowableFileExtensions: allowableFileExtensions),
+                      allowableFileExtensions: allowableFileExtensions)
+    }
+
+    private struct ExportOptions {
+        var imageOptions: MediaImageExporter.Options
+        var videoOptions: MediaVideoExporter.Options
+        var urlOptions: MediaURLExporter.Options
+        var allowableFileExtensions: Set<String>
+    }
+
     private var exporterImageOptions: MediaImageExporter.Options {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
@@ -354,10 +378,11 @@ class MediaImportService: NSObject {
         return options
     }
 
-    private var exporterVideoOptions: MediaVideoExporter.Options {
+    private func makeExporterVideoOptions(for blog: Blog) -> MediaVideoExporter.Options {
         var options = MediaVideoExporter.Options()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
         options.exportPreset = MediaSettings().maxVideoSizeSetting.videoPreset
+        options.durationLimit = blog.videoDurationLimit
         return options
     }
 

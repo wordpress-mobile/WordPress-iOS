@@ -1386,6 +1386,9 @@
 /* Shown while the app waits for the username changing web service to return. */
 "Changing username" = "Changing username";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Rate as helpful";
+
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Check out our top tips to increase your views and traffic";
 
@@ -4930,6 +4933,18 @@ Please install the %3$@ to use the app with this site.";
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Today's Stats";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "News";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Transfer your domains";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "As you may know, Google Domains has been sold to Squarespace. Transfer your domains to WordPress.com now, and we'll pay all transfer fees plus an extra year of your domain registration.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Reclaim your Google Domains";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder
@@ -7660,7 +7675,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Your latest post %1$@ has received %2$@ likes.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Your latest post %1$@ has received %2$@ like.";
 
 /* The status of the post. Should be the same as in core WP. */
@@ -7772,6 +7787,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Visit WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Thinking...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Close";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Contact support";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "What can I help you with? If I can't answer your question I'll help you open a support ticket with our team!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Send a message...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "I forgot my login information";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Why can't I login?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "What is my site address?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "How can I use my custom domain in the app?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "I can't upload photos/videos";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Help, my site is down!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Report as inaccurate";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Sources";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Not sure what to ask?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Error submitting support ticket";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Creating support ticket...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Ticket created";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Contact Support";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Answer";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Question";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot transcript";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ask a question in the community forum and get help from our group of volunteers.";
@@ -10014,7 +10092,8 @@ from anywhere.";
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %1$@\n\nFrom another device\nSaved on %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "You replied to this comment.";
 
 /* No comment provided by engineer. */

@@ -1,16 +1,6 @@
-Version 23.0 is here! Do we look older?
-
-To celebrate, we made some Gallery block updates in the block editor.
-
-- We removed the visual gap that appears between selected gallery blocks and the toolbar.
-- The gallery caption button is no longer visible on mobile devices.
-- The correct gallery block will stay selected while you’re adding media.
-
-We also squashed several bugs in the media picker.
-
-- Your screen won’t flash anymore when you open the media picker.
-- Media files have stopped rearranging themselves and will now behave.
-- The image count no longer includes other media types.
-- Thumbnail image sizes are now smaller. Faster loading, less memory—what’s not to love?
-
-Finally, the app should no longer crash when you update a post. (But wear a helmet anyway. Safety first.)
+* [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
+* [*] Block editor: Display custom color value in mobile Cover Block color picker [https://github.com/WordPress/gutenberg/pull/51414]
+* [**] Block editor: Display outline around selected Social Link block [https://github.com/WordPress/gutenberg/pull/53377]
+* [**] Block editor: Fix font customization not getting updated. [https://github.com/WordPress/gutenberg/pull/53391]
+* [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
+* [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]

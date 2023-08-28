@@ -71,7 +71,14 @@ final class DashboardGoogleDomainsCardCell: DashboardCollectionViewCell {
     private func configureMoreButton(with blog: Blog) {
         frameView.addMoreMenu(
             items:
-                [UIMenu(options: .displayInline, children: [BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)])],
+                [
+                    UIMenu(
+                        options: .displayInline,
+                        children: [
+                            BlogDashboardHelpers.makeHideCardAction(for: .googleDomains, blog: blog)
+                        ]
+                    )
+                ],
             card: .googleDomains
         )
     }
@@ -92,7 +99,7 @@ extension DashboardGoogleDomainsCardCell: DashboardGoogleDomainsCardCellProtocol
 private extension DashboardGoogleDomainsCardCell {
     enum Strings {
         static let cardTitle = NSLocalizedString(
-            "mySite.domain.focus.card.title",
+            "mySite.domain.focus.cardCell.title",
             value: "News",
             comment: "Title for the domain focus card on My Site"
         )

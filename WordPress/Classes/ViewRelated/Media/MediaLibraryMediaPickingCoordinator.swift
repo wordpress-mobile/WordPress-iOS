@@ -1,14 +1,14 @@
 import MobileCoreServices
 import WPMediaPicker
+import PhotosUI
 
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate
+    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate & PHPickerViewControllerDelegate & ImagePickerControllerDelegate
     private weak var delegate: PickersDelegate?
     private var tenor: TenorPicker?
 
     private var stockPhotos: StockPhotosPicker?
-    private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
     init(delegate: PickersDelegate) {
@@ -29,7 +29,7 @@ final class MediaLibraryMediaPickingCoordinator {
             menuAlert.title = quotaUsageDescription
         }
 
-        if WPMediaCapturePresenter.isCaptureAvailable() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
             menuAlert.addAction(cameraAction(origin: origin, blog: blog))
         }
 
@@ -87,7 +87,8 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showCameraCapture(origin: UIViewController, blog: Blog) {
-        cameraCapture.presentMediaCapture(origin: origin, blog: blog)
+        MediaPickerMenu(viewController: origin)
+            .showCamera(delegate: self)
     }
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
@@ -117,7 +118,18 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {
-        mediaLibrary.presentPicker(origin: origin, blog: blog)
+        if FeatureFlag.nativePhotoPicker.enabled {
+            var configuration = PHPickerConfiguration()
+            configuration.preferredAssetRepresentationMode = .current
+            configuration.selection = .ordered
+            configuration.selectionLimit = 0 // Unlimited
+
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            origin.present(picker, animated: true)
+        } else {
+            mediaLibrary.presentPicker(origin: origin, blog: blog)
+        }
     }
 }
 
@@ -132,5 +144,17 @@ extension MediaLibraryMediaPickingCoordinator: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         delegate?.stockPhotosPicker(picker, didFinishPicking: assets)
         stockPhotos = nil
+    }
+}
+
+extension MediaLibraryMediaPickingCoordinator: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        delegate?.picker(picker, didFinishPicking: results)
+    }
+}
+
+extension MediaLibraryMediaPickingCoordinator: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        delegate?.imagePicker(picker, didFinishPickingMediaWithInfo: info)
     }
 }

@@ -1,22 +1,8 @@
-Version 23.0 is here! Do we look older?
-
-To celebrate, we made design improvements across the app so you can share content on social media more easily. We’re all about that social life.
-
-You’ll notice the new Blaze Campaign card in your dashboard, where you can see the most recent campaign, a campaigns list screen, and a campaign details screen. That’s hot.
-
-We made some Gallery block updates in the block editor.
-
-- We removed the visual gap that appears between selected gallery blocks and the toolbar.
-- The gallery caption button is no longer visible on mobile devices.
-- The correct gallery block will stay selected while you’re adding media.
-
-You might be happy to hear that we squashed several bugs in the media picker.
-
-- Your screen won’t flash anymore when you open the media picker.
-- Media files have stopped rearranging themselves and will now behave.
-- The image count no longer includes other media types.
-- Thumbnail image sizes are now smaller. Faster loading, less memory—what’s not to love?
-
-We also sped up loading time for the Total Likes stats card and fixed an issue that caused the stats screen to stall the app.
-
-Finally, the app won’t crash when you update notifications, posts, or reader content, or when you’re cleaning up followed topics in the reader. (But wear a helmet anyway. Safety first.)
+* [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
+* [*] Block editor: Display custom color value in mobile Cover Block color picker [https://github.com/WordPress/gutenberg/pull/51414]
+* [**] Block editor: Display outline around selected Social Link block [https://github.com/WordPress/gutenberg/pull/53377]
+* [**] Block editor: Fix font customization not getting updated. [https://github.com/WordPress/gutenberg/pull/53391]
+* [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
+* [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
+* [*] Fixed a crash that could occur when following sites in Reader. [#21341]
+* [**] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]

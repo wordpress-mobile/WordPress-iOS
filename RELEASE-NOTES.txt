@@ -1,9 +1,22 @@
+23.2
+-----
+* [**] Integrate the native media picker (`PHPickerViewController`), which is familiar to all Apple Photos users. It has a powerful search; you can filter by favorites, zoom in, filter by different media types, and more. And it doesn't require any access permissions or dialogs to work and handles large Photos libaries with ease. [#21190](https://github.com/wordpress-mobile/WordPress-iOS/issues/21190).
+* [*] Remove the "New Photo Post" app quick action [#21369](https://github.com/wordpress-mobile/WordPress-iOS/pull/21369)
+* [*] (Internal) Fix unbounded growth of number media observers in Post Editor (performance issue) [#21352](https://github.com/wordpress-mobile/WordPress-iOS/pull/21352)
+* [**] [internal] Fix a crash when disconnecting the app from the "Connected Applications" on WordPress.com. [#21375]
+* [*] Fix an issue where the "Take Photo" flow was not working without the "All Photos" access [#21398](https://github.com/wordpress-mobile/WordPress-iOS/pull/21398)
+* [*] Fix a couple of small issues with media uploads error handling [#21411](https://github.com/wordpress-mobile/WordPress-iOS/pull/21411)
+
 23.1
 -----
 * [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
+* [*] Block editor: Display custom color value in mobile Cover Block color picker [https://github.com/WordPress/gutenberg/pull/51414]
+* [**] Block editor: Display outline around selected Social Link block [https://github.com/WordPress/gutenberg/pull/53377]
+* [**] Block editor: Fix font customization not getting updated. [https://github.com/WordPress/gutenberg/pull/53391]
 * [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
 * [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21341]
+* [**] [Jetpack-only] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]
 
 23.0
 -----
@@ -24,6 +37,7 @@
 * [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
 * [*] [internal] Fix incorrectly terminated background task [#21254]
 * [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Editor. [#21227]
+* [**] Fixed an occassional crash when reloading Media picker. [#21337]
 
 22.9
 -----
