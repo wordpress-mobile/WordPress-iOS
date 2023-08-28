@@ -1,4 +1,5 @@
 #import "WPProgressTableViewCell.h"
+#import "WordPress-Swift.h"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #import "MRProgress.h"
@@ -9,7 +10,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 @interface WPProgressTableViewCell ()
 
-@property (nonatomic, strong) MRActivityIndicatorView * progressView;
+@property (nonatomic, strong) StoppableProgressIndicatorView * progressView;
 
 @end
 
@@ -21,7 +22,7 @@ NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumb
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0,0.0,40.0,40.0)];
+        _progressView = [[StoppableProgressIndicatorView alloc] initWithFrame:CGRectMake(10.0,0.0,40.0,40.0)];
         _progressView.hidden = YES;
         self.accessoryView = _progressView;
     }
