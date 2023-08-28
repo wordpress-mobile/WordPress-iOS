@@ -228,12 +228,26 @@ end
 #
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
 lane :gutenberg_dep_check do
-  require_relative './../../Gutenberg/version'
+  require 'yaml'
 
-  case [GUTENBERG_CONFIG[:tag], GUTENBERG_CONFIG[:commit]]
+  gutenberg_config_path = File.join(PROJECT_ROOT_FOLDER, 'Gutenberg', 'config.yml')
+
+  UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
+
+  begin
+    config = YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+  rescue StandardError => e
+    UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
+  end
+
+  source = config[:ref]
+
+  UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
+
+  case [source[:tag], source[:commit]]
   when [nil, nil]
     UI.user_error!('Could not find any Gutenberg version reference.')
-  when [nil, commit = GUTENBERG_CONFIG[:commit]]
+  when [nil, commit = source[:commit]]
     if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
       UI.message("Gutenberg version: #{commit}")
     else
@@ -241,7 +255,7 @@ lane :gutenberg_dep_check do
     end
   else
     # If a tag is present, the commit value is ignored
-    UI.message("Gutenberg version: #{GUTENBERG_CONFIG[:tag]}")
+    UI.message("Gutenberg version: #{source[:tag]}")
   end
 end
 

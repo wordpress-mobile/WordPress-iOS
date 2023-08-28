@@ -93,12 +93,12 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - Sentry (8.10.0):
-    - Sentry/Core (= 8.10.0)
-    - SentryPrivate (= 8.10.0)
-  - Sentry/Core (8.10.0):
-    - SentryPrivate (= 8.10.0)
-  - SentryPrivate (8.10.0)
+  - Sentry (8.9.4):
+    - Sentry/Core (= 8.9.4)
+    - SentryPrivate (= 8.9.4)
+  - Sentry/Core (8.9.4):
+    - SentryPrivate (= 8.9.4)
+  - SentryPrivate (8.9.4)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -270,8 +270,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  Sentry: 71cd4427146ac56eab6e70401ac7a24384c3d3b5
-  SentryPrivate: 9334613897c85a9e30f2c9d7a331af8aaa4fe71f
+  Sentry: 56c76eed917f7dffd46db50906afbf5c9aa2673a
+  SentryPrivate: f3be34b5deb9fe676fdfb1f1ad5cdb1b740c5688
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
