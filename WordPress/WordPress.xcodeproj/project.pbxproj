@@ -3462,6 +3462,7 @@
 		EA85B7AF2A688AB00096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
 		EA85B7B02A688B1C0096E097 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA85B7A92A6860370096E097 /* TestObserver.swift */; };
 		EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */; };
+		EABE86612A995124004281A8 /* PHPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE86602A995124004281A8 /* PHPickerScreen.swift */; };
 		EAD08D0E29D45E23001A72F9 /* CommentsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */; };
 		EAD2BF4227594DAB00A847BB /* StatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD2BF4127594DAB00A847BB /* StatsTests.swift */; };
 		EB6DF027AF96D801F280E805 /* Pods_WordPressStatsWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D670B9448DF9991366CF42D /* Pods_WordPressStatsWidgets.framework */; };
@@ -8840,6 +8841,7 @@
 		EA78189327596B2F00554DFA /* ContactUsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsScreen.swift; sourceTree = "<group>"; };
 		EA85B7A92A6860370096E097 /* TestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObserver.swift; sourceTree = "<group>"; };
 		EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
+		EABE86602A995124004281A8 /* PHPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerScreen.swift; sourceTree = "<group>"; };
 		EAD08D0D29D45E23001A72F9 /* CommentsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsScreen.swift; sourceTree = "<group>"; };
 		EAD2BF4127594DAB00A847BB /* StatsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTests.swift; sourceTree = "<group>"; };
 		EEF80689364FA9CAE10405E8 /* Pods-WordPressNotificationServiceExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -11221,6 +11223,7 @@
 			children = (
 				CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */,
 				CC52189B2279D295008998CE /* MediaPickerAlbumScreen.swift */,
+				EABE86602A995124004281A8 /* PHPickerScreen.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -22862,6 +22865,7 @@
 				3FE39A3B26F837FF006E2B3A /* PostsScreen.swift in Sources */,
 				3F2F855C26FAF227000FCDA5 /* LinkOrPasswordScreen.swift in Sources */,
 				3F2F855226FAF227000FCDA5 /* SignupCheckMagicLinkScreen.swift in Sources */,
+				EABE86612A995124004281A8 /* PHPickerScreen.swift in Sources */,
 				3FE39A4026F8386A006E2B3A /* SiteSettingsScreen.swift in Sources */,
 				D8E7529B2A29DC4C00E73B2D /* XCUIApplication+ScrollDownToElement.swift in Sources */,
 				3FE39A3526F83701006E2B3A /* LoginEpilogueScreen.swift in Sources */,

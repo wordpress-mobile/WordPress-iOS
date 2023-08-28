@@ -392,14 +392,10 @@ public class BlockEditorScreen: ScreenObject {
             .selectMultipleImages(numberOfImages)
     }
 
-    private func chooseFromDevice() throws -> MediaPickerAlbumScreen {
+    private func chooseFromDevice() throws -> PHPickerScreen {
         chooseFromDeviceButton.tap()
 
-        // Allow access to device media
-        app.tap() // trigger the media permissions alert handler
-
-        return try MediaPickerAlbumListScreen()
-                    .selectAlbum(atIndex: 0)
+        return try PHPickerScreen()
     }
 
     private func confirmPost(button: XCUIElement) throws {
