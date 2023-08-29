@@ -179,7 +179,7 @@ extension SupportChatBotViewController {
                                                         value: "Send a message...",
                                                         comment: "Placeholder text for the chat input field.")
         static let firstMessage = NSLocalizedString("support.chatBot.firstMessage",
-                                                    value: "What can we help you with? If I can't answer your question I'll help you open a support ticket with our team!",
+                                                    value: "What can we help you with?",
                                                     comment: "Initial message shown to the user when the chat starts.")
         static let sources = NSLocalizedString("support.chatBot.sources",
                                                value: "Sources",
