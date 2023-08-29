@@ -121,7 +121,7 @@ public class NotificationsScreen: ScreenObject {
         var tries = 0
 
         while !likeCommentButton.label.hasSuffix(.commentLikedLabel) && tries < 5 {
-            usleep(500000) // Wait for 0.5 seconds
+            sleep(1) // Wait for 1 second
             tries += 1
         }
 
