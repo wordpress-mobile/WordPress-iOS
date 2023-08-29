@@ -21,7 +21,7 @@ extension BlogDetailsSubsection {
             return .content
         case .themes, .customize:
             return .personalize
-        case .sharing, .people, .plugins:
+        case .me, .sharing, .people, .plugins:
             return .configure
         case .home:
             return .home
@@ -92,6 +92,10 @@ extension BlogDetailsViewController {
             return false
         }
         return blog.supports(.themeBrowsing) || blog.supports(.menus)
+    }
+
+    @objc func shouldAddMeRow() -> Bool {
+        return JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified
     }
 
     @objc func shouldAddSharingRow() -> Bool {

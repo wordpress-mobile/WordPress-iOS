@@ -11,6 +11,10 @@ public class EditorPostSettings: ScreenObject {
         $0.cells["Categories"]
     }
 
+    private let chooseFromMediaButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Choose from Media"]
+    }
+
     private let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Tags"]
     }
@@ -44,6 +48,7 @@ public class EditorPostSettings: ScreenObject {
     }
 
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
+    var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
     var doneButton: XCUIElement { doneButtonGetter(app) }
@@ -96,8 +101,8 @@ public class EditorPostSettings: ScreenObject {
 
     public func setFeaturedImage() throws -> EditorPostSettings {
         featuredImageButton.tap()
-        try MediaPickerAlbumListScreen()
-            .selectAlbum(atIndex: 0) // Select media library
+        chooseFromMediaButton.tap()
+        try MediaPickerAlbumScreen()
             .selectImage(atIndex: 0) // Select latest uploaded image
 
         return try EditorPostSettings()

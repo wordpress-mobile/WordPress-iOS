@@ -72,6 +72,20 @@ def get_app_version(xcconfig_path: PUBLIC_CONFIG_FILE)
   ios_get_app_version(public_version_xcconfig_file: xcconfig_path)
 end
 
+def gutenberg_config!
+  require 'yaml'
+
+  gutenberg_config_path = File.join(PROJECT_ROOT_FOLDER, 'Gutenberg', 'config.yml')
+
+  UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
+
+  begin
+    YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+  rescue StandardError => e
+    UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
+  end
+end
+
 ########################################################################
 # Group buildkite logs by action
 ########################################################################

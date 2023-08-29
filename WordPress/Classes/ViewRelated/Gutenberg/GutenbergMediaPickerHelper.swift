@@ -58,8 +58,8 @@ class GutenbergMediaPickerHelper: NSObject {
     private func presentNativePicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = completion
 
-        var configuration = PHPickerConfiguration(photoLibrary: .shared())
-        configuration.preferredAssetRepresentationMode = .compatible
+        var configuration = PHPickerConfiguration()
+        configuration.preferredAssetRepresentationMode = .current
         if allowMultipleSelection {
             configuration.selection = .ordered
             configuration.selectionLimit = 0

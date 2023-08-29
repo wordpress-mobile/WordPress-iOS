@@ -13,8 +13,9 @@ protocol MediaExternalAsset {
 }
 
 enum MediaExternalExporterError: MediaExportError {
-
     case unknownError
+
+    public var errorDescription: String? { description }
 
     var description: String {
         switch self {
@@ -31,6 +32,8 @@ class MediaExternalExporter: MediaExporter {
     public enum ExportError: MediaExportError {
 
         case downloadError(NSError)
+
+        public var errorDescription: String? { description }
 
         public var description: String {
             switch self {

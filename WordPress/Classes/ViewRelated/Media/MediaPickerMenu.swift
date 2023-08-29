@@ -49,6 +49,7 @@ extension MediaPickerMenu {
 
     func showPhotosPicker(delegate: PHPickerViewControllerDelegate) {
         var configuration = PHPickerConfiguration()
+        configuration.preferredAssetRepresentationMode = .current
         if let filter {
             switch filter {
             case .images:
