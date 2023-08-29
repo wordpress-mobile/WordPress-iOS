@@ -113,6 +113,9 @@
 "Add a Category" = "Ychwanegu Categori";
 
 /* No comment provided by engineer. */
+"Add alt text" = "Ychwanegu testun arall";
+
+/* No comment provided by engineer. */
 "Add menu item above" = "Ychwanegwch eitem dewislen uchod";
 
 /* No comment provided by engineer. */
@@ -969,6 +972,9 @@
 /* Hide All Sites */
 "Hide All Sites" = "Cuddio Pob Gwefan";
 
+/* No comment provided by engineer. */
+"Hide keyboard" = "Cuddio bysellfwrdd";
+
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Dal ar gyfer Cymedroli";
@@ -1684,6 +1690,9 @@
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Rhagolwg";
+
+/* No comment provided by engineer. */
+"Preview post" = "Rhagolwg post";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -2520,6 +2529,9 @@
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Newidiadau heb eu Cadw.";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Heb ei gynnal";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Mae gwerth saith diwrnod o ffeiliau cofnod yn cael eu cadw.";
