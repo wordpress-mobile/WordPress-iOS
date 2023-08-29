@@ -244,32 +244,18 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
-    private enum postAction: String {
+    public enum postAction: String {
         case publish = "Publish"
         case schedule = "Schedule"
     }
 
-    public func publish() throws {
-        return try post(action: .publish)
-    }
-
-    public func publishAndViewEpilogue() throws -> EditorPublishEpilogueScreen {
-        try publish()
+    public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
+        try post(action: action)
         waitAndTap(noticeViewButton)
         return try EditorPublishEpilogueScreen()
     }
 
-    public func schedulePost() throws {
-        try post(action: .schedule)
-    }
-
-    public func schedulePostAndViewEpilogue() throws -> EditorPublishEpilogueScreen {
-        try schedulePost()
-        waitAndTap(noticeViewButton)
-        return try EditorPublishEpilogueScreen()
-    }
-
-    private func post(action: postAction) throws {
+    public func post(action: postAction) throws {
         let postButton = app.buttons[action.rawValue]
         let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
