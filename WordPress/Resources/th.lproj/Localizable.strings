@@ -80,6 +80,9 @@
 /* The title on the add category screen */
 "Add a Category" = "เพิ่มหมวดหมู่";
 
+/* No comment provided by engineer. */
+"Add alt text" = "เพิ่ม alt text";
+
 /* Add self-hosted site button */
 "Add self-hosted site" = "เพิ่มเว็บที่ติดตั้งบนโฮสท์ตัวเอง";
 
@@ -672,6 +675,9 @@
 /* Hide All Sites */
 "Hide All Sites" = "ซ่อนเว็บทั้งหมด";
 
+/* No comment provided by engineer. */
+"Hide keyboard" = "ซ่อนคีย์บอร์ด";
+
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "กดค้างสำหรับการจัดการ";
@@ -1220,6 +1226,9 @@
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "ดูก่อน";
+
+/* No comment provided by engineer. */
+"Preview post" = "ดูก่อนเรื่อง";
 
 /* Label for the privacy setting
    Privacy settings section header */
@@ -1860,6 +1869,9 @@
 
 /* Filters Unread Notifications */
 "Unread" = "ยังไม่ได้อ่าน";
+
+/* No comment provided by engineer. */
+"Unsupported" = "ไม่สนับสนุนแล้ว";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "ไม่มีหัวข้อ";
