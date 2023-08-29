@@ -127,28 +127,32 @@ platform :ios do
     # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
     # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
     # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
-    require_relative './../../Gutenberg/version'
+    config = gutenberg_config!
 
-    ref = GUTENBERG_CONFIG[:tag] || GUTENBERG_CONFIG[:commit]
+    ref_node = config[:ref]
+    UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
 
-    UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref.nil?
+    ref = ref_node[:tag] || ref_node[:commit]
+    UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
 
-    UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') unless defined?(GITHUB_ORG)
+    github_org = config[:github_org]
+    UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
 
-    UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') unless defined?(REPO_NAME)
+    repo_name = config[:repo_name]
+    UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
 
     # Create a temporary directory to clone Gutenberg into.
     # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
     gutenberg_clone_name = 'Gutenberg-Strings-Clone'
     Dir.mktmpdir do |tempdir|
       Dir.chdir(tempdir) do
-        repo_url = "https://github.com/#{GITHUB_ORG}/#{REPO_NAME}"
+        repo_url = "https://github.com/#{github_org}/#{repo_name}"
         UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
         sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
         Dir.chdir(gutenberg_clone_name) do
-          if GUTENBERG_CONFIG[:tag]
-            sh("git fetch origin refs/tags/#{GUTENBERG_CONFIG[:tag]}:refs/tags/#{GUTENBERG_CONFIG[:tag]}")
-            sh("git checkout refs/tags/#{GUTENBERG_CONFIG[:tag]}")
+          if config[:ref][:tag]
+            sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
+            sh("git checkout refs/tags/#{ref}")
           else
             sh("git fetch origin #{ref}")
             sh("git checkout #{ref}")

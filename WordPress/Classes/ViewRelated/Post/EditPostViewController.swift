@@ -9,8 +9,6 @@ class EditPostViewController: UIViewController {
 
     /// appear instantly, without animations
     @objc var showImmediately: Bool = false
-    /// appear with the media picker open
-    @objc var openWithMediaPicker: Bool = false
     /// appear with the post epilogue visible
     @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
@@ -157,9 +155,6 @@ class EditPostViewController: UIViewController {
     }
 
     private func showEditor(_ editor: EditorViewController) {
-        editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-        // only open the media picker once.
-        openWithMediaPicker = false
         editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
             guard let strongSelf = self else {
                 editor?.dismiss(animated: true) {}

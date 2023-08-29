@@ -180,6 +180,7 @@ public class MySiteScreen: ScreenObject {
     }
 
     public func goToPostsScreen() throws -> PostsScreen {
+        goToMenu()
         postsButton.tap()
         return try PostsScreen()
     }
@@ -219,7 +220,7 @@ public class MySiteScreen: ScreenObject {
     @discardableResult
     public func goToMenu() -> Self {
         // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
-        guard XCUIDevice.isPhone else {
+        guard XCUIDevice.isPhone && !segmentedControlMenuButton.isSelected else {
             return self
         }
 

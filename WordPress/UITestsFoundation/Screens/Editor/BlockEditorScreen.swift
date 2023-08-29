@@ -4,80 +4,88 @@ import XCUITestHelpers
 
 public class BlockEditorScreen: ScreenObject {
 
-    private let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
-    }
-
-    private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
-    }
-
-    private let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
-    }
-
     private let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["add-block-button"]
-    }
-
-    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["more_post_options"]
-    }
-
-    private let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Insert from URL"]
     }
 
     private let applyButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Apply"]
     }
 
-    private let discardButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Discard"]
-    }
-
-    private let firstParagraphBlockGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["Paragraph Block. Row 1. Empty"]
-    }
-
-    private let postTitleViewGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["Post title. Empty"]
-    }
-
-    private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"]
+    private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Choose from device"]
     }
 
     private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Close"]
     }
 
+    private let discardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Discard"]
+    }
+
     private let dismissPopoverRegionGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements["PopoverDismissRegion"]
+    }
+
+    private let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
+    }
+
+    private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"]
+    }
+
+    private let firstParagraphBlockGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Paragraph Block. Row 1. Empty"]
+    }
+
+    private let fullScreenImageGetter: (XCUIApplication) -> XCUIElement = {
+        $0.images["Fullscreen view of image. Double tap to dismiss"]
+    }
+
+    private let insertFromUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Insert from URL"]
     }
 
     private let keepEditingButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Keep Editing"]
     }
 
+    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["more_post_options"]
+    }
+
+    private let noticeViewButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["View"]
+    }
+
+    private let noticeViewTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["notice_title_and_message"]
+    }
+
     private let postSettingsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Post Settings"]
     }
 
-    private let switchToHTMLModeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Switch to HTML Mode"]
+    private let postTitleViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["Post title. Empty"]
     }
 
-    private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Choose from device"]
+    private let redoButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
     }
 
     private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Set reminders"]
     }
 
-    private let fullScreenImageGetter: (XCUIApplication) -> XCUIElement = {
-        $0.images["Fullscreen view of image. Double tap to dismiss"]
+    private let switchToHTMLModeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Switch to HTML Mode"]
+    }
+
+    private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Undo"]
     }
 
     private let unsavedChangesLabelGetter: (XCUIApplication) -> XCUIElement = {
@@ -97,11 +105,13 @@ public class BlockEditorScreen: ScreenObject {
     var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
     var keepEditingButton: XCUIElement { keepEditingButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
+    var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
+    var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
-    var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
+    var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
     var unsavedChangesLabel: XCUIElement { unsavedChangesLabelGetter(app) }
 
@@ -234,17 +244,20 @@ public class BlockEditorScreen: ScreenObject {
         }
     }
 
-    public func publish() throws -> EditorNoticeComponent {
-        return try post(action: "Publish")
+    public enum postAction: String {
+        case publish = "Publish"
+        case schedule = "Schedule"
     }
 
-    public func schedulePost() throws -> EditorNoticeComponent {
-        return try post(action: "Schedule")
+    public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
+        try post(action: action)
+        waitAndTap(noticeViewButton)
+        return try EditorPublishEpilogueScreen()
     }
 
-    private func post(action: String) throws -> EditorNoticeComponent {
-        let postButton = app.buttons[action]
-        let postNowButton = app.buttons["\(action) Now"]
+    public func post(action: postAction) throws {
+        let postButton = app.buttons[action.rawValue]
+        let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
         // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
         // The tests would fail sometimes in the pipeline with no apparent reason.
@@ -252,19 +265,8 @@ public class BlockEditorScreen: ScreenObject {
             postButton.tap()
             tries += 1
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
-        try confirmPost(button: postNowButton)
 
-        let actionInNotice: String
-
-        if action == "Schedule" {
-            actionInNotice = "scheduled"
-        } else if action == "Publish" {
-            actionInNotice = "published"
-        } else {
-            throw NSError(domain: "InvalidAction", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid action: \(action)"])
-        }
-
-        return try EditorNoticeComponent(withNotice: "Post \(actionInNotice)")
+        try confirmPost(button: postNowButton, action: action)
     }
 
     @discardableResult
@@ -392,23 +394,16 @@ public class BlockEditorScreen: ScreenObject {
             .selectMultipleImages(numberOfImages)
     }
 
-    private func chooseFromDevice() throws -> MediaPickerAlbumScreen {
+    private func chooseFromDevice() throws -> PHPickerScreen {
         chooseFromDeviceButton.tap()
 
-        // Allow access to device media
-        app.tap() // trigger the media permissions alert handler
-
-        return try MediaPickerAlbumListScreen()
-                    .selectAlbum(atIndex: 0)
+        return try PHPickerScreen()
     }
 
-    private func confirmPost(button: XCUIElement) throws {
-        if FancyAlertComponent.isLoaded() {
-            try FancyAlertComponent().acceptAlert()
-        } else {
-            button.tap()
-            dismissBloggingRemindersAlertIfNeeded()
-        }
+    private func confirmPost(button: XCUIElement, action: postAction) throws {
+        button.tap()
+        guard action == .publish else { return }
+        dismissBloggingRemindersAlertIfNeeded()
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {

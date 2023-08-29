@@ -13,6 +13,7 @@ final class SupportChatBotViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
         contentController.add(self, name: Constants.supportCallback)
+        contentController.add(self, name: Constants.errorCallback)
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -36,6 +37,8 @@ final class SupportChatBotViewController: UIViewController {
         title = Strings.title
         setupNavigationBar()
         loadChatBot()
+
+        viewModel.track(.supportChatbotStarted)
     }
 
     private func loadChatBot() {
@@ -49,6 +52,11 @@ final class SupportChatBotViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.track(.supportChatbotEnded)
+    }
+
     /// Creating DocsBotAI JavaScript code so we could tweak configuration from within Swift code
     /// https://docsbot.ai/docs/embeddable-chat-widget
     private func createDocsBotInitCode() -> String {
@@ -58,11 +66,14 @@ final class SupportChatBotViewController: UIViewController {
             window.prepareDocsBotForPresentation();
 
             DocsBotAI.init({
-                id: '\(viewModel.id)',
-                 supportCallback: function (event, history) {
+                id: '\(viewModel.docsBotId)',
+                identify: {
+                    chatId: '\(viewModel.chatId)',
+                },
+                supportCallback: function (event, history) {
                     event.preventDefault()
                     window.webkit.messageHandlers.supportCallback.postMessage(history)
-                  },
+                },
                 options: {
                     color: "#9dd977",
                     supportLink: "#",
@@ -143,6 +154,8 @@ extension SupportChatBotViewController: WKScriptMessageHandler {
         if message.name == Constants.supportCallback, let messageHistory = message.body as? [[String]] {
             let history = SupportChatHistory(messageHistory: messageHistory)
             createTicket(with: history)
+        } else if message.name == Constants.errorCallback, let payload = message.body as? [String: Any], let errorMessage = payload["message"] as? String {
+            viewModel.track(.supportChatbotWebViewError, errorMessage: errorMessage)
         }
     }
 }
@@ -191,6 +204,7 @@ extension SupportChatBotViewController {
 
     private enum Constants {
         static let supportCallback = "supportCallback"
+        static let errorCallback = "errorCallback"
     }
 }
 
@@ -200,14 +214,17 @@ extension SupportChatBotViewController {
     func createTicket(with history: SupportChatHistory) {
         SVProgressHUD.show(withStatus: Strings.ticketCreationLoadingMessage)
 
-        viewModel.contactSupport(including: history, in: self) { [weak self] success in
+        viewModel.contactSupport(including: history, in: self) { [weak self] result in
             SVProgressHUD.dismiss()
 
             guard let self else { return }
             DispatchQueue.main.async {
-                if success {
+                switch result {
+                case .success:
+                    self.viewModel.track(.supportChatbotTicketSuccess)
                     self.showTicketCreatedSuccessNotice()
-                } else {
+                case .failure(let failure):
+                    self.viewModel.track(.supportChatbotTicketFailure, errorMessage: failure.localizedDescription)
                     self.showTicketCreatedFailureNotice()
                 }
             }

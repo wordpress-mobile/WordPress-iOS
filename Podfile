@@ -42,7 +42,7 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.14'
+  pod 'WordPressUI', '~> 1.14.2-beta.1'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
@@ -115,14 +115,13 @@ abstract_target 'Apps' do
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'MRProgress', '0.8.3'
   pod 'Starscream', '3.0.6'
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
   pod 'AlamofireImage', '3.5.2'
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-  pod 'JTAppleCalendar', '~> 8.0.2'
+  pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
   pod 'SDWebImage', '~> 5.11.1'
 
@@ -428,16 +427,4 @@ post_install do |installer|
   yellow_marker = "\033[33m"
   reset_marker = "\033[0m"
   puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
-
-  # Fix a compiling issue in Xcode 15 beta.
-  # This line in particular https://github.com/mrackwitz/MRProgress/blob/0.8.3/src/Components/MRProgressOverlayView.m#L811
-  # The error message is "Multiple methods named 'setProgress:' found with mismatched result, parameter type or attributes"
-  # We are going to replace the `id` with `MRProgressView *` (or any other type that has a method `setProgress:` that takes a float argument).
-  mrprogress_filepath = "#{project_root}/Pods/MRProgress/src/Components/MRProgressOverlayView.m"
-  File.chmod(0o644, mrprogress_filepath)
-  lines = File.readlines(mrprogress_filepath)
-  if lines[810] == "        [((id)self.modeView) setProgress:self.progress];\n"
-    lines[810] = "        [((MRProgressView *)self.modeView) setProgress:self.progress];\n"
-    File.write(mrprogress_filepath, lines.join)
-  end
 end

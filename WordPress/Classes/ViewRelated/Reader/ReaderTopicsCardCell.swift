@@ -70,6 +70,7 @@ extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSo
                                                                  with: indexPath.row)
 
         cell.label.text = title
+        cell.label.accessibilityIdentifier = .topicsCardCellIdentifier
         cell.label.accessibilityTraits = .button
 
         // We need to use the calculated size for the height / corner radius because the cell size doesn't change until later
@@ -132,4 +133,9 @@ extension ReaderTopicsCardCell: UICollectionViewDelegateFlowLayout {
         static let marginX: CGFloat = 16
         static let marginY: CGFloat = 8
     }
+}
+
+private extension String {
+    // MARK: Accessibility Identifiers Constants
+    static let topicsCardCellIdentifier = "topics-card-cell-button"
 }
