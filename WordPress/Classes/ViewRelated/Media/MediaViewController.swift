@@ -44,7 +44,6 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         collectionView.pinSubviewToAllEdges(view)
 
         collectionView.dataSource = dataSource
-        (collectionView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize = CGSize(width: 140, height: 140)
 
         fetchController.delegate = self
         do {
@@ -55,6 +54,22 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let spacing: CGFloat = 2
+
+        let availableWidth = collectionView.bounds.width
+        let maxNumColumns = Int(availableWidth / Constants.minColumnWidth)
+        let cellWidth = ((availableWidth - spacing * CGFloat(maxNumColumns - 1)) / CGFloat(maxNumColumns)).rounded(.down)
+
+        let flowLayout = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout)
+        flowLayout.minimumInteritemSpacing = spacing
+        flowLayout.minimumLineSpacing = spacing
+        flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+        flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
+    }
+
     // MARK: - NSFetchedResultsControllerDelegate
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
@@ -63,6 +78,10 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         snapshot.appendItems(fetchController.fetchedObjects ?? [])
         dataSource.apply(snapshot, animatingDifferences: true)
     }
+}
+
+private enum Constants {
+    static let minColumnWidth: CGFloat = 96
 }
 
 final class MediaCellViewModel: Hashable {
