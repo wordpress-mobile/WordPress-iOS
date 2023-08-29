@@ -59,10 +59,11 @@ public class SupportScreen: ScreenObject {
     }
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
+        let emailExists = contactSupportPlaceholderEmailText.waitForExistence(timeout: 5)
         contactSupportButton.tap()
 
         // If email exists, skip this
-        if contactSupportPlaceholderEmailText.exists {
+        if emailExists {
             contactEmailTextField.tap()
             contactEmailTextField.typeText(userEmail)
             okButton.tap()
