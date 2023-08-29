@@ -170,6 +170,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
         startObservingQuickStart()
         startObservingOnboardingPrompt()
         subscribeToWillEnterForeground()
+
+        #warning("TEMP")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+            let vc = MediaViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            self.present(nav, animated: true)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
