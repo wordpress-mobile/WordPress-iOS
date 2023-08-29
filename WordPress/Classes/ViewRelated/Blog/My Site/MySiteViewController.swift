@@ -154,10 +154,11 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     ///
     private var noSitesScrollView: UIScrollView?
     private var noSitesRefreshControl: UIRefreshControl?
-    private let noSitesViewController: UIHostingController = {
-        let configuration = NoSitesViewConfiguration()
-        return UIHostingController(rootView: NoSitesView(configuration: configuration))
+    private lazy var noSitesViewController: UIHostingController = {
+        let viewModel = NoSitesViewModel(account: defaultAccount())
+        return UIHostingController(rootView: NoSitesView(viewModel: viewModel))
     }()
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -603,9 +604,9 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
             return
         }
 
-        makeNoResultsScrollView()
+        makeNoSitesScrollView()
         configureNoSitesView()
-        addNoResultsViewAndConfigureConstraints()
+        addNoSitesViewAndConfigureConstraints()
         createButtonCoordinator?.removeCreateButton()
     }
 
@@ -617,10 +618,10 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
         WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 
-    private func makeNoResultsScrollView() {
+    private func makeNoSitesScrollView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .basicBackground
+        scrollView.backgroundColor = .listBackground
 
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)
@@ -634,10 +635,10 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     }
 
     private func configureNoSitesView() {
-        noSitesViewController.rootView.configuration.delegate = self
+        noSitesViewController.rootView.delegate = self
     }
 
-    private func addNoResultsViewAndConfigureConstraints() {
+    private func addNoSitesViewAndConfigureConstraints() {
         guard let scrollView = noSitesScrollView else {
             return
         }
@@ -690,6 +691,11 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
 
     func didTapAddNewSiteButton() {
         presentInterfaceForAddingNewSite()
+    }
+
+    func didTapAccountAndSettingsButton() {
+        let meViewController = MeViewController()
+        showDetailViewController(meViewController, sender: self)
     }
 
     @objc
