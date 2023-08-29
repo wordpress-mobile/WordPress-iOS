@@ -33,3 +33,7 @@ a.floating-button {
 .docsbot-chat-bot-message-meta {
     margin-top: 16px;
 }
+
+.docsbot-chat-suggested-questions-container button {
+    height: 48px;
+}
