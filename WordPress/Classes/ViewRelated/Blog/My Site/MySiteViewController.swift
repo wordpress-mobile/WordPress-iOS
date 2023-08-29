@@ -398,17 +398,10 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     }
 
     private func setupNavBarAppearance() {
-        let scrollEdgeAppearance = navigationController?.navigationBar.scrollEdgeAppearance
-        let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
-        scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
-        scrollEdgeAppearance?.configureWithTransparentBackground()
-
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     private func resetNavBarAppearance() {
-        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBar.appearance().scrollEdgeAppearance
-
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
