@@ -1,7 +1,7 @@
 import UIKit
 import PhotosUI
 
-final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate {
+final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSourcePrefetching {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
     private lazy var dataSource = makeDataSource()
@@ -44,6 +44,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         collectionView.pinSubviewToAllEdges(view)
 
         collectionView.dataSource = dataSource
+        collectionView.prefetchDataSource = self
 
         fetchController.delegate = self
         do {
@@ -77,6 +78,16 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         snapshot.appendSections([0])
         snapshot.appendItems(fetchController.fetchedObjects ?? [])
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+
+    // MARK: - UICollectionViewDataSourcePrefetching
+
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print("start prefetch: \(indexPaths)")
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        print("cancel prefetch: \(indexPaths)")
     }
 }
 
