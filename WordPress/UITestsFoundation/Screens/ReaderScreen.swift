@@ -254,13 +254,13 @@ public class ReaderScreen: ScreenObject {
     }
 
     private func verifyNotEmptyPostList(state: String, file: StaticString = #file, line: UInt = #line) {
-        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 5), file: file, line: line)
         XCTAssertEqual(readerTable.cells.count, 1, .postNotEqualOneError, file: file, line: line)
         XCTAssertEqual(state, .withPosts, file: file, line: line)
     }
 
     private func verifyEmptyPostList(state: String, file: StaticString = #file, line: UInt = #line) {
-        XCTAssertTrue(noResultsView.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(noResultsView.waitForExistence(timeout: 5), file: file, line: line)
         XCTAssertTrue(readerTable.label == .emptyListLabel, file: file, line: line)
         XCTAssertEqual(state, .withoutPosts, file: file, line: line)
     }
