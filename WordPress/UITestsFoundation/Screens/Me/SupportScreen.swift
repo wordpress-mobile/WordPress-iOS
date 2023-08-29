@@ -33,10 +33,15 @@ public class SupportScreen: ScreenObject {
         $0.cells["activity-logs-button"]
     }
 
+    private let contactSupportPlaceholderEmailTextGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["set-contact-email-button"].staticTexts["Not Set"]
+    }
+
     var activityLogsButton: XCUIElement { activityLogsButtonGetter(app) }
     var closeButton: XCUIElement { closeButtonGetter(app) }
-    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
     var contactEmailTextField: XCUIElement { contactEmailTextFieldGetter(app) }
+    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
+    var contactSupportPlaceholderEmailText: XCUIElement { contactSupportPlaceholderEmailTextGetter(app) }
     var okButton: XCUIElement { okButtonGetter(app) }
     var visitForumsButton: XCUIElement { visitForumsButtonGetter(app) }
     var visitWordPressForumsPrompt: XCUIElement { visitWordPressForumsPromptGetter(app) }
@@ -55,9 +60,13 @@ public class SupportScreen: ScreenObject {
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
         contactSupportButton.tap()
-        contactEmailTextField.tap()
-        contactEmailTextField.typeText(userEmail)
-        okButton.tap()
+
+        // If email exists, skip this
+        if contactSupportPlaceholderEmailText.exists {
+            contactEmailTextField.tap()
+            contactEmailTextField.typeText(userEmail)
+            okButton.tap()
+        }
 
         return try ContactUsScreen()
     }
