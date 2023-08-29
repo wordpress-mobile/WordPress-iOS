@@ -6,6 +6,7 @@ public class PostsScreen: ScreenObject {
     public enum PostStatus {
         case published
         case drafts
+        case scheduled
     }
 
     private var currentlyFilteredPostStatus: PostStatus = .published
@@ -56,6 +57,8 @@ public class PostsScreen: ScreenObject {
             publishedButton.tap()
         case .drafts:
             draftsButton.tap()
+        case .scheduled:
+            scheduledButton.tap()
         }
 
         currentlyFilteredPostStatus = status
@@ -88,6 +91,12 @@ public class PostsScreen: ScreenObject {
         if autosaveAlert.exists {
             autosaveAlert.buttons.firstMatch.tap()
         }
+    }
+
+    public func verifyPostExists(withTitle title: String) {
+        let expectedPost = app.cells.containing(.staticText, identifier: title).element
+
+        XCTAssertTrue(expectedPost.exists)
     }
 }
 
