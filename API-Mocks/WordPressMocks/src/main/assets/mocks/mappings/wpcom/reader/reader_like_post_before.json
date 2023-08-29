@@ -1,4 +1,7 @@
 {
+  "scenarioName": "reader_like_post_flow",
+  "requiredScenarioState": "initial_list",
+  "newScenarioState": "post_liked",
   "request": {
     "method": "POST",
     "urlPath": "/rest/v1.1/sites/70135762/posts/125073/likes/new",
