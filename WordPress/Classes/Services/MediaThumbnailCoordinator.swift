@@ -38,8 +38,10 @@ class MediaThumbnailCoordinator: NSObject {
                 return
             }
             let image = UIImage(contentsOfFile: imageURL.path)
+            // Decompression is expensive and has to happen in the background
+            let decompressedImage = image?.preparingForDisplay() ?? image
             DispatchQueue.main.async {
-                onCompletion(image, nil)
+                onCompletion(decompressedImage, nil)
             }
         }
         let failure: (Error?) -> Void = { (error) in
