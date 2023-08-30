@@ -29,7 +29,9 @@ private func makeCookieNonceAuthenticator(blog: Blog) -> Authenticator? {
 }
 
 private func apiBase(blog: Blog) -> URL? {
-    precondition(blog.account == nil, ".com support has not been implemented yet")
+    guard blog.account == nil else {
+        return nil
+    }
     return try? blog.url(withPath: "wp-json/")?.asURL()
 }
 
