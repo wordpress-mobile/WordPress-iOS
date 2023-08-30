@@ -1,20 +1,26 @@
 import UIKit
 
+@MainActor
 final class MediaCollectionCellViewModel {
     var onLoadingFinished: ((UIImage?) -> Void)?
     let mediaID: TaggedManagedObjectID<Media>
 
     private let media: Media
-    private let coordinator: MediaThumbnailCoordinator
+    private let service: MediaThumbnailService
     private let cache: MemoryCache
     private var requestCount = 0
+    private var imageTask: Task<Void, Never>?
+
+    deinit {
+        imageTask?.cancel()
+    }
 
     init(media: Media,
-         coordinator: MediaThumbnailCoordinator = .shared,
+         service: MediaThumbnailService = .shared,
          cache: MemoryCache = .shared) {
         self.mediaID = TaggedManagedObjectID(saved: media)
         self.media = media
-        self.coordinator = coordinator
+        self.service = service
         self.cache = cache
     }
 
@@ -33,10 +39,15 @@ final class MediaCollectionCellViewModel {
         guard requestCount == 1 else {
             return // Already loading
         }
-        // TODO: fix how we manage completion callbacks
-        coordinator.thumbnail(for: media, with: targetSize) { [weak self] in
-            self?.didFinishLoading(with: $0, error: $1)
+        let task = Task { [service, media, weak self] in
+            do {
+                let image = try await service.image(for: media, preferredSize: targetSize)
+                self?.didFinishLoading(with: image, error: nil)
+            } catch {
+                self?.didFinishLoading(with: nil, error: error)
+            }
         }
+        imageTask = task
     }
 
     private func didFinishLoading(with image: UIImage?, error: Error?) {
@@ -51,7 +62,7 @@ final class MediaCollectionCellViewModel {
         guard requestCount > 0 else { return }
         requestCount -= 1
         if requestCount == 0 {
-            // TODO: actually cancel
+            imageTask?.cancel()
         }
     }
 

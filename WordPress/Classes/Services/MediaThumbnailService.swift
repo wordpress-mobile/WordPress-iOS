@@ -3,9 +3,11 @@ import Foundation
 /// A service for handling the process of retrieving and generating thumbnail images
 /// for existing Media objects, whether remote or locally available.
 final class MediaThumbnailService: NSObject {
+    static let shared = MediaThumbnailService()
+
     private let coreDataStack: CoreDataStackSwift
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
     }
 
