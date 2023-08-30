@@ -1,12 +1,12 @@
 import UIKit
 import PhotosUI
 
-final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSourcePrefetching {
+final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
-    private lazy var dataSource = makeDataSource()
     private lazy var fetchController = makeFetchController()
 
+    private var pendingChanges: [(UICollectionView) -> Void] = []
     private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
 
     override func viewDidLoad() {
@@ -20,7 +20,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.pinSubviewToAllEdges(view)
 
-        collectionView.dataSource = dataSource
+        collectionView.dataSource = self
         collectionView.prefetchDataSource = self
 
         fetchController.delegate = self
@@ -70,23 +70,48 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     // MARK: - NSFetchedResultsControllerDelegate
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, Media>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(fetchController.fetchedObjects ?? [])
-        dataSource.apply(snapshot, animatingDifferences: true)
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        pendingChanges = []
     }
 
-    // MARK: - UICollectionViewDiffableDataSource
-
-    private func makeDataSource() -> UICollectionViewDiffableDataSource<Int, Media> {
-        UICollectionViewDiffableDataSource(collectionView: collectionView) { [weak self] in
-            self?.makeCell(for: $0, indexPath: $1, media: $2)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath else { return }
+            pendingChanges.append({ $0.insertItems(at: [newIndexPath]) })
+        case .delete:
+            guard let indexPath else { return }
+            pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
+        case .update:
+            guard let indexPath else { return }
+            pendingChanges.append({ $0.reloadItems(at: [indexPath]) })
+        case .move:
+            guard let indexPath, let newIndexPath else { return }
+            pendingChanges.append({ $0.moveItem(at: indexPath, to: newIndexPath) })
+        @unknown default:
+            break
         }
     }
 
-    private func makeCell(for collectionView: UICollectionView, indexPath: IndexPath, media: Media) -> UICollectionViewCell {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        let updates = pendingChanges
+        collectionView.performBatchUpdates {
+            for update in updates {
+                update(collectionView)
+            }
+        }
+        pendingChanges = []
+    }
+
+    // MARK: - UICollectionViewDataSource
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        fetchController.fetchedObjects?.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
+        let media = fetchController.object(at: indexPath)
         cell.configure(media: media, viewModel: makeViewModel(for: media), targetSize: getImageTargetSize())
         return cell
     }
