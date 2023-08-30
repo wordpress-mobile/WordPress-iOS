@@ -317,7 +317,7 @@ class MediaImportService: NSObject {
     ///       via the new thumbnail service methods is much preferred, but would indeed take a good bit of refactoring away from
     ///       using `absoluteThumbnailLocalURL`.
     func exportPlaceholderThumbnail(for media: Media, completion: ((URL?) -> Void)?) {
-        let thumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
+        let thumbnailService = LegacyMediaThumbnailService(coreDataStack: coreDataStack)
         thumbnailService.thumbnailURL(forMedia: media, preferredSize: .zero) { url in
             self.coreDataStack.performAndSave({ context in
                 let mediaInContext = try context.existingObject(with: media.objectID) as! Media

@@ -50,7 +50,7 @@ class MediaThumbnailCoordinator: NSObject {
             }
         }
 
-        let mediaThumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
+        let mediaThumbnailService = LegacyMediaThumbnailService(coreDataStack: coreDataStack)
         mediaThumbnailService.exportQueue = self.queue
         mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
     }
