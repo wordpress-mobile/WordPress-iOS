@@ -281,6 +281,18 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
         logString(string: "logEditorGIFChange trimStart: \(trimStart) end: \(trimEnd)")
     }
 
+    public func logEditorCropRotateOpen() {
+        logString(string: "logEditorCropRotateOpen")
+    }
+
+    public func logScreenView(_ screen: Kanvas.KanvasScreen) {
+        logString(string: "logScreenView screen:\(screen)")
+    }
+
+    public func logScreenLeave(_ screen: Kanvas.KanvasScreen) {
+        logString(string: "logScreenLeave screen:\(screen)")
+    }
+
     func logString(string: String) {
         NSLog("\(self): \(string)")
     }
@@ -316,5 +328,15 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
             return "unspecified"
         }
     }
+}
 
+extension Kanvas.KanvasScreen: CustomStringConvertible {
+
+    public var description: String {
+        switch self {
+        case .camera: return "camera"
+        case .editor: return "editor"
+        case .preview: return "preview"
+        }
+    }
 }

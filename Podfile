@@ -90,7 +90,7 @@ def shared_with_extension_pods
 end
 
 def shared_style_pods
-  pod 'Gridicons', '~> 1.1.0'
+  pod 'Gridicons', '~> 1.2'
 end
 
 abstract_target 'Apps' do
@@ -110,7 +110,7 @@ abstract_target 'Apps' do
   ##
   pod 'Gifu', '3.3.1'
 
-  app_center_version = '~> 4.1'
+  app_center_version = '~> 5.0'
   app_center_configurations = %w[Release-Internal Release-Alpha]
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
@@ -147,8 +147,6 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-  pod 'Gridicons', '~> 1.1.0'
-
   pod 'WordPressAuthenticator', '~> 6.3'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
@@ -160,6 +158,7 @@ abstract_target 'Apps' do
 
   aztec
   wordpress_ui
+  shared_style_pods
 
   ## WordPress App iOS
   ## =================
