@@ -83,8 +83,9 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             guard let indexPath else { return }
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
         case .update:
-            guard let indexPath else { return }
-            pendingChanges.append({ $0.reloadItems(at: [indexPath]) })
+            // No interested in these. The screen observe these changes separately
+            // to minimize the number of reloads: `.update` is emitted too often.
+            break
         case .move:
             guard let indexPath, let newIndexPath else { return }
             pendingChanges.append({ $0.moveItem(at: indexPath, to: newIndexPath) })

@@ -34,7 +34,11 @@ final class MediaCollectionCell: UICollectionViewCell {
     func configure(viewModel: MediaCollectionCellViewModel, targetSize: CGSize) {
         self.viewModel = viewModel
 
-        // TODO: Add support for other asset types
+        guard viewModel.mediaType == .image || viewModel.mediaType == .video else {
+            // TODO: Add support for other asset types
+            return
+        }
+
         if let image = viewModel.getCachedImage() {
             // Display with no animations. It should happen often thanks to prefetchig
             imageView.image = image

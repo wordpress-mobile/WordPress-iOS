@@ -4,6 +4,7 @@ import UIKit
 final class MediaCollectionCellViewModel {
     var onLoadingFinished: ((UIImage?) -> Void)?
     let mediaID: TaggedManagedObjectID<Media>
+    var mediaType: MediaType
 
     private let media: Media
     private let service: MediaThumbnailService
@@ -20,6 +21,7 @@ final class MediaCollectionCellViewModel {
          cache: MemoryCache = .shared) {
         self.mediaID = TaggedManagedObjectID(saved: media)
         self.media = media
+        self.mediaType = media.mediaType
         self.service = service
         self.cache = cache
     }
