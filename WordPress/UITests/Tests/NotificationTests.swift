@@ -50,7 +50,7 @@ class NotificationTests: XCTestCase {
         let (updatedNotificationsScreen, initialLikes) = try TabNavComponent()
             .goToNotificationsScreen()
             .openNotification(withSubstring: .commentNotificationString)
-            .getNumberOfLikesForNotification()!
+            .getNumberOfLikesForNotification()
 
         // Tapping like and verify that like count increased
         updatedNotificationsScreen
