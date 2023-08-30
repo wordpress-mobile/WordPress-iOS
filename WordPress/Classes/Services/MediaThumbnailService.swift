@@ -36,22 +36,22 @@ final class MediaThumbnailService: NSObject {
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
     @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping (URL?) -> Void, onError: ((Error) -> Void)?) {
+        let mediaID = TaggedManagedObjectID(saved: media)
+
         // We can use the main context here because we only read the `Media` instance, without changing it, and all
         // the time consuming work is done in background queues.
         let context = coreDataStack.mainContext
         context.perform {
-            var objectInContext: NSManagedObject?
+            let mediaInContext: Media
             do {
-                objectInContext = try context.existingObject(with: media.objectID)
+                mediaInContext = try context.existingObject(with: mediaID)
             } catch {
                 self.exportQueue.async {
                     onError?(error)
                 }
                 return
             }
-            guard let mediaInContext = objectInContext as? Media else {
-                return
-            }
+
             // Configure a thumbnail exporter.
             let exporter = MediaThumbnailExporter()
             exporter.mediaDirectoryType = .cache
@@ -81,7 +81,7 @@ final class MediaThumbnailService: NSObject {
 
             // Configure a handler for any thumbnail exports
             let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
-                self.handleThumbnailExport(media: mediaInContext,
+                self.handleThumbnailExport(mediaID: mediaID,
                                            identifier: identifier,
                                            export: export,
                                            onCompletion: onCompletion)
@@ -189,12 +189,12 @@ final class MediaThumbnailService: NSObject {
 
     // MARK: - Helpers
 
-    private func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping (URL?) -> Void) {
+    private func handleThumbnailExport(mediaID: TaggedManagedObjectID<Media>, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping (URL?) -> Void) {
         coreDataStack.performAndSave({ context in
-            let object = try context.existingObject(with: media.objectID)
-            // It's safe to force-unwrap here, since the `object`, if exists, must be a `Media` type.
-            let mediaInContext = object as! Media
-            mediaInContext.localThumbnailIdentifier = identifier
+            let media = try context.existingObject(with: mediaID)
+            if media.localThumbnailIdentifier != identifier {
+                media.localThumbnailIdentifier = identifier
+            }
         }, completion: { (result: Result<Void, Error>) in
             switch result {
             case .success:
