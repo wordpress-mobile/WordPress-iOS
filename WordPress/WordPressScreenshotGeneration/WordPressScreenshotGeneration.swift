@@ -97,7 +97,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Currently, the view includes the "You Might Like" section
         try TabNavComponent()
             .goToReaderScreen()
-            .openDiscover()
+            .openDiscoverTab()
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
