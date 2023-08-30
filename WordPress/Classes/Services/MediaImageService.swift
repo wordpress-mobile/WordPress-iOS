@@ -184,13 +184,8 @@ final class MediaImageService: NSObject {
         guard let mediaID = media.mediaID else {
             throw MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL
         }
-        return try await withUnsafeThrowingContinuation { continuation in
-            let mediaService = MediaService(managedObjectContext: coreDataStack.mainContext)
-            mediaService.getMediaWithID(mediaID, in: media.blog, success: {
-                continuation.resume(returning: $0)
-            }, failure: {
-                continuation.resume(throwing: $0)
-            })
-        }
+        let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
+        let objectID = try await mediaRepository.getMedia(withID: mediaID, in: .init(media.blog))
+        return try coreDataStack.mainContext.existingObject(with: objectID)
     }
 }

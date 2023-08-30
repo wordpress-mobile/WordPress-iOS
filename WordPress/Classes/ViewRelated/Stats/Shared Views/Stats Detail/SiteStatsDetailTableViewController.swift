@@ -43,10 +43,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         return ContextManager.sharedInstance().mainContext
     }()
 
-    private lazy var mediaService: MediaService = {
-        return MediaService(managedObjectContext: mainContext)
-    }()
-
     // MARK: - View
 
     override func viewDidLoad() {
@@ -300,12 +296,22 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
                 return
         }
 
-        mediaService.getMediaWithID(mediaID, in: blog, success: { (media) in
+        let coreDataStack = ContextManager.shared
+        let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
+        let blogID = TaggedManagedObjectID(saved: blog)
+        Task { @MainActor in
+            let media: Media
+            do {
+                let mediaID = try await mediaRepository.getMedia(withID: mediaID, in: blogID)
+                media = try mainContext.existingObject(with: mediaID)
+            } catch {
+                DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
+                return
+            }
+
             let viewController = MediaItemViewController(media: media)
             self.navigationController?.pushViewController(viewController, animated: true)
-        }, failure: { (error) in
-            DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
-        })
+        }
     }
 }
 
