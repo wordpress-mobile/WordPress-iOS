@@ -316,6 +316,9 @@
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Rejtett";
 
+/* No comment provided by engineer. */
+"Hide keyboard" = "Billentyűzet elrejtése";
+
 /* Undated post time label */
 "Immediately" = "Azonnal";
 
@@ -597,6 +600,9 @@
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Előnézet";
+
+/* No comment provided by engineer. */
+"Preview post" = "Bejegyzés előnézet";
 
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Adatvédelmi irányelvek";

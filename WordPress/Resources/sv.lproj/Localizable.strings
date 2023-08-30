@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-07 18:54:30+0000 */
+/* Translation-Revision-Date: 2023-08-23 05:45:39+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: sv_SE */
@@ -71,6 +71,15 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d ej visade inlägg";
+
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "%1$s omvandat till %2$s";
+
+/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s är %3$s %4$s.";
+
+/* translators:  %1$s: Select control button label e.g. \"Button width\". %2$s: Select control option value e.g: \"Auto, 25%\". */
+"%1$s. Currently selected: %2$s" = "%1$s. Aktuell markering: %2$s";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ – %2$@, %3$@";
@@ -225,6 +234,46 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li ord, %2$li tecken";
 
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
+"%s block" = "Block av typen %s";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s block options" = "Inställningar för blocket %s";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "Blocket %s, ett nytt tillskott";
+
+/* translators: accessibility text for the media block empty state. %s: media type */
+"%s block. Empty" = "Block av typen %s. Tomt";
+
+/* translators: accessibility text for blocks with invalid content. %d: localized block title */
+"%s block. This block has invalid content" = "Block av typen %s. Detta block har ogiltigt innehåll";
+
+/* translators: %s: name of the synced block */
+"%s detached" = "%s frikopplad";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "Snart kommer förhandsgranskningar av inbäddade block för %s";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has URL set" = "URL angiven för %s";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has no URL set" = "Ingen URL angiven för %s";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "Länk för %s";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "Förhandsgranskning av %s är inte tillgängligt ännu";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s social icon" = "Social ikon för %s";
+
+/* translators: Missing block alert title. %s: The localized block name */
+"'%s' is not fully-supported" = "”%s” stöds inte fullt ut";
+
 /* Empty Post Title */
 "(No Title)" = "(ingen rubrik)";
 
@@ -354,6 +403,24 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTIV";
 
+/* No comment provided by engineer. */
+"ADD AUDIO" = "LÄGG TILL LJUD";
+
+/* No comment provided by engineer. */
+"ADD BLOCK HERE" = "LÄGG TILL BLOCK HÄR";
+
+/* No comment provided by engineer. */
+"ADD IMAGE" = "LÄGG TILL BILD";
+
+/* No comment provided by engineer. */
+"ADD IMAGE OR VIDEO" = "LÄGG TILL BILD ELLER VIDEO";
+
+/* No comment provided by engineer. */
+"ADD MEDIA" = "LÄGG TILL MEDIA";
+
+/* No comment provided by engineer. */
+"ADD VIDEO" = "LÄGG TILL VIDEO";
+
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESS";
 
@@ -430,11 +497,26 @@
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Lägg till %@";
 
+/* No comment provided by engineer. */
+"Add Block After" = "Lägg till block efter";
+
+/* No comment provided by engineer. */
+"Add Block Before" = "Lägg till block före";
+
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Lägg till innehållet i inlägget";
 
+/* No comment provided by engineer. */
+"Add To Beginning" = "Lägg till först";
+
+/* No comment provided by engineer. */
+"Add To End" = "Lägg till sist";
+
 /* Button Title. Tapping subscribes the user to a new topic. */
 "Add Topic" = "Lägg till ämne";
+
+/* No comment provided by engineer. */
+"Add URL" = "Lägg till URL";
 
 /* The title on the add category screen */
 "Add a Category" = "Lägg till en kategori";
@@ -451,8 +533,14 @@
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Lägg till en domän";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Lägg till ett nytt block när som helst genom att trycka på ikonen + i verktygsfältet nere till vänster.";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Lägg till en webbplats på webbhotell\/egen server";
+
+/* No comment provided by engineer. */
+"Add a shortcode…" = "Lägg till en kortkod …";
 
 /* No Tags View Button Label */
 "Add a site" = "Lägg till en webbplats";
@@ -463,11 +551,32 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Lägg till bild för kontot.";
 
+/* No comment provided by engineer. */
+"Add alt text" = "Lägg till alt-text";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Lägg till något ämne";
 
+/* No comment provided by engineer. */
+"Add blocks" = "Lägg till block";
+
+/* No comment provided by engineer. */
+"Add button text" = "Lägg till knapptext";
+
+/* No comment provided by engineer. */
+"Add description" = "Lägg till beskrivning";
+
+/* No comment provided by engineer. */
+"Add image or video" = "Lägg till bild eller video";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Lägg till en bild eller profilbild för att representera detta nya konto.";
+
+/* No comment provided by engineer. */
+"Add link text" = "Lägg till länktext";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"Add link to %s" = "Lägg till länk till %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Lägg till menypost ovanför";
@@ -493,6 +602,9 @@
 /* Voiceover accessibility label for the tags field in blog post settings. */
 "Add new tags, separated by commas." = "Lägg till nya etiketter, separerade med kommatecken.";
 
+/* No comment provided by engineer. */
+"Add paragraph block" = "Lägg till ett block med ett textstycke";
+
 /* Add self-hosted site button */
 "Add self-hosted site" = "Lägg till webbplats på egen server";
 
@@ -503,12 +615,27 @@
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Lägg till etiketter";
 
+/* No comment provided by engineer. */
+"Add this email link" = "Länka till denna e-postadress";
+
+/* No comment provided by engineer. */
+"Add this link" = "Lägg till denna länk";
+
+/* No comment provided by engineer. */
+"Add this telephone link" = "Länka till detta telefonnummer";
+
+/* No comment provided by engineer. */
+"Add title" = "Lägg till rubrik";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Lägger till olika webbplatsfunktioner";
 
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adress";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Adressinställningar";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Adressrad %@";
@@ -604,6 +731,12 @@
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Du kan även frikoppla och redigera dessa block separat genom att trycka på Frikoppla mönster.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Du kan även frikoppla och redigera det här blocket separat genom att trycka på Frikoppla mönster.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternativt kan du ange lösenordet för detta konto.";
@@ -712,6 +845,9 @@
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentisering via Apple-ID misslyckades.\nSe till att du är inloggad till iCloud med ett Apple-ID som använder tvåfaktorsautentisering.";
 
+/* No comment provided by engineer. */
+"Applies the setting" = "Tillämpar inställningen";
+
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Tillämpa";
 
@@ -807,6 +943,12 @@
 /* Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location */
 "Are you trying to log in to your web browser near %1$@?" = "Försöker du logga in i din webbläsare i närheten av %1$@?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Ordna ditt innehåll i kolumner, lägg till knappar för uppmaningar, och överläggstexter på bilder.";
+
+/* No comment provided by engineer. */
+"Arrow buttons" = "Piltangenter";
+
 /* An example tag used in the login prologue screens.
    Art site intent topic */
 "Art" = "Konst";
@@ -816,6 +958,15 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Bifoga filen som en länk";
+
+/* No comment provided by engineer. */
+"Audio Player" = "Ljudspelare";
+
+/* translators: accessibility text. %s: Audio caption. */
+"Audio caption. %s" = "Beskrivning för ljudfil. %s";
+
+/* translators: accessibility text. Empty Audio caption. */
+"Audio caption. Empty" = "Beskrivning för ljudfil. Tom";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Ljudfil, %@";
@@ -974,14 +1125,38 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citatblock";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Blocket kopierat";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Blocket har klippts ut";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Blocket har duplicerats";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blockredigeraren är aktiverad";
+
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Block grupperat";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blockera obehöriga inloggningsförsök";
 
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Blocket har klistrats in";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Blocket har tagits bort";
+
+/* No comment provided by engineer. */
+"Block settings" = "Blockinställningar";
+
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blockera denna webbplats";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Block avgrupperat";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
@@ -992,6 +1167,15 @@
 /* Blocklist Title
    Settings: Comments Blocklist */
 "Blocklist" = "Blockeringslista";
+
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Block låter dig fokusera på innehållet med den trygga vetskapen att alla formateringsverktyg du behöver för att få fram ditt budskap finns tillgängliga.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Block är innehållsbitar som du kan lägga in, sortera om och stilsätta utan att du behöver kunna programmera eller koda. Block är ett enkelt och modernt sätt för dig att skapa vackra layouter.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Block-meny";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
@@ -1024,8 +1208,17 @@
 /* Books site intent topic */
 "Books" = "Böcker";
 
+/* No comment provided by engineer. */
+"Border Radius" = "Kantradie";
+
+/* No comment provided by engineer. */
+"Border Settings" = "Raminställningar";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Dela upp kommentarstrådar i flera sidor.";
+
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader user" = "Beskriv kortfattat länken för den som använder skärmläsare.";
 
 /* Description of a Quick Start Tour */
 "Bring media straight from your device or camera to your site." = "Överför media till din webbplats direkt från din enhet eller kamera.";
@@ -1036,6 +1229,9 @@
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Skydd mot brute force-attacker";
 
+/* No comment provided by engineer. */
+"Build layouts" = "Bygg layouter";
+
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Punktlista";
 
@@ -1045,8 +1241,14 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Upptagen";
 
+/* No comment provided by engineer. */
+"Button Link URL" = "URL för knapp-länk";
+
 /* Title for a list of different button styles. */
 "Button Style" = "Knappstil";
+
+/* No comment provided by engineer. */
+"Button position" = "Knapposition";
 
 /* Label for the post author in the post detail. */
 "By " = "av";
@@ -1066,6 +1268,12 @@
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Genom att registrera dig godkänner du våra _användarvillkor_.";
+
+/* No comment provided by engineer. */
+"CHOOSE A FILE" = "VÄLJ EN FIL";
+
+/* No comment provided by engineer. */
+"CUSTOMIZE" = "ANPASSA";
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Beräknar...";
@@ -1154,6 +1362,9 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "Avbryt uppladdning av mediefiler";
 
+/* No comment provided by engineer. */
+"Cancel search" = "Avbryt sök";
+
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Avbryt delning";
 
@@ -1213,6 +1424,9 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Ändra synlighet";
 
+/* No comment provided by engineer. */
+"Change block position" = "Ändra blockets position";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Förändringen misslyckades";
 
@@ -1227,6 +1441,9 @@
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Ändra, lägg till eller ta bort sidor på din webbplats.";
+
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Ändringar som gäller den utvalda bilden påverkas inte av knapparna ångra\/gör om.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Ändrar visningsnamn";
@@ -1331,14 +1548,32 @@
 /* Title of a Quick Start Tour */
 "Choose a unique site icon" = "Välj en unik webbplats-ikon";
 
+/* No comment provided by engineer. */
+"Choose audio" = "Välj ljud";
+
 /* Title to choose date range in a calendar */
 "Choose date range" = "Välj datumintervall";
+
+/* No comment provided by engineer. */
+"Choose file" = "Välj fil";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Välj från min enhet";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Välj mellan en startsida som visar dina senaste inlägg (klassisk blogg) och en fast\/statisk sida.";
+
+/* No comment provided by engineer. */
+"Choose from device" = "Välj från enheten";
+
+/* No comment provided by engineer. */
+"Choose image" = "Välj bild";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "Välj bild eller video";
+
+/* No comment provided by engineer. */
+"Choose images" = "Välj bilder";
 
 /* Shortened version of the main title to be used in back navigation */
 "Choose layout" = "Välj layout";
@@ -1348,6 +1583,9 @@
 
 /* Restorable items: general section title */
 "Choose the items to restore" = "Välj vilka objekt du vill återställa";
+
+/* No comment provided by engineer. */
+"Choose video" = "Välj video";
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Välj dina ämnen";
@@ -1375,6 +1613,9 @@
 
 /* Message of the trash confirmation alert. */
 "Clear all old activity logs?" = "Rensa alla gamla aktivitetsloggar?";
+
+/* No comment provided by engineer. */
+"Clear search" = "Rensa sökning";
 
 /* Title of a button. */
 "Clear search history" = "Rensa sökhistorik";
@@ -1427,6 +1668,15 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Färgrika bakgrunder";
+
+/* translators: %d: column index. */
+"Column %d" = "Kolumn %d";
+
+/* No comment provided by engineer. */
+"Column Settings" = "Kolumninställningar";
+
+/* No comment provided by engineer. */
+"Columns Settings" = "Kolumninställningar";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Kombinera foton, videoklipp och text för att skapa engagerande och smidiga berättelseinlägg som dina besökare kommer att älska.";
@@ -1690,8 +1940,14 @@
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Bidra";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Konvertera till länk";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Matlagning";
+
+/* No comment provided by engineer. */
+"Copied block" = "Blocket kopierat";
 
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
@@ -1699,6 +1955,12 @@
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopiera länk till kommentaren";
+
+/* translators: Copy URL from the clipboard, https://sample.url */
+"Copy URL from the clipboard, %s" = "Kopiera URL från urklipp, %s";
+
+/* No comment provided by engineer. */
+"Copy file URL" = "Kopiera filens URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Kopiera versionen från denna app";
@@ -1887,6 +2149,12 @@
 /* Button title for download backup action */
 "Create downloadable file" = "Skapa nedladdningsbar fil";
 
+/* No comment provided by engineer. */
+"Create embed" = "Skapa inbäddning";
+
+/* No comment provided by engineer. */
+"Create link" = "Skapa länk";
+
 /* Title of a Quick Start Tour */
 "Create your site" = "Skapa din webbplats";
 
@@ -1906,6 +2174,9 @@
 "Creating downloadable backup" = "Skapar nedladdningsbar säkerhetskopia";
 
 /* No comment provided by engineer. */
+"Crosspost" = "Korspublicera";
+
+/* No comment provided by engineer. */
 "Current" = "Nuvarande";
 
 /* Label title. Refers to the current WordPress.com plan for a user's site. */
@@ -1920,6 +2191,15 @@
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "Aktuell period: från %1$@ till %2$@";
 
+/* No comment provided by engineer. */
+"Current placeholder text is" = "Den nuvarande platshållartexten är";
+
+/* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
+"Current unit is %s" = "Aktuell enhet är %s";
+
+/* translators: %s: current cell value. */
+"Current value is %s" = "Nuvarande värde är %s";
+
 /* Title for the Jetpack Backup Status message. */
 "Currently creating a downloadable backup of your site" = "Vi skapar en nedladdningsbar säkerhetskopia av din webbplats";
 
@@ -1932,6 +2212,9 @@
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Återställer för närvarande: %1$@";
 
+/* No comment provided by engineer. */
+"Custom URL" = "Anpassad URL";
+
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Anpassat meddelande …";
 
@@ -1939,8 +2222,14 @@
    Theme Customize action title */
 "Customize" = "Anpassa";
 
+/* No comment provided by engineer. */
+"Customize Gradient" = "Anpassa gradient";
+
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Anpassa din webbplats";
+
+/* No comment provided by engineer. */
+"Customize blocks" = "Anpassa block";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "Anpassa meddelandet";
@@ -1953,6 +2242,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Anpassa din webbplats inställningar för Gillar, Kommentarer, Följare och mer";
+
+/* No comment provided by engineer. */
+"Cut block" = "Klipp ut blocket";
 
 /* DIY site intent topic */
 "DIY" = "Gör det själv";
@@ -2064,6 +2356,9 @@
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Neka";
+
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if decorative." = "Beskriv syftet med bilden. Lämna tomt om det är dekorativt.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2218,11 +2513,101 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Du behöver inte oroa dig inte för någonting";
 
+/* No comment provided by engineer. */
+"Double tap and hold to edit" = "Dubbeltryck och håll ned för att redigera";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy." = "Dubbeltryck och håll ned för att flytta detta menyval upp eller ner. Flytta horisontellt för att ändra hierarki.";
 
+/* No comment provided by engineer. */
+"Double tap to add a block" = "Dubbeltryck för att lägga till ett block";
+
+/* No comment provided by engineer. */
+"Double tap to add a link." = "Dubbeltryck för att lägga till en länk.";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Dubbelknacka för att stänga";
+
+/* No comment provided by engineer. */
+"Double tap to edit button text" = "Dubbeltryck för att redigera knapptexten";
+
+/* No comment provided by engineer. */
+"Double tap to edit label text" = "Dubbeltryck för att redigera etikettens text";
+
+/* No comment provided by engineer. */
+"Double tap to edit placeholder text" = "Dubbeltryck för att redigera platshållartexten";
+
+/* translators: accessibility text */
+"Double tap to edit this value" = "Dubbeltryck för att redigera detta värde";
+
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Dubbeltryck för att gå till färginställningarna";
+
+/* No comment provided by engineer. */
+"Double tap to listen the audio file" = "Dubbeltryck för att lyssna på ljudfilen";
+
+/* No comment provided by engineer. */
+"Double tap to move the block down" = "Dubbeltryck för att flytta blocket nedåt";
+
+/* No comment provided by engineer. */
+"Double tap to move the block to the left" = "Dubbeltryck för att flytta blocket åt vänster";
+
+/* No comment provided by engineer. */
+"Double tap to move the block to the right" = "Dubbeltryck för att flytta blocket åt höger";
+
+/* No comment provided by engineer. */
+"Double tap to move the block up" = "Dubbeltryck för att flytta blocket uppåt";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet to add image or video" = "Dubbeltryck för att öppna åtgärdsbladet och lägga till bild eller video";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Dubbeltryck för att öppna åtgärdsbladet där du kan redigera, ersätta eller ta bort bilden";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Dubbeltryck för att öppna åtgärdsbladet med tillgängliga alternativ";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to add image or video" = "Dubbeltryck för att öppna det nedre arket och lägga till bild eller video";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dubbeltryck för att öppna nedre bladet där du kan redigera, ersätta eller ta bort bilden";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Dubbeltryck för att öppna det nedre arket med tillgänliga alternativ";
+
+/* No comment provided by engineer. */
+"Double tap to preview page." = "Dubbeltryck för att förhandsgranska sidan.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Dubbeltryck för att förhandsgranska inlägget.";
+
+/* No comment provided by engineer. */
+"Double tap to select" = "Dubbeltryck för att välja";
+
+/* No comment provided by engineer. */
+"Double tap to select a video" = "Dubbeltryck för att välja ett videoklipp";
+
+/* No comment provided by engineer. */
+"Double tap to select an audio file" = "Dubbeltryck för att välja en ljudfil";
+
+/* No comment provided by engineer. */
+"Double tap to select an image" = "Dubbeltryck för att välja en bild";
+
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Dubbeltryck för att välja standardtextstorlek";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Dubbeltryck för att välja typsnitt";
+
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Dubbeltryck för att välja alternativet";
+
+/* translators: accessibility text (hint for switches) */
+"Double tap to toggle setting" = "Dubbeltryck för att växla inställningens värde";
+
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Dubbeltryck för att visa inbäddningsalternativ.";
 
 /* Download button title */
 "Download" = "Ladda ner";
@@ -2250,12 +2635,30 @@
    Title of the drafts header in search list. */
 "Drafts" = "Utkast";
 
+/* No comment provided by engineer. */
+"Drag & drop" = "Dra och släpp";
+
+/* No comment provided by engineer. */
+"Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release." = "Dra och släpp gör det enkelt att sortera om blocken. Tryck länge på ett block, dra det sedan till dess nya plats och släpp det sedan.";
+
+/* No comment provided by engineer. */
+"Drag to adjust focal point" = "Dra för att flytta bildfokus";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Duplicera";
 
+/* No comment provided by engineer. */
+"Duplicate block" = "Duplicera block";
+
+/* No comment provided by engineer. */
+"Dynamic" = "Dynamisk";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "T.ex. mode, poesi, politik";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Varje block har sina egna inställningar. För att se dem trycker du på blocket i fråga. Inställningarna visas i verktygsfältet längst ned på skärmen.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
    Edit the post.
@@ -2294,6 +2697,18 @@
 /* Accessibility label for button to edit a comment from a notification */
 "Edit comment" = "Ändra kommentar";
 
+/* No comment provided by engineer. */
+"Edit cover media" = "Redigera omslagsmedia";
+
+/* No comment provided by engineer. */
+"Edit file" = "Redigera fil";
+
+/* No comment provided by engineer. */
+"Edit focal point" = "Ändra plats i fokus";
+
+/* No comment provided by engineer. */
+"Edit media" = "Redigera media";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Redigera nya inlägg och sidor med blockredigeraren.";
 
@@ -2302,6 +2717,18 @@
 
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "Redigera inlägget först";
+
+/* No comment provided by engineer. */
+"Edit using web editor" = "Redigera i webbredigeraren";
+
+/* No comment provided by engineer. */
+"Edit video" = "Redigera video";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "Redigering av synkroniserade mönster stöds ännu inte i %s för Android";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "Redigering av synkroniserade mönster stöds ännu inte i %s för iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Om du redigerar den här GIF-bilden tas animeringen bort.";
@@ -2360,6 +2787,21 @@
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-postmeddelande skickat!";
+
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Förhandsgranskning av inbäddade block kommer snart";
+
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Beskrivning för inbäddning. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Beskrivning för inbäddning. Tom";
+
+/* No comment provided by engineer. */
+"Embed media" = "Bädda in media";
+
+/* No comment provided by engineer. */
+"Embed options" = "Inbäddningsalternativ";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2594,6 +3036,9 @@
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Utdrag";
 
+/* No comment provided by engineer. */
+"Excerpt length (words)" = "Utdragets längd (antal ord)";
+
 /* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
 "Excerpt. %@." = "Utdrag. %@.";
 
@@ -2663,14 +3108,26 @@
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Lyckades inte markera aviseringarna som lästa";
 
+/* No comment provided by engineer. */
+"Failed to insert audio file. Please tap for options." = "Kunde inte lägga in ljudfil. Tryck för att visa alternativ.";
+
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Det gick inte att placera in media.\nKnacka här för alternativ.";
+
+/* No comment provided by engineer. */
+"Failed to insert media.\nTap for more info." = "Misslyckades att infoga media.\nTryck för mer information.";
+
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Kunde inte spara filerna.\nTryck för att visa alternativ.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Det gick inte att serialisera förfrågan till REST API.";
 
 /* The app failed to unsubscribe from the comments for the post */
 "Failed to unfollow conversation" = "Det gick inte att avbryta prenumerationen på denna konversation";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Kunde inte ladda upp filerna.\nTryck för att visa alternativ.";
 
 /* Fashion site intent topic */
 "Fashion" = "Mode";
@@ -2716,6 +3173,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Filnedladdningar";
+
+/* No comment provided by engineer. */
+"File block settings" = "Inställningar för filblock";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Filnamn";
@@ -2837,6 +3297,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Följer denna etikett.";
 
+/* No comment provided by engineer. */
+"Font Size" = "Typsnittsstorlek";
+
 /* Food site intent topic */
 "Food" = "Mat";
 
@@ -2848,6 +3311,9 @@
 
 /* Next web page */
 "Forward" = "Vidarebefodra";
+
+/* No comment provided by engineer. */
+"Four" = "Fyra";
 
 /* Browse free themes selection title */
 "Free" = "Gratis";
@@ -2873,6 +3339,9 @@
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "Från annan enhet";
 
+/* No comment provided by engineer. */
+"From clipboard" = "Från urklipp";
+
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "Från denna enhet";
 
@@ -2887,6 +3356,12 @@
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
+
+/* translators: accessibility text. %s: gallery caption. */
+"Gallery caption. %s" = "Bildtext för galleri. %s";
+
+/* No comment provided by engineer. */
+"Gallery style" = "Galleristil";
 
 /* Gaming site intent topic */
 "Gaming" = "Dataspel";
@@ -2925,6 +3400,9 @@
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Kom igång genom att välja någon av alla förberedda sidlayouter. Eller börja helt enkelt med en tom sida.";
 
+/* No comment provided by engineer. */
+"Get support" = "Skaffa support";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Sätt bollen i rullning och få fler läsare av ditt inlägg genom att dela ditt inlägg.";
 
@@ -2955,6 +3433,9 @@
 /* Cancel */
 "Give Up" = "Ge upp";
 
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Prova nu direkt genom att lägga till några block i ditt inlägg eller din sida!";
+
 /* Title of the Site Name screen. Takes the vertical name as a parameter. */
 "Give your %@ website a name" = "Ge din %@-webbplats ett namn";
 
@@ -2967,6 +3448,9 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Gå tillbaka";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Gå till följda webbplatser";
@@ -2993,6 +3477,9 @@
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Hämtar URL för webbplatsen";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Gradienttyp";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Utmärkt!\nVi är lika glada varje gång en nöjd användare hör av sig \n😁";
@@ -3094,6 +3581,12 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjälp och support";
 
+/* No comment provided by engineer. */
+"Help button" = "Hjälpknapp";
+
+/* No comment provided by engineer. */
+"Help icon" = "Hjälpikon";
+
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Så här har ditt inlägg lyckats hittills.";
 
@@ -3109,6 +3602,12 @@
 
 /* Hide All Sites */
 "Hide All Sites" = "Dölj alla webbplatser";
+
+/* No comment provided by engineer. */
+"Hide keyboard" = "Göm tangentbord";
+
+/* No comment provided by engineer. */
+"Hide search heading" = "Dölj sökrubrik";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -3150,6 +3649,12 @@
 
 /* How to create story description */
 "How to create a story post" = "Så skapar du ett berättelseinlägg";
+
+/* No comment provided by engineer. */
+"How to edit your page" = "Så redigerar du din sida";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "Så redigerar du ditt inlägg";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Hur åtgärdar vi det?";
@@ -3213,6 +3718,12 @@
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Bildstorlek";
+
+/* translators: accessibility text. %s: image caption. */
+"Image caption. %s" = "Bildtext. %s";
+
+/* No comment provided by engineer. */
+"Image file not found." = "Bildfilen hittades inte.";
 
 /* Hint for image title on image settings. */
 "Image title" = "Bildrubrik";
@@ -3283,8 +3794,17 @@
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Infoga %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Infoga ljudblock";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Infoga galleriblock";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Placera in horisontell linje";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Infoga bildblock";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3294,11 +3814,23 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Infoga media";
 
+/* No comment provided by engineer. */
+"Insert Video Block" = "Infoga videoblock";
+
+/* No comment provided by engineer. */
+"Insert crosspost" = "Infoga korspublicering";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Placera in mediafil";
 
+/* No comment provided by engineer. */
+"Insert mention" = "Infoga omnämnande";
+
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Infoga det markerade";
+
+/* No comment provided by engineer. */
+"Inside" = "På insidan";
 
 /* Title of Insights stats filter. */
 "Insights" = "Insikter";
@@ -3360,8 +3892,17 @@
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Ogiltig URL, kolla om du skrev en giltig webbplatsadress.";
 
+/* No comment provided by engineer. */
+"Invalid URL." = "Ogiltig URL.";
+
+/* No comment provided by engineer. */
+"Invalid URL. Audio file not found." = "Ogiltig URL. Ljudfil hittades inte.";
+
 /* Error message shown when the input URL is invalid. */
 "Invalid URL. Please double-check and try again." = "Ogiltig URL. Dubbelkolla och försök igen.";
+
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Ogiltig URL. Ange en giltig URL.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Ogiltig ändpunkt";
@@ -3472,6 +4013,9 @@
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack har installerats";
+
+/* No comment provided by engineer. */
+"Jetpack powered" = "Drivs med Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack kommer att åtgärda alla upptäckta aktiva hot.";
@@ -3634,6 +4178,9 @@
 /* This description is used to set the accessibility label for the Insights chart, with Visitors selected. */
 "Line Chart depicting Visitors for insights." = "Linjediagram som visar antalet besökare för Insikter.";
 
+/* No comment provided by engineer. */
+"Line Height" = "Radhöjd";
+
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
 "Link" = "Länk";
@@ -3647,6 +4194,9 @@
 /* Link name field placeholder */
 "Link Name" = "Länknamn";
 
+/* No comment provided by engineer. */
+"Link Rel" = "Länk-rel";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Länkalternativ";
 
@@ -3655,6 +4205,12 @@
 
 /* Image link option title. */
 "Link To" = "Länk till";
+
+/* No comment provided by engineer. */
+"Link inserted" = "Länken har lagts in";
+
+/* No comment provided by engineer. */
+"Link text" = "Länktext";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Länk till befintligt innehåll";
@@ -3672,6 +4228,9 @@
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Ladda fler inlägg";
+
+/* No comment provided by engineer. */
+"Loading" = "Laddar in";
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Läser in aktiviteter...";
@@ -3765,6 +4324,9 @@
 "Location unknown" = "Geografisk plats okänd";
 
 /* No comment provided by engineer. */
+"Lock icon" = "Låsikon";
+
+/* No comment provided by engineer. */
 "Log Files By Created Date" = "Loggfiler sorterade på datum";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3827,6 +4389,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "Huvudmeny";
 
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Förstärk ditt innehåll genom att lägga till bilder, gif-illustrationer, videoklipp och inbäddade media i ditt sidinnehåll.";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3848,6 +4413,9 @@
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Hantera webbplats";
+
+/* No comment provided by engineer. */
+"Manual" = "Manuell";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manuella offset-värden";
@@ -3954,6 +4522,9 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Mediafilens storlek (%1$@) är för stor för uppladdning. Maximalt tillåtet är %2$@";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Media options" = "Mediaalternativ";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Det gick inte att förhandsgranska media.";
 
@@ -3965,6 +4536,9 @@
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
+
+/* No comment provided by engineer. */
+"Mention" = "Omnämnande";
 
 /* The default text used for filling the name of a menu when creating it.
    The segmented control item to select during a guided tour.
@@ -4030,11 +4604,47 @@
 /* Label for the posting activity legend. */
 "More Posts" = "Fler inlägg";
 
+/* No comment provided by engineer. */
+"More support options" = "Fler supportalternativ";
+
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populäraste tidpunkten";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Flytta %@";
+
+/* No comment provided by engineer. */
+"Move Image Backward" = "Flytta bilden bakåt";
+
+/* No comment provided by engineer. */
+"Move Image Forward" = "Flytta bilden framåt";
+
+/* No comment provided by engineer. */
+"Move block down" = "Flytta block nedåt";
+
+/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
+"Move block down from row %1$s to row %2$s" = "Flytta block nedåt från rad %1$s till rad %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "Flytta blocket åt vänster";
+
+/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
+"Move block left from position %1$s to position %2$s" = "Flytta blocket åt vänster från position %1$s till position %2$s";
+
+/* No comment provided by engineer. */
+"Move block right" = "Flytta blocket åt höger";
+
+/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
+"Move block right from position %1$s to position %2$s" = "Flytta blocket åt höger från position %1$s till position %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "Flytta block uppåt";
+
+/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
+"Move block up from row %1$s to row %2$s" = "Flytta block uppåt från rad  %1$s till rad %2$s";
+
+/* No comment provided by engineer. */
+"Move blocks" = "Flytta block";
 
 /* Option to move Insight down in the view. */
 "Move down" = "Flytta ner";
@@ -4053,6 +4663,12 @@
    Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Flytta till papperskorgen";
+
+/* No comment provided by engineer. */
+"Move to bottom" = "Flytta längst ned";
+
+/* No comment provided by engineer. */
+"Move to top" = "Flytta längst upp";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Flytta upp";
@@ -4085,6 +4701,9 @@
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Mina tio favoritcaféer";
 
+/* No comment provided by engineer. */
+"NEW" = "NYTT";
+
 /* Title for disclaimer in the dashboard's custom What's New page. */
 "NEW!" = "NYTT!";
 
@@ -4096,6 +4715,25 @@
 
 /* Error to be displayed when a tag is empty */
 "Name Required" = "Ett namn krävs";
+
+/* No comment provided by engineer. */
+"Navigate Up" = "Navigera upp";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Går till färgväljare";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Går till anpassning av gradient";
+
+/* No comment provided by engineer. */
+"Navigates to layout selection screen" = "Går till skärmen för val av layout";
+
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navigerar för att markera %s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Går till föregående innehållsblad";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hjälp";
@@ -4217,6 +4855,12 @@
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Inga åtgärder än";
 
+/* No comment provided by engineer. */
+"No application can handle this request." = "Det finns ingen applikation som kan hantera denna begäran.";
+
+/* No comment provided by engineer. */
+"No application can handle this request. Please install a Web browser." = "Det finns inget program som kan hantera denna begäran. Installera ett webbläsarprogram.";
+
 /* A short message that informs the user no WordPress.com sites could be found. */
 "No available WordPress.com sites" = "Det finns inga tillgängliga WordPress.com-webbplatser";
 
@@ -4225,6 +4869,9 @@
 
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "Inga webbplatser tillgängliga";
+
+/* No comment provided by engineer. */
+"No blocks found" = "Inga block hittades";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Inga kommentarer";
@@ -4242,6 +4889,9 @@
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "Inga anslutningar funna för %@";
 
+/* No comment provided by engineer. */
+"No custom placeholder set" = "Ingen anpassad platshållare angiven";
+
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Ingen data för denna period";
 
@@ -4251,6 +4901,9 @@
 
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Inget datumintervall är angivet";
+
+/* No comment provided by engineer. */
+"No description" = "Ingen beskrivning";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Inga åtgärdade hot";
@@ -4341,6 +4994,9 @@
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Inga inlägg.";
 
+/* No comment provided by engineer. */
+"No preview available" = "Ingen förhandsgranskning tillgänglig";
+
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "Ingen primär webbplatsadress hittades";
 
@@ -4374,6 +5030,9 @@
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Inga hot hittades";
+
+/* No comment provided by engineer. */
+"No title" = "Ingen rubrik";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4416,6 +5075,15 @@
 
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Observera:";
+
+/* No comment provided by engineer. */
+"Note: Column layout may vary between themes and screen sizes" = "Obs: Kolumnlayouten kan variera mellan olika teman och skärmstorlekar";
+
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Obs: Layout kan variera mellan olika teman och skärmstorlekar";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Obs: Du måste tillåta inloggning via WordPress.com för att kunna redigera detta block i den mobila redigeraren.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Inget hittades.";
@@ -4473,6 +5141,9 @@
 /* Register Domain - Address information field Number */
 "Number" = "Nummer";
 
+/* No comment provided by engineer. */
+"Number of columns" = "Antal kolumner";
+
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Numrerad lista";
 
@@ -4499,6 +5170,9 @@
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "Fortsätt";
 
+/* No comment provided by engineer. */
+"OPEN" = "ÖPPNA";
+
 /* Disabled */
 "Off" = "Av";
 
@@ -4523,14 +5197,23 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "När denna inbjudningslänk har inaktiverats kan ingen använda den för att ansluta sig till ditt team. Är du säker?";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Om du vet namnen på de block du behöver kan du lägga till ett block genom att skriva ett snedstreck följt av blockets namn, exempelvis \/bild eller \/rubrik.";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
+
+/* No comment provided by engineer. */
+"One" = "En";
 
 /* Warning label that informs the user to only scan login codes that they generated. */
 "Only scan QR codes taken directly from your web browser. Never scan a code sent to you by anyone else." = "Skanna endast QR-koder som visas direkt i din egen webbläsare. Avläs aldrig en kod som någon annan skickat till dig.";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Visa bara den statistik som är mest relevat. Lägger till insikter som passar dina behov.";
+
+/* No comment provided by engineer. */
+"Only show excerpt" = "Visa endast utdrag";
 
 /* Message telling the user that they've only enabled limited photo library permissions for the app. */
 "Only the selected photos you've given access to are available." = "Endast de markerade fotografier som du har gett åtkomst till är tillgängliga.";
@@ -4549,8 +5232,17 @@
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Hoppsan!";
 
+/* No comment provided by engineer. */
+"Opacity" = "Opacitet";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Öppna menyn för blockåtgärder";
+
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Öppna inställningar för enheten";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Öppna säkerhetsinställningarna för Jetpack";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4571,6 +5263,9 @@
 
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Öppna i webbläsaren";
+
+/* No comment provided by engineer. */
+"Open link in a browser" = "Öppna länken i en webbläsare";
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Öppna länken i nytt fönster\/ny flik";
@@ -4640,11 +5335,17 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Andra webbplatser";
 
+/* No comment provided by engineer. */
+"Outside" = "På utsidan";
+
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
 
 /* Caption for the recommended sections in site designs. */
 "PICKED FOR YOU" = "UTVALT FÖR DIG";
+
+/* No comment provided by engineer. */
+"Padding" = "Padding";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -4663,6 +5364,9 @@
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Sidinställningar";
+
+/* translators: accessibility text. %s: Page break text. */
+"Page break block. %s" = "Sidbrytningblock. %s";
 
 /* Notice that a page with content has been created */
 "Page created" = "Sidan har skapats";
@@ -4684,6 +5388,12 @@
 
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Sidan har schemalagts";
+
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "Sidrubrik. %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "Sidrubrik. Tom";
 
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Sida uppdaterad";
@@ -4727,6 +5437,12 @@
 
 /* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
 "Password protected" = "Lösenordsskyddat";
+
+/* No comment provided by engineer. */
+"Paste URL" = "Klistra in en URL";
+
+/* No comment provided by engineer. */
+"Paste block after" = "Infoga blocket efter";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Klistra in utan formatering";
@@ -4784,6 +5500,12 @@
 
 /* User action to play a video on the editor. */
 "Play video" = "Spela video";
+
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Färg på uppspelningsfältet";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Uppspelningsinställningar";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Lägg till något innehåll innan du försöker publicera.";
@@ -5002,6 +5724,12 @@
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
 "Post sync conflict" = "Konflikt vid synkronisering av inlägg";
 
+/* translators: accessibility text. %s: text content of the post title. */
+"Post title. %s" = "Inläggsrubrik. %s";
+
+/* translators: accessibility text. empty post title. */
+"Post title. Empty" = "Inläggsrubrik. Tom";
+
 /* Title of camera permissions screen */
 "Post to WordPress" = "Publicera på WordPress";
 
@@ -5085,6 +5813,12 @@
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "Preview media" = "Förhandsvisa media";
 
+/* No comment provided by engineer. */
+"Preview page" = "Förhandsgranska sidan";
+
+/* No comment provided by engineer. */
+"Preview post" = "Förhandsgranska";
+
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Förhandsgranska din webbplats för att se vad dina besökare kommer att se.";
 
@@ -5118,6 +5852,9 @@
    Privacy Settings Title */
 "Privacy Settings" = "Inställningar för integritet";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Integritet och klassificering";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Integritetsnotis för användare i Kalifornien";
 
@@ -5126,11 +5863,20 @@
    Title of the Private Badge */
 "Private" = "Privat";
 
+/* No comment provided by engineer. */
+"Problem displaying block. \nTap to attempt block recovery." = "Problem med att visa block. \nTryck för att försöka med blockåterställning.";
+
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem att ladda in innehåll";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problem att ladda webbplatser";
+
+/* No comment provided by engineer. */
+"Problem opening the audio" = "Svårigheter att öppna ljudfilen";
+
+/* No comment provided by engineer. */
+"Problem opening the video" = "Svårigheter att öppna videoklippet";
 
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "Problem att köpa din domän. Försök igen.";
@@ -5368,6 +6114,15 @@
 /* Remove site icon button */
 "Remove Site Icon" = "Avlägsna webbplatsikonen";
 
+/* No comment provided by engineer. */
+"Remove as Featured Image" = "Ta bort som utvald bild";
+
+/* No comment provided by engineer. */
+"Remove block" = "Ta bort block";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Ta bort block";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Ta bort från insikterna";
 
@@ -5405,11 +6160,26 @@
 /* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
 "Renews on %@" = "Förnyas %@";
 
+/* No comment provided by engineer. */
+"Replace Current Block" = "Ersätt aktuellt block";
+
+/* No comment provided by engineer. */
+"Replace audio" = "Ersätt ljudfilen";
+
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
 "Replace current featured image?" = "Vill du ersätta den utvalda bilden?";
 
 /* Button to confirm the replacement of a featured image. */
 "Replace featured image" = "Ersätt den utvalda bilden";
+
+/* No comment provided by engineer. */
+"Replace file" = "Ersätt filen";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "Ersätt en bild eller ett videoklipp";
+
+/* No comment provided by engineer. */
+"Replace video" = "Ersätt videoklipp";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Svarar på en kommentar.";
@@ -5562,6 +6332,9 @@
 /* Post Rich content */
 "Rich Content" = "Formaterat innehåll";
 
+/* No comment provided by engineer. */
+"Rich text editing" = "Redigering av formaterad text";
+
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Höger";
 
@@ -5692,6 +6465,12 @@
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Tidsinställer ...";
 
+/* No comment provided by engineer. */
+"Scrollable block menu closed." = "Den rullningsbara blockmenyn har stängts.";
+
+/* No comment provided by engineer. */
+"Scrollable block menu opened. Select a block." = "Den rullningsbara blockmenyn har öppnats. Välj ett block.";
+
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
@@ -5706,6 +6485,15 @@
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Sök i WordPress";
 
+/* No comment provided by engineer. */
+"Search block label. Current text is" = "Etikett för sökblock. Aktuell text är";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Sök block";
+
+/* No comment provided by engineer. */
+"Search button. Current button text is" = "Sökknapp. Den nuvarande knapptexten är";
+
 /* Search domain - Title for the Suggested domains screen */
 "Search domains" = "Sök domäner";
 
@@ -5715,11 +6503,20 @@
 /* Select domain name. Subtitle */
 "Search for a short and memorable keyword to help people find and visit your website." = "Sök efter ett kort och minnesvärt sökord för att hjälpa människor att hitta och besöka din webbplats.";
 
+/* No comment provided by engineer. */
+"Search input field." = "Inmatningsfält för sökning.";
+
+/* No comment provided by engineer. */
+"Search or type URL" = "Sök eller skriv URL";
+
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Söksidor";
 
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Sök inlägg";
+
+/* No comment provided by engineer. */
+"Search settings" = "Sökinställningar";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Sök för att hitta GIF som du vill lägga till i ditt mediebibliotek!";
@@ -5806,8 +6603,17 @@
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Välj stat";
 
+/* No comment provided by engineer. */
+"Select a color" = "Välj en färg";
+
+/* No comment provided by engineer. */
+"Select a color above" = "Välj en färg ovan";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Välj några för att fortsätta";
+
+/* No comment provided by engineer. */
+"Select a layout" = "Välj en layout";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Välj domän";
@@ -5863,6 +6669,13 @@
 /* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
 "Selected range: %1$@ to %2$@" = "Valt intervall: endast: från %1$@ till %2$@";
 
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Valt: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Valt: standard";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Val av en annan menyplats kommer att kasta bort ändringar som du har gjort i den nuvarande menyn. Är du säker på att du vill fortsätta?";
 
@@ -5917,6 +6730,9 @@
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Ange överordnad";
+
+/* No comment provided by engineer. */
+"Set as Featured Image" = "Ställ in som utvald bild";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Ställ in som startsida";
@@ -6036,6 +6852,9 @@
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Visa lösenord";
+
+/* No comment provided by engineer. */
+"Show post content" = "Visa inläggets innehåll";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Visa teman:";
@@ -6199,6 +7018,9 @@
 /* Menu title to skip today's prompt. */
 "Skip for today" = "Hoppa över för idag";
 
+/* translators: Slash inserter autocomplete results */
+"Slash inserter results" = "Resultat från ”snedstrecksinfogaren”";
+
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalänk";
 
@@ -6215,6 +7037,9 @@
 
 /* Title of a Quick Start Tour */
 "Social sharing" = "Social delning";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Vissa block har ytterligare inställningar. Tryck på ikonen för inställningar i blockets nedre högra hörn för att se fler alternativ.";
 
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Viss data kunde inte läsas in";
@@ -6332,6 +7157,9 @@
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Börja om";
+
+/* No comment provided by engineer. */
+"Start writing…" = "Börja skriva …";
 
 /* Accessibility hint for stat not available to add to Insights. */
 "Stat is already displayed in Insights." = "Datapunkten visas redan i insikterna.";
@@ -6522,6 +7350,15 @@
 /* Menu option for taking an image or video with the device's camera. */
 "Take Photo or Video" = "Ta ett foto eller spela in video";
 
+/* No comment provided by engineer. */
+"Take a Photo" = "Ta en bild";
+
+/* No comment provided by engineer. */
+"Take a Photo or Video" = "Ta ett foto eller spela in video";
+
+/* No comment provided by engineer. */
+"Take a Video" = "Spela in en video";
+
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
 "Tap \"View more\" to see your top commenters." = "Tryck på ”Visa mer” för att se vilka som kommenterat dig mest.";
 
@@ -6530,6 +7367,9 @@
 
 /* Accessibility hint */
 "Tap for more detail." = "Tryck för detaljerad information.";
+
+/* No comment provided by engineer. */
+"Tap here to show help" = "Tryck här för att visa hjälp";
 
 /* Accessibility hint for a button that opens a view that allows to add new stats cards. */
 "Tap to add new stats cards." = "Tryck för att lägga till nya statistikkort.";
@@ -6555,6 +7395,9 @@
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Knacka för att mata in ett anpassat värde";
+
+/* No comment provided by engineer. */
+"Tap to hide the keyboard" = "Tryck för att dölja tangentbordet";
 
 /* Title for a push notification with fixed content that invites the user to load today's blogging prompt. */
 "Tap to load today's prompt..." = "Tryck för att hämta dagens tips …";
@@ -6622,6 +7465,12 @@
 /* Title of a button style */
 "Text Only" = "Endast text";
 
+/* No comment provided by engineer. */
+"Text color" = "Textfärg";
+
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Medan man redigerar ett textblock finns verktygen för textformatering finns i verktygsfältet ovanför tangentbordet ";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Skicka mig en kod via SMS i stället";
@@ -6680,6 +7529,9 @@
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Appen förstår inte svaret från servern. Vänligen kontrollera din webbplats inställningar.";
+
+/* No comment provided by engineer. */
+"The basics" = "Grunderna";
 
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Det bästa sättet att bli en bättre skribent är att börja skriva regelbundet och visa för andra – och det är här bloggningspåminnelserna kommer in i bilden!";
@@ -6939,6 +7791,12 @@
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Denna app behöver åtkomst till mediabiblioteket i din enhet för att kunna lägga till bilder eller videoklipp i dina inlägg. Ändra integritetsinställningarna om du vill tillåta detta.";
 
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "Denna färgkombination kan vara svår för människor att läsa. Försök använda en ljusare bakgrundsfärg och\/eller en mörkare textfärg.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Denna färgkombination kan vara svår för människor att läsa. Försök använda en mörkare bakgrundsfärg och\/eller en ljusare textfärg.";
+
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Denna domän är inte tillgänglig";
 
@@ -7019,11 +7877,17 @@
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "Hotet ignorerades.";
 
+/* No comment provided by engineer. */
+"Three" = "Tre";
+
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatyr";
 
 /* Message shown if a thumbnail preview of a media item unavailable. */
 "Thumbnail unavailable." = "Miniatyr ej tillgänglig.";
+
+/* No comment provided by engineer. */
+"Tiled gallery settings" = "Inställningar för mosaikgalleri";
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
@@ -7074,6 +7938,9 @@
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "För att fortsätta med detta Google-konto måste du först logga in med ditt lösenord för WordPress.com. Detta behövs bara en gång.";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Ta bort ett block genom att markera blocket och klicka på de tre punkterna i blockets nedre högra hörn för att visa inställningarna. Där väljer du sedan alternativet att ta bort blocket.";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
 "To use blogging reminders, you'll need to turn on push notifications." = "För att kunna använda bloggningspåminnelser behöver du aktivera push-meddelanden.";
@@ -7156,6 +8023,12 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafik";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "Omvandla %s till";
+
+/* No comment provided by engineer. */
+"Transform block…" = "Omvandla block …";
+
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
    Trashes a comment
@@ -7207,6 +8080,9 @@
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Försök igen";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Prova en annan sökterm";
+
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Prova nu";
 
@@ -7252,8 +8128,14 @@
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter-användarnamn";
 
+/* No comment provided by engineer. */
+"Two" = "Två";
+
 /* Type menu item in share extension. */
 "Type" = "Typ";
+
+/* No comment provided by engineer. */
+"Type a URL" = "Skriv en URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Skriv in ett sökbegrepp för fler idéer";
@@ -7305,6 +8187,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Det gick inte att ladda ned filen";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Kan inte bädda in media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Det gick inte att följa konversationen";
@@ -7466,6 +8351,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Sluta följ bloggen.";
 
+/* No comment provided by engineer. */
+"Ungroup" = "Lös upp grupp";
+
 /* Unhides a site from the site picker list */
 "Unhide" = "Visa";
 
@@ -7488,6 +8376,9 @@
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Okända sökbegrepp";
 
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Omärkt färg. %s";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Ogillar kommentaren.";
 
@@ -7505,6 +8396,9 @@
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Ej sparade ändringar";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Stöds ej";
 
 /* Title for stories unsupported device error. */
 "Unsupported Device" = "Enheten stöds inte";
@@ -7554,11 +8448,20 @@
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Uppdaterar stapeldiagrammet så att det visar besökare.";
 
+/* No comment provided by engineer. */
+"Updates the title." = "Uppdaterar rubriken.";
+
 /* Describes a status of a plugin */
 "Updating" = "Uppdaterar";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Uppdaterar...";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Uppgradera ditt paket för att ladda upp ljud";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Uppgradera ditt paket för att använda videocovers";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Ladda upp mediafiler";
@@ -7614,6 +8517,9 @@
 /* Label to show while uploading media to server */
 "Uploading..." = "Laddar upp …";
 
+/* No comment provided by engineer. */
+"Uploading…" = "Laddar upp …";
+
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Filer kunde inte laddas upp";
 
@@ -7628,6 +8534,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Använd blockredigeraren";
+
+/* No comment provided by engineer. */
+"Use icon button" = "Använd ikonknapp";
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Använd lösenord för att logga in";
@@ -7688,6 +8597,12 @@
 
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Förhandsvisning av video ej tillgänglig";
+
+/* translators: accessibility text. %s: video caption. */
+"Video caption. %s" = "Beskrivning för video. %s";
+
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "Beskrivning för video. Tom";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export av video avbruten.";
@@ -7834,6 +8749,9 @@
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Vi har problem med att ladda data";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release." = "Vi arbetar för fullt med att lägga till fler block i varje utgåva.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "Åtgärden gick inte att slutföra och denna sida publicerades inte.";
@@ -8095,6 +9013,9 @@
 /* A message title */
 "Welcome to the Reader" = "Välkommen till Läsaren";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Välkommen till världen av block";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Välkommen till världens populäraste webbplatsbyggare.";
 
@@ -8117,6 +9038,12 @@
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll still attempt to restore your site." = "Vi kommer ändå att försöka återställa din webbplats.";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Vi jobbar hårt på att lägga till stöd för förhandsgranskningar av %s. Tills dess kan du förhandsgranska det inbäddade innehållet på sidan.";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Vi jobbar hårt på att lägga till stöd för förhandsgranskning av %s. Tills dess kan du förhandsgranska det inbäddade innehållet i inlägget.";
+
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Ikonerna för din anpassade app har fått ett nytta, fräscht utseende. Nu kan du välja någon av 10 olika nya stilar. Men om du vill kan också behålla den ikon du redan använder.";
 
@@ -8125,6 +9052,12 @@
 
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "Vad är WordPress.com?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "Vad är ett block?";
+
+/* No comment provided by engineer. */
+"What is alt text?" = "Vad är alternativ text?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Vad var problemet?";
@@ -8176,6 +9109,9 @@
 
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Widgetar";
+
+/* No comment provided by engineer. */
+"Width Settings" = "Breddinställningar";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Visas ej offentligt.";
@@ -8298,6 +9234,12 @@
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Writing blog posts" = "Skriva blogginlägg";
 
+/* No comment provided by engineer. */
+"X-Axis Position" = "Läge på X-axeln";
+
+/* No comment provided by engineer. */
+"Y-Axis Position" = "Läge på Y-axeln";
+
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
 
@@ -8341,6 +9283,9 @@
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Mediefiler laddas upp för tillfället. Om du fortsätter med den här åtgärden avbryts uppladdningen.\n\nVill du det?";
 
+/* No comment provided by engineer. */
+"You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "Du kan även ändra blockens ordning genom att trycka på ett block och sedan trycka på pilarna upp\/ned som visas till vänster i blocket för att flytta blocket uppåt eller nedåt.";
+
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Du kan alltid logga in med hjälp av en länk av samma typ som du just tryckte på. Men du kan ocksa spara ett lösenord, om du vill.";
 
@@ -8352,6 +9297,9 @@
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kan visa statistik för en enskild webbplats under Idag i notiscentret i iOS.";
+
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "Du kan redigera detta block i webbversionen av redigeraren.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Du kan följa inlägg på en specifik webbplats genom att följa den.";
@@ -8459,7 +9407,8 @@
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Du har nyligen gjort ändringar i detta inlägg men sparade dem inte. Välj vilken version du vill häsa in:\n\nFrån denna enhet\nSparades %1$@\n\nFrån annan enhet\nSparades %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Du svarade på denna kommentar.";
 
 /* No comment provided by engineer. */
@@ -8654,6 +9603,9 @@
 
 /* Label displayed on audio media items. */
 "audio" = "ljud";
+
+/* translators: displays audio file extension. e.g. MP3 audio file */
+"audio file" = "ljudfil";
 
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Avfärda";
@@ -8948,6 +9900,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Domänen du försöker lägga till kan inte köpas i Jetpack-appen just nu.";
+
+/* No comment provided by engineer. */
+"double-tap to change unit" = "dubbeltryck för att ändra enhet";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "till exempel 1122334455";
@@ -9491,6 +10446,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Dagens statistik";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Nyheter";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Överför dina domäner";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Avfärda";
 
@@ -9952,7 +10913,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkeringar.";
 
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by a number. */
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkering.";
 
 /* Dismiss the AlertView */
@@ -9981,6 +10942,60 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Besök WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Tänker …";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Stäng";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Kontakta supporten";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Skicka ett meddelande …";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Jag har glömt min inloggningsinformation";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Varför kan jag inte logga in?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Vad är min webbplatsadress?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Hur kan jag använda min anpassade domän i appen?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Jag kan inte ladda upp foton\/videoklipp";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Hjälp, min webbplats är nere!";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Källor";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Är du inte säker på vad du ska fråga?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Det gick inte att skicka in supportärende";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Skapar supportärende …";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Supportärende skapat";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Kontakta support";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Svar";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Fråga";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ställ en fråga i communityforumet och få hjälp av vår grupp med volontärer.";

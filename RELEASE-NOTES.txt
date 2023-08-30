@@ -6,6 +6,7 @@
 * [**] [internal] Fix a crash when disconnecting the app from the "Connected Applications" on WordPress.com. [#21375]
 * [*] Fix an issue where the "Take Photo" flow was not working without the "All Photos" access [#21398](https://github.com/wordpress-mobile/WordPress-iOS/pull/21398)
 * [*] Fix a couple of small issues with media uploads error handling [#21411](https://github.com/wordpress-mobile/WordPress-iOS/pull/21411)
+* [*] [internal] Change how a post's revision is fetched from the post history screen. [#21440]
 * [**] [internal] Replace the progress indicator implementation in uploading featured image from "Post Settings" [#21438]
 
 23.0.1
@@ -22,6 +23,7 @@
 * [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
 * [*] Fixed a crash that could occur when following sites in Reader. [#21341]
 * [**] [Jetpack-only] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]
+* [**] Fix Voice Over and assistive keyboards [https://github.com/WordPress/gutenberg/pull/53895]
 
 23.0
 -----
