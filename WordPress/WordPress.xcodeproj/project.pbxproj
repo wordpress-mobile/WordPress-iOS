@@ -5466,8 +5466,6 @@
 		FAE8EE99273AC06F00A65307 /* QuickStartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8EE98273AC06F00A65307 /* QuickStartSettings.swift */; };
 		FAE8EE9A273AC06F00A65307 /* QuickStartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8EE98273AC06F00A65307 /* QuickStartSettings.swift */; };
 		FAE8EE9C273AD0A800A65307 /* QuickStartSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8EE9B273AD0A800A65307 /* QuickStartSettingsTests.swift */; };
-		FAF0FAA92A9F858C004C3228 /* AddNewSiteAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF0FAA82A9F858C004C3228 /* AddNewSiteAlertController.swift */; };
-		FAF0FAAA2A9F858C004C3228 /* AddNewSiteAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF0FAA82A9F858C004C3228 /* AddNewSiteAlertController.swift */; };
 		FAF13C5325A57ABD003EE470 /* JetpackRestoreWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */; };
 		FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */; };
 		FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
@@ -9307,7 +9305,6 @@
 		FAE4CA672732C094003BFDFE /* QuickStartPromptViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartPromptViewController.xib; sourceTree = "<group>"; };
 		FAE8EE98273AC06F00A65307 /* QuickStartSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartSettings.swift; sourceTree = "<group>"; };
 		FAE8EE9B273AD0A800A65307 /* QuickStartSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartSettingsTests.swift; sourceTree = "<group>"; };
-		FAF0FAA82A9F858C004C3228 /* AddNewSiteAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewSiteAlertController.swift; sourceTree = "<group>"; };
 		FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningViewController.swift; sourceTree = "<group>"; };
 		FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusViewController.swift; sourceTree = "<group>"; };
 		FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackScreenshotGeneration.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -10183,7 +10180,6 @@
 				C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */,
 				FA4EBCC02A98F00200BA3DFB /* NoSitesView.swift */,
 				FA85F5F42A9DFDCC001D8425 /* NoSitesViewModel.swift */,
-				FAF0FAA82A9F858C004C3228 /* AddNewSiteAlertController.swift */,
 			);
 			path = "My Site";
 			sourceTree = "<group>";
@@ -21784,7 +21780,6 @@
 				08216FCF1CDBF96000304BA7 /* MenuItemSourceCell.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				178DDD1B266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
-				FAF0FAA92A9F858C004C3228 /* AddNewSiteAlertController.swift in Sources */,
 				FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */,
 				C3B5545329661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */,
 				3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */,
@@ -24485,7 +24480,6 @@
 				FABB22D42602FC2C00C8785C /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				FE32F003275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				3FAE0653287C8FC500F46508 /* JPScrollViewDelegate.swift in Sources */,
-				FAF0FAAA2A9F858C004C3228 /* AddNewSiteAlertController.swift in Sources */,
 				FEE48EFD2A4C8312008A48E0 /* Blog+JetpackSocial.swift in Sources */,
 				FABB22D52602FC2C00C8785C /* TenorStrings.swift in Sources */,
 				FAFC064F27D2360B002F0483 /* QuickStartCell.swift in Sources */,

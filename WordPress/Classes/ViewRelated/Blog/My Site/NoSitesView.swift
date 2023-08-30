@@ -15,7 +15,7 @@ struct NoSitesView: View {
 
     @SwiftUI.Environment(\.colorScheme) var colorScheme
 
-    @State private var isShowingPopover = false
+    @State private var isShowingDialog = false
 
     let viewModel: NoSitesViewModel
     let addNewSiteConfiguration: AddNewSiteConfiguration
@@ -76,8 +76,8 @@ struct NoSitesView: View {
                 .cornerRadius(5)
                 .font(.callout.weight(.semibold))
         }
-        .popover(isPresented: $isShowingPopover, arrowEdge: .top) {
-            makeAddNewSiteAlertController()
+        .confirmationDialog("", isPresented: $isShowingDialog) {
+            makeAddNewSitesDialog()
         }
     }
 
@@ -131,27 +131,33 @@ struct NoSitesView: View {
 extension NoSitesView {
 
     /// If the account can't add a self-hosted site, launch site creation.
-    /// Otherwise, show an alert controller with the option to create a
-    /// WordPress.com site or add a self-hosted site.
+    ///
+    /// Otherwise, show options to create a WordPress.com site or add a self-hosted site.
+    /// In compact size classes, the system shows a dialog sheet with a cancel button.
+    /// In regular size classes, the system shows a popover without a cancel button.
     ///
     func handleAddNewSiteButtonTapped() {
         WPAnalytics.track(.mySiteNoSitesViewActionTapped)
+
+        guard addNewSiteConfiguration.canCreateWPComSite else {
+            return
+        }
 
         guard addNewSiteConfiguration.canAddSelfHostedSite else {
             addNewSiteConfiguration.launchSiteCreation()
             return
         }
 
-        self.isShowingPopover = true
+        self.isShowingDialog = true
     }
 
-    private func makeAddNewSiteAlertController() -> some View {
-        AddNewSiteAlertController(
-            canCreateWPComSite: addNewSiteConfiguration.canCreateWPComSite,
-            canAddSelfHostedSite: addNewSiteConfiguration.canAddSelfHostedSite,
-            launchSiteCreation: addNewSiteConfiguration.launchSiteCreation,
-            launchLoginForSelfHostedSite: addNewSiteConfiguration.launchLoginForSelfHostedSite
-        )
+    @ViewBuilder private func makeAddNewSitesDialog() -> some View {
+        Button(Strings.createWPComSite) {
+            addNewSiteConfiguration.launchSiteCreation()
+        }
+        Button(Strings.addSelfHostedSite) {
+            addNewSiteConfiguration.launchLoginForSelfHostedSite()
+        }
     }
 }
 
@@ -161,6 +167,8 @@ extension NoSitesView {
         static let description = NSLocalizedString("mySite.noSites.description", value: "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", comment: "Message description for when a user has no sites.")
         static let addNewSite = NSLocalizedString("mySite.noSites.button.addNewSite", value: "Add new site", comment: "Button title. Displays a screen to add a new site when tapped.")
         static let accountAndSettings = NSLocalizedString("mySite.noSites.button.accountAndSettings", value: "Account and settings", comment: "Button title. Displays the account and setting screen.")
+        static let createWPComSite = NSLocalizedString("mySite.noSites.actionSheet.createWPComSite", value: "Create WordPress.com site", comment: "Action sheet button title. Launches the flow to create a WordPress.com site.")
+        static let addSelfHostedSite = NSLocalizedString("mySite.noSites.actionSheet.addSelfHostedSite", value: "Add self-hosged site", comment: "Action sheet button title. Launches the flow to a add self-hosted site.")
     }
 }
 
