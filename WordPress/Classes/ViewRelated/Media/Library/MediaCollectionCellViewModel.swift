@@ -2,6 +2,7 @@ import UIKit
 
 final class MediaCollectionCellViewModel {
     var onLoadingFinished: ((UIImage?) -> Void)?
+    let mediaID: TaggedManagedObjectID<Media>
 
     private let media: Media
     private let coordinator: MediaThumbnailCoordinator
@@ -11,6 +12,7 @@ final class MediaCollectionCellViewModel {
     init(media: Media,
          coordinator: MediaThumbnailCoordinator = .shared,
          cache: MemoryCache = .shared) {
+        self.mediaID = TaggedManagedObjectID(saved: media)
         self.media = media
         self.coordinator = coordinator
         self.cache = cache
@@ -31,7 +33,7 @@ final class MediaCollectionCellViewModel {
         guard requestCount == 1 else {
             return // Already loading
         }
-        // TODO: keep track of current request and its cancellation
+        // TODO: fix how we manage completion callbacks
         coordinator.thumbnail(for: media, with: targetSize) { [weak self] in
             self?.didFinishLoading(with: $0, error: $1)
         }
@@ -42,11 +44,12 @@ final class MediaCollectionCellViewModel {
             cache.setImage(image, forKey: makeCacheKey(for: media))
         }
         onLoadingFinished?(image)
+        requestCount = 0
     }
 
     func cancelLoading() {
+        guard requestCount > 0 else { return }
         requestCount -= 1
-        requestCount = max(0, requestCount) // Just in case
         if requestCount == 0 {
             // TODO: actually cancel
         }

@@ -112,7 +112,8 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
         let media = fetchController.object(at: indexPath)
-        cell.configure(media: media, viewModel: makeViewModel(for: media), targetSize: getImageTargetSize())
+        let viewModel = makeViewModel(for: media)
+        cell.configure(viewModel: viewModel, targetSize: getImageTargetSize())
         return cell
     }
 

@@ -2,7 +2,7 @@ import UIKit
 
 final class MediaCollectionCell: UICollectionViewCell {
     private let imageView = UIImageView()
-    private var media: Media?
+    private var viewModel: MediaCollectionCellViewModel?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,22 +24,24 @@ final class MediaCollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        viewModel?.cancelLoading()
+        viewModel = nil
+
         imageView.image = nil
         backgroundColor = .systemGroupedBackground
     }
 
-    func configure(
-        media: Media,
-        viewModel: MediaCollectionCellViewModel,
-        targetSize: CGSize
-    ) {
+    func configure(viewModel: MediaCollectionCellViewModel, targetSize: CGSize) {
+        self.viewModel = viewModel
+
         // TODO: Add support for other asset types
         if let image = viewModel.getCachedImage() {
             // Display with no animations. It should happen often thanks to prefetchig
             imageView.image = image
         } else {
+            let mediaID = viewModel.mediaID
             viewModel.onLoadingFinished = { [weak self] image in
-                guard let self else { return }
+                guard let self, self.viewModel?.mediaID != mediaID else { return }
                 // TODO: Display an asset-specific placeholder on error
                 UIView.animate(withDuration: 0.2) {
                     self.imageView.image = image
