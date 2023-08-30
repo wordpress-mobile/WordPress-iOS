@@ -7,7 +7,7 @@ final class MediaCollectionCellViewModel {
     var mediaType: MediaType
 
     private let media: Media
-    private let service: MediaThumbnailService
+    private let service: MediaImageService
     private let cache: MemoryCache
     private var requestCount = 0
     private var imageTask: Task<Void, Never>?
@@ -17,7 +17,7 @@ final class MediaCollectionCellViewModel {
     }
 
     init(media: Media,
-         service: MediaThumbnailService = .shared,
+         service: MediaImageService = .shared,
          cache: MemoryCache = .shared) {
         self.mediaID = TaggedManagedObjectID(saved: media)
         self.media = media

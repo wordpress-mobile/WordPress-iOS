@@ -38,10 +38,8 @@ class MediaThumbnailCoordinator: NSObject {
                 return
             }
             let image = UIImage(contentsOfFile: imageURL.path)
-            // Decompression is expensive and has to happen in the background
-            let decompressedImage = image?.preparingForDisplay() ?? image
             DispatchQueue.main.async {
-                onCompletion(decompressedImage, nil)
+                onCompletion(image, nil)
             }
         }
         let failure: (Error?) -> Void = { (error) in
@@ -50,7 +48,7 @@ class MediaThumbnailCoordinator: NSObject {
             }
         }
 
-        let mediaThumbnailService = LegacyMediaThumbnailService(coreDataStack: coreDataStack)
+        let mediaThumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
         mediaThumbnailService.exportQueue = self.queue
         mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
     }
