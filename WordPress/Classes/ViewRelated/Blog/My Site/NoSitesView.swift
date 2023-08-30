@@ -91,9 +91,13 @@ struct NoSitesView: View {
                     Text(viewModel.displayName)
                         .foregroundColor(.primary)
                         .font(.callout.weight(.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                     Text(Strings.accountAndSettings)
                         .foregroundColor(.secondary)
                         .font(.subheadline.weight(.regular))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
