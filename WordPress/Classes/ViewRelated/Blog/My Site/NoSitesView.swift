@@ -1,15 +1,25 @@
 import SwiftUI
 
 protocol NoSitesViewDelegate: AnyObject {
-    func didTapAddNewSiteButton()
     func didTapAccountAndSettingsButton()
+}
+
+struct AddNewSiteConfiguration {
+    let canCreateWPComSite: Bool
+    let canAddSelfHostedSite: Bool
+    let launchSiteCreation: () -> Void
+    let launchLoginForSelfHostedSite: () -> Void
 }
 
 struct NoSitesView: View {
 
     @SwiftUI.Environment(\.colorScheme) var colorScheme
 
+    @State private var isShowingPopover = false
+
     let viewModel: NoSitesViewModel
+    let addNewSiteConfiguration: AddNewSiteConfiguration
+
     weak var delegate: NoSitesViewDelegate?
 
     var body: some View {
@@ -56,7 +66,7 @@ struct NoSitesView: View {
 
     private func makeAddNewSiteButton() -> some View {
         Button {
-            delegate?.didTapAddNewSiteButton()
+            handleAddNewSiteButtonTapped()
         } label: {
             Text(Strings.addNewSite)
                 .padding(.horizontal, 20)
@@ -65,6 +75,9 @@ struct NoSitesView: View {
                 .background(colorScheme == .dark ? Color(uiColor: .listForeground) : .black)
                 .cornerRadius(5)
                 .font(.callout.weight(.semibold))
+        }
+        .popover(isPresented: $isShowingPopover, arrowEdge: .top) {
+            makeAddNewSiteAlertController()
         }
     }
 
@@ -109,6 +122,35 @@ struct NoSitesView: View {
     }
 }
 
+// MARK: - Add new site
+
+extension NoSitesView {
+
+    /// If the account can't add a self-hosted site, launch site creation.
+    /// Otherwise, show an alert controller with the option to create a
+    /// WordPress.com site or add a self-hosted site.
+    ///
+    func handleAddNewSiteButtonTapped() {
+        WPAnalytics.track(.mySiteNoSitesViewActionTapped)
+
+        guard addNewSiteConfiguration.canAddSelfHostedSite else {
+            addNewSiteConfiguration.launchSiteCreation()
+            return
+        }
+
+        self.isShowingPopover = true
+    }
+
+    private func makeAddNewSiteAlertController() -> some View {
+        AddNewSiteAlertController(
+            canCreateWPComSite: addNewSiteConfiguration.canCreateWPComSite,
+            canAddSelfHostedSite: addNewSiteConfiguration.canAddSelfHostedSite,
+            launchSiteCreation: addNewSiteConfiguration.launchSiteCreation,
+            launchLoginForSelfHostedSite: addNewSiteConfiguration.launchLoginForSelfHostedSite
+        )
+    }
+}
+
 extension NoSitesView {
     private enum Strings {
         static let title = NSLocalizedString("mySite.noSites.title", value: "You don't have any sites", comment: "Message title for when a user has no sites.")
@@ -120,6 +162,15 @@ extension NoSitesView {
 
 struct NoSitesView_Previews: PreviewProvider {
     static var previews: some View {
-        NoSitesView(viewModel: NoSitesViewModel(account: nil))
+        let configuration = AddNewSiteConfiguration(
+            canCreateWPComSite: true,
+            canAddSelfHostedSite: true,
+            launchSiteCreation: {},
+            launchLoginForSelfHostedSite: {}
+        )
+        NoSitesView(
+            viewModel: NoSitesViewModel(account: nil),
+            addNewSiteConfiguration: configuration
+        )
     }
 }

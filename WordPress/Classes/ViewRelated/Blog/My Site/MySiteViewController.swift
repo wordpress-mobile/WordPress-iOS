@@ -156,7 +156,17 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     private var noSitesRefreshControl: UIRefreshControl?
     private lazy var noSitesViewController: UIHostingController = {
         let viewModel = NoSitesViewModel(account: defaultAccount())
-        return UIHostingController(rootView: NoSitesView(viewModel: viewModel))
+        let configuration = AddNewSiteConfiguration(
+            canCreateWPComSite: defaultAccount() != nil,
+            canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
+            launchSiteCreation: self.launchSiteCreationFromNoSites,
+            launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
+        )
+        let noSiteView = NoSitesView(
+            viewModel: viewModel,
+            addNewSiteConfiguration: configuration
+        )
+        return UIHostingController(rootView: noSiteView)
     }()
 
     // MARK: - View Lifecycle
@@ -682,10 +692,6 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
 
 // MARK: - Add Site Alert
 
-    func didTapAddNewSiteButton() {
-        presentInterfaceForAddingNewSite()
-    }
-
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
         showDetailViewController(meViewController, sender: self)
@@ -693,33 +699,15 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        WPAnalytics.track(.mySiteNoSitesViewActionTapped)
-        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
-        let addSite = {
-            self.launchSiteCreation(source: "my_site_no_sites")
-        }
+        noSitesViewController.rootView.handleAddNewSiteButtonTapped()
+    }
 
-        guard canAddSelfHostedSite else {
-            addSite()
-            return
-        }
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
-                                                                  canCreateWPComSite: defaultAccount() != nil,
-                                                                  createWPComSite: {
-            addSite()
-        }, canAddSelfHostedSite: canAddSelfHostedSite, addSelfHostedSite: {
-            WordPressAuthenticator.showLoginForSelfHostedSite(self)
-        })
+    private func launchSiteCreationFromNoSites() {
+        launchSiteCreation(source: "my_site_no_sites")
+    }
 
-//        if let sourceView = noResultsViewController.actionButton,
-//           let popoverPresentationController = addSiteAlert.popoverPresentationController {
-//
-//            popoverPresentationController.sourceView = sourceView
-//            popoverPresentationController.sourceRect = sourceView.bounds
-//            popoverPresentationController.permittedArrowDirections = .up
-//        }
-
-        present(addSiteAlert, animated: true)
+    private func launchLoginForSelfHostedSite() {
+        WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
     @objc
