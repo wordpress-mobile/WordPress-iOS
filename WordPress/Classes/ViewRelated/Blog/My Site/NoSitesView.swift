@@ -168,7 +168,7 @@ extension NoSitesView {
         static let addNewSite = NSLocalizedString("mySite.noSites.button.addNewSite", value: "Add new site", comment: "Button title. Displays a screen to add a new site when tapped.")
         static let accountAndSettings = NSLocalizedString("mySite.noSites.button.accountAndSettings", value: "Account and settings", comment: "Button title. Displays the account and setting screen.")
         static let createWPComSite = NSLocalizedString("mySite.noSites.actionSheet.createWPComSite", value: "Create WordPress.com site", comment: "Action sheet button title. Launches the flow to create a WordPress.com site.")
-        static let addSelfHostedSite = NSLocalizedString("mySite.noSites.actionSheet.addSelfHostedSite", value: "Add self-hosged site", comment: "Action sheet button title. Launches the flow to a add self-hosted site.")
+        static let addSelfHostedSite = NSLocalizedString("mySite.noSites.actionSheet.addSelfHostedSite", value: "Add self-hosted site", comment: "Action sheet button title. Launches the flow to a add self-hosted site.")
     }
 }
 
