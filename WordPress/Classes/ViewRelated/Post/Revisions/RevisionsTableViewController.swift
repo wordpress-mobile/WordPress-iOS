@@ -154,16 +154,22 @@ private extension RevisionsTableViewController {
 
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading...", comment: "Text displayed in HUD while a revision post is loading."))
 
-        let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.getPostWithID(revision.revisionId, for: blog, success: { post in
-            SVProgressHUD.dismiss()
-            WPAnalytics.track(.postRevisionsRevisionLoaded)
-            self.onRevisionLoaded(post)
-            self.navigationController?.popViewController(animated: true)
-        }, failure: { error in
-            DDLogError("Error loading revision: \(error.localizedDescription)")
-            SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
-        })
+        let coreDataStack = ContextManager.shared
+        let postRepository = PostRepository(coreDataStack: coreDataStack)
+        Task { @MainActor in
+            do {
+                let postID = try await postRepository.getPost(withID: revision.revisionId, from: .init(saved: blog))
+                let post = try coreDataStack.mainContext.existingObject(with: postID)
+
+                await SVProgressHUD.dismiss()
+                WPAnalytics.track(.postRevisionsRevisionLoaded)
+                self.onRevisionLoaded(post)
+                self.navigationController?.popViewController(animated: true)
+            } catch {
+                DDLogError("Error loading revision: \(error.localizedDescription)")
+                SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
+            }
+        }
     }
 }
 

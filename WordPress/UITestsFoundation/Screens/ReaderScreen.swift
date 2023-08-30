@@ -19,6 +19,10 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Saved"]
     }
 
+    private let firstPostLikeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["reader-like-button"].firstMatch
+    }
+
     private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Visit"]
     }
@@ -37,6 +41,10 @@ public class ReaderScreen: ScreenObject {
 
     private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Following"]
+    }
+
+    private let likesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Likes"]
     }
 
     private let topicNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
@@ -58,8 +66,10 @@ public class ReaderScreen: ScreenObject {
     var backButton: XCUIElement { backButtonGetter(app) }
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
     var dismissButton: XCUIElement { dismissButtonGetter(app) }
+    var firstPostLikeButton: XCUIElement { firstPostLikeButtonGetter(app) }
     var followButton: XCUIElement { followButtonGetter(app) }
     var followingButton: XCUIElement { followingButtonGetter(app) }
+    var likesTabButton: XCUIElement { likesTabButtonGetter(app) }
     var noResultsView: XCUIElement { noResultsViewGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app) }
     var readerTable: XCUIElement { readerTableGetter(app) }
@@ -166,6 +176,12 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
+    public func openLikes() -> Self {
+        likesTabButton.tap()
+
+        return self
+    }
+
     public func followTopic() -> Self {
         followButton.tap()
 
@@ -193,24 +209,68 @@ public class ReaderScreen: ScreenObject {
         return (self, postLabel)
     }
 
+    public func likeFirstPost() -> Self {
+        var tries = 0
+
+        while !firstPostLikeButton.exists && firstPostLikeButton.label.hasPrefix(.postNotLiked) && tries < 5 {
+            usleep(500000) // Wait for 0.5 seconds
+            tries += 1
+        }
+
+        firstPostLikeButton.tap()
+        return self
+    }
+
+    public func verifyPostLikedOnFollowingTab(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreaterThanOneError, file: file, line: line)
+        XCTAssertTrue(firstPostLikeButton.label.hasPrefix(.postLiked), file: file, line: line)
+
+        return self
+    }
+
     @discardableResult
-    public func verifySavedPosts(state: String, postLabel: String? = nil) -> Self {
-        if readerTable.cells.count > 0 {
-            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, "Post displayed does not match saved post!")
-            XCTAssertEqual(readerTable.cells.count, 1, "There should only be 1 post!")
-            XCTAssertEqual(state, .withSavedPosts)
-        } else {
-            XCTAssertTrue(noResultsView.waitForExistence(timeout: 3))
-            XCTAssertTrue(readerTable.label == .emptyListLabel)
-            XCTAssertEqual(state, .withoutSavedPosts)
+    public func verifySavedPosts(state: String, postLabel: String? = nil, file: StaticString = #file, line: UInt = #line) -> Self {
+        if state == .withPosts {
+            verifyNotEmptyPostList()
+            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, .postNotEqualSavedPostError, file: file, line: line)
+        } else if state == .withoutPosts {
+            verifyEmptyPostList()
         }
 
         return self
+    }
+
+    @discardableResult
+    public func verifyLikedPosts(state: String, file: StaticString = #file, line: UInt = #line) -> Self {
+        if state == .withPosts {
+            verifyNotEmptyPostList()
+            XCTAssertTrue(firstPostLikeButton.label.hasPrefix(.postLiked), file: file, line: line)
+        } else if state == .withoutPosts {
+            verifyEmptyPostList()
+        }
+
+        return self
+    }
+
+    private func verifyNotEmptyPostList(file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 5), file: file, line: line)
+        XCTAssertEqual(readerTable.cells.count, 1, .postNotEqualOneError, file: file, line: line)
+    }
+
+    private func verifyEmptyPostList(file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(noResultsView.waitForExistence(timeout: 5), file: file, line: line)
+        XCTAssertTrue(readerTable.label == .emptyListLabel, file: file, line: line)
     }
 }
 
 private extension String {
     static let emptyListLabel = "Empty list"
-    static let withoutSavedPosts = "without posts"
-    static let withSavedPosts = "with posts"
+    static let postLiked = "This post is in My Likes"
+    static let postNotEqualOneError = "There should only be 1 post!"
+    static let postNotEqualSavedPostError = "Post displayed does not match saved post!"
+    static let postNotGreaterThanOneError = "There shouldn't only be 1 post!"
+    static let postNotLiked = "This post is not in My Likes"
+    static let withoutPosts = "without posts"
+    static let withPosts = "with posts"
 }

@@ -42,6 +42,12 @@
 /* No Tags View Button Label */
 "Add a site" = "Tilføj et websted";
 
+/* No comment provided by engineer. */
+"Add alt text" = "Tilføj alternativ tekst";
+
+/* No comment provided by engineer. */
+"Add title" = "Tilføj en titel";
+
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avanceret";
 
@@ -194,6 +200,9 @@
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Vælg websted";
+
+/* No comment provided by engineer. */
+"Choose file" = "Vælg fil";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Nulstil gamle aktivitetslogs";
@@ -422,6 +431,12 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Rediger indlæg";
 
+/* No comment provided by engineer. */
+"Edit file" = "Rediger fil";
+
+/* No comment provided by engineer. */
+"Edit media" = "Rediger medie";
+
 /* Title for the editor settings section */
 "Editor" = "Editor";
 
@@ -551,6 +566,9 @@
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skjult";
+
+/* No comment provided by engineer. */
+"Hide keyboard" = "Skjul tastatur";
 
 /* Ignore action. Verb */
 "Ignore" = "Ignorer";
@@ -799,6 +817,9 @@
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Ingen forbindelse";
 
+/* No comment provided by engineer. */
+"No blocks found" = "Ingen blokke fundet.";
+
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
@@ -1023,6 +1044,9 @@
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Forhåndsvis";
+
+/* No comment provided by engineer. */
+"Preview post" = "Forhåndsvis indlæg";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -1524,6 +1548,9 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Uploader...";
+
+/* No comment provided by engineer. */
+"Uploading…" = "Overfører...";
 
 /* No comment provided by engineer. */
 "Use this site" = "Brug dette websted";

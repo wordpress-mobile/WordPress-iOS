@@ -141,6 +141,9 @@
 "Add a Category" = "Добавяне на категория";
 
 /* No comment provided by engineer. */
+"Add alt text" = "Добавете описателен текст";
+
+/* No comment provided by engineer. */
 "Add menu item above" = "Добавяне на елемент в менюто отгоре";
 
 /* No comment provided by engineer. */
@@ -1112,6 +1115,9 @@
 /* Hide All Sites */
 "Hide All Sites" = "Скриване на всички сайтове";
 
+/* No comment provided by engineer. */
+"Hide keyboard" = "Скриване на клавиатурата";
+
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Задържане за модерация";
@@ -1906,6 +1912,9 @@
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Преглед";
+
+/* No comment provided by engineer. */
+"Preview post" = "Преглед";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -2781,6 +2790,9 @@
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Незапазени промени";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Не се поддържа";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Съхраняват се журнали за последните 7 дни.";

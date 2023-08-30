@@ -102,10 +102,13 @@ public class NotificationsScreen: ScreenObject {
         return self
     }
 
-    public func getNumberOfLikesForNotification() -> (NotificationsScreen, Int) {
+    public func getNumberOfLikesForNotification() -> (NotificationsScreen, Int)? {
+        guard likeCommentButton.waitForExistence(timeout: 5) else {
+            return nil
+        }
+
         let totalLikesInString = likeCommentButton.label.prefix(1)
         let totalLikes = Int(totalLikesInString) ?? 0
-
         return (self, totalLikes)
     }
 
@@ -118,7 +121,16 @@ public class NotificationsScreen: ScreenObject {
 
     @discardableResult
     public func verifyCommentLiked(expectedLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
-        let (_, currentLikes) = getNumberOfLikesForNotification()
+        var tries = 0
+
+        while !likeCommentButton.label.hasSuffix(.commentLikedLabel) && tries < 5 {
+            sleep(1) // Wait for 1 second
+            tries += 1
+        }
+
+        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentLikedLabel))
+
+        let (_, currentLikes) = getNumberOfLikesForNotification()!
         XCTAssertEqual(currentLikes, expectedLikes, file: file, line: line)
 
         return self
@@ -127,4 +139,9 @@ public class NotificationsScreen: ScreenObject {
     public static func isLoaded() -> Bool {
         (try? NotificationsScreen().isLoaded) ?? false
     }
+}
+
+private extension String {
+    static let commentLikedLabel = "Comment is liked"
+    static let commentNotLikedLabel = "Comment is not liked"
 }

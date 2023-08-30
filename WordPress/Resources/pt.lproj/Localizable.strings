@@ -164,6 +164,9 @@
 "Add a site" = "Adicionar site";
 
 /* No comment provided by engineer. */
+"Add alt text" = "Adicione texto alternativo (alt)";
+
+/* No comment provided by engineer. */
 "Add menu item above" = "Adicionar item de menu acima";
 
 /* No comment provided by engineer. */
@@ -180,6 +183,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Adicionar etiquetas";
+
+/* No comment provided by engineer. */
+"Add title" = "Adicionar título";
 
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
@@ -947,6 +953,9 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Editar artigo";
 
+/* No comment provided by engineer. */
+"Edit file" = "Editar ficheiro";
+
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editar botões de partilha";
 
@@ -1221,6 +1230,9 @@
 
 /* Hide All Sites */
 "Hide All Sites" = "Esconder todos os sites";
+
+/* No comment provided by engineer. */
+"Hide keyboard" = "Esconder teclado";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -2111,6 +2123,9 @@
    Title for screen to preview a static content. */
 "Preview" = "Pré-visualizar";
 
+/* No comment provided by engineer. */
+"Preview post" = "Pré-visualizar artigo";
+
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notificação anterior";
 
@@ -2262,6 +2277,12 @@
 
 /* User action to remove video. */
 "Remove video" = "Remover vídeo";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "Substituir imagem ou vídeo";
+
+/* No comment provided by engineer. */
+"Replace video" = "Substituir vídeo";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Responde a um comentário";
@@ -3054,6 +3075,9 @@
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Alterações não guardadas";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Não suportado";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
