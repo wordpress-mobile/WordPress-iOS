@@ -31,9 +31,11 @@ class PostTests: XCTestCase {
             .updatePublishDateToFutureDate()
             .closePublishDateSelector()
             .closePostSettings()
-            .schedulePost()
-            .viewPublishedPost(withTitle: postTitle)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomSiteForScheduledPost)
-            .tapDone()
+            .post(action: .schedule)
+
+        try MySiteScreen()
+            .goToPostsScreen()
+            .showOnly(.scheduled)
+            .verifyPostExists(withTitle: postTitle)
     }
 }
