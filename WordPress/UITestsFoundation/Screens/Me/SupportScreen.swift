@@ -59,13 +59,17 @@ public class SupportScreen: ScreenObject {
     }
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
-        let emailExists = contactSupportPlaceholderEmailText.waitForExistence(timeout: 5)
+        let noEmailAddress = contactSupportPlaceholderEmailText.waitForExistence(timeout: 3)
         contactSupportButton.tap()
+        let okButtonExists = okButton.waitForExistence(timeout: 3)
 
-        // If email exists, skip this
-        if emailExists {
+        // If there's no email address, add email
+        if noEmailAddress {
             contactEmailTextField.tap()
             contactEmailTextField.typeText(userEmail)
+            okButton.tap()
+        // If there's email address, but the add email and name modal is still displayed, tap OK to close it
+        } else if !noEmailAddress && okButtonExists {
             okButton.tap()
         }
 
