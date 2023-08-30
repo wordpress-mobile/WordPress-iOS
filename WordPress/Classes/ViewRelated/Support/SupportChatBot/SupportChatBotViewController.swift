@@ -12,8 +12,6 @@ final class SupportChatBotViewController: UIViewController {
     private weak var delegate: SupportChatBotCreatedTicketDelegate?
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
-        contentController.add(self, name: Constants.supportCallback)
-        contentController.add(self, name: Constants.errorCallback)
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -25,6 +23,20 @@ final class SupportChatBotViewController: UIViewController {
         self.viewModel = viewModel
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        webView.configuration.userContentController.add(self, name: Constants.supportCallback)
+        webView.configuration.userContentController.add(self, name: Constants.errorCallback)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        /// Message handlers need to be removed to prevent memory leaks
+        webView.configuration.userContentController.removeAllScriptMessageHandlers()
     }
 
     override func loadView() {
