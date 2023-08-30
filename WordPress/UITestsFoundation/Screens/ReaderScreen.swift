@@ -144,7 +144,7 @@ public class ReaderScreen: ScreenObject {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func openDiscover() -> Self {
+    public func openDiscoverTab() -> Self {
         discoverButton.tap()
 
         return self
@@ -156,7 +156,7 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
-    public func openSavedPosts() -> Self {
+    public func openSavedTab() -> Self {
         savedButton.tap()
 
         return self
@@ -170,13 +170,13 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
-    public func openFollowing() -> Self {
+    public func openFollowingTab() -> Self {
         followingButton.tap()
 
         return self
     }
 
-    public func openLikes() -> Self {
+    public func openLikesTab() -> Self {
         likesTabButton.tap()
 
         return self
