@@ -3,16 +3,7 @@ import Foundation
 /// A service for handling the process of retrieving and generating thumbnail images
 /// for existing Media objects, whether remote or locally available.
 ///
-class MediaThumbnailService: NSObject {
-
-    /// Completion handler for a thumbnail URL.
-    ///
-    public typealias OnThumbnailURL = (URL?) -> Void
-
-    /// Error handler.
-    ///
-    public typealias OnError = (Error) -> Void
-
+final class MediaThumbnailService: NSObject {
     private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaThumbnailService", autoreleaseFrequency: .workItem)
 
     @objc public lazy var exportQueue: DispatchQueue = {
@@ -44,7 +35,7 @@ class MediaThumbnailService: NSObject {
     /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
-    @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
+    @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping (URL?) -> Void, onError: ((Error) -> Void)?) {
         // We can use the main context here because we only read the `Media` instance, without changing it, and all
         // the time consuming work is done in background queues.
         let context = coreDataStack.mainContext
@@ -198,7 +189,7 @@ class MediaThumbnailService: NSObject {
 
     // MARK: - Helpers
 
-    private func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping OnThumbnailURL) {
+    private func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping (URL?) -> Void) {
         coreDataStack.performAndSave({ context in
             let object = try context.existingObject(with: media.objectID)
             // It's safe to force-unwrap here, since the `object`, if exists, must be a `Media` type.
@@ -216,7 +207,7 @@ class MediaThumbnailService: NSObject {
 
     /// Handle the OnError callback and logging any errors encountered.
     ///
-    private func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+    private func handleExportError(_ error: MediaExportError, errorHandler: ((Error) -> Void)?) {
         MediaImportService.logExportError(error)
         exportQueue.async {
             errorHandler?(error.toNSError())
