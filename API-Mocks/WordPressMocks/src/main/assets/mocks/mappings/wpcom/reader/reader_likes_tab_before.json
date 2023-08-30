@@ -1,0 +1,42 @@
+{
+  "scenarioName": "reader_like_post_flow",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "initial_list",
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/v1.2/read/liked",
+    "queryParameters": {
+      "locale": {
+        "matches": "(.*)"
+      },
+      "before": {
+        "matches": "(.*)"
+      },
+      "meta": {
+        "matches": "(.*)"
+      },
+      "number": {
+        "matches": "(.*)"
+      },
+      "order": {
+        "matches": "DESC"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "date_range": {
+        "before": "(.*)",
+        "after": "(.*)"
+      },
+      "number": 0,
+      "posts": []
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

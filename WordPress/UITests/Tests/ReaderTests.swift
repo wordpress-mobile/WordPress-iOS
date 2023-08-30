@@ -4,8 +4,9 @@ import XCTest
 class ReaderTests: XCTestCase {
 
     @MainActor
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         setUpTestSuite()
+        try await WireMock.setUpScenario(scenario: "reader_like_post_flow")
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
@@ -50,20 +51,31 @@ class ReaderTests: XCTestCase {
         // Get saved post label
         let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
             .openSavedPosts()
-            .verifySavedPosts(state: .withoutSavedPosts)
+            .verifySavedPosts(state: .withoutPosts)
             .openFollowing()
             .saveFirstPost()
 
         // Open saved posts tab and validate that the correct saved post is displayed
         updatedReaderScreen
             .openSavedPosts()
-            .verifySavedPosts(state: .withSavedPosts, postLabel: savedPostLabel)
+            .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
+    }
+
+    func testLikePost() throws {
+        try ReaderScreen()
+            .openLikes()
+            .verifyLikedPosts(state: .withoutPosts)
+            .openFollowing()
+            .likeFirstPost()
+            .verifyPostLikedOnFollowingTab()
+            .openLikes()
+            .verifyLikedPosts(state: .withPosts)
     }
 }
 
 private extension String {
     static let commentContent = "🤖👍 #Testing 123 це тестовий коментар"
     static let expectedPostContent = "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Proin dictum non ligula aliquam varius. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
-    static let withoutSavedPosts = "without posts"
-    static let withSavedPosts = "with posts"
+    static let withoutPosts = "without posts"
+    static let withPosts = "with posts"
 }
