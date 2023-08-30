@@ -252,37 +252,45 @@ fileprivate extension SearchManager {
                    blogID: NSNumber,
                    onSuccess: @escaping (_ post: AbstractPost) -> Void,
                    onFailure: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
+        let coreDataStack = ContextManager.shared
 
-        guard let blog = Blog.lookup(withID: blogID, in: context) else {
+        guard let blog = Blog.lookup(withID: blogID, in: coreDataStack.mainContext) else {
                 onFailure()
                 return
         }
 
-        let postService = PostService(managedObjectContext: context)
-        postService.getPostWithID(postID, for: blog, success: { apost in
-            onSuccess(apost)
-        }, failure: { error in
-            onFailure()
-        })
+        let postRepository = PostRepository(coreDataStack: coreDataStack)
+        Task { @MainActor in
+            do {
+                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(saved: blog))
+                let post = try coreDataStack.mainContext.existingObject(with: postObjectID)
+                onSuccess(post)
+            } catch {
+                onFailure()
+            }
+        }
     }
 
     func fetchSelfHostedPost(_ postID: NSNumber,
                              blogXMLRpcString: String,
                              onSuccess: @escaping (_ post: AbstractPost) -> Void,
                              onFailure: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-        guard let blog = Blog.selfHosted(in: context).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
+        let coreDataStack = ContextManager.shared
+        guard let blog = Blog.selfHosted(in: coreDataStack.mainContext).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
             onFailure()
             return
         }
 
-        let postService = PostService(managedObjectContext: context)
-        postService.getPostWithID(postID, for: blog, success: { apost in
-            onSuccess(apost)
-        }, failure: { error in
-            onFailure()
-        })
+        let postRepository = PostRepository(coreDataStack: coreDataStack)
+        Task { @MainActor in
+            do {
+                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(saved: blog))
+                let post = try coreDataStack.mainContext.existingObject(with: postObjectID)
+                onSuccess(post)
+            } catch {
+                onFailure()
+            }
+        }
     }
 
     func fetchBlog(_ blogID: NSNumber,
