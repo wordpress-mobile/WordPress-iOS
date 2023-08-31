@@ -16,7 +16,7 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
+        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: FeatureFlag.readerImprovements.enabled)
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,15 +14,15 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-WX-1gb">
-                    <rect key="frame" x="16" y="40" width="343" height="0.0"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Legacy" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-WX-1gb">
+                    <rect key="frame" x="16" y="40" width="343" height="26.333333333333329"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gN8-Rn-2M3">
-                    <rect key="frame" x="160.66666666666666" y="60" width="54" height="68"/>
-                    <color key="tintColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <rect key="frame" x="160.66666666666666" y="86.333333333333329" width="54" height="41.666666666666671"/>
+                    <color key="tintColor" systemColor="systemBackgroundColor"/>
                     <state key="normal" title="Button">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -30,8 +31,8 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <color key="tintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+            <color key="tintColor" systemColor="linkColor"/>
             <constraints>
                 <constraint firstItem="gN8-Rn-2M3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="0ga-1S-GtT"/>
                 <constraint firstItem="gN8-Rn-2M3" firstAttribute="top" secondItem="yMm-WX-1gb" secondAttribute="bottom" constant="20" id="554-ja-cGb"/>
@@ -51,5 +52,99 @@
             </connections>
             <point key="canvasLocation" x="139" y="155"/>
         </view>
+        <view clipsSubviews="YES" tag="1" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="EAn-Fo-3Wc" userLabel="Improved Reader Tag Stream Header - Horizontal" customClass="ReaderTagStreamHeader" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Horizontal" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBt-SR-rx1">
+                    <rect key="frame" x="16" y="16" width="123" height="48"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tq8-oU-LjX">
+                    <rect key="frame" x="305" y="23" width="54" height="34"/>
+                    <color key="tintColor" systemColor="systemBackgroundColor"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapFollowButton:" destination="EAn-Fo-3Wc" eventType="touchUpInside" id="HFQ-ab-DOy"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+            <color key="tintColor" systemColor="linkColor"/>
+            <constraints>
+                <constraint firstItem="sBt-SR-rx1" firstAttribute="leading" secondItem="EAn-Fo-3Wc" secondAttribute="leadingMargin" id="AgO-fk-WO2"/>
+                <constraint firstItem="Tq8-oU-LjX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sBt-SR-rx1" secondAttribute="trailing" constant="8" id="MfS-17-r5P"/>
+                <constraint firstItem="Tq8-oU-LjX" firstAttribute="centerY" secondItem="sBt-SR-rx1" secondAttribute="centerY" id="bTG-n8-2RI"/>
+                <constraint firstItem="sBt-SR-rx1" firstAttribute="top" secondItem="EAn-Fo-3Wc" secondAttribute="top" constant="16" id="gaC-c1-XAh"/>
+                <constraint firstAttribute="bottom" secondItem="sBt-SR-rx1" secondAttribute="bottom" constant="16" id="hfe-LN-dyG"/>
+                <constraint firstAttribute="trailingMargin" secondItem="Tq8-oU-LjX" secondAttribute="trailing" id="t8f-ZJ-Moh"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="followButton" destination="Tq8-oU-LjX" id="qCa-w1-yEC"/>
+                <outlet property="titleLabel" destination="sBt-SR-rx1" id="KN3-cE-mJS"/>
+            </connections>
+            <point key="canvasLocation" x="917.60000000000002" y="335.46798029556652"/>
+        </view>
+        <view clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="Zt2-QZ-5QS" userLabel="Improved Reader Tag Stream Header - Vertical" customClass="ReaderTagStreamHeader" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vertical" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7PP-0C-EJV">
+                    <rect key="frame" x="16" y="15.999999999999996" width="343" height="33.666666666666657"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IFQ-dS-FSp">
+                    <rect key="frame" x="16" y="65.666666666666686" width="54" height="86.333333333333314"/>
+                    <color key="tintColor" systemColor="systemBackgroundColor"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapFollowButton:" destination="Zt2-QZ-5QS" eventType="touchUpInside" id="uji-NZ-Uz3"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+            <color key="tintColor" systemColor="linkColor"/>
+            <constraints>
+                <constraint firstItem="IFQ-dS-FSp" firstAttribute="top" secondItem="7PP-0C-EJV" secondAttribute="bottom" constant="16" id="BGh-Ef-dXj"/>
+                <constraint firstItem="7PP-0C-EJV" firstAttribute="top" secondItem="Zt2-QZ-5QS" secondAttribute="top" constant="16" id="CJ7-g8-NPl"/>
+                <constraint firstItem="7PP-0C-EJV" firstAttribute="leading" secondItem="Zt2-QZ-5QS" secondAttribute="leadingMargin" id="Moo-2i-lF7"/>
+                <constraint firstAttribute="trailingMargin" secondItem="7PP-0C-EJV" secondAttribute="trailing" id="XE2-Y7-Z5x"/>
+                <constraint firstItem="IFQ-dS-FSp" firstAttribute="leading" secondItem="Zt2-QZ-5QS" secondAttribute="leadingMargin" id="f4x-dn-pDf"/>
+                <constraint firstAttribute="bottom" secondItem="IFQ-dS-FSp" secondAttribute="bottom" constant="16" id="gxg-Nl-MT8"/>
+                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="IFQ-dS-FSp" secondAttribute="trailing" id="iNu-iN-yhk"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="followButton" destination="IFQ-dS-FSp" id="mWO-1Z-dEd"/>
+                <outlet property="titleLabel" destination="7PP-0C-EJV" id="1Xl-Bm-3cj"/>
+            </connections>
+            <point key="canvasLocation" x="136.80000000000001" y="367.98029556650249"/>
+        </view>
     </objects>
+    <resources>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

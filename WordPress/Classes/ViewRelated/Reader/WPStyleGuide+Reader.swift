@@ -202,8 +202,12 @@ extension WPStyleGuide {
 
     // MARK: - Apply Stream Header Styles
 
-    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
-        label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
+    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel, usesNewStyle: Bool = false) {
+        if usesNewStyle {
+            label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        } else {
+            label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
+        }
         label.textColor = .text
     }
 
