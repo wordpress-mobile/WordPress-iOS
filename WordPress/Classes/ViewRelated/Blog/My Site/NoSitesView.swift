@@ -33,7 +33,7 @@ struct NoSitesView: View {
             if viewModel.isShowingAccountAndSettings {
                 accountAndSettingsButton
                     .padding(.horizontal, 32)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 24)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
