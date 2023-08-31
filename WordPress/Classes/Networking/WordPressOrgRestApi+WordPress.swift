@@ -30,6 +30,7 @@ private func makeCookieNonceAuthenticator(blog: Blog) -> Authenticator? {
 
 private func apiBase(blog: Blog) -> URL? {
     guard blog.account == nil else {
+        assertionFailure(".com support has not been implemented yet")
         return nil
     }
     return try? blog.url(withPath: "wp-json/")?.asURL()
