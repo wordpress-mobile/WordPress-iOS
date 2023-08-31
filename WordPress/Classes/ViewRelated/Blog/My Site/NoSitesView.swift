@@ -87,18 +87,7 @@ struct NoSitesView: View {
         } label: {
             HStack(alignment: .center, spacing: 16) {
                 makeGravatarIcon(size: 40)
-                VStack(alignment: .leading) {
-                    Text(viewModel.displayName)
-                        .foregroundColor(.primary)
-                        .font(.callout.weight(.semibold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-                    Text(Strings.accountAndSettings)
-                        .foregroundColor(.secondary)
-                        .font(.subheadline.weight(.regular))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-                }
+                accountAndSettingsStackView
                 Spacer()
                 Image(systemName: "chevron.right")
                     .tint(.secondary)
@@ -107,6 +96,21 @@ struct NoSitesView: View {
             .padding(.vertical, 10)
             .background(Color(uiColor: .listForeground))
             .cornerRadius(10)
+        }
+    }
+
+    private var accountAndSettingsStackView: some View {
+        VStack(alignment: .leading) {
+            Text(viewModel.displayName)
+                .foregroundColor(.primary)
+                .font(.callout.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+            Text(Strings.accountAndSettings)
+                .foregroundColor(.secondary)
+                .font(.subheadline.weight(.regular))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
         }
     }
 
