@@ -43,6 +43,7 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case domainFocus
     case nativePhotoPicker
+    case readerImprovements // pcdRpT-3Eb-p2
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -137,6 +138,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .nativePhotoPicker:
             return true
+        case .readerImprovements:
+            return false
         }
     }
 
@@ -241,6 +244,8 @@ extension FeatureFlag {
             return "Domain Focus"
         case .nativePhotoPicker:
             return "Native Photo Picker"
+        case .readerImprovements:
+            return "Reader Improvements v1"
         }
     }
 }
