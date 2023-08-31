@@ -59,7 +59,7 @@ final class PostRepository {
 
             PostHelper.update(post, with: remotePost, in: context)
 
-            return try .init(unsaved: post)
+            return .init(post)
         }
     }
 
