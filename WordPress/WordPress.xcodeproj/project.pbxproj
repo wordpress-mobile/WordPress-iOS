@@ -5466,6 +5466,7 @@
 		FAE8EE99273AC06F00A65307 /* QuickStartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8EE98273AC06F00A65307 /* QuickStartSettings.swift */; };
 		FAE8EE9A273AC06F00A65307 /* QuickStartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8EE98273AC06F00A65307 /* QuickStartSettings.swift */; };
 		FAE8EE9C273AD0A800A65307 /* QuickStartSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8EE9B273AD0A800A65307 /* QuickStartSettingsTests.swift */; };
+		FAF0FAAC2AA094C0004C3228 /* NoSiteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF0FAAB2AA094C0004C3228 /* NoSiteViewModelTests.swift */; };
 		FAF13C5325A57ABD003EE470 /* JetpackRestoreWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */; };
 		FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */; };
 		FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
@@ -9305,6 +9306,7 @@
 		FAE4CA672732C094003BFDFE /* QuickStartPromptViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartPromptViewController.xib; sourceTree = "<group>"; };
 		FAE8EE98273AC06F00A65307 /* QuickStartSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartSettings.swift; sourceTree = "<group>"; };
 		FAE8EE9B273AD0A800A65307 /* QuickStartSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartSettingsTests.swift; sourceTree = "<group>"; };
+		FAF0FAAB2AA094C0004C3228 /* NoSiteViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSiteViewModelTests.swift; sourceTree = "<group>"; };
 		FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningViewController.swift; sourceTree = "<group>"; };
 		FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusViewController.swift; sourceTree = "<group>"; };
 		FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackScreenshotGeneration.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -15632,6 +15634,7 @@
 				BEC8A3FD1B4BAA08001CB8C3 /* Blog */,
 				E1B921BA1C0ED481003EA3CB /* Cells */,
 				C3E42AAD27F4D2CF00546706 /* Menus */,
+				FAF0FAAD2AA094CE004C3228 /* My Site */,
 				3F86A83829D19C1C005D20C0 /* NUX */,
 				8B7623352384372200AB3EE7 /* Pages */,
 				937E3AB41E3EBDC900CDA01A /* Post */,
@@ -18094,6 +18097,14 @@
 				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		FAF0FAAD2AA094CE004C3228 /* My Site */ = {
+			isa = PBXGroup;
+			children = (
+				FAF0FAAB2AA094C0004C3228 /* NoSiteViewModelTests.swift */,
+			);
+			path = "My Site";
 			sourceTree = "<group>";
 		};
 		FAF64BC82637DF0600E8A1DF /* JetpackScreenshotGeneration */ = {
@@ -23510,6 +23521,7 @@
 				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
 				4629E4232440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift in Sources */,
 				8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */,
+				FAF0FAAC2AA094C0004C3228 /* NoSiteViewModelTests.swift in Sources */,
 				02BE5CC02281B53F00E351BA /* RegisterDomainDetailsViewModelLoadingStateTests.swift in Sources */,
 				FEFA263E26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift in Sources */,
 				0C6C4CD02A4F0A000049E762 /* BlazeCampaignsStreamTests.swift in Sources */,

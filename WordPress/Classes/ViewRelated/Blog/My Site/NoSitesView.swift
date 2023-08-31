@@ -185,7 +185,7 @@ struct NoSitesView_Previews: PreviewProvider {
             launchLoginForSelfHostedSite: {}
         )
         NoSitesView(
-            viewModel: NoSitesViewModel(account: nil),
+            viewModel: NoSitesViewModel(appUIType: .simplified, account: nil),
             addNewSiteConfiguration: configuration
         )
     }

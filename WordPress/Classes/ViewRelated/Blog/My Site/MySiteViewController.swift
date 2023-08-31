@@ -155,7 +155,10 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     private var noSitesScrollView: UIScrollView?
     private var noSitesRefreshControl: UIRefreshControl?
     private lazy var noSitesViewController: UIHostingController = {
-        let viewModel = NoSitesViewModel(account: defaultAccount())
+        let viewModel = NoSitesViewModel(
+            appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType,
+            account: defaultAccount()
+        )
         let configuration = AddNewSiteConfiguration(
             canCreateWPComSite: defaultAccount() != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
