@@ -33,10 +33,15 @@ public class SupportScreen: ScreenObject {
         $0.cells["activity-logs-button"]
     }
 
+    private let contactSupportPlaceholderEmailTextGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["set-contact-email-button"].staticTexts["Not Set"]
+    }
+
     var activityLogsButton: XCUIElement { activityLogsButtonGetter(app) }
     var closeButton: XCUIElement { closeButtonGetter(app) }
-    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
     var contactEmailTextField: XCUIElement { contactEmailTextFieldGetter(app) }
+    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
+    var contactSupportPlaceholderEmailText: XCUIElement { contactSupportPlaceholderEmailTextGetter(app) }
     var okButton: XCUIElement { okButtonGetter(app) }
     var visitForumsButton: XCUIElement { visitForumsButtonGetter(app) }
     var visitWordPressForumsPrompt: XCUIElement { visitWordPressForumsPromptGetter(app) }
@@ -54,10 +59,19 @@ public class SupportScreen: ScreenObject {
     }
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
+        let noEmailAddress = contactSupportPlaceholderEmailText.waitForExistence(timeout: 3)
         contactSupportButton.tap()
-        contactEmailTextField.tap()
-        contactEmailTextField.typeText(userEmail)
-        okButton.tap()
+        let okButtonExists = okButton.waitForExistence(timeout: 3)
+
+        // If there's no email address, add email
+        if noEmailAddress {
+            contactEmailTextField.tap()
+            contactEmailTextField.typeText(userEmail)
+            okButton.tap()
+        // If there's email address, but the add email and name modal is still displayed, tap OK to close it
+        } else if !noEmailAddress && okButtonExists {
+            okButton.tap()
+        }
 
         return try ContactUsScreen()
     }
