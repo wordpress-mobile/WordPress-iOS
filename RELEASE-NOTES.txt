@@ -9,7 +9,7 @@
 * [*] [internal] Change how a post is fetched when selecting a post in Spotlight search result. [#21439]
 * [*] [internal] Change how a post's revision is fetched from the post history screen. [#21440]
 * [**] [internal] Replace the progress indicator implementation in uploading featured image from "Post Settings" [#21438]
-* [***] [Jetpack-only] Contact Support: Need assistance? Use Jetpack mobile assistant for immediate help. Create a support ticket for further assistance. [#21467]
+* [***] [Jetpack-only] Contact Support: Add a new chat-based support channel where users can get answers from a bot trained to help app users. Users can still create a support ticket to talk to a Happiness Engineer if they don't find the answer they're looking for [#21467]
 
 23.0.1
 -----
