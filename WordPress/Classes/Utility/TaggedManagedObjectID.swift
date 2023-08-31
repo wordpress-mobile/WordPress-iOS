@@ -29,17 +29,27 @@ import Foundation
 struct TaggedManagedObjectID<Model: NSManagedObject>: Equatable {
     let objectID: NSManagedObjectID
 
-    /// Create an `TaggedManagedObjectID` instance of an object that's already saved.
+    @available(*, deprecated, message: "Use init(_:) instead")
     init(saved object: Model) {
-        self = TaggedManagedObjectID<Model>(objectID: object.objectID)
+        self.init(object)
     }
 
-    /// Create an `TaggedManagedObjectID` instance of an object that's not yet saved.
+    @available(*, deprecated, message: "Use init(_:) instead")
     init(unsaved object: Model) throws {
+        self.init(object)
+    }
+
+    /// Create an `TaggedManagedObjectID` instance of the given object.
+    init(_ object: Model) {
         var objectID = object.objectID
+
         if objectID.isTemporaryID {
             let context = object.managedObjectContext!
-            try context.obtainPermanentIDs(for: [object])
+            do {
+                try context.obtainPermanentIDs(for: [object])
+            } catch {
+                fatalError("Failed to obtain permanent id for \(objectID). Error: \(error)")
+            }
             objectID = object.objectID
         }
 
