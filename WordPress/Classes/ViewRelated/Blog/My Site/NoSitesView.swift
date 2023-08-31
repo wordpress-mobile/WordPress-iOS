@@ -134,9 +134,9 @@ struct NoSitesView: View {
 
 extension NoSitesView {
 
-    /// If the account can't add a self-hosted site, launch site creation.
-    ///
+    /// If the account can't add a self-hosted site, launch site creation for a WordPress.com site.
     /// Otherwise, show options to create a WordPress.com site or add a self-hosted site.
+    ///
     /// In compact size classes, the system shows a dialog sheet with a cancel button.
     /// In regular size classes, the system shows a popover without a cancel button.
     ///
