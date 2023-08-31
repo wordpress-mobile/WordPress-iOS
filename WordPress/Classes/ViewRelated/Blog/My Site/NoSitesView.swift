@@ -27,11 +27,11 @@ struct NoSitesView: View {
             Color(uiColor: .listBackground)
                 .edgesIgnoringSafeArea(.all)
 
-            makeMainView()
+            mainView
                 .padding(.horizontal, 32)
 
             if viewModel.isShowingAccountAndSettings {
-                makeAccountAndSettingsButton()
+                accountAndSettingsButton
                     .padding(.horizontal, 32)
                     .padding(.bottom, 20)
             }
@@ -39,7 +39,7 @@ struct NoSitesView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    private func makeMainView() -> some View {
+    private var mainView: some View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer()
             Image("pagesCardPromoImage")
@@ -47,13 +47,13 @@ struct NoSitesView: View {
                 .scaledToFill()
                 .frame(width: 110, height: 80)
                 .cornerRadius(5)
-            makeTextStackView()
-            makeAddNewSiteButton()
+            textStackView
+            addNewSiteButton
             Spacer()
         }
     }
 
-    private func makeTextStackView() -> some View {
+    private var textStackView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(Strings.title)
                 .font(.title3.weight(.semibold))
@@ -64,7 +64,7 @@ struct NoSitesView: View {
         }
     }
 
-    private func makeAddNewSiteButton() -> some View {
+    private var addNewSiteButton: some View {
         Button {
             handleAddNewSiteButtonTapped()
         } label: {
@@ -77,11 +77,11 @@ struct NoSitesView: View {
                 .font(.callout.weight(.semibold))
         }
         .confirmationDialog("", isPresented: $isShowingDialog) {
-            makeAddNewSitesDialog()
+            addNewSitesDialog
         }
     }
 
-    private func makeAccountAndSettingsButton() -> some View {
+    private var accountAndSettingsButton: some View {
         Button {
             delegate?.didTapAccountAndSettingsButton()
         } label: {
@@ -151,7 +151,7 @@ extension NoSitesView {
         self.isShowingDialog = true
     }
 
-    @ViewBuilder private func makeAddNewSitesDialog() -> some View {
+    @ViewBuilder private var addNewSitesDialog: some View {
         Button(Strings.createWPComSite) {
             addNewSiteConfiguration.launchSiteCreation()
         }
