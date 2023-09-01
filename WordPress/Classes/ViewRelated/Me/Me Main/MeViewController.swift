@@ -254,7 +254,7 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             if let myProfileViewController = self.myProfileViewController {
                 WPAppAnalytics.track(.openedMyProfile)
-                self.showDetailViewController(myProfileViewController, sender: self)
+                self.showOrPushController(myProfileViewController)
             }
         }
     }
@@ -266,7 +266,7 @@ class MeViewController: UITableViewController {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-                self.showDetailViewController(controller, sender: self)
+                self.showOrPushController(controller)
             }
         }
     }
@@ -286,20 +286,14 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
             let controller = AppSettingsViewController()
-            self.showDetailViewController(controller, sender: self)
+            self.showOrPushController(controller)
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportTableViewController(style: .insetGrouped)
-
-            // If iPad, show Support from Me view controller instead of navigation controller.
-             if !self.splitViewControllerIsHorizontallyCompact {
-                 controller.showHelpFromViewController = self
-             }
-
-            self.showDetailViewController(controller, sender: self)
+            self.showOrPushController(controller)
         }
     }
 
@@ -386,6 +380,17 @@ class MeViewController: UITableViewController {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
             handler.tableView(self.tableView, didSelectRowAt: indexPath)
         }
+    }
+
+    private func showOrPushController(_ controller: UIViewController) {
+        let primaryViewController = (splitViewController?.viewControllers.first as? UINavigationController)?.topViewController
+        let shouldShowInDetailViewController = splitViewControllerIsHorizontallyCompact || primaryViewController is MeViewController
+        if shouldShowInDetailViewController {
+            self.showDetailViewController(controller, sender: self)
+            return
+        }
+
+        self.navigationController?.pushViewController(controller, animated: true, rightBarButton: self.navigationItem.rightBarButtonItem)
     }
 
     // MARK: - Helpers
