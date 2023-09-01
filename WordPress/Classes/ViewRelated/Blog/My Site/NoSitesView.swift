@@ -42,10 +42,10 @@ struct NoSitesView: View {
     private var mainView: some View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer()
-            Image("pagesCardPromoImage")
+            Image("noSitesEmptyStateImage")
                 .resizable()
                 .scaledToFill()
-                .frame(width: 110, height: 80)
+                .frame(width: 210, height: 120)
                 .cornerRadius(5)
             textStackView
             addNewSiteButton
