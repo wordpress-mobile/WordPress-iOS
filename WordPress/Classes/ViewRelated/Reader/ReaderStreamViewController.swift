@@ -181,6 +181,14 @@ import Combine
                 siteID = nil
                 tagSlug = nil
             }
+
+            // Make sure the header is in-sync with the `readerTopic` object if it exists.
+            readerTopicChangesObserver?.cancel()
+            readerTopicChangesObserver = readerTopic?
+                .objectWillChange
+                .sink { [weak self] _ in
+                    self?.updateStreamHeaderIfNeeded()
+                }
         }
     }
 
@@ -206,7 +214,7 @@ import Combine
 
     let ghostableTableView = UITableView()
 
-    private var cancellables = Set<AnyCancellable>()
+    private var readerTopicChangesObserver: AnyCancellable?
 
     // MARK: - Factory Methods
 
@@ -361,14 +369,6 @@ import Combine
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
-
-        // Make sure the header is in-sync with the `readerTopic` object if it exists.
-        readerTopic?
-            .objectWillChange
-            .sink { [weak self] _ in
-                self?.updateStreamHeaderIfNeeded()
-            }
-            .store(in: &cancellables)
     }
 
 
