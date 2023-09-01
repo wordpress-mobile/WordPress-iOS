@@ -88,6 +88,7 @@ struct ReaderSiteHeader: View {
             countsDisplay
             if !viewModel.isFollowHidden {
                 followButton
+                    .padding(.top, 4)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -102,7 +103,7 @@ struct ReaderSiteHeader: View {
         return stringItems.reduce(Text(""), {
             var text = Text($1)
             if $1 == viewModel.postCount || $1 == viewModel.followerCount {
-                text = text.font(.subheadline.weight(.semibold))
+                text = text.font(.subheadline)
             } else {
                 text = text.font(.subheadline).foregroundColor(.secondary)
             }
