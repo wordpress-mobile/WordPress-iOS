@@ -126,7 +126,8 @@ class MeViewController: UITableViewController {
     }
 
     private var appSettingsRow: NavigationItemRow {
-        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let isDetailViewController = (splitViewController?.viewControllers.last as? UINavigationController)?.topViewController is MeViewController
+        let accessoryType: UITableViewCell.AccessoryType = isDetailViewController ? .disclosureIndicator : .none
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
@@ -137,7 +138,8 @@ class MeViewController: UITableViewController {
     }
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
-        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let isDetailViewController = (splitViewController?.viewControllers.last as? UINavigationController)?.topViewController is MeViewController
+        let accessoryType: UITableViewCell.AccessoryType = isDetailViewController ? .disclosureIndicator : .none
 
         let loggedIn = account != nil
 
