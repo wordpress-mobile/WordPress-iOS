@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-10 11:54:29+0000 */
+/* Translation-Revision-Date: 2023-08-30 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ja_JP */
@@ -9709,6 +9709,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "作成者: %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "役に立ったと評価する";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "コメント";
 
@@ -10443,6 +10446,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "今日の統計情報";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "ニュース";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "ドメインを移管する";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "ご存知かもしれませんが、Google Domains は Squarespace に売却されました。 今すぐドメインを WordPress.com に移管していただければ、移管費用に加え、ドメイン登録料も当社が負担いたします。";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Google Domains を再利用する";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
@@ -10930,6 +10945,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "WordPress.org にアクセス";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "考えています...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "閉じる";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "サポートに連絡";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "何かお困りですか ? 問題が解決しない場合は、当社のチームがサポートチケットを開くお手伝いをいたします。";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "メッセージを送信...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "ログイン情報を忘れました";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "なぜログインできないのでしょうか ?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "サイトのアドレスがわかりません。";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "アプリで自分のカスタムドメインを使用するにはどうすればいいですか ?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "写真や動画をアップロードできません";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "サイトがダウンしていまいました。";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "不正確として報告";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "ソース";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "どうすればいいかわからない場合";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "サポートチケットの送信中にエラーが発生しました";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "サポートチケットを作成しています...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "チケットが作成されました";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "サポートに連絡";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "回答";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "質問";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack モバイルのボットのトランスクリプト";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "コミュニティーフォーラムで質問して、ボランティアグループからサポートを受けましょう。";

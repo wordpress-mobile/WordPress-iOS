@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-09 14:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-29 16:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: he_IL */
@@ -9709,6 +9709,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "מאת %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "לדרג כמידע מועיל";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "תגובה";
 
@@ -10443,6 +10446,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "הנתונים הסטטיסטיים של היום";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "חדשות";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "להעביר את הדומיינים שלך";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "כפי שוודאי ידוע לך, שירות Google Domains נמכר ל-Squarespace. אפשר להעביר את הדומיינים שלך ל-WordPress.com עכשיו ואנחנו נשלם עבור דמי ההעברה וניתן לך שנה נוספת של רישום דומיין בחינם.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "לקבל בעלות על הדומיינים שלך ב-Google Domains";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "ביטול";
 
@@ -10933,6 +10948,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "מעבר לאתר WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "מנסה למצוא תשובה...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "לסגור";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "לפנות לתמיכה";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "איך אוכל לעזור? אם לא אצליח לענות על השאלה שלך, אוכל לעזור לך לפתוח קריאה לצוות התמיכה שלנו!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "לשלוח הודעה...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "שכחתי את פרטי הכניסה שלי";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "למה לא הצלחתי להתחבר?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "מהי כתובת האתר שלי?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "איך אפשר להשתמש בדומיין האישי שלי באפליקציה?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "לא הצלחתי להעלות תמונות\/סרטונים";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "הצילו, האתר שלי מושבת!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "לדווח על מידע לא מדויק";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "מקורות";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "לא הצלחת להבין לך מה צריך לשאול?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "שגיאה בשליחת הקריאה לתמיכה";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "פותח קריאה לתמיכה...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "הקריאה נוצרה";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "לפנות לתמיכה";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "תשובה";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "שאלה";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "תסריט לבוט האפליקציה של Jetpack לנייד";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "אפשר לשאול שאלה בפורום הקהילה ולקבל עזרה מקבוצת המתנדבים שלנו.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-09 12:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-29 12:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ar */
@@ -9706,6 +9706,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "بواسطة %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "التقييم بأنه مفيد";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "التعليق";
 
@@ -10440,6 +10443,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "إحصاءات اليوم";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "الأخبار";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "نقل نطاقاتك";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "مثلما تعرف، تم بيع Google Domains لـ Squarespace. انقل نطاقاتك إلى ووردبريس.كوم الآن، وسندفع كل رسوم النقل بالإضافة إلى عام إضافي من تسجيلك للنطاق.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "استعادة Google Domains الخاصة بك";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "تجاهل";
 
@@ -10921,6 +10936,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "زيارة وردبرس.أورج";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "جارٍ التفكير...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "إغلاق";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "الاتصال بالدعم";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "ما الذي يمكنني مساعدتك على القيام به؟ إذا لم أتمكن من الإجابة عن سؤالك، فإنني سأساعدك على فتح بطاقة دعم من خلال فريقنا!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "إرسال رسالة...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "نسيتُ معلومات تسجيل الدخول الخاصة بي";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "ما السبب في عدم تسجيلي الدخول؟";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "ما عنوان موقعي؟";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "كيف يمكنني استخدام نطاقي المخصص في التطبيق؟";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "يتعذر عليَّ رفع الصور\/الفيديوهات";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "ساعدوني، لقد تعطَّل موقعي!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "الإبلاغ بأنه غير دقيق";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "مصادر";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "ألست متأكدًا مما تسأل؟";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "خطأ في إرسال بطاقة الدعم";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "جارٍ إنشاء بطاقة الدعم...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "تم إنشاء بطاقة";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "الاتصال بالدعم";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "إجابة";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "سؤال";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "النص المكتوب في Jetpack Mobile Bot";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "اطرح سؤالاً في المنتدى الاجتماعي واحصل على المساعدة من مجموعة المتطوعين لدينا.";

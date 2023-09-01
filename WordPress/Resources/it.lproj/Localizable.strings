@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-09 12:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-30 09:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: it */
@@ -9712,6 +9712,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "di %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Valuta come utile";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "commento";
 
@@ -10446,6 +10449,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistiche odierne";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Notizie";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Trasferisci i tuoi domini";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Come forse saprai, Google Domains è stato venduto a Squarespace. Trasferisci i tuoi domini a WordPress.com ora gratuitamente e noi ci faremo carico di tutti i costi di trasferimento, in aggiunta a un ulteriore anno di registrazione gratuita del dominio.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Recupera i tuoi Google Domains";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Ignora";
 
@@ -10936,6 +10951,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Visita WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Sto pensando...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Chiudi";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Contatta il supporto";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Come posso aiutarti? Se non riesco a rispondere alla tua domanda, ti aiuterò ad aprire un ticket di supporto con il nostro team.";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Invia un messaggio...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Ho dimenticato le mie informazioni di accesso";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Perché non posso accedere?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Qual è l'indirizzo del mio sito?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Come posso usare il mio dominio personalizzato nell'app?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Non posso caricare foto\/video";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Mi serve aiuto, il mio sito è inattivo.";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Segnala come informazione imprecisa";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Fonti";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Non sai cosa chiedere?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Errore durante l'invio di un ticket di supporto";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Creazione del ticket di supporto…";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Ticket creato";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Contatta il supporto";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Risposta";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Domanda";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Trascrizione del bot di Jetpack per dispositivi mobili";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Fai una domanda nel forum della community e lasciati aiutare dal nostro gruppo di volontari.";
