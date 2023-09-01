@@ -14,6 +14,7 @@
 * [**] Block Editor: Add block outline to all Social Link blocks when selected [https://github.com/WordPress/gutenberg/pull/54011]
 * [***] [Jetpack-only] Contact Support: Add a new chat-based support channel where users can get answers from a bot trained to help app users. Users can still create a support ticket to talk to a Happiness Engineer if they don't find the answer they're looking for [#21467]
 * [*] Fix a crash on the pages list when the authentication token is invalid. [#21471]
+* [**] Me tab: move Me to the bottom tab bar [https://github.com/wordpress-mobile/WordPress-iOS/pull/21348]
 
 23.0.1
 -----
