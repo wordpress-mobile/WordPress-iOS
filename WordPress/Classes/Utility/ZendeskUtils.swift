@@ -17,8 +17,15 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+enum ZendeskRequestError: Error {
+    case noIdentity
+    case failedParsingResponse
+    case createRequest(String)
+}
+
 protocol ZendeskUtilsProtocol {
-    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ())
+    typealias ZendeskNewRequestCompletion = (Result<ZDKRequest, ZendeskRequestError>) -> ()
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion)
 }
 
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
@@ -323,11 +330,11 @@ protocol ZendeskUtilsProtocol {
 // MARK: - Create Request
 
 extension ZendeskUtils {
-    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping (Bool) -> ()) {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
         presentInController = viewController
         ZendeskUtils.createIdentity { [weak self] success, newIdentity in
             guard let self, success else {
-                completion(false)
+                completion(.failure(.noIdentity))
                 return
             }
 
@@ -341,14 +348,18 @@ extension ZendeskUtils {
                 request.subject = requestConfig.subject
                 request.requestDescription = description
 
-                provider.createRequest(request) { _, error in
+                provider.createRequest(request) { response, error in
                     if let error {
                         DDLogError("Creating new request failed: \(error)")
-                        completion(false)
+                        completion(.failure(.createRequest(error.localizedDescription)))
+                    } else if let data = (response as? ZDKDispatcherResponse)?.data,
+                              let dict = try? JSONSerialization.jsonObject(with: data) as? [AnyHashable: Any],
+                              let requestDict = dict["request"] as? [AnyHashable: Any],
+                              let request = ZDKRequest(dict: requestDict) {
+                        completion(.success(request))
                     } else {
-                        completion(true)
+                        completion(.failure(.failedParsingResponse))
                     }
-
                 }
             }
         }

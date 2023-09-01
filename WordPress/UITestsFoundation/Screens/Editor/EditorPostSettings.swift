@@ -11,6 +11,10 @@ public class EditorPostSettings: ScreenObject {
         $0.cells["Categories"]
     }
 
+    private let chooseFromMediaButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Choose from Media"]
+    }
+
     private let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Tags"]
     }
@@ -35,8 +39,8 @@ public class EditorPostSettings: ScreenObject {
         $0.buttons["Next Month"]
     }
 
-    private let firstCalendarDayLabelGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["1"]
+    private let firstCalendarDayButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons.containing(.staticText, identifier: "1").element
     }
 
     private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -44,11 +48,12 @@ public class EditorPostSettings: ScreenObject {
     }
 
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
+    var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
     var doneButton: XCUIElement { doneButtonGetter(app) }
     var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
-    var firstCalendarDayLabel: XCUIElement { firstCalendarDayLabelGetter(app) }
+    var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
     var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
     var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
     var settingsTable: XCUIElement { settingsTableGetter(app) }
@@ -96,8 +101,8 @@ public class EditorPostSettings: ScreenObject {
 
     public func setFeaturedImage() throws -> EditorPostSettings {
         featuredImageButton.tap()
-        try MediaPickerAlbumListScreen()
-            .selectAlbum(atIndex: 0) // Select media library
+        chooseFromMediaButton.tap()
+        try MediaPickerAlbumScreen()
             .selectImage(atIndex: 0) // Select latest uploaded image
 
         return try EditorPostSettings()
@@ -137,7 +142,7 @@ public class EditorPostSettings: ScreenObject {
 
         // Selects the first day of the next month
         nextMonthButton.tap()
-        firstCalendarDayLabel.tap()
+        firstCalendarDayButton.tap()
 
         doneButton.tap()
         return self

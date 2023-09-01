@@ -481,6 +481,13 @@ import Foundation
     case supportMigrationFAQButtonTapped
     case supportMigrationFAQCardViewed
 
+    // Chatbot Support
+    case supportChatbotStarted
+    case supportChatbotWebViewError
+    case supportChatbotTicketSuccess
+    case supportChatbotTicketFailure
+    case supportChatbotEnded
+
     // Jetpack plugin connection to user's WP.com account
     case jetpackPluginConnectUserAccountStarted
     case jetpackPluginConnectUserAccountFailed
@@ -1341,6 +1348,19 @@ import Foundation
             return "support_migration_faq_tapped"
         case .supportMigrationFAQCardViewed:
             return "support_migration_faq_viewed"
+
+        // Chatbot Support
+        case .supportChatbotStarted:
+            return "support_chatbot_started"
+        case .supportChatbotWebViewError:
+            return "support_chatbot_webview_error"
+        case .supportChatbotTicketSuccess:
+            return "support_chatbot_ticket_success"
+        case .supportChatbotTicketFailure:
+            return "support_chatbot_ticket_failure"
+        case .supportChatbotEnded:
+            return "support_chatbot_ended"
+
 
         // Jetpack plugin connection to user's WP.com account
         case .jetpackPluginConnectUserAccountStarted:

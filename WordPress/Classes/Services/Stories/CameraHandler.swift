@@ -111,6 +111,14 @@ class CameraHandler: CameraControllerDelegate {
 
     }
 
+    func screenDidAppear(_ screen: Kanvas.KanvasScreen) {
+        // no-op
+    }
+
+    func screenWillDisappear(_ screen: Kanvas.KanvasScreen) {
+        // no-op
+    }
+
     func openAppSettings(completion: ((Bool) -> ())?) {
         if let targetURL = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(targetURL)

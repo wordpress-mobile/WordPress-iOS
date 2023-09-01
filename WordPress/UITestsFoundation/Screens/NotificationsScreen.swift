@@ -49,7 +49,7 @@ public class NotificationsScreen: ScreenObject {
     var replyTextView: XCUIElement { replyTextViewGetter(app) }
     var trashCommentButton: XCUIElement { trashCommentButtonGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ notificationsTableGetter ],
             app: app
@@ -102,7 +102,46 @@ public class NotificationsScreen: ScreenObject {
         return self
     }
 
+    public func getNumberOfLikesForNotification() -> (NotificationsScreen, Int)? {
+        guard likeCommentButton.waitForExistence(timeout: 5) else {
+            return nil
+        }
+
+        let totalLikesInString = likeCommentButton.label.prefix(1)
+        let totalLikes = Int(totalLikesInString) ?? 0
+        return (self, totalLikes)
+    }
+
+
+    public func likeComment() -> Self {
+        likeCommentButton.tap()
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyCommentLiked(expectedLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
+        var tries = 0
+
+        while !likeCommentButton.label.hasSuffix(.commentLikedLabel) && tries < 5 {
+            sleep(1) // Wait for 1 second
+            tries += 1
+        }
+
+        XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentLikedLabel))
+
+        let (_, currentLikes) = getNumberOfLikesForNotification()!
+        XCTAssertEqual(currentLikes, expectedLikes, file: file, line: line)
+
+        return self
+    }
+
     public static func isLoaded() -> Bool {
         (try? NotificationsScreen().isLoaded) ?? false
     }
+}
+
+private extension String {
+    static let commentLikedLabel = "Comment is liked"
+    static let commentNotLikedLabel = "Comment is not liked"
 }

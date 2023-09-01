@@ -6,6 +6,7 @@ import XCTest
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
 
+    @MainActor
     override func setUpWithError() throws {
         super.setUp()
 
@@ -96,7 +97,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Currently, the view includes the "You Might Like" section
         try TabNavComponent()
             .goToReaderScreen()
-            .openDiscover()
+            .openDiscoverTab()
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot

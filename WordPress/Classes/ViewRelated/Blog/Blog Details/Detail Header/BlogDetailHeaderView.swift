@@ -2,7 +2,8 @@ import Gridicons
 import UIKit
 
 @objc protocol BlogDetailHeaderViewDelegate {
-    func siteIconTapped()
+    func makeSiteIconMenu() -> UIMenu?
+    func didShowSiteIconMenu()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
@@ -107,11 +108,12 @@ class BlogDetailHeaderView: UIView {
 
     // MARK: - Initializers
 
-    required init(items: [ActionRow.Item]) {
+    required init(items: [ActionRow.Item], delegate: BlogDetailHeaderViewDelegate) {
         titleView = TitleView(frame: .zero)
 
         super.init(frame: .zero)
 
+        self.delegate = delegate
         setupChildViews(items: items)
     }
 
@@ -122,11 +124,14 @@ class BlogDetailHeaderView: UIView {
     // MARK: - Child View Initialization
 
     private func setupChildViews(items: [ActionRow.Item]) {
-        titleView.siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.shared.visited(.siteIcon)
-            self?.titleView.siteIconView.spotlightIsShown = false
+        assert(delegate != nil)
 
-            self?.delegate?.siteIconTapped()
+        if let menu = delegate?.makeSiteIconMenu() {
+            titleView.siteIconView.setMenu(menu) { [weak self] in
+                self?.delegate?.didShowSiteIconMenu()
+                WPAnalytics.track(.siteSettingsSiteIconTapped)
+                self?.titleView.siteIconView.spotlightIsShown = false
+            }
         }
 
         titleView.siteIconView.dropped = { [weak self] images in
@@ -215,7 +220,7 @@ fileprivate extension BlogDetailHeaderView {
         }
 
         private enum LayoutSpacing {
-            static let betweenTitleAndSubtitleButtons: CGFloat = 8
+            static let betweenTitleAndSubtitleButtons: CGFloat = 4
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4

@@ -100,8 +100,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var onClose: ((Bool, Bool) -> Void)?
 
-    var isOpenedDirectlyForPhotoPost: Bool = false
-
     var postIsReblogged: Bool = false
 
     var isEditorClosing: Bool = false
@@ -138,29 +136,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
         }
         mediaToInsertOnPost = []
-    }
-
-    private func showMediaSelectionOnStart() {
-        isOpenedDirectlyForPhotoPost = false
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: .image,
-                                                       dataSourceType: .device,
-                                                       allowMultipleSelection: false,
-                                                       callback: {(asset) in
-                                                        guard let phAsset = asset as? [PHAsset] else {
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
-                                                            guard let media = media,
-                                                                let mediaInfo = media.first,
-                                                                let mediaID = mediaInfo.id,
-                                                                let mediaURLString = mediaInfo.url,
-                                                                let mediaURL = URL(string: mediaURLString) else {
-                                                                return
-                                                            }
-                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
-                                                        })
-        })
     }
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -675,39 +650,42 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .mediaLibrary,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: {(assets) in
-                                                        guard let media = assets as? [Media] else {
-                                                            callback(nil)
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
+                                                       callback: { [weak self] assets in
+            guard let self, let media = assets as? [Media] else {
+                callback(nil)
+                return
+            }
+            self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
         })
     }
 
     func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: filter,
                                                        dataSourceType: .device,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: {(assets) in
-                                                        guard let phAssets = assets as? [PHAsset] else {
-                                                            callback(nil)
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAssets, callback: callback)
+                                                       callback: { [weak self] assets in
+            guard let self, let assets, !assets.isEmpty else {
+                return callback(nil)
+            }
+            self.mediaInserterHelper.insertFromDevice(assets, callback: callback)
         })
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
-                                                         filter: filter,
-                                                         callback: {(assets) in
-                                                            guard let phAsset = assets?.first as? PHAsset else {
-                                                                callback(nil)
-                                                                return
-                                                            }
-                                                            self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
-        })
+        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
+            guard let self, let asset = assets?.first else {
+                return callback(nil)
+            }
+            if let asset = asset as? PHAsset {
+                self.mediaInserterHelper.insertFromDevice(asset: asset, callback: callback)
+            } else if let image = asset as? UIImage {
+                self.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .camera)
+            } else if let url = asset as? URL {
+                self.mediaInserterHelper.insertFromDevice(url: url, callback: callback, source: .camera)
+            }
+        }
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -883,10 +861,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
-            let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                self.mediaInserterHelper.retryUploadOf(media: media)
+            if media.canRetry {
+                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                    self.mediaInserterHelper.retryUploadOf(media: media)
+                }
+                alertController.addAction(retryUploadAction)
             }
-            alertController.addAction(retryUploadAction)
         }
 
         alertController.title = title
@@ -969,9 +949,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         if isFirstGutenbergLayout {
             insertPrePopulatedMedia()
-            if isOpenedDirectlyForPhotoPost {
-                showMediaSelectionOnStart()
-            }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
         }
@@ -1114,7 +1091,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
-        post.managedObjectContext!.perform {
+        post.managedObjectContext?.perform {
             WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
         }
     }

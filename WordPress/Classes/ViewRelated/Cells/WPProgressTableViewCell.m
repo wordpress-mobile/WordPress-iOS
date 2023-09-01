@@ -1,15 +1,12 @@
 #import "WPProgressTableViewCell.h"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wstrict-prototypes"
-#import "MRProgress.h"
-#pragma clang diagnostic pop
+#import "WordPress-Swift.h"
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 @interface WPProgressTableViewCell ()
 
-@property (nonatomic, strong) IBOutlet MRActivityIndicatorView * progressView;
+@property (nonatomic, strong) StoppableProgressIndicatorView * progressView;
 
 @end
 
@@ -21,11 +18,17 @@ NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumb
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0,0.0,40.0,40.0)];
+        _progressView = [[StoppableProgressIndicatorView alloc] initWithFrame:CGRectMake(10.0,0.0,40.0,40.0)];
         _progressView.hidden = YES;
         self.accessoryView = _progressView;
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    NSAssert(false, @"WPProgressTableViewCell can't be created using a nib");
+    return [super initWithCoder:coder];
 }
 
 - (void)dealloc

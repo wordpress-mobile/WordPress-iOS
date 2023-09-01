@@ -1,19 +1,6 @@
 import UIKit
 import WordPressAuthenticator
 
-protocol EpilogueUserInfoCellViewControllerProvider {
-    func viewControllerForEpilogueUserInfoCell() -> UIViewController
-}
-
-extension EpilogueUserInfoCellViewControllerProvider where Self: UIViewController {
-    func viewControllerForEpilogueUserInfoCell() -> UIViewController {
-        guard let navController = navigationController else {
-            return self
-        }
-        return navController
-    }
-}
-
 // MARK: - EpilogueUserInfoCell
 //
 class EpilogueUserInfoCell: UITableViewCell {
@@ -25,9 +12,10 @@ class EpilogueUserInfoCell: UITableViewCell {
     @IBOutlet var gravatarView: UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    open var viewControllerProvider: EpilogueUserInfoCellViewControllerProvider?
+    private weak var viewController: UIViewController?
     private var gravatarStatus: GravatarUploaderStatus = .idle
     private var email: String?
+    private var avatarMenuController: AnyObject?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,8 +25,9 @@ class EpilogueUserInfoCell: UITableViewCell {
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
     ///
-    func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false, allowGravatarUploads: Bool = false) {
+    func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false, allowGravatarUploads: Bool = false, viewController: UIViewController) {
         email = userInfo.email
+        self.viewController = viewController
 
         fullNameLabel.text = userInfo.fullName
         fullNameLabel.fadeInAnimation()
@@ -57,6 +46,10 @@ class EpilogueUserInfoCell: UITableViewCell {
         gravatarAddIcon.isHidden = !allowGravatarUploads
         configureAccessibility()
 
+        if allowGravatarUploads {
+            setupGravatarButton(viewController: viewController)
+        }
+
         switch gravatarStatus {
         case .uploading:
             gravatarActivityIndicator.startAnimating()
@@ -69,6 +62,23 @@ class EpilogueUserInfoCell: UITableViewCell {
                 let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
                 gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x, placeholderImage: placeholder)
             }
+        }
+    }
+
+    private func setupGravatarButton(viewController: UIViewController) {
+        if FeatureFlag.nativePhotoPicker.enabled {
+            let menuController = AvatarMenuController(viewController: viewController)
+            menuController.onAvatarSelected = { [weak self] in
+                self?.uploadGravatarImage($0)
+            }
+            self.avatarMenuController = menuController // Just retaining it
+            gravatarButton.menu = menuController.makeMenu()
+            gravatarButton.showsMenuAsPrimaryAction = true
+            gravatarButton.addAction(UIAction { _ in
+                AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
+            }, for: .menuActionTriggered)
+        } else {
+            gravatarButton.addTarget(self, action: #selector(gravatarTapped), for: .touchUpInside)
         }
     }
 
@@ -133,20 +143,17 @@ private extension EpilogueUserInfoCell {
         let accessibilityHint = NSLocalizedString("Add image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
         gravatarButton.accessibilityHint = accessibilityHint
     }
-
 }
 
 
 // MARK: - Gravatar uploading
 //
 extension EpilogueUserInfoCell: GravatarUploader {
-    @IBAction func gravatarTapped() {
+    @objc func gravatarTapped() {
         AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-
-        guard let vcProvider = viewControllerProvider else {
-            return
+        guard let viewController else {
+            return assertionFailure()
         }
-        let viewController = vcProvider.viewControllerForEpilogueUserInfoCell()
         presentGravatarPicker(from: viewController)
     }
 

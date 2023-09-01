@@ -7,7 +7,7 @@ WordPress for iOS has UI acceptance tests for critical user flows through the ap
 The following flows are covered/planned to be covered by UI tests. Tests that are covered will be checked.
 
 1. Unified Login
-    - [ ] WPCom Account:
+    - [x] WPCom Account:
         - [x] Log in and log out using WPCom Account
         - [x] Log in and log out Self Hosted Site
         - [x] Invalid Password WPCom Account
@@ -27,7 +27,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [x] Create New Site - Follow Quick Start (Only checking the first item from the list)
     - [ ] Set Up Blogging Reminders on First Post
 4. Posting/Editing/Gutenberg
-    - [ ] Post:
+    - [x] Post:
         - [x] Publish Text Post
         - [x] Publish Basic Public Post with Category and Tag
         - [x] Add and Remove Featured Image
@@ -39,8 +39,8 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
         - [ ] Create Blank Page
 5. Notifications
     - [x] View Notification - Comment, Follow and Like Notifications
-    - [ ] Reply from Notification
-    - [ ] Like Notification
+    - [x] Reply from Notification
+    - [x] Like Notification
 6. Blogging Reminders
     - [ ] Set Up New Blogging Reminders from Post Publish Prompt
     - [ ] Set Up Scheduled Story Post (iPhone Only)
@@ -51,9 +51,9 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [x] View Last Post
     - [x] View Last Post in Safari
     - [x] Add Comment to Post
-    - [ ] Follow New Topics on Discover Tab
-    - [ ] Save a Post
-    - [ ] Like a Post 
+    - [x] Follow New Topic on Discover Tab
+    - [x] Save a Post
+    - [x] Like a Post 
 9. Jetpack Settings
     - [ ] Open and View Jetpack Settings Options
     - [ ] Search and View a Plugin

@@ -14,14 +14,31 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) -> ImmuTableViewController {
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
-    headerView.onAddUpdatePhoto = { [weak controller, weak viewController] in
-        if let viewController = viewController {
-            controller?.presentGravatarPicker(viewController)
+
+    let menuController = AvatarMenuController(viewController: viewController)
+    menuController.onAvatarSelected = { [weak controller, weak viewController] image in
+        guard let controller, let viewController else { return }
+        controller.uploadGravatarImage(image, presenter: viewController)
+    }
+    objc_setAssociatedObject(viewController, &associateObjectKey, menuController, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+    for button in [headerView.imageViewButton, headerView.gravatarButton] as [UIButton] {
+        if FeatureFlag.nativePhotoPicker.enabled {
+            button.menu = menuController.makeMenu()
+            button.showsMenuAsPrimaryAction = true
+        } else {
+            button.addAction(UIAction { [weak controller, weak viewController] _ in
+                if let viewController = viewController {
+                    controller?.presentGravatarPicker(viewController)
+                }
+            }, for: .touchUpInside)
         }
     }
     viewController.tableView.tableHeaderView = headerView
     return viewController
 }
+
+private var associateObjectKey: UInt8 = 0
 
 private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     let defaultImage = UIImage.gravatarPlaceholderImage

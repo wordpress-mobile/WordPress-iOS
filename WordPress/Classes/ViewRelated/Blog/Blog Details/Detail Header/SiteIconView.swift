@@ -1,7 +1,7 @@
 class SiteIconView: UIView {
 
     private enum Constants {
-        static let imageSize: CGFloat = 64
+        static let imageSize: CGFloat = 48
         static let borderRadius: CGFloat = 4
         static let imageRadius: CGFloat = 2
         static let spotlightOffset: CGFloat = 8
@@ -39,6 +39,14 @@ class SiteIconView: UIView {
     }()
 
     private var dropInteraction: UIDropInteraction?
+
+    /// Set the menu to be displayed when the button is tapped. The menu replaces
+    /// teh default on tap action.
+    func setMenu(_ menu: UIMenu, onMenuTriggered: @escaping () -> Void) {
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        button.addAction(UIAction { _ in onMenuTriggered() }, for: .menuActionTriggered)
+    }
 
     private let button: UIButton = {
         let button = UIButton(frame: .zero)
