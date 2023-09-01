@@ -111,7 +111,8 @@ class MeViewController: UITableViewController {
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(with: account)
 
-        if !splitViewControllerIsHorizontallyCompact {
+        let primaryViewController = (splitViewController?.viewControllers.first as? UINavigationController)?.topViewController
+        if !splitViewControllerIsHorizontallyCompact && primaryViewController is MeViewController {
             // And finally we'll reselect the selected row, if there is one
             tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
         }
