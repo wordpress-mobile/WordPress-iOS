@@ -319,6 +319,13 @@ public class MySiteScreen: ScreenObject {
         return self
     }
 
+    @discardableResult
+    public func verifyPagePublished() -> Self {
+        // do something
+
+        return self
+    }
+
     private func scrollToCard(withId id: String) {
         let collectionView = app.collectionViews.firstMatch
         let cardCell = collectionView.cells.containing(.any, identifier: id).firstMatch

@@ -7,7 +7,12 @@ public class ChooseLayoutScreen: ScreenObject {
         $0.buttons["Close"]
     }
 
+    private let createBlankPageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Create Blank Page"]
+    }
+
     var closeButton: XCUIElement { closeButtonGetter(app) }
+    var createBlankPageButton: XCUIElement { createBlankPageButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -20,6 +25,13 @@ public class ChooseLayoutScreen: ScreenObject {
     public func closeModal() throws -> MySiteScreen {
         closeButton.tap()
         return try MySiteScreen()
+    }
+
+    @discardableResult
+    public func createBlankPage() throws -> BlockEditorScreen {
+        createBlankPageButton.tap()
+
+        return try BlockEditorScreen()
     }
 
     public static func isLoaded() -> Bool {
