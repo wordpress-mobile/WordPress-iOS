@@ -28,19 +28,19 @@ struct NoSitesView: View {
                 .edgesIgnoringSafeArea(.all)
 
             mainView
-                .padding(.horizontal, 32)
+                .padding(.horizontal, Length.Padding.medium)
 
             if viewModel.isShowingAccountAndSettings {
                 accountAndSettingsButton
-                    .padding(.horizontal, 32)
-                    .padding(.bottom, 24)
+                    .padding(.horizontal, Length.Padding.medium)
+                    .padding(.bottom, Length.Padding.small)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var mainView: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Length.Padding.double) {
             Spacer()
             Image("noSitesEmptyStateImage")
                 .resizable()
@@ -49,12 +49,13 @@ struct NoSitesView: View {
                 .cornerRadius(5)
             textStackView
             addNewSiteButton
+                .padding(.bottom, 80)
             Spacer()
         }
     }
 
     private var textStackView: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Length.Padding.single) {
             Text(Strings.title)
                 .font(.title3.weight(.semibold))
                 .foregroundColor(.primary)
@@ -69,8 +70,8 @@ struct NoSitesView: View {
             handleAddNewSiteButtonTapped()
         } label: {
             Text(Strings.addNewSite)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.horizontal, Length.Padding.small)
+                .padding(.vertical, Length.Padding.single)
                 .foregroundColor(.white)
                 .background(colorScheme == .dark ? Color(uiColor: .listForeground) : .black)
                 .cornerRadius(5)
@@ -85,7 +86,7 @@ struct NoSitesView: View {
         Button {
             delegate?.didTapAccountAndSettingsButton()
         } label: {
-            HStack(alignment: .center, spacing: 16) {
+            HStack(alignment: .center, spacing: Length.Padding.double) {
                 makeGravatarIcon(size: 40)
                 accountAndSettingsStackView
                 Spacer()
@@ -93,7 +94,7 @@ struct NoSitesView: View {
                     .tint(.secondary)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .padding(.vertical, 8)
             .background(Color(uiColor: .listForeground))
             .cornerRadius(10)
         }
