@@ -12,8 +12,6 @@ final class SupportChatBotViewController: UIViewController {
     private weak var delegate: SupportChatBotCreatedTicketDelegate?
     private lazy var webView: WKWebView = {
         let contentController = WKUserContentController()
-        contentController.add(self, name: Constants.supportCallback)
-        contentController.add(self, name: Constants.errorCallback)
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -25,6 +23,20 @@ final class SupportChatBotViewController: UIViewController {
         self.viewModel = viewModel
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        webView.configuration.userContentController.add(self, name: Constants.supportCallback)
+        webView.configuration.userContentController.add(self, name: Constants.errorCallback)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        /// Message handlers need to be removed to prevent memory leaks
+        webView.configuration.userContentController.removeAllScriptMessageHandlers()
     }
 
     override func loadView() {
@@ -179,7 +191,7 @@ extension SupportChatBotViewController {
                                                         value: "Send a message...",
                                                         comment: "Placeholder text for the chat input field.")
         static let firstMessage = NSLocalizedString("support.chatBot.firstMessage",
-                                                    value: "What can I help you with? If I can't answer your question I'll help you open a support ticket with our team!",
+                                                    value: "What can we help you with?",
                                                     comment: "Initial message shown to the user when the chat starts.")
         static let sources = NSLocalizedString("support.chatBot.sources",
                                                value: "Sources",

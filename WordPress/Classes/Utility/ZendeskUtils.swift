@@ -331,6 +331,7 @@ protocol ZendeskUtilsProtocol {
 
 extension ZendeskUtils {
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+        presentInController = viewController
         ZendeskUtils.createIdentity { [weak self] success, newIdentity in
             guard let self, success else {
                 completion(.failure(.noIdentity))

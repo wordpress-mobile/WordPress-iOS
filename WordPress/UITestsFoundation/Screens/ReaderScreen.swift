@@ -131,8 +131,8 @@ public class ReaderScreen: ScreenObject {
         return isPostContentEqual
     }
 
-    public func verifyPostContentEquals(_ expected: String) {
-        XCTAssertTrue(postContentEquals(expected))
+    public func verifyPostContentEquals(_ expected: String, file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(postContentEquals(expected), file: file, line: line)
     }
 
     public func dismissPost() {
@@ -144,7 +144,7 @@ public class ReaderScreen: ScreenObject {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func openDiscover() -> Self {
+    public func openDiscoverTab() -> Self {
         discoverButton.tap()
 
         return self
@@ -156,27 +156,27 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
-    public func openSavedPosts() -> Self {
+    public func openSavedTab() -> Self {
         savedButton.tap()
 
         return self
     }
 
-    public func verifyTopicLoaded() -> Self {
-        XCTAssertTrue(topicNavigationBar.waitForExistence(timeout: 3))
-        XCTAssertTrue(readerButton.waitForExistence(timeout: 3))
-        XCTAssertTrue(followButton.waitForExistence(timeout: 3))
+    public func verifyTopicLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(topicNavigationBar.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(readerButton.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(followButton.waitForExistence(timeout: 3), file: file, line: line)
 
         return self
     }
 
-    public func openFollowing() -> Self {
+    public func openFollowingTab() -> Self {
         followingButton.tap()
 
         return self
     }
 
-    public func openLikes() -> Self {
+    public func openLikesTab() -> Self {
         likesTabButton.tap()
 
         return self
@@ -189,9 +189,9 @@ public class ReaderScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyTopicFollowed() -> Self {
-        XCTAssertTrue(followingButton.waitForExistence(timeout: 3))
-        XCTAssertTrue(followingButton.isSelected)
+    public func verifyTopicFollowed(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(followingButton.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(followingButton.isSelected, file: file, line: line)
 
         return self
     }

@@ -10,6 +10,11 @@ final class SupportCoordinator {
             return nil
         }
 
+        /// Do not present within navigation controller if UISplitViewController is expanded, usually the case on iPad
+        if let splitViewController = navigationController.splitViewController, !splitViewController.isCollapsed {
+            return nil
+        }
+
         return navigationController
     }
 
@@ -28,6 +33,8 @@ final class SupportCoordinator {
                 navigationController.pushViewController(chatBotViewController, animated: true)
             } else {
                 let navigationController = UINavigationController(rootViewController: chatBotViewController)
+                navigationController.modalPresentationStyle = .formSheet
+                navigationController.modalTransitionStyle = .coverVertical
                 controllerToShowFrom.present(navigationController, animated: true)
             }
         } else {

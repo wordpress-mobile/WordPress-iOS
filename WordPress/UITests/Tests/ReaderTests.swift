@@ -40,7 +40,7 @@ class ReaderTests: XCTestCase {
 
     func testFollowNewTopicOnDiscover() throws {
         try ReaderScreen()
-            .openDiscover()
+            .openDiscoverTab()
             .selectTopic()
             .verifyTopicLoaded()
             .followTopic()
@@ -50,25 +50,25 @@ class ReaderTests: XCTestCase {
     func testSavePost() throws {
         // Get saved post label
         let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
-            .openSavedPosts()
+            .openSavedTab()
             .verifySavedPosts(state: .withoutPosts)
-            .openFollowing()
+            .openFollowingTab()
             .saveFirstPost()
 
         // Open saved posts tab and validate that the correct saved post is displayed
         updatedReaderScreen
-            .openSavedPosts()
+            .openSavedTab()
             .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
     }
 
     func testLikePost() throws {
         try ReaderScreen()
-            .openLikes()
+            .openLikesTab()
             .verifyLikedPosts(state: .withoutPosts)
-            .openFollowing()
+            .openFollowingTab()
             .likeFirstPost()
             .verifyPostLikedOnFollowingTab()
-            .openLikes()
+            .openLikesTab()
             .verifyLikedPosts(state: .withPosts)
     }
 }
