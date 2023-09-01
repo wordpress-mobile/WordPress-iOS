@@ -38,6 +38,12 @@ class AccountBuilder: NSObject {
     }
 
     @objc
+    func with(displayName: String) -> AccountBuilder {
+        account.displayName = displayName
+        return self
+    }
+
+    @objc
     func with(email: String) -> AccountBuilder {
         account.email = email
         return self

@@ -363,7 +363,14 @@ fileprivate extension BlogDetailHeaderView {
         private func setupChildViews() {
             refreshMainStackViewAxis()
             addSubview(mainStackView)
-            pinSubviewToAllEdges(mainStackView)
+
+            NSLayoutConstraint.activate([
+                mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Length.Padding.double),
+                mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            ])
+
             setupConstraintsForSiteSwitcher()
         }
 
