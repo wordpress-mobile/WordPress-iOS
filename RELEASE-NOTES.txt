@@ -9,7 +9,7 @@
 * [*] [internal] Change how a post is fetched when selecting a post in Spotlight search result. [#21439]
 * [*] [internal] Change how a post's revision is fetched from the post history screen. [#21440]
 * [**] [internal] Replace the progress indicator implementation in uploading featured image from "Post Settings" [#21438]
-* [**] Block Editor:  Add basic support to view, relocate, and remove the Jetpack Paywall block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6076]
+* [**] [Jetpack-only] Block Editor: Add basic support to view, relocate, and remove the Jetpack Paywall block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6076]
 * [*] Block Editor: Columns block - Fix transforming into a Group block crash [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6129]
 * [**] Block Editor: Add block outline to all Social Link blocks when selected [https://github.com/WordPress/gutenberg/pull/54011]
 
