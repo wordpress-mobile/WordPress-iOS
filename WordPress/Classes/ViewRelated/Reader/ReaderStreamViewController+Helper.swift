@@ -39,19 +39,7 @@ extension ReaderStreamViewController {
                 return nil
             }
 
-            guard FeatureFlag.readerImprovements.enabled else {
-                return nibViews.first
-            }
-
-            let layoutTag = {
-                if topic.title.count > Constants.tagStreamHeaderHorizontalLengthLimit
-                    || traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-                    return Constants.verticalTagStreamHeaderTag
-                }
-                return Constants.horizontalTagStreamHeaderTag
-            }()
-
-            return nibViews.first { $0.tag == layoutTag }
+            return FeatureFlag.readerImprovements.enabled ? nibViews.last : nibViews.first
         }
 
         if ReaderHelpers.isTopicList(topic) {
@@ -193,8 +181,5 @@ private extension ReaderStreamViewController {
     struct Constants {
         // The number of characters allowed for the horizontal layout.
         static let tagStreamHeaderHorizontalLengthLimit = 10
-
-        static let horizontalTagStreamHeaderTag = 1
-        static let verticalTagStreamHeaderTag = 2
     }
 }

@@ -52,47 +52,6 @@
             </connections>
             <point key="canvasLocation" x="139" y="155"/>
         </view>
-        <view clipsSubviews="YES" tag="1" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="EAn-Fo-3Wc" userLabel="Improved Reader Tag Stream Header - Horizontal" customClass="ReaderTagStreamHeader" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Horizontal" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBt-SR-rx1">
-                    <rect key="frame" x="16" y="16" width="123" height="48"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tq8-oU-LjX">
-                    <rect key="frame" x="305" y="23" width="54" height="34"/>
-                    <color key="tintColor" systemColor="systemBackgroundColor"/>
-                    <state key="normal" title="Button">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapFollowButton:" destination="EAn-Fo-3Wc" eventType="touchUpInside" id="HFQ-ab-DOy"/>
-                    </connections>
-                </button>
-            </subviews>
-            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
-            <color key="tintColor" systemColor="linkColor"/>
-            <constraints>
-                <constraint firstItem="sBt-SR-rx1" firstAttribute="leading" secondItem="EAn-Fo-3Wc" secondAttribute="leadingMargin" id="AgO-fk-WO2"/>
-                <constraint firstItem="Tq8-oU-LjX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sBt-SR-rx1" secondAttribute="trailing" constant="8" id="MfS-17-r5P"/>
-                <constraint firstItem="Tq8-oU-LjX" firstAttribute="centerY" secondItem="sBt-SR-rx1" secondAttribute="centerY" id="bTG-n8-2RI"/>
-                <constraint firstItem="sBt-SR-rx1" firstAttribute="top" secondItem="EAn-Fo-3Wc" secondAttribute="top" constant="16" id="gaC-c1-XAh"/>
-                <constraint firstAttribute="bottom" secondItem="sBt-SR-rx1" secondAttribute="bottom" constant="16" id="hfe-LN-dyG"/>
-                <constraint firstAttribute="trailingMargin" secondItem="Tq8-oU-LjX" secondAttribute="trailing" id="t8f-ZJ-Moh"/>
-            </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <nil key="simulatedTopBarMetrics"/>
-            <nil key="simulatedBottomBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="followButton" destination="Tq8-oU-LjX" id="qCa-w1-yEC"/>
-                <outlet property="titleLabel" destination="sBt-SR-rx1" id="KN3-cE-mJS"/>
-            </connections>
-            <point key="canvasLocation" x="917.60000000000002" y="335.46798029556652"/>
-        </view>
         <view clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="Zt2-QZ-5QS" userLabel="Improved Reader Tag Stream Header - Vertical" customClass="ReaderTagStreamHeader" customModule="WordPress">
             <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
