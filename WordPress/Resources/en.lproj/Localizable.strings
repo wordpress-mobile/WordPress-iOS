@@ -437,6 +437,9 @@
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
 
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "Access this Paywall block on your web browser for advanced settings.";
+
 /* Title for the account section in site settings screen */
 "Account" = "Account";
 
@@ -1082,6 +1085,12 @@
 
 /* No comment provided by engineer. */
 "Available to all users" = "Available to all users";
+
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "Unable to load the image. Please choose a different one or try again later.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Update Gravatar";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments / Post" = "Avg Comments / Post";
@@ -2605,8 +2614,7 @@ Example: Reply to Pamela Nguyen */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Delete";
 
 /* Screen Reader: Button that deletes a menu. */
@@ -5204,6 +5212,8 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
@@ -5261,6 +5271,18 @@ Please install the %3$@ to use the app with this site.";
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media Uploads";
 
+/* Media screen navigation title */
+"media.title" = "Media";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "The item could not be added to the Media library";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "Unsupported content type";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "Uploading videos longer than 5 minutes requires a paid plan.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Dismiss";
 
@@ -5269,6 +5291,30 @@ Please install the %3$@ to use the app with this site.";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "Media Capture";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "Open Settings";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "Choose from Media";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "Choose from Device";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "Take Photo";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "Take Photo or Video";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "Take Video";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
@@ -5566,6 +5612,24 @@ Please install the %3$@ to use the app with this site.";
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Reclaim your Google Domains";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "Add self-hosted site";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "Create WordPress.com site";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "Account and settings";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "Add new site";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "You don't have any sites";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder
@@ -5635,9 +5699,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Placeholder text for password field */
 "New password" = "New password";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "New Photo Post";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "New Post";
@@ -6733,6 +6794,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "Set Featured Image";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Subscribe now to share more";
@@ -8629,7 +8693,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Contact support";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "What can I help you with? If I can't answer your question I'll help you open a support ticket with our team!";
+"support.chatBot.firstMessage" = "What can we help you with?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Send a message...";
@@ -9830,9 +9894,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Unfollows the blog.";
-
-/* No comment provided by engineer. */
-"Ungroup" = "Ungroup";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Unhide";
