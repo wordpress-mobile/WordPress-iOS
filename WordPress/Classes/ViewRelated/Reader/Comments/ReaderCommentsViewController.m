@@ -10,7 +10,6 @@
 #import "SuggestionsTableView.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
-#import <WordPressUI/WordPressUI.h>
 
 @class Comment;
 
@@ -201,7 +200,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     self.deviceIsRotating = true;
 
-    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull __unused context) {
         self.deviceIsRotating = false;
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
@@ -745,6 +744,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         NSString *placeholderFormat = NSLocalizedString(@"Reply to %1$@", @"Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.");
         self.replyTextView.placeholder = [NSString stringWithFormat:placeholderFormat, [comment authorForDisplay]];
     } else {
+        self.replyTextView.accessibilityIdentifier = @"reply-to-post-text-field";
         self.replyTextView.placeholder = NSLocalizedString(@"Reply to post", @"Placeholder text for replying to a post");
     }
 }
@@ -985,7 +985,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     __typeof(self) __weak weakSelf = self;
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
         [weakSelf trackCommentLikedOrUnliked:comment];
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         // in case of failure, revert the cell's like state.
         [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
@@ -998,7 +998,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.failedToFetchComments = NO;
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber * __unused totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -1014,7 +1014,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-    [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber * __unused totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -1121,11 +1121,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     __weak __typeof(self) weakSelf = self;
 
     cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
-        if (comment && [self isModerationMenuEnabledFor:comment]) {
-            // NOTE: Remove when minimum version is bumped to iOS 14.
-            [self showMenuSheetFor:comment indexPath:indexPath handler:weakSelf.tableViewHandler sourceView:sourceView];
-        } else {
-            [self shareComment:comment sourceView:sourceView];
+        if (comment) {
+            [weakSelf shareComment:comment sourceView:sourceView];
         }
     };
 

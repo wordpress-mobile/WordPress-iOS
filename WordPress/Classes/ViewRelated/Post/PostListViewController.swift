@@ -4,31 +4,6 @@ import WordPressShared
 import Gridicons
 import UIKit
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     private let postCompactCellIdentifier = "PostCompactCellIdentifier"
@@ -256,7 +231,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return UIView(frame: .zero)
         }
 
-        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
+        let sectionInfo = _tableViewHandler.resultsController?.sections?[section]
 
         if let sectionInfo = sectionInfo {
             headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
@@ -462,7 +437,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested post.
     ///
     fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
-        guard let post = tableViewHandler.resultsController.object(at: indexPath) as? Post else {
+        guard let post = tableViewHandler.resultsController?.object(at: indexPath) as? Post else {
             // Retrieving anything other than a post object means we have an App with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
@@ -610,10 +585,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
-        guard !PostCoordinator.shared.isUploading(post: post) else {
-            presentAlertForPostBeingUploaded()
-            return
-        }
 
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
@@ -625,16 +596,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         PostListEditorPresenter.handleCopy(post: post, in: self)
-    }
-
-    func presentAlertForPostBeingUploaded() {
-        let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
-
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        alertController.presentFromRootViewController()
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
@@ -793,7 +754,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func updateForLocalPostsMatchingSearchText() {
         // If the user taps and starts to type right away, avoid doing the search
         // while the tableViewHandler is not ready yet
-        if !_tableViewHandler.isSearching && currentSearchTerm()?.count > 0 {
+        if !_tableViewHandler.isSearching, let search = currentSearchTerm(), !search.isEmpty {
             return
         }
 
@@ -920,6 +881,8 @@ private extension PostListViewController {
             return NoResultsText.noTrashedTitle
         case .published:
             return NoResultsText.noPublishedTitle
+        case .allNonTrashed:
+            return ""
         }
     }
 

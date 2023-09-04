@@ -12,7 +12,7 @@ import WordPressFlux
     }
 
     var button: FloatingActionButton = {
-        let button = FloatingActionButton(image: .gridicon(.create))
+        let button = FloatingActionButton(image: .gridicon(.plus))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         return button
@@ -301,9 +301,8 @@ private extension CreateButtonCoordinator {
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
               let prompt = prompt,
-              let siteID = blog.dotComID?.stringValue,
-              let isPromptsEnabled = UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID],
-              isPromptsEnabled,
+              let siteID = blog.dotComID,
+              BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts),
               !userSkippedPrompt(prompt, for: blog) else {
             return nil
         }

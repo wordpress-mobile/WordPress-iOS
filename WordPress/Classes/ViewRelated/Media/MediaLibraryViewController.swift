@@ -4,6 +4,8 @@ import SVProgressHUD
 import WordPressShared
 import WPMediaPicker
 import MobileCoreServices
+import UniformTypeIdentifiers
+import PhotosUI
 
 /// Displays the user's media library in a grid
 ///
@@ -21,8 +23,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate var kvoTokens: [NSKeyValueObservation]?
 
     fileprivate var selectedAsset: Media? = nil
-
-    fileprivate var capturePresenter: WPMediaCapturePresenter?
 
     // After 99% progress, we'll count a media item as being uploaded, and we'll
     // show an indeterminate spinner as the server processes it.
@@ -82,7 +82,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.showActionBar = false
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         return options
@@ -351,14 +351,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             if let error = media.error {
                 alertController.message = error.localizedDescription
             }
-            if media.absoluteLocalURL != nil {
+            if media.canRetry {
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
                     let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary))
                     MediaCoordinator.shared.retryMedia(media, analyticsInfo: info)
-                }
-            } else {
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
-                    MediaCoordinator.shared.delete(media: [media])
                 }
             }
         }
@@ -471,6 +467,55 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         kvoTokens?.forEach({ $0.invalidate() })
     }
 }
+
+// MARK: - PHPickerViewControllerDelegate
+
+extension MediaLibraryViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true)
+
+        for result in results {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
+            MediaCoordinator.shared.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
+        }
+    }
+}
+
+// MARK: - ImagePickerControllerDelegate
+
+extension MediaLibraryViewController: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        dismiss(animated: true)
+
+        func addAsset(from exportableAsset: ExportableAsset) {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker)
+            MediaCoordinator.shared.addMedia(from: exportableAsset, to: blog, analyticsInfo: info)
+        }
+
+        guard let mediaType = info[.mediaType] as? String else {
+            return
+        }
+        switch mediaType {
+        case UTType.image.identifier:
+            if let image = info[.originalImage] as? UIImage {
+                addAsset(from: image)
+            }
+
+        case UTType.movie.identifier:
+            guard let videoURL = info[.mediaURL] as? URL else {
+                return
+            }
+            guard self.blog.canUploadVideo(from: videoURL) else {
+                self.presentVideoLimitExceededAfterCapture(on: self)
+                return
+            }
+            addAsset(from: videoURL as NSURL)
+        default:
+            break
+        }
+    }
+}
+
 
 // MARK: - UIDocumentPickerDelegate
 

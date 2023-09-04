@@ -66,6 +66,10 @@ extension ReaderRoute: Route {
 
 extension ReaderRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            RootViewCoordinator.sharedPresenter.showReaderTab() // Show static reader tab
+            return
+        }
         guard let coordinator = RootViewCoordinator.sharedPresenter.readerCoordinator else {
             return
         }
@@ -144,7 +148,7 @@ extension ReaderRoute: NavigationAction {
         return (blogID, postID)
     }
 
-    private func isValidWpcomUrl(_ values: [String: String]) -> Bool {
+    func isValidWpcomUrl(_ values: [String: String]) -> Bool {
         let year = Int(values["post_year"] ?? "") ?? 0
         let month = Int(values["post_month"] ?? "") ?? 0
         let day = Int(values["post_day"] ?? "") ?? 0

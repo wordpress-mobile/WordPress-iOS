@@ -72,7 +72,6 @@ class JetpackRemoteInstallCardView: UIView {
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.icon = .none
         frameView.onEllipsisButtonTap = {}
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu

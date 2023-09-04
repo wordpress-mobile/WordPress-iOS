@@ -42,7 +42,7 @@
             default = "YES">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:WordPressUITests/WordPressUITests.xctestplan">
+            reference = "container:UITests/WordPressUITests.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>
@@ -93,7 +93,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-com.apple.CoreData.ConcurrencyDebug 1"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-wpcom-api-base-url http://localhost:8282/"

@@ -6,16 +6,16 @@ import XCTest
 class JetpackScreenshotGeneration: XCTestCase {
     let scanWaitTime: UInt32 = 5
 
+    @MainActor
     override func setUpWithError() throws {
         super.setUp()
 
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let app = XCUIApplication.jetpack
 
         // This does the shared setup including injecting mocks and launching the app
-        setUpTestSuite(for: "Jetpack")
+        setUpTestSuite(for: app, removeBeforeLaunching: true)
 
         // The app is already launched so we can set it up for screenshots here
-        let app = XCUIApplication()
         setupSnapshot(app)
 
         if XCUIDevice.isPad {
@@ -24,15 +24,12 @@ class JetpackScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail,
-                            password: WPUITestCredentials.testWPcomPassword,
-                            selectedSiteTitle: "yourjetpack.blog")
+        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        removeApp(.jetpack)
         super.tearDown()
-        removeApp("Jetpack")
     }
 
     func testGenerateScreenshots() throws {
@@ -80,7 +77,7 @@ class JetpackScreenshotGeneration: XCTestCase {
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
             notificationList
-                .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
+                .openNotification(withSubstring: "commented on")
         }
         notificationList.thenTakeScreenshot(5, named: "Notifications")
     }
@@ -97,4 +94,9 @@ extension ScreenObject {
 
         return self
     }
+}
+
+extension XCUIApplication {
+
+    static let jetpack = XCUIApplication(bundleIdentifier: "com.automattic.jetpack")
 }

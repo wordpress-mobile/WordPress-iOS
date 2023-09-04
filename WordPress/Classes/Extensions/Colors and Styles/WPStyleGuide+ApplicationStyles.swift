@@ -57,9 +57,7 @@ extension WPStyleGuide {
 
     /// Style `UITableView` in the app
     class func configureTableViewAppearance() {
-        if #available(iOS 15.0, *) {
-            UITableView.appearance().sectionHeaderTopPadding = 0
-        }
+        UITableView.appearance().sectionHeaderTopPadding = 0
     }
 
     /// Style the tab bar using Muriel colors
@@ -67,14 +65,12 @@ extension WPStyleGuide {
         UITabBar.appearance().tintColor = .tabSelected
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
 
-        if #available(iOS 15.0, *) {
-            let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .systemBackground
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
 
-            UITabBar.appearance().standardAppearance = appearance
-            UITabBar.appearance().scrollEdgeAppearance = appearance
-        }
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 
     /// Style the `LightNavigationController` UINavigationBar and BarButtonItems
@@ -114,10 +110,7 @@ extension WPStyleGuide {
         appearance.configureWithDefaultBackground()
 
         UIToolbar.appearance().standardAppearance = appearance
-
-        if #available(iOS 15.0, *) {
-            UIToolbar.appearance().scrollEdgeAppearance = appearance
-        }
+        UIToolbar.appearance().scrollEdgeAppearance = appearance
     }
 }
 

@@ -4,8 +4,6 @@
 #import "BlogService.h"
 #import "SVProgressHUD+Dismiss.h"
 
-#import <WordPressUI/WordPressUI.h>
-
 #import "WordPress-Swift.h"
 
 
@@ -212,7 +210,7 @@
         }
         
         [weakSelf showAccountSelectorForKeyrings:marr];
-    } failure:^(NSError *error) {
+    } failure:^(NSError * __unused error) {
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:keyringFetchFailedForService:)]) {
             [self.delegate sharingAuthorizationHelper:self keyringFetchFailedForService:self.publicizeService];
             return;
@@ -318,7 +316,7 @@
 
     [alertController addCancelActionWithTitle:cancel handler:nil];
 
-    [alertController addDefaultActionWithTitle:connect handler:^(UIAlertAction *action) {
+    [alertController addDefaultActionWithTitle:connect handler:^(UIAlertAction * __unused action) {
         [self updateConnection:currentPublicizeConnection forKeyringConnection:keyringConnection withExternalID:externalID];
     }];
 

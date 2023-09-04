@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SwiftUI
 import Gridicons
 import WordPressShared
 import SVProgressHUD
@@ -12,6 +13,10 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate var handler: ImmuTableViewHandler!
+
+    // MARK: - Dependencies
+
+    private let privacySettingsAnalyticsTracker = PrivacySettingsAnalyticsTracker()
 
     // MARK: - Initialization
 
@@ -133,6 +138,18 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    // MARK: - Navigation
+
+    func navigateToPrivacySettings(animated: Bool = true, completion: ((PrivacySettingsViewController) -> Void)? = nil) {
+        let destination = PrivacySettingsViewController(style: .insetGrouped)
+        CATransaction.perform {
+            self.navigationController?.pushViewController(destination, animated: animated)
+            self.privacySettingsAnalyticsTracker.track(.privacySettingsOpened)
+        } completion: {
+            completion?(destination)
+        }
+    }
+
     // MARK: - Actions
 
     @objc func imageSizeChanged() -> (Int) -> Void {
@@ -250,6 +267,13 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushDesignSystemGallery() -> ImmuTableAction {
+        return { [weak self] row in
+            let controller = UIHostingController(rootView: ColorGallery())
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     func pushAppIconSwitcher() -> ImmuTableAction {
         return { [weak self] row in
             let controller = AppIconViewController()
@@ -259,10 +283,7 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
-            WPAnalytics.track(.privacySettingsOpened)
-
-            let controller = PrivacySettingsViewController(style: .insetGrouped)
-            self?.navigationController?.pushViewController(controller, animated: true)
+            self?.navigateToPrivacySettings(animated: true)
         }
     }
 
@@ -484,6 +505,11 @@ private extension AppSettingsViewController {
             action: pushDebugMenu()
         )
 
+        let designSystem = NavigationItemRow(
+            title: NSLocalizedString("Design System", comment: "Navigates to design system gallery only available in development builds"),
+            action: pushDesignSystemGallery()
+        )
+
         let iconRow = NavigationItemRow(
             title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
             action: pushAppIconSwitcher()
@@ -509,6 +535,7 @@ private extension AppSettingsViewController {
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
+            rows.append(designSystem)
         }
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,

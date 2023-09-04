@@ -13,7 +13,7 @@ public class SupportScreen: ScreenObject {
         $0.cells["contact-support-button"]
     }
 
-    private let contactEmailFieldGetter: (XCUIApplication) -> XCUIElement = {
+    private let contactEmailTextFieldGetter: (XCUIApplication) -> XCUIElement = {
         $0.textFields["Email"]
     }
 
@@ -25,32 +25,53 @@ public class SupportScreen: ScreenObject {
         $0.buttons["OK"]
     }
 
-    var closeButton: XCUIElement { closeButtonGetter(app) }
-    var visitForumsButton: XCUIElement { visitForumsButtonGetter(app) }
-    var okButton: XCUIElement { okButtonGetter(app) }
+    private let visitWordPressForumsPromptGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["visit-wordpress-forums-prompt"]
+    }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    private let activityLogsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["activity-logs-button"]
+    }
+
+    private let contactSupportPlaceholderEmailTextGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["set-contact-email-button"].staticTexts["Not Set"]
+    }
+
+    var activityLogsButton: XCUIElement { activityLogsButtonGetter(app) }
+    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var contactEmailTextField: XCUIElement { contactEmailTextFieldGetter(app) }
+    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
+    var contactSupportPlaceholderEmailText: XCUIElement { contactSupportPlaceholderEmailTextGetter(app) }
+    var okButton: XCUIElement { okButtonGetter(app) }
+    var visitForumsButton: XCUIElement { visitForumsButtonGetter(app) }
+    var visitWordPressForumsPrompt: XCUIElement { visitWordPressForumsPromptGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 closeButtonGetter,
                 visitForumsButtonGetter,
-                // swiftlint:disable opening_brace
-                { $0.cells["visit-wordpress-forums-prompt"] },
-                { $0.cells["activity-logs-button"] }
-                // swiftlint:enable opening_brace
+                visitWordPressForumsPromptGetter,
+                activityLogsButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
     public func contactSupport(userEmail: String) throws -> ContactUsScreen {
-        let emailTextField = app.textFields["Email"]
+        let noEmailAddress = contactSupportPlaceholderEmailText.waitForExistence(timeout: 3)
+        contactSupportButton.tap()
+        let okButtonExists = okButton.waitForExistence(timeout: 3)
 
-        app.cells["contact-support-button"].tap()
-        emailTextField.tap()
-        emailTextField.typeText(userEmail)
-        app.buttons["OK"].tap()
+        // If there's no email address, add email
+        if noEmailAddress {
+            contactEmailTextField.tap()
+            contactEmailTextField.typeText(userEmail)
+            okButton.tap()
+        // If there's email address, but the add email and name modal is still displayed, tap OK to close it
+        } else if !noEmailAddress && okButtonExists {
+            okButton.tap()
+        }
 
         return try ContactUsScreen()
     }
@@ -76,7 +97,7 @@ public class SupportScreen: ScreenObject {
     }
 
     public func assertForumsLoaded() {
-        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+        let safari = Apps.safari
         guard safari.wait(for: .runningForeground, timeout: 4) else {
             XCTFail("Safari wait failed")
             return

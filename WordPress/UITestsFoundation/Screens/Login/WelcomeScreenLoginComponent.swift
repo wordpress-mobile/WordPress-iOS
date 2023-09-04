@@ -1,22 +1,20 @@
 import ScreenObject
 import XCTest
 
-// TODO: remove when unifiedAuth is permanent.
-
 public class WelcomeScreenLoginComponent: ScreenObject {
 
-    let emailLoginButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let emailLoginButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Log in with Email Button"]
     }
-    let siteAddressButtonGetter: (XCUIApplication) -> XCUIElement = {
+
+    private let siteAddressButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Self Hosted Login Button"]
     }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [emailLoginButtonGetter, siteAddressButtonGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

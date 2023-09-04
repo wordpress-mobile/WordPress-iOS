@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -281,9 +281,6 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "LEGG TIL BILDE ELLER VIDEO";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "LEGG TIL LENKE";
-
-/* No comment provided by engineer. */
 "ADD VIDEO" = "LEGG TIL VIDEO";
 
 /* Register Domain - Address information field section header title */
@@ -438,6 +435,9 @@ translators: Block name. %s: The localized block name */
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Legg til stikkord";
 
+/* No comment provided by engineer. */
+"Add title" = "Legg til tittel";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Legger til funksjoner";
 
@@ -469,7 +469,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alle";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -791,9 +792,6 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Beste visninger noensinne";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Stor iPhone\/iPad-oppdatering nå tilgjengelig";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blokksitat";
@@ -1022,9 +1020,6 @@ translators: Block name. %s: The localized block name */
    Main title */
 "Change Password" = "Endre passord";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Bytte nettsted";
-
 /* Change site icon button */
 "Change Site Icon" = "Endre sideikon";
 
@@ -1119,9 +1114,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Velg dine emner";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Når du velger et annet nettsted vil du miste redigeringene til nettstedsspesifikt innhold som media og kategorier. Er du sikker?";
-
 /* Register Domain - Address information field City */
 "City" = "By\/sted";
 
@@ -1155,6 +1147,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1365,9 +1358,6 @@ translators: Block name. %s: The localized block name */
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopier lenke til kommentar";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Kan bli bedre";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Kunne ikke følge emne";
@@ -1801,9 +1791,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Dobbelttrykk for å forhåndsvise innlegget.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Dobbelttrykk for å gjenta siste endring";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Dobbelttrykk for å velge";
 
 /* No comment provided by engineer. */
@@ -1814,9 +1801,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Dobbelttrykk for å veksle innstilling";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Dobbelttrykk for å angre siste endring";
 
 /* Download button title */
 "Download" = "Last ned";
@@ -1850,9 +1834,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "Rediger %@";
-
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "Rediger %@-blokk";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Rediger blokkeringslisteord";
@@ -2447,8 +2428,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Her er hvordan innlegget har gjort det så langt.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skjult";
 
 /* Hides a site from the site picker list
@@ -2484,9 +2464,6 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hurra!\nNesten ferdig";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Jeg liker den";
 
 /* Title of a button style */
 "Icon & Text" = "Ikon og tekst";
@@ -3301,9 +3278,6 @@ translators: Block name. %s: The localized block name */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Ingen forhåndsvisnings-URL er tilgjengelig";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nei takk";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Uten tittel";
 
@@ -3660,9 +3634,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Outside" = "Utenfor";
-
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Overstyrt";
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
@@ -4044,7 +4015,6 @@ translators: Block name. %s: The localized block name */
 "Preparing..." = "Forbereder...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -4076,8 +4046,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Hovedside";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Personvern";
 
 /* Title of button that displays the App's privacy policy */
@@ -4095,7 +4064,6 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
 
@@ -4117,8 +4085,7 @@ translators: Block name. %s: The localized block name */
 /* Menu item label for linking a project page. */
 "Projects" = "Prosjekter";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Offentlig";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -4177,9 +4144,6 @@ translators: Block name. %s: The localized block name */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Push-varsler";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Pushvarsler har blitt slått av i Innstillinger-appen";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Pushvarsler er skrudd av i Innstillinger-appen. Skru på \"Tillat varslinger\" for å aktivere igjen.";
@@ -4272,13 +4236,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Bluss opp samtalen: skriv en nytt innlegg.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Relaterte innlegg";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Relaterte innlegg viser relevant innhold fra siden din under innleggene dine";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -4697,9 +4656,6 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "Velg dette elementet";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Send tilbakemelding";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Send lenke";
 
@@ -4807,12 +4763,6 @@ translators: Block name. %s: The localized block name */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Delingsfeil";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Vis overskift";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Vis bilder";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Vis Liker-knapp";
 
@@ -4821,9 +4771,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Vis Gjenblogg-knapp";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Vis relaterte innlegg";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5284,9 +5231,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to select the previous period" = "Trykk for å velge forrige periode";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Trykk for å velge hvilke blogger du skal publisere til";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klassifisering";
 
@@ -5357,9 +5301,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-en savner en gyldig vert.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "WordPress for Android får et stort ansiktsløft";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Appen kjenner ikke igjen svaret fra serveren. Vennligst sjekk oppsettet på ditt nettsted.";
@@ -5568,9 +5509,6 @@ translators: Block name. %s: The localized block name */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Denne informasjonen hjelper oss med å forbedre produktere våre, gjøre markedsføring mer relevant, personliggjøre din WordPress.com-opplevelse og mer, som detaljert i våre retningslinjer for personvern.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Dette er hvor folk finner deg på nettet.";
-
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dette medieobjektet har blitt slettet.";
 
@@ -5641,9 +5579,6 @@ translators: Block name. %s: The localized block name */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "For å opprette en ny WordPress.com-konto, vennligst skriv inn epostadressen din.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "For å aktivere varsler:\n\n1. Åpne **Innstillinger**-appen\n2. Trykk på **Varslinger**\n3. Velg **WordPress**\n4. Skru på **Tillat varslinger**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "For å få hjelpsomme varslinger fra WordPress-siden din på mobilen, må du installere Jetpack-utvidelsen.";
 
@@ -5664,8 +5599,7 @@ translators: Block name. %s: The localized block name */
    Notifications Today Section Header */
 "Today" = "I dag";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Dagens statistikk";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -5731,7 +5665,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slett";
@@ -5903,7 +5836,8 @@ translators: Block name. %s: The localized block name */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Understrek";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -5941,7 +5875,6 @@ translators: Block name. %s: The localized block name */
 "Unhide" = "Slutt å skjule";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Ukjent";
 
@@ -6028,9 +5961,6 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Oppdaterer...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Oppgraderingsfokus: VideoPress for bryllup";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Last opp medier";
@@ -6440,9 +6370,6 @@ translators: Block name. %s: The localized block name */
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vil vil alltid sende viktige meldinger om din konto, men du kan også få noen hjelpsomme esktraeposter.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Hva synes du om WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Hva vil du gjøre med denne filen: laste den opp og legge til en lenke til filen i innlegge ditt, eller legge til innholdet i filen direkte i innlegget?";
 
@@ -6695,7 +6622,8 @@ translators: Block name. %s: The localized block name */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Du gjorde nylig endringer i dette innlegget, men lagret dem ikke. Velg hvilken versjon som skal lastes:\n\nFra denne enheten\nLagret %1$@\n\nFra en annen enhet\nLagret %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Du svarte på denne kommentaren.";
 
 /* No comment provided by engineer. */
@@ -6752,17 +6680,8 @@ translators: Block name. %s: The localized block name */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Nettstedet ditt gjenopprettes";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Siden din er bare synlig for deg og brukere du godkjenner.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Siden din har gått tom for lagringsplass for medieopplastninger.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Siden din er synlig for alle, og kan bli indeksert av søkemotorer.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Siden din er tilgjengelig for alle, men søkemotorer bes om å ikke indeksere siden.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "Ditt nettsted vil straks være klart";
@@ -6822,15 +6741,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed on image media items. */
 "image" = "bilde";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "i \"Apper\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "i \"Mobil\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "i \"Oppgrader\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

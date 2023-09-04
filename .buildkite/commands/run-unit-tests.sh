@@ -5,11 +5,14 @@ echo '--- :test-analytics: Configuring Test Analytics'
 export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products.tar
-tar -xf build-products.tar
+download_artifact build-products-wordpress.tar
+tar -xf build-products-wordpress.tar
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
+
+echo "--- :swift: Setting up Swift Packages"
+install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 set +e
@@ -33,6 +36,11 @@ else
   echo "The Unit Tests, ran during the '🔬 Testing' step above, have failed."
   echo "For more details about the failed tests, check the Buildkite annotation, the logs under the '🔬 Testing' section and the \`.xcresult\` and test reports in Buildkite artifacts."
 fi
-annotate_test_failures "build/results/report.junit"
+
+if [[ $BUILDKITE_BRANCH == trunk ]] || [[ $BUILDKITE_BRANCH == release/* ]]; then
+    annotate_test_failures "build/results/WordPress.xml" --slack "build-and-ship"
+else
+    annotate_test_failures "build/results/WordPress.xml"
+fi
 
 exit $TESTS_EXIT_STATUS

@@ -29,9 +29,23 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let formattedMedia = media.map { item in
-            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt)
+            var metadata: [String: String] = [:]
+            if let videopressGUID = item.videopressGUID {
+                metadata["videopressGUID"] = videopressGUID
+            }
+            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: metadata)
         }
         callback(formattedMedia)
+    }
+
+    func insertFromDevice(_ selection: [Any], callback: @escaping MediaPickerDidPickMediaCallback) {
+        if let assets = selection as? [PHAsset] {
+            insertFromDevice(assets: assets, callback: callback)
+        } else if let providers = selection as? [NSItemProvider] {
+            insertItemProviders(providers, callback: callback)
+        } else {
+            callback(nil)
+        }
     }
 
     func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -89,8 +103,24 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
-    func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        guard let media = insert(exportableAsset: url as NSURL, source: .otherApps) else {
+    private func insertItemProviders(_ providers: [NSItemProvider], callback: @escaping MediaPickerDidPickMediaCallback) {
+        let media: [MediaInfo] = providers.compactMap {
+            // WARNING: Media is a CoreData entity and has to be thread-confined
+            guard let media = insert(exportableAsset: $0, source: .deviceLibrary) else {
+                return nil
+            }
+            // Gutenberg fails to add an image if the preview `url` is `nil`. But
+            // it doesn't need to point anywhere. The placeholder gets displayed
+            // as soon as `MediaImportService` generated it (see `MediaState.thumbnailReady`).
+            // This way we, dramatically cut CPU and especially memory usage.
+            let previewURL = URL(fileURLWithPath: NSTemporaryDirectory() + "\(media.gutenbergUploadID)")
+            return MediaInfo(id: media.gutenbergUploadID, url: previewURL.absoluteString, type: media.mediaTypeString)
+        }
+        callback(media)
+    }
+
+    func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback, source: MediaSource = .otherApps) {
+        guard let media = insert(exportableAsset: url as NSURL, source: source) else {
             callback([])
             return
         }
@@ -150,9 +180,6 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func syncUploads() {
-        if mediaObserverReceipt != nil {
-            registerMediaObserver()
-        }
         for media in post.media {
             if media.remoteStatus == .failed {
                 gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .uploading, progress: 0, url: media.absoluteThumbnailLocalURL, serverID: nil)
@@ -259,20 +286,25 @@ class GutenbergMediaInserterHelper: NSObject {
             }
             switch media.mediaType {
             case .video:
-                EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
-                    guard let strongSelf = self else {
+                // Fetch metadata when is a VideoPress video
+                if media.videopressGUID != nil {
+                    EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] (result) in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        switch result {
+                        case .failure:
+                            strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
+                        case .success(let metadata):
+                            strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: metadata.originalURL, serverID: mediaServerID, metadata: metadata.asDictionary())
+                        }
+                    }
+                } else {
+                    guard let remoteURLString = media.remoteURL, let remoteURL = URL(string: remoteURLString) else {
+                        gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
                         return
                     }
-                    switch result {
-                    case .failure:
-                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
-                    case .success(let value):
-                        var metadata: [String: Any] = [:]
-                        if let videopressGUID = media.videopressGUID {
-                            metadata["videopressGUID"] = videopressGUID
-                        }
-                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID, metadata: metadata)
-                    }
+                    gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: remoteURL, serverID: mediaServerID)
                 }
             default:
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)

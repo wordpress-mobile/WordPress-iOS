@@ -86,7 +86,7 @@ private extension JetpackRemoteInstallViewController {
 
             case .failure(let error):
                 let blogURLString = self.blog.url ?? "unknown"
-                self.viewModel.track(.failed(description: error.type.rawValue, siteURLString: blogURLString))
+                self.viewModel.track(.failed(description: error.description, siteURLString: blogURLString))
 
                 let title = error.title ?? "no error message"
                 let type = error.type.rawValue
@@ -164,5 +164,18 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
         let supportViewController = SupportTableViewController()
         supportViewController.sourceTag = viewModel.supportSourceTag
         navigationController?.pushViewController(supportViewController, animated: true)
+    }
+}
+
+// MARK: - Error Helpers
+
+extension JetpackInstallError {
+    /// When the error is unknown, return the error title (if it exists) to get a more descriptive reason.
+    var description: String {
+        if let title,
+           type == .unknown {
+            return title
+        }
+        return type.rawValue
     }
 }

@@ -3,10 +3,12 @@ import SVProgressHUD
 import WPMediaPicker
 import WordPressShared
 import MobileCoreServices
+import UniformTypeIdentifiers
+import PhotosUI
 
 /// Encapsulates the interactions required to capture a new site icon image, crop it and resize it.
 ///
-class SiteIconPickerPresenter: NSObject {
+final class SiteIconPickerPresenter: NSObject {
 
     // MARK: - Public Properties
 
@@ -35,7 +37,7 @@ class SiteIconPickerPresenter: NSObject {
         options.filter = [.image]
         options.allowMultipleSelection = false
         options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
@@ -46,6 +48,9 @@ class SiteIconPickerPresenter: NSObject {
 
         return pickerViewController
     }()
+
+    private var dataSource: AnyObject?
+    private var mediaCapturePresenter: AnyObject?
 
     // MARK: - Public methods
 
@@ -86,7 +91,7 @@ class SiteIconPickerPresenter: NSObject {
 
     /// Shows a new ImageCropViewController for the given image.
     ///
-    fileprivate func showImageCropViewController(_ image: UIImage) {
+    func showImageCropViewController(_ image: UIImage, presentingViewController: UIViewController? = nil) {
         DispatchQueue.main.async {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
@@ -100,15 +105,17 @@ class SiteIconPickerPresenter: NSObject {
                     self.onCompletion?(media, nil)
                 } else {
                     let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+                    let importService = MediaImportService(coreDataStack: ContextManager.sharedInstance())
 
                     WPAnalytics.track(.siteSettingsSiteIconCropped)
 
-                    mediaService.createMedia(with: image,
-                                             blog: self.blog,
-                                             post: nil,
-                                             progress: nil,
-                                             thumbnailCallback: nil,
-                                             completion: { (media, error) in
+                    importService.createMedia(
+                        with: image,
+                        blog: self.blog,
+                        post: nil,
+                        receiveUpdate: nil,
+                        thumbnailCallback: nil
+                    ) { (media, error) in
                         guard let media = media, error == nil else {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
@@ -125,10 +132,20 @@ class SiteIconPickerPresenter: NSObject {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
                         })
-                    })
+                    }
                 }
             }
-            self.mediaPickerViewController.show(after: imageCropViewController)
+            if let presentingViewController {
+                imageCropViewController.shouldShowCancelButton = true
+                imageCropViewController.onCancel = { [weak presentingViewController] in
+                    // Dismiss the crop controller but not the picker
+                    presentingViewController?.dismiss(animated: true)
+                }
+                let navigationController = UINavigationController(rootViewController: imageCropViewController)
+                presentingViewController.present(navigationController, animated: true)
+            } else {
+                self.mediaPickerViewController.show(after: imageCropViewController)
+            }
         }
     }
 
@@ -170,6 +187,39 @@ class SiteIconPickerPresenter: NSObject {
     }
 }
 
+extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard let result = results.first else {
+            picker.presentingViewController?.dismiss(animated: true)
+            return
+        }
+        WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
+        self.showLoadingMessage()
+        self.originalMedia = nil
+        PHPickerResult.loadImage(for: result) { [weak self] image, error in
+            if let image {
+                self?.showImageCropViewController(image, presentingViewController: picker)
+            } else {
+                DDLogError("Failed to load image: \(String(describing: error))")
+                self?.showErrorLoadingImageMessage()
+            }
+        }
+    }
+}
+
+extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let presentingViewController = picker.presentingViewController else {
+            return
+        }
+        presentingViewController.dismiss(animated: true) {
+            if let image = info[.originalImage] as? UIImage {
+                self.showImageCropViewController(image, presentingViewController: presentingViewController)
+            }
+        }
+    }
+}
+
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
@@ -203,6 +253,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
     ///
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
+        dataSource = nil
         mediaLibraryDataSource.searchCancelled()
         if assets.isEmpty {
             return
@@ -237,7 +288,11 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
                     self?.showErrorLoadingImageMessage()
                     return
                 }
-                self?.showImageCropViewController(image)
+                if FeatureFlag.nativePhotoPicker.enabled {
+                    self?.showImageCropViewController(image, presentingViewController: picker)
+                } else {
+                    self?.showImageCropViewController(image)
+                }
             })
         default:
             break

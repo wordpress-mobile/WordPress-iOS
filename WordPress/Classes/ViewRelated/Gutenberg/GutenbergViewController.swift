@@ -4,15 +4,15 @@ import Gutenberg
 import Aztec
 import WordPressFlux
 import Kanvas
+import React
 
-class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
         case publish
         case close
         case more
-        case switchBlog
         case autoSave
         case continueFromHomepageEditing
     }
@@ -47,6 +47,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             return nil
         }
         return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
+    }()
+
+    private lazy var coordinator: SupportCoordinator = {
+        SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
     }()
 
     // MARK: - Aztec
@@ -96,9 +100,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var onClose: ((Bool, Bool) -> Void)?
 
-    var isOpenedDirectlyForPhotoPost: Bool = false
-
     var postIsReblogged: Bool = false
+
+    var isEditorClosing: Bool = false
 
     // MARK: - Editor Media actions
 
@@ -132,29 +136,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
         }
         mediaToInsertOnPost = []
-    }
-
-    private func showMediaSelectionOnStart() {
-        isOpenedDirectlyForPhotoPost = false
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       filter: .image,
-                                                       dataSourceType: .device,
-                                                       allowMultipleSelection: false,
-                                                       callback: {(asset) in
-                                                        guard let phAsset = asset as? [PHAsset] else {
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
-                                                            guard let media = media,
-                                                                let mediaInfo = media.first,
-                                                                let mediaID = mediaInfo.id,
-                                                                let mediaURLString = mediaInfo.url,
-                                                                let mediaURL = URL(string: mediaURLString) else {
-                                                                return
-                                                            }
-                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
-                                                        })
-        })
     }
 
     private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -205,7 +186,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
 
         self.html = html
-        gutenberg.updateHtml(html)
+
+        // Avoid sending the HTML back to the editor if it's closing.
+        // Otherwise, it will cause the editor to recreate all blocks.
+        if !isEditorClosing {
+            gutenberg.updateHtml(html)
+        }
     }
 
     func getHTML() -> String {
@@ -235,6 +221,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     let navigationBarManager: PostEditorNavigationBarManager
 
+    // swiftlint:disable:next weak_delegate
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
@@ -332,6 +319,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         self.navigationBarManager.delegate = self
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -449,16 +437,31 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
-        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
+
+        // Add bottom border line
+        let screenScale = UIScreen.main.scale
+        let borderWidth: CGFloat = 1.0 / screenScale
+        let borderColor = UIColor(red: 60/255, green: 60/255, blue: 67/255, alpha: 0.36).cgColor
+
+        let borderBottom = UIView()
+        borderBottom.backgroundColor = UIColor(cgColor: borderColor)
+        borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
+        borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        navigationController?.navigationBar.addSubview(borderBottom)
     }
 
-    private func reloadBlogTitleView() {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
+    private func reloadBlogIconView() {
+        let blog = post.blog
 
-        navigationBarManager.reloadBlogTitleView(text: blogTitle)
+        if blog.hasIcon == true {
+            let size = CGSize(width: 24, height: 24)
+            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
+        } else if blog.isWPForTeams() {
+            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
+            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
+        } else {
+            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
+        }
     }
 
     private func reloadEditorContents() {
@@ -473,7 +476,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func refreshInterface() {
-        reloadBlogTitleView()
+        reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()
     }
@@ -487,6 +490,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
         presentEditingModeSwitchedNotice()
+
+        navigationBarManager.undoButton.isHidden = mode == .html
+        navigationBarManager.redoButton.isHidden = mode == .html
     }
 
     private func presentEditingModeSwitchedNotice() {
@@ -546,6 +552,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
 
+    func emitPostSaveEvent() {
+        gutenberg.postHasBeenJustSaved()
+    }
+
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -574,9 +584,16 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+    func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
+        post.managedObjectContext!.perform {
+            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
+        }
+    }
 
-    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
+        post.managedObjectContext!.perform {
+            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
+        }
     }
 
     func editorDidAutosave() {
@@ -620,6 +637,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 mediaType = mediaType | WPMediaType.other.rawValue
             case .any:
                 mediaType = mediaType | WPMediaType.all.rawValue
+            @unknown default:
+                fatalError()
             }
         }
 
@@ -631,39 +650,42 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .mediaLibrary,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: {(assets) in
-                                                        guard let media = assets as? [Media] else {
-                                                            callback(nil)
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
+                                                       callback: { [weak self] assets in
+            guard let self, let media = assets as? [Media] else {
+                callback(nil)
+                return
+            }
+            self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
         })
     }
 
     func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: filter,
                                                        dataSourceType: .device,
                                                        allowMultipleSelection: allowMultipleSelection,
-                                                       callback: {(assets) in
-                                                        guard let phAssets = assets as? [PHAsset] else {
-                                                            callback(nil)
-                                                            return
-                                                        }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAssets, callback: callback)
+                                                       callback: { [weak self] assets in
+            guard let self, let assets, !assets.isEmpty else {
+                return callback(nil)
+            }
+            self.mediaInserterHelper.insertFromDevice(assets, callback: callback)
         })
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
-                                                         filter: filter,
-                                                         callback: {(assets) in
-                                                            guard let phAsset = assets?.first as? PHAsset else {
-                                                                callback(nil)
-                                                                return
-                                                            }
-                                                            self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
-        })
+        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
+            guard let self, let asset = assets?.first else {
+                return callback(nil)
+            }
+            if let asset = asset as? PHAsset {
+                self.mediaInserterHelper.insertFromDevice(asset: asset, callback: callback)
+            } else if let image = asset as? UIImage {
+                self.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .camera)
+            } else if let url = asset as? URL {
+                self.mediaInserterHelper.insertFromDevice(url: url, callback: callback, source: .camera)
+            }
+        }
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -839,10 +861,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
-            let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
-                self.mediaInserterHelper.retryUploadOf(media: media)
+            if media.canRetry {
+                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                    self.mediaInserterHelper.retryUploadOf(media: media)
+                }
+                alertController.addAction(retryUploadAction)
             }
-            alertController.addAction(retryUploadAction)
         }
 
         alertController.title = title
@@ -900,11 +924,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                     showAlertForEmptyPostPublish()
                 }
             case .close:
+                isEditorClosing = true
                 cancelEditing()
             case .more:
                 displayMoreSheet()
-            case .switchBlog:
-                blogPickerWasPressed()
             case .autoSave:
                 break
                 // Inelegant :(
@@ -926,9 +949,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         if isFirstGutenbergLayout {
             insertPrePopulatedMedia()
-            if isOpenedDirectlyForPhotoPost {
-                showMediaSelectionOnStart()
-            }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
         }
@@ -956,6 +976,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error, .fatal:
             DDLogError(message)
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -1041,6 +1063,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         switch buttonType {
             case .missingBlockAlertActionButton:
                 handleMissingBlockAlertButtonPressed()
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -1057,7 +1081,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestContactCustomerSupport() {
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+        coordinator.showSupport()
     }
 
     func gutenbergDidRequestGotoCustomerSupportOptions() {
@@ -1067,7 +1091,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
-        WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: post.blog)
+        post.managedObjectContext?.perform {
+            WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
+        }
     }
 }
 
@@ -1177,12 +1203,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        return [
-            post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            post.blog.supports(.tenor) ? .tenor : nil,
-            .otherApps,
-            .allFiles,
-        ].compactMap { $0 }
+        workaroundCoreDataConcurrencyIssue(accessing: post) {
+            [
+                post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
+                post.blog.supports(.tenor) ? .tenor : nil,
+                .otherApps,
+                .allFiles,
+            ].compactMap { $0 }
+        }
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
@@ -1200,7 +1228,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
                 .videoPressBlock: false,
                 .unsupportedBlockEditor: false,
                 .canEnableUnsupportedBlockEditor: false,
-                .isAudioBlockMediaUploadEnabled: false,
+                .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
                 .mediaFilesCollectionBlock: false,
                 .reusableBlock: false,
                 .shouldUseFastImage: !post.blog.isPrivate(),
@@ -1312,16 +1340,38 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.savingDraftButtonSize
     }
 
+    func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
+    func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         requestHTML(for: .close)
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-        requestHTML(for: .more)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+        self.gutenberg.onUndoPressed()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        requestHTML(for: .switchBlog)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+        self.gutenberg.onRedoPressed()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+        requestHTML(for: .more)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {

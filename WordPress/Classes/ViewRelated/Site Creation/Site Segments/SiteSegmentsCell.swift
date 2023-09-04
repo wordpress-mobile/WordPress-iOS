@@ -53,6 +53,8 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         title.text = ""
         subtitle.text = ""
         icon.image = nil

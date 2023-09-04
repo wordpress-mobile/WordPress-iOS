@@ -19,7 +19,7 @@ extension RootViewPresenter {
         if Blog.count(in: context) == 0 {
             mySitesCoordinator.showAddNewSite()
         } else {
-            showPostTab(animated: true, toMedia: false, completion: afterDismiss)
+            showPostTab(animated: true, completion: afterDismiss)
         }
     }
 
@@ -28,12 +28,11 @@ extension RootViewPresenter {
         if Blog.count(in: context) == 0 {
             mySitesCoordinator.showAddNewSite()
         } else {
-            showPostTab(animated: true, toMedia: false, blog: blog)
+            showPostTab(animated: true, blog: blog)
         }
     }
 
     func showPostTab(animated: Bool,
-                     toMedia openToMedia: Bool,
                      blog: Blog? = nil,
                      completion afterDismiss: (() -> Void)? = nil) {
         if rootViewController.presentedViewController != nil {
@@ -47,7 +46,6 @@ extension RootViewPresenter {
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
         editor.showImmediately = !animated
-        editor.openWithMediaPicker = openToMedia
         editor.afterDismiss = afterDismiss
 
         let properties = [WPAppAnalyticsKeyTapSource: "create_button", WPAppAnalyticsKeyPostType: "post"]
@@ -80,9 +78,9 @@ extension RootViewPresenter {
             return
         }
 
-        let blogID = blog.dotComID?.intValue ?? 0 as Any
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "page"])
-
+        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
+                          properties: [WPAppAnalyticsKeyTapSource: source],
+                          blog: blog)
         PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) { [weak self] (selectedLayout) in
             self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content, templateKey: selectedLayout?.slug)
         }

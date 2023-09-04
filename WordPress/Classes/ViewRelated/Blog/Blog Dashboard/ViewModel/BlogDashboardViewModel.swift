@@ -19,12 +19,12 @@ enum DashboardItem: Hashable {
 typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardSection, DashboardItem>
 typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardSection, DashboardItem>
 
-class BlogDashboardViewModel {
+final class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
 
-    var blog: Blog
+    private var blog: Blog
 
     private var currentCards: [DashboardCardModel] = []
 
@@ -36,6 +36,10 @@ class BlogDashboardViewModel {
         return PostListFilter.scheduledFilter().statuses.strings
     }()
 
+    private lazy var pageStatusesToSync: [String] = {
+        return PostListFilter.allNonTrashedFilter().statuses.strings
+    }()
+
     private lazy var service: BlogDashboardService = {
         return BlogDashboardService(managedObjectContext: managedObjectContext)
     }()
@@ -45,7 +49,7 @@ class BlogDashboardViewModel {
             return nil
         }
 
-        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self] collectionView, indexPath, item in
+        return DashboardDataSource(collectionView: viewController.collectionView) { [unowned self, unowned viewController] collectionView, indexPath, item in
 
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
@@ -59,9 +63,11 @@ class BlogDashboardViewModel {
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath)
-                if let cellConfigurable = cell as? BlogDashboardCardConfigurable {
+                if var cellConfigurable = cell as? BlogDashboardCardConfigurable {
+                    cellConfigurable.row = indexPath.row
                     cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse)
                 }
+                (cell as? DashboardBlazeCardCell)?.configure(blazeViewModel)
                 return cell
             case .migrationSuccess:
                 let cellType = DashboardMigrationSuccessCell.self
@@ -69,20 +75,31 @@ class BlogDashboardViewModel {
                 cell?.configure(with: viewController)
                 return cell
             }
-
         }
     }()
+
+    private var blazeViewModel: DashboardBlazeCardCellViewModel
 
     init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
+        self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
         registerNotifications()
     }
 
     /// Apply the initial configuration when the view loaded
     func viewDidLoad() {
         loadCardsFromCache()
+    }
+
+    /// Update to display the selected blog.
+    func update(blog: Blog) {
+        BlogDashboardAnalytics.shared.reset()
+        self.blog = blog
+        self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.loadCardsFromCache()
+        self.loadCards()
     }
 
     /// Call the API to return cards for the current blog
@@ -100,9 +117,11 @@ class BlogDashboardViewModel {
 
             completion?(cards)
         })
+
+        blazeViewModel.refresh()
     }
 
-    func loadCardsFromCache() {
+    @objc func loadCardsFromCache() {
         let cards = service.fetchLocal(blog: blog)
         updateCurrentCards(cards: cards)
     }
@@ -126,7 +145,8 @@ private extension BlogDashboardViewModel {
     func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showScheduledCardIfNeeded), name: .newPostScheduled, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showNextPostCardIfNeeded), name: .newPostPublished, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
     }
 
     func updateCurrentCards(cards: [DashboardCardModel]) {
@@ -137,25 +157,19 @@ private extension BlogDashboardViewModel {
 
     func syncPosts(for cards: [DashboardCardModel]) {
         if cards.hasDrafts {
-            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: draftStatusesToSync)
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: draftStatusesToSync)
         }
         if cards.hasScheduled {
-            DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: scheduledStatusesToSync)
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .post, statuses: scheduledStatusesToSync)
+        }
+        if cards.hasPages {
+            DashboardPostsSyncManager.shared.syncPosts(blog: blog, postType: .page, statuses: pageStatusesToSync)
         }
     }
 
     func applySnapshot(for cards: [DashboardCardModel]) {
         let snapshot = createSnapshot(from: cards)
-        let scrollView = viewController?.mySiteScrollView
-        let position = scrollView?.contentOffset
-
-        dataSource?.apply(snapshot, animatingDifferences: false) { [weak self] in
-            guard let scrollView = scrollView, let position = position else {
-                return
-            }
-
-            self?.scroll(scrollView, to: position)
-        }
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
@@ -174,12 +188,6 @@ private extension BlogDashboardViewModel {
         return snapshot
     }
 
-    func scroll(_ scrollView: UIScrollView, to position: CGPoint) {
-        if position.y > 0 {
-            scrollView.setContentOffset(position, animated: false)
-        }
-    }
-
     // In case a draft is saved and the drafts card
     // is not appearing, we show it.
     @objc func showDraftsCardIfNeeded() {
@@ -196,13 +204,6 @@ private extension BlogDashboardViewModel {
         }
     }
 
-    // In case a post is published and create_first card
-    // is showing, we replace it with the create_next card.
-    @objc func showNextPostCardIfNeeded() {
-        if !currentCards.contains(where: { $0.cardType == .createPost }) {
-            loadCardsFromCache()
-        }
-    }
 }
 
 // MARK: - Ghost/Skeleton cards and failures
@@ -223,5 +224,9 @@ private extension Collection where Element == DashboardCardModel {
 
     var hasScheduled: Bool {
         return contains(where: { $0.cardType == .scheduledPosts })
+    }
+
+    var hasPages: Bool {
+        return contains(where: { $0.cardType == .pages })
     }
 }

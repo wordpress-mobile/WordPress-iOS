@@ -57,10 +57,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-
-    deinit {
-        stopObservingQuickStart()
-    }
 }
 
 // MARK: - Button Actions
@@ -68,20 +64,34 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 extension DashboardQuickActionsCardCell {
 
     func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
-        statsButton.onTap = { [weak self] in
-            self?.showStats(for: blog, from: sourceController)
+        hideUnsupportedActionIfNeeded(for: blog)
+        configureTapEvents(for: blog, with: sourceController)
+    }
+
+    private func hideUnsupportedActionIfNeeded(for blog: Blog) {
+        statsButton.isHidden = !blog.supports(.stats)
+        pagesButton.isHidden = !blog.supports(.pages)
+    }
+
+    private func configureTapEvents(for blog: Blog, with sourceController: UIViewController) {
+        statsButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showStats(for: blog, from: sourceController)
         }
 
-        postsButton.onTap = { [weak self] in
-            self?.showPostList(for: blog, from: sourceController)
+        postsButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showPostList(for: blog, from: sourceController)
         }
 
-        mediaButton.onTap = { [weak self] in
-            self?.showMediaLibrary(for: blog, from: sourceController)
+        mediaButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showMediaLibrary(for: blog, from: sourceController)
         }
 
-        pagesButton.onTap = { [weak self] in
-            self?.showPageList(for: blog, from: sourceController)
+        pagesButton.onTap = { [weak self, weak sourceController] in
+            guard let self, let sourceController else { return }
+            self.showPageList(for: blog, from: sourceController)
         }
     }
 
@@ -132,35 +142,34 @@ extension DashboardQuickActionsCardCell {
     }
 
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
-
-            if let info = notification.userInfo,
-               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-
-                switch element {
-                case .stats:
-                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-                        return
-                    }
-
-                    self?.autoScrollToStatsButton()
-                case .mediaScreen:
-                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-                        return
-                    }
-
-                    self?.autoScrollToMediaButton()
-                default:
-                    break
-                }
-                self?.statsButton.shouldShowSpotlight = element == .stats
-                self?.mediaButton.shouldShowSpotlight = element == .mediaScreen
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let info = notification.userInfo,
+              let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement
+        else {
+            return
+        }
+
+        switch element {
+        case .stats:
+            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                return
+            }
+
+            autoScrollToStatsButton()
+        case .mediaScreen:
+            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                return
+            }
+
+            autoScrollToMediaButton()
+        default:
+            break
+        }
+        statsButton.shouldShowSpotlight = element == .stats
+        mediaButton.shouldShowSpotlight = element == .mediaScreen
     }
 
     private func autoScrollToStatsButton() {

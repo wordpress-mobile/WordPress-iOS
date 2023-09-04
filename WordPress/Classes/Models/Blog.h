@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SiteSuggestion;
 @class PageTemplateCategory;
 @class JetpackFeaturesRemovalCoordinator;
+@class PublicizeInfo;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -104,7 +105,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureFileDownloadsStats,
     /// Does the blog support Blaze?
     BlogFeatureBlaze,
-    
+    /// Does the blog support listing and editing Pages?
+    BlogFeaturePages,
+
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -144,7 +147,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastPostsSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastPagesSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
-@property (nonatomic, strong, readwrite, nullable) NSDate *lastStatsSync;
 @property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
 @property (nonatomic, assign, readwrite) BOOL visible;
 @property (nonatomic, weak, readwrite, nullable) NSNumber *isActivated;
@@ -161,12 +163,12 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
 @property (nonatomic, strong, readwrite, nullable) NSString *planTitle;
+@property (nonatomic, strong, readwrite, nullable) NSArray<NSString *> *planActiveFeatures;
 @property (nonatomic, assign, readwrite) BOOL hasPaidPlan;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 @property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quickStartTypeValue;
-@property (nonatomic, assign, readwrite) BOOL isBlazeApproved;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites
@@ -179,6 +181,11 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *              and their values.
  */
 @property (nonatomic, strong, readwrite, nullable) BlogSettings *settings;
+
+/**
+ *  @details    Maps to a PublicizeInfo instance, which contains Jetpack Social auto-sharing information.
+ */
+@property (nonatomic, strong, readwrite, nullable) PublicizeInfo *publicizeInfo;
 
 /**
  *  @details    Flags whether the current user is an admin on the blog.
@@ -205,6 +212,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
 @property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
+@property (nonatomic, assign, readonly) BOOL canBlaze;
 
 /**
  *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
@@ -241,7 +249,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
 - (NSString *)loginUrl;
-- (NSString *)urlWithPath:(NSString *)path;
+- (nullable NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;

@@ -26,10 +26,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     ///
     var post: AbstractPost { get set }
 
-    /// Whether the editor should open directly to the media picker.
-    ///
-    var isOpenedDirectlyForPhotoPost: Bool { get set }
-
     /// Initializer
     ///
     /// - Parameters:
@@ -145,6 +141,10 @@ extension PostEditor {
     }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
+        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
+            return [.visibility, .schedule, .tags, .categories, .autoSharing]
+        }
+
         return [.visibility, .schedule, .tags, .categories]
     }
 }
@@ -152,6 +152,7 @@ extension PostEditor {
 enum PostEditorEntryPoint: String {
     case unknown
     case postsList
+    case pagesList
     case dashboard
     case bloggingPromptsFeatureIntroduction = "blogging_prompts_introduction"
     case bloggingPromptsActionSheetHeader = "add_new_sheet_answer_prompt"

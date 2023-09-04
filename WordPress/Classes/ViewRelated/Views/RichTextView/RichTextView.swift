@@ -1,5 +1,6 @@
 import UIKit
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 @objc public protocol RichTextViewDataSource {
     @objc optional func textView(_ textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
@@ -11,8 +12,8 @@ import MobileCoreServices
 
 
 @objc open class RichTextView: UIView, UITextViewDelegate {
-    @objc open var dataSource: RichTextViewDataSource?
-    @objc open var delegate: RichTextViewDelegate?
+    @objc open weak var dataSource: RichTextViewDataSource?
+    @objc open weak var delegate: RichTextViewDelegate?
 
 
     // MARK: - Initializers
@@ -162,9 +163,7 @@ import MobileCoreServices
         pinSubviewToAllEdges(textView)
 
         // Allow animatable gifs to be displayed
-        if #available(iOS 15.0, *) {
-            NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: kUTTypeGIF as String)
-        }
+        NSTextAttachment.registerViewProviderClass(AnimatedGifAttachmentViewProvider.self, forFileType: UTType.gif.identifier)
     }
 
     fileprivate func renderAttachments() {

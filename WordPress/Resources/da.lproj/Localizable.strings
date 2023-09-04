@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: da_DK */
 
 /* Age between dates over one day.
@@ -44,6 +44,9 @@
 
 /* No comment provided by engineer. */
 "Add alt text" = "Tilføj alternativ tekst";
+
+/* No comment provided by engineer. */
+"Add title" = "Tilføj en titel";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avanceret";
@@ -195,9 +198,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Certifikatsfejl";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Skift websted";
-
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Vælg websted";
 
@@ -213,6 +213,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -268,9 +269,6 @@
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Kopier link";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Kunne være bedre";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
@@ -566,15 +564,11 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjælp & support";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skjult";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skjul tastatur";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Jeg synes godt om den";
 
 /* Ignore action. Verb */
 "Ignore" = "Ignorer";
@@ -823,9 +817,6 @@
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Ingen forbindelse";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nej tak";
-
 /* No comment provided by engineer. */
 "No blocks found" = "Ingen blokke fundet.";
 
@@ -1049,7 +1040,6 @@
 "Preparing..." = "Forbereder...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -1067,12 +1057,10 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Offentlig";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -1098,9 +1086,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Push meddelelser";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Push notifikationer er blevet deaktiveret i iOS indstillinger";
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
@@ -1468,9 +1453,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Titel på en kategori er obligatorisk.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "For at modtage notifikationer:\n\n1. Åben **iOS Settings\"\"\n2. Vælg **Notifications**\n3. Vælg **WordPress**\n4. Aktivér **Allow Notifications**";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -1491,7 +1473,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slet";

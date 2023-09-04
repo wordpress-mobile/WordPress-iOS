@@ -35,11 +35,11 @@ class ActivityListViewModelTests: XCTestCase {
 
     // Check if `loadMore` dispatchs the correct offset
     //
-    func testLoadMoreOffset() {
+    func testLoadMoreOffset() throws {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
         let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
-        activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
+        activityStoreMock.state.activities[jetpackSiteRef] = try [Activity.mock(), Activity.mock(), Activity.mock()]
 
         activityListViewModel.loadMore()
         activityListViewModel.loadMore()
@@ -51,11 +51,11 @@ class ActivityListViewModelTests: XCTestCase {
 
     // Check if `loadMore` dispatchs the correct after/before date and groups
     //
-    func testLoadMoreAfterBeforeDate() {
+    func testLoadMoreAfterBeforeDate() throws {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
         let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
-        activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
+        activityStoreMock.state.activities[jetpackSiteRef] = try [Activity.mock(), Activity.mock(), Activity.mock()]
         let afterDate = Date()
         let beforeDate = Date(timeIntervalSinceNow: 86400)
         let activityGroup = ActivityGroup.mock()
@@ -133,8 +133,16 @@ class ActivityStoreMock: ActivityStore {
 }
 
 extension Activity {
-    static func mock(isRewindable: Bool = false) -> Activity {
-        let dictionary = ["activity_id": "1", "summary": "", "is_rewindable": isRewindable, "rewind_id": "1", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String: AnyObject]
-        return try! Activity(dictionary: dictionary)
+    static func mock(id: String = "1", isRewindable: Bool = false) throws -> Activity {
+        let dictionary = [
+            "activity_id": id,
+            "summary": "",
+            "is_rewindable": isRewindable,
+            "rewind_id": "1",
+            "content": ["text": ""],
+            "published": "2020-11-09T13:16:43.701+00:00"
+        ] as [String: AnyObject]
+        let data = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+        return try JSONDecoder().decode(Activity.self, from: data)
     }
 }

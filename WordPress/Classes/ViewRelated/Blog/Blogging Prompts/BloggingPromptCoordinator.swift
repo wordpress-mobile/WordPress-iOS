@@ -109,10 +109,24 @@ private extension BloggingPromptCoordinator {
     ///   - blog: The blog associated with the blogging prompt.
     ///   - completion: Closure invoked after the scheduling process completes.
     func reschedulePromptRemindersIfNeeded(for blog: Blog, completion: @escaping () -> Void) {
-        guard let service = promptsServiceFactory.makeService(for: blog),
-              let settings = service.localSettings,
-              let reminderDays = settings.reminderDays,
-              settings.promptRemindersEnabled else {
+        guard let context = blog.managedObjectContext else {
+            completion()
+            return
+        }
+
+        context.perform {
+            self.reschedulePromptRemindersIfNeeded(for: blog, in: context, completion: completion)
+        }
+    }
+
+    private func reschedulePromptRemindersIfNeeded(for blog: Blog, in context: NSManagedObjectContext, completion: @escaping () -> Void) {
+        assert(blog.managedObjectContext == context)
+
+        guard let settings = try? BloggingPromptSettings.of(blog),
+              let activeWeekdays = settings.reminderDays?.getActiveWeekdays(),
+              let reminderTimeDate = settings.reminderTimeDate(),
+              settings.promptRemindersEnabled
+        else {
             completion()
             return
         }
@@ -125,10 +139,12 @@ private extension BloggingPromptCoordinator {
                 return
             }
 
-            // Reschedule the prompt reminders.
-            let schedule = BloggingRemindersScheduler.Schedule.weekdays(reminderDays.getActiveWeekdays())
-            self.scheduler.schedule(schedule, for: blog, time: settings.reminderTimeDate()) { result in
-                completion()
+            context.perform {
+                // Reschedule the prompt reminders.
+                let schedule = BloggingRemindersScheduler.Schedule.weekdays(activeWeekdays)
+                self.scheduler.schedule(schedule, for: blog, time: reminderTimeDate) { result in
+                    completion()
+                }
             }
         }
     }

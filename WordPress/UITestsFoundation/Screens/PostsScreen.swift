@@ -6,15 +6,46 @@ public class PostsScreen: ScreenObject {
     public enum PostStatus {
         case published
         case drafts
+        case scheduled
     }
 
     private var currentlyFilteredPostStatus: PostStatus = .published
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    private let postsTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["PostsTable"]
+    }
+
+    private let publishedButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["published"]
+    }
+
+    private let draftsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["drafts"]
+    }
+
+    private let scheduledButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["scheduled"]
+    }
+
+    private let createPostButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Create Post Button"]
+    }
+
+    private let autosaveAlertGetter: (XCUIApplication) -> XCUIElement = {
+        $0.alerts["autosave-options-alert"]
+    }
+
+    var postsTable: XCUIElement { postsTableGetter(app) }
+    var publishedButton: XCUIElement { publishedButtonGetter(app) }
+    var draftsButton: XCUIElement { draftsButtonGetter(app) }
+    var scheduledButton: XCUIElement { scheduledButtonGetter(app) }
+    var createPostButton: XCUIElement { createPostButtonGetter(app) }
+    var autosaveAlert: XCUIElement { autosaveAlertGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.tables["PostsTable"] } ],
-            app: app,
-            waitTimeout: 7
+            expectedElementGetters: [postsTableGetter],
+            app: app
         )
         showOnly(.published)
     }
@@ -23,9 +54,11 @@ public class PostsScreen: ScreenObject {
     public func showOnly(_ status: PostStatus) -> PostsScreen {
         switch status {
         case .published:
-            app.buttons["published"].tap()
+            publishedButton.tap()
         case .drafts:
-            app.buttons["drafts"].tap()
+            draftsButton.tap()
+        case .scheduled:
+            scheduledButton.tap()
         }
 
         currentlyFilteredPostStatus = status
@@ -55,10 +88,15 @@ public class PostsScreen: ScreenObject {
     /// If there are two versions of a local post, the app will ask which version we want to use when editing.
     /// We always want to use the local version (which is currently the first option)
     private func dismissAutosaveDialogIfNeeded() {
-        let autosaveDialog = app.alerts["autosave-options-alert"]
-        if autosaveDialog.exists {
-            autosaveDialog.buttons.firstMatch.tap()
+        if autosaveAlert.exists {
+            autosaveAlert.buttons.firstMatch.tap()
         }
+    }
+
+    public func verifyPostExists(withTitle title: String) {
+        let expectedPost = app.cells.containing(.staticText, identifier: title).element
+
+        XCTAssertTrue(expectedPost.exists)
     }
 }
 

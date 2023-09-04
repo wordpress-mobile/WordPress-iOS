@@ -1,7 +1,10 @@
-Hot news—Jetpack now supports Blaze, so you can reach new readers by promoting a post or page from within the app.
+We added a Domain Focus card to your dashboard so you can more easily transfer Google domains. (Don’t want to see this card across multiple sites? Tap the “More” button to hide it.)
 
-We’ve added a little extra support for sites with individual plugins. These plugins don’t support all app features yet, but you can always install the full Jetpack plugin instead. Ready to launch?
+We also made some changes in the block editor.
 
-We also added a post-migration FAQ card to the Help screen, which you’ll see after switching from the WordPress app over to Jetpack.
+- The Social Link block now includes an outline so you can see when it’s selected.
+- We fixed an issue for iOS users where custom font sizes and styles weren’t displaying properly.
+- The undo and redo buttons are no longer visible in the HTML editor.
+- You’ll now see hex codes for the selected color when you’re using the Cover Block color picker.
 
-Finally, there’s a new button to the Post menu that lets you block an author so their posts no longer appear in your content feed.
+Finally, we squashed a bug that could cause the app to crash when following new sites in the Reader.

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -146,7 +146,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Y Cyfan";
 
 /* An option in a list. Automatically approve all comments */
@@ -271,9 +272,6 @@
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Byddwch y cyntaf i adael sylwadau.";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Diweddariad iPhone\/iPad Mawr Nawr ar Gael";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -400,9 +398,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Gwall tystysgrif";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Newid Gwefan";
-
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Wedi methu newid";
 
@@ -414,9 +409,6 @@
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Gwirio'r nwyddau â brynwyd...";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Bydd dewis gwefan gwahanol yn colli golygiadau i gynnwys penodol y wefan fel cyfryngau a chategori. A ydych yn siŵr?";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Clirio'r Hen Gofnodion Gweithgaredd";
@@ -433,6 +425,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -564,9 +557,6 @@
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Parhau i ddarllen";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Gallai Fod yn Well";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Methu Cadw'r Newidiadau";
@@ -973,8 +963,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Cymorth a Chefnogaeth";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Cudd";
 
 /* Hide All */
@@ -989,9 +978,6 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Dal ar gyfer Cymedroli";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Rydw i'n ei Hoffi";
 
 /* Title of a button style */
 "Icon & Text" = "Eicon a Thestun";
@@ -1366,9 +1352,6 @@
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Dim Dewislen wedi ei Dewis";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Dim Diolch";
-
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Dim sylwadau";
 
@@ -1703,7 +1686,6 @@
 "Preparing..." = "Paratoi...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -1717,8 +1699,7 @@
 "Primary Site" = "Prif Wefan";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Preifatrwydd";
 
 /* Title of button that displays the App's privacy policy */
@@ -1726,7 +1707,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Preifat";
 
@@ -1736,8 +1716,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projectau";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Cyhoeddus";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -1769,9 +1748,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Hysbysiadau Gwthio";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Mae Gosodiadau Gwthio wedi eu diffodd yn iOS Settings";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Mae Hysbysiadau Gwthio wedi eu diffodd yn Ap Gosodiadau iOS. Toglwch \"Allow Notifications\" i'w cychwyn eto.";
@@ -1823,13 +1799,8 @@
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Parth Cofrestredig";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Cofnodion sy'n Perthyn";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Mae Cofnodion Perthynol yn dangos cynnwys perthnasol o'ch gwefan islaw eich cofnodion";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -2006,9 +1977,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn gwaredu'r newidiadau rydych wedi eu gwneud i'r ddewislen ar hyn o bryd. A ydych yn siŵr eich bod am barhau?";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Anfon Adborth";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Anfon Dolen";
 
@@ -2064,12 +2032,6 @@
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Botymau Rhannu";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Dangos Pennyn";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Dangos Delweddau";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Dangos y botwm Hoffi";
 
@@ -2078,9 +2040,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Dangos y botwm Ailflogio";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Dangos Cofnodion sy'n Perthyn";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Dangos themâu:";
@@ -2256,9 +2215,6 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tapiwch i ddiddymu'r llwytho.";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Tap i ddewis pa blog i gofnodi iddo";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Tacsonomi";
 
@@ -2301,9 +2257,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Nid oes gan URL westai dilys.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Mae Ap WordPress Android yn Derbyn Adnewyddiad Mawr";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Nid yw'r ap yn gallu a adnabod ymateb y gweinydd. Gwiriwch ffurfweddiad eich gwefan.";
@@ -2442,16 +2395,12 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Mae teitl gyfer y categori yn orfodol.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "I alluogi hysbysiadau:\n\n1. Agor **iOS Settings**\n2. Tapio **Notifications**\n3. Dewis **WordPress**\n4. Cychwyn **Allow Notifications**";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
 "Today" = "Heddiw";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Ystadegau Heddiw";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -2475,7 +2424,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Dileu";
@@ -2538,7 +2486,8 @@
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Tanlinellu";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -2557,7 +2506,6 @@
 "Unfollowed site" = "Gwefan wedi ei dad-ddilyn";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Anhysbys";
 
@@ -2599,9 +2547,6 @@
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Diweddaru Dolen";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Pwyslais Diweddaru: VideoPress ar gyfer Priodasau";
 
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
@@ -2741,9 +2686,6 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Byddwn bob amser yn anfon e-byst ynghylch eich cyfrif, ond mae modd i chi gael rhai ychwanegion defnyddiol, hefyd.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Beth ydych chi'n ei feddwl o WordPress?";
-
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pan fydd sylw yn cynnwys unrhyw un o'r geiriau hyn yn ei gynnwys, enw, URL, e-bost neu IP, bydd yn cael ei gadw yn y rhes cymedroli. Gallwch gynnig geiriau rhannol, felly bydd \"press\" yn canfod \"WordPress\".";
 
@@ -2840,17 +2782,8 @@
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Bydd cofnodion, tudalennau a gosodiadau yn cael eu e-bost atoch i %@.";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Mae eich gwefan yn weladwy i chi yn unig a defnyddwyr rydych wedi eu cymeradwyo.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Does dim lle ar ôl ar eich gwefan ar gyfer llwytho cyfryngau.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Mae'r wefan yn weladwy i bawb, ac o bosib wedi ei fynegeio gan beiriannau chwilio.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Mae eich gwefan yn weladwy i bawb, ond mae'n gofyn i beiriannau chwilio i beidio mynegeio eich gwefan.";
 
 /* Age between dates equaling one day. */
 "a day" = "diwrnod";
@@ -2866,15 +2799,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/cyfeiriad-fy-ngwefan (URL)";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "yn \"Apiau\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "yn \"Symudol\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "yn \"Diweddaru\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

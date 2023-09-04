@@ -135,17 +135,6 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc convenience init?(blog: Blog) {
-        precondition(blog.dotComID != nil)
-        guard let siteRef = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-
-        let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
-        self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
-    }
-
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -166,6 +155,8 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         SVProgressHUD.dismiss()
     }
 

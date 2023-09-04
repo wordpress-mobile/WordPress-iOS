@@ -38,7 +38,7 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
+        label.font = AppStyleGuide.prominentFont(textStyle: .title2, weight: .semibold)
         label.textColor = .text
         label.numberOfLines = 0
         return label
@@ -110,10 +110,6 @@ final class NewQuickStartChecklistView: UIView, QuickStartChecklistConfigurable 
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
-    }
-
-    deinit {
-        stopObservingQuickStart()
     }
 
     // MARK: - Trait Collection
@@ -197,20 +193,18 @@ extension NewQuickStartChecklistView {
     }
 
     private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
-
-            guard let userInfo = notification.userInfo,
-                let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
-                element == .tourCompleted else {
-                    return
-            }
-
-            self?.updateViews()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    private func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+            let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
+            element == .tourCompleted
+        else {
+            return
+        }
+
+        updateViews()
     }
 
     @objc private func didTap() {

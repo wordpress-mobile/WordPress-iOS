@@ -759,19 +759,22 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 // MARK: - Keyboard Adjustments
 extension CollapsableHeaderViewController {
     private func startObservingKeyboardChanges() {
-        let willShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (notification) in
+        let willShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+            guard let self else { return }
             UIView.animate(withKeyboard: notification) { (_, endFrame) in
                 self.scrollableContainerBottomConstraint.constant = endFrame.height - self.footerHeight
             }
         }
 
-        let willHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (notification) in
+        let willHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { [weak self] (notification) in
+            guard let self else { return }
             UIView.animate(withKeyboard: notification) { (_, _) in
                 self.scrollableContainerBottomConstraint.constant = 0
             }
         }
 
-        let willChangeFrameObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { (notification) in
+        let willChangeFrameObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { [weak self] (notification) in
+            guard let self else { return }
             UIView.animate(withKeyboard: notification) { (_, endFrame) in
                 self.scrollableContainerBottomConstraint.constant = endFrame.height - self.footerHeight
             }

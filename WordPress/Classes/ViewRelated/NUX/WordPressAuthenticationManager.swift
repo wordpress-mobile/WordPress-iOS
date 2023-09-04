@@ -19,14 +19,18 @@ class WordPressAuthenticationManager: NSObject {
 
     private let recentSiteService: RecentSitesService
 
+    private let remoteFeaturesStore: RemoteFeatureFlagStore
+
     init(windowManager: WindowManager,
          authenticationHandler: AuthenticationHandler? = nil,
          quickStartSettings: QuickStartSettings = QuickStartSettings(),
-         recentSiteService: RecentSitesService = RecentSitesService()) {
+         recentSiteService: RecentSitesService = RecentSitesService(),
+         remoteFeaturesStore: RemoteFeatureFlagStore) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
         self.quickStartSettings = quickStartSettings
         self.recentSiteService = recentSiteService
+        self.remoteFeaturesStore = remoteFeaturesStore
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -59,6 +63,16 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
+        let googleLogingWithoutSDK: Bool = {
+            switch BuildConfiguration.current {
+            case .appStore:
+                // Rely on the remote flag in production
+                return RemoteFeatureFlag.sdkLessGoogleSignIn.enabled(using: remoteFeaturesStore)
+            default:
+                return true
+            }
+        }()
+
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
@@ -75,7 +89,8 @@ extension WordPressAuthenticationManager {
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
                                                    enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
-                                                   enableSocialLogin: true)
+                                                   enableSocialLogin: true,
+                                                   googleLoginWithoutSDK: googleLogingWithoutSDK)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
@@ -343,8 +358,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             fatalError()
         }
 
-        let onBlogSelected: ((Blog) -> Void) = { [weak self] blog in
-            guard let self = self else {
+        let onBlogSelected: ((Blog) -> Void) = { [weak self, weak navigationController] blog in
+            guard let self, let navigationController else {
                 return
             }
 
@@ -366,7 +381,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
 
-        epilogueViewController.onCreateNewSite = {
+        epilogueViewController.onCreateNewSite = { [weak navigationController] in
+            guard let navigationController else { return }
+
             let source = "login_epilogue"
             JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
                 guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
@@ -380,7 +397,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 }
 
                 navigationController.present(wizard, animated: true)
-                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+                SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
             })
         }
 
@@ -400,8 +417,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
-        epilogueViewController.onContinue = { [weak self] in
-            guard let self = self else {
+        epilogueViewController.onContinue = { [weak self, weak navigationController] in
+            guard let self, let navigationController else {
                 return
             }
 
@@ -545,7 +562,9 @@ private extension WordPressAuthenticationManager {
 
         let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
 
-        coordinator.onDismiss = { selectedOption in
+        coordinator.onDismiss = { [weak navigationController] selectedOption in
+            guard let navigationController else { return }
+
             self.handleOnboardingQuestionsWillDismiss(option: selectedOption)
 
             let completion: (() -> Void)? = {
@@ -643,7 +662,9 @@ private extension WordPressAuthenticationManager {
         let viewController = PostSignUpInterstitialViewController()
         let windowManager = self.windowManager
 
-        viewController.dismiss = { dismissAction in
+        viewController.dismiss = { [weak navigationController] dismissAction in
+            guard let navigationController else { return }
+
             let completion: (() -> Void)?
 
             switch dismissAction {

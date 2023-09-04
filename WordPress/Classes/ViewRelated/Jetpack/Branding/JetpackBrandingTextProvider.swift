@@ -33,6 +33,8 @@ struct JetpackBrandingTextProvider {
             return Strings.phaseTwoText
         case .three:
             return phaseThreeText()
+        case .staticScreens:
+            return staticScreensPhaseText()
         default:
             return Strings.defaultText
         }
@@ -59,6 +61,14 @@ struct JetpackBrandingTextProvider {
         }
 
         return String(format: movingInString, featureName, dateString)
+    }
+
+    private func staticScreensPhaseText() -> String {
+        guard let screen = screen, let _ = screen.featureName else {
+            return Strings.defaultText // Screen not provided, or was opted out by defining a nil featureName
+        }
+
+        return Strings.phaseStaticScreensText
     }
 
     private func dateString(now: Date, deadline: Date) -> String? {
@@ -108,6 +118,11 @@ private extension JetpackBrandingTextProvider {
         static let phaseThreeSingularMovingInText = NSLocalizedString("jetpack.branding.badge_banner.moving_in.singular",
                                                                       value: "%@ is moving in %@",
                                                                       comment: "Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks")
+        static let phaseStaticScreensText = NSLocalizedString(
+            "jetpack.branding.badge_banner.moving_in_days.plural",
+            value: "Moving to the Jetpack app in a few days.",
+            comment: "Title of a badge or banner indicating that this feature will be moved in a few days."
+        )
     }
 
     private var isPlural: Bool {

@@ -1,33 +1,41 @@
 import ScreenObject
 import XCTest
 
-// TODO: remove when unifiedAuth is permanent.
-
 class LoginPasswordScreen: ScreenObject {
 
-    let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+    private let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
         $0.secureTextFields["Password"]
     }
+
+    private let passwordErrorLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["pswdErrorLabel"]
+    }
+
+    private let loginButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Password next Button"]
+    }
+
+    var loginButton: XCUIElement { loginButtonGetter(app) }
+    var passwordErrorLabel: XCUIElement { passwordErrorLabelGetter(app) }
+    var passwordTextField: XCUIElement { passwordTextFieldGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [passwordTextFieldGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
     func proceedWith(password: String) throws -> LoginEpilogueScreen {
-        _ = tryProceed(password: password)
+        tryProceed(password: password)
 
         return try LoginEpilogueScreen()
     }
 
-    func tryProceed(password: String) -> LoginPasswordScreen {
-        let passwordTextField = passwordTextFieldGetter(app)
+    @discardableResult
+    func tryProceed(password: String) -> Self {
         passwordTextField.tap()
         passwordTextField.typeText(password)
-        let loginButton = app.buttons["Password next Button"]
         loginButton.tap()
         if loginButton.exists && !loginButton.isHittable {
             XCTAssertEqual(loginButton.waitFor(predicateString: "isEnabled == true"), .completed)
@@ -35,11 +43,8 @@ class LoginPasswordScreen: ScreenObject {
         return self
     }
 
-    func verifyLoginError() -> LoginPasswordScreen {
-        let errorLabel = app.staticTexts["pswdErrorLabel"]
-        _ = errorLabel.waitForExistence(timeout: 2)
-
-        XCTAssertTrue(errorLabel.exists)
+    func verifyLoginError() -> Self {
+        XCTAssertTrue(passwordErrorLabel.waitForExistence(timeout: 2))
         return self
     }
 

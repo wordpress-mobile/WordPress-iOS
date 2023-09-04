@@ -3,6 +3,7 @@ import WPMediaPicker
 import WordPressShared
 import Photos
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 // Encapsulates all of the interactions required to capture a new Gravatar image, and resize it.
 //
@@ -96,7 +97,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         options.filter = [.image]
         options.preferFrontCamera = true
         options.allowMultipleSelection = false
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)

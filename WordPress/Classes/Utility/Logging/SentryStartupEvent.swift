@@ -42,15 +42,10 @@ startup time. This will block the thread. Do not use unless you're sure.
                 "Code": error.code,
                 "Description": error.localizedDescription,
                 "User Info": error.userInfo.description
-            ]
+            ] as [String: Any]
         })
 
         let error = NSError(domain: title, code: -1, userInfo: [NSLocalizedDescriptionKey: title])
-        do {
-            try WordPressAppDelegate.crashLogging?.logErrorAndWait(error, userInfo: userInfo, level: SentryLevel.fatal)
-        } catch let err {
-            DDLogError("⛔️ Unable to send startup error message to Sentry:")
-            DDLogError(err.localizedDescription)
-        }
+        WordPressAppDelegate.crashLogging?.logErrorAndWait(error, userInfo: userInfo, level: SentryLevel.fatal)
     }
 }

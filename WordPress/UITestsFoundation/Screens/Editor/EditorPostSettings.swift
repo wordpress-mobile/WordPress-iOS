@@ -1,22 +1,68 @@
-import Nimble
 import ScreenObject
 import XCTest
 
 public class EditorPostSettings: ScreenObject {
 
-    // expectedElement comes from the superclass and gets the first expectedElementGetters result
-    var settingsTable: XCUIElement { expectedElement }
+    private let settingsTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["SettingsTable"]
+    }
 
-    var categoriesSection: XCUIElement { settingsTable.cells["Categories"] }
-    var tagsSection: XCUIElement { settingsTable.cells["Tags"] }
-    var featuredImageButton: XCUIElement { settingsTable.cells["SetFeaturedImage"] }
-    var changeFeaturedImageButton: XCUIElement { settingsTable.cells["CurrentFeaturedImage"] }
+    private let categoriesSectionGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Categories"]
+    }
+
+    private let chooseFromMediaButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Choose from Media"]
+    }
+
+    private let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Tags"]
+    }
+
+    private let featuredImageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["SetFeaturedImage"]
+    }
+
+    private let currentFeaturedImageGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["CurrentFeaturedImage"]
+    }
+
+    private let publishDateButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["Publish Date"]
+    }
+
+    private let dateSelectorGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["Immediately"]
+    }
+
+    private let nextMonthButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Next Month"]
+    }
+
+    private let firstCalendarDayButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons.containing(.staticText, identifier: "1").element
+    }
+
+    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Done"]
+    }
+
+    var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
+    var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
+    var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
+    var dateSelector: XCUIElement { dateSelectorGetter(app) }
+    var doneButton: XCUIElement { doneButtonGetter(app) }
+    var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
+    var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
+    var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
+    var publishDateButton: XCUIElement { publishDateButtonGetter(app) }
+    var settingsTable: XCUIElement { settingsTableGetter(app) }
+    var tagsSection: XCUIElement { tagsSectionGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.tables["SettingsTable"] } ],
-            app: app,
-            waitTimeout: 7
+            expectedElementGetters: [ settingsTableGetter ],
+            app: app
         )
     }
 
@@ -45,7 +91,7 @@ public class EditorPostSettings: ScreenObject {
     }
 
     public func removeFeatureImage() throws -> EditorPostSettings {
-        changeFeaturedImageButton.tap()
+        currentFeaturedImage.tap()
 
         try FeaturedImageScreen()
             .tapRemoveFeaturedImageButton()
@@ -55,8 +101,8 @@ public class EditorPostSettings: ScreenObject {
 
     public func setFeaturedImage() throws -> EditorPostSettings {
         featuredImageButton.tap()
-        try MediaPickerAlbumListScreen()
-            .selectAlbum(atIndex: 0) // Select media library
+        chooseFromMediaButton.tap()
+        try MediaPickerAlbumScreen()
             .selectImage(atIndex: 0) // Select latest uploaded image
 
         return try EditorPostSettings()
@@ -69,24 +115,41 @@ public class EditorPostSettings: ScreenObject {
         if let postTag = tag {
             XCTAssertTrue(tagsSection.staticTexts[postTag].exists, "Tag \(postTag) not set")
         }
-        let imageCount = settingsTable.images.count
         if hasImage {
-            XCTAssertTrue(imageCount == 1, "Featured image not set")
-            expect(self.changeFeaturedImageButton.images.descendants(matching: .other).element.exists)
-                .toEventually(beFalse(), timeout: .seconds(30), description: "Featured image is not displayed")
+            XCTAssertTrue(currentFeaturedImage.exists, "Featured image not set")
         } else {
-            XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
+            XCTAssertFalse(currentFeaturedImage.exists, "Featured image is set but should not be")
         }
 
         return try EditorPostSettings()
     }
 
-    /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
-    public func closePostSettings() {
+    @discardableResult
+    public func closePostSettings() throws -> BlockEditorScreen {
         navigateBack()
+
+        return try BlockEditorScreen()
     }
 
     public static func isLoaded() -> Bool {
         return (try? EditorPostSettings().isLoaded) ?? false
+    }
+
+    @discardableResult
+    public func updatePublishDateToFutureDate() -> Self {
+        publishDateButton.tap()
+        dateSelector.tap()
+
+        // Selects the first day of the next month
+        nextMonthButton.tap()
+        firstCalendarDayButton.tap()
+
+        doneButton.tap()
+        return self
+    }
+
+    public func closePublishDateSelector() -> Self {
+        navigateBack()
+        return self
     }
 }

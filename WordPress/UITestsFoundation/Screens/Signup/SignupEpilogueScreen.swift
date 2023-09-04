@@ -3,17 +3,42 @@ import XCTest
 
 public class SignupEpilogueScreen: ScreenObject {
 
+    private let newAccountHeaderGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["New Account Header"]
+    }
+
+    private let usernameFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Username Field"]
+    }
+
+    private let displayNameFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Display Name Field"]
+    }
+
+    private let passwordFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.secureTextFields["Password Field"]
+    }
+
+    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Done"]
+    }
+
+    var displayNameField: XCUIElement { displayNameFieldGetter(app) }
+    var doneButton: XCUIElement { doneButtonGetter(app) }
+    var newAccountHeader: XCUIElement { newAccountHeaderGetter(app) }
+    var passwordField: XCUIElement { passwordFieldGetter(app) }
+    var usernameField: XCUIElement { usernameFieldGetter(app) }
+
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [ { $0.staticTexts["New Account Header"] } ],
-            app: app,
-            waitTimeout: 7
+            expectedElementGetters: [newAccountHeaderGetter],
+            app: app
         )
     }
 
-    public func verifyEpilogueContains(username: String, displayName: String) -> SignupEpilogueScreen {
-        let actualUsername = app.textFields["Username Field"].value as! String
-        let actualDisplayName = app.textFields["Display Name Field"].value as! String
+    public func verifyEpilogueContains(username: String, displayName: String) -> Self {
+        let actualUsername = usernameField.value as! String
+        let actualDisplayName = displayNameField.value as! String
 
         XCTAssertEqual(username, actualUsername, "Username is set to \(actualUsername) but should be \(username)")
         XCTAssertEqual(displayName, actualDisplayName, "Display name is set to \(actualDisplayName) but should be \(displayName)")
@@ -21,17 +46,16 @@ public class SignupEpilogueScreen: ScreenObject {
         return self
     }
 
-    public func setPassword(_ password: String) -> SignupEpilogueScreen {
-        let passwordField = app.secureTextFields["Password Field"]
+    public func setPassword(_ password: String) -> Self {
         passwordField.tap()
         passwordField.typeText(password)
-        app.buttons["Done"].tap()
+        doneButton.tap()
 
         return self
     }
 
     public func continueWithSignup() throws -> MySiteScreen {
-        app.buttons["Done Button"].tap()
+        doneButton.tap()
 
         return try MySiteScreen()
     }

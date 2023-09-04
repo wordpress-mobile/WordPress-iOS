@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Media export handling of URLs.
 ///
@@ -20,6 +21,8 @@ class MediaURLExporter: MediaExporter {
         case invalidFileURL
         case unknownFileUTI
         case unsupportedFileType
+
+        public var errorDescription: String? { description }
 
         var description: String {
             switch self {
@@ -56,16 +59,16 @@ class MediaURLExporter: MediaExporter {
         guard fileURL.isFileURL else {
             throw URLExportError.invalidFileURL
         }
-        guard let typeIdentifier = fileURL.typeIdentifier as CFString? else {
+        guard let fileType = fileURL.typeIdentifier.flatMap(UTType.init) else {
             throw URLExportError.unknownFileUTI
         }
-        if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
+        if fileType == .gif {
             return .gif
-        } else if UTTypeConformsTo(typeIdentifier, kUTTypeVideo) || UTTypeConformsTo(typeIdentifier, kUTTypeMovie) {
+        } else if fileType.conforms(to: .video) || fileType.conforms(to: .movie) {
             return .video
-        } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
+        } else if fileType.conforms(to: .image) {
             return .image
-        } else if UTTypeConformsTo(typeIdentifier, kUTTypeContent) || UTTypeConformsTo(typeIdentifier, kUTTypeZipArchive) {
+        } else if fileType.conforms(to: .content) || fileType.conforms(to: .zip) {
             return .other
         }
         throw URLExportError.unsupportedFileType

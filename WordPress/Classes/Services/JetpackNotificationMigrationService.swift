@@ -22,7 +22,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     private let jetpackNotificationMigrationDefaultsKey = "jetpackNotificationMigrationDefaultsKey"
 
     private var jetpackMigrationPreventDuplicateNotifications: Bool {
-        return featureFlagStore.value(for: FeatureFlag.jetpackMigrationPreventDuplicateNotifications)
+        return RemoteFeatureFlag.jetpackMigrationPreventDuplicateNotifications.enabled(using: featureFlagStore)
     }
 
     private lazy var notificationSettingsService: NotificationSettingsService? = {

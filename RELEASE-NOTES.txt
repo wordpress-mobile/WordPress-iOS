@@ -1,12 +1,171 @@
+23.2
+-----
+* [**] Integrate the native media picker (`PHPickerViewController`), which is familiar to all Apple Photos users. It has a powerful search; you can filter by favorites, zoom in, filter by different media types, and more. And it doesn't require any access permissions or dialogs to work and handles large Photos libaries with ease. [#21190](https://github.com/wordpress-mobile/WordPress-iOS/issues/21190).
+* [*] Remove the "New Photo Post" app quick action [#21369](https://github.com/wordpress-mobile/WordPress-iOS/pull/21369)
+* [*] (Internal) Fix unbounded growth of number media observers in Post Editor (performance issue) [#21352](https://github.com/wordpress-mobile/WordPress-iOS/pull/21352)
+* [**] [internal] Fix a crash when disconnecting the app from the "Connected Applications" on WordPress.com. [#21375]
+* [*] Fix an issue where the "Take Photo" flow was not working without the "All Photos" access [#21398](https://github.com/wordpress-mobile/WordPress-iOS/pull/21398)
+* [*] Fix a couple of small issues with media uploads error handling [#21411](https://github.com/wordpress-mobile/WordPress-iOS/pull/21411)
+* [*] [internal] Change how a post is fetched when selecting a post in Spotlight search result. [#21439]
+* [*] [internal] Change how a post's revision is fetched from the post history screen. [#21440]
+* [**] [internal] Replace the progress indicator implementation in uploading featured image from "Post Settings" [#21438]
+* [**] [Jetpack-only] Block Editor: Add basic support to view, relocate, and remove the Jetpack Paywall block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6076]
+* [*] Block Editor: Columns block - Fix transforming into a Group block crash [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6129]
+* [**] Block Editor: Add block outline to all Social Link blocks when selected [https://github.com/WordPress/gutenberg/pull/54011]
+* [***] [Jetpack-only] Contact Support: Add a new chat-based support channel where users can get answers from a bot trained to help app users. Users can still create a support ticket to talk to a Happiness Engineer if they don't find the answer they're looking for [#21467]
+* [*] Fix a crash on the pages list when the authentication token is invalid. [#21471]
+* [**] Me tab: move Me to the bottom tab bar [https://github.com/wordpress-mobile/WordPress-iOS/pull/21348]
+
+23.0.1
+-----
+ * [**] Fix Voice Over and assistive keyboards [https://github.com/WordPress/gutenberg/pull/53895]
+
+23.1
+-----
+* [*] Block editor: Hide undo/redo buttons when using the HTML editor [#21253]
+* [*] Block editor: Display custom color value in mobile Cover Block color picker [https://github.com/WordPress/gutenberg/pull/51414]
+* [**] Block editor: Display outline around selected Social Link block [https://github.com/WordPress/gutenberg/pull/53377]
+* [**] Block editor: Fix font customization not getting updated. [https://github.com/WordPress/gutenberg/pull/53391]
+* [*] [internal] Fix Core Data multithreaded access exception in Blogging Reminders [#21232]
+* [*] [internal] Remove one of the image loading subsystems for avatars and consolidate the cache [#21259]
+* [*] Fixed a crash that could occur when following sites in Reader. [#21341]
+* [**] [Jetpack-only] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]
+* [**] Fix Voice Over and assistive keyboards [https://github.com/WordPress/gutenberg/pull/53895]
+* [*] Fix an issue with widget data sometimes showing zeros [https://github.com/wordpress-mobile/WordPress-iOS/pull/21430]
+
+23.0
+-----
+* [***] [Jetpack-only] Jetpack Social: UI improvements to access and control your social sharing from more locations throughout the app [#21258]
+* [**] [Jetpack-only] Blaze Manage Campaigns: Added a dashboard card that displays the most recent campaign, a campaigns list screen, and a campaign details screen. [#20821, #20977, #20950]
+* [**] [Jetpack-only] Made significant performance improvements for Total Likes stats card. [#21168]
+* [**] [internal] Upgrade React Native to 0.71.11 [#20956]
+* [*] Fix incorrect WordPress Media images count in Media Picker. [#21181]
+* [*] [Jetpack-only] Fix app hangs on the Stats screen [#21067]
+* [*] Fix an issue with the size of the thumbnails in the media picker so it now loads faster and uses less memory [#21204]
+* [*] Fix an issue with unstable order of assets on the media screen [#21210]
+* [*] Fix an issue with media screen flashing when opened [#21211]
+* [*] Block editor: Remove visual gap in mobile toolbar when a Gallery block is selected [https://github.com/WordPress/gutenberg/pull/52966]
+* [*] Block editor: Remove Gallery caption button on mobile [https://github.com/WordPress/gutenberg/pull/53010]
+* [*] Block editor: Fix Gallery block selection when adding media [https://github.com/WordPress/gutenberg/pull/53127]
+* [*] [internal] Fix an issue with some media pickers not deallocating after selection in post editor [#21225]
+* [*] Fix occasional crashes when updating Notification, Posts, and Reader content [#21250]
+* [*] Fix an issue in Reader topics cleanup that could cause the app to crash. [#21243]
+* [*] [internal] Fix incorrectly terminated background task [#21254]
+* [**] [internal] Refactor how image is downloaded in Gutenberg Editor and Aztec Editor. [#21227]
+* [**] Fixed an occassional crash when reloading Media picker. [#21337]
+
+22.9
+-----
+* [*] [internal] Fix multiple memory leaks after logging in and logging out. [#21047, #21092]
+* [**] Block editor: Move undo/redo buttons to the navigation bar. [#20930]
+* [*] Fixed an issue that caused the UI to be briefly unresponsive in certain case when opening the app. [#21065]
+* [**] Blogging Prompts: Fixed a crash in Reader after tapping on a blogging prompt multiple times. [#21112]
+* [*] [internal] Update calls to use UserDefaults singleton. [#21088]
+* [*] Fix memory leaks in setting up Jetpack connection. [#21052]
+* [*] Fix a memory leak caused by the theme customization web view. [#21051]
+* [**] [internal] Updated the code that enables Gutenberg editor in all blogs when the user is in the Gutenberg rollout group. [#21146]
+* [**] [internal] Fix a few potential Core Data issues in Blogging Prompts & Reminders. [#21016]
+* [*] [Jetpack-only] Made performance improvements for Posting Activity stats. [#21136]
+* [*] Fixed a crash that could occur when following sites in Reader. [#21140]
+* [*] Fix an issue with avatars not loading in mentions [#21169]
+* [*] [Jetpack-only] Fixed a crash that could occur when the user deletes the WordPress app upon a successful migration. [#21167]
+* [*] Fixed a crash that occurs in Weekly Roundup Background task due to a Core Data Concurrency violation. [#21076]
+* [***] Block editor: Editor UX improvements with new icons, colors and additional design enhancements. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5985]
+* [**] Fixed an occassional crash when opening Media picker. [#21231]
+
+22.8
+-----
+* [*] Blogging Reminders: Disabled prompt for self-hosted sites not connected to Jetpack. [#20970]
+* [**] [internal] Do not save synced blogs if the app has signed out. [#20959]
+* [**] [internal] Make sure synced posts are saved before calling completion block. [#20960]
+* [**] [internal] Fix observing Quick Start notifications. [#20997]
+* [**] [internal] Fixed an issue that was causing a memory leak in the domain selection flow. [#20813]
+* [*] [Jetpack-only] Block editor: Rename "Reusable blocks" to "Synced patterns", aligning with the web editor. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5885]
+* [**] [internal] Block editor: Fix a crash related to Reanimated when closing the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5938]
+
+22.7
+-----
+* [**] [internal] Blaze: Switch to using new canBlaze property to determine Blaze eligiblity. [#20916]
+* [**] Fixed crash issue when accessing drafts that are mid-upload from the Home 'Work on a Draft Post' card. [#20872]
+* [**] [internal] Make sure media-related features function correctly. [#20889], [20887]
+* [*] [internal] Posts list: Disable action bar/menu button when a post is being uploaded [#20885]
+* [*] Block editor: Image block - Fix issue where in some cases the image doesn't display the right aspect ratio [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5869]
+* [*] Block editor: Fix cursor positioning when dictating text on iOS [https://github.com/WordPress/gutenberg/issues/51227]
+
+22.6
+-----
+* [**] [internal] Check required WordPress version to set "galleryWithImageBlocks" flag [#20736]
+* [**] [Jetpack-only] Add a "Personalize Home Tab" button to the bottom of the My Site Dashboard that opens a new screen where you can customize which dashboard cards are visible. You can now also hide any of the dashboard cards directly from My Site Dashboard using the "more" menu. [#20296]
+* [*] [Jetpack-only] Domains selection: Show error message when selecting unsupported domains. [#20786]
+* [***] [Jetpack-only] Plans: Bringing WPCOM plans to Jetpack app. [#20822]
+* [**] Block editor: [iOS] Fix dictation regression, in which typing/dictating at the same time caused content loss. [https://github.com/WordPress/gutenberg/pull/49452]
+* [*] Block editor: Display lock icon in disabled state of `Cell` component [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5798]
+* [*] Block editor: Show "No title"/"No description" placeholder for not belonged videos in VideoPress block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5840]
+
+22.5.1
+-----
+* [*] Resolve an issue that was causing the app crash when `CrashLogging.logError` is called from a background thread. [#20846]
+* [**] [internal] Make sure a database tidy-up task (null blog property sanitizer) is completed before any other Core Data queries. [#20867]
+
+22.5
+-----
+* [*] [Jetpack-only] Reader: Fix the display of the followed topics in the filter sheet when they're written in non-latin languages. [#20702]
+* [*] [Jetpack-only] Reader: Fixed an issue that was causing the Report and Block actions to be missing from Post Menu actions sheet. [#20705]
+* [***] Enables editing of the site homepage for sites using block-based themes directly from the pages list. [#20713]
+* [*] Block editor: Add disabled style to `Cell` component [https://github.com/WordPress/gutenberg/pull/50665]
+* [**] Block editor: Fix undo/redo history when inserting a link configured to open in a new tab [https://github.com/WordPress/gutenberg/pull/50460]
+* [**] [Jetpack-only] Block editor: Disable details settings for not belonged VideoPress videos [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5782]
+* [*] Block editor: [List block] Fix an issue when merging a list item into a Paragraph would remove its nested list items [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5785]
+* [**] Block editor: Tapping any type of nested block moves focus to the nested block directly, rather than requiring multiple taps to navigate down each nesting levels. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5781]
+
+22.4
+-----
+* [*] [internal] [Jetpack-only] Domains Dashboard Card: Immediately opening domains search after tapping the card. [#20638]
+* [**] [Jetpack-only] Adds a dashboard card for viewing activity log. [#20569]
+* [**] [Jetpack-only] Adds a dashboard card for viewing pages. [#20524]
+* [*] [Jetpack-only] Block editor: Fix crash when trying to convert to regular blocks an undefined/deleted reusable block [https://github.com/WordPress/gutenberg/pull/50475]
+* [**] Block editor: Tapping on a nested block now gets focus directly instead of having to tap multiple times depending on the nesting levels. [https://github.com/WordPress/gutenberg/pull/50108]
+* [*] [Jetpack-only] Block editor: Use host app namespace in reusable block message [https://github.com/WordPress/gutenberg/pull/50478]
+* [*] [internal] [Jetpack-only] Enables domain purchases in site creation A/B experiment. [#20670]
+* [*] Classic Block: Fixes a crash that happens when attempting to add media to a classic block while the library permissions are missing. [#20666]
+
+22.3
+-----
+* [*] [internal] Allow updating specific fields when updating media details. [#20606]
+* [**] Block Editor: Enable VideoPress block (only on Simple WPCOM sites) [#20580]
+* [**] [internal] Attempt to fix an image loading crash in post editor. [#20633]
+
+22.2
+-----
+* [**] [Jetpack-only] Added a dashboard card for purchasing domains. [#20424]
+* [*] [internal] [Jetpack-only] Redesigned the migration success card. [#20515]
+* [**] [internal] Refactored Google SignIn implementation to not use the Google SDK [#20128]
+* [***] Block Editor: Resolved scroll-jump issues and enhanced caret focus management [https://github.com/WordPress/gutenberg/pull/48791]
+* [**] [Jetpack-only] Blogging Prompts: adds the ability to view other users' responses to a prompt. [#20540]
+
+22.1
+-----
+* [**] [internal] Refactor updating account related Core Data operations, which ususally happens during log in and out of the app. [#20394]
+* [***] [internal] Refactor uploading photos (from the device photo, the Free Photo library, and other sources) to the WordPress Media Library. Affected areas are where you can choose a photo and upload, including the "Media" screen, adding images to a post, updating site icon, etc. [#20322]
+* [**] [WordPress-only] Warns user about sites with only individual plugins not supporting core app features and offers the option to switch to the Jetpack app. [#20408]
+* [*] [Reader] Fix an issue that was causing the app to crash when tapping the More or Share buttons in Reader Detail screen. [#20490]
+* [*] Block editor: Avoid empty Gallery block error [https://github.com/WordPress/gutenberg/pull/49557]
+
 22.0
 -----
 * [*] Remove large title in Reader and Notifications tabs. [#20271]
 * [*] Reader: Change the following button cog icon. [#20274]
 * [*] [Jetpack-only] Change the dark background color of toolbars and top tabs across the whole app. [#20278]
 * [*] Change the Reader's navigation bar background color to match other screens. [#20278]
+* [*] Tweak My Site Dashboard Cards UI. [#20303]
+* [*] [Jetpack-only] Change My Sites tab bar icon. [#20310]
 * [*] [internal] Refactored the Core Data operations (saving the site data) after a new site is created. [#20270]
 * [*] [internal] Refactored updating user role in the "People" screen on the "My Sites" tab. [#20244]
 * [*] [internal] Refactor managing social connections and social buttons in the "Sharing" screen. [#20265]
+* [*] [internal] Refactor uploading media assets. [#20294]
+* [*] Block editor: Allow new block transforms for most blocks. [https://github.com/WordPress/gutenberg/pull/48792]
+* [*] Visual improvements were made to the in-app survey along with updated text to differentiate between the WordPress and Jetpack apps. [#20276]
+* [*] Reader: Resolve an issue that could cause the app to crash when blocking a post author. [#20421]
 
 21.9
 -----

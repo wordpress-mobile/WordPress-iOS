@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-11-01 10:41:33+0000 */
+/* Translation-Revision-Date: 2023-04-09 10:06:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -241,6 +241,9 @@
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Pridať značky";
 
+/* No comment provided by engineer. */
+"Add title" = "Pridať názov";
+
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adresa";
@@ -263,7 +266,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Všetko";
 
 /* An option in a list. Automatically approve all comments */
@@ -501,9 +505,6 @@
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Buďte prvý, kto napíše komentár.";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Veľká aktualizácia pr iPhone\/iPad už dostupná";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blok citácie";
@@ -674,9 +675,6 @@
    Main title */
 "Change Password" = "Zmeniť heslo";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Zmeniť webovú stránku";
-
 /* Change site icon button */
 "Change Site Icon" = "Zmeniť ikonu webovej stránky";
 
@@ -715,9 +713,6 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Vybrať z Môjho zariadenia";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Ak vyberiete inú stránku, stratíte úpravy konkrétneho obsahu stránky, ako sú médiá a kategórie. Chcete pokračovať?";
-
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Vymazanie vyrovnávacej pamäte zariadenia";
 
@@ -742,6 +737,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -919,9 +915,6 @@
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Skopírovať odkaz do komentáru";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Mohlo by byť lepšie";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Tému nie je možné sledovať";
@@ -1658,8 +1651,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Pomoc a podpora";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skrytý";
 
 /* Hides a site from the site picker list
@@ -1692,9 +1684,6 @@
 /* Label for Homepage Settings site settings section
    Title for the Homepage Settings screen */
 "Homepage Settings" = "Nastavenia domovskej stránky";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Páči sa mi to";
 
 /* Title of a button style */
 "Icon & Text" = "Ikona a text";
@@ -2344,9 +2333,6 @@
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nie ďakujem";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Bez názvu";
 
@@ -2884,7 +2870,6 @@
 "Preparing..." = "Pripravuje sa...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -2907,8 +2892,7 @@
 "Primary Site" = "Primárna webová stránka";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Súkromné";
 
 /* Title of button that displays the App's privacy policy */
@@ -2920,7 +2904,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Súkromné";
 
@@ -2933,8 +2916,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Verejné";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -2983,9 +2965,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Zobrazenie upozornení";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Zobrazenie upozornení bolo vypnuté v Nastavenia iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Zobrazovanie upozornení bolo vypnuté v aplikácii Nastavenia iOS. Prepnutím na \"Povoliť uporoznenia\" sa opätovne zapnú upozornenia.";
@@ -3051,13 +3030,8 @@
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Zapojte konverzáciu: napíšte nový článok.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Súvisiace články";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Súvisiace články zobrazujú príslušný obsah vašej webovej stránky pod vašimi článkami";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -3381,9 +3355,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Pokiaľ vyberiete iné menu, zahodíte si tak zmeny, ktoré ste urobili v aktuálnom menu. Určite chcete pokračovať?";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Poslať spätnú väzbu";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Poslať odkaz";
 
@@ -3467,12 +3438,6 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Zdielanie chyby";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Zobraziť hlavičku";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Zobraziť obrázky";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Zobraziť tlačidlo To sa mi páči";
 
@@ -3481,9 +3446,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Zobraziť tlačidlo Reblog";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Zobraziť súvisiace články";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Zobraziť témy:";
@@ -3801,9 +3763,6 @@
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Klepnutím zadáte vlastnú hodnotu";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Ťuknutím vyberte, do ktorého blogu chcete prispieť";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonómia";
 
@@ -3818,6 +3777,9 @@
 
 /* Title of a button style */
 "Text Only" = "Len text";
+
+/* No comment provided by engineer. */
+"Text color" = "Farba textu";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -3856,9 +3818,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "V URL adrese chýba platný hostiteľ.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Aplikácia WordPress pre Android v novom šate";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikácia nemôže rozpoznať odpoveď servera. Skontrolujte konfiguráciu na vašej webovej stránke.";
@@ -4106,9 +4065,6 @@
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Prosím zadajte svoju e-mailovú adresu na vytvorenie nového účtu WordPress.com.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Povoliť upozornenia:\n\n1. Otvorte **Nastavenia iOS**\n2. Ťuknite na **Upozornenia**\n3. Vyberte **WordPress**\n4. Zapnite **Povoliť Upozornenia**";
-
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "Chcete ich tu spravovať, nastavte ich aby boli viditeľné.";
 
@@ -4120,8 +4076,7 @@
    Notifications Today Section Header */
 "Today" = "Dnes";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Dnešná štatistika";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -4158,7 +4113,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kôš";
@@ -4297,7 +4251,8 @@
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Podčiarknuť";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -4328,7 +4283,6 @@
 "Unhide" = "Odkryť";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Neznámy";
 
@@ -4391,9 +4345,6 @@
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Aktualizuje sa...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Nová aktualizácia: VideoPress pre svatby";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Nahrať súbor";
@@ -4638,9 +4589,6 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vždy zasielame dôležité e-maily ohľadom vášho účtu, ale rovnako zasielame aj iné.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Čo si myslíte o WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Čo chcete urobiť s týmto súborom: nahrať ho a pridať odkaz na súbor do vášho príspevku, alebo pridať obsah súboru priamo do príspevku?";
 
@@ -4853,7 +4801,8 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Potrebujete overiť účet skôr ako zverejníte článok. \nNemajte obavy, článok sa uloží ako koncept.";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Odpovedali ste na tento komentár.";
 
 /* No comment provided by engineer. */
@@ -4892,17 +4841,8 @@
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Vaša webová stránka sa obnovuje";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Vaša webová stránka sa zobrazí iba vám a používateľom, ktorým povolíte prístup.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Na vašej stránke nieje dostatok miesta pre nahratie nových súborov.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Vaša webová stránka sa zobrazí všetkým používateľom a môže byť indexovaná vo vyhľadávacích nástrojoch.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Vaša stránka je viditeľná pre všetkých, ale požiada vyhľadávače, aby vaše stránky indexovali.";
 
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Webová stránka nebude posielať údaje do WordPress.com a Jetpack funkcie prestanú pracovať. Prídete o prístup do webovej stránky cez aplikáciu. Budete ju musieť nanovo pridať s povereniami webovej stránky.";
@@ -4936,15 +4876,6 @@
 
 /* Label displayed on image media items. */
 "image" = "obrázok";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "v \"Aplikácie\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "v \"Mobilné\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "v \"Aktualizácia\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-13 11:57:04+0000 */
+/* Translation-Revision-Date: 2023-07-24 20:13:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: pl */
 
 /* Per-year postfix shown after a domain's cost. */
@@ -217,7 +217,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Wszystko";
 
 /* An option in a list. Automatically approve all comments */
@@ -356,9 +357,6 @@
 
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Najlepsza godzina";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Duże uaktualnienie dla iPhone'a\/iPada jest już dostępne";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -579,9 +577,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Wybierz film";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Wybranie innej witryny spowoduje utratę edytowanych treści takich jak media i kategorie. Czy na pewno to zrobić?";
-
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Klasyczny blog";
 
@@ -600,6 +595,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -746,9 +742,6 @@
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Skopiuj adres URL ze schowka, %s";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Mogłaby być lepsza";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Nie można śledzić tematu";
 
@@ -838,12 +831,6 @@
 
 /* No comment provided by engineer. */
 "Create link" = "Stwórz odnośnik";
-
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Stwórz swój pierwszy wpis";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Utwórz kolejny wpis";
 
 /* No comment provided by engineer. */
 "Current" = "Obecnie";
@@ -1018,9 +1005,6 @@
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Stuknij dwukrotnie aby przełączyć ustawienie";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Stuknij dwukrotnie aby cofnąć zmiany";
 
 /* Name for the status of a draft post. */
 "Draft" = "Szkic";
@@ -1407,8 +1391,7 @@
 /* No comment provided by engineer. */
 "Help icon" = "Ikonka pomocy";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Ukryty";
 
 /* Hides a site from the site picker list
@@ -1444,9 +1427,6 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hurra!\nPrawie gotowe";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Podoba mi się";
-
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adres IP";
 
@@ -1479,10 +1459,22 @@
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Wstaw %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Wstaw blok audio";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Wstaw blok galerii";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Wstaw blok obrazka";
+
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
    Label action for inserting a link on the editor */
 "Insert Link" = "Wstaw odnośnik";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Wstaw blok filmu";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Wstaw media";
@@ -1903,9 +1895,6 @@
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Brak menu";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nie, dziękuję";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Bez tytułu";
 
@@ -2250,7 +2239,6 @@
 "Preparing..." = "Przygotowuję…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -2266,8 +2254,7 @@
 "Previous month" = "Poprzedni miesiąc";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Prywatność";
 
 /* Title of button that displays the App's privacy policy */
@@ -2282,7 +2269,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Prywatny";
 
@@ -2292,8 +2278,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publiczne";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -2372,6 +2357,9 @@
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Połączono ponownie";
 
+/* Action button to redo last change */
+"Redo" = "Ponów";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "Odsyłający";
 
@@ -2388,9 +2376,7 @@
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Zarejestrowana domena";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Powiązane posty";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
@@ -2600,9 +2586,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Selected: Default" = "Wybrano: domyślne";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Wyślij opinię";
-
 /* The button title text for sending a magic link. */
 "Send Link by Email" = "Wyślij odnośnik w wiadomości e-mail";
 
@@ -2664,12 +2647,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Przyciski udostępniania";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Pokaż nagłówek";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Pokaż obrazki";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Pokaż przycisk polubienia";
 
@@ -2678,9 +2655,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Pokaż przycisk reblogowania";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Pokaż powiązane posty";
 
 /* No comment provided by engineer. */
 "Show post content" = "Pokaż treść wpisu";
@@ -2911,9 +2885,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for a button to retry loading posts */
 "Tap to retry" = "Dotknij, aby spróbować ponownie";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Dotknij aby wybrać blog na którym chcesz pisać";
-
 /* Accessibility hint for a button that opens a new view with more details. */
 "Tap to view more details." = "Kliknij, aby wyświetlić więcej szczegółów.";
 
@@ -2928,6 +2899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Tylko tekst";
+
+/* No comment provided by engineer. */
+"Text color" = "Kolor tekstu";
 
 /* No comment provided by engineer. */
 "That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Podany adres e-mail został już użyty. Proszę sprawdzić czy dostarczona została wiadomość z możliwością potwierdzenia. Ponowne użycie tego adresu będzie możliwe za kilka dni.";
@@ -3072,7 +3046,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kosz";
@@ -3494,12 +3467,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Twoje witryny";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Twój ostatni wpis <a href=\"\">%1$@<\/a> otrzymał <strong>%2$d<\/strong> polubień.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Twój ostatni wpis <a href=\"\">%@<\/a> otrzymał <strong>jedno<\/strong> polubienie.";
-
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Wpis jest właśnie aktualizowany. Proszę poczekać na zakończenie.";
 
@@ -3508,15 +3475,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Twoja witryna została utworzona!";
-
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Twoja strona jest tylko widoczna dla Ciebie i dla osób którym dałeś takie uprawnienia.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Wszyscy mogą odwiedzić Twoją stronę i może on być znajdowana w wyszukiwarkach internetowych.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Wszyscy mogą odwiedzić Twoją stronę, ale nie jest ona dostępna dla wyszukiwarek internetowych.";
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTARZ]";
@@ -3571,6 +3529,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Wypróbuj teraz";
+
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Flagi funkcji";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Ogólne";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "np. 1122334455";
@@ -3646,9 +3610,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Odrzuć";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "w \"Aplikacjach\"";
-
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
 
@@ -3696,6 +3657,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Przejdź do powiadomień";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Przełącz się na aplikację Jetpack, aby otrzymywać powiadomienia w czasie rzeczywistym na swoim urządzeniu.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Otrzymuj powiadomienia dzięki aplikacji Jetpack";
@@ -3790,9 +3754,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Odrzuć";
 
-/* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Wygląda na to, że nadal masz zainstalowaną aplikację WordPress. Zalecamy usunięcie aplikacji WordPress, aby uniknąć konfliktów danych.";
-
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Rozumiem.";
 
@@ -3800,16 +3761,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "Potrzebujesz pomocy?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPress";
+"migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPressa na swoim urządzeniu";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Koniec";
 
-/* Footer for the migration done screen. */
-"migration.done.footer" = "Usuń aplikację WordPress, aby uniknąć konfliktów danych.";
-
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "usuń aplikację WordPress";
+"migration.done.footer.highlighted" = "odinstalowanie aplikacji WordPressa";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Przenieśliśmy wszystkie twoje dane i ustawienia. Wszystko jest dokładnie tam, gdzie było.";
@@ -3858,9 +3816,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Odrzuć";
-
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Odrzuć";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "z";
@@ -4023,9 +3978,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Odwiedzający";
-
-/* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Usuń aplikację WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "twoja witryna";

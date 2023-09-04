@@ -3,21 +3,22 @@ import XCTest
 
 public class ChooseLayoutScreen: ScreenObject {
 
-    let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Close"]
     }
+
+    var closeButton: XCUIElement { closeButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [closeButtonGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
     @discardableResult
     public func closeModal() throws -> MySiteScreen {
-        closeButtonGetter(app).tap()
+        closeButton.tap()
         return try MySiteScreen()
     }
 

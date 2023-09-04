@@ -15,13 +15,14 @@ final class SitePickerViewController: UIViewController {
     var siteIconPresenter: SiteIconPickerPresenter?
     var siteIconPickerPresenter: SiteIconPickerPresenter?
     var onBlogSwitched: ((Blog) -> Void)?
+    var onBlogListDismiss: (() -> Void)?
 
     let meScenePresenter: ScenePresenter
     let blogService: BlogService
     let mediaService: MediaService
 
     private(set) lazy var blogDetailHeaderView: BlogDetailHeaderView = {
-        let headerView = BlogDetailHeaderView(items: [])
+        let headerView = BlogDetailHeaderView(items: [], delegate: self)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
@@ -48,23 +49,19 @@ final class SitePickerViewController: UIViewController {
         startObservingTitleChanges()
     }
 
-    deinit {
-        stopObservingQuickStart()
-    }
-
     private func setupHeaderView() {
         blogDetailHeaderView.blog = blog
-        blogDetailHeaderView.delegate = self
         view.addSubview(blogDetailHeaderView)
         view.pinSubviewToAllEdges(blogDetailHeaderView)
     }
 
     private func startObservingTitleChanges() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogUpdated,
-                                               object: nil,
-                                               queue: .main) { [weak self] _ in
+        NotificationCenter.default.addObserver(self, selector: #selector(handleBlogUpdated), name: .WPBlogUpdated, object: nil)
+    }
 
-            self?.updateTitles()
+    @objc private func handleBlogUpdated() {
+        DispatchQueue.main.async {
+            self.updateTitles()
         }
     }
 }
@@ -72,25 +69,6 @@ final class SitePickerViewController: UIViewController {
 // MARK: - BlogDetailHeaderViewDelegate
 
 extension SitePickerViewController: BlogDetailHeaderViewDelegate {
-
-    func siteIconTapped() {
-        guard siteIconShouldAllowDroppedImages() else {
-            // Gracefully ignore the tap for users that can not upload files or
-            // blogs that do not have capabilities since those will not support the REST API icon update
-            return
-        }
-
-        WPAnalytics.track(.siteSettingsSiteIconTapped)
-
-        NoticesDispatch.lock()
-
-        guard FeatureFlag.siteIconCreator.enabled else {
-            showUpdateSiteIconAlert()
-            return
-        }
-
-        showSiteIconSelectionAlert()
-    }
 
     func siteIconReceivedDroppedImage(_ image: UIImage?) {
         if !siteIconShouldAllowDroppedImages() {
@@ -125,7 +103,9 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
                 return
             }
             self?.switchToBlog(blog)
-            controller?.dismiss(animated: true)
+            controller?.dismiss(animated: true) {
+                self?.onBlogListDismiss?()
+            }
         }
 
         let navigationController = UINavigationController(rootViewController: blogListController)

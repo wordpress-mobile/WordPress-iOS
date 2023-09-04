@@ -17,10 +17,21 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+enum ZendeskRequestError: Error {
+    case noIdentity
+    case failedParsingResponse
+    case createRequest(String)
+}
+
+protocol ZendeskUtilsProtocol {
+    typealias ZendeskNewRequestCompletion = (Result<ZDKRequest, ZendeskRequestError>) -> ()
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion)
+}
+
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
 ///
-@objc class ZendeskUtils: NSObject {
+@objc class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
 
     // MARK: - Public Properties
 
@@ -314,6 +325,45 @@ extension NSNotification.Name {
         }
     }
 
+}
+
+// MARK: - Create Request
+
+extension ZendeskUtils {
+    func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+        presentInController = viewController
+        ZendeskUtils.createIdentity { [weak self] success, newIdentity in
+            guard let self, success else {
+                completion(.failure(.noIdentity))
+                return
+            }
+
+            self.createRequest() { requestConfig in
+                let provider = ZDKRequestProvider()
+                let request = ZDKCreateRequest()
+                requestConfig.tags += tags
+                request.customFields = requestConfig.customFields
+                request.tags = requestConfig.tags
+                request.ticketFormId = requestConfig.ticketFormID
+                request.subject = requestConfig.subject
+                request.requestDescription = description
+
+                provider.createRequest(request) { response, error in
+                    if let error {
+                        DDLogError("Creating new request failed: \(error)")
+                        completion(.failure(.createRequest(error.localizedDescription)))
+                    } else if let data = (response as? ZDKDispatcherResponse)?.data,
+                              let dict = try? JSONSerialization.jsonObject(with: data) as? [AnyHashable: Any],
+                              let requestDict = dict["request"] as? [AnyHashable: Any],
+                              let request = ZDKRequest(dict: requestDict) {
+                        completion(.success(request))
+                    } else {
+                        completion(.failure(.failedParsingResponse))
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Private Extension

@@ -14,6 +14,7 @@
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import "UIViewController+RemoveQuickStart.h"
+#import "NSMutableArray+NullableObjects.h"
 #import <Reachability/Reachability.h>
 #import <WordPressShared/WPTableViewCell.h>
 
@@ -386,7 +387,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [self preloadMetadata];
 
@@ -395,20 +395,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         AccountService *acctService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleDataModelChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:context];
+
+    [self observeManagedObjectContextObjectsDidChangeNotification];
 
     [self startObservingQuickStart];
-    [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
+    
+    [self observeGravatarImageUpdate];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    [self observeWillEnterForegroundNotification];
+
     if (self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
@@ -453,6 +453,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self stopObservingWillEnterForegroundNotification];
     [self stopAlertTimer];
 }
 
@@ -464,7 +465,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     // Required to add / remove "Home" section when switching between regular and compact width
     [self configureTableViewData];
 
@@ -566,6 +567,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             [self showCommentsFromSource:BlogDetailsNavigationSourceLink];
             break;
+        case BlogDetailsSubsectionMe:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showMe];
+            break;
         case BlogDetailsSubsectionSharing:
             if ([self.blog supports:BlogFeatureSharing]) {
                 self.restorableSelectedIndexPath = indexPath;
@@ -630,6 +638,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionComments:
             return [NSIndexPath indexPathForRow:3 inSection:section];
+        case BlogDetailsSubsectionMe:
         case BlogDetailsSubsectionSharing:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionPeople:
@@ -727,6 +736,229 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return nil;
 }
 
+#pragma mark - Rows
+
+- (BlogDetailsRow *)postsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
+                                        accessibilityIdentifier:@"Blog Post Row"
+                                                          image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
+                                                       callback:^{
+        [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)pagesRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                        accessibilityIdentifier:@"Site Pages Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypePages]
+                                                       callback:^{
+        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementPages;
+    return row;
+}
+
+- (BlogDetailsRow *)mediaRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                        accessibilityIdentifier:@"Media Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeImage]
+                                                       callback:^{
+        [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementMediaScreen;
+    return row;
+}
+
+- (BlogDetailsRow *)commentsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
+                                                          image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
+                                                       callback:^{
+        [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)statsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                             accessibilityIdentifier:@"Stats Row"
+                                                               image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
+                                                            callback:^{
+        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    statsRow.quickStartIdentifier = QuickStartTourElementStats;
+    return statsRow;
+}
+
+- (BlogDetailsRow *)blazeRow
+{
+    __weak __typeof(self) weakSelf = self;
+    CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
+    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
+    BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                             accessibilityIdentifier:@"Blaze Row"
+                                                               image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
+                                                          imageColor:nil
+                                                       renderingMode:UIImageRenderingModeAlwaysOriginal
+                                                            callback:^{
+        [weakSelf showBlaze];
+    }];
+    blazeRow.showsSelectionState = [RemoteFeature enabled:RemoteFeatureFlagBlazeManageCampaigns];
+    return blazeRow;
+}
+
+- (BlogDetailsRow *)socialRow
+{
+    __weak __typeof(self) weakSelf = self;
+
+    NSString *title = [AppConfiguration isWordPress]
+    ? NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+    : [BlogDetailsViewControllerStrings socialRowTitle];
+
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:title
+                                                          image:[UIImage gridiconOfType:GridiconTypeShare]
+                                                       callback:^{
+        [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementSharing;
+    return row;
+}
+
+- (BlogDetailsRow *)activityRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
+                                        accessibilityIdentifier:@"Activity Log Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                       callback:^{
+        [weakSelf showActivity];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)backupRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
+                                        accessibilityIdentifier:@"Backup Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                       callback:^{
+        [weakSelf showBackup];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)scanRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
+                                        accessibilityIdentifier:@"Scan Row"
+                                                          image:[UIImage imageNamed:@"jetpack-scan-menu-icon"]
+                                                       callback:^{
+        [weakSelf showScan];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)peopleRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
+                                        accessibilityIdentifier:@"People Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeUser]
+                                                       callback:^{
+        [weakSelf showPeople];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)pluginsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
+                                                          image:[UIImage gridiconOfType:GridiconTypePlugins]
+                                                       callback:^{
+        [weakSelf showPlugins];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)themesRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
+                                                          image:[UIImage gridiconOfType:GridiconTypeThemes]
+                                                       callback:^{
+        [weakSelf showThemes];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementThemes;
+    return row;
+}
+
+- (BlogDetailsRow *)menuRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
+                                                          image:[[UIImage gridiconOfType:GridiconTypeMenus] imageFlippedForRightToLeftLayoutDirection]
+                                                       callback:^{
+        [weakSelf showMenus];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)domainsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
+                                                     identifier:BlogDetailsSettingsCellIdentifier
+                                        accessibilityIdentifier:@"Domains Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeDomains]
+                                                       callback:^{
+        [weakSelf showDomainsFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)siteSettingsRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Settings", @"Noun. Title. Links to the blog's Settings screen.")
+                                                     identifier:BlogDetailsSettingsCellIdentifier
+                                        accessibilityIdentifier:@"Settings Row"
+                                                          image:[UIImage gridiconOfType:GridiconTypeCog]
+                                                       callback:^{
+        [weakSelf showSettingsFromSource:BlogDetailsNavigationSourceRow];
+    }];
+    return row;
+}
+
+- (BlogDetailsRow *)adminRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
+                                                          image:[UIImage gridiconOfType:GridiconTypeMySites]
+                                                       callback:^{
+        [weakSelf showViewAdmin];
+        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
+    }];
+    UIImage *image = [[UIImage gridiconOfType:GridiconTypeExternal withSize:CGSizeMake(BlogDetailGridiconAccessorySize, BlogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
+    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
+    accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
+    row.accessoryView = accessoryView;
+    row.showsSelectionState = NO;
+    return row;
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
@@ -785,56 +1017,186 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *marr = [NSMutableArray array];
     
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
-        [marr addObject:[self migrationSuccessSectionViewModel]];
+        [marr addNullableObject:[self migrationSuccessSectionViewModel]];
     }
 
     if ([self shouldShowJetpackInstallCard]) {
-        [marr addObject:[self jetpackInstallSectionViewModel]];
+        [marr addNullableObject:[self jetpackInstallSectionViewModel]];
     }
 
     if (self.shouldShowTopJetpackBrandingMenuCard == YES) {
-        [marr addObject:[self jetpackCardSectionViewModel]];
+        [marr addNullableObject:[self jetpackCardSectionViewModel]];
     }
 
-    if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
-        if (!self.hasLoggedDomainCreditPromptShownEvent) {
-            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
-            self.hasLoggedDomainCreditPromptShownEvent = YES;
-        }
-        [marr addObject:[self domainCreditSectionViewModel]];
-    }
+    // This code will be removed in a future PR.
+//    if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
+//        if (!self.hasLoggedDomainCreditPromptShownEvent) {
+//            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
+//            self.hasLoggedDomainCreditPromptShownEvent = YES;
+//        }
+//        [marr addNullableObject:[self domainCreditSectionViewModel]];
+//    }
+
     if ([self shouldShowQuickStartChecklist]) {
-        [marr addObject:[self quickStartSectionViewModel]];
+        [marr addNullableObject:[self quickStartSectionViewModel]];
     }
     if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
-        [marr addObject:[self homeSectionViewModel]];
-    }
-    if ([self shouldAddJetpackSection]) {
-        [marr addObject:[self jetpackSectionViewModel]];
-    }
-    
-    if ([self shouldAddGeneralSection]) {
-        [marr addObject:[self generalSectionViewModel]];
+        [marr addNullableObject:[self homeSectionViewModel]];
     }
 
-    [marr addObject:[self publishTypeSectionViewModel]];
-    
-    if ([self shouldAddPersonalizeSection]) {
-        [marr addObject:[self personalizeSectionViewModel]];
+    if ([AppConfiguration isWordPress]) {
+        if ([self shouldAddJetpackSection]) {
+            [marr addNullableObject:[self jetpackSectionViewModel]];
+        }
+
+        if ([self shouldAddGeneralSection]) {
+            [marr addNullableObject:[self generalSectionViewModel]];
+        }
+
+        [marr addNullableObject:[self publishTypeSectionViewModel]];
+
+        if ([self shouldAddPersonalizeSection]) {
+            [marr addNullableObject:[self personalizeSectionViewModel]];
+        }
+
+        [marr addNullableObject:[self configurationSectionViewModel]];
+        [marr addNullableObject:[self externalSectionViewModel]];
+    } else {
+        [marr addNullableObject:[self contentSectionViewModel]];
+        [marr addNullableObject:[self trafficSectionViewModel]];
+        [marr addObjectsFromArray:[self maintenanceSectionViewModel]];
     }
-    
-    [marr addObject:[self configurationSectionViewModel]];
-    [marr addObject:[self externalSectionViewModel]];
+
     if ([self.blog supports:BlogFeatureRemovable]) {
-        [marr addObject:[self removeSiteSectionViewModel]];
+        [marr addNullableObject:[self removeSiteSectionViewModel]];
     }
     
     if (self.shouldShowBottomJetpackBrandingMenuCard == YES) {
-        [marr addObject:[self jetpackCardSectionViewModel]];
+        [marr addNullableObject:[self jetpackCardSectionViewModel]];
     }
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
+}
+
+/// This section is available on Jetpack only.
+- (BlogDetailsSection *)contentSectionViewModel
+{
+    NSMutableArray *rows = [NSMutableArray array];
+
+    [rows addObject:[self postsRow]];
+    if ([self.blog supports:BlogFeaturePages]) {
+        [rows addObject:[self pagesRow]];
+    }
+    [rows addObject:[self mediaRow]];
+    [rows addObject:[self commentsRow]];
+
+    NSString *title = [BlogDetailsViewControllerStrings contentSectionTitle];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
+}
+
+/// This section is available on Jetpack only.
+- (BlogDetailsSection *)trafficSectionViewModel
+{
+    // Init rows
+    NSMutableArray *rows = [NSMutableArray array];
+
+    // Stats row
+    if ([self.blog supports:BlogFeatureStats]) {
+        [rows addObject:[self statsRow]];
+    }
+
+    // Social row
+    if ([self shouldAddSharingRow]) {
+        [rows addObject:[self socialRow]];
+    }
+
+    // Blaze row
+    if ([self shouldShowBlaze]) {
+        [rows addObject:[self blazeRow]];
+    }
+
+    if (rows.count == 0) {
+        return nil;
+    }
+
+    // Return
+    NSString *title = [BlogDetailsViewControllerStrings trafficSectionTitle];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryTraffic];
+}
+
+/// Returns a list of sections. Available on Jetpack only.
+- (NSArray<BlogDetailsSection *> *)maintenanceSectionViewModel
+{
+    // Init array
+    NSMutableArray<BlogDetailsSection *> *sections = [NSMutableArray array];
+    NSMutableArray *firstSectionRows = [NSMutableArray array];
+    NSMutableArray *secondSectionRows = [NSMutableArray array];
+    NSMutableArray *thirdSectionRows = [NSMutableArray array];
+
+    // The 1st section
+    if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
+        [firstSectionRows addObject:[self activityRow]];
+    }
+    if ([self.blog isBackupsAllowed]) {
+        [firstSectionRows addObject:[self backupRow]];
+    }
+
+    if ([self.blog isScanAllowed]) {
+        [firstSectionRows addObject:[self scanRow]];
+    }
+
+    // The 2nd section
+    if ([self shouldAddPeopleRow]) {
+        [secondSectionRows addObject:[self peopleRow]];
+    }
+    if ([self shouldAddPluginsRow]) {
+        [secondSectionRows addObject:[self pluginsRow]];
+    }
+    if ([self.blog supports:BlogFeatureThemeBrowsing] && ![self.blog isWPForTeams]) {
+        [secondSectionRows addObject:[self themesRow]];
+    }
+    if ([self.blog supports:BlogFeatureMenus]) {
+        [secondSectionRows addObject:[self menuRow]];
+    }
+    if ([self shouldAddDomainRegistrationRow]) {
+        [secondSectionRows addObject:[self domainsRow]];
+    }
+    [secondSectionRows addObject:[self siteSettingsRow]];
+
+    // Third section
+    if ([self shouldDisplayLinkToWPAdmin]) {
+        [thirdSectionRows addObject:[self adminRow]];
+    }
+
+    // Add sections
+    NSString *sectionTitle = [BlogDetailsViewControllerStrings maintenanceSectionTitle];
+    BOOL shouldAddSectionTitle = YES;
+    if ([firstSectionRows count] > 0) {
+        BlogDetailsSection *section = [[BlogDetailsSection alloc] initWithTitle:sectionTitle
+                                                                        andRows:firstSectionRows
+                                                                       category:BlogDetailsSectionCategoryMaintenance];
+        [sections addObject:section];
+        shouldAddSectionTitle = NO;
+    }
+    if ([secondSectionRows count] > 0) {
+        NSString *title = shouldAddSectionTitle ? sectionTitle : nil;
+        BlogDetailsSection *section = [[BlogDetailsSection alloc] initWithTitle:title
+                                                                        andRows:secondSectionRows
+                                                                       category:BlogDetailsSectionCategoryMaintenance];
+        [sections addObject:section];
+        shouldAddSectionTitle = NO;
+    }
+    if ([thirdSectionRows count] > 0) {
+        NSString *title = shouldAddSectionTitle ? sectionTitle : nil;
+        BlogDetailsSection *section = [[BlogDetailsSection alloc] initWithTitle:title
+                                                                        andRows:thirdSectionRows
+                                                                       category:BlogDetailsSectionCategoryMaintenance];
+        [sections addObject:section];
+    }
+
+    // Return
+    return sections;
 }
 
 - (BlogDetailsSection *)homeSectionViewModel
@@ -857,14 +1219,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     
-    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
-                                  accessibilityIdentifier:@"Stats Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
-                                                 callback:^{
-        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
-                                                 }];
-    statsRow.quickStartIdentifier = QuickStartTourElementStats;
-    [rows addObject:statsRow];
+    if ([self.blog supports:BlogFeatureStats]) {
+        [rows addObject:[self statsRow]];
+    }
 
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
@@ -872,6 +1229,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      callback:^{
                                                          [weakSelf showActivity];
                                                      }]];
+    }
+    
+    if ([self shouldShowBlaze]) {
+        [rows addObject:[self blazeRow]];
     }
 
 // Temporarily disabled
@@ -888,6 +1249,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 //        [rows addObject:plansRow];
 //    }
 
+    if (rows.count == 0) {
+        return nil;
+    }
+    
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
 
@@ -896,14 +1261,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     
-    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
-                                  accessibilityIdentifier:@"Stats Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
-                                                 callback:^{
-        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
-                                                 }];
-    statsRow.quickStartIdentifier = QuickStartTourElementStats;
-    [rows addObject:statsRow];
+    if ([self.blog supports:BlogFeatureStats]) {
+        [rows addObject:[self statsRow]];
+    }
 
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
@@ -946,19 +1306,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     if ([self shouldShowBlaze]) {
-        CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
-        UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
-        BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
-                                                 accessibilityIdentifier:@"Blaze Row"
-                                                                   image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
-                                                              imageColor:nil
-                                                           renderingMode:UIImageRenderingModeAlwaysOriginal
-                                                                callback:^{
-                                                                    [weakSelf showBlaze];
-                                                                }];
-        blazeRow.showsSelectionState = NO;
-        [rows addObject:blazeRow];
+        [rows addObject:[self blazeRow]];
     }
+
+    if (rows.count == 0) {
+        return nil;
+    }
+
     NSString *title = @"";
 
     if ([self.blog supports:BlogFeatureJetpackSettings]) {
@@ -968,47 +1322,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
 }
 
-
 - (BlogDetailsSection *)publishTypeSectionViewModel
 {
-    __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    BlogDetailsRow *postsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
-                                              accessibilityIdentifier:@"Blog Post Row"
-                                                                image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
-                                                             callback:^{
-                    [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
-                                                             }];
-    [rows addObject:postsRow];
-    
-    BlogDetailsRow *mediaRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                             accessibilityIdentifier:@"Media Row"
-                                                               image:[UIImage gridiconOfType:GridiconTypeImage]
-                                                            callback:^{
-                   [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
-                                                            }];
-    mediaRow.quickStartIdentifier = QuickStartTourElementMediaScreen;
-    [rows addObject:mediaRow];
-
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                             accessibilityIdentifier:@"Site Pages Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypePages]
-                                                 callback:^{
-        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
-                                                 }];
-    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
-    [rows addObject:pagesRow];
-
-    BlogDetailsRow *commentsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
-                                                          image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
-                                                       callback:^{
-        [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
-                                                       }];
-    [rows addObject:commentsRow];
+    [rows addObject:[self postsRow]];
+    [rows addObject:[self mediaRow]];
+    if ([self.blog supports:BlogFeaturePages]) {
+        [rows addObject:[self pagesRow]];
+    }
+    [rows addObject:[self commentsRow]];
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPublish];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
 }
 
 - (BlogDetailsSection *)personalizeSectionViewModel
@@ -1039,6 +1365,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+    
+    if ([self shouldAddMeRow]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Me", @"Noun. Title. Links to the Me screen.")
+                                        image:[UIImage gridiconOfType:GridiconTypeUserCircle]
+                                     callback:^{
+                                         [weakSelf showMe];
+                                     }];
+        [self downloadGravatarImageFor:row];
+        self.meRow = row;
+        [rows addObject:row];
+    }
 
     if ([self shouldAddSharingRow]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
@@ -1255,7 +1592,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return cell;
     }
 
-    if (section.category == BlogDetailsSectionCategoryMigrationSuccess && MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
+    if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
         [cell configureWithViewController:self];
         return cell;
@@ -1269,6 +1606,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
+
+    if (cell == nil) {
+        DDLogError(@"Cell with identifier '%@' at index path '%@' is nil", row.identifier, indexPath);
+    }
+
     cell.accessibilityHint = row.accessibilityHint;
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentNatural;
@@ -1452,7 +1794,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         NSError *error = nil;
         [self.blog.managedObjectContext save:&error];
 
-        [postService syncPostsOfType:postType withOptions:options forBlog:self.blog success:nil failure:^(NSError *error) {
+        [postService syncPostsOfType:postType withOptions:options forBlog:self.blog success:nil failure:^(NSError * __unused error) {
             NSDate *invalidatedDate = [NSDate dateWithTimeIntervalSince1970:0.0];
             if ([postType isEqual:PostServiceTypePage]) {
                 self.blog.lastPagesSync = invalidatedDate;
@@ -1554,6 +1896,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementMediaScreen];
 }
 
+- (void)showMe
+{
+    UIViewController *controller = [[MeViewController alloc] init];
+    [self.presentationDelegate presentBlogDetailsViewController:controller];
+}
+
 - (void)showPeople
 {
     UIViewController *controller = [PeopleViewController withJPBannerForBlog:self.blog];
@@ -1594,13 +1942,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAnalytics trackEvent:WPAnalyticsEventDomainsDashboardViewed
-                 properties:@{WPAppAnalyticsKeyTapSource: [self propertiesStringForSource:source]}
-                       blog:self.blog];
-
-    UIViewController *controller = [self makeDomainsDashboardViewController];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    [DomainsDashboardCoordinator presentDomainsDashboardWithPresenter:self.presentationDelegate
+                                                               source:[self propertiesStringForSource:source]
+                                                                 blog:self.blog];
 }
 
 -(void)showJetpackSettings
@@ -1629,11 +1973,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{    
+{
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
-    StatsViewController *statsView = [StatsViewController new];
-    statsView.blog = self.blog;
-    statsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *statsView = [self viewControllerForStats];
 
     // Calling `showDetailViewController:sender:` should do this automatically for us,
     // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
@@ -1664,16 +2006,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+    
+    [WPAnalytics track:WPAnalyticsStatActivityLogViewed
+                 withProperties:@{WPAppAnalyticsKeyTapSource: @"site_menu"}];
 }
 
 - (void)showBlaze
 {
     [BlazeEventsTracker trackEntryPointTappedFor:BlazeSourceMenuItem];
-    
-    [BlazeFlowCoordinator presentBlazeInViewController:self
-                                                source:BlazeSourceMenuItem
-                                                  blog:self.blog
-                                                  post:nil];
+
+    if ([RemoteFeature enabled:RemoteFeatureFlagBlazeManageCampaigns]) {
+        BlazeCampaignsViewController *controller =  [BlazeCampaignsViewController makeWithSource:BlazeSourceMenuItem
+                                                                                            blog:self.blog];
+        [self.presentationDelegate presentBlogDetailsViewController:controller];
+    } else {
+        [BlazeFlowCoordinator presentBlazeInViewController:self
+                                                    source:BlazeSourceMenuItem
+                                                      blog:self.blog
+                                                      post:nil];
+    }
 }
 
 - (void)showScan
@@ -1795,7 +2146,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                       preferredStyle:alertStyle];
 
     [alertController addCancelActionWithTitle:cancelTitle handler:nil];
-    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction * __unused action) {
         [self confirmRemoveSite];
     }];
 
@@ -1848,6 +2199,36 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [self reloadTableViewPreservingSelection];
     }
+}
+
+- (void)handleWillEnterForegroundNotification:(NSNotification *)note
+{
+    [self configureTableViewData];
+    [self reloadTableViewPreservingSelection];
+}
+
+- (void)observeManagedObjectContextObjectsDidChangeNotification
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDataModelChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:context];
+}
+
+- (void)observeWillEnterForegroundNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleWillEnterForegroundNotification:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+}
+
+- (void)stopObservingWillEnterForegroundNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationWillEnterForegroundNotification
+                                                  object:nil];
 }
 
 #pragma mark - WPSplitViewControllerDetailProvider

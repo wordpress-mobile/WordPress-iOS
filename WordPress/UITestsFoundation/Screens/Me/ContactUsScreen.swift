@@ -26,7 +26,7 @@ public class ContactUsScreen: ScreenObject {
     var attachButton: XCUIElement { attachButtonGetter(app) }
     var deleteMessageButton: XCUIElement { deleteMessageButtonGetter(app) }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    init(app: XCUIApplication = XCUIApplication()) throws {
         // Notice we are not checking for the send button because it's visible but not enabled,
         // and `ScreenObject` checks for enabled elements.
         try super.init(
@@ -34,8 +34,7 @@ public class ContactUsScreen: ScreenObject {
                 closeButtonGetter,
                 attachButtonGetter,
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

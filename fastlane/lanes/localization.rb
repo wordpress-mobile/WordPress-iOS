@@ -101,7 +101,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
 UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: ios_get_app_version,
+  app_version: get_app_version,
   skip_binary_upload: true,
   overwrite_screenshots: true,
   phased_release: true,
@@ -109,8 +109,6 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   api_key_path: APP_STORE_CONNECT_KEY_PATH,
   app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
 }.freeze
-
-
 
 #################################################
 # Lanes
@@ -126,25 +124,62 @@ platform :ios do
   lane :generate_strings_file_for_glotpress do |options|
     cocoapods
 
-    wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
-    ios_generate_strings_file_from_code(
-      paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
-      exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
-      routines: ['AppLocalizedString'],
-      output_dir: wordpress_en_lproj
-    )
+    # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
+    # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
+    # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
+    config = gutenberg_config!
 
-    # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
-    # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-    ios_merge_strings_files(
-      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
-      destination: File.join(wordpress_en_lproj, 'Localizable.strings')
-    )
+    ref_node = config[:ref]
+    UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
 
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
+    ref = ref_node[:tag] || ref_node[:commit]
+    UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
+
+    github_org = config[:github_org]
+    UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
+
+    repo_name = config[:repo_name]
+    UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
+
+    # Create a temporary directory to clone Gutenberg into.
+    # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
+    gutenberg_clone_name = 'Gutenberg-Strings-Clone'
+    Dir.mktmpdir do |tempdir|
+      Dir.chdir(tempdir) do
+        repo_url = "https://github.com/#{github_org}/#{repo_name}"
+        UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
+        sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
+        Dir.chdir(gutenberg_clone_name) do
+          if config[:ref][:tag]
+            sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
+            sh("git checkout refs/tags/#{ref}")
+          else
+            sh("git fetch origin #{ref}")
+            sh("git checkout #{ref}")
+          end
+        end
+      end
+
+      # Notice that we are no longer in the tempdir, so the paths below are back to being relative to the project root folder.
+      # However, we are still in the tempdir block, so that once the automation is done, the tempdir will be automatically deleted.
+      wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
+      ios_generate_strings_file_from_code(
+        paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', File.join(tempdir, gutenberg_clone_name)],
+        exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
+        routines: ['AppLocalizedString'],
+        output_dir: wordpress_en_lproj
+      )
+
+      # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
+      # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
+      ios_merge_strings_files(
+        paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
+        destination: File.join(wordpress_en_lproj, 'Localizable.strings')
+      )
+
+      git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
+    end
   end
-
-
 
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
   #
@@ -164,10 +199,10 @@ platform :ios do
   lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
-    version = options.fetch(:version, ios_get_app_version)
+    version = options.fetch(:version, get_app_version)
 
     files = {
-      whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+      whats_new: WORDPRESS_RELEASE_NOTES_PATH,
       app_store_name: File.join(source_metadata_folder, 'name.txt'),
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
@@ -200,10 +235,10 @@ platform :ios do
   lane :update_jetpack_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-    version = options.fetch(:version, ios_get_app_version)
+    version = options.fetch(:version, get_app_version)
 
     files = {
-      whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
+      whats_new: JETPACK_RELEASE_NOTES_PATH,
       app_store_name: File.join(source_metadata_folder, 'name.txt'),
       app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
       app_store_desc: File.join(source_metadata_folder, 'description.txt'),
@@ -271,7 +306,7 @@ platform :ios do
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
     # In the meantime, just copy the file to the right place for `deliver` to find, for the `default` pseudo-locale which is used as fallback
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
+    release_notes_source = WORDPRESS_RELEASE_NOTES_PATH
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'default', 'release_notes.txt'))
 
     # Download metadata translations from GlotPress
@@ -293,7 +328,7 @@ platform :ios do
     # (will require changes in the `update_appstore_strings` lane, the Release Scenario, the MC tool to generate the announcement post…)
     #
     # In the meantime, just copy the file to the right place for `deliver` to find, for the `default` pseudo-locale which is used as fallback
-    release_notes_source = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+    release_notes_source = JETPACK_RELEASE_NOTES_PATH
     FileUtils.cp(release_notes_source, File.join(metadata_directory, 'default', 'release_notes.txt'))
 
     # Download metadata translations from GlotPress
@@ -313,7 +348,7 @@ platform :ios do
 
     locales_map = GLOTPRESS_TO_ASC_METADATA_LOCALE_CODES.slice(*locales)
     target_files = {
-      "v#{ios_get_app_version}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
+      "v#{get_app_version}-whats-new": { desc: 'release_notes.txt', max_size: 4000 },
       app_store_name: { desc: 'name.txt', max_size: 30 },
       app_store_subtitle: { desc: 'subtitle.txt', max_size: 30 },
       app_store_desc: { desc: 'description.txt', max_size: 4000 },

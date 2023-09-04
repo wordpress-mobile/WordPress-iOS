@@ -5,7 +5,6 @@
 #import "Constants.h"
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
-#import <WordPressUI/WordPressUI.h>
 #import <WordPressShared/UIDevice+Helpers.h>
 #import "WordPress-Swift.h"
 
@@ -360,7 +359,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [activityItems addObject:[NSURL URLWithString:permaLink]];
 
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
-    activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+    activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray * __unused returnedItems, NSError * __unused  activityError) {
         if (!completed) {
             return;
         }

@@ -12,8 +12,7 @@ public class QuickStartPromptScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [noThanksButtonGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

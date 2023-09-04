@@ -16,8 +16,8 @@ platform :ios do
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release(skip_deliver: true)
-    new_version = ios_get_app_version
+    ios_bump_version_release
+    new_version = get_app_version
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
     extract_release_notes_for_version(
@@ -44,10 +44,19 @@ platform :ios do
     )
     ios_update_release_notes(new_version: new_version)
 
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+    else
+      UI.message('Aborting code completion. See you later.')
+    end
+
     setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GITHUB_REPO, milestone: new_version)
-    ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
 
+    ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
   end
 
@@ -83,10 +92,20 @@ platform :ios do
   desc 'Trigger a new beta build on CI'
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
+    generate_strings_file_for_glotpress
     download_localized_strings_and_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
-    trigger_beta_build
+
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the beta build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_beta_build
+    else
+      UI.message('Aborting beta deployment. See you later.')
+    end
   end
 
   # Sets the stage to start working on a hotfix
@@ -102,8 +121,7 @@ platform :ios do
     prev_ver = ios_hotfix_prechecks(options)
     ios_bump_version_hotfix(
       previous_version: prev_ver,
-      version: options[:version],
-      skip_deliver: true
+      version: options[:version]
     )
   end
 
@@ -115,7 +133,16 @@ platform :ios do
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
     git_pull
-    trigger_release_build
+
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the release build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_release_build
+    else
+      UI.message('Aborting hotfix finalization. See you later.')
+    end
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -141,13 +168,21 @@ platform :ios do
     ios_bump_version_beta
 
     # Wrap up
-    version = ios_get_app_version
+    version = get_app_version
     removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
     setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
-    trigger_release_build
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the release build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_release_build
+    else
+      UI.message('Aborting release finalization. See you later.')
+    end
   end
 
   # Triggers a beta build on CI
@@ -155,7 +190,7 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    branch = options[:branch] || release_branch_name
+    branch = compute_release_branch_name(options: options)
     trigger_buildkite_release_build(branch: branch, beta: true)
   end
 
@@ -164,7 +199,7 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    branch = options[:branch] || release_branch_name
+    branch = compute_release_branch_name(options: options)
     trigger_buildkite_release_build(branch: branch, beta: false)
   end
 end
@@ -193,22 +228,23 @@ end
 #
 desc 'Verifies that Gutenberg is referenced by release version and not by commit'
 lane :gutenberg_dep_check do
-  res = ''
+  source = gutenberg_config![:ref]
 
-  File.open File.join(PROJECT_ROOT_FOLDER, 'Podfile') do |file|
-    res = file.find { |line| line =~ /^(?!\s*#)(?=.*\bgutenberg\b).*(\bcommit|tag\b){1}.+/ }
-  end
+  UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
 
-  UI.user_error!("Can't find any reference to Gutenberg!") if res.empty?
-  if res.include?('commit')
-    UI.user_error!("Gutenberg referenced by commit!\n#{res}") unless UI.interactive?
-
-    unless UI.confirm("Gutenberg referenced by commit!\n#{res}\nDo you want to continue anyway?")
-      UI.user_error!('Aborted by user request. Please fix Gutenberg reference and try again.')
+  case [source[:tag], source[:commit]]
+  when [nil, nil]
+    UI.user_error!('Could not find any Gutenberg version reference.')
+  when [nil, commit = source[:commit]]
+    if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
+      UI.message("Gutenberg version: #{commit}")
+    else
+      UI.user_error!('Aborting...')
     end
+  else
+    # If a tag is present, the commit value is ignored
+    UI.message("Gutenberg version: #{source[:tag]}")
   end
-
-  UI.message("Gutenberg version: #{res.scan(/'([^']*)'/)[0][0]}")
 end
 
 # Returns the path to the extracted Release Notes file for the given `app`.
@@ -217,8 +253,8 @@ end
 #
 def extracted_release_notes_file_path(app:)
   paths = {
-    wordpress: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-    jetpack: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+    wordpress: WORDPRESS_RELEASE_NOTES_PATH,
+    jetpack: JETPACK_RELEASE_NOTES_PATH
   }
   paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
 end
@@ -250,6 +286,18 @@ def prompt_for_confirmation(message:, bypass:)
   UI.confirm(message)
 end
 
+def compute_release_branch_name(options:)
+  branch_option = :branch
+  branch_name = options[branch_option]
+
+  if branch_name.nil?
+    branch_name = release_branch_name
+    UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
+  end
+
+  branch_name
+end
+
 def release_branch_name
-  "release/#{ios_get_app_version}"
+  "release/#{get_app_version}"
 end

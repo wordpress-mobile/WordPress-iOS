@@ -73,7 +73,7 @@
     
     [self.service syncCategoriesForBlog:self.blog
                                 success:^{}
-                                failure:^(NSError * _Nonnull error) {}];
+                                failure:^(NSError * _Nonnull __unused error) {}];
 }
 
 - (void)testThatSyncCategoriesWithPagingWorks
@@ -99,8 +99,8 @@
     [self.service syncCategoriesForBlog:self.blog
                                  number:number
                                  offset:offset
-                                success:^(NSArray<PostCategory *> * _Nonnull tags) {}
-                                failure:^(NSError * _Nonnull error) {}];
+                                success:^(NSArray<PostCategory *> * _Nonnull __unused tags) {}
+                                failure:^(NSError * _Nonnull __unused error) {}];
 }
 
 - (void)testThatCreateCategoryWithNameWorks
@@ -122,8 +122,8 @@
     [self.service createCategoryWithName:name
                   parentCategoryObjectID:nil
                          forBlogObjectID:self.blog.objectID
-                                 success:^(PostCategory * _Nonnull category) {}
-                                 failure:^(NSError * _Nonnull error) {}];
+                                 success:^(PostCategory * _Nonnull __unused category) {}
+                                 failure:^(NSError * _Nonnull __unused error) {}];
 }
 
 - (void)testSyncSuccessShouldBeCalledOnce
@@ -135,7 +135,7 @@
                                      failure:[OCMArg isNotNil]]);
     [self.service syncCategoriesForBlog:self.blog
                                 success:^{ [completion fulfill]; }
-                                failure:^(NSError * _Nonnull error) {[completion fulfill]; }];
+                                failure:^(NSError * _Nonnull __unused error) {[completion fulfill]; }];
     [self waitForExpectations:@[completion] timeout:1];
 }
 
@@ -148,7 +148,7 @@
                                      failure:[OCMArg invokeBlock]]);
     [self.service syncCategoriesForBlog:self.blog
                                 success:^{ [completion fulfill]; }
-                                failure:^(NSError * _Nonnull error) {[completion fulfill]; }];
+                                failure:^(NSError * _Nonnull __unused error) {[completion fulfill]; }];
     [self waitForExpectations:@[completion] timeout:1];
 }
 

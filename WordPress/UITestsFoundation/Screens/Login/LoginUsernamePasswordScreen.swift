@@ -1,41 +1,25 @@
 import ScreenObject
 import XCTest
-import XCUITestHelpers
-
-private struct ElementStringIDs {
-    // TODO: clean up comments when unifiedSiteAddress is permanently enabled.
-
-    // For original Site Address. These match accessibilityIdentifier in Login.storyboard.
-    // Leaving here for now in case unifiedSiteAddress is disabled.
-    // static let usernameTextField = "usernameField"
-    // static let passwordTextField = "passwordField"
-    // static let nextButton = "submitButton"
-
-    // For unified Site Address. This matches TextFieldTableViewCell.accessibilityIdentifier.
-    static let usernameTextField = "Username"
-    static let passwordTextField = "Password"
-    static let nextButton = "Continue Button"
-}
 
 public class LoginUsernamePasswordScreen: ScreenObject {
 
-    let usernameTextFieldGetter: (XCUIApplication) -> XCUIElement = {
-        $0.textFields[ElementStringIDs.usernameTextField]
+    private let usernameTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Username"]
     }
 
-    let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
-        $0.secureTextFields[ElementStringIDs.passwordTextField]
+    private let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.secureTextFields["Password"]
     }
 
-    let nextButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons[ElementStringIDs.nextButton]
+    private let nextButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Continue Button"]
     }
 
-    var usernameTextField: XCUIElement { usernameTextFieldGetter(app) }
-    var passwordTextField: XCUIElement { passwordTextFieldGetter(app) }
     var nextButton: XCUIElement { nextButtonGetter(app) }
+    var passwordTextField: XCUIElement { passwordTextFieldGetter(app) }
+    var usernameTextField: XCUIElement { usernameTextFieldGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         // Notice that we don't use the "next button" getter because, at the time the screen loads,
         // that element is disabled. `ScreenObject` uses `isEnabled == true` on the elements we
         // pass at `init`.
@@ -44,8 +28,7 @@ public class LoginUsernamePasswordScreen: ScreenObject {
                 usernameTextFieldGetter,
                 passwordTextFieldGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
@@ -57,16 +40,12 @@ public class LoginUsernamePasswordScreen: ScreenObject {
 
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
         fill(username: username, password: password)
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySitesScreen()
     }
 
     public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
-        try dismissQuickStartPromptIfNeeded()
-        try dismissOnboardingQuestionsPromptIfNeeded()
 
         return try MySiteScreen()
     }

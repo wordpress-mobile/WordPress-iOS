@@ -6,42 +6,26 @@ import WordPressKit
 struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
     private let blog: Blog
-    private let domainType: DomainType
+    private let domainSelectionType: DomainSelectionType
     private let onDismiss: () -> Void
 
     private var domainSuggestionViewController: RegisterDomainSuggestionsViewController
 
-    init(blog: Blog, domainType: DomainType, onDismiss: @escaping () -> Void) {
+    init(blog: Blog, domainSelectionType: DomainSelectionType, onDismiss: @escaping () -> Void) {
         self.blog = blog
-        self.domainType = domainType
+        self.domainSelectionType = domainSelectionType
         self.onDismiss = onDismiss
-        self.domainSuggestionViewController = RegisterDomainSuggestionsViewController.instance(site: blog,
-                                                                                               domainType: domainType,
-                                                                                               includeSupportButton: false)
+        self.domainSuggestionViewController = DomainsDashboardFactory.makeDomainsSuggestionViewController(
+            blog: blog,
+            domainSelectionType: domainSelectionType,
+            onDismiss: onDismiss
+        )
     }
 
     func makeUIViewController(context: Context) -> LightNavigationController {
-        let blogService = BlogService(coreDataStack: ContextManager.shared)
-
-        self.domainSuggestionViewController.domainPurchasedCallback = { domain in
-            blogService.syncBlogAndAllMetadata(self.blog) { }
-            WPAnalytics.track(.domainCreditRedemptionSuccess)
-            self.presentDomainCreditRedemptionSuccess(domain: domain)
-        }
-
         let navigationController = LightNavigationController(rootViewController: domainSuggestionViewController)
         return navigationController
     }
 
     func updateUIViewController(_ uiViewController: LightNavigationController, context: Context) { }
-
-    private func presentDomainCreditRedemptionSuccess(domain: String) {
-
-        let controller = DomainCreditRedemptionSuccessViewController(domain: domain) { _ in
-            self.domainSuggestionViewController.dismiss(animated: true) {
-                self.onDismiss()
-            }
-        }
-        domainSuggestionViewController.present(controller, animated: true)
-    }
 }

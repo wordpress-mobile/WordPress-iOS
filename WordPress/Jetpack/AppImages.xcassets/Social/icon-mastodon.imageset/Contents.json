@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon-mastodon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

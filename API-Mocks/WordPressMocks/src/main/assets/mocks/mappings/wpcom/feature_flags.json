@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/wpcom/v2/mobile/feature-flags",
+    "queryParameters": {
+      "_locale": {
+        "matches": "(.*)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "dashboard_card_activity_log": true,
+      "dashboard_card_domain": false,
+      "dashboard_card_free_to_paid_plans": true,
+      "dashboard_card_pages": true
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import MobileCoreServices
 import WPMediaPicker
+import UniformTypeIdentifiers
 
 protocol TenorPickerDelegate: AnyObject {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia])
@@ -41,29 +42,29 @@ final class TenorPicker: NSObject {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
         options.allowMultipleSelection = allowMultipleSelection
         return options
-    }()
-
-    private lazy var picker: WPNavigationMediaPickerViewController = {
-        let picker = WPNavigationMediaPickerViewController(options: pickerOptions)
-        picker.delegate = self
-        picker.startOnGroupSelector = false
-        picker.showGroupSelector = false
-        picker.dataSource = dataSource
-        picker.cancelButtonTitle = .closePicker
-        picker.mediaPicker.registerClass(forReusableCellOverlayViews: CachedAnimatedImageView.self)
-        return picker
     }()
 
     func presentPicker(origin: UIViewController, blog: Blog) {
         NoResultsTenorConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
+        let picker: WPNavigationMediaPickerViewController = {
+            let picker = WPNavigationMediaPickerViewController(options: pickerOptions)
+            picker.delegate = self
+            picker.startOnGroupSelector = false
+            picker.showGroupSelector = false
+            picker.dataSource = dataSource
+            picker.cancelButtonTitle = .closePicker
+            picker.mediaPicker.registerClass(forReusableCellOverlayViews: CachedAnimatedImageView.self)
+            return picker
+        }()
+
         origin.present(picker, animated: true) {
-            self.picker.mediaPicker.searchBar?.becomeFirstResponder()
+            picker.mediaPicker.searchBar?.becomeFirstResponder()
         }
 
         observeDataSource()

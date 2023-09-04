@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import SwiftUI
 
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
@@ -19,6 +20,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         return .hidden
     }
 
+    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
+    private var domainPurchasingEnabled: Bool {
+        return siteCreator.domainPurchasingEnabled
+    }
+
     /// The creator collects user input as they advance through the wizard flow.
     private let siteCreator: SiteCreator
     private let service: SiteAddressService
@@ -35,7 +41,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private let table: UITableView
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
+    private let searchBar = UISearchBar()
     private var sitePromptView: SitePromptView!
+    private let siteCreationEmptyTemplate = SiteCreationEmptySiteTemplate()
+    private lazy var siteTemplateHostingController = UIHostingController(rootView: siteCreationEmptyTemplate)
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -135,18 +144,49 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
         loadHeaderView()
         addAddressHintView()
+        configureUIIfNeeded()
+    }
+
+    private func configureUIIfNeeded() {
+        guard domainPurchasingEnabled else {
+            return
+        }
+
+        NSLayoutConstraint.activate([
+            largeTitleView.widthAnchor.constraint(equalTo: headerStackView.widthAnchor)
+        ])
+        largeTitleView.textAlignment = .natural
+        promptView.textAlignment = .natural
+        promptView.font = .systemFont(ofSize: 17)
     }
 
     private func loadHeaderView() {
-        let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
-        let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
-        let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
-        let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
-        searchHeader.addSubview(searchTextField)
-        searchHeader.addConstraints([top, bottom, leading, trailing])
-        searchHeader.addTopBorder(withColor: .divider)
-        searchHeader.addBottomBorder(withColor: .divider)
-        searchHeader.backgroundColor = searchTextField.backgroundColor
+
+        if domainPurchasingEnabled {
+            searchBar.searchBarStyle = UISearchBar.Style.default
+            searchBar.translatesAutoresizingMaskIntoConstraints = false
+            WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
+            searchBar.layer.borderWidth = 0
+            searchHeader.addSubview(searchBar)
+            searchBar.delegate = self
+
+            NSLayoutConstraint.activate([
+                searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
+                searchHeader.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
+                searchBar.topAnchor.constraint(equalTo: searchHeader.topAnchor, constant: 1),
+                searchHeader.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 1)
+            ])
+        } else {
+            searchHeader.addSubview(searchTextField)
+            searchHeader.backgroundColor = searchTextField.backgroundColor
+            let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
+            let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
+            let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
+            let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
+            searchHeader.addConstraints([top, bottom, leading, trailing])
+            searchHeader.addTopBorder(withColor: .divider)
+            searchHeader.addBottomBorder(withColor: .divider)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -177,9 +217,16 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         updateNoResultsLabelTopInset()
 
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
-            guard let `self` = self else { return }
-            if !self.sitePromptView.isHidden {
-                self.updateTitleViewVisibility(true)
+            guard let self else { return }
+
+            if self.domainPurchasingEnabled {
+                if !self.siteTemplateHostingController.view.isHidden {
+                    self.updateTitleViewVisibility(true)
+                }
+            } else {
+                if !self.sitePromptView.isHidden {
+                    self.updateTitleViewVisibility(true)
+                }
             }
         }
     }
@@ -189,7 +236,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
         let cellCount = hasExactMatch ? data.count : data.count + 1
-        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressCell.estimatedSize.height)
+        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
     }
 
@@ -280,15 +327,18 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupCells() {
-        let cellName = AddressCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
+        let cellName = String(describing: AddressTableViewCell.self)
+        table.register(AddressTableViewCell.self, forCellReuseIdentifier: cellName)
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         table.cellLayoutMarginsFollowReadableWidth = true
     }
 
     private func restoreSearchIfNeeded() {
-        search(withInputFrom: searchTextField)
+        if domainPurchasingEnabled {
+            search(searchBar.text)
+        } else {
+            search(query(from: searchTextField))
+        }
     }
 
     private func prepareViewIfNeeded() {
@@ -326,14 +376,17 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
+        if !domainPurchasingEnabled {
+            table.separatorStyle = .none
+        }
         table.dataSource = self
-        table.estimatedRowHeight = AddressCell.estimatedSize.height
+        table.estimatedRowHeight = AddressTableViewCell.estimatedSize.height
         setupTableBackground()
         setupTableSeparator()
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
-        table.separatorStyle = .none // Remove Seperator from from section headers we'll add in seperators when creating cells.
+        table.isAccessibilityElement = false
     }
 
     private func setupTableBackground() {
@@ -342,12 +395,13 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setupTableSeparator() {
         table.separatorColor = .divider
+        table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
     }
 
     private func query(from textField: UITextField?) -> String? {
         guard let text = textField?.text,
-            !text.isEmpty else {
-                return siteCreator.information?.title
+              !text.isEmpty else {
+            return siteCreator.information?.title
         }
 
         return text
@@ -355,7 +409,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     @objc
     private func textChanged(sender: UITextField) {
-        search(withInputFrom: sender)
+        search(sender.text)
     }
 
     private func clearSelectionAndCreateSiteButton() {
@@ -370,7 +424,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             "search_term": lastSearchQuery as AnyObject
         ]
 
-        if FeatureFlag.siteCreationDomainPurchasing.enabled {
+        if domainPurchasingEnabled {
             domainSuggestionProperties["domain_cost"] = domainSuggestion.costString
         }
 
@@ -383,8 +437,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         searchTextField.setIcon(isLoading: isLoading)
     }
 
-    private func search(withInputFrom textField: UITextField) {
-        guard let query = query(from: textField), query.isEmpty == false else {
+    private func search(_ string: String?) {
+        guard let query = string, query.isEmpty == false else {
             clearContent()
             return
         }
@@ -395,20 +449,39 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     // MARK: - Search logic
 
     private func setAddressHintVisibility(isHidden: Bool) {
-        sitePromptView.isHidden = isHidden
+        if domainPurchasingEnabled {
+            siteTemplateHostingController.view?.isHidden = isHidden
+        } else {
+            sitePromptView.isHidden = isHidden
+        }
     }
 
     private func addAddressHintView() {
-        sitePromptView = SitePromptView(frame: .zero)
-        sitePromptView.isUserInteractionEnabled = false
-        sitePromptView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(sitePromptView)
-        NSLayoutConstraint.activate([
-            sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
-            sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
-            sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
-            sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
-        ])
+        if domainPurchasingEnabled {
+            guard let siteCreationView = siteTemplateHostingController.view else {
+                return
+            }
+            siteCreationView.isUserInteractionEnabled = false
+            siteCreationView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(siteCreationView)
+            NSLayoutConstraint.activate([
+                siteCreationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+                containerView.trailingAnchor.constraint(equalTo: siteCreationView.trailingAnchor, constant: 16),
+                siteCreationView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin),
+                containerView.bottomAnchor.constraint(equalTo: siteCreationView.bottomAnchor, constant: 0)
+            ])
+        } else {
+            sitePromptView = SitePromptView(frame: .zero)
+            sitePromptView.isUserInteractionEnabled = false
+            sitePromptView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(sitePromptView)
+            NSLayoutConstraint.activate([
+                sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
+                sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
+                sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
+                sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
+            ])
+        }
         setAddressHintVisibility(isHidden: true)
     }
 
@@ -420,14 +493,14 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
         static let invalidQuery = NSLocalizedString("Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9.",
-                                                 comment: "This is shown to the user when their domain search query contains invalid characters.")
+                                                    comment: "This is shown to the user when their domain search query contains invalid characters.")
         static let noConnection: String = NSLocalizedString("No connection",
                                                             comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
         static let serverError: String = NSLocalizedString("There was a problem",
                                                            comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
         static let mainTitle: String = NSLocalizedString("Choose a domain",
                                                          comment: "Select domain name. Title")
-        static let prompt: String = NSLocalizedString("This is where people will find you on the internet.",
+        static let prompt: String = NSLocalizedString("Search for a short and memorable keyword to help people find and visit your website.",
                                                       comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
@@ -438,7 +511,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let suggestions: String = NSLocalizedString("Suggestions",
                                                            comment: "Suggested domains")
         static let noMatch: String = NSLocalizedString("This domain is unavailable",
-                                                           comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
+                                                       comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
     }
 }
 
@@ -460,6 +533,18 @@ extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         clearSelectionAndCreateSiteButton()
         return true
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension WebAddressWizardContent: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        clearSelectionAndCreateSiteButton()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        search(searchText)
     }
 }
 
@@ -485,30 +570,30 @@ private extension WebAddressWizardContent {
 extension WebAddressWizardContent: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard !isShowingError else { return 1 }
-        return (!hasExactMatch && section == 0) ? 1 : data.count
+        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? 1 : data.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard data.count > 0 else { return nil }
-        return (!hasExactMatch && section == 0) ? nil : Strings.suggestions
+        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? nil : Strings.suggestions
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (!hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
+        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return hasExactMatch ? 1 : 2
+        return (domainPurchasingEnabled || hasExactMatch) ? 1 : 2
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return (!hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
+        return (!domainPurchasingEnabled && !hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isShowingError {
             return configureErrorCell(tableView, cellForRowAt: indexPath)
-        } else if !hasExactMatch && indexPath.section == 0 {
+        } else if !domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0 {
             return configureNoMatchCell(table, cellForRowAt: indexPath)
         } else {
             return configureAddressCell(tableView, cellForRowAt: indexPath)
@@ -526,20 +611,27 @@ extension WebAddressWizardContent: UITableViewDataSource {
             return newCell
         }()
 
-        cell.textLabel?.attributedText = AddressCell.processName("\(lastSearchQuery ?? "").wordpress.com")
+        cell.textLabel?.attributedText = AddressTableViewCell.processName("\(lastSearchQuery ?? "").wordpress.com")
         return cell
     }
 
     func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressCell.cellReuseIdentifier()) as? AddressCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressTableViewCell.self)) as? AddressTableViewCell else {
             assertionFailure("This is a programming error - AddressCell has not been properly registered!")
             return UITableViewCell()
         }
 
         let domainSuggestion = data[indexPath.row]
-        cell.model = domainSuggestion
-        cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
-        cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
+        if domainPurchasingEnabled {
+            let tags = AddressTableViewCell.ViewModel.tagsFromPosition(indexPath.row)
+            let viewModel = AddressTableViewCell.ViewModel(model: domainSuggestion, tags: tags)
+            cell.update(with: viewModel)
+        } else {
+            cell.update(with: domainSuggestion)
+            cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
+            cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
+        }
+
         return cell
     }
 
@@ -559,7 +651,7 @@ extension WebAddressWizardContent: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // Prevent selection if it's the no matches cell
-        return (!hasExactMatch && indexPath.section == 0) ? nil : indexPath
+        return (!domainPurchasingEnabled && !hasExactMatch && indexPath.section == 0) ? nil : indexPath
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -570,7 +662,12 @@ extension WebAddressWizardContent: UITableViewDelegate {
 
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
-        searchTextField.resignFirstResponder()
+
+        if domainPurchasingEnabled {
+            searchBar.resignFirstResponder()
+        } else {
+            searchTextField.resignFirstResponder()
+        }
     }
 
     func retry() {

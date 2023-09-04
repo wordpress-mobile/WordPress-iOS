@@ -27,6 +27,10 @@ class TopicsCollectionView: DynamicHeightCollectionView {
         commonInit()
     }
 
+    deinit {
+        coordinator?.invalidate()
+    }
+
     func commonInit() {
         collectionViewLayout = ReaderInterestsCollectionViewFlowLayout()
 

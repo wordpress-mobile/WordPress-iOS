@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "6250F91E-8E09-40AF-96F5-C7474EE19AB4",
+      "name" : "Foundation-EN-US",
+      "options" : {
+        "language" : "en",
+        "region" : "US"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPress.xcodeproj",
+      "identifier" : "FABB1F8F2602FC2C00C8785C",
+      "name" : "Jetpack"
+    },
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "EditorAztecTests",
+        "LoginTests\/testEmailMagicLinkLogin()",
+        "SignupTests",
+        "SignupTests\/testEmailSignup()",
+        "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
+      ],
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "EA14532229AD874C001F3143",
+        "name" : "JetpackUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

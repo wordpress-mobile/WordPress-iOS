@@ -574,12 +574,14 @@ private extension NoResultsViewController {
     func configureForAccessibility() {
         // Reset
         view.isAccessibilityElement = false
+        view.accessibilityIdentifier = nil
         view.accessibilityLabel = nil
         view.accessibilityElements = nil
         view.accessibilityTraits = .none
 
         if displayTitleViewOnly {
             view.isAccessibilityElement = true
+            view.accessibilityIdentifier = .noResultsTitleViewAccessibilityIdentifier
             view.accessibilityLabel = titleLabel.text
             view.accessibilityTraits = .staticText
         } else {
@@ -587,10 +589,18 @@ private extension NoResultsViewController {
 
             labelStackView.accessibilityTraits = .staticText
             labelStackView.isAccessibilityElement = true
+            labelStackView.accessibilityIdentifier = .noResultsLabelStackViewAccessibilityIdentifier
             labelStackView.accessibilityLabel = [
                 titleLabel.text,
                 subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
             ].compactMap { $0 }.joined(separator: ". ")
         }
     }
+}
+
+// MARK: - Accessibility Identifiers
+
+private extension String {
+    static let noResultsTitleViewAccessibilityIdentifier = "no-results-title-view"
+    static let noResultsLabelStackViewAccessibilityIdentifier = "no-results-label-stack-view"
 }

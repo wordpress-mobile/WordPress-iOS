@@ -11,13 +11,27 @@ extension WPStyleGuide {
     /// - Returns: A UIImageView
     ///
     @objc public class func sharingCellWarningAccessoryImageView() -> UIImageView {
-
         let imageSize = 20.0
         let horizontalPadding = 8.0
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
 
         imageView.image = UIImage(named: "sharing-notice")
         imageView.tintColor = jazzyOrange()
+        imageView.contentMode = .right
+        return imageView
+    }
+
+    /// Create an UIImageView showing the notice gridicon.
+    ///
+    /// - Returns: A UIImageView
+    ///
+    @objc public class func sharingCellErrorAccessoryImageView() -> UIImageView {
+        let imageSize = 20.0
+        let horizontalPadding = 8.0
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
+
+        imageView.image = UIImage(named: "sharing-notice")
+        imageView.tintColor = .systemRed
         imageView.contentMode = .right
         return imageView
     }
@@ -55,6 +69,14 @@ extension WPStyleGuide {
         return image!.withRenderingMode(.alwaysTemplate)
     }
 
+    @objc public class func socialIcon(for service: NSString) -> UIImage {
+        guard RemoteFeatureFlag.jetpackSocialImprovements.enabled() else {
+            return iconForService(service)
+        }
+
+        return UIImage(named: "icon-\(service)") ?? iconForService(service)
+    }
+
 
     /// Get's the tint color to use for the specified service when it is connected.
     ///
@@ -84,6 +106,7 @@ extension WPStyleGuide {
         }
     }
 
+    // TODO: Remove this in favor of `PublicizeService.ServiceName` once `jetpackSocial` flag is removed.
     enum SharingServiceNames: String {
         case Facebook = "facebook"
         case Twitter = "twitter"

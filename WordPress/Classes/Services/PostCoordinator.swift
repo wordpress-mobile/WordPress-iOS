@@ -302,8 +302,8 @@ class PostCoordinator: NSObject {
                         switch result {
                         case .failure:
                             handleSingleMediaFailure()
-                        case .success(let value):
-                            media.remoteURL = value.videoURL.absoluteString
+                        case .success(let videoURL):
+                            media.remoteURL = videoURL.absoluteString
                             successHandler()
                         }
                     }
@@ -373,6 +373,11 @@ class PostCoordinator: NSObject {
 
             let gutenbergMediaFilesUploadProcessor = GutenbergMediaFilesUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergMediaFilesUploadProcessor)
+
+            if let videoPressGUID = media.videopressGUID {
+                let gutenbergVideoPressUploadProcessor = GutenbergVideoPressUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, videoPressGUID: videoPressGUID)
+                gutenbergProcessors.append(gutenbergVideoPressUploadProcessor)
+            }
 
         } else if media.mediaType == .audio {
             let gutenbergAudioProcessor = GutenbergAudioUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)

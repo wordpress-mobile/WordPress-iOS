@@ -3,6 +3,45 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 152
+
+ @kean 2023-07-28
+
+ -  Remove the following stats-related entities: `AllTimeStatsRecordValue` ,`AnnualAndMostPopularTimeStatsRecordValue` ,`ClicksStatsRecordValue` ,`CountryStatsRecordValue` ,`FileDownloadsStatsRecordValue` ,`FollowersCountStatsRecordValue` ,`FollowersStatsRecordValue` ,`LastPostStatsRecordValue` ,`OtherAndTotalViewsCount` ,`PublicizeConnectionStatsRecordValue` ,`ReferrerStatsRecordValue` ,`SearchResultsStatsRecordValue` ,`StatsRecord` ,`StatsRecordValue` ,`StreakInsightStatsRecordValue` ,`StreakStatsRecordValue` ,`TagsCategoriesStatsRecordValue` ,`TodayStatsRecordValue` ,`TopCommentedPostStatsRecordValue` ,`TopCommentsAuthorStatsRecordValue` ,`TopViewedAuthorStatsRecordValue` ,`TopViewedPostStatsRecordValue` ,`TopViewedVideoStatsRecordValue` ,`VisitsSummaryStatsRecordValue`.
+ - Remove `statsRecords` and `lastStatsSync` from `Blog`
+
+## WordPress 151
+
+@dvdchr 2023-06-28
+
+- `Blog`: added `planActiveFeatures` (optional, no default, `Transformable` with type `[String]`)
+
+@dvdchr 2023-06-23
+
+- Created a new entity `PublicizeInfo` with:
+  - `sharedPostsCount` (required, default `0`, `Int 64`)
+  - `sharesRemaining` (required, default `0`, `Int 64`)
+  - `shareLimit` (required, default `0`, `Int 64`)
+  - `toBePublicizedCount` (required, default `0`, `Int 64`)
+
+- Created one-to-many relationship between `PublicizeInfo` and `Blog`
+  - `PublicizeInfo`
+    - `blog` (optional, to-one, nullify on delete)
+  - `Blog`
+    - `publicizeInfo` (optional, to-one, cascade on delete)
+
+## WordPress 150
+
+@momozw 2023-06-20
+
+- `Blog`: removed `isBlazeApproved` attribute.
+
+## WordPress 149
+
+@dvdchr 2023-05-16
+
+- `PublicizeService`: added `status` attribute. (optional, default `ok`, `String`)
+
 ## WordPress 148
 
 @momozw 2023-02-20

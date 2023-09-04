@@ -46,13 +46,23 @@ final class SiteCreator {
             siteURLString: siteURLString,
             isPublic: true,
             siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
-            findAvailableURL: address == nil
+            findAvailableURL: !(address?.isFree ?? false)
         )
         return request
     }
 
     var hasSiteTitle: Bool {
         information?.title != nil
+    }
+
+    /// Checks if the Domain Purchasing Feature Flag and AB Experiment are enabled
+    var domainPurchasingEnabled: Bool {
+        FeatureFlag.siteCreationDomainPurchasing.enabled
+    }
+
+    /// Flag indicating whether the domain checkout flow should appear or not.
+    var shouldShowDomainCheckout: Bool {
+        domainPurchasingEnabled && !(address?.isFree ?? false)
     }
 
     /// Returns the domain suggestion if there's one,

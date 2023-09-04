@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-03-06 07:06:56+0000 */
+/* Translation-Revision-Date: 2023-08-29 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -250,11 +250,8 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Block av typen %s. Detta block har ogiltigt innehåll";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s konverterades till vanligt block";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s konverterades till vanliga block";
+/* translators: %s: name of the synced block */
+"%s detached" = "%s frikopplad";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "Snart kommer förhandsgranskningar av inbäddade block för %s";
@@ -264,6 +261,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "Ingen URL angiven för %s";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "Länk för %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Förhandsgranskning av %s är inte tillgängligt ännu";
@@ -416,9 +416,6 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "LÄGG TILL BILD ELLER VIDEO";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "LÄGG TILL LÄNK";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "LÄGG TILL MEDIA";
 
 /* No comment provided by engineer. */
@@ -567,6 +564,9 @@ translators: Block name. %s: The localized block name */
 "Add button text" = "Lägg till knapptext";
 
 /* No comment provided by engineer. */
+"Add description" = "Lägg till beskrivning";
+
+/* No comment provided by engineer. */
 "Add image or video" = "Lägg till bild eller video";
 
 /* Accessibility hint text for adding an image to a new user account. */
@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "Länka till detta telefonnummer";
 
+/* No comment provided by engineer. */
+"Add title" = "Lägg till rubrik";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Lägger till olika webbplatsfunktioner";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Alla";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -729,10 +733,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Alt-text";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativt kan du frikoppla och redigera dessa block separat genom att trycka på ”Konvertera till vanliga block”.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Du kan även frikoppla och redigera dessa block separat genom att trycka på Frikoppla mönster.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Alternativt kan du ta bort bifogning och redigera detta block separat genom att trycka på ”Konvertera till vanligt block”.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "Du kan även frikoppla och redigera det här blocket separat genom att trycka på Frikoppla mönster.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternativt kan du ange lösenordet för detta konto.";
@@ -1111,11 +1115,11 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Flest visningar någonsin";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Stor iPhone\/iPad-uppdatering nu tillgänglig";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "En blank sida har skapats";
+
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -1133,6 +1137,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blockredigeraren är aktiverad";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "Block grupperat";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blockera obehöriga inloggningsförsök";
 
@@ -1147,6 +1154,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blockera denna webbplats";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "Block avgrupperat";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
@@ -1405,9 +1415,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "Ändra inställningar";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Ändra webbplats";
-
 /* Change site icon button */
 "Change Site Icon" = "Byt webbplatsikon";
 
@@ -1583,9 +1590,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Välj dina ämnen";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "När du väljer en annan webbplats kommer du förlora ändringar i inlägget som är specifikt till webbplatsen, t ex uppladdade foton och valda kategorier. Är du säker?";
-
 /* Register Domain - Address information field City */
 "City" = "Ort";
 
@@ -1625,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1960,9 +1965,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Kopiera versionen från denna app";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Kunde vara bättre";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Kunde inte följa ämne";
 
@@ -2152,12 +2154,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Create link" = "Skapa länk";
-
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "Skapa ditt första inlägg";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "Skapa nästa inlägg";
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Skapa din webbplats";
@@ -2362,7 +2358,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Neka";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "Beskriv bildens syfte. Lämna tomt om bilden endast har dekorativ funktion.";
+"Describe the purpose of the image. Leave empty if decorative." = "Beskriv syftet med bilden. Lämna tomt om det är dekorativt.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2371,6 +2367,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "Designsystem";
 
 /* Title for the desktop web preview */
 "Desktop" = "Stationär dator";
@@ -2584,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "Dubbeltryck för att förhandsgranska inlägget.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Dubbeltryck för att göra om senaste ändring";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "Dubbeltryck för att välja";
 
 /* No comment provided by engineer. */
@@ -2609,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Dubbeltryck för att växla inställningens värde";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "Dubbeltryck för att ångra senaste ändring";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Dubbeltryck för att visa inbäddningsalternativ.";
@@ -2658,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicera block";
 
+/* No comment provided by engineer. */
+"Dynamic" = "Dynamisk";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "T.ex. mode, poesi, politik";
 
@@ -2680,9 +2676,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "Redigera %@";
-
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "Redigera %@-blocket";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Redigera ord i blockeringslistan";
@@ -2731,11 +2724,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Redigera video";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Redigering av återanvändbara block stöds ännu inte i WordPress för Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "Redigering av synkroniserade mönster stöds ännu inte i %s för Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Redigering av återanvändbara block stöds ännu inte i WordPress för iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "Redigering av synkroniserade mönster stöds ännu inte i %s för iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Om du redigerar den här GIF-bilden tas animeringen bort.";
@@ -3142,9 +3135,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "Funktionsflaggor";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Utvalda";
 
@@ -3489,9 +3479,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Hämtar URL för webbplatsen";
 
 /* No comment provided by engineer. */
-"Gradient" = "Gradient";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "Gradienttyp";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3603,8 +3590,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Så här har ditt inlägg lyckats hittills.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Dold";
 
 /* Hides a site from the site picker list
@@ -3672,9 +3658,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Hur åtgärdar vi det?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Jag gillar den";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jag är så inspirerad av fotografen Cameron Karstens arbete. Jag kommer att prova dessa tekniker nästa gång";
@@ -3811,8 +3794,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "Infoga %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "Infoga ljudblock";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "Infoga galleriblock";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "Placera in horisontell linje";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "Infoga bildblock";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3821,6 +3813,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Infoga media";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "Infoga videoblock";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "Infoga korspublicering";
@@ -4234,6 +4229,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Ladda fler inlägg";
 
+/* No comment provided by engineer. */
+"Loading" = "Laddar in";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Läser in aktiviteter...";
 
@@ -4415,6 +4413,9 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Hantera webbplats";
+
+/* No comment provided by engineer. */
+"Manual" = "Manuell";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Manuella offset-värden";
@@ -4842,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Ingen förhandsgransknings-URL tillgänglig.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Nej, tack";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Ingen rubrik";
 
@@ -4903,6 +4901,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "Inget datumintervall är angivet";
+
+/* No comment provided by engineer. */
+"No description" = "Ingen beskrivning";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Inga åtgärdade hot";
@@ -5029,6 +5030,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Inga hot hittades";
+
+/* No comment provided by engineer. */
+"No title" = "Ingen rubrik";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5334,9 +5338,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "På utsidan";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "Åsidosatt";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
 
@@ -5499,6 +5500,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to play a video on the editor. */
 "Play video" = "Spela video";
+
+/* No comment provided by engineer. */
+"Playback Bar Color" = "Färg på uppspelningsfältet";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "Uppspelningsinställningar";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Lägg till något innehåll innan du försöker publicera.";
@@ -5742,9 +5749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Publiceringsaktivitet";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "Genom att publicera regelbundet bygger du upp en större publik!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5760,9 +5764,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Inlägg och sidor";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "Inlägg visas i omvänd kronologisk ordning på din bloggsida. Dags att berätta om dina tankar för världen!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "Inläggssida";
@@ -5795,7 +5796,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "Förbereder...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -5839,8 +5839,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "Primär webbplatsadress";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Integritet";
 
 /* Title of button that displays the App's privacy policy */
@@ -5853,12 +5852,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "Inställningar för integritet";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "Integritet och klassificering";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Integritetsnotis för användare i Kalifornien";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
 
@@ -5894,8 +5895,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Förslag";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publikt";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5961,9 +5961,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Mobile Push Notifications */
 "Push Notifications" = "Push-notiser";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Push-notiser har varit avstängda i inställningarna för iOS.";
-
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Push-notiser har varit avstängda i inställningsappen för iOS. Slå på \"Tillåt notiser\" för att aktivera dem igen.";
 
@@ -5993,7 +5990,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS.
    Title of the Reader section of the debug screen used in debug builds of the app */
-"Reader" = "Läsvy";
+"Reader" = "Läsare";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "CSS-URL för läsaren";
@@ -6037,6 +6034,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Ansluten igen";
 
+/* Action button to redo last change */
+"Redo" = "Gör om";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "Hänvisning";
 
@@ -6067,13 +6067,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Sätt fart på diskussionen: skriv ett nytt inlägg.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Relaterade inlägg";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Relaterade inlägg visar relevant innehåll från din webbplats nedanför dina inlägg";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Påminn mig";
@@ -6124,6 +6119,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Ta bort block";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "Ta bort block";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Ta bort från insikterna";
@@ -6502,6 +6500,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Sök en domän";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "Sök efter ett kort och minnesvärt sökord för att hjälpa människor att hitta och besöka din webbplats.";
+
 /* No comment provided by engineer. */
 "Search input field." = "Inmatningsfält för sökning.";
 
@@ -6693,9 +6694,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Väljer detta ämne som syftet med din webbplats.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Säg vad du tycker";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Skicka länk";
 
@@ -6839,12 +6837,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Delningsfel";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Visa sidhuvud";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Visa bilder";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Visa Gilla-knappen";
 
@@ -6853,9 +6845,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Visa Reblogga-knappen";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Visa relaterade inlägg";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "Visa mig en rundtur";
@@ -7431,9 +7420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "Tryck för att välja föregående period";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Tryck för att välja vilken blogg du vill publicera till";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "Tryck för att växla till någon annan webbplats eller lägga till en ny.";
 
@@ -7478,6 +7464,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Endast text";
+
+/* No comment provided by engineer. */
+"Text color" = "Textfärg";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Medan man redigerar ett textblock finns verktygen för textformatering finns i verktygsfältet ovanför tangentbordet ";
@@ -7534,9 +7523,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Det finns ingen gilitg värd för webbadressen.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "WordPress för Android får en ny design";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Världens bästa fans";
@@ -7826,9 +7812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Denna information hjälper oss att förbättra våra produkter, se till att marknadsföringen till dig är mer relevant, anpassa din upplevelse av WordPress.com och annat som finns beskrivet i vår integritetspolicy.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "Det är här du kommer att hittas på internet.";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Det här är din bloggningspåminnels för i idag ✍️";
 
@@ -7938,9 +7921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Fyll i din e-postadress för att skapa ditt nya WordPress.com-konto.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "För att aktivera notiser:\n\n1. Öppna **iOS-inställningar**\n2. Tryck på **Notiser**\n3. Välj **WordPress**\n4. Aktivera **Tillåt notiser**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "För att kunna få hjälpsamma notiser till din telefon från din WordPress-webbplats behöver du installera tillägget Jetpack.";
 
@@ -7979,8 +7959,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "Dagens tips 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Dagens statistik";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8052,7 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kastas";
@@ -8335,7 +8313,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Understrykning";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -8379,7 +8358,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "Visa";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Okänd";
 
@@ -8397,6 +8375,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "Okända sökbegrepp";
+
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "Omärkt färg. %s";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "Ogillar kommentaren.";
@@ -8475,9 +8456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Uppdaterar...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "Uppgradering i fokus: VideoPress för bröllop";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Uppgradera ditt paket för att ladda upp ljud";
@@ -9069,9 +9047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Ikonerna för din anpassade app har fått ett nytta, fräscht utseende. Nu kan du välja någon av 10 olika nya stilar. Men om du vill kan också behålla den ikon du redan använder.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Vad tycker du om WordPress?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Vad vill du göra med denna fil: ladda upp den till webbplatsen och länka till filen i ditt inlägg eller lägga till filens innehåll direkt i inlägget?";
 
@@ -9227,9 +9202,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Jobba med oss";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "Arbeta på ett inläggsutkast";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Världskarta med antal visningar per land.";
@@ -9435,7 +9407,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Du har nyligen gjort ändringar i detta inlägg men sparade dem inte. Välj vilken version du vill häsa in:\n\nFrån denna enhet\nSparades %1$@\n\nFrån annan enhet\nSparades %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Du svarade på denna kommentar.";
 
 /* No comment provided by engineer. */
@@ -9502,12 +9475,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Din gratisadress hos WordPress.com är";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Ditt senaste inlägg <a href=\"\">%1$@<\/a> har fått <strong>%2$d<\/strong> gillamarkeringar.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Ditt senaste inlägg <a href=\"\">%@<\/a> har fått <strong>en<\/strong> gillamarkering.";
-
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Dina mediafiler kunde inte exporteras. Om problemet kvarstår kan du kontakta oss via skärmen Jag  > Hjälp och support.";
 
@@ -9562,17 +9529,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Din webbplats återställs";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Din webbplats är bara synlig för dig själv och användare som du godkänner.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Din webbplats har slut på förvaringsutrymme för uppladdning av media.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Din webbplats är synlig för alla och den kan indexeras av sökmotorer.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Din webbplats är synlig för alla, men begär att sökmotorerna inte ska indexera den.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "Din webbplats kan vara i riskzonen";
@@ -9637,6 +9595,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "en timme";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Vad tycker du om Jetpack?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "Vad tycker du om WordPress?";
+
 /* Label displayed on audio media items. */
 "audio" = "ljud";
 
@@ -9649,11 +9613,95 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Avfärda";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "Skapa";
+
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "Du har inte skapat några kampanjer ännu. Klicka på skapa för att komma igång.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "Du har inga kampanjer";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "Ett fel uppstod vid inläsning av kampanjerna.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "Hoppsan";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "Laddar in kampanjer …";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze-kampanjer";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "Visa ditt arbete på miljontals webbplatser.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "Dölj detta";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "Lär dig mer";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Marknadsför ditt innehåll med Blaze";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "Marknadsför ett inlägg nu";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "Marknadsför valfritt inlägg eller valfri sida på bara några minuter, för endast några kronor om dagen.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "Spåra hur dina kampanjer presterar och avbryt när du vill.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "Ditt innehåll kommer att visas på miljontals WordPress- och Tumblr-webbplatser.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Få mer trafik till din webbplats med Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "Marknadsför den här sidan";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "Marknadsför det här inlägget";
+
+/* Short status description */
+"blazeCampaign.status.active" = "Aktivt";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "Godkänd";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "Avbruten";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "Färdigbehandlad";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "Under granskning";
+
+/* Short status description */
+"blazeCampaign.status.processing" = "Bearbetar";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "Avvisad";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "Schemalagt";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "Budget";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "Klick";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "Visningar";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "Dölj detta";
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
@@ -9664,8 +9712,44 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "av %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Betygsätt som användbart";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "kommentera";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "Kommentarer på";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "Kommentar på";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "Svar till %1$@";
+
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "Dessa cookies tillåter oss att optimera prestandan genom att samla in information om hur användare interagerar med våra webbplatser.";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "Spara";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "Gå till inställningar";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "Vi behandlar dina personuppgifter för att optimera vår webbplats och marknadsföringsaktiviteter baserat på ditt samtycke och vårt berättigade intresse.";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "Hantera integritet";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "Analyser";
 
 /* The menu item to select during a guided tour. */
 "connections" = "anslutningar";
@@ -9688,6 +9772,138 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Prova nu";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "Lägg till kort som passar dina behov för att få information om din webbplats.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "Inga kort att visa";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "Anpassa din hem-flik";
+
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "Dölj detta";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "Dela mellan dina sociala nätverk";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "Du har slut på delningar!";
+
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "All aktivet";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "Senaste aktivitet";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "Alla sidor";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "Sidor";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "Klick";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "Skapa kampanj";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "Visningar";
+
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "Lär dig mer";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze-kampanj";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "Visa alla kampanjer";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "Lägg till sidor på din webbplats";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "Utkast";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "Publicerat";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "Schemalagd";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "Skapa en annan sida";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "Börja med skräddarsydda, mobilvänliga layouter.";
+
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "Visa statistik";
+
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "Funktionsflaggor";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "Allmänt";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "Åsidosatta parametrar markeras med en bock.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "Åsidosätt den valda parametern genom att definiera ett nytt värde här.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "Inget fjärr- eller standardvärde";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "Fjärrkonfiguration";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "Gör ditt anspråk på ditt hörn av webben med en webbplatsadress som är lätt att hitta, dela och följa.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "Dölj detta";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "Hitta en anpassad domän";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "Det kan ta upp till 30 minuter för din anpassade domän att börja fungera.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "Nu ska vi hjälpa dig att göra den redo att visas i webbläsare.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "Vi har skickat dig ett kvitto på din e-post. Nu ska vi hjälpa dig att få den redo för alla.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "Grattis, din webbplats är live!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "Bästa alternativ";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "för första året";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "Gratis";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "Rekommenderad";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "Rea";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "per år";
+
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "Avfärda";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "Domänen du försöker lägga till kan inte köpas i Jetpack-appen just nu.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";
 
@@ -9705,11 +9921,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "Kampanjdetaljer";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "följ";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "Få en gratis domän det första året, ta bort annonser från din webbplats och utöka ditt lagringsutrymme.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "Dölj detta";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "Gratis domän med ett årligt paket";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "Klar";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "Det kan ta upp till 30 minuter för din domän att börja fungera ordentligt";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "Din nya domän %@ håller på att konfigureras.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "Allt är klart att köras!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "Ett fel uppstod";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "Försök igen";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Ställ in bloggningspåminnelser";
@@ -9777,15 +10023,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on image media items. */
 "image" = "bild";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "i ”Appar”";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "i ”Mobil”";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "i ”Uppgradera”";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "För att ta bilder eller spela in videoklipp som kan användas i dina inlägg.";
 
@@ -9845,6 +10082,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ flyttar om %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "Flyttar till Jetpack-appen om några dagar.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ flyttar snart";
@@ -9981,6 +10221,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Klar";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "Anslut ditt användarkonto";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "För att få användbara aviseringar på din telefon från din WordPress-webbplats måste du ansluta till ditt användarkonto.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "För att använda statistik på din webbplats måste du ansluta tillägget Jetpack till ditt användarkonto.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Statistik, läsare, aviseringar och andra funktioner kommer snart att flyttas över till Jetpack-mobilappen.";
 
@@ -10084,7 +10333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Avfärda";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "Det verkar som att du fortfarande har WordPress-appen installerad. Vi rekommenderar att du tar bort WordPress-appen för att undvika datakonflikter.";
+"migration.deleteWordpress.description" = "Det ser ut som att du fortfarande har WordPress-appen installerad.";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "Jag förstår";
@@ -10093,16 +10342,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "Behöver du hjälp?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "Du behöver inte längre WordPress-appen";
+"migration.deleteWordpress.title" = "Du behöver inte längre WordPress-appen på din enhet";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Avsluta";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "Ta bort WordPress-appen för att undvika datakonflikter.";
+"migration.done.footer" = "Vi rekommenderar att du avinstallerar WordPress-appen på din enhet för att undvika datakonflikter.";
 
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "ta bort WordPress-appen";
+"migration.done.footer.highlighted" = "avinstallerar WordPress-appen";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Vi har flyttat över alla data och dina inställningar, så allt är precis som förut.";
@@ -10155,11 +10404,77 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Välkommen till Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Jetpack-appen har alla WordPress-appens funktionalitet och nu exklusiv åtkomst till statistik, Läsare, aviseringar och mer.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "Bytet är gratis och tar bara en minut.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Byt till Jetpack-appen";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "Läs mer på jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Använd WordPress med aviseringar i Jetpack-appen.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Använd WordPress med Läsare i Jetpack-appen.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Använd WordPress med statistik i Jetpack-appen.";
+
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "Innehåll";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "Underhåll";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "Socialt";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "Trafik";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "Arbeta på ett inläggsutkast";
+
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "Visa alla utkast";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "Visa alla schemalagda inlägg";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "Dagens statistik";
+
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Nyheter";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Överför dina domäner";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Google Domains har som du kanske känner till sålts till Squarespace. Överför dina domäner till WordPress.com nu så står vi för alla överföringsavgifter plus ett extra år av domänregistrering.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Få tillbaka dina Google-domäner";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Avfärda";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Avfärda";
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "Kan förbättras";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "Jag gillar det";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "Nej tack";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "Skicka feedback";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "av";
@@ -10167,8 +10482,53 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "övrigt";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Marknadsför med Blaze";
+
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "Din startsida använder en temamall och kommer att öppnas i webbredigeraren.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "Startsida";
+
 /* No comment provided by engineer. */
 "password" = "lösenord";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "Kort kan visa olika innehåll beroende på vad som händer på din webbplats. Vi arbetar på fler kort och kontroller.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Dölj eller visa kort";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "Senaste aktivitet";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "Utkastinlägg";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "Lär känna appen";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "Nästa steg";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "Sidor";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "Bloggningsprompter";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "Schemalagda inlägg";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "Dagens statistik";
+
+/* Page title */
+"personalizeHome.title" = "Anpassa Hem-fliken";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
@@ -10185,6 +10545,79 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
+
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Marknadsför med Blaze";
+
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "Prenumerera nu för att dela mer";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " under de kommande 30 dagarna";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "%1$d sociala delningar kvar";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "Delar till %1$d konton";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "Delar inte till sociala";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "Delar till %1$d av %2$d konton";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "Delar till %1$@";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "%1$d sociala delningar kvar";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "Varning";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "Anpassa meddelande";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "Prenumerera för fler delningar";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "%1$d sociala delningar kvar under de kommande 30 dagarna";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Varning";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "Meddelande";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "Socialt";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "Visa alla svar";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Gå till Webbplatsinställningar för att aktivera igen";
 
@@ -10199,6 +10632,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Sök";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Läsarinställningar";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "denna webbplats";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blockera denna användare";
@@ -10239,6 +10685,48 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nyheter";
 
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "Relaterade inlägg visar relevant innehåll från din webbplats under dina inlägg.";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "i ”Mobil”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "Stor iPhone\/iPad-uppdatering är nu tillgänglig";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "i ”Appar”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "WordPress för Android-appen får ett ansiktslyft";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "i ”Uppgradera”";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "Uppgradera fokus: VideoPress för bröllop";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "Förhandsgranska";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "Relaterade inlägg";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "Misslyckades att uppdatera inställningar";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "Visa sidhuvud";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "Visa relaterade inlägg";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "Visa bilder";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "Relaterade inlägg";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Avfärda";
 
@@ -10260,11 +10748,83 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Delningsfel";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Din webbplats har skapats, men vi stötte på ett problem när vi skulle förbereda din anpassade domän för betalning. Försök igen eller kontakta supporten för hjälp.";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "Som exemplet ovan låter en domän människor hitta och besöka din webbplats från sin webbläsare.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "Integritet";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "Din webbplats är synlig för alla, men begär av sökmotorer att inte indexera den.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "Dold";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "Din webbplats är bara synlig för dig själv och användare som du godkänner.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "Privat";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "Din webbplats är synlig för alla och den kan indexeras av sökmotorer.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "Offentlig";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "Okänt";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "Okänt";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "Visa förslag";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Påminnelser";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "Öka din trafik genom att dela dina inlägg automatiskt med dina vänner på sociala medier.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "Anslut konton";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "Sociala mediaikoner";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "Inte nu";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "Dina inlägg kommer inte att delas till dina %1$d sociala konton.";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "Dina inlägg kommer inte att delas till ditt sociala konto.";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "Sociala mediaikoner";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "Prenumerera för fler delningar";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "Få reda på mer";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Automatisk delning på Twitter är inte längre tillgängligt på grund av Twitters ändringar i villkor och pris.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Senaste 7 dagarna";
@@ -10359,6 +10919,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Inte tillräckligt med aktivitet. Kom tillbaka när din webbplats har haft fler besökare.";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkeringar.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
+"stats.insights.totalLikes.guideText.singular" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkering.";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Avfärda";
 
@@ -10371,6 +10937,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "Klar";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "Tryck för att besöka Jetpack-appens sida med vanliga frågor i en extern webbläsare";
+
 /* Option in Support view to visit the Jetpack migration FAQ website. */
 "support.button.jetpackMigration.title" = "Besök våra vanliga frågor";
 
@@ -10382,6 +10951,69 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Besök WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Tänker …";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Stäng";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Kontakta supporten";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Vad kan jag hjälpa dig med? Om jag inte kan besvara din fråga hjälper jag dig att öppna ett supportärende med vårt team.";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Skicka ett meddelande …";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Jag har glömt min inloggningsinformation";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Varför kan jag inte logga in?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Vad är min webbplatsadress?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Hur kan jag använda min anpassade domän i appen?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Jag kan inte ladda upp foton\/videoklipp";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Hjälp, min webbplats är nere!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Rapportera som felaktigt";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Källor";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Är du inte säker på vad du ska fråga?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Det gick inte att skicka in supportärende";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Skapar supportärende …";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Supportärende skapat";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Kontakta support";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Svar";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Fråga";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot-kopia";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ställ en fråga i communityforumet och få hjälp av vår grupp med volontärer.";
@@ -10409,6 +11041,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress hjälpcenter";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "Vår sida med vanliga frågor ger dig svar på eventuella frågor du kan tänkas ha.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Tack för att du byter till Jetpack-appen!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "Loggar";
@@ -10566,8 +11204,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, webbplatser, webbplats, bloggar, blogg";
 
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Byt till Jetpack-appen";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Fortsätt utan Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ använder sig av enskilda Jetpack-tillägg vilket inte stöds av WordPress-appen.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ använder tillägget %2$@ som inte stöds av WordPress-appen.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Gå till Jetpack-appen där vi guidar dig igenom hur du ansluter det fullständiga Jetpack-tillägget så att du kan använda alla appens funktioner för den här webbplatsen.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "Denna webbplats stöds inte av WordPress-appen";
+
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "Ta bort WordPress-appen";
+"wp.migration.successCard.description" = "Välkommen till Jetpack-appen. Du kan avinstallera WordPress-appen.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "Lär dig mer";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "din webbplats";

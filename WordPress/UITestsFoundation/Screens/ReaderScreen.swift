@@ -7,65 +7,270 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Discover"]
     }
 
-    var discoverButton: XCUIElement { discoverButtonGetter(app) }
+    private let readerTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Reader"]
+    }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Reader"]
+    }
+
+    private let savedButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Saved"]
+    }
+
+    private let firstPostLikeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["reader-like-button"].firstMatch
+    }
+
+    private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Visit"]
+    }
+
+    private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Back"]
+    }
+
+    private let dismissButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Dismiss"]
+    }
+
+    private let followButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Follow"]
+    }
+
+    private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Following"]
+    }
+
+    private let likesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Likes"]
+    }
+
+    private let topicNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Topic"]
+    }
+
+    private let topicCellButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["topics-card-cell-button"]
+    }
+
+    private let noResultsViewGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["no-results-label-stack-view"]
+    }
+
+    private let savePostButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Save post"]
+    }
+
+    var backButton: XCUIElement { backButtonGetter(app) }
+    var discoverButton: XCUIElement { discoverButtonGetter(app) }
+    var dismissButton: XCUIElement { dismissButtonGetter(app) }
+    var firstPostLikeButton: XCUIElement { firstPostLikeButtonGetter(app) }
+    var followButton: XCUIElement { followButtonGetter(app) }
+    var followingButton: XCUIElement { followingButtonGetter(app) }
+    var likesTabButton: XCUIElement { likesTabButtonGetter(app) }
+    var noResultsView: XCUIElement { noResultsViewGetter(app) }
+    var readerButton: XCUIElement { readerButtonGetter(app) }
+    var readerTable: XCUIElement { readerTableGetter(app) }
+    var savePostButton: XCUIElement { savePostButtonGetter(app) }
+    var savedButton: XCUIElement { savedButtonGetter(app) }
+    var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
+    var topicNavigationBar: XCUIElement { topicNavigationBarGetter(app) }
+    var visitButton: XCUIElement { visitButtonGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                // swiftlint:skip:next opening_brace
-                { $0.tables["Reader"] },
+                readerTableGetter,
                 discoverButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
-    public func openLastPost() {
+    public func openLastPost() -> ReaderScreen {
         getLastPost().tap()
+        return self
     }
 
-    public func openLastPostInSafari() {
+    public func openLastPostInSafari() -> ReaderScreen {
         getLastPost().buttons["More"].tap()
-        app.buttons["Visit"].tap()
+        visitButton.tap()
+        return self
     }
 
+    public func openLastPostComments() throws -> CommentsScreen {
+        let commentButton = getLastPost().buttons["0 comment"]
+        guard commentButton.waitForIsHittable() else { fatalError("ReaderScreen.Post: Comments button not loaded") }
+        commentButton.tap()
+        return try CommentsScreen()
+    }
+
+    @discardableResult
     public func getLastPost() -> XCUIElement {
         guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
-        scrollDownUntilElementIsHittable(element: post)
+        scrollDownUntilElementIsFullyVisible(element: post)
         return post
     }
 
-    private func scrollDownUntilElementIsHittable(element: XCUIElement) {
+    private func scrollDownUntilElementIsFullyVisible(element: XCUIElement) {
         var loopCount = 0
-        while !element.waitForIsHittable(timeout: 3) && loopCount < 10 {
+        // Using isFullyVisibleOnScreen instead of waitForIsHittable to solve a problem on iPad where the desired post
+        // was already hittable but the comments button was still not visible.
+        while !element.isFullyVisibleOnScreen() && loopCount < 10 {
             loopCount += 1
             app.swipeUp(velocity: .fast)
         }
     }
 
-    public func postContentEquals(_ expected: String) -> Bool {
+    private func postContentEquals(_ expected: String) -> Bool {
         let equalsPostContent = NSPredicate(format: "label == %@", expected)
         let isPostContentEqual = app.staticTexts.element(matching: equalsPostContent).waitForIsHittable(timeout: 3)
 
         return isPostContentEqual
     }
 
-    public func dismissPost() {
-        let backButton = app.buttons["Back"]
-        let dismissButton = app.buttons["Dismiss"]
+    public func verifyPostContentEquals(_ expected: String, file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(postContentEquals(expected), file: file, line: line)
+    }
 
+    public func dismissPost() {
         if dismissButton.isHittable { dismissButton.tap() }
         if backButton.isHittable { backButton.tap() }
     }
 
-    public static func isLoaded() -> Bool {
+    public func isLoaded() -> Bool {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func openDiscover() -> ReaderScreen {
+    public func openDiscoverTab() -> Self {
         discoverButton.tap()
 
         return self
     }
+
+    public func selectTopic() -> Self {
+        topicCellButton.firstMatch.tap()
+
+        return self
+    }
+
+    public func openSavedTab() -> Self {
+        savedButton.tap()
+
+        return self
+    }
+
+    public func verifyTopicLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(topicNavigationBar.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(readerButton.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(followButton.waitForExistence(timeout: 3), file: file, line: line)
+
+        return self
+    }
+
+    public func openFollowingTab() -> Self {
+        followingButton.tap()
+
+        return self
+    }
+
+    public func openLikesTab() -> Self {
+        likesTabButton.tap()
+
+        return self
+    }
+
+    public func followTopic() -> Self {
+        followButton.tap()
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyTopicFollowed(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(followingButton.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(followingButton.isSelected, file: file, line: line)
+
+        return self
+    }
+
+    public func saveFirstPost() throws -> (ReaderScreen, String) {
+        XCTAssertTrue(readerTable.waitForExistence(timeout: 3))
+        let postLabel = readerTable.cells.firstMatch.label
+        savePostButton.firstMatch.tap()
+
+        // An alert about saved post is displayed the first time a post is saved
+        if let alert = try? FancyAlertComponent() {
+            alert.acceptAlert()
+        }
+
+        return (self, postLabel)
+    }
+
+    public func likeFirstPost() -> Self {
+        var tries = 0
+
+        while !firstPostLikeButton.exists && firstPostLikeButton.label.hasPrefix(.postNotLiked) && tries < 5 {
+            usleep(500000) // Wait for 0.5 seconds
+            tries += 1
+        }
+
+        firstPostLikeButton.tap()
+        return self
+    }
+
+    public func verifyPostLikedOnFollowingTab(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreaterThanOneError, file: file, line: line)
+        XCTAssertTrue(firstPostLikeButton.label.hasPrefix(.postLiked), file: file, line: line)
+
+        return self
+    }
+
+    @discardableResult
+    public func verifySavedPosts(state: String, postLabel: String? = nil, file: StaticString = #file, line: UInt = #line) -> Self {
+        if state == .withPosts {
+            verifyNotEmptyPostList()
+            XCTAssertEqual(readerTable.cells.firstMatch.label, postLabel, .postNotEqualSavedPostError, file: file, line: line)
+        } else if state == .withoutPosts {
+            verifyEmptyPostList()
+        }
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyLikedPosts(state: String, file: StaticString = #file, line: UInt = #line) -> Self {
+        if state == .withPosts {
+            verifyNotEmptyPostList()
+            XCTAssertTrue(firstPostLikeButton.label.hasPrefix(.postLiked), file: file, line: line)
+        } else if state == .withoutPosts {
+            verifyEmptyPostList()
+        }
+
+        return self
+    }
+
+    private func verifyNotEmptyPostList(file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 5), file: file, line: line)
+        XCTAssertEqual(readerTable.cells.count, 1, .postNotEqualOneError, file: file, line: line)
+    }
+
+    private func verifyEmptyPostList(file: StaticString = #file, line: UInt = #line) {
+        XCTAssertTrue(noResultsView.waitForExistence(timeout: 5), file: file, line: line)
+        XCTAssertTrue(readerTable.label == .emptyListLabel, file: file, line: line)
+    }
+}
+
+private extension String {
+    static let emptyListLabel = "Empty list"
+    static let postLiked = "This post is in My Likes"
+    static let postNotEqualOneError = "There should only be 1 post!"
+    static let postNotEqualSavedPostError = "Post displayed does not match saved post!"
+    static let postNotGreaterThanOneError = "There shouldn't only be 1 post!"
+    static let postNotLiked = "This post is not in My Likes"
+    static let withoutPosts = "without posts"
+    static let withPosts = "with posts"
 }

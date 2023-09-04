@@ -70,7 +70,8 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
     }
 
     func test_startAndDo_givenExportError_shouldInvokeClosureWithError() {
-        mockDataMigrator.exportErrorToReturn = .databaseCopyError
+        let error: DataMigrationError = .databaseExportError(underlyingError: ContextManager.ContextManagerError.missingCoordinatorOrStore)
+        mockDataMigrator.exportErrorToReturn = error
 
         let expect = expectation(description: "Content migration should fail")
         coordinator.startAndDo { result in
@@ -202,7 +203,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
     }
 
     func test_coordinatorShouldObserveLogoutNotifications() {
-        XCTAssertNotNil(mockNotificationCenter.observerBlock)
+        XCTAssertNotNil(mockNotificationCenter.observerSelector)
         XCTAssertNotNil(mockNotificationCenter.observedNotificationName)
         XCTAssertEqual(mockNotificationCenter.observedNotificationName, Foundation.Notification.Name.WPAccountDefaultWordPressComAccountChanged)
     }
@@ -212,7 +213,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         let loginNotification = mockNotificationCenter.makeLoginNotification()
 
         // When
-        mockNotificationCenter.observerBlock?(loginNotification)
+        mockNotificationCenter.post(loginNotification)
 
         // Then
         XCTAssertFalse(mockDataMigrator.exportCalled)
@@ -225,7 +226,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         let logoutNotification = mockNotificationCenter.makeLogoutNotification()
 
         // When
-        mockNotificationCenter.observerBlock?(logoutNotification)
+        mockNotificationCenter.post(logoutNotification)
 
         // Then
         XCTAssertFalse(mockDataMigrator.exportCalled)
@@ -299,15 +300,12 @@ private extension ContentMigrationCoordinatorTests {
 
 private final class MockNotificationCenter: NotificationCenter {
     var observedNotificationName: NSNotification.Name? = nil
-    var observerBlock: ((Foundation.Notification) -> Void)? = nil
+    var observerSelector: Selector? = nil
 
-    override func addObserver(forName name: NSNotification.Name?,
-                              object obj: Any?,
-                              queue: OperationQueue?,
-                              using block: @escaping @Sendable (Foundation.Notification) -> Void) -> NSObjectProtocol {
-        observedNotificationName = name
-        observerBlock = block
-        return NSNull()
+    override func addObserver(_ observer: Any, selector aSelector: Selector, name aName: NSNotification.Name?, object anObject: Any?) {
+        observedNotificationName = aName
+        observerSelector = aSelector
+        super.addObserver(observer, selector: aSelector, name: aName, object: anObject)
     }
 
     func makeLoginNotification() -> Foundation.Notification {

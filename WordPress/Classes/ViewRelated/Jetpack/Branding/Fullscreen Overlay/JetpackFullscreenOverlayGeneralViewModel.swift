@@ -167,6 +167,8 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
             fallthrough
         case (.appOpen, _):
             fallthrough
+        case (.phaseFourOverlay, _):
+            fallthrough
         case (.disabledEntryPoint, _):
             return Constants.allFeaturesLogosAnimationLtr
         }
@@ -189,6 +191,8 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
         case (.login, _):
             fallthrough
         case (.appOpen, _):
+            fallthrough
+        case (.phaseFourOverlay, _):
             fallthrough
         case (.disabledEntryPoint, _):
             return Constants.allFeaturesLogosAnimationRtl
@@ -219,11 +223,11 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
         case .one:
             return nil
         case .two:
-            return RemoteConfig().phaseTwoBlogPostUrl.value
+            return RemoteConfigParameter.phaseTwoBlogPostUrl.value()
         case .three:
-            return RemoteConfig().phaseThreeBlogPostUrl.value
+            return RemoteConfigParameter.phaseThreeBlogPostUrl.value()
         case .four:
-            return RemoteConfig().phaseFourBlogPostUrl.value
+            return RemoteConfigParameter.phaseFourBlogPostUrl.value()
         default:
             return nil
         }

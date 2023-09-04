@@ -3,7 +3,7 @@ import AutomatticTracks
 import SwiftUI
 
 class DebugMenuViewController: UITableViewController {
-    fileprivate var handler: ImmuTableViewHandler!
+    private var handler: ImmuTableViewHandler!
 
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -37,29 +37,24 @@ class DebugMenuViewController: UITableViewController {
     }
 
     private func reloadViewModel() {
-        let cases = FeatureFlag.allCases.filter({ $0.canOverride })
-        let rows: [ImmuTableRow] = cases.map({ makeRow(for: $0) })
-
         handler.viewModel = ImmuTable(sections: [
-            ImmuTableSection(headerText: Strings.featureFlags, rows: rows),
+            ImmuTableSection(headerText: Strings.general, rows: generalRows),
             ImmuTableSection(headerText: Strings.tools, rows: toolsRows),
             ImmuTableSection(headerText: Strings.crashLogging, rows: crashLoggingRows),
             ImmuTableSection(headerText: Strings.reader, rows: readerRows),
         ])
     }
 
-    private func makeRow(for flag: FeatureFlag) -> ImmuTableRow {
-        let store = FeatureFlagOverrideStore()
-
-        let overridden: String? = store.isOverridden(flag) ? Strings.overridden : nil
-
-        return SwitchWithSubtitleRow(title: String(describing: flag), value: flag.enabled, subtitle: overridden, onChange: { isOn in
-            try? store.override(flag, withValue: isOn)
-            self.reloadViewModel()
-        })
-    }
-
     // MARK: Tools
+
+    private var generalRows: [ImmuTableRow] {
+        [
+            NavigationItemRow(title: Strings.featureFlags) { [weak self] _ in
+                let vc = UIHostingController(rootView: DebugFeatureFlagsView())
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        ]
+    }
 
     private var toolsRows: [ImmuTableRow] {
         var toolsRows = [
@@ -71,6 +66,9 @@ class DebugMenuViewController: UITableViewController {
             }),
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
+            }),
+            ButtonRow(title: Strings.remoteConfigTitle, action: { [weak self] _ in
+                self?.displayRemoteConfigDebugMenu()
             }),
         ]
 
@@ -156,6 +154,11 @@ class DebugMenuViewController: UITableViewController {
         QuickStartTourGuide.shared.setup(for: blog, type: type)
     }
 
+    private func displayRemoteConfigDebugMenu() {
+        let viewController = RemoteConfigDebugViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
     // MARK: Reader
 
     private var readerRows: [ImmuTableRow] {
@@ -175,8 +178,6 @@ class DebugMenuViewController: UITableViewController {
     }
 
     enum Strings {
-        static let overridden = NSLocalizedString("Overridden", comment: "Used to indicate a setting is overridden in debug builds of the app")
-        static let featureFlags = NSLocalizedString("Feature flags", comment: "Title of the Feature Flags screen used in debug builds of the app")
         static let tools = NSLocalizedString("Tools", comment: "Title of the Tools section of the debug screen used in debug builds of the app")
         static let sandboxStoreCookieSecretRow = NSLocalizedString("Use Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
         static let quickStartForNewSiteRow = NSLocalizedString("Enable Quick Start for New Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
@@ -190,5 +191,8 @@ class DebugMenuViewController: UITableViewController {
         static let readerCssTitle = NSLocalizedString("Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
         static let readerURLPlaceholder = NSLocalizedString("Default URL", comment: "Placeholder for the reader CSS URL")
         static let readerURLHint = NSLocalizedString("Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
+        static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
+        static let general = NSLocalizedString("debugMenu.generalSectionTitle", value: "General", comment: "General section title")
+        static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     }
 }

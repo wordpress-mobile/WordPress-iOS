@@ -29,7 +29,7 @@ class RevisionsTableViewController: UITableViewController {
     }()
 
     private var sectionCount: Int {
-        return tableViewHandler.resultsController.sections?.count ?? 0
+        return tableViewHandler.resultsController?.sections?.count ?? 0
     }
 
 
@@ -88,7 +88,7 @@ private extension RevisionsTableViewController {
     }
 
     private func getRevision(at indexPath: IndexPath) -> Revision {
-        guard let revision = tableViewHandler.resultsController.object(at: indexPath) as? Revision else {
+        guard let revision = tableViewHandler.resultsController?.object(at: indexPath) as? Revision else {
             preconditionFailure("Expected a Revision object.")
         }
 
@@ -104,7 +104,7 @@ private extension RevisionsTableViewController {
     }
 
     private func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
-        let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
+        let allRevisions = tableViewHandler.resultsController?.fetchedObjects as? [Revision] ?? []
         let selectedRevision = getRevision(at: indexPath)
         let selectedIndex = allRevisions.firstIndex(of: selectedRevision) ?? 0
         return RevisionBrowserState(revisions: allRevisions, currentIndex: selectedIndex) { [weak self] revision in
@@ -154,16 +154,22 @@ private extension RevisionsTableViewController {
 
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading...", comment: "Text displayed in HUD while a revision post is loading."))
 
-        let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.getPostWithID(revision.revisionId, for: blog, success: { post in
-            SVProgressHUD.dismiss()
-            WPAnalytics.track(.postRevisionsRevisionLoaded)
-            self.onRevisionLoaded(post)
-            self.navigationController?.popViewController(animated: true)
-        }, failure: { error in
-            DDLogError("Error loading revision: \(error.localizedDescription)")
-            SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
-        })
+        let coreDataStack = ContextManager.shared
+        let postRepository = PostRepository(coreDataStack: coreDataStack)
+        Task { @MainActor in
+            do {
+                let postID = try await postRepository.getPost(withID: revision.revisionId, from: .init(saved: blog))
+                let post = try coreDataStack.mainContext.existingObject(with: postID)
+
+                await SVProgressHUD.dismiss()
+                WPAnalytics.track(.postRevisionsRevisionLoaded)
+                self.onRevisionLoaded(post)
+                self.navigationController?.popViewController(animated: true)
+            } catch {
+                DDLogError("Error loading revision: \(error.localizedDescription)")
+                SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
+            }
+        }
     }
 }
 
@@ -173,7 +179,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         return ContextManager.sharedInstance().mainContext
     }
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         guard let postId = post?.postID, let siteId = post?.blog.dotComID else {
             preconditionFailure("Expected a postId or a siteId")
         }
@@ -221,7 +227,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
+        guard let sectionInfo = tableViewHandler.resultsController?.sections?[section],
             let headerView = Bundle.main.loadNibNamed(PageListSectionHeaderView.classNameWithoutNamespaces(),
                                                       owner: nil,
                                                       options: nil)?.first as? PageListSectionHeaderView else {

@@ -11,13 +11,13 @@ public class SiteSettingsScreen: ScreenObject {
     private let blockEditorToggleGetter: (XCUIApplication) -> XCUIElement = {
         $0.tables["siteSettingsTable"].switches["useBlockEditorSwitch"]
     }
+
     var blockEditorToggle: XCUIElement { blockEditorToggleGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [blockEditorToggleGetter],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
@@ -36,6 +36,7 @@ public class SiteSettingsScreen: ScreenObject {
         return self
     }
 
+    @discardableResult
     public func goBackToMySite() throws -> MySiteScreen {
         if XCUIDevice.isPhone {
             navigateBack()

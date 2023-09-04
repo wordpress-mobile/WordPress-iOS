@@ -38,7 +38,7 @@ private extension SiteSettingsViewController {
         if blog.areBloggingRemindersAllowed() {
             rows.append(.reminders)
         }
-        if blog.isAccessibleThroughWPCom() && FeatureFlag.bloggingPromptsEnhancements.enabled {
+        if blog.isAccessibleThroughWPCom() && FeatureFlag.bloggingPromptsEnhancements.enabled && !FeatureFlag.personalizeHomeTab.enabled {
             rows.append(.prompts)
         }
         return rows
@@ -56,7 +56,6 @@ private extension SiteSettingsViewController {
         cell?.textValue = schedule(for: blog)
         return cell ?? SettingTableViewCell()
     }
-
 
     func schedule(for blog: Blog) -> String {
         guard let scheduler = try? ReminderScheduleCoordinator() else {
@@ -92,23 +91,20 @@ private extension SiteSettingsViewController {
     }
 
     var isPromptsSwitchEnabled: Bool {
-        guard let siteID = blog.dotComID?.stringValue else {
+        guard let siteID = blog.dotComID else {
             return false
         }
-
-        return UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID] ?? false
+        return BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts)
     }
 
     var promptsSwitchOnChange: (Bool) -> () {
         return { [weak self] isPromptsEnabled in
             WPAnalytics.track(.promptsSettingsShowPromptsTapped, properties: ["enabled": isPromptsEnabled])
-            guard let siteID = self?.blog.dotComID?.stringValue else {
+            guard let siteID = self?.blog.dotComID else {
                 return
             }
-            let repository = UserPersistentStoreFactory.instance()
-            var promptsEnabledSettings = repository.promptsEnabledSettings
-            promptsEnabledSettings[siteID] = isPromptsEnabled
-            repository.promptsEnabledSettings = promptsEnabledSettings
+            BlogDashboardPersonalizationService(siteID: siteID.intValue)
+                .setEnabled(isPromptsEnabled, for: .prompts)
         }
     }
 

@@ -13,20 +13,28 @@ class ReminderScheduleCoordinator {
     private let bloggingRemindersScheduler: BloggingRemindersScheduler
     private let promptRemindersScheduler: PromptRemindersScheduler
     private let bloggingPromptsServiceFactory: BloggingPromptsServiceFactory
+    private let coreDataStack: CoreDataStackSwift
 
     // MARK: Public Methods
 
-    init(bloggingRemindersScheduler: BloggingRemindersScheduler,
-         promptRemindersScheduler: PromptRemindersScheduler,
-         bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) {
+    init(
+        bloggingRemindersScheduler: BloggingRemindersScheduler,
+        promptRemindersScheduler: PromptRemindersScheduler,
+        bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
+        coreDataStack: CoreDataStackSwift
+    ) {
         self.bloggingRemindersScheduler = bloggingRemindersScheduler
         self.promptRemindersScheduler = promptRemindersScheduler
         self.bloggingPromptsServiceFactory = bloggingPromptsServiceFactory
+        self.coreDataStack = coreDataStack
     }
 
-    convenience init(notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
-                     pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
-                     bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init()) throws {
+    convenience init(
+        notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current(),
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared,
+        bloggingPromptsServiceFactory: BloggingPromptsServiceFactory = .init(),
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) throws {
 
         let bloggingRemindersScheduler = try BloggingRemindersScheduler(notificationCenter: notificationScheduler,
                                                                         pushNotificationAuthorizer: pushNotificationAuthorizer)
@@ -34,9 +42,12 @@ class ReminderScheduleCoordinator {
                                                                 notificationScheduler: notificationScheduler,
                                                                 pushAuthorizer: pushNotificationAuthorizer)
 
-        self.init(bloggingRemindersScheduler: bloggingRemindersScheduler,
-                  promptRemindersScheduler: promptRemindersScheduler,
-                  bloggingPromptsServiceFactory: bloggingPromptsServiceFactory)
+        self.init(
+            bloggingRemindersScheduler: bloggingRemindersScheduler,
+            promptRemindersScheduler: promptRemindersScheduler,
+            bloggingPromptsServiceFactory: bloggingPromptsServiceFactory,
+            coreDataStack: coreDataStack
+        )
     }
 
     /// Returns the user's reminder schedule for the given `blog`, based on the current reminder type.
@@ -49,13 +60,16 @@ class ReminderScheduleCoordinator {
             return bloggingRemindersScheduler.schedule(for: blog)
 
         case .bloggingPrompts:
-            guard let settings = promptReminderSettings(for: blog),
-                  let reminderDays = settings.reminderDays,
-                  !reminderDays.getActiveWeekdays().isEmpty else {
-                return .none
+            return coreDataStack.performQuery { [blogID = blog.objectID] context in
+                if let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                   let settings = try? BloggingPromptSettings.of(blogInContext),
+                   let days = settings.reminderDays?.getActiveWeekdays(),
+                   !days.isEmpty {
+                    return .weekdays(days)
+                } else {
+                    return .none
+                }
             }
-
-            return .weekdays(reminderDays.getActiveWeekdays())
         }
     }
 
@@ -69,12 +83,16 @@ class ReminderScheduleCoordinator {
             return bloggingRemindersScheduler.scheduledTime(for: blog)
 
         case .bloggingPrompts:
-            guard let settings = promptReminderSettings(for: blog),
-                  let dateForTime = settings.reminderTimeDate() else {
-                return Constants.defaultTime
-            }
+            return coreDataStack.performQuery { [blogID = blog.objectID] context in
+                guard let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                   let settings = try? BloggingPromptSettings.of(blogInContext),
+                   let dateForTime = settings.reminderTimeDate()
+                else {
+                    return Constants.defaultTime
+                }
 
-            return dateForTime
+                return dateForTime
+            }
         }
     }
 
@@ -138,21 +156,19 @@ private extension ReminderScheduleCoordinator {
         }
     }
 
-    func promptReminderSettings(for blog: Blog) -> BloggingPromptSettings? {
-        guard let service = bloggingPromptsServiceFactory.makeService(for: blog) else {
-            return nil
-        }
-
-        return service.localSettings
-    }
-
     func reminderType(for blog: Blog) -> ReminderType {
-        if Feature.enabled(.bloggingPrompts),
-           let settings = promptReminderSettings(for: blog),
-           settings.promptRemindersEnabled {
-            return .bloggingPrompts
+        guard Feature.enabled(.bloggingPrompts) else {
+            return .bloggingReminders
         }
 
-        return .bloggingReminders
+        return coreDataStack.performQuery { [blogID = blog.objectID] context -> ReminderType in
+            guard let blogInContext = try? context.existingObject(with: blogID) as? Blog,
+                  let settings = try? BloggingPromptSettings.of(blogInContext)
+            else {
+                return .bloggingReminders
+            }
+
+            return settings.promptRemindersEnabled ? .bloggingPrompts : .bloggingReminders
+        }
     }
 }

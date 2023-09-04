@@ -4,19 +4,29 @@ import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
+enum DomainSelectionType {
+    case registerWithPaidPlan
+    case purchaseWithPaidPlan
+    case purchaseSeparately
+}
+
 class RegisterDomainSuggestionsViewController: UIViewController {
+    typealias DomainPurchasedCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
+    typealias DomainAddedToCartCallback = ((RegisterDomainSuggestionsViewController, String) -> Void)
+
     @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     private var constraintsInitialized = false
 
     private var site: Blog!
-    var domainPurchasedCallback: ((String) -> Void)!
+    var domainPurchasedCallback: DomainPurchasedCallback!
+    var domainAddedToCartCallback: DomainAddedToCartCallback?
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
-    private var domainType: DomainType = .registered
+    private var domainSelectionType: DomainSelectionType = .registerWithPaidPlan
     private var includeSupportButton: Bool = true
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
@@ -44,13 +54,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     }()
 
     static func instance(site: Blog,
-                         domainType: DomainType = .registered,
+                         domainSelectionType: DomainSelectionType = .registerWithPaidPlan,
                          includeSupportButton: Bool = true,
-                         domainPurchasedCallback: ((String) -> Void)? = nil) -> RegisterDomainSuggestionsViewController {
+                         domainPurchasedCallback: DomainPurchasedCallback? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.site = site
-        controller.domainType = domainType
+        controller.domainSelectionType = domainSelectionType
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.includeSupportButton = includeSupportButton
         controller.siteName = siteNameForSuggestions(for: site)
@@ -77,10 +87,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         title = TextContent.title
         WPStyleGuide.configureColors(view: view, tableView: nil)
 
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                           target: self,
-                                           action: #selector(handleCancelButtonTapped))
-        navigationItem.leftBarButtonItem = cancelButton
+        /// If this is the first view controller in the navigation controller - show the cancel button
+        if navigationController?.children.count == 1 {
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                               target: self,
+                                               action: #selector(handleCancelButtonTapped))
+            navigationItem.leftBarButtonItem = cancelButton
+        }
 
         guard includeSupportButton else {
             return
@@ -161,7 +174,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.delegate = self
             vc.siteName = siteName
             vc.blog = site
-            vc.domainType = domainType
+            vc.domainSelectionType = domainSelectionType
             vc.freeSiteAddress = site.freeSiteAddress
 
             if site.hasBloggerPlan {
@@ -210,14 +223,38 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        switch domainType {
-        case .registered:
+        let onFailure: () -> () = { [weak self] in
+            self?.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+        }
+
+        switch domainSelectionType {
+        case .registerWithPaidPlan:
             pushRegisterDomainDetailsViewController(domain)
-        case .siteRedirect:
+        case .purchaseSeparately:
             setPrimaryButtonLoading(true)
-            createCartAndPresentWebView(domain)
-        default:
-            break
+            createCart(
+                domain,
+                onSuccess: { [weak self] in
+                    self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+                    self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure
+            )
+        case .purchaseWithPaidPlan:
+            setPrimaryButtonLoading(true)
+            createCart(
+                domain,
+                onSuccess: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainAddedToCartCallback?(self, domain.domainName)
+                    self.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                },
+                onFailure: onFailure
+            )
         }
     }
 
@@ -237,11 +274,19 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
 
         let controller = RegisterDomainDetailsViewController()
-        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
+        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self else {
+                return
+            }
+
+            self.domainPurchasedCallback?(self, name)
+        }
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCartAndPresentWebView(_ domain: FullyQuotedDomainSuggestion) {
+    private func createCart(_ domain: FullyQuotedDomainSuggestion,
+                            onSuccess: @escaping () -> (),
+                            onFailure: @escaping () -> ()) {
         guard let siteID = site.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
@@ -251,11 +296,12 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
                                                  domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
-                                                 success: { [weak self] _ in
-            self?.presentWebViewForCurrentSite(domainSuggestion: domain)
-            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
+                                                 success: { _ in
+            onSuccess()
         },
-                                                 failure: { error in })
+                                                 failure: { _ in
+            onFailure()
+        })
     }
 
     static private let checkoutURLPrefix = "https://wordpress.com/checkout"
@@ -321,32 +367,19 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 navController.dismiss(animated: true)
             }) { domain in
                 self.dismiss(animated: true, completion: { [weak self] in
-                    self?.domainPurchasedCallback(domain)
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.domainPurchasedCallback(self, domain)
                 })
             }
         }
 
         WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
-        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
-
-            $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
-            $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
-        }) {
-            // this code will only run if a store sandbox cookie has been set
-            let webView = webViewController.webView
-            let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-            cookieStore.getAllCookies { [weak self] cookies in
-
-                    var newCookies = cookies
-                    newCookies.append(storeSandboxCookie)
-
-                    cookieStore.setCookies(newCookies) {
-                        self?.present(navController, animated: true)
-                    }
-            }
-        } else {
-            present(navController, animated: true)
+        webViewController.configureSandboxStore { [weak self] in
+            self?.present(navController, animated: true)
         }
     }
 }
@@ -361,6 +394,13 @@ extension RegisterDomainSuggestionsViewController {
         static let primaryButtonTitle = NSLocalizedString("Select domain",
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
+
+        static let errorTitle = NSLocalizedString("domains.failure.title",
+                                                  value: "Sorry, the domain you are trying to add cannot be bought on the Jetpack app at this time.",
+                                                  comment: "Content show when the domain selection action fails.")
+        static let errorDismiss = NSLocalizedString("domains.failure.dismiss",
+                                                    value: "Dismiss",
+                                                    comment: "Action shown in a bottom notice to dismiss it.")
     }
 
     enum Constants {

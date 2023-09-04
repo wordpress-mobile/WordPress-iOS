@@ -119,10 +119,9 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
             return nil
         }
 
-        let mediaService = MediaService(managedObjectContext: mainContext)
+        let service = MediaImportService(coreDataStack: contextManager)
         let expect = self.expectation(description: "Media should be create with success")
-        mediaService.createMedia(with: url as NSURL, blog: blog, post: post, progress: nil, thumbnailCallback: { (media, url) in
-        }, completion: { (media, error) in
+        _ = service.createMedia(with: url as NSURL, blog: blog, post: post, thumbnailCallback: nil, completion: { (media, error) in
             expect.fulfill()
             if let _ = error {
                 XCTFail("Media should be created without error")

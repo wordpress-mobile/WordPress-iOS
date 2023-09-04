@@ -181,6 +181,14 @@ import Combine
                 siteID = nil
                 tagSlug = nil
             }
+
+            // Make sure the header is in-sync with the `readerTopic` object if it exists.
+            readerTopicChangesObserver?.cancel()
+            readerTopicChangesObserver = readerTopic?
+                .objectWillChange
+                .sink { [weak self] _ in
+                    self?.updateStreamHeaderIfNeeded()
+                }
         }
     }
 
@@ -206,7 +214,7 @@ import Combine
 
     let ghostableTableView = UITableView()
 
-    private var cancellables = Set<AnyCancellable>()
+    private var readerTopicChangesObserver: AnyCancellable?
 
     // MARK: - Factory Methods
 
@@ -361,14 +369,6 @@ import Combine
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
-
-        // Make sure the header is in-sync with the `readerTopic` object if it exists.
-        readerTopic?
-            .objectWillChange
-            .sink { [weak self] _ in
-                self?.updateStreamHeaderIfNeeded()
-            }
-            .store(in: &cancellables)
     }
 
 
@@ -684,7 +684,11 @@ import Combine
         }
 
         if ReaderHelpers.isTopicTag(topic) {
-             title = NSLocalizedString("Topic", comment: "Topic page title")
+            // don't display any title for the tag stream for the new design.
+            if FeatureFlag.readerImprovements.enabled {
+                return
+            }
+            title = NSLocalizedString("Topic", comment: "Topic page title")
         } else {
             title = topic.title
         }
@@ -1293,7 +1297,7 @@ import Combine
         // has to exist within an empty set.
         let predicateForNilTopic = contentType == .saved ?
             NSPredicate(format: "isSavedForLater == YES") :
-            NSPredicate(format: "topic = NULL AND SELF in %@", [])
+            NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
         guard let topic = readerTopic else {
             return predicateForNilTopic
@@ -1494,7 +1498,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
@@ -1518,7 +1522,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
             if let syncHelper = syncHelper, syncHelper.isSyncing {
                 return
             }

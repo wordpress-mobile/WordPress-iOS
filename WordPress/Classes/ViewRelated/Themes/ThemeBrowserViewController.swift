@@ -98,6 +98,7 @@ public protocol ThemePresenter: AnyObject {
 
     @IBOutlet weak var collectionView: UICollectionView!
 
+    // swiftlint:disable:next weak_delegate
     fileprivate lazy var customizerNavigationDelegate: ThemeWebNavigationDelegate = {
         return ThemeWebNavigationDelegate()
     }()
@@ -251,7 +252,11 @@ public protocol ThemePresenter: AnyObject {
      *  @brief      Load theme screenshots at maximum displayed width
      */
     @objc open var screenshotWidth: Int = {
-        let windowSize = UIApplication.shared.mainWindow!.bounds.size
+        guard let window = UIApplication.shared.mainWindow else {
+            assertionFailure("The mainWindow is not set")
+            return Int(Styles.imageWidthForFrameWidth(852))
+        }
+        let windowSize = window.bounds.size
         let vWidth = Styles.imageWidthForFrameWidth(windowSize.width)
         let hWidth = Styles.imageWidthForFrameWidth(windowSize.height)
         let maxWidth = Int(max(hWidth, vWidth))

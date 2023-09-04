@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 
 @testable import WordPress
 
@@ -30,8 +31,18 @@ final class BlogBuilder {
         return self
     }
 
+    func with(supportsDomains: Bool) -> Self {
+        return with(isHostedAtWPCom: supportsDomains)
+            .with(isAdmin: supportsDomains)
+    }
+
     func with(planID: Int) -> Self {
         blog.planID = planID as NSNumber
+        return self
+    }
+
+    func with(planActiveFeatures: [String]) -> Self {
+        blog.planActiveFeatures = planActiveFeatures
         return self
     }
 
@@ -76,6 +87,11 @@ final class BlogBuilder {
         return self
     }
 
+    func withAccount(id: NSManagedObjectID) throws -> Self {
+        blog.account = try XCTUnwrap(context.existingObject(with: id) as? WPAccount)
+        return self
+    }
+
     func withAnAccount(username: String = "test_user") -> Self {
         // Add Account
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
@@ -98,9 +114,9 @@ final class BlogBuilder {
         return self
     }
 
-    func isBlazeApproved() -> Self {
-        blog.isBlazeApproved = true
-
+    func canBlaze() -> Self {
+        set(blogOption: "can_blaze", value: true)
+        blog.isAdmin = true
         return self
     }
 
@@ -114,9 +130,64 @@ final class BlogBuilder {
         return self
     }
 
+    func with(dotComID: Int) -> Self {
+        blog.dotComID = dotComID as NSNumber
+        return self
+    }
+
     func with(url: String) -> Self {
         blog.url = url
 
+        return self
+    }
+
+    func with(domainCount: Int, of type: DomainType) -> Self {
+        var domains: [ManagedDomain] = []
+        for _ in 0..<domainCount {
+            let domain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
+            domain.domainType = type
+            domains.append(domain)
+        }
+
+        blog.domains = Set(domains).union(Set(blog.domains ?? []))
+        return self
+    }
+
+    func with(hasDomainCredit: Bool) -> Self {
+        blog.hasDomainCredit = hasDomainCredit
+        return self
+    }
+
+    func with(hasPaidPlan: Bool) -> Self {
+        blog.hasPaidPlan = hasPaidPlan
+        return self
+    }
+
+    func with(hasMappedDomain: Bool) -> Self {
+        set(blogOption: "unmapped_url", value: "http://domain1.com")
+
+        if hasMappedDomain {
+            set(blogOption: "home_url", value: "http://domain2.com")
+        } else {
+            set(blogOption: "home_url", value: "http://domain1.com")
+        }
+
+        return self
+    }
+
+    func with(isWPForTeamsSite: Bool) -> Self {
+        return set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
+    }
+
+    func with(connections: Set<PublicizeConnection>) -> Self {
+        blog.connections = connections
+        return self
+    }
+
+    func with(capabilities: [Blog.Capability]) -> Self {
+        blog.capabilities = capabilities.reduce(into: [String: Bool]()) {
+            $0[$1.rawValue] = true
+        }
         return self
     }
 

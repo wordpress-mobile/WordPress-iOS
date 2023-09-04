@@ -8,6 +8,13 @@ extension MediaHost {
         case baseInitializerError(error: Error, blog: Blog)
     }
 
+    init(with blog: Blog) {
+        self.init(with: blog) { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            WordPressAppDelegate.crashLogging?.logError(error)
+        }
+    }
+
     init(with blog: Blog, failure: (BlogError) -> ()) {
         let isAtomic = blog.isAtomic()
         self.init(with: blog, isAtomic: isAtomic, failure: failure)

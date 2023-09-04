@@ -4,13 +4,36 @@ import WordPressKit
 
 public class BloggingPromptSettings: NSManagedObject {
 
+    static func of(_ blog: Blog) throws -> BloggingPromptSettings? {
+        guard let context = blog.managedObjectContext else { return nil }
+
+        // This getting site id logic is copied from the BloggingPromptsService initializer.
+        let siteID: NSNumber
+        if let id = blog.dotComID {
+            siteID = id
+        } else if let account = try WPAccount.lookupDefaultWordPressComAccount(in: context) {
+            siteID = account.primaryBlogID
+        } else {
+            return nil
+        }
+
+        return try lookup(withSiteID: siteID, in: context)
+    }
+
+    static func lookup(withSiteID siteID: NSNumber, in context: NSManagedObjectContext) throws -> BloggingPromptSettings? {
+        let fetchRequest = BloggingPromptSettings.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
+        fetchRequest.fetchLimit = 1
+        return try context.fetch(fetchRequest).first
+    }
+
     func configure(with remoteSettings: RemoteBloggingPromptsSettings, siteID: Int32, context: NSManagedObjectContext) {
         self.siteID = siteID
         self.promptCardEnabled = remoteSettings.promptCardEnabled
         self.reminderTime = remoteSettings.reminderTime
         self.promptRemindersEnabled = remoteSettings.promptRemindersEnabled
         self.isPotentialBloggingSite = remoteSettings.isPotentialBloggingSite
-        updatePromptSettingsIfNecessary(siteID: String(siteID), enabled: isPotentialBloggingSite)
+        updatePromptSettingsIfNecessary(siteID: Int(siteID), enabled: isPotentialBloggingSite)
         self.reminderDays = reminderDays ?? BloggingPromptSettingsReminderDays(context: context)
         reminderDays?.configure(with: remoteSettings.reminderDays)
     }
@@ -24,12 +47,10 @@ public class BloggingPromptSettings: NSManagedObject {
         return dateFormatter.date(from: reminderTime)
     }
 
-    private func updatePromptSettingsIfNecessary(siteID: String, enabled: Bool) {
-        let repository = UserPersistentStoreFactory.instance()
-        var promptsEnabledSettings = repository.promptsEnabledSettings
-        if promptsEnabledSettings[siteID] == nil {
-            promptsEnabledSettings[siteID] = enabled
-            repository.promptsEnabledSettings = promptsEnabledSettings
+    private func updatePromptSettingsIfNecessary(siteID: Int, enabled: Bool) {
+        let service = BlogDashboardPersonalizationService(siteID: siteID)
+        if !service.hasPreference(for: .prompts) {
+            service.setEnabled(enabled, for: .prompts)
         }
     }
 

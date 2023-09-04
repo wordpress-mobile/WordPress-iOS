@@ -4,46 +4,54 @@ import XCTest
 /// The site switcher AKA blog list. Currently presented as a modal we can get to from My Site by
 /// tapping the down arrow next to the site title.
 public class MySitesScreen: ScreenObject {
-    let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
+
+    private let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["my-sites-cancel-button"]
     }
 
-    let plusButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let plusButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["add-site-button"]
     }
 
-    let addSelfHostedSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let addSelfHostedSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Add self-hosted site"]
     }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    private let mySitesLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.staticTexts["My Sites"]
+    }
+
+    var addSelfHostedSiteButton: XCUIElement { addSelfHostedSiteButtonGetter(app) }
+    var cancelButton: XCUIElement { cancelButtonGetter(app) }
+    var mySitesLabel: XCUIElement { mySitesLabelGetter(app) }
+    var plusButton: XCUIElement { plusButtonGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
-                // swiftlint:disable:next opening_brace
-                { $0.staticTexts["My Sites"] },
+                mySitesLabelGetter,
                 cancelButtonGetter,
                 plusButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
     public func addSelfHostedSite() throws -> LoginSiteAddressScreen {
-        plusButtonGetter(app).tap()
-        addSelfHostedSiteButtonGetter(app).tap()
+        plusButton.tap()
+        addSelfHostedSiteButton.tap()
         return try LoginSiteAddressScreen()
     }
 
     @discardableResult
     public func tapPlusButton() throws -> SiteIntentScreen {
-        plusButtonGetter(app).tap()
+        plusButton.tap()
         return try SiteIntentScreen()
     }
 
     @discardableResult
     public func closeModal() throws -> MySiteScreen {
-        cancelButtonGetter(app).tap()
+        cancelButton.tap()
         return try MySiteScreen()
     }
 
@@ -57,6 +65,6 @@ public class MySitesScreen: ScreenObject {
         if addSelfHostedSiteButtonGetter(app).isHittable {
             app.children(matching: .window).element(boundBy: 0).tap()
         }
-        if cancelButtonGetter(app).isHittable { cancelButtonGetter(app).tap() }
+        if cancelButton.isHittable { cancelButton.tap() }
     }
 }

@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import WordPressFlux
+import AutomatticTracks
 
 
 // MARK: - Reader Notifications
@@ -365,7 +366,23 @@ struct ReaderPostMenuButtonTitles {
     }
 
     class func dispatchToggleFollowSiteMessage(post: ReaderPost, follow: Bool, success: Bool) {
-        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, follow: follow, success: success)
+        guard let siteID = post.siteID else {
+            /// This is a workaround to prevent a crash from occurring when trying to pass a `nil` site ID to dispatchToggleFollowSiteMessage.
+            /// The root issue is that post.siteID should never be nil when this method is called.
+            CrashLogging.main.logMessage("Expected siteID to exist", level: .error)
+            return
+        }
+
+        let blogName = {
+            guard let blogNameForDisplay = post.blogNameForDisplay() else {
+                CrashLogging.main.logMessage("Expected blogNameForDisplay() to exist",
+                                                 properties: ["siteID": siteID, "postID": post.postID ?? "nil"],
+                                                 level: .error)
+                return NoticeMessages.unknownSiteText
+            }
+            return blogNameForDisplay
+        }()
+        dispatchToggleFollowSiteMessage(siteTitle: blogName, siteID: siteID, follow: follow, success: success)
     }
 
     class func dispatchToggleFollowSiteMessage(site: ReaderSiteTopic, follow: Bool, success: Bool) {
@@ -526,6 +543,14 @@ struct ReaderPostMenuButtonTitles {
         static let commentUnfollowFail = NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
         static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
         static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
+        static let unknownSiteText = NSLocalizedString(
+            "reader.notice.follow.site.unknown",
+            value: "this site",
+            comment: """
+                A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+                Example: given a notice format "Following %@" and empty site name, this will be "Following this site".
+                """
+        )
     }
 }
 

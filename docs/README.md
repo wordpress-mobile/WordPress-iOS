@@ -16,7 +16,7 @@
 
 ## Testing 
 
-- [UI Tests](../WordPress/WordPressUITests)
+- [UI Tests](../WordPress/UITests)
 
 ## Others 
 

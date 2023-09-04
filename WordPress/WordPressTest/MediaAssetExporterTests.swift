@@ -1,6 +1,7 @@
 import XCTest
 @testable import WordPress
 import MobileCoreServices
+import UniformTypeIdentifiers
 import Photos
 
 class MediaAssetExporterTests: XCTestCase {
@@ -236,11 +237,11 @@ class MediaAssetExporterTests: XCTestCase {
         let exporter = MediaAssetExporter(asset: asset)
         exporter.mediaDirectoryType = .temporary
         var options = MediaImageExporter.Options()
-        options.exportImageType = kUTTypePNG as String
+        options.exportImageType = UTType.png.identifier
         exporter.imageOptions = options
         let expect = self.expectation(description: "image export by UIImage")
         exporter.export(onCompletion: { (imageExport) in
-            XCTAssert(UTTypeEqual(kUTTypePNG, imageExport.url.typeIdentifier! as CFString), "Unexpected image format when trying to target a PNG format from a JPEG.")
+            XCTAssertEqual(UTType.png.identifier, imageExport.url.typeIdentifier, "Unexpected image format when trying to target a PNG format from a JPEG.")
             MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
             MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
             expect.fulfill()

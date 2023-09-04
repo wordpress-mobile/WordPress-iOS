@@ -60,6 +60,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     var router: ActivityContentRouter?
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         setupLabelStyles()
         setupViews()
         setupText()
@@ -286,6 +288,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return "activity_log"
         } else if presenter is BackupListViewController {
             return "backup"
+        } else if presenter is DashboardActivityLogCardCell {
+            return "dashboard"
         } else {
             return "unknown"
         }

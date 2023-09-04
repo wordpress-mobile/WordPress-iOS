@@ -42,7 +42,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(AbstractPost *post))success
-              failure:(void (^)(NSError *))failure;
+              failure:(void (^)(NSError *))failure __attribute__((deprecated("Use `PostRepository` instead")));
 
 /**
  Sync an initial batch of posts from the specified blog.

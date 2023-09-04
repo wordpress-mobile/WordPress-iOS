@@ -3,7 +3,7 @@ import Foundation
 /// A service for handling the process of retrieving and generating thumbnail images
 /// for existing Media objects, whether remote or locally available.
 ///
-class MediaThumbnailService: LocalCoreDataService {
+class MediaThumbnailService: NSObject {
 
     /// Completion handler for a thumbnail URL.
     ///
@@ -19,24 +19,43 @@ class MediaThumbnailService: LocalCoreDataService {
         return MediaThumbnailService.defaultExportQueue
     }()
 
+    private let coreDataStack: CoreDataStackSwift
+
+    /// The initialiser for Objective-C code.
+    ///
+    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    @objc
+    convenience init(contextManager: ContextManager) {
+        self.init(coreDataStack: contextManager)
+    }
+
+    init(coreDataStack: CoreDataStackSwift) {
+        self.coreDataStack = coreDataStack
+    }
+
     /// Generate a URL to a thumbnail of the Media, if available.
     ///
     /// - Parameters:
     ///   - media: The Media object the URL should be a thumbnail of.
     ///   - preferredSize: An ideal size of the thumbnail in points. If `zero`, the maximum dimension of the UIScreen is used.
-    ///   - onCompletion: Completion handler passing the URL once available, or nil if unavailable.
-    ///   - onError: Error handler.
+    ///   - onCompletion: Completion handler passing the URL once available, or nil if unavailable. This closure is called on the `exportQueue`.
+    ///   - onError: Error handler. This closure is called on the `exportQueue`.
     ///
     /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
     @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
-        managedObjectContext.perform {
+        // We can use the main context here because we only read the `Media` instance, without changing it, and all
+        // the time consuming work is done in background queues.
+        let context = coreDataStack.mainContext
+        context.perform {
             var objectInContext: NSManagedObject?
             do {
-                objectInContext = try self.managedObjectContext.existingObject(with: media.objectID)
+                objectInContext = try context.existingObject(with: media.objectID)
             } catch {
-                onError?(error)
+                self.exportQueue.async {
+                    onError?(error)
+                }
                 return
             }
             guard let mediaInContext = objectInContext as? Media else {
@@ -56,7 +75,9 @@ class MediaThumbnailService: LocalCoreDataService {
 
             // Check if there is already an exported thumbnail available.
             if let identifier = mediaInContext.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
-                onCompletion(availableThumbnail)
+                self.exportQueue.async {
+                    onCompletion(availableThumbnail)
+                }
                 return
             }
 
@@ -69,12 +90,10 @@ class MediaThumbnailService: LocalCoreDataService {
 
             // Configure a handler for any thumbnail exports
             let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
-                self.managedObjectContext.perform {
-                    self.handleThumbnailExport(media: mediaInContext,
-                                               identifier: identifier,
-                                               export: export,
-                                               onCompletion: onCompletion)
-                }
+                self.handleThumbnailExport(media: mediaInContext,
+                                           identifier: identifier,
+                                           export: export,
+                                           onCompletion: onCompletion)
             }
             // Configure an error handler
             let onThumbnailExportError: OnExportError = { (error) in
@@ -83,16 +102,12 @@ class MediaThumbnailService: LocalCoreDataService {
 
             // Configure an attempt to download a remote thumbnail and export it as a thumbnail.
             let attemptDownloadingThumbnail: () -> Void = {
-                self.downloadThumbnail(forMedia: mediaInContext, preferredSize: preferredSize, onCompletion: { (image) in
+                self.downloadThumbnail(forMedia: mediaInContext, preferredSize: preferredSize, callbackQueue: self.exportQueue, onCompletion: { (image) in
                     guard let image = image else {
                         onError?(MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
                         return
                     }
-                    self.exportQueue.async {
-                        exporter.exportThumbnail(forImage: image,
-                                                 onCompletion: onThumbnailExport,
-                                                 onError: onThumbnailExportError)
-                    }
+                    exporter.exportThumbnail(forImage: image, onCompletion: onThumbnailExport, onError: onThumbnailExportError)
                 }, onError: { (error) in
                     onError?(error)
                 })
@@ -117,7 +132,7 @@ class MediaThumbnailService: LocalCoreDataService {
                                              onError: { (error) in
                                                 // If an error occurred with the remote video URL, try and download the Media's
                                                 // remote thumbnail instead.
-                                                self.managedObjectContext.perform {
+                                                context.perform {
                                                     attemptDownloadingThumbnail()
                                                 }
                     })
@@ -135,87 +150,76 @@ class MediaThumbnailService: LocalCoreDataService {
     /// - Parameters:
     ///   - media: The Media object.
     ///   - preferredSize: The preferred size of the image, in points, to configure remote URLs for.
+    ///   - callbackQueue: The queue to execute the `onCompletion` or the `onError` callback.
     ///   - onCompletion: Completes if everything was successful, but nil if no image is available.
     ///   - onError: An error was encountered either from the server or locally, depending on the Media object or blog.
     ///
     /// - Note: based on previous implementation in MediaService.m.
     ///
-    fileprivate func downloadThumbnail(forMedia media: Media,
-                                       preferredSize: CGSize,
-                                       onCompletion: @escaping (UIImage?) -> Void,
-                                       onError: @escaping (Error) -> Void) {
+    private func downloadThumbnail(
+        forMedia media: Media,
+        preferredSize: CGSize,
+        callbackQueue: DispatchQueue,
+        onCompletion: @escaping (UIImage?) -> Void,
+        onError: @escaping (Error) -> Void
+    ) {
         var remoteURL: URL?
         // Check if the Media item is a video or image.
         if media.mediaType == .video {
             // If a video, ensure there is a remoteThumbnailURL
-            guard let remoteThumbnailURL = media.remoteThumbnailURL else {
-                // No video thumbnail available.
-                onCompletion(nil)
-                return
+            if let remoteThumbnailURL = media.remoteThumbnailURL {
+                remoteURL = URL(string: remoteThumbnailURL)
             }
-            remoteURL = URL(string: remoteThumbnailURL)
         } else {
             // Check if a remote URL for the media itself is available.
-            guard let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) else {
-                // No remote asset URL available.
-                onCompletion(nil)
-                return
-            }
-            // Get an expected WP URL, for sizing.
-            if media.blog.isPrivateAtWPCom() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
-                remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
-            } else {
-                remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
+            if let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) {
+                // Get an expected WP URL, for sizing.
+                if media.blog.isPrivateAtWPCom() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
+                    remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
+                } else {
+                    let scale = 1.0 / UIScreen.main.scale
+                    let preferredSize = preferredSize.applying(CGAffineTransform(scaleX: scale, y: scale))
+                    remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
+                }
             }
         }
         guard let imageURL = remoteURL else {
             // No URL's available, no images available.
-            onCompletion(nil)
+            callbackQueue.async {
+                onCompletion(nil)
+            }
             return
         }
-        let inContextImageHandler: (UIImage?) -> Void = { (image) in
-            self.managedObjectContext.perform {
-                onCompletion(image)
-            }
-        }
-        let inContextErrorHandler: (Error?) -> Void = { (error) in
-            self.managedObjectContext.perform {
-                guard let error = error else {
-                    onCompletion(nil)
-                    return
-                }
-                onError(error)
-            }
-        }
 
-        let download = AuthenticatedImageDownload(url: imageURL, blog: media.blog, onSuccess: inContextImageHandler, onFailure: inContextErrorHandler)
+        let download = AuthenticatedImageDownload(url: imageURL, mediaHost: MediaHost(with: media.blog), callbackQueue: callbackQueue, onSuccess: onCompletion, onFailure: onError)
 
         download.start()
     }
 
     // MARK: - Helpers
 
-    fileprivate func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping OnThumbnailURL) {
-        // Make sure the Media object hasn't been deleted.
-        guard media.isDeleted == false else {
-            onCompletion(nil)
-            return
-        }
-        if media.localThumbnailIdentifier != identifier {
-            media.localThumbnailIdentifier = identifier
-            ContextManager.sharedInstance().save(managedObjectContext)
-        }
-        onCompletion(export.url)
+    private func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping OnThumbnailURL) {
+        coreDataStack.performAndSave({ context in
+            let object = try context.existingObject(with: media.objectID)
+            // It's safe to force-unwrap here, since the `object`, if exists, must be a `Media` type.
+            let mediaInContext = object as! Media
+            mediaInContext.localThumbnailIdentifier = identifier
+        }, completion: { (result: Result<Void, Error>) in
+            switch result {
+            case .success:
+                onCompletion(export.url)
+            case .failure:
+                onCompletion(nil)
+            }
+        }, on: exportQueue)
     }
 
     /// Handle the OnError callback and logging any errors encountered.
     ///
-    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+    private func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
         MediaImportService.logExportError(error)
-        if let errorHandler = errorHandler {
-            self.managedObjectContext.perform {
-                errorHandler(error.toNSError())
-            }
+        exportQueue.async {
+            errorHandler?(error.toNSError())
         }
     }
 }

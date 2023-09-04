@@ -119,16 +119,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
-    /// Cache the HTML template format. We only need read the template once.
-    private static let htmlTemplateFormat: String? = {
-        guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
-              let templateString = try? String(contentsOfFile: templatePath) else {
-            return nil
-        }
-
-        return templateString
-    }()
-
     private var renderer: CommentContentRenderer? = nil
 
     private var renderMethod: RenderMethod?
@@ -339,6 +329,7 @@ private extension CommentContentTableViewCell {
         replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         adjustImageAndTitleEdgeInsets(for: replyButton)
         replyButton?.sizeToFit()
+        replyButton?.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton?.tintColor = Style.reactionButtonTextColor
         likeButton?.titleLabel?.font = Style.reactionButtonFont
@@ -351,6 +342,7 @@ private extension CommentContentTableViewCell {
         adjustImageAndTitleEdgeInsets(for: likeButton)
         updateLikeButton(liked: false, numberOfLikes: 0)
         likeButton?.sizeToFit()
+        likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
     }
 
     private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
@@ -415,6 +407,7 @@ private extension CommentContentTableViewCell {
             self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
             self.adjustImageAndTitleEdgeInsets(for: self.likeButton)
             self.likeButton.setTitleColor(liked ? Style.likedTintColor : Style.reactionButtonTextColor, for: .normal)
+            self.likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
             completion?()
         }
 
@@ -525,6 +518,10 @@ private extension CommentContentTableViewCell {
 // MARK: - Localization
 
 private extension String {
+    static let commentIsLiked = " likes. Comment is liked"
+    static let commentIsNotLiked = " existing likes. Comment is not liked"
+    static let replyButtonAccessibilityId = "reply-comment-button"
+    static let likeButtonAccessibilityId = "like-comment-button"
     static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
     static let noLikes = NSLocalizedString("Like", comment: "Button title to Like a comment.")
     static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. "

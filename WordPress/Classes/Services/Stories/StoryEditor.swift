@@ -222,6 +222,10 @@ class StoryEditor: CameraController {
 
 extension StoryEditor: PublishingEditor {
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
+        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
+            return  [.title, .visibility, .schedule, .tags, .categories, .autoSharing]
+        }
+
         return  [.title, .visibility, .schedule, .tags, .categories]
     }
 

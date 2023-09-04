@@ -231,6 +231,10 @@ import Foundation
     case domainsRegistrationFormViewed
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
+    case domainsPurchaseSucceeded
+    case domainTransferShown
+    case domainTransferMoreTapped
+    case domainTransferButtonTapped
 
     // My Site
     case mySitePullToRefresh
@@ -253,6 +257,10 @@ import Foundation
     case postListShareAction
     case postListSetAsPostsPageAction
     case postListSetHomePageAction
+
+    // Page List
+    case pageListEditHomepageTapped
+    case pageListEditHomepageInfoTapped
 
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
@@ -277,10 +285,6 @@ import Foundation
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
-
-    // Privacy Settings
-    case privacySettingsOpened
-    case privacySettingsReportCrashesToggled
 
     // Notifications
     case notificationsPreviousTapped
@@ -329,6 +333,8 @@ import Foundation
     // My Site Dashboard
     case dashboardCardShown
     case dashboardCardItemTapped
+    case dashboardCardContextualMenuAccessed
+    case dashboardCardHideTapped
     case mySiteTabTapped
     case mySiteSiteMenuShown
     case mySiteDashboardShown
@@ -427,9 +433,14 @@ import Foundation
     case jetpackBrandingMenuCardRemindLater
     case jetpackBrandingMenuCardContextualMenuAccessed
     case jetpackFeatureIncorrectlyAccessed
+
+    // Jetpack plugin overlay modal
     case jetpackInstallPluginModalViewed
     case jetpackInstallPluginModalDismissed
     case jetpackInstallPluginModalInstallTapped
+    case wordPressInstallPluginModalViewed
+    case wordPressInstallPluginModalDismissed
+    case wordPressInstallPluginModalSwitchTapped
 
     // Jetpack full plugin installation for individual sites
     case jetpackInstallFullPluginViewed
@@ -447,6 +458,7 @@ import Foundation
     case blazeEntryPointTapped
     case blazeContextualMenuAccessed
     case blazeCardHidden
+    case blazeCardLearnMoreTapped
     case blazeOverlayDisplayed
     case blazeOverlayButtonTapped
     case blazeOverlayDismissed
@@ -454,11 +466,55 @@ import Foundation
     case blazeFlowCanceled
     case blazeFlowCompleted
     case blazeFlowError
+    case blazeCampaignListOpened
+    case blazeCampaignDetailsOpened
+    case blazeCampaignDetailsError
+    case blazeCampaignDetailsDismissed
+
+    // Moved to Jetpack static screen
+    case removeStaticPosterDisplayed
+    case removeStaticPosterButtonTapped
+    case removeStaticPosterLinkTapped
 
     // Help & Support
     case supportOpenMobileForumTapped
     case supportMigrationFAQButtonTapped
     case supportMigrationFAQCardViewed
+
+    // Chatbot Support
+    case supportChatbotStarted
+    case supportChatbotWebViewError
+    case supportChatbotTicketSuccess
+    case supportChatbotTicketFailure
+    case supportChatbotEnded
+
+    // Jetpack plugin connection to user's WP.com account
+    case jetpackPluginConnectUserAccountStarted
+    case jetpackPluginConnectUserAccountFailed
+    case jetpackPluginConnectUserAccountCompleted
+
+    // Domains Dashboard Card
+    case directDomainsPurchaseDashboardCardShown
+    case directDomainsPurchaseDashboardCardTapped
+    case directDomainsPurchaseDashboardCardHidden
+
+    // Jetpack Social - Twitter Deprecation Notice
+    case jetpackSocialTwitterNoticeLinkTapped
+
+    // Jetpack Social Improvements v1
+    case jetpackSocialConnectionToggled
+    case jetpackSocialShareLimitDisplayed
+    case jetpackSocialShareLimitDismissed
+    case jetpackSocialUpgradeLinkTapped
+    case jetpackSocialNoConnectionCardDisplayed
+    case jetpackSocialNoConnectionCTATapped
+    case jetpackSocialNoConnectionCardDismissed
+
+    // Free to Paid Plans Dashboard Card
+    case freeToPaidPlansDashboardCardShown
+    case freeToPaidPlansDashboardCardTapped
+    case freeToPaidPlansDashboardCardMenuTapped
+    case freeToPaidPlansDashboardCardHidden
 
     /// A String that represents the event
     var value: String {
@@ -868,6 +924,14 @@ import Foundation
             return "domains_registration_form_submitted"
         case .domainsPurchaseWebviewViewed:
             return "domains_purchase_webview_viewed"
+        case .domainsPurchaseSucceeded:
+            return "domains_purchase_domain_success"
+        case .domainTransferShown:
+            return "dashboard_card_domain_transfer_shown"
+        case .domainTransferMoreTapped:
+            return "dashboard_card_domain_transfer_more_menu_tapped"
+        case .domainTransferButtonTapped:
+            return "dashboard_card_domain_transfer_button_tapped"
 
         // My Site
         case .mySitePullToRefresh:
@@ -896,12 +960,20 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+
+        // Post List
         case .postListShareAction:
             return "post_list_button_pressed"
         case .postListSetAsPostsPageAction:
             return "post_list_button_pressed"
         case .postListSetHomePageAction:
             return "post_list_button_pressed"
+
+        // Page List
+        case .pageListEditHomepageTapped:
+            return "page_list_edit_homepage_item_pressed"
+        case .pageListEditHomepageInfoTapped:
+            return "page_list_edit_homepage_info_pressed"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
@@ -932,12 +1004,6 @@ import Foundation
             return "app_settings_clear_siri_suggestions_tapped"
         case .appSettingsOpenDeviceSettingsTapped:
             return "app_settings_open_device_settings_tapped"
-
-        // Privacy Settings
-        case .privacySettingsOpened:
-            return "privacy_settings_opened"
-        case .privacySettingsReportCrashesToggled:
-            return "privacy_settings_report_crashes_toggled"
 
         // Account Close
         case .accountCloseTapped:
@@ -1018,6 +1084,10 @@ import Foundation
             return "my_site_dashboard_card_shown"
         case .dashboardCardItemTapped:
             return "my_site_dashboard_card_item_tapped"
+        case .dashboardCardContextualMenuAccessed:
+            return "my_site_dashboard_contextual_menu_accessed"
+        case .dashboardCardHideTapped:
+            return "my_site_dashboard_card_hide_tapped"
         case .mySiteTabTapped:
             return "my_site_tab_tapped"
         case .mySiteSiteMenuShown:
@@ -1194,12 +1264,20 @@ import Foundation
             return "remove_feature_card_menu_accessed"
         case .jetpackFeatureIncorrectlyAccessed:
             return "jetpack_feature_incorrectly_accessed"
+
+        // Jetpack plugin overlay modal
         case .jetpackInstallPluginModalViewed:
             return "jp_install_full_plugin_onboarding_modal_viewed"
         case .jetpackInstallPluginModalDismissed:
             return "jp_install_full_plugin_onboarding_modal_dismissed"
         case .jetpackInstallPluginModalInstallTapped:
             return "jp_install_full_plugin_onboarding_modal_install_tapped"
+        case .wordPressInstallPluginModalViewed:
+            return "wp_individual_site_overlay_viewed"
+        case .wordPressInstallPluginModalDismissed:
+            return "wp_individual_site_overlay_dismissed"
+        case .wordPressInstallPluginModalSwitchTapped:
+            return "wp_individual_site_overlay_primary_tapped"
 
         // Jetpack full plugin installation for individual sites
         case .jetpackInstallFullPluginViewed:
@@ -1230,6 +1308,8 @@ import Foundation
             return "blaze_entry_point_menu_accessed"
         case .blazeCardHidden:
             return "blaze_entry_point_hide_tapped"
+        case .blazeCardLearnMoreTapped:
+            return "blaze_entry_point_learn_more_tapped"
         case .blazeOverlayDisplayed:
             return "blaze_overlay_displayed"
         case .blazeOverlayButtonTapped:
@@ -1244,7 +1324,22 @@ import Foundation
             return "blaze_flow_completed"
         case .blazeFlowError:
             return "blaze_flow_error"
+        case .blazeCampaignListOpened:
+            return "blaze_campaign_list_opened"
+        case .blazeCampaignDetailsOpened:
+            return "blaze_campaign_details_opened"
+        case .blazeCampaignDetailsError:
+            return "blaze_campaign_details_error"
+        case .blazeCampaignDetailsDismissed:
+            return "blaze_campaign_details_dismissed"
 
+        // Moved to Jetpack static screen
+        case .removeStaticPosterDisplayed:
+            return "remove_static_poster_displayed"
+        case .removeStaticPosterButtonTapped:
+            return "remove_static_poster_get_jetpack_tapped"
+        case .removeStaticPosterLinkTapped:
+            return "remove_static_poster_link_tapped"
 
         // Help & Support
         case .supportOpenMobileForumTapped:
@@ -1253,6 +1348,65 @@ import Foundation
             return "support_migration_faq_tapped"
         case .supportMigrationFAQCardViewed:
             return "support_migration_faq_viewed"
+
+        // Chatbot Support
+        case .supportChatbotStarted:
+            return "support_chatbot_started"
+        case .supportChatbotWebViewError:
+            return "support_chatbot_webview_error"
+        case .supportChatbotTicketSuccess:
+            return "support_chatbot_ticket_success"
+        case .supportChatbotTicketFailure:
+            return "support_chatbot_ticket_failure"
+        case .supportChatbotEnded:
+            return "support_chatbot_ended"
+
+
+        // Jetpack plugin connection to user's WP.com account
+        case .jetpackPluginConnectUserAccountStarted:
+            return "jetpack_plugin_connect_user_account_started"
+        case .jetpackPluginConnectUserAccountFailed:
+            return "jetpack_plugin_connect_user_account_failed"
+        case .jetpackPluginConnectUserAccountCompleted:
+            return "jetpack_plugin_connect_user_account_completed"
+
+        // Domains Dashboard Card
+        case .directDomainsPurchaseDashboardCardShown:
+            return "direct_domains_purchase_dashboard_card_shown"
+        case .directDomainsPurchaseDashboardCardHidden:
+            return "direct_domains_purchase_dashboard_card_hidden"
+        case .directDomainsPurchaseDashboardCardTapped:
+            return "direct_domains_purchase_dashboard_card_tapped"
+
+        // Jetpack Social - Twitter Deprecation Notice
+        case .jetpackSocialTwitterNoticeLinkTapped:
+            return "twitter_notice_link_tapped"
+
+        case .jetpackSocialConnectionToggled:
+            return "jetpack_social_auto_sharing_connection_toggled"
+        case .jetpackSocialShareLimitDisplayed:
+            return "jetpack_social_share_limit_displayed"
+        case .jetpackSocialShareLimitDismissed:
+            return "jetpack_social_share_limit_dismissed"
+        case .jetpackSocialUpgradeLinkTapped:
+            return "jetpack_social_upgrade_link_tapped"
+        case .jetpackSocialNoConnectionCardDisplayed:
+            return "jetpack_social_add_connection_cta_displayed"
+        case .jetpackSocialNoConnectionCTATapped:
+            return "jetpack_social_add_connection_tapped"
+        case .jetpackSocialNoConnectionCardDismissed:
+            return "jetpack_social_add_connection_dismissed"
+
+        // Free to Paid Plans Dashboard Card
+        case .freeToPaidPlansDashboardCardShown:
+            return "free_to_paid_plan_dashboard_card_shown"
+        case .freeToPaidPlansDashboardCardHidden:
+            return "free_to_paid_plan_dashboard_card_hidden"
+        case .freeToPaidPlansDashboardCardTapped:
+            return "free_to_paid_plan_dashboard_card_tapped"
+        case .freeToPaidPlansDashboardCardMenuTapped:
+            return "free_to_paid_plan_dashboard_card_menu_tapped"
+
         } // END OF SWITCH
     }
 

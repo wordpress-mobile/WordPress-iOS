@@ -6,6 +6,8 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
     let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
+        store.onlyRestorableItems = false
+
         let activityListConfiguration = ActivityListConfiguration(
             identifier: "activity_log",
             title: NSLocalizedString("Activity", comment: "Title for the activity list"),
@@ -31,14 +33,22 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    @objc convenience init?(blog: Blog) {
+        precondition(blog.dotComID != nil)
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+
+        let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
+        self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
+    }
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         extendedLayoutIncludesOpaqueBars = true
-
-        WPAnalytics.track(.activityLogViewed)
     }
 
     private func configureBanner() {

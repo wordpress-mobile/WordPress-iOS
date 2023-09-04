@@ -91,6 +91,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         AppAppearance.overrideAppearance()
+        MemoryCache.shared.register()
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -128,18 +129,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ABTest.start()
 
-        if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
-            // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
-            // Please refer to the documentation of the called method to learn the details and know
-            // how to tell if this call can be removed.
-            UITextField.activateWorkaroundForBulgarianKeyboardCrash()
-        }
-
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
+        logoutAtLaunchForUITests(application)
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -172,15 +167,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             bgTask = .invalid
         }
 
-        bgTask = app.beginBackgroundTask(expirationHandler: {
-            // Synchronize the cleanup call on the main thread in case
-            // the task actually finishes at around the same time.
-            DispatchQueue.main.async { [weak self] in
-                if let task = self?.bgTask, task != .invalid {
-                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
-                    app.endBackgroundTask(task)
-                    self?.bgTask = .invalid
-                }
+        bgTask = app.beginBackgroundTask(expirationHandler: { [weak self] in
+            // WARNING: The task has to be terminated immediately on expiration
+            if let task = self?.bgTask, task != .invalid {
+                DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
+                app.endBackgroundTask(task)
+                self?.bgTask = .invalid
             }
         })
 
@@ -379,6 +371,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    private func logoutAtLaunchForUITests(_ application: UIApplication) {
+        if CommandLine.arguments.contains("-logout-at-launch") {
+            AccountHelper.logOutDefaultWordPressComAccount()
+        }
+    }
+
     var runningInBackground: Bool {
         return UIApplication.shared.applicationState == .background
     }
@@ -516,20 +514,19 @@ extension WordPressAppDelegate {
             return
         }
 
-        // When a counterpart WordPress/Jetpack app is detected, ensure that the router can handle the URL.
-        // Passing a URL that the router can't handle results in opening the URL in Safari, which will
-        // cause the other app to "catch" the intent — and leads to a navigation loop between the two apps.
-        //
-        // TODO: Remove this after the Universal Link routes for the WordPress app are removed.
-        //
-        // Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
-        if MigrationAppDetection.isCounterpartAppInstalled {
-            // If we can handle the URL, then let the UniversalLinkRouter do it.
-            guard UniversalLinkRouter.shared.canHandle(url: url) else {
-                // Otherwise, try to convert the URL to a WP Admin link and open it in Safari.
-                WPAdminConvertibleRouter.shared.handle(url: url)
-                return
-            }
+        /// If the counterpart WordPress/Jetpack app is installed, and the URL has a wp-admin link equivalent,
+        /// bounce the wp-admin link to Safari instead.
+        ///
+        /// Passing a URL that the router couldn't handle results in opening the URL in Safari, which will
+        /// cause the other app to "catch" the intent — and leads to a navigation loop between the two apps.
+        ///
+        /// TODO: Remove this after the Universal Link routes for the WordPress app are removed.
+        ///
+        /// Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
+        if MigrationAppDetection.isCounterpartAppInstalled,
+           WPAdminConvertibleRouter.shared.canHandle(url: url) {
+            WPAdminConvertibleRouter.shared.handle(url: url)
+            return
         }
 
         trackDeepLink(for: url) { url in
@@ -776,6 +773,11 @@ extension WordPressAppDelegate {
     @objc class func setLogLevel(_ level: DDLogLevel) {
         SetCocoaLumberjackObjCLogLevel(level.rawValue)
         CocoaLumberjack.dynamicLogLevel = level
+    }
+
+    /// Logs the error in Sentry.
+    @objc class func logError(_ error: Error) {
+        crashLogging?.logError(error)
     }
 }
 

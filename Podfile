@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative './Gutenberg/cocoapods_helpers'
+require 'xcodeproj'
+
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
 # For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
 install! 'cocoapods', warn_for_multiple_pod_sources: false
@@ -8,21 +11,21 @@ source 'https://cdn.cocoapods.org/'
 
 raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_GEMFILE].any? { |k| ENV.key?(k) }
 
+VERSION_XCCONFIG_PATH = File.join(File.expand_path(__dir__), 'config', 'Common.xcconfig')
+APP_IOS_DEPLOYMENT_TARGET = Gem::Version.new(Xcodeproj::Config.new(VERSION_XCCONFIG_PATH).to_hash['IPHONEOS_DEPLOYMENT_TARGET'])
+
+platform :ios, APP_IOS_DEPLOYMENT_TARGET.version
 inhibit_all_warnings!
 use_frameworks!
-
-app_ios_deployment_target = Gem::Version.new('13.0')
-
-platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 2.0-beta'
+  pod 'WordPressShared', '~> 2.2'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', tag: ''
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
+  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
@@ -39,7 +42,7 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.12.5'
+  pod 'WordPressUI', '~> 1.14.2-beta.1'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
@@ -47,9 +50,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 6.2.0-beta'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'trunk'
+  pod 'WordPressKit', '~> 8.5'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
@@ -77,7 +80,7 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
-  gutenberg_pods
+  gutenberg_pod
 end
 
 def shared_with_extension_pods
@@ -87,93 +90,7 @@ def shared_with_extension_pods
 end
 
 def shared_style_pods
-  pod 'Gridicons', '~> 1.1.0'
-end
-
-def gutenberg_pods
-  gutenberg tag: 'v1.90.0'
-end
-
-def gutenberg(options)
-  options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
-  options[:submodules] = true
-  local_gutenberg = ENV.fetch('LOCAL_GUTENBERG', nil)
-  if local_gutenberg
-    options = { path: local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
-  end
-  pod 'Gutenberg', options
-  pod 'RNTAztecView', options
-
-  gutenberg_dependencies options
-end
-
-def gutenberg_dependencies(options)
-  # Note that the pods in this array might seem unused if you look for
-  # `import` statements in this codebase. However, make sure to also check
-  # whether they are used in the gutenberg-mobile and Gutenberg projects.
-  #
-  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
-  dependencies = %w[
-    FBLazyVector
-    React
-    ReactCommon
-    RCTRequired
-    RCTTypeSafety
-    React-Core
-    React-CoreModules
-    React-RCTActionSheet
-    React-RCTAnimation
-    React-RCTBlob
-    React-RCTImage
-    React-RCTLinking
-    React-RCTNetwork
-    React-RCTSettings
-    React-RCTText
-    React-RCTVibration
-    React-callinvoker
-    React-cxxreact
-    React-jsinspector
-    React-jsi
-    React-jsiexecutor
-    React-logger
-    React-perflogger
-    React-runtimeexecutor
-    boost
-    Yoga
-    RCT-Folly
-    glog
-    react-native-keyboard-aware-scroll-view
-    react-native-safe-area
-    react-native-safe-area-context
-    react-native-video
-    react-native-webview
-    RNSVG
-    react-native-slider
-    BVLinearGradient
-    react-native-get-random-values
-    react-native-blur
-    RNScreens
-    RNReanimated
-    RNGestureHandler
-    RNCMaskedView
-    RNCClipboard
-    RNFastImage
-    React-Codegen
-    React-bridging
-  ]
-  if options[:path]
-    podspec_prefix = options[:path]
-  else
-    tag_or_commit = options[:tag] || options[:commit]
-    podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
-  end
-
-  # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
-  pod 'FBReactNativeSpec', podspec: "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
-
-  dependencies.each do |pod_name|
-    pod pod_name, podspec: "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
-  end
+  pod 'Gridicons', '~> 1.2'
 end
 
 abstract_target 'Apps' do
@@ -186,27 +103,27 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg_pods
+  gutenberg_pod
 
   ## Third party libraries
   ## =====================
   ##
-  pod 'Gifu', '3.2.0'
+  pod 'Gifu', '3.3.1'
 
-  app_center_version = '~> 4.1'
+  app_center_version = '~> 5.0'
   app_center_configurations = %w[Release-Internal Release-Alpha]
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'MRProgress', '0.8.3'
   pod 'Starscream', '3.0.6'
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
   pod 'AlamofireImage', '3.5.2'
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-  pod 'JTAppleCalendar', '~> 8.0.2'
+  pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
+  pod 'SDWebImage', '~> 5.11.1'
 
   ## Automattic libraries
   ## ====================
@@ -217,7 +134,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.13'
+  pod 'Automattic-Tracks-iOS', '~> 2.2'
   # While in PR
   # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development
@@ -225,24 +142,23 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.7'
+  pod 'WPMediaPicker', '~> 1.8', '>= 1.8.10-beta.1'
   ## while PR is in review:
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-  pod 'Gridicons', '~> 1.1.0'
-
-  pod 'WordPressAuthenticator', '~> 5.1-beta'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'trunk'
+  pod 'WordPressAuthenticator', '~> 6.3'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
-  pod 'MediaEditor', '~> 1.2.1'
+  pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
   # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
   # pod 'MediaEditor', path: '../MediaEditor-iOS'
 
   aztec
   wordpress_ui
+  shared_style_pods
 
   ## WordPress App iOS
   ## =================
@@ -405,7 +321,7 @@ pre_install do |installer|
   installer.pod_targets.each do |pod|
     # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
     # linking it resolves this.
-    if pod.name == 'Sentry'
+    if %w[Sentry SentryPrivate].include? pod.name
       dynamic << pod
       next
     end
@@ -423,6 +339,8 @@ pre_install do |installer|
 end
 
 post_install do |installer|
+  gutenberg_post_install(installer: installer)
+
   project_root = File.dirname(__FILE__)
 
   ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
@@ -478,7 +396,7 @@ post_install do |installer|
 
     target.build_configurations.each do |configuration|
       pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= APP_IOS_DEPLOYMENT_TARGET
     end
   end
 

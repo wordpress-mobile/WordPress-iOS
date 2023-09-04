@@ -216,7 +216,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)preserveSavedPostsFromTopic:(ReaderAbstractTopic *)topic
 {
-    [topic.posts enumerateObjectsUsingBlock:^(ReaderPost * _Nonnull post, NSUInteger idx, BOOL * _Nonnull stop) {
+    // Copy posts so that `post.topic = nil` doesn't mutate `topic.posts` collection.
+    NSMutableArray *posts = [[NSMutableArray alloc] initWithCapacity:topic.posts.count];
+    for (id post in topic.posts) {
+        [posts addObject:post];
+    }
+
+    // Now it's safe to update `post.topic`.
+    [posts enumerateObjectsUsingBlock:^(ReaderPost * _Nonnull post, NSUInteger __unused idx, BOOL * _Nonnull __unused stop) {
         if (post.isSavedForLater) {
             DDLogInfo(@"Preserving saved post: %@", post.titleForDisplay);
             post.topic = nil;
@@ -295,7 +302,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber * __unused topicID) {
         successBlock();
     } failure:^(NSError *error) {
         if (failure) {
@@ -345,7 +352,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber * __unused topicID) {
         successBlock();
     } failure:^(NSError *error) {
         if (failure) {
@@ -375,7 +382,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     BOOL oldShowInMenuValue = topic.showInMenu;
 
     // Optimistically update and save
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * __unused context) {
         ReaderTagTopic *topicInContext = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:nil];
         topicInContext.following = !oldFollowingValue;
         if (topicInContext.following) {
@@ -386,7 +393,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * __unused context) {
             ReaderTagTopic *topicInContext = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:nil];
             topicInContext.following = oldFollowingValue;
             topicInContext.showInMenu = oldShowInMenuValue;

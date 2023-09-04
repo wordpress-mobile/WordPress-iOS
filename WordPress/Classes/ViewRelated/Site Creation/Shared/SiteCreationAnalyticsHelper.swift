@@ -7,6 +7,8 @@ extension Variation {
         switch self {
         case .treatment:
             return "treatment"
+        case .customTreatment:
+            return "custom_treatment"
         case .control:
             return "control"
         }
@@ -23,6 +25,12 @@ class SiteCreationAnalyticsHelper {
     private static let variationKey = "variation"
     private static let siteNameKey = "site_name"
     private static let recommendedKey = "recommended"
+    private static let customTreatmentNameKey = "custom_treatment_variation_name"
+
+    // MARK: - Lifecycle
+    static func trackSiteCreationAccessed(source: String) {
+        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+    }
 
     // MARK: - Site Intent
     static func trackSiteIntentViewed() {
@@ -135,6 +143,7 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
+
     private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
         var result: [AnyHashable: Any] = [:]
 

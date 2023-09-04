@@ -1,3 +1,4 @@
+import Combine
 import WordPressAuthenticator
 
 class ChangeUsernameViewController: SignupUsernameTableViewController {
@@ -15,7 +16,13 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
         }
         return saveItem
     }()
-    private var changeUsernameAction: UIAlertAction?
+
+    private var confirmationTextObserver: AnyCancellable?
+    private weak var confirmationController: UIAlertController? {
+        didSet {
+            observeConfirmationTextField()
+        }
+    }
 
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
@@ -34,6 +41,8 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         viewModel.start()
     }
 
@@ -103,7 +112,9 @@ private extension ChangeUsernameViewController {
     }
 
     func save() {
-        present(changeUsernameConfirmationPrompt(), animated: true)
+        let controller = changeUsernameConfirmationPrompt()
+        present(controller, animated: true)
+        confirmationController = controller
     }
 
     func changeUsername() {
@@ -133,42 +144,64 @@ private extension ChangeUsernameViewController {
                                                 preferredStyle: .alert)
         alertController.addAttributeMessage(String(format: Constants.Alert.message, viewModel.selectedUsername),
                                             highlighted: viewModel.selectedUsername)
-        alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { [weak alertController] _ in
-            if let textField = alertController?.textFields?.first {
-                NotificationCenter.default.removeObserver(textField, name: UITextField.textDidChangeNotification, object: nil)
-            }
+        alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { _ in
             DDLogInfo("User cancelled alert")
         })
-        changeUsernameAction = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first,
+        let action = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController, weak self] _ in
+            guard let self, let alertController else { return }
+            guard let textField = alertController.textFields?.first,
                 textField.text == self.viewModel.selectedUsername else {
                     DDLogInfo("Username confirmation failed")
                     return
             }
             DDLogInfo("User changes username")
-            NotificationCenter.default.removeObserver(textField, name: UITextField.textDidChangeNotification, object: nil)
             self.changeUsername()
         })
-        changeUsernameAction?.isEnabled = false
-        alertController.addTextField { [weak self] textField in
+        action.isEnabled = false
+        alertController.addTextField { textField in
             textField.placeholder = Constants.Alert.confirm
-            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification,
-                                                   object: textField,
-                                                   queue: .main) {_ in
-                                                    if let text = textField.text,
-                                                        !text.isEmpty,
-                                                        let username = self?.viewModel.selectedUsername,
-                                                        text == username {
-                                                        self?.changeUsernameAction?.isEnabled = true
-                                                        textField.textColor = .success
-                                                        return
-                                                    }
-                                                    self?.changeUsernameAction?.isEnabled = false
-                                                    textField.textColor = .text
-            }
         }
         DDLogInfo("Prompting user for confirmation of change username")
         return alertController
+    }
+
+    func observeConfirmationTextField() {
+        confirmationTextObserver?.cancel()
+        confirmationTextObserver = nil
+
+        guard let confirmationController,
+              let textField = confirmationController.textFields?.first
+        else {
+            return
+        }
+
+        // We need to add another condition to check if the text field is the username confirmation text field, if there
+        // are more than one text field in the prompt.
+        assert(confirmationController.textFields?.count == 1, "There should be only one text field in the prompt")
+
+        confirmationTextObserver = NotificationCenter.default
+            .publisher(for: UITextField.textDidChangeNotification, object: textField)
+            .sink(receiveValue: { [weak self] in
+                self?.handleTextDidChangeNotification($0)
+            })
+    }
+
+    func handleTextDidChangeNotification(_ notification: Foundation.Notification) {
+        guard notification.name == UITextField.textDidChangeNotification,
+              let confirmationController,
+              let textField = notification.object as? UITextField
+        else {
+            DDLogInfo("The notification is not sent from the text field within the change username confirmation prompt")
+            return
+        }
+
+        let actions = confirmationController.actions.filter({ $0.title == Constants.Alert.change })
+        precondition(actions.count == 1, "More than one 'Change username' action found")
+        let changeUsernameAction = actions.first
+
+        let enabled = textField.text?.isEmpty == false && textField.text == self.viewModel.selectedUsername
+        changeUsernameAction?.isEnabled = enabled
+        textField.textColor = enabled ? .success : .text
     }
 
     enum Constants {

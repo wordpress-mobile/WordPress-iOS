@@ -2,6 +2,7 @@ import WPMediaPicker
 import MobileCoreServices
 import CoreGraphics
 import Photos
+import UniformTypeIdentifiers
 
 /// Encapsulates launching and customization of a media picker to import media from the Photos Library
 final class MediaLibraryPicker: NSObject {
@@ -16,7 +17,7 @@ final class MediaLibraryPicker: NSObject {
         options.showMostRecentFirst = true
         options.filter = [.all]
         options.allowCaptureOfMedia = false
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPNavigationMediaPickerViewController(options: options)

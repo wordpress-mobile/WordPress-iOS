@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-02-28 15:54:10+0000 */
+/* Translation-Revision-Date: 2023-08-29 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -250,11 +250,8 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s 블록. 이 블록에는 잘못된 내용이 있습니다.";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "일반 블록으로 %s 변환됨";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "일반 블록으로 %s 변환됨";
+/* translators: %s: name of the synced block */
+"%s detached" = "분리된 %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s 임베드 블록 미리보기 곧 공개 예정";
@@ -264,6 +261,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s에 설정된 URL 없음";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s 링크";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s 미리보기는 아직 사용할 수 없음";
@@ -416,9 +416,6 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "이미지 또는 비디오 추가";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "링크 추가";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "미디어 추가";
 
 /* No comment provided by engineer. */
@@ -567,6 +564,9 @@ translators: Block name. %s: The localized block name */
 "Add button text" = "추가 버튼 텍스트";
 
 /* No comment provided by engineer. */
+"Add description" = "설명 추가";
+
+/* No comment provided by engineer. */
 "Add image or video" = "이미지 또는 비디오 추가";
 
 /* Accessibility hint text for adding an image to a new user account. */
@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "이 전화번호 링크 추가하기";
 
+/* No comment provided by engineer. */
+"Add title" = "제목 추가하기";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "사이트 기능 추가";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "모든";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -729,10 +733,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "대체 텍스트";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "또는 \"일반 블록으로 변환\"을 눌러 이 블록을 분리하고 따로 편집할 수 있습니다.";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "또는 \"일반 블록으로 변환\"을 눌러 이 블록을 분리하고 따로 편집할 수 있습니다.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "또는 이 계정에 대한 비밀번호를 입력하셔도 됩니다.";
@@ -1111,11 +1115,11 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "최고 조회수";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "iPhone\/iPad 업데이트 지금 이용 가능";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "빈 페이지를 만들었습니다";
+
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -1133,6 +1137,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "블록 편집기 활성화됨";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "블록 그룹 지정됨";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "악의적인 로그인 시도 차단";
 
@@ -1148,8 +1155,14 @@ translators: Block name. %s: The localized block name */
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "이 블로그 차단";
 
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "블록 그룹 해제됨";
+
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "차단한 사이트";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "차단한 사용자";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -1402,9 +1415,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "설정 변경";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "사이트 변경";
-
 /* Change site icon button */
 "Change Site Icon" = "사이트 아이콘 변경";
 
@@ -1580,9 +1590,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests subtitle label text */
 "Choose your topics" = "주제 선택";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "다른 사이트로 변경하면 미디어와 카테고리 같은 특정 사이트 콘텐츠의 수정 사항을 잃게 됩니다. 계속할까요?";
-
 /* Register Domain - Address information field City */
 "City" = "도시";
 
@@ -1622,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1957,9 +1965,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "이 앱으로부터 버전 복사하기";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "별로";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "토픽을 팔로우할 수 없습니다";
 
@@ -2149,12 +2154,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Create link" = "링크 생성";
-
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "첫 번째 글 작성";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "다음 글 작성";
 
 /* Title of a Quick Start Tour */
 "Create your site" = "사이트 작성";
@@ -2359,7 +2358,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "거부하기";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "이미지의 용도를 설명합니다. 이미지가 장식용이면 비워둡니다.";
+"Describe the purpose of the image. Leave empty if decorative." = "이미지의 용도를 설명합니다. 장식용이면 비워둡니다.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2368,6 +2367,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "디자인";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "디자인 시스템";
 
 /* Title for the desktop web preview */
 "Desktop" = "데스크탑";
@@ -2581,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "글을 미리 보려면 두 번 누르세요.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "마지막 변경을 다시 실행하려면 두 번 탭하세요.";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "선택하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
@@ -2606,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "설정을 전환하려면 두 번 탭하세요.";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "마지막 변경을 취소하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "임베드 옵션을 보려면 두 번 누릅니다.";
@@ -2655,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "블록 복제하기";
 
+/* No comment provided by engineer. */
+"Dynamic" = "동적";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "예: 패션, 시, 정치";
 
@@ -2677,9 +2676,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "%@ 편집하기";
-
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "%@ 블록 편집";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "차단 목록 단어 편집";
@@ -2728,11 +2724,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "비디오 편집";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "재활용 가능한 블록 편집은 아직 Android용 WordPress에서 지원되지 않습니다.";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "Android용 %s에서는 동기화된 패턴 편집이 아직 지원되지 않습니다.";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "재활용 가능한 블록 편집은 아직 iOS용 WordPress에서 지원되지 않습니다.";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "iOS용 %s에서는 동기화된 패턴 편집이 아직 지원되지 않습니다.\n";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
@@ -3139,9 +3135,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "패스트메일";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "기능 플래그";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "대표";
 
@@ -3486,9 +3479,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "사이트 URL 확보";
 
 /* No comment provided by engineer. */
-"Gradient" = "기울기";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "그라디언트 유형";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3600,8 +3590,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "지금까지 글의 성과입니다.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "숨김";
 
 /* Hides a site from the site picker list
@@ -3669,9 +3658,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "어떻게 고칠까요?";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "좋아요";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "저는 사진 작가 Cameron Karsten의 작업에서 많은 영감을 받았습니다. 다음 작업에서 이러한 기법을 시도해볼 생각합니다.";
@@ -3808,8 +3794,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "삽입 %@:";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "오디오 블록 삽입";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "갤러리 블록 삽입";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "가로 눈금자 삽입";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "이미지 블록 삽입";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3818,6 +3813,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "미디어 삽입";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "비디오 블록 삽입";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "교차 글 삽입";
@@ -4231,6 +4229,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "더 많은 글 로드";
 
+/* No comment provided by engineer. */
+"Loading" = "로드 중";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "활동 로드 중...";
 
@@ -4412,6 +4413,9 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "사이트 관리";
+
+/* No comment provided by engineer. */
+"Manual" = "수동";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "수동 오프셋";
@@ -4839,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "사용 가능한 미리보기 URL이 없습니다";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "괜찮습니다.";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "제목 없음";
 
@@ -4900,6 +4901,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "선택된 날짜 범위 없음";
+
+/* No comment provided by engineer. */
+"No description" = "설명 없음";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "해결된 위협 없음";
@@ -5026,6 +5030,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "찾은 위협 없음";
+
+/* No comment provided by engineer. */
+"No title" = "제목 없음";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5331,9 +5338,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "외부";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "재정의";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "전화";
 
@@ -5496,6 +5500,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to play a video on the editor. */
 "Play video" = "비디오 재생";
+
+/* No comment provided by engineer. */
+"Playback Bar Color" = "재생 표시줄 색상";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "재생 설정";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "발행을 시도하기 전에 약간의 콘텐츠를 추가하시기 바랍니다.";
@@ -5739,9 +5749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "게시 활동";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "정기적으로 글을 작성하면 잠재 고객 유치에 도움이 됩니다!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5757,9 +5764,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "게시물과 페이지";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "글은 시간 역순으로 블로그 페이지에 표시됩니다. 전 세계와 아이디어를 공유할 때가 되었습니다!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "글 페이지";
@@ -5792,7 +5796,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "준비중...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -5836,8 +5839,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "주요 사이트 주소";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "개인 정보";
 
 /* Title of button that displays the App's privacy policy */
@@ -5850,12 +5852,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "개인 정보 설정";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "개인정보 및 평점";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "캘리포니아 사용자를 위한 개인정보 공지";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "개인용";
 
@@ -5891,8 +5895,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "프롬프트";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "공개";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5957,9 +5960,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "푸시 알림";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "iOS 설정에서 푸시 알림이 꺼졌습니다.";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "iOS 설정 앱에서 푸시 알림이 꺼졌습니다. 다시 활성화하려면 \"알림 허용\"을 토글하세요.";
@@ -6034,6 +6034,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "다시 연결됨";
 
+/* Action button to redo last change */
+"Redo" = "다시 실행";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "참조자";
 
@@ -6064,13 +6067,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "대화 다시 계속하기: 새 글을 작성하세요.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "관련 글";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "관련 글에는 글 아래에 있는 사이트의 관련 콘텐츠가 표시됩니다.";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "나에게 알림";
@@ -6121,6 +6119,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "블록 제거하기";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "블록 제거";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
@@ -6499,6 +6500,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "도메인 검색";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "사람들이 웹사이트를 찾고 방문하는 데 도움이 되도록 짧고 인상적인 키워드를 검색하세요.";
+
 /* No comment provided by engineer. */
 "Search input field." = "입력 필드를 검색합니다.";
 
@@ -6690,9 +6694,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "사이트의 의도로 이 주제를 선택하세요.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "의견 보내기";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "링크 전송";
 
@@ -6836,12 +6837,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "공유 오류";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "헤더 표시";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "이미지 보이기";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "좋아요 버튼 표시";
 
@@ -6850,9 +6845,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "리블로그 버튼 표시";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "관련 글 표시";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "주변 보여주기";
@@ -7428,9 +7420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "눌러서 이전 기간 선택";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "글을 올릴 블로그를 선택하려면 탭하세요";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "눌러서 다른 사이트로 전환하거나 새 사이트 추가하기";
 
@@ -7475,6 +7464,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "텍스트만";
+
+/* No comment provided by engineer. */
+"Text color" = "텍스트 색상";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "텍스트 서식 지정 컨트롤은 텍스트 블록을 편집하는 동안 키보드 위에 배치되는 도구 모음 내에 있습니다.";
@@ -7531,9 +7523,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL에 올바른 호스트가 없습니다.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "대대적으로 업데이트된 Android 앱용 WordPress";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "세계 최고의 팬";
@@ -7823,9 +7812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "이 정보는 개인정보 취급방침에 명시된 것처럼 제품을 개선하고, 보다 관련된 마케팅을 제공하며, 워드프레스닷컴 환경을 개인 설정하는 데 도움을 줍니다.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "사람들이 인터넷에서 회원님을 찾을 수 있는 곳입니다.";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "오늘의 블로깅에 대한 알림입니다. ✍️";
 
@@ -7935,9 +7921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "새 워드프레스닷컴 계정을 만들려면 이메일 주소를 입력하세요.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "알림을 사용 설정하려면:\n\n1. **iOS 설정**을 엽니다.\n2. **알림**을 누릅니다.\n3. **워드프레스**를 선택합니다.\n4. **알림 허용**을 켭니다.";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "휴대폰에서 워드프레스 사이트로부터 유용한 알림을 가져오려면 젯팩 플러그인을 설치해야 합니다.";
 
@@ -7976,8 +7959,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "오늘의 프롬프트 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "오늘의 통계";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8049,7 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "휴지통";
@@ -8332,7 +8313,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "밑줄";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -8376,7 +8358,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "숨기기 취소";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "알 수 없음";
 
@@ -8394,6 +8375,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "알 수 없는 검색어";
+
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "레이블이 없는 색상입니다. %s";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "댓글 좋아요 취소";
@@ -8472,9 +8456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "업데이트 중...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "업그레이드 핵심: 웨딩용 VideoPress";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "오디오를 업로드하려면 요금제를 업그레이드하세요.";
@@ -9066,9 +9047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "사용자 정의 앱 아이콘을 신선한 새 모양으로 업데이트했습니다. 새로운 10가지 스타일 중에서 선택하거나 원하면 기존 아이콘을 간단히 유지하실 수 있습니다.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "WordPress를 어떻게 생각하시나요?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "이 파일로 무엇을 하고 싶으신가요? 파일을 업로드하고 파일의 링크를 글에 추가하거나, 파일 콘텐츠를 글에 직접 추가하시겠습니까?";
 
@@ -9224,9 +9202,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "워드프레스닷컴 사용";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "임시글로 글 작업";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "국가별 조회 수가 표시된 세계 지도";
@@ -9432,7 +9407,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\n이 장치에서\n다음으로 저장됨 %1$@\n\n다른 장치에서\n다음으로 저장됨 %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "이 댓글에 답하였습니다.";
 
 /* No comment provided by engineer. */
@@ -9499,12 +9475,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "무료 워드프레스닷컴 주소:";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "최신 글 <a href=\"\">%1$@<\/a>에 <strong>%2$d<\/strong>개의 좋아요가 있습니다.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "최신 글 <a href=\"\">%@<\/a>에 <strong>하나<\/strong>의 좋아요가 있습니다.";
-
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "미디어를 내보낼 수 없음. If the problem persists you can contact us via the Me > 도움 및 지원 화면입니다.";
 
@@ -9559,17 +9529,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "사이트 복원 중";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "사이트가 본인과 본인이 승인한 사용자에게만 공개됩니다.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "사이트에 미디어 업로드 공간이 부족합니다.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "사이트가 모든 사람에게 공개되며 검색 엔진이 검색할 수 있습니다.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "사이트가 모든 사람에게 공개되지만 검색 엔진에 사이트가 검색되지 않도록 지정하세요.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "사이트가 위험에 처했을 수 있습니다";
@@ -9634,6 +9595,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "1시간";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "젯팩을 어떻게 생각하시나요?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "워드프레스를 어떻게 생각하시나요?";
+
 /* Label displayed on audio media items. */
 "audio" = "오디오";
 
@@ -9646,6 +9613,96 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "무시";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "생성";
+
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "아직 캠페인을 만들지 않았습니다. 시작하려면 만들기를 클릭합니다.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "캠페인이 없습니다.";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "캠페인을 로드하는 동안 오류가 발생했습니다.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "이런!";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "캠페인 로드 중...";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze 캠페인";
+
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "수백만 개 사이트에 작업을 표시하세요.";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "더 알아보기";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Blaze로 콘텐츠 홍보";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "지금 글 Blaze";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "하루에 적은 금액으로 단 몇 분 만에 글 또는 페이지를 홍보하세요.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "언제든지 캠페인 성과를 추적하고 취소하세요.";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "콘텐츠가 수백만 개의 워드프레스 및 Tumblr 사이트에 표시됩니다.";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Blaze를 통해 사이트에 더 많은 트래픽 유도";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "이 페이지 Blaze";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "이 글 Blaze";
+
+/* Short status description */
+"blazeCampaign.status.active" = "활성";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "승인됨";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "취소됨";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "완료됨";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "검토 중";
+
+/* Short status description */
+"blazeCampaign.status.processing" = "처리중";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "거부됨";
+
+/* Short status description */
+"blazeCampaign.status.scheduled" = "예약됨";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "예산";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "클릭 수";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "노출 수";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "숨기기";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
 
@@ -9655,8 +9712,44 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "제작자: %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "도움이 되는 것으로 평가";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "댓글";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "댓글 대상:";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "댓글 대상:";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "%1$@에 회신";
+
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "이러한 쿠키를 통해 당사에서는 사용자가 당사 웹사이트와 상호 작용하는 방식에 대한 정보를 수집하여 성능을 최적화할 수 있습니다.";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "저장";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "설정으로 이동";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "당사에서는 회원님의 동의와 당사의 적법한 이해에 따라 회원님의 개인 데이터를 처리하여 당사의 웹사이트와 마케팅 활동을 최적화합니다.";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "개인정보 관리";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "분석";
 
 /* The menu item to select during a guided tour. */
 "connections" = "연결";
@@ -9679,6 +9772,138 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "지금 시도";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "사이트에 관한 정보를 표시하기에 적합한 카드를 추가하세요.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "표시할 카드 없음";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "홈 탭 개인 설정";
+
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "숨기기";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "소셜 미디어 네트워크에서 공유";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "남은 공유 횟수가 없습니다!";
+
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "모든 활동";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "최근 활동";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "모든 페이지";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "페이지";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "클릭 수";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "캠페인 생성";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "노출";
+
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "더 알아보기";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze 캠페인";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "모든 캠페인 보기";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "사이트에 페이지 추가";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "임시글";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "발행됨";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "예약됨";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "다른 페이지 생성";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "모바일 친화적인 맞춤형 레이아웃으로 시작하세요.";
+
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "통계 보기";
+
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "기능 플래그";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "일반";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "체크 표시가 재정의된 파라미터에 표시됩니다.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "선택한 파라미터를 여기에서 새 값을 정의하여 재정의하세요.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "원격 또는 기본 값 없음";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "원격 구성";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "찾고 공유하고 팔로우하기 쉬운 사이트 주소로 자신에게 유리하게 웹에 대한 권리를 주장하세요.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "사용자 정의 도메인 찾기";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "사용자 정의 도메인이 작동하기 시작하려면 30분 정도 걸릴 수 있습니다.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "이제부터 탐색할 수 있도록 도와드리겠습니다.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "영수증을 이메일로 보내드렸습니다. 이제부터 모든 사용자를 위해 준비하도록 도와드리겠습니다.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "사이트가 활성화되었습니다.";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "최선의 대안";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "첫해";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "무료";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "권장";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "세일";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "\/년";
+
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "해제";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "죄송합니다. 추가하려는 도메인을 현재 잿팩에서 구매할 수 없습니다.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
 
@@ -9696,11 +9921,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "캠페인 상세";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "팔로우";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "첫해에 무료 도메인을 이용하고, 사이트에서 광고를 제거하고, 저장 공간을 늘리세요.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "숨기기";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "무료 도메인이 제공되는 연간 요금제";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "완료";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "도메인이 올바르게 작동하기 시작하려면 최대 30분이 걸릴 수 있습니다.";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "새 도메인(%@)을 설정하는 중입니다.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "모든 준비를 마쳤습니다!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "오류 발생";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "재시도";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "블로깅 알림 설정";
@@ -9768,15 +10023,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on image media items. */
 "image" = "이미지";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "\"앱\"에서";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "\"모바일\"에서";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "\"업그레이드\"에서";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "글에 사용할 사진이나 비디오를 촬영";
 
@@ -9836,6 +10082,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%2$@에서 %1$@ 이동 중";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "며칠 후 젯팩 앱이 이동됩니다.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "곧 %@ 이동 예정";
@@ -9972,6 +10221,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "완료";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "사용자 계정 연결";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "스마트폰에서 워드프레스 사이트의 유용한 알림을 받으려면 사용자 계정을 연결해야 합니다.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "사이트에서 통계를 사용하려면 젯팩 플러그인을 해당 사용자 계정에 연결해야 합니다.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "통계, 리더, 알림 및 기타 기능이 곧 젯팩 모바일 앱으로 이동합니다.";
 
@@ -10075,7 +10333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "아직 워드프레스 앱이 설치되어 있는 것 같습니다. 데이터가 충돌하지 않도록 워드프레스 앱을 삭제하는 것이 좋습니다.";
+"migration.deleteWordpress.description" = "아직 워드프레스 앱이 설치되어 있는 것 같습니다.";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "알겠습니다.";
@@ -10084,16 +10342,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "도움말이 필요하신가요?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "더는 워드프레스 앱 필요 없음";
+"migration.deleteWordpress.title" = "더는 기기에 워드프레스 앱이 필요하지 않습니다.";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "마침";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "데이터가 충돌하지 않도록 워드프레스 앱을 삭제하세요.";
+"migration.done.footer" = "데이터가 충돌하지 않도록 기기에서 워드프레스 앱을 제거하는 것이 좋습니다.";
 
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "워드프레스 앱 삭제";
+"migration.done.footer.highlighted" = "워드프레스 앱 제거";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "모든 데이터와 설정을 이전하겠습니다. 모든 것이 그대로 다 남아 있습니다.";
@@ -10146,11 +10404,77 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "젯팩에 오신 것을 환영합니다!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "젯팩 앱에서는 워드프레스 앱의 모든 기능을 보유하며, 이제 통계, 리더, 알림 등에 독점적으로 접근할 수 있습니다.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "전환은 무료이며 1분밖에 걸리지 않습니다.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "젯팩 앱으로 전환";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "jetpack.com에서 더 알아보기";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "젯팩 앱에서 알림과 함께 워드프레스를 사용하세요.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "젯팩 앱에서 리더와 함께 워드프레스를 사용하세요.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "젯팩 앱에서 통계와 함께 워드프레스를 사용하세요.";
+
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "콘텐츠";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "유지보수";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "소셜";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "트래픽";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "임시글로 글 작업";
+
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "모든 임시글 보기";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "예약된 모든 게시물 보기";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "오늘의 통계";
+
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "뉴스";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "도메인 이전";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "아시다시피 Google 도메인이 Squarespace에 매각되었습니다. 지금 도메인을 워드프레스닷컴으로 이전하면 모든 이전 수수료와 도메인 1년 추가 등록을 결제해 드립니다.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Google 도메인 되찾기";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "무시";
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "개선 가능";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "좋아요";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "괜찮습니다";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "피드백 보내기";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -10158,8 +10482,53 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "기타";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Blaze로 홍보";
+
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "홈페이지에서 테마 템플릿이 사용되고 있으며 웹 편집기에서 홈페이지가 열립니다.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "홈페이지";
+
 /* No comment provided by engineer. */
 "password" = "비밀번호";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "사이트에서 발생하는 상황에 따라 다른 콘텐츠가 카드에 표시될 수 있습니다. 더 많은 카드와 제어 기능을 연구하고 있습니다.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "카드 추가 또는 숨기기";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "최근 활동";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "임시글";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "앱 알아보기";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "다음 단계";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "페이지";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "블로깅 프롬프트";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "예약된 글";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "오늘의 통계";
+
+/* Page title */
+"personalizeHome.title" = "홈 탭 개인 설정";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "전화번호";
@@ -10176,6 +10545,79 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "특성 이미지 옵션";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter 자동 공유를 더는 이용할 수 없음";
+
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Blaze로 홍보";
+
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "더 많은 정보를 공유하려면 지금 구독하세요";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " 향후 30일 이내에";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "남은 소셜 공유 %1$d";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "%1$d개 계정과 공유 중";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "소셜 계정과 공유 안 함";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "%1$d\/%2$d개 계정과 공유 중";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "%1$@과(와) 공유 중";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "남은 소셜 공유 %1$d";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "경고";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "메시지 사용자 정의";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "구독 후 더 공유";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "남아 있는 다음 30일의 소셜 공유 %1$d회";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "경고";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "메시지";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "소셜";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "모든 응답 보기";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "사이트 설정으로 이동하여 다시 켜기";
 
@@ -10190,6 +10632,22 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "로그인되었습니다!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "검색";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "리더 설정";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "이 사이트";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "이 사용자 차단";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "이 사용자 신고";
@@ -10227,6 +10685,48 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "신규";
 
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "관련 게시물은 글 아래에 사이트의 관련 콘텐츠를 표시합니다.";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "\"모바일\"에서";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "대규모 아이폰\/아이패드 업데이트 제공";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "\"앱\"에서";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "안드로이드용 워드프레스 앱이 대대적으로 개편되었습니다.";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "\"업그레이드\"에서";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "업그레이드 포커스: 결혼식용 비디오 프레스";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "미리보기";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "관련 게시물";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "설정 업데이트 실패";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "헤더 보이기";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "관련 게시물 표시";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "이미지 보이기";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "관련 게시물";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "해제";
 
@@ -10248,11 +10748,83 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "공유 오류";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "웹사이트가 생성되었지만, 체크아웃용 사용자 정의 도메인을 준비하는 동안 문제가 발생했습니다. 다시 시도하거나 지원팀에 도움을 문의하세요.";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "위의 예와 같이 사람들이 웹 브라우저에서 도메인을 통해 사이트를 찾고 방문할 수 있습니다.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "개인정보";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "사이트가 모든 사람에게 공개되지만 검색 엔진에서 사이트가 검색되지 않도록 지정하세요.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "숨김";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "사이트가 본인과 본인이 승인한 사용자에게만 공개됩니다.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "비공개";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "사이트가 모든 사람에게 공개되며 검색 엔진이 검색할 수 있습니다.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "공개";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "알 수 없음";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "알 수 없음";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "프롬프트 표시";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "알림";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "소셜 미디어에서 글을 친구와 자동으로 공유하여 트래픽을 늘려보세요.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "계정 연결";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "소셜 미디어 아이콘";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "지금 안 함";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "글이 %1$d개의 소셜 미디어 계정에 공유되지 않습니다.";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "글이 소셜 미디어 계정에 공유되지 않습니다.";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "소셜 미디어 아이콘";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "구독 후 더 공유";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter 자동 공유를 더는 이용할 수 없음";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "더 알아보기";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter의 약관 및 가격 변경으로 인해 Twitter 자동 공유를 더는 이용할 수 없습니다.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "최근 7일";
@@ -10347,6 +10919,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "활동이 충분하지 않습니다. 나중에 사이트의 방문자가 증가하면 다시 확인하세요!";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "최신 글%1$@에 %2$@개의 좋아요가 있습니다.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
+"stats.insights.totalLikes.guideText.singular" = "최신 글 %1$@에 %2$@개의 좋아요가 있습니다.";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "무시";
 
@@ -10359,6 +10937,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "완료";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "외부 브라우저에서 젯팩 앱 FAQ를 눌러서 방문";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "FAQ 방문";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "로그아웃";
 
@@ -10367,6 +10951,69 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "WordPress.org 방문";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "생각 중...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "닫기";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "지원 문의";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "무엇을 도와드릴까요? 질문에 답변해 드릴 수 없는 경우에는 담당 팀에 지원 티켓을 접수하도록 도와드리겠습니다!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "메시지 보내기...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "로그인 정보가 기억나지 않습니다.";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "로그인할 수 없는 이유가 무엇인가요?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "내 사이트 주소가 무엇인가요?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "앱에서 사용자 정의 도메인을 사용하려면 어떻게 해야 하나요?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "사진\/비디오를 업로드할 수 없습니다.";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "내 사이트가 중단되었습니다.";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "부정확한 것으로 신고";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "소스";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "어떤 질문을 해야 할지 잘 모르시겠어요?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "지원 티켓 제출 중 오류 발생";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "지원 티켓 생성 중...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "티켓 생성됨";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "지원 문의";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "답변";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "질문";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "젯팩 모바일 봇 대본";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "커뮤니티 포럼에서 질문하고 자원봉사자 그룹으로부터 도움말을 받으세요.";
@@ -10394,6 +11041,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "워드프레스 도움말 센터";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "궁금할 수도 있는 일반적인 질문에 대한 답변이 FAQ에 있습니다.";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "젯팩 앱으로 전환해 주셔서 감사합니다!";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "로그";
@@ -10551,8 +11204,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "워드프레스, 사이트, 사이트, 블로그, 블로그";
 
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "젯팩 앱으로 전환";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "젯팩 없이 계속";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "워드프레스 앱에서 지원되지 않는 개별 젯팩 플러그인을 %1$@에서 사용하고 있습니다.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "워드프레스 앱에서 지원되지 않는 %2$@ 플러그인을 %1$@에서 사용하고 있습니다.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "이 사이트의 모든 앱 기능을 사용할 수 있도록 전체 젯팩 플러그인 연결 방법을 안내해 드리는 젯팩 앱으로 전환하세요.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "죄송합니다. 이 사이트는 워드프레스 앱에서 지원되지 않습니다.";
+
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "워드프레스 앱 삭제 요망";
+"wp.migration.successCard.description" = "젯팩 앱에 오신 것을 환영합니다. 워드프레스 앱을 제거하실 수 있습니다.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "더 알아보기";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "내 사이트";

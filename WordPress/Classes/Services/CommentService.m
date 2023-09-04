@@ -685,6 +685,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     BOOL isPrivateSite = post.isPrivate;
     [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentID) {
+        if (!commentID) {
+            NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to create a comment for a post"}];
+            if (failure) {
+                failure(error);
+            }
+            [WordPressAppDelegate logError:error];
+            return;
+        }
         void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 Comment *comment = [context existingObjectWithID:commentID error:nil];
@@ -730,6 +738,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     BOOL isPrivateSite = post.isPrivate;
     [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentObjectID) {
+        if (!commentObjectID) {
+            NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to create a comment for a post"}];
+            if (failure) {
+                failure(error);
+            }
+            [WordPressAppDelegate logError:error];
+            return;
+        }
         void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
             // Update and save the comment
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
@@ -778,7 +794,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
     [remote replyToCommentWithID:commentID
                          content:content
-                         success:^(RemoteComment *comment){
+                         success:^(RemoteComment * __unused comment){
                              if (success){
                                  success();
                              }
@@ -946,7 +962,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     id <CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     [remote moderateComment:remoteComment
-                    success:^(RemoteComment *comment) {
+                    success:^(RemoteComment * __unused comment) {
                         if (success) {
                             success();
                         }
@@ -1048,6 +1064,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         ReaderPost *post = [context existingObjectWithID:postObjectID error:nil];
         Comment *comment = [self createHierarchicalCommentWithContent:content withParent:parentID postID:post.postID siteID:siteID inContext:context];
+        objectID = comment.objectID;
         // This fixes an issue where the comment may not appear for some posts after a successful posting
         // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
         comment.post = post;

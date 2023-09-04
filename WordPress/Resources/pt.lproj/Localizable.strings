@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -184,6 +184,9 @@
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Adicionar etiquetas";
 
+/* No comment provided by engineer. */
+"Add title" = "Adicionar título";
+
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Endereço";
@@ -203,7 +206,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Tudo";
 
 /* An option in a list. Automatically approve all comments */
@@ -351,9 +355,6 @@
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Seja o primeiro a deixar um comentário.";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Grande actualização disponível para iPhone\/iPad";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citação";
@@ -498,9 +499,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Erro de certificado";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Mudar de site";
-
 /* Change site icon button */
 "Change Site Icon" = "Alterar ícone do site";
 
@@ -543,6 +541,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -692,9 +691,6 @@
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Copiar link";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Poderia ser melhor";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Não foi possível guardar alterações";
@@ -1226,8 +1222,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ajuda e suporte";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Invisível";
 
 /* Hide All */
@@ -1247,9 +1242,6 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Reter para moderação";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Eu gosto";
 
 /* Title of a button style */
 "Icon & Text" = "Ícone e texto";
@@ -1733,9 +1725,6 @@
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Nenhum menu seleccionado";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Não, obrigado";
-
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Sem comentários";
 
@@ -2129,7 +2118,6 @@
 "Preparing..." = "A preparar…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -2146,8 +2134,7 @@
 "Primary Site" = "Site principal";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Privacidade";
 
 /* Title of button that displays the App's privacy policy */
@@ -2162,15 +2149,13 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privada";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projectos";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Público";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -2211,9 +2196,6 @@
 /* Mobile Push Notifications */
 "Push Notifications" = "Notificações por push";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Notificações push foram desligadas nas definições do iOS";
-
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Notificações push foram desligadas nas definições do iOS. Toque em \"Permitir notificações\" para voltar a ligar.";
 
@@ -2253,13 +2235,8 @@
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Domínio registado";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Artigos relacionados";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Artigos Relacionados, permite mostrar outros artigos do seu site com conteúdo relacionado com o artigo actual";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -2466,9 +2443,6 @@
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "Selecione quais os sítios que serão exibidos no selecionador de sítio.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Enviar feedback";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Enviar ligação";
 
@@ -2518,12 +2492,6 @@
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Botões de partilha";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Mostrar cabeçalho";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Mostrar imagens";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Mostrar botão Gosto";
 
@@ -2532,9 +2500,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Mostrar botão Reblog";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Mostrar artigos relacionados";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Mostrar temas:";
@@ -2738,9 +2703,6 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Toque para cancelar o carregamento.";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "Toque para seleccionar em que site publicar";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomia";
 
@@ -2938,8 +2900,7 @@
    Notifications Today Section Header */
 "Today" = "Hoje";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Estatísticas de hoje";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -2966,7 +2927,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Lixo";
@@ -3063,7 +3023,8 @@
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Sublinhado";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -3085,7 +3046,6 @@
 "Unhide" = "Mostrar";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Desconhecido";
 
@@ -3309,9 +3269,6 @@
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo ao Leitor";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "O que pensa do WordPress?";
-
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Qual é o endereço do meu site?";
 
@@ -3434,15 +3391,6 @@
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "O seu site está a ser reposto";
-
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "O seu site é visível apenas aos utilizadores que aprovar.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "O seu site é visível a todos, e pode ser indexado pelos motores de busca.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "O seu site é visível a todos, mas pede aos motores de busca para não o indexarem.";
 
 /* Age between dates equaling one day. */
 "a day" = "um dia";

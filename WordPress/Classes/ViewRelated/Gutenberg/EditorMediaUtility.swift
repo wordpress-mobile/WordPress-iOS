@@ -3,33 +3,34 @@ import Aztec
 import Gridicons
 
 final class AuthenticatedImageDownload: AsyncOperation {
+    enum DownloadError: Error {
+        case blogNotFound
+    }
+
     let url: URL
-    let blog: Blog
+    let mediaHost: MediaHost
+    private let callbackQueue: DispatchQueue
     private let onSuccess: (UIImage) -> ()
     private let onFailure: (Error) -> ()
 
-    init(url: URL, blog: Blog, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
+    init(url: URL, mediaHost: MediaHost, callbackQueue: DispatchQueue, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
         self.url = url
-        self.blog = blog
+        self.mediaHost = mediaHost
+        self.callbackQueue = callbackQueue
         self.onSuccess = onSuccess
         self.onFailure = onFailure
     }
 
     override func main() {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
-        let host = MediaHost(with: blog) { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            WordPressAppDelegate.crashLogging?.logError(error)
-        }
-
         mediaRequestAuthenticator.authenticatedRequest(
             for: url,
-            from: host,
+            from: mediaHost,
             onComplete: { request in
                 ImageDownloader.shared.downloadImage(for: request) { (image, error) in
                     self.state = .isFinished
 
-                    DispatchQueue.main.async {
+                    self.callbackQueue.async {
                         guard let image = image else {
                             DDLogError("Unable to download image for attachment with url = \(String(describing: request.url)). Details: \(String(describing: error?.localizedDescription))")
                             if let error = error {
@@ -44,15 +45,19 @@ final class AuthenticatedImageDownload: AsyncOperation {
                         self.onSuccess(image)
                     }
                 }
-        },
+            },
             onFailure: { error in
                 self.state = .isFinished
-                self.onFailure(error)
-        })
+                self.callbackQueue.async {
+                    self.onFailure(error)
+                }
+            }
+        )
     }
 }
 
 class EditorMediaUtility {
+    private static let InternalInconsistencyError = NSError(domain: NSExceptionName.internalInconsistencyException.rawValue, code: 0)
 
     private struct Constants {
         static let placeholderDocumentLink = URL(string: "documentUploading://")!
@@ -113,15 +118,71 @@ class EditorMediaUtility {
     func downloadImage(
         from url: URL,
         size requestSize: CGSize,
-        scale: CGFloat, post: AbstractPost,
+        scale: CGFloat,
+        post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> ImageDownloaderTask {
+        onFailure failure: @escaping (Error) -> Void
+    ) -> ImageDownloaderTask {
+        let postObjectID = post.objectID
+        let result = ContextManager.shared.performQuery { context in
+            Result {
+                try EditorMediaUtility.prepareForDownloading(url: url, size: requestSize, scale: scale, postObjectID: postObjectID, in: context)
+            }
+        }
+
+        let callbackQueue = DispatchQueue.main
+        switch result {
+        case let .failure(error):
+            callbackQueue.async {
+                failure(error)
+            }
+            return EmptyImageDownloaderTask()
+        case let .success((requestURL, mediaHost)):
+            let imageDownload = AuthenticatedImageDownload(
+                url: requestURL,
+                mediaHost: mediaHost,
+                callbackQueue: callbackQueue,
+                onSuccess: success,
+                onFailure: failure
+            )
+            imageDownload.start()
+            return imageDownload
+        }
+    }
+
+    private static func prepareForDownloading(
+        url: URL,
+        size requestSize: CGSize,
+        scale: CGFloat,
+        postObjectID: NSManagedObjectID,
+        in context: NSManagedObjectContext
+    ) throws -> (URL, MediaHost) {
+        // This function is added to debug the issue linked below.
+        let safeExistingObject: (NSManagedObjectID) throws -> NSManagedObject = { objectID in
+            var object: Result<NSManagedObject, Error> = .failure(AuthenticatedImageDownload.DownloadError.blogNotFound)
+            do {
+                // Catch an Objective-C `NSInvalidArgumentException` exception from `existingObject(with:)`.
+                // See https://github.com/wordpress-mobile/WordPress-iOS/issues/20630
+                try WPException.objcTry {
+                    object = Result {
+                        try context.existingObject(with: objectID)
+                    }
+                }
+            } catch {
+                // Send Objective-C exceptions to Sentry for further diagnosis.
+                WordPressAppDelegate.crashLogging?.logError(error)
+                throw error
+            }
+
+            return try object.get()
+        }
+
+        let post = try safeExistingObject(postObjectID) as! AbstractPost
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
         var size = CGSize(width: imageMaxDimension, height: 0)
         let requestURL: URL
-
         if url.isFileURL {
             requestURL = url
         } else if post.isPrivateAtWPCom() && url.isHostedAtWPCom {
@@ -137,42 +198,60 @@ class EditorMediaUtility {
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
         }
 
-        let imageDownload = AuthenticatedImageDownload(
-            url: requestURL,
-            blog: post.blog,
-            onSuccess: success,
-            onFailure: failure)
-
-        imageDownload.start()
-        return imageDownload
+        return (requestURL, MediaHost(with: post.blog))
     }
 
-    static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?), Error> ) -> Void) {
-        guard let videoPressID = media.videopressGUID else {
-            //the site can be a self-hosted site if there's no videopressGUID
-            if let videoURLString = media.remoteURL,
-                let videoURL = URL(string: videoURLString) {
-                completion(Result.success((videoURL: videoURL, posterURL: nil)))
-            } else {
+    static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, withToken: Bool = false, completion: @escaping ( Result<(URL), Error> ) -> Void) {
+        // Return the attachment url it it's not a VideoPress video
+        if media.videopressGUID == nil {
+            guard let videoURLString = media.remoteURL, let videoURL = URL(string: videoURLString) else {
                 DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
-                completion(Result.failure(NSError()))
-            }
-            return
-        }
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: post.blog, success: { (videoURLString, posterURLString) in
-            guard let videoURL = URL(string: videoURLString) else {
-                completion(Result.failure(NSError()))
+                completion(Result.failure(InternalInconsistencyError))
                 return
             }
-            var posterURL: URL?
-            if let validPosterURLString = posterURLString, let url = URL(string: validPosterURLString) {
-                posterURL = url
+            completion(Result.success(videoURL))
+        }
+        else {
+            fetchVideoPressMetadata(for: media, in: post) { result in
+                switch result {
+                case .success((let metadata)):
+                    guard let originalURL = metadata.originalURL else {
+                        DDLogError("Failed getting original URL for media with upload ID: \(media.uploadID)")
+                        completion(Result.failure(InternalInconsistencyError))
+                        return
+                    }
+                    if withToken {
+                        completion(Result.success(metadata.getURLWithToken(url: originalURL) ?? originalURL))
+                    }
+                    else {
+                        completion(Result.success(originalURL))
+                    }
+                case .failure(let error):
+                    completion(Result.failure(error))
+                }
             }
-            completion(Result.success((videoURL: videoURL, posterURL: posterURL)))
+        }
+    }
+
+    static func fetchVideoPressMetadata(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(RemoteVideoPressVideo), Error> ) -> Void) {
+        guard let videoPressID = media.videopressGUID else {
+            DDLogError("Unable to find metadata for video with upload ID = \(media.uploadID).")
+            completion(Result.failure(InternalInconsistencyError))
+            return
+        }
+
+        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        mediaService.getMetadataFromVideoPressID(videoPressID, in: post.blog, success: { (metadata) in
+            completion(Result.success(metadata))
         }, failure: { (error) in
-            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
             completion(Result.failure(error))
         })
+    }
+}
+
+private class EmptyImageDownloaderTask: ImageDownloaderTask {
+    func cancel() {
+        // Do nothing
     }
 }

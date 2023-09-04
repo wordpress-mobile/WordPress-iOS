@@ -45,6 +45,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
+
+    // swiftlint:disable:next weak_delegate
     private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
 
     /// The table view that displays Related Posts
@@ -202,16 +204,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         ReaderTracker.shared.start(.readerPost)
-
-        // Reapply the appearance, this reset the navbar after presenting a view
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
+        super.viewDidDisappear(animated)
         ReaderTracker.shared.stop(.readerPost)
     }
 
@@ -558,10 +555,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func setupFeaturedImage() {
         configureFeaturedImage()
 
-        featuredImage.configure(scrollView: scrollView,
-                                navigationBar: navigationController?.navigationBar)
-
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+        featuredImage.configure(
+            scrollView: scrollView,
+            navigationBar: navigationController?.navigationBar,
+            navigationItem: navigationItem
+        )
 
         guard !featuredImage.isLoaded else {
             return
@@ -707,15 +705,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Ask the coordinator to present the share sheet
     ///
-    @objc func didTapShareButton(_ sender: UIButton) {
-        coordinator?.share(fromView: sender)
+    @objc func didTapShareButton(_ sender: UIBarButtonItem) {
+        coordinator?.share(fromAnchor: .barButtonItem(sender))
     }
 
-    @objc func didTapMenuButton(_ sender: UIButton) {
+    @objc func didTapMenuButton(_ sender: UIBarButtonItem) {
         coordinator?.didTapMenuButton(sender)
     }
 
-    @objc func didTapBrowserButton(_ sender: UIButton) {
+    @objc func didTapBrowserButton(_ sender: UIBarButtonItem) {
         coordinator?.openInBrowser()
     }
 
@@ -1052,11 +1050,7 @@ private extension ReaderDetailViewController {
 
     func barButtonItem(with image: UIImage, action: Selector) -> UIBarButtonItem {
         let image = image.withRenderingMode(.alwaysTemplate)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44.0, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: action, for: .touchUpInside)
-
-        return UIBarButtonItem(customView: button)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
     }
 
     /// Checks if the view is visible in the viewport.

@@ -7,6 +7,7 @@
 
 #import "TextBundleWrapper.h"
 #import <CoreServices/CoreServices.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 // Filenames constants
 NSString * const kTextBundleInfoFileName = @"info.json";
@@ -29,7 +30,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 + (BOOL)isTextBundleType:(NSString *)typeName
 {
-    return UTTypeConformsTo((__bridge CFStringRef)typeName, (__bridge CFStringRef)kUTTypeTextBundle);
+    return [[UTType typeWithIdentifier:typeName] conformsToType:[UTType typeWithIdentifier:kUTTypeTextBundle]];
 }
 
 - (instancetype)init
@@ -181,7 +182,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 {
     // Finding the text.* file inside the .textbundle
     __block NSString *filename = nil;
-    [[fileWrapper fileWrappers] enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSFileWrapper * obj, BOOL *stop)
+    [[fileWrapper fileWrappers] enumerateKeysAndObjectsUsingBlock:^(NSString * __unused key, NSFileWrapper * obj, BOOL * __unused stop)
     {
         if([[obj.filename lowercaseString] hasPrefix:@"text"]) {
             filename = obj.filename;
@@ -193,7 +194,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 - (NSString *)textFilenameForType:(NSString *)type
 {
-    NSString *ext = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassFilenameExtension);
+    NSString *ext = [UTType typeWithIdentifier:type].preferredFilenameExtension;
     return [@"text" stringByAppendingPathExtension:ext];
 }
 
@@ -203,7 +204,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 - (NSFileWrapper *)fileWrapperForAssetFilename:(NSString *)filename
 {
     __block NSFileWrapper *fileWrapper = nil;
-    [[self.assetsFileWrapper fileWrappers] enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSFileWrapper * _Nonnull obj, BOOL * _Nonnull stop) {
+    [[self.assetsFileWrapper fileWrappers] enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull __unused key, NSFileWrapper * _Nonnull __unused obj, BOOL * _Nonnull __unused stop) {
         if ([obj.filename isEqualToString:filename] || [obj.preferredFilename isEqualToString:filename]) {
             fileWrapper = obj;
         }

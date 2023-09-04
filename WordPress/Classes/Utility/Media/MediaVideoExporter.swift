@@ -1,5 +1,7 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
+import AVFoundation
 
 /// Media export handling of Videos from PHAssets or AVAssets.
 ///
@@ -26,6 +28,10 @@ class MediaVideoExporter: MediaExporter {
         ///
         var preferredExportVideoType: String?
 
+        /// The maximum duration. The exporter throws an error if the video is
+        /// longer than the limit.
+        var durationLimit: TimeInterval?
+
         // MARK: - MediaExporting
 
         var stripsGeoLocationIfNeeded = false
@@ -38,6 +44,9 @@ class MediaVideoExporter: MediaExporter {
         case failedExportingVideoDuringExportSession
         case failedGeneratingVideoPreviewImage
         case videoExportSessionCancelled
+        case videoLimitExceeded
+
+        public var errorDescription: String? { description }
 
         var description: String {
             switch self {
@@ -45,6 +54,8 @@ class MediaVideoExporter: MediaExporter {
                 return NSLocalizedString("Video Preview Unavailable", comment: "Message shown if a video preview image is unavailable while the video is being uploaded.")
             case .videoExportSessionCancelled:
                 return NSLocalizedString("Video export canceled.", comment: "Message shown if a video export is canceled by the user.")
+            case .videoLimitExceeded:
+                return NSLocalizedString("mediaExporter.videoLimitExceededError", value: "Uploading videos longer than 5 minutes requires a paid plan.", comment: "Message of an alert informing users that the video they are trying to select is not allowed.")
             default:
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
@@ -100,6 +111,11 @@ class MediaVideoExporter: MediaExporter {
     /// Configures an AVAssetExportSession and exports the video asynchronously.
     ///
     @discardableResult func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+        if let limit = options.durationLimit, CMTimeGetSeconds(session.asset.duration) > limit {
+            onError(VideoExportError.videoLimitExceeded)
+            return Progress()
+        }
+
         var outputType = options.preferredExportVideoType ?? supportedExportFileTypes.first!
         // Check if the exportFileType is one of the supported types for the exportSession.
         if session.supportedFileTypes.contains(AVFileType(rawValue: outputType)) == false {
@@ -119,8 +135,10 @@ class MediaVideoExporter: MediaExporter {
         // Generate a URL for exported video.
         let mediaURL: URL
         do {
-            mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
-                                                                fileExtension: URL.fileExtensionForUTType(outputType))
+            mediaURL = try mediaFileManager.makeLocalMediaURL(
+                withFilename: filename ?? "video",
+                fileExtension: UTType(outputType)?.preferredFilenameExtension
+            )
         } catch {
             onError(exporterErrorWith(error: error))
             return Progress.discreteCompletedProgress()
@@ -215,13 +233,13 @@ class MediaVideoExporter: MediaExporter {
     ///   exported videos to WordPress, and what WordPress itself supports.
     ///
     fileprivate var supportedExportFileTypes: [String] {
-        let types = [
-            kUTTypeMPEG4,
-            kUTTypeQuickTimeMovie,
-            kUTTypeMPEG,
-            kUTTypeAVIMovie
+        let types: [UTType] = [
+            .mpeg4Movie,
+            .quickTimeMovie,
+            .mpeg,
+            .avi
         ]
-        return types as [String]
+        return types.map(\.identifier)
     }
 }
 

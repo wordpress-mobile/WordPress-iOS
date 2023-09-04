@@ -202,8 +202,12 @@ extension WPStyleGuide {
 
     // MARK: - Apply Stream Header Styles
 
-    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
-        label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
+    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel, usesNewStyle: Bool = false) {
+        if usesNewStyle {
+            label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        } else {
+            label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
+        }
         label.textColor = .text
     }
 
@@ -262,34 +266,6 @@ extension WPStyleGuide {
         button.setTitleColor(selectedColor, for: .selected)
         button.setTitleColor(bothColor, for: [.selected, .highlighted])
         button.setTitleColor(disabledColor, for: .disabled)
-    }
-
-    @objc public class func applyReaderFollowConversationButtonStyle(_ button: UIButton) {
-        // General
-        button.naturalContentHorizontalAlignment = .leading
-        button.backgroundColor = .clear
-        button.titleLabel?.font = fontForTextStyle(.footnote)
-
-        // Color(s)
-        let normalColor = UIColor.primary
-        let highlightedColor =  UIColor.neutral
-        let selectedColor = UIColor.success
-
-        button.setTitleColor(normalColor, for: .normal)
-        button.setTitleColor(selectedColor, for: .selected)
-        button.setTitleColor(highlightedColor, for: .highlighted)
-
-        // Image(s)
-        let side = WPStyleGuide.fontSizeForTextStyle(.headline)
-        let size = CGSize(width: side, height: side)
-        let followIcon = UIImage.gridicon(.readerFollowConversation, size: size)
-        let followingIcon = UIImage.gridicon(.readerFollowingConversation, size: size)
-
-        button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
-        button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
-        button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
-        button.imageEdgeInsets = FollowConversationButton.Style.imageEdgeInsets
-        button.contentEdgeInsets = FollowConversationButton.Style.contentEdgeInsets
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {

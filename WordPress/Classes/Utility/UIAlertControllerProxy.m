@@ -1,5 +1,4 @@
 #import "UIAlertControllerProxy.h"
-#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 
@@ -15,7 +14,7 @@
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 
-    void (^handler)(UIAlertAction *) = ^(UIAlertAction *action) {
+    void (^handler)(UIAlertAction *) = ^(UIAlertAction * __unused action) {
         if (!tapBlock) {
             return;
         }

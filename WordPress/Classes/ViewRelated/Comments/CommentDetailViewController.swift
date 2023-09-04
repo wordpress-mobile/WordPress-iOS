@@ -95,6 +95,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
         cell.textLabel?.attributedText = attributedString
         cell.textLabel?.numberOfLines = 0
+        cell.accessibilityIdentifier = .replyIndicatorCellIdentifier
 
         // setup constraints for textLabel to match the spacing specified in the design.
         if let textLabel = cell.textLabel {
@@ -105,6 +106,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                 textLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: Constants.replyIndicatorVerticalSpacing),
                 textLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -Constants.replyIndicatorVerticalSpacing)
             ])
+            textLabel.accessibilityIdentifier = .replyIndicatorTextIdentifier
         }
 
         return cell
@@ -121,6 +123,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                        normalColor: Constants.deleteButtonNormalColor,
                        highlightedColor: Constants.deleteButtonHighlightColor,
                        buttonInsets: Constants.deleteButtonInsets)
+        cell.accessibilityIdentifier = .deleteButtonAccessibilityId
         cell.delegate = self
         return cell
     }()
@@ -134,6 +137,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                        borderColor: .clear,
                        buttonInsets: Constants.deleteButtonInsets,
                        backgroundColor: Constants.trashButtonBackgroundColor)
+        cell.accessibilityIdentifier = .trashButtonAccessibilityId
         cell.delegate = self
         return cell
     }()
@@ -194,18 +198,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         appearance.configureWithOpaqueBackground()
         return appearance
     }()
-
-    /// Convenience property that keeps track of whether the content has scrolled.
-    private var isContentScrolled: Bool = false {
-        didSet {
-            if isContentScrolled == oldValue {
-                return
-            }
-
-            // show blurred navigation bar when content is scrolled, or opaque style when the scroll position is at the top.
-            updateNavigationBarAppearance(isBlurred: isContentScrolled)
-        }
-    }
 
     // MARK: Nav Bar Buttons
 
@@ -380,24 +372,9 @@ private extension CommentDetailViewController {
     }
 
     func configureNavigationBar() {
-        if #available(iOS 15, *) {
-            // In iOS 15, to apply visual blur only when content is scrolled, keep the scrollEdgeAppearance unchanged as it applies to ALL navigation bars.
-            navigationItem.standardAppearance = blurredBarAppearance
-        } else {
-            // For iOS 14 and below, scrollEdgeAppearance only affects large title navigation bars. Therefore we need to manually detect if the content
-            // has been scrolled and change the appearance accordingly.
-            updateNavigationBarAppearance()
-        }
-
+        navigationItem.standardAppearance = blurredBarAppearance
         navigationController?.navigationBar.isTranslucent = true
         configureNavBarButton()
-    }
-
-    /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
-    /// but reverts to opaque style when the scroll position is at the top. This method may be called multiple times since it's triggered by the `didSet`
-    /// property observer on the `isContentScrolled` property.
-    func updateNavigationBarAppearance(isBlurred: Bool = false) {
-        navigationItem.standardAppearance = isBlurred ? blurredBarAppearance : opaqueBarAppearance
     }
 
     func configureNavBarButton() {
@@ -765,9 +742,12 @@ private extension CommentDetailViewController {
 
 private extension String {
     // MARK: Constants
-    static let replyIndicatorCellIdentifier = "replyIndicatorCell"
-    static let textCellIdentifier = "textCell"
+    static let replyIndicatorCellIdentifier = "reply-indicator-cell"
+    static let replyIndicatorTextIdentifier = "reply-indicator-text"
     static let moderationCellIdentifier = "moderationCell"
+    static let trashButtonAccessibilityId = "trash-comment-button"
+    static let deleteButtonAccessibilityId = "delete-comment-button"
+    static let replyViewAccessibilityId = "reply-comment-view"
 
     // MARK: Localization
     static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
@@ -1044,17 +1024,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
 
     }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
-        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
-        if #available(iOS 15, *) {
-            return
-        }
-
-        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
-    }
-
 }
 
 // MARK: - Reply Handling
@@ -1065,7 +1034,8 @@ private extension CommentDetailViewController {
         let replyView = ReplyTextView(width: view.frame.width)
 
         replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyView.accessibilityIdentifier = .replyViewAccessibilityId
+        replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyView.delegate = self
         replyView.onReply = { [weak self] content in
             self?.createReply(content: content)

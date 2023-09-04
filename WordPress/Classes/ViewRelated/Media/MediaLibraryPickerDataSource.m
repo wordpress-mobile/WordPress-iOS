@@ -4,6 +4,7 @@
 #import "Blog.h"
 #import "CoreDataStack.h"
 #import "WordPress-Swift.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface  MediaLibraryPickerDataSource() <NSFetchedResultsControllerDelegate>
 
@@ -67,12 +68,6 @@
         _post = post;
     }
     return self;
-}
-
-
-- (instancetype)init
-{
-    return [self initWithBlog:nil];
 }
 
 #pragma mark - WPMediaCollectionDataSource
@@ -243,7 +238,7 @@
             NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];
             NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
             NSError *error;
-            if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
+            if ([image writeToURL:fileURL type:UTTypeJPEG.identifier compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
                 return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
             }
             return nil;
@@ -252,7 +247,7 @@
         NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];        
         NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
         NSError *error;
-        if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
+        if ([image writeToURL:fileURL type:UTTypeJPEG.identifier compressionQuality:MediaImportService.preferredImageCompressionQuality metadata:metadata error:&error]){
             [self addMediaFromURL:fileURL completionBlock:completionBlock];
         } else {
             if (completionBlock) {
@@ -301,14 +296,10 @@
 -(void)addMediaFromAssetIdentifier:(NSString *)assetIdentifier
             completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    NSManagedObjectID *objectID = [self.post objectID];
-    if (objectID == nil) {
-        objectID = [self.blog objectID];
-    }
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWith:asset blog:self.blog post: self.post progress:nil thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+    MediaImportService *service = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    [service createMediaWith:asset blog:self.blog post: self.post receiveUpdate:nil thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
@@ -322,13 +313,13 @@
 -(void)addMediaFromURL:(NSURL *)url
            completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWith:url
-                     blog:self.blog
-                     post:self.post
-                         progress:nil
-                   thumbnailCallback:nil
-                          completion:^(Media *media, NSError *error) {
+    MediaImportService *service = [[MediaImportService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    [service createMediaWith:url
+                        blog:self.blog
+                        post:self.post
+               receiveUpdate:nil
+           thumbnailCallback:nil
+                  completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
@@ -445,8 +436,10 @@
         fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
     }
 
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
-    fetchRequest.sortDescriptors = @[sortDescriptor];
+    fetchRequest.sortDescriptors = @[
+        [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering],
+        [NSSortDescriptor sortDescriptorWithKey:@"mediaID" ascending:self.ascendingOrdering]
+    ];
 
     _fetchController = [[NSFetchedResultsController alloc]
                             initWithFetchRequest:fetchRequest

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -102,7 +102,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "ทั้งหมด";
 
 /* An option in a list. Automatically approve all comments */
@@ -165,9 +166,6 @@
    Dismiss view
    Previous web page */
 "Back" = "กลับไป";
-
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "การอัปเดต ไอโฟน\/ไอแพด ครั้งใหญ่มีใช้โหลดแล้ว";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -270,12 +268,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "การรับรองผิดพลาด";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "เปลี่ยนเว็บ";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "การเลือกเว็บอื่นจะเสียการแก้ไขสำหรับเว็บไปเช่นไฟล์สื่อและหมวดหมู่  คุณแน่ใจหรือไม่";
-
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "ล้างค่า log กิจกรรมเก่า";
 
@@ -285,6 +277,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -354,9 +347,6 @@
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "คัดลอกลิงก์";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "สามารถดีกว่านี้ได้";
 
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "ไม่สามารถติดตามเว็บไซต์ตามที่อยู่ที่ระบุ";
@@ -676,8 +666,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "ช่วยเหลือและสนับสนุน";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "ซ่อน";
 
 /* Hide All */
@@ -692,9 +681,6 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "กดค้างสำหรับการจัดการ";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "ฉันชอบมัน";
 
 /* Ignore action. Verb */
 "Ignore" = "เพิกเฉย";
@@ -979,9 +965,6 @@
 /* List Editor Empty State Message */
 "No Items" = "ไม่มีรายการ";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "ไม่ล่ะ ขอบคุณ";
-
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "ไม่มีความเห็น";
 
@@ -1239,7 +1222,6 @@
 "Preparing..." = "กำลังเตรียม...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -1249,8 +1231,7 @@
 "Preview post" = "ดูก่อนเรื่อง";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "ส่วนตัว";
 
 /* Title of button that displays the App's privacy policy */
@@ -1258,15 +1239,13 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "ส่วนตัว";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "การทำต่อจะลบข้อมูล WordPress.com ทั้งหมดออกจาอุปกรณ์  และลบฉบับร่างที่บันทึกในอุปกรณ์ด้วย  แต่คุณไม่ได้เสียอะไรเพราะว่าทั้งหมดถูกบันทึกไปที่บล็อก WordPress.com ของคุณแล้ว";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "สาธารณะ";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -1292,9 +1271,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "ส่งการเตือน";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่า iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
@@ -1331,13 +1307,8 @@
    The loading view button title displayed when an error occurred */
 "Refresh" = "โหลดใหม่";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "เรื่องที่เกี่ยวข้อง";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "เรื่องที่เกี่ยวข้องแสดงบทความที่คล้ายกันจากเว็บของคุณด้านล่างเรื่องของคุณ";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -1473,9 +1444,6 @@
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "เลือกเว็บใดที่จะแสดงในตัวเลือกเว็บ";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "ส่งผลตอบรับ";
-
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "ส่ง Pingbacks";
 
@@ -1517,15 +1485,6 @@
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "แบ่งปันเรื่องของคุณที่นี่...";
-
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "แสดงส่วนหัว";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "แสดงรูปภาพ";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "แสดงเรื่องที่เกี่ยวข้อง";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "แสดงธีม:";
@@ -1681,9 +1640,6 @@
 /* Label for a button to retry loading posts */
 "Tap to retry" = "แตะเพื่อเลิกใหม่";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "แตะเพื่อเลือกว่าบล็อกไหนที่จะทำการส่งข้อความ";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "ลำดับขั้น";
 
@@ -1714,9 +1670,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL นั้นขาดโฮสท์ที่ใช้งานได้";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "เวิร์ดเพรสสำหรับแอนดรอยด์แอพจะได้หน้ายิ้มขนาดใหญ่";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "แอพไม่สามารถจดจำการตอบสนองของเซิร์ฟเวอร์ กรุณา ตรวจสอบการตั้งค่าเว็บของคุณ";
@@ -1809,16 +1762,12 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "จำเป็นต้องใส่หัวข้อสำหรับหมวดหมู่";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "เพื่อเปิดใช้การเตือน:\n\n1. เปิด **การตั้งค่า iOS**\n2. แตะคำว่า **การเตือน**\n3. เลือก **เวิร์ดเพรส**\n4. เปิด **อนุญาตการเตือน**";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
 "Today" = "วันนี้";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "สถิติวันนี้";
 
 /* Shortened version of the main title to be used in back navigation
@@ -1839,7 +1788,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "ถังขยะ";
@@ -1887,7 +1835,8 @@
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "ขีดเส้นใต้";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -1906,7 +1855,6 @@
 "Unfollowed site" = "เว็บที่เลิกติดตาม";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "ไม่รู้จัก";
 
@@ -1936,9 +1884,6 @@
 
 /* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
 "Update Draft" = "อัปเดตฉบับร่าง";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "อัปเกรดโฟกัส: VideoPress สำหรับงานแต่งงาน";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -2051,9 +1996,6 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "เรามักจะส่งอีเมลสำคัญเกี่ยวกับบัญชีของคุณ  แต่คุณสามารถได้ข้อมูลที่มีประโยชน์อย่างอื่นด้วย";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "คุณคิดยังไงเกี่ยวกับเวิร์ดเพรส?";
-
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "เมื่อความเห็นประกอบด้วยคำต่อไปนี้ในเนื้อหา, ชื่อ, URL, อีเมล, หรือ IP ของมัน มันจะถูกวางไว้ในคิวการจัดการ คุณสามารถใส่บางส่วนของคำ เช่นคำว่า \"press\" จะตรงกับ \"WordPress\"";
 
@@ -2123,15 +2065,6 @@
 /* Displayed in the Notification Settings View */
 "Your Sites" = "เว็บของคุณ";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "เว็บไซต์ของคุณจะเห็นได้เฉพาะตัวคุณและผู้ใช้ที่คุณอนุมัติ";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "ทุกคนสามารถมองเห็นเว็บของคุณ และเซิร์ชเอนจิ้นอาจจะเก็บข้อมูลเว็บคุณ";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "ทุกคนสามารถมองเห็นเว็บของคุณ แต่ขอให้เซิร์ชเอนจิ้นไม่เก็บข้อมูลเว็บคุณ";
-
 /* Age between dates equaling one day. */
 "a day" = "หนึ่งวัน";
 
@@ -2146,15 +2079,6 @@
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/ที่อยู่เว็บของฉัน (URL)";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "ใน \"แอพ\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "ใน \"มือถือ\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "ใน \"อัปเกรด\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

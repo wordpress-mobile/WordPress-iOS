@@ -146,9 +146,7 @@ class ContextManagerTests: XCTestCase {
         let derivedContext = contextManager.newDerivedContext()
 
         derivedContext.perform {
-            let account = WPAccount(context: derivedContext)
-            account.userID = 1
-            account.username = "First User"
+            _ = WPAccount.fixture(context: derivedContext, userID: 1, username: "First User")
             contextManager.saveContextAndWait(derivedContext)
         }
 
@@ -165,9 +163,7 @@ class ContextManagerTests: XCTestCase {
         // Save another user
         waitUntil { done in
             derivedContext.perform {
-                let account = WPAccount(context: derivedContext)
-                account.userID = 2
-                account.username = "Second account"
+                _ = WPAccount.fixture(context: derivedContext, userID: 2)
                 contextManager.saveContextAndWait(derivedContext)
                 done()
             }
@@ -193,22 +189,19 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(numberOfAccounts(), 0)
 
         try await contextManager.performAndSave { context in
-            let account = WPAccount(context: context)
-            account.userID = 1
-            account.username = "First User"
+            _ = WPAccount.fixture(context: context, userID: 1)
         }
         XCTAssertEqual(numberOfAccounts(), 1)
 
+        let expectedError = NSError.testInstance()
         do {
             try await contextManager.performAndSave { context in
-                let account = WPAccount(context: context)
-                account.userID = 100
-                account.username = "Unknown User"
-                throw NSError(domain: "save", code: 1)
+                _ = WPAccount.fixture(context: context, userID: 100)
+                throw expectedError
             }
             XCTFail("The above call should throw")
         } catch {
-            XCTAssertEqual((error as NSError).domain, "save")
+            XCTAssertEqual(error as NSError, expectedError)
         }
         XCTAssertEqual(numberOfAccounts(), 1)
 
@@ -221,9 +214,7 @@ class ContextManagerTests: XCTestCase {
         // > "In non-async functions, and closures without any await expression, the compiler selects the non-async overload"
         let sync: () -> Void = {
             contextManager.performAndSave { context in
-                let account = WPAccount(context: context)
-                account.userID = 2
-                account.username = "Second User"
+                _ = WPAccount.fixture(context: context, userID: 2)
             }
         }
         sync()
@@ -245,14 +236,10 @@ class ContextManagerTests: XCTestCase {
         ]
 
         contextManager.performAndSave({
-            let account = WPAccount(context: $0)
-            account.userID = 1
-            account.username = "First User"
+            _ = WPAccount.fixture(context: $0, userID: 1, username: "First User")
 
             contextManager.performAndSave {
-                let account = WPAccount(context: $0)
-                account.userID = 2
-                account.username = "Second User"
+                _ = WPAccount.fixture(context: $0, userID: 2, username: "Second User")
             }
             saveOperations[1].fulfill()
 
@@ -279,14 +266,10 @@ class ContextManagerTests: XCTestCase {
         ]
 
         contextManager.performAndSave({
-            let account = WPAccount(context: $0)
-            account.userID = 1
-            account.username = "First User"
+            _ = WPAccount.fixture(context: $0, userID: 1, username: "First User")
 
             contextManager.performAndSave({
-                let account = WPAccount(context: $0)
-                account.userID = 2
-                account.username = "Second User"
+                _ = WPAccount.fixture(context: $0, userID: 2, username: "Second User")
             }, completion: {
                 saveOperations[1].fulfill()
             }, on: .main)
@@ -380,9 +363,7 @@ class ContextManagerTests: XCTestCase {
         // First, insert an account into the database.
         let contextManager = ContextManager.forTesting()
         contextManager.performAndSave { context in
-            let account = WPAccount(context: context)
-            account.userID = 1
-            account.username = "First User"
+            _ = WPAccount.fixture(context: context, userID: 1, username: "First User")
         }
 
         // Fetch the account in the main context
@@ -441,8 +422,8 @@ class ContextManagerTests: XCTestCase {
     private func createOrUpdateAccount(username: String, newToken: String, in context: NSManagedObjectContext) throws {
         var account = try WPAccount.lookup(withUsername: username, in: context)
         if account == nil {
-            account = WPAccount(context: context)
-            account?.username = username
+            // Will this make tests fail because of the default userID in the fixture?
+            account = WPAccount.fixture(context: context, username: username)
         }
         account?.authToken = newToken
     }

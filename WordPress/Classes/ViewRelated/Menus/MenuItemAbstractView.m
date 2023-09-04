@@ -217,28 +217,18 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.backgroundColor = [UIColor clearColor];
 
-    [button setImage:image forState:UIControlStateNormal];
+    UIImage *resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(MenusDesignItemIconSize, MenusDesignItemIconSize) interpolationQuality:kCGInterpolationDefault];
+    [button setImage:[resizedImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     button.tintColor = [UIColor murielTextTertiary];
 
     CGFloat padding = 6.0;
-    CGFloat width = MenusDesignItemIconSize + (padding * 2);
-    CGFloat height = MenusDesignItemIconSize + (padding * 2);
+    CGFloat side = MenusDesignItemIconSize + (padding * 2);
 
-    UIEdgeInsets inset = button.imageEdgeInsets;
-    inset.top = padding;
-    inset.bottom = padding;
-    inset.left = padding;
-    inset.right = padding;
-    button.imageEdgeInsets = inset;
-
-    NSLayoutConstraint *widthConstraint = [button.widthAnchor constraintEqualToConstant:width];
+    NSLayoutConstraint *widthConstraint = [button.widthAnchor constraintEqualToConstant:side];
     widthConstraint.priority = 999;
-    NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToConstant:height];
+    NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToConstant:side];
     heightConstraint.priority = 999;
-    [NSLayoutConstraint activateConstraints:@[
-                                              widthConstraint,
-                                              heightConstraint
-                                              ]];
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint]];
     [self addAccessoryButton:button];
 
     return button;

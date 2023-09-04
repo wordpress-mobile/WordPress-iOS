@@ -14,7 +14,7 @@ extension PostService {
         }
 
         let mediaService = MediaService(managedObjectContext: self.managedObjectContext)
-        mediaService.updateMedia(mediaToUpdate, overallSuccess: {
+        mediaService.updateMedia(mediaToUpdate, fieldsToUpdate: ["postID"], overallSuccess: {
             ContextManager.sharedInstance().save(self.managedObjectContext)
             success()
         }) { error in

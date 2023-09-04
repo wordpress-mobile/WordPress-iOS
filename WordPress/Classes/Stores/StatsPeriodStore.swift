@@ -183,6 +183,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
+    private let cache: StatsPediodCache = .shared
 
     weak var delegate: StatsPeriodStoreDelegate?
 
@@ -249,26 +250,23 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         processQueries()
     }
 
-    func persistToCoreData() {
-        guard
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                return
+    private func storeDataInCache() {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
         }
-
-        _ = state.summary.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topPostsAndPages.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topReferrers.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topClicks.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topPublished.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topAuthors.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topSearchTerms.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topCountries.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topVideos.flatMap { StatsRecord.record(from: $0, for: blog) }
-        _ = state.topFileDownloads.flatMap { StatsRecord.record(from: $0, for: blog) }
-
-        try? ContextManager.shared.mainContext.save()
-        DDLogInfo("Stats Period: finished persisting Period Stats to disk.")
+        func setValue<T: StatsTimeIntervalData>(_ value: T, _ record: StatsPediodCache.Record) {
+            cache.setValue(value, record: record, siteID: siteID)
+        }
+        state.summary.map { setValue($0, .summary) }
+        state.topPostsAndPages.map { setValue($0, .topPostsAndPages) }
+        state.topReferrers.map { setValue($0, .topReferrers) }
+        state.topClicks.map { setValue($0, .topClicks) }
+        state.topPublished.map { setValue($0, .topPublished) }
+        state.topAuthors.map { setValue($0, .topAuthors) }
+        state.topSearchTerms.map { setValue($0, .topSearchTerms) }
+        state.topCountries.map { setValue($0, .topCountries) }
+        state.topVideos.map { setValue($0, .topVideos) }
+        state.topFileDownloads.map { setValue($0, .topFileDownloads) }
     }
 }
 
@@ -578,45 +576,31 @@ private extension StatsPeriodStore {
         if FeatureFlag.statsNewAppearance.enabled {
             group.notify(queue: .main) { [weak self] in
                 DDLogInfo("Stats Period: Finished fetchAsyncData.")
-                self?.persistToCoreData()
+                self?.storeDataInCache()
             }
         }
     }
 
     func loadFromCache(date: Date, period: StatsPeriodUnit) {
-        guard
-            let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                return
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
         }
-
-        let summary = StatsRecord.timeIntervalData(for: blog, type: .blogVisitsSummary, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let posts = StatsRecord.timeIntervalData(for: blog, type: .topViewedPost, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let referrers = StatsRecord.timeIntervalData(for: blog, type: .referrers, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let clicks = StatsRecord.timeIntervalData(for: blog, type: .clicks, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let published = StatsRecord.timeIntervalData(for: blog, type: .publishedPosts, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let authors = StatsRecord.timeIntervalData(for: blog, type: .topViewedAuthor, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let searchTerms = StatsRecord.timeIntervalData(for: blog, type: .searchTerms, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let countries = StatsRecord.timeIntervalData(for: blog, type: .countryViews, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let videos = StatsRecord.timeIntervalData(for: blog, type: .videos, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-        let fileDownloads = StatsRecord.timeIntervalData(for: blog, type: .fileDownloads, period: StatsRecordPeriodType(remoteStatus: period), date: date)
-
-        DDLogInfo("Stats Period: Finished loading Period data from Core Data.")
-
+        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record) -> T? {
+            cache.getValue(record: record, date: date, period: period, siteID: siteID)
+        }
         transaction { state in
-            state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topPostsAndPages = posts.flatMap { StatsTopPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topReferrers = referrers.flatMap { StatsTopReferrersTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topClicks = clicks.flatMap { StatsTopClicksTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topPublished = published.flatMap { StatsPublishedPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topAuthors = authors.flatMap { StatsTopAuthorsTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topSearchTerms = searchTerms.flatMap { StatsSearchTermTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topVideos = videos.flatMap { StatsTopVideosTimeIntervalData(statsRecordValues: $0.recordValues) }
-            state.topFileDownloads = fileDownloads.flatMap { StatsFileDownloadsTimeIntervalData(statsRecordValues: $0.recordValues) }
-
-            DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
+            state.summary = getValue(.summary)
+            state.topPostsAndPages = getValue(.topPostsAndPages)
+            state.topReferrers = getValue(.topReferrers)
+            state.topClicks = getValue(.topClicks)
+            state.topPublished = getValue(.topPublished)
+            state.topAuthors = getValue(.topAuthors)
+            state.topSearchTerms = getValue(.topSearchTerms)
+            state.topCountries = getValue(.topCountries)
+            state.topVideos = getValue(.topVideos)
+            state.topFileDownloads = getValue(.topFileDownloads)
         }
+        DDLogInfo("Stats Period: Finished setting data to Period store from disk cache.")
     }
 
     func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
@@ -624,7 +608,7 @@ private extension StatsPeriodStore {
         // It's here because call to this method will usually happen after user selects a different
         // time period they're interested in. If we only relied on calls to `persistToCoreData()`
         // when user has left the screen/app, we would possibly lose on storing A LOT of data.
-        persistToCoreData()
+        storeDataInCache()
 
         if forceRefresh {
             cancelQueries()
@@ -652,7 +636,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -684,7 +668,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedSearchTerms(searchTerms, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -716,7 +700,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -748,7 +732,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedClicks(clicks, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -780,7 +764,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -812,7 +796,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -844,7 +828,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -876,7 +860,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -908,7 +892,7 @@ private extension StatsPeriodStore {
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
             }
-            self?.persistToCoreData()
+            self?.storeDataInCache()
         })
     }
 
@@ -1413,13 +1397,14 @@ private extension PeriodStoreState {
         // - The summary period end date is the current date
 
         guard widgetUsingCurrentSite(),
-            summary?.period == .day,
-            summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
+              let summary,
+            summary.period == .day,
+            summary.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
                 return
         }
 
         // Include an extra day. It's needed to get the dailyChange for the last day.
-        let summaryData = Array(summary?.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1) ?? [])
+        let summaryData = Array(summary.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1))
 
         let widgetData = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
         widgetData.saveData()

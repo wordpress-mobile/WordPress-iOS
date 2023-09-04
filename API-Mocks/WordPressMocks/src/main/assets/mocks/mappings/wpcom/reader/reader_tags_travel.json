@@ -1,0 +1,337 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/wpcom/v2/read/tags/posts",
+    "queryParameters": {
+      "tags[]": {
+        "matches": "(.*)"
+      },
+      "_locale": {
+        "matches": "(.*)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "success": true,
+      "tags": [
+        "travel"
+      ],
+      "sort": "date",
+      "lang": "en",
+      "page": 1,
+      "posts": [
+        {
+          "ID": 12345,
+          "site_ID": 67890,
+          "author": {
+            "ID": 54321,
+            "login": "user123",
+            "email": false,
+            "name": "John Doe",
+            "first_name": "John",
+            "last_name": "Doe",
+            "nice_name": "user123",
+            "URL": "http://example.com",
+            "avatar_URL": "https://example.com/avatar.jpg",
+            "profile_URL": "https://example.com/user123",
+            "site_ID": 98765,
+            "has_avatar": true
+          },
+          "date": "2023-08-21T22:31:06-04:00",
+          "modified": "2023-08-19T22:32:37-04:00",
+          "title": "Sustainability and Investment Trends",
+          "URL": "https://example.com/article/sustainability-investment-trends",
+          "short_URL": "https://example.com/shortlink",
+          "content": "<div class=\"is-reader\">\n<p>Today, significant capital is shifting towards sustainable ventures. This is not just a large-scale trend; it signifies a shift in the financial landscape. Leading asset and wealth management firms are witnessing a profound redistribution of investments towards sustainability.</p>\n\n<p>By the year 2022, a forecast by a well-known advisory firm predicts that a significant percentage of institutional investors will exclusively engage with ESG (Environmental, Social, and Governance) products. The growth of ESG fund assets is expected to play a substantial role in the European fund landscape, reaching trillions in assets.</p>\n\n<p>While Europe currently leads in ESG assets, the American market presents an opportunity of around $120 trillion.</p>\n\n<!-- Content shortened for privacy -->\n\n<p>Facedrive, a multi-vertical tech company with an ESG focus, has emerged as a prominent player, making strides in various industries across North America.</p>\n\n<p>These trends emphasize the importance of sustainability and its integration into financial strategies. The tech industry giants such as Facebook, Microsoft, Google, and Apple are also actively contributing to sustainability efforts.</p>\n</div>",
+          "excerpt": "<p>Today, significant capital is shifting towards sustainable ventures. This is not just a large-scale trend; it signifies a shift in the financial landscape. Leading asset and wealth management firms are witnessing a profound redistribution of investments towards sustainability.</p>",
+          "slug": "sustainability-and-investment-trends",
+          "guid": "https://example.com/article/12345",
+          "status": "publish",
+          "discussion": {
+            "comments_open": true,
+            "comment_status": "open",
+            "pings_open": true,
+            "ping_status": "open",
+            "comment_count": 0
+          },
+          "likes_enabled": false,
+          "sharing_enabled": true,
+          "like_count": 0,
+          "i_like": false,
+          "is_reblogged": false,
+          "is_following": false,
+          "global_ID": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5",
+          "featured_image": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg",
+          "post_thumbnail": {
+            "ID": 1234,
+            "URL": "https://example.com/images/thumbnail.jpg",
+            "guid": "http://example.com/images/thumbnail.jpg",
+            "mime_type": "image/jpeg",
+            "width": 800,
+            "height": 600
+          },
+          "format": "standard",
+          "tags": {},
+          "categories": {
+            "Architecture": {
+              "ID": 2290,
+              "name": "Architecture",
+              "slug": "architecture",
+              "description": "",
+              "post_count": 24,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:architecture",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:architecture/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Civilization": {
+              "ID": 3268,
+              "name": "Civilization",
+              "slug": "civilization",
+              "description": "",
+              "post_count": 56,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:civilization",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:civilization/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Culture": {
+              "ID": 1098,
+              "name": "Culture",
+              "slug": "culture",
+              "description": "",
+              "post_count": 51,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:culture",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:culture/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Featured": {
+              "ID": 35890,
+              "name": "Featured",
+              "slug": "featured",
+              "description": "",
+              "post_count": 60,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:featured",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:featured/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Future": {
+              "ID": 2850,
+              "name": "Future",
+              "slug": "future",
+              "description": "",
+              "post_count": 23,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:future",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:future/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Global Warming": {
+              "ID": 18880,
+              "name": "Global Warming",
+              "slug": "global-warming",
+              "description": "",
+              "post_count": 61,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:global-warming",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:global-warming/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Greenhouse Gas": {
+              "ID": 228993,
+              "name": "Greenhouse Gas",
+              "slug": "greenhouse-gas",
+              "description": "",
+              "post_count": 68,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/154612013/categories/slug:greenhouse-gas",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/154612013/categories/slug:greenhouse-gas/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/154612013"
+                }
+              }
+            },
+            "Human Engineering": {
+              "ID": 3140291,
+              "name": "Human Engineering",
+              "slug": "human-engineering",
+              "description": "",
+              "post_count": 24,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:human-engineering",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:human-engineering/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Nature": {
+              "ID": 1099,
+              "name": "Nature",
+              "slug": "nature",
+              "description": "",
+              "post_count": 178,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:nature",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:nature/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "News": {
+              "ID": 103,
+              "name": "News",
+              "slug": "news",
+              "description": "",
+              "post_count": 197,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:news",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:news/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "Tourism": {
+              "ID": 9826,
+              "name": "Tourism",
+              "slug": "tourism",
+              "description": "",
+              "post_count": 80,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/154612013/categories/slug:tourism",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/154612013/categories/slug:tourism/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/154612013"
+                }
+              }
+            },
+            "Travel": {
+              "ID": 200,
+              "name": "Travel",
+              "slug": "travel",
+              "description": "",
+              "post_count": 72,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/154612013/categories/slug:travel",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/154612013/categories/slug:travel/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/154612013"
+                }
+              }
+            },
+            "USA": {
+              "ID": 699,
+              "name": "USA",
+              "slug": "usa",
+              "description": "",
+              "post_count": 31,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:usa",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:usa/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            },
+            "WEF": {
+              "ID": 651891,
+              "name": "WEF",
+              "slug": "wef",
+              "description": "",
+              "post_count": 1,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/154612013/categories/slug:wef",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/154612013/categories/slug:wef/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/154612013"
+                }
+              }
+            }
+          },
+          "attachments": {},
+          "attachment_count": 0,
+          "metadata": [],
+          "meta": {
+            "links": {
+              "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/181977606/posts/6335",
+              "help": "https://public-api.wordpress.com/rest/v/sites/181977606/posts/6335/help",
+              "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606",
+              "replies": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/posts/6335/replies/",
+              "likes": "https://public-api.wordpress.com/rest/v/sites/181977606/posts/6335/likes/"
+            }
+          },
+          "feed_ID": 12345678,
+          "feed_URL": "http://example-feed.com",
+          "pseudo_ID": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5",
+          "is_external": false,
+          "site_name": "Example Feed Site",
+          "site_URL": "https://example-feed.com",
+          "site_is_private": false,
+          "featured_media": {
+            "uri": "https://infocusphotographers.files.wordpress.com/2019/02/adult-band-concert-995301.jpg",
+            "width": 800,
+            "height": 600,
+            "type": "image"
+          },
+          "is_subscribed_comments": false,
+          "can_subscribe_comments": true,
+          "subscribed_comments_notifications": false,
+          "use_excerpt": false,
+          "capabilities": {
+            "publish_post": false,
+            "delete_post": false,
+            "edit_post": false
+          }
+        }
+      ],
+      "next_page_handle": "ZnJvbT0xMCZiZWZvcmU9MjAyMy0wOC0yMlQwOSUzQTAyJTNBMTElMkIwOCUzQTAw",
+      "date_range": {
+        "before": "2023-08-21T22:44:57-04:00",
+        "after": "2023-08-22T09:02:11+08:00"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "Connection": "keep-alive",
+      "Cache-Control": "no-cache, must-revalidate, max-age=0"
+    }
+  }
+}

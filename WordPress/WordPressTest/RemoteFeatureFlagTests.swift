@@ -28,20 +28,14 @@ class RemoteFeatureFlagTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    func testThatStoreReturnsCorrectCompileTimeDefaultForColdCache() {
-        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
-        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature))
-        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature))
-        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyEnabledLocallyDisabledFeature))
-        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature))
-        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyUndefinedLocallyDisabledFeature))
-    }
-
     func testThatStoreDoesNotHaveValueForColdCache() {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
-        let flag = FeatureFlag.allCases.first!
-        XCTAssertFalse(store.hasValue(for: flag))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature.remoteKey))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature.remoteKey))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature.remoteKey))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyDisabledFeature.remoteKey))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature.remoteKey))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyUndefinedLocallyDisabledFeature.remoteKey))
     }
 
     func testThatUpdateCachesNewFlags() {
@@ -51,22 +45,22 @@ class RemoteFeatureFlagTests: XCTestCase {
         store.update(using: mock)
 
         // All of the remotely defined values should be present
-        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
-        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature))
-        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyDisabledFeature))
-        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature))
+        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature.remoteKey))
+        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature.remoteKey))
+        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyDisabledFeature.remoteKey))
+        XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature.remoteKey))
 
         // All of the remotely undefined values should not be present
-        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature))
-        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyUndefinedLocallyDisabledFeature))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature.remoteKey))
+        XCTAssertFalse(store.hasValue(for: MockFeatureFlag.remotelyUndefinedLocallyDisabledFeature.remoteKey))
 
         // The remotely enabled flags should return true
-        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
-        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyDisabledFeature))
+        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature.remoteKey)!)
+        XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyDisabledFeature.remoteKey)!)
 
         // The remotely disabled flags should return false
-        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature))
-        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature))
+        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature.remoteKey)!)
+        XCTAssertFalse(store.value(for: MockFeatureFlag.remotelyDisabledLocallyDisabledFeature.remoteKey)!)
     }
 }
 

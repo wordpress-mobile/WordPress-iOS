@@ -46,6 +46,8 @@ class ExpandableCell: WPReusableTableViewCell {
     }
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+
         setupSubviews()
     }
 

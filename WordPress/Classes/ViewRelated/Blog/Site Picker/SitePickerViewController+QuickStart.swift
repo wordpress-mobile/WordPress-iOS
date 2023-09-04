@@ -10,19 +10,17 @@ extension SitePickerViewController {
     }
 
     func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
-            guard self?.blog.managedObjectContext != nil else {
-                return
-            }
-
-            self?.blogDetailHeaderView.toggleSpotlightOnSiteTitle()
-            self?.blogDetailHeaderView.toggleSpotlightOnSiteUrl()
-            self?.blogDetailHeaderView.refreshIconImage()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
     }
 
-    func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(self)
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard blog.managedObjectContext != nil else {
+            return
+        }
+
+        blogDetailHeaderView.toggleSpotlightOnSiteTitle()
+        blogDetailHeaderView.toggleSpotlightOnSiteUrl()
+        blogDetailHeaderView.refreshIconImage()
     }
 
     func startAlertTimer() {
@@ -42,7 +40,7 @@ extension SitePickerViewController {
         blogDetailHeaderView.toggleSpotlightOnSiteIcon()
     }
 
-    private func showNoticeAsNeeded() {
+    func showNoticeAsNeeded() {
         if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }

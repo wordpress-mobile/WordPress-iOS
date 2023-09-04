@@ -25,16 +25,6 @@ class BlogDashboardCardFrameView: UIView {
         return topStackView
     }()
 
-    /// Card's icon image view
-    private lazy var iconImageView: UIImageView = {
-        let iconImageView = UIImageView(image: UIImage.gridicon(.posts, size: Constants.iconSize).withRenderingMode(.alwaysTemplate))
-        iconImageView.tintColor = .label
-        iconImageView.frame = CGRect(x: 0, y: 0, width: Constants.iconSize.width, height: Constants.iconSize.height)
-        iconImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        iconImageView.isAccessibilityElement = false
-        return iconImageView
-    }()
-
     /// Card's title
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -42,33 +32,23 @@ class BlogDashboardCardFrameView: UIView {
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         titleLabel.accessibilityTraits = .button
+        titleLabel.numberOfLines = 0
         return titleLabel
-    }()
-
-    /// Chevron displayed in case there's any action associated
-    private lazy var chevronImageView: UIImageView = {
-        let chevronImage = UIImage.gridicon(.chevronRight, size: Constants.iconSize).withRenderingMode(.alwaysTemplate)
-        let chevronImageView = UIImageView(image: chevronImage.imageFlippedForRightToLeftLayoutDirection())
-        chevronImageView.frame = CGRect(x: 0, y: 0, width: Constants.iconSize.width, height: Constants.iconSize.height)
-        chevronImageView.tintColor = .listIcon
-        chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        chevronImageView.isAccessibilityElement = false
-        chevronImageView.isHidden = true
-        chevronImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        return chevronImageView
     }()
 
     /// Ellipsis Button displayed on the top right corner of the view.
     /// Displayed only when an associated action is set
     private(set) lazy var ellipsisButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
+        button.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
+        button.tintColor = UIColor.listIcon
         button.contentEdgeInsets = Constants.ellipsisButtonPadding
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
         button.accessibilityTraits = .button
         button.isHidden = true
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
             self?.onEllipsisButtonTap?()
         }
@@ -88,26 +68,10 @@ class BlogDashboardCardFrameView: UIView {
 
     weak var currentView: UIView?
 
-    /// The title at the header
-    var title: String? {
-        didSet {
-            titleLabel.text = title
-        }
-    }
-
-    /// The icon to be displayed at the header
-    var icon: UIImage? {
-        didSet {
-            iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
-            iconImageView.isHidden = icon == nil
-        }
-    }
-
     /// Closure to be called when anywhere in the view is tapped.
     /// If set, the chevron image is displayed.
     var onViewTap: (() -> Void)? {
         didSet {
-            updateChevronImageState()
             addViewTapGestureIfNeeded()
         }
     }
@@ -117,10 +81,8 @@ class BlogDashboardCardFrameView: UIView {
     /// If set, the chevron image is displayed.
     var onHeaderTap: (() -> Void)? {
         didSet {
-            updateChevronImageState()
             addHeaderTapGestureIfNeeded()
         }
-
     }
 
     /// Closure to be called when the ellipsis button is tapped..
@@ -133,21 +95,20 @@ class BlogDashboardCardFrameView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        backgroundColor = .listForeground
-
-        layer.cornerRadius = Constants.cornerRadius
-
-        configureMainStackView()
+        self.backgroundColor = .listForeground
+        self.configureMainStackView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateColors()
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+
+        // Update view background
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = Constants.cornerRadius
     }
 
     /// Add a subview inside the card frame
@@ -161,7 +122,7 @@ class BlogDashboardCardFrameView: UIView {
         headerStackView.isHidden = true
         buttonContainerStackView.isHidden = false
 
-        if !ellipsisButton.isHidden || !chevronImageView.isHidden {
+        if !ellipsisButton.isHidden {
             mainStackViewTrailingConstraint?.constant = -Constants.mainStackViewTrailingPadding
         }
     }
@@ -172,6 +133,18 @@ class BlogDashboardCardFrameView: UIView {
         buttonContainerStackView.isHidden = true
 
         mainStackViewTrailingConstraint?.constant = 0
+    }
+
+
+    /// Set's the title displayed in the card's header
+    /// - Parameters:
+    ///   - title: Title to be displayed
+    ///   - titleHint: The part in the title that needs to be highlighted
+    func setTitle(_ title: String?, titleHint: String? = nil) {
+        guard let title else {
+            return
+        }
+        self.titleLabel.attributedText = Self.titleAttributedText(title: title, hint: titleHint, font: titleLabel.font)
     }
 
     private func configureMainStackView() {
@@ -188,15 +161,11 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         mainStackView.addArrangedSubview(headerStackView)
-
-        headerStackView.addArrangedSubviews([
-            iconImageView,
-            titleLabel,
-            chevronImageView,
-            ellipsisButton
-        ])
+        headerStackView.addArrangedSubviews([titleLabel, ellipsisButton])
     }
 
+    /// Configures button container stack view
+    /// Only call when the header view is hidden
     func configureButtonContainerStackView() {
         addSubview(buttonContainerStackView)
 
@@ -206,7 +175,6 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         buttonContainerStackView.addArrangedSubviews([
-            chevronImageView,
             ellipsisButton
         ])
     }
@@ -215,13 +183,13 @@ class BlogDashboardCardFrameView: UIView {
         buttonContainerStackView.removeFromSuperview()
     }
 
-    private func updateColors() {
-        ellipsisButton.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
-    }
-
-    private func updateChevronImageState() {
-        chevronImageView.isHidden = onViewTap == nil && onHeaderTap == nil
-        assertOnTapRecognitionCorrectUsage()
+    /// Adds the "more" button with the given actions to the corner of the cell.
+    func addMoreMenu(items: [UIMenuElement], card: DashboardCard) {
+        onEllipsisButtonTap = {
+            BlogDashboardAnalytics.trackContextualMenuAccessed(for: card)
+        }
+        ellipsisButton.showsMenuAsPrimaryAction = true
+        ellipsisButton.menu = UIMenu(title: "", options: .displayInline, children: items)
     }
 
     private func updateEllipsisButtonState() {
@@ -230,19 +198,11 @@ class BlogDashboardCardFrameView: UIView {
             Constants.headerPaddingWithEllipsisButtonHidden :
             Constants.headerPaddingWithEllipsisButtonShown
         headerStackView.layoutMargins = headerPadding
-        assertOnTapRecognitionCorrectUsage()
-    }
-
-    /// Only one of two types of action should be associated with the card.
-    /// Either ellipsis button tap, or view/header tap
-    private func assertOnTapRecognitionCorrectUsage() {
-        let bothTypesUsed = (onViewTap != nil || onHeaderTap != nil) && onEllipsisButtonTap != nil
-        assert(!bothTypesUsed, "Using onViewTap or onHeaderTap alongside onEllipsisButtonTap is not supported and will result in unexpected behavior.")
     }
 
     private func addHeaderTapGestureIfNeeded() {
         // Reset any previously added gesture recognizers
-        headerStackView.gestureRecognizers?.forEach {headerStackView.removeGestureRecognizer($0)}
+        headerStackView.gestureRecognizers?.forEach { headerStackView.removeGestureRecognizer($0) }
 
         // Add gesture recognizer if needed
         if onHeaderTap != nil {
@@ -253,7 +213,7 @@ class BlogDashboardCardFrameView: UIView {
 
     private func addViewTapGestureIfNeeded() {
         // Reset any previously added gesture recognizers
-        self.gestureRecognizers?.forEach {self.removeGestureRecognizer($0)}
+        self.gestureRecognizers?.forEach { self.removeGestureRecognizer($0) }
 
         // Add gesture recognizer if needed
         if onViewTap != nil {
@@ -273,6 +233,17 @@ class BlogDashboardCardFrameView: UIView {
         else {
             onViewTap?()
         }
+    }
+
+    private static func titleAttributedText(title: String, hint: String?, font: UIFont?) -> NSAttributedString {
+        let titleString = NSMutableAttributedString(string: title)
+        if let hint = hint, let range = title.nsRange(of: hint) {
+            titleString.addAttributes([
+                .foregroundColor: UIColor.primary,
+                .font: font as Any
+            ], range: range)
+        }
+        return titleString
     }
 
     private enum Constants {

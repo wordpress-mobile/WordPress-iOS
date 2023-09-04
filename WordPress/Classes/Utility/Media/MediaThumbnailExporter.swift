@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 /// Media export handling of thumbnail images from videos or images.
 ///
@@ -41,7 +42,7 @@ class MediaThumbnailExporter: MediaExporter {
         ///
         /// - Note: Passed on to the MediaImageExporter.Options.exportImageType.
         ///
-        var thumbnailImageType = kUTTypeJPEG as String
+        var thumbnailImageType = UTType.jpeg.identifier
 
         /// Computed preferred size, at scale.
         ///
@@ -87,6 +88,9 @@ class MediaThumbnailExporter: MediaExporter {
     public enum ThumbnailExportError: MediaExportError {
         case failedToGenerateThumbnailFileURL
         case unsupportedThumbnailFromOriginalType
+
+        public var errorDescription: String? { description }
+
         var description: String {
             switch self {
             default:
@@ -106,7 +110,9 @@ class MediaThumbnailExporter: MediaExporter {
         guard let thumbnail = try? thumbnailURL(withIdentifier: identifier) else {
             return nil
         }
-        guard let type = thumbnail.typeIdentifier, UTTypeConformsTo(type as CFString, options.thumbnailImageType as CFString) else {
+        guard let type = thumbnail.typeIdentifier.flatMap(UTType.init),
+              let thumbnailType = UTType(options.thumbnailImageType),
+              type.conforms(to: thumbnailType) else {
             return nil
         }
         return thumbnail
@@ -233,9 +239,11 @@ class MediaThumbnailExporter: MediaExporter {
             filename.append("-\(Int(preferredSize.width))x\(Int(preferredSize.height))")
         }
         // Get a new URL for the file as a thumbnail within the cache.
-        return try mediaFileManager.makeLocalMediaURL(withFilename: filename,
-                                                        fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
-                                                        incremented: false)
+        return try mediaFileManager.makeLocalMediaURL(
+            withFilename: filename,
+            fileExtension: UTType(options.thumbnailImageType)?.preferredFilenameExtension,
+            incremented: false
+        )
     }
 
     /// Renames and moves an exported thumbnail to the expected directory with the expected thumbnail filenaming convention.
@@ -261,4 +269,57 @@ class MediaThumbnailExporter: MediaExporter {
             onError(exporterErrorWith(error: error))
         }
     }
+}
+
+// MARK: - MediatH (Async/Await)
+
+extension MediaThumbnailExporter {
+    func exportThumbnail(forFileURL fileURL: URL) async throws -> (ThumbnailIdentifier, MediaExport) {
+        let token = MediaExportCancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.progress = exportThumbnail(forFile: fileURL, onCompletion: {
+                    continuation.resume(returning: ($0, $1))
+                }, onError: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        } onCancel: {
+            token.progress?.cancel()
+        }
+    }
+
+    func exportThumbnail(forVideoURL url: URL) async throws -> (ThumbnailIdentifier, MediaExport) {
+        let token = MediaExportCancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.progress = exportThumbnail(forVideoURL: url, onCompletion: {
+                    continuation.resume(returning: ($0, $1))
+                }, onError: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        } onCancel: {
+            token.progress?.cancel()
+        }
+    }
+
+    func exportThumbnail(forImage image: UIImage) async throws -> (ThumbnailIdentifier, MediaExport) {
+        let token = MediaExportCancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.progress = exportThumbnail(forImage: image, onCompletion: {
+                    continuation.resume(returning: ($0, $1))
+                }, onError: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        } onCancel: {
+            token.progress?.cancel()
+        }
+    }
+}
+
+private final class MediaExportCancelationToken {
+    var progress: Progress?
 }

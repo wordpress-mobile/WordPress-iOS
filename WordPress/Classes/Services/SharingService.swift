@@ -34,14 +34,15 @@ import WordPressKit
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
     @objc func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
-        guard let remote = remoteForBlog(blog) else {
+        guard let remote = remoteForBlog(blog),
+              let blogID = blog.dotComID else {
             return
         }
-        remote.getPublicizeServices({ remoteServices in
+
+        remote.getPublicizeServices(for: blogID, success: { remoteServices in
             // Process the results
             self.mergePublicizeServices(remoteServices, success: success)
-        },
-        failure: failure)
+        }, failure: failure)
     }
 
 
@@ -96,9 +97,7 @@ import WordPressKit
                 WPAppAnalytics.track(.sharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
 
                 self.coreDataStack.performAndSave({ context -> NSManagedObjectID in
-                    let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
-                    try context.obtainPermanentIDs(for: [pubConn])
-                    return pubConn.objectID
+                    try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
                 }, completion: { result in
                     let transformed = result.flatMap { objectID in
                         Result {
@@ -346,6 +345,7 @@ import WordPressKit
         pubService?.order = remoteService.order
         pubService?.serviceID = remoteService.serviceID
         pubService?.type = remoteService.type
+        pubService?.status = (remoteService.status.isEmpty ? PublicizeService.defaultStatus : remoteService.status)
 
         return pubService!
     }
@@ -365,12 +365,14 @@ import WordPressKit
         _ blogObjectID: NSManagedObjectID,
         remoteConnection: RemotePublicizeConnection,
         in context: NSManagedObjectContext
-    ) throws -> PublicizeConnection {
+    ) throws -> NSManagedObjectID {
         let blog = try context.existingObject(with: blogObjectID) as! Blog
         let pubConn = PublicizeConnection.createOrReplace(from: remoteConnection, in: context)
         pubConn.blog = blog
 
-        return pubConn
+        try context.obtainPermanentIDs(for: [pubConn])
+
+        return pubConn.objectID
     }
 
 

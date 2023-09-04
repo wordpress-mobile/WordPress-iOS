@@ -6,16 +6,16 @@ import XCTest
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
 
+    @MainActor
     override func setUpWithError() throws {
         super.setUp()
 
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let app = XCUIApplication(bundleIdentifier: "org.wordpress")
 
         // This does the shared setup including injecting mocks and launching the app
-        setUpTestSuite(for: "WordPress")
+        setUpTestSuite(for: app, removeBeforeLaunching: true)
 
         // The app is already launched so we can set it up for screenshots here
-        let app = XCUIApplication()
         setupSnapshot(app)
 
         if XCUIDevice.isPad {
@@ -24,7 +24,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        try LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
+        try LoginFlow.login(siteAddress: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
     }
 
     override func tearDown() {
@@ -39,7 +39,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let postList = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
-            .gotoPostsScreen()
+            .goToPostsScreen()
             .showOnly(.drafts)
 
         let postEditorScreenshot = try postList.selectPost(withSlug: "our-services")
@@ -59,8 +59,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         if XCUIDevice.isPad {
             let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
-                .switchToSite(withTitle: "yourjetpack.blog")
-                .gotoPostsScreen()
+                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
+                .goToPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
             try BlockEditorScreen().selectBlock(containingText: "Ingredients")
@@ -90,14 +90,14 @@ class WordPressScreenshotGeneration: XCTestCase {
         let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
-            .switchTo(mode: .months)
+            .switchTo(mode: "months")
             .thenTakeScreenshot(3, named: "Stats")
 
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
         try TabNavComponent()
             .goToReaderScreen()
-            .openDiscover()
+            .openDiscoverTab()
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
@@ -106,7 +106,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
             notificationList
-                .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
+                .openNotification(withSubstring: "commented on")
         }
         notificationList.thenTakeScreenshot(5, named: "Notifications")
     }

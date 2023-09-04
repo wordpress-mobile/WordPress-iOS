@@ -35,7 +35,33 @@ class ImageDownloader {
     deinit {
         session.invalidateAndCancel()
     }
+    /// Downloads image for the given URL.
+    func image(at url: URL) async throws -> UIImage {
+        var request = URLRequest(url: url)
+        request.addValue("image/*", forHTTPHeaderField: "Accept")
+        return try await image(for: request)
+    }
 
+    /// Downloads image for the given request.
+    func image(for request: URLRequest) async throws -> UIImage {
+        final class CancelationToken {
+            var task: ImageDownloaderTask?
+        }
+        let token = CancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.task = downloadImage(for: request) { image, error in
+                    if let image {
+                        continuation.resume(returning: image)
+                    } else {
+                        continuation.resume(throwing: error ?? URLError(.unknown))
+                    }
+                }
+            }
+        } onCancel: {
+            token.task?.cancel()
+        }
+    }
 
     /// Downloads the UIImage resource at the specified URL. On completion the received closure will be executed.
     ///

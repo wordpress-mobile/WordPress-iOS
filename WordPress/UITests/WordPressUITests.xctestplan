@@ -1,0 +1,46 @@
+{
+  "configurations" : [
+    {
+      "id" : "8E888E84-0D6D-4516-A355-99461ADC0F47",
+      "name" : "Foundation-EN-US",
+      "options" : {
+        "language" : "en",
+        "region" : "US"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPress.xcodeproj",
+      "identifier" : "1D6058900D05DD3D006BFB54",
+      "name" : "WordPress"
+    },
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "DashboardTests",
+        "EditorAztecTests",
+        "EditorTests\/testPlayground()",
+        "LoginTests\/testEmailMagicLinkLogin()",
+        "LoginTests\/testEmailPasswordLoginLogout()",
+        "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
+        "LoginTests\/testUnsuccessfulLogin()",
+        "LoginTests\/testWpcomUsernamePasswordLogin()",
+        "MainNavigationTests",
+        "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests\/testContactUsCanBeLoadedDuringLogin()",
+        "SupportScreenTests\/testSupportScreenLoads()"
+      ],
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "FF27168E1CAAC87A0006E2D4",
+        "name" : "WordPressUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

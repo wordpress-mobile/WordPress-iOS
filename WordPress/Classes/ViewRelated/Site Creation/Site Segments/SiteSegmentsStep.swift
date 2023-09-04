@@ -8,7 +8,7 @@ final class SiteSegmentsStep: WizardStep {
         return SiteSegmentsWizardContent(service: self.service, selection: self.didSelect)
     }()
 
-    var delegate: WizardDelegate?
+    weak var delegate: WizardDelegate?
 
     init(creator: SiteCreator, service: SiteSegmentsService) {
         self.creator = creator

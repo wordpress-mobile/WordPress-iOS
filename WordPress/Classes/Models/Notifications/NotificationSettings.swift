@@ -15,9 +15,19 @@ open class NotificationSettings {
     ///
     public let streams: [Stream]
 
-    /// Maps to the associated blog, if any.
+    /// The associated blog. This property is not thread-safe.
+    ///
+    /// If you need to access this property from a thread different from the one it was created on, don't access it directly. Instead, use the `blogManagedObjectID`
+    /// with `context.existingObject(with: blogManagedObjectID)` to retrieve the corresponding managed object in a thread-safe manner.
     ///
     public let blog: Blog?
+
+    /// The managed object identifier for the associated blog. This property serves as a thread-safe version of the `blog` property.
+    ///
+    /// Rather than directly accessing the `blog` property from a different thread than the one it was created on, use this identifier with
+    /// `context.existingObject(with: blogManagedObjectID)` to retrieve the corresponding managed object in a thread-safe manner.
+    ///
+    public let blogManagedObjectID: NSManagedObjectID?
 
     /// The settings that are stored locally
     ///
@@ -37,6 +47,7 @@ open class NotificationSettings {
         self.channel = channel
         self.streams = streams
         self.blog    = blog
+        self.blogManagedObjectID = blog?.objectID
     }
 
 

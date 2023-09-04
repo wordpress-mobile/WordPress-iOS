@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:52:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -174,7 +174,8 @@
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "Всички";
 
 /* An option in a list. Automatically approve all comments */
@@ -310,9 +311,6 @@
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Коментирайте първи.";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "Може да бъде изтеглено голямо обновяване за iPhone\/iPad ";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Цитат";
@@ -441,9 +439,6 @@
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Грешка със сертификата";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Промяна на сайт";
-
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Промяна на видимостта";
 
@@ -458,9 +453,6 @@
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Изтегляне на покупките...";
-
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "С избор на друг сайт ще изгубите настройките на категории и файлове от този сайт. Сигурни ли сте?";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Изтриване на старата история на активността";
@@ -480,6 +472,7 @@
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -622,9 +615,6 @@
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Продължете да четете";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "Може и по-добре";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Промените не бяха запазени";
@@ -1112,8 +1102,7 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Помощ";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Скрит";
 
 /* Hides a site from the site picker list
@@ -1132,9 +1121,6 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Задържане за модерация";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "Харесва ми";
 
 /* Title of a button style */
 "Icon & Text" = "Икона и текст";
@@ -1574,9 +1560,6 @@
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Няма избрано меню";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "Не, благодаря";
-
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Няма коментари";
 
@@ -1925,7 +1908,6 @@
 "Preparing..." = "Подготовка...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -1939,8 +1921,7 @@
 "Primary Site" = "Основен сайт";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "Поверителност";
 
 /* Title of button that displays the App's privacy policy */
@@ -1948,7 +1929,6 @@
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Лична";
 
@@ -1958,8 +1938,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Проекти";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Публична";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -1996,9 +1975,6 @@
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Моментни известия";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Известията на устройството са изключени от настройките на iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Известията на устройството бяха изключени от настройките на iOS. Изберете \"Включване на известията\" за да ги включите.";
@@ -2050,13 +2026,8 @@
 /* Describes a domain that was registered with WordPress.com */
 "Registered Domain" = "Регистриран домейн";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "Подобни публикации";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "Модулът за свързани публикации показва релевантно съдържание от вашия сайт под публикациите ви.";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -2242,9 +2213,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Избирането на друго меню ще отхвърли промените, които сте направили към текущото. Сигурни ли сте, че искате да продължите?";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "Обратна връзка";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Изпращане на връзка";
 
@@ -2300,12 +2268,6 @@
    Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Бутони за споделяне";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "Към заглавната част";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "Показване на изображенията";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "Показване на бутона за харесване";
 
@@ -2314,9 +2276,6 @@
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Показване на бутон за реблогване";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "Показване на подобни публикации";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Показване на теми:";
@@ -2513,9 +2472,6 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Натиснете, за да отмените качването.";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "С тап избирате коя публикация да";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Категоризация";
 
@@ -2562,9 +2518,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Този адрес няма валиден хост.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "Приложението WordPress за Android претърпява изумителни подобрения";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Приложението не разпознава отговора на сървъра. Проверете конфигурацията на сайта си.";
@@ -2706,9 +2659,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Заглавието на категория е задължително";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "За да получавате известия:\n\n1. Отворете **iOS Настройки**\n2. Натиснете на **Известия**\n3. Изберете **WordPress**\n4. Включете **Позволяване на известия**";
-
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "За да ги управлявате тук, направете ги видими.";
 
@@ -2717,8 +2667,7 @@
    Notifications Today Section Header */
 "Today" = "Днес";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "Днешна статистика";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -2742,7 +2691,6 @@
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "Кошче";
@@ -2802,7 +2750,8 @@
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Подчертаване";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -2821,7 +2770,6 @@
 "Unfollowed site" = "Отабонирахте се за сайта";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "Непознат";
 
@@ -2860,9 +2808,6 @@
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Обновяване на връзката";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "На фокус: VideoPress за сватби";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -3009,9 +2954,6 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Ще ви изпращаме важни имейли относно профила ви, също можете да получите и някои полезни екстри.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "Какво мислите за WordPress?";
-
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Какъв е адресът на моя сайт?";
 
@@ -3123,17 +3065,8 @@
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Вашите публикации, страници и настройки ще ви бъдат изпратени на %@.";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "Сайтът ви е видим само за вас и потребителите, които сте одобрили.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Сайтът ви няма повече пространство за качване на файлове.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "Сайтът ви е видим в интернет и позволява на търсачките да индексират съдържанието му.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "Сайтът ви е видим в интернет, но не дава търсачките да индексират съдържанието му.";
 
 /* Age between dates equaling one day. */
 "a day" = "1 ден";
@@ -3155,15 +3088,6 @@
 
 /* Label displayed on image media items. */
 "image" = "изображение";
-
-/* Text for related post cell preview */
-"in \"Apps\"" = "в \"Приложения\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "в \"Мобилно\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "в \"Обновяване\"";
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";

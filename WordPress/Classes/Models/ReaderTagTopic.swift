@@ -10,6 +10,13 @@ import Foundation
         return "tag"
     }
 
+    // MARK: - Computed Properties
+
+    /// The `slug` property is URL encoded. Use this property for display instead.
+    var slugForDisplay: String? {
+        return slug.removingPercentEncoding
+    }
+
     // MARK: - Logged Out Helpers
 
     /// The tagID used if an interest was added locally and not sync'd with the server

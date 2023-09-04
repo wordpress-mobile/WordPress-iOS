@@ -5,7 +5,7 @@ import WordPressShared
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var followButton: UIButton!
 
-    open var delegate: ReaderStreamHeaderDelegate?
+    open weak var delegate: ReaderStreamHeaderDelegate?
 
     // MARK: - Lifecycle Methods
     open override func awakeFromNib() {
@@ -16,7 +16,7 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
+        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: FeatureFlag.readerImprovements.enabled)
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -31,7 +31,12 @@ import WordPressShared
     // MARK: - Configuration
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
-        titleLabel.text = topic.title
+        titleLabel.text = {
+            guard FeatureFlag.readerImprovements.enabled else {
+                return topic.title
+            }
+            return topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
+        }()
         followButton.isSelected = topic.following
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
     }
@@ -41,13 +46,7 @@ import WordPressShared
     }
 
     fileprivate func adjustInsetsForTextDirection() {
-        guard userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
-        followButton.contentEdgeInsets = followButton.contentEdgeInsets.flippedForRightToLeftLayoutDirection()
-        followButton.imageEdgeInsets = followButton.imageEdgeInsets.flippedForRightToLeftLayoutDirection()
-        followButton.titleEdgeInsets = followButton.titleEdgeInsets.flippedForRightToLeftLayoutDirection()
+        followButton.flipInsetsForRightToLeftLayoutDirection()
     }
 
     // MARK: - Actions

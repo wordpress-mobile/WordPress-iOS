@@ -277,7 +277,7 @@ import Gridicons
         textView.textColor = Style.textColor
         textView.textContainer.lineFragmentPadding = 0
         textView.layoutManager.allowsNonContiguousLayout = false
-        textView.accessibilityIdentifier = "ReplyText"
+        textView.accessibilityIdentifier = "reply-text-view"
 
         // Placeholder
         placeholderLabel.textColor = Style.placeholderColor
@@ -291,6 +291,7 @@ import Gridicons
         // Reply button
         replyButton.setTitleColor(Style.replyButtonColor, for: .normal)
         replyButton.titleLabel?.text = NSLocalizedString("Reply", comment: "Reply to a comment.")
+        replyButton.accessibilityIdentifier = "reply-button"
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
         refreshReplyButton()
 

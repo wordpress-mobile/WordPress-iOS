@@ -63,16 +63,4 @@ struct StoryAction: ActionSheetItem {
                                                 handler()
                                             })
     }
-
-    static func newBadge(title: String) -> UIButton {
-        let badge = UIButton(type: .custom)
-        badge.translatesAutoresizingMaskIntoConstraints = false
-        badge.setTitle(title, for: .normal)
-        badge.titleLabel?.font = Constants.Badge.font
-        badge.contentEdgeInsets = Constants.Badge.insets
-        badge.layer.cornerRadius = Constants.Badge.cornerRadius
-        badge.isUserInteractionEnabled = false
-        badge.backgroundColor = Constants.Badge.backgroundColor
-        return badge
-    }
 }

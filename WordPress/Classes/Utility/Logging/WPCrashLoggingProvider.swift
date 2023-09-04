@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 import AutomatticTracks
 
 /// A wrapper around the logging stack – provides shared initialization and configuration for Tracks Crash and Event Logging
@@ -10,7 +11,10 @@ struct WPLoggingStack {
     let eventLogging: EventLogging
 
     private let eventLoggingDataProvider = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
+    // swiftlint:disable:next weak_delegate
     private let eventLoggingDelegate = EventLoggingDelegate()
+
+    private let enterForegroundObserver: AnyCancellable
 
     init() {
 
@@ -20,21 +24,25 @@ struct WPLoggingStack {
         self.crashLogging = CrashLogging(dataProvider: WPCrashLoggingDataProvider(), eventLogging: eventLogging)
 
         /// Upload any remaining files any time the app becomes active
-        let willEnterForeground = UIApplication.willEnterForegroundNotification
-        NotificationCenter.default.addObserver(forName: willEnterForeground, object: nil, queue: nil, using: self.willEnterForeground)
+        enterForegroundObserver = NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink(receiveValue: { [eventLogging] _ in
+                eventLogging.uploadNextLogFileIfNeeded()
+                DDLogDebug("📜 Resumed encrypted log upload queue due to app entering foreground")
+            })
     }
 
     func start() throws {
         _ = try crashLogging.start()
     }
-
-    private func willEnterForeground(note: Foundation.Notification) {
-        self.eventLogging.uploadNextLogFileIfNeeded()
-        DDLogDebug("📜 Resumed encrypted log upload queue due to app entering foreground")
-    }
 }
 
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
+    private let contextManager: ContextManager
+
+    init(contextManager: ContextManager = .shared) {
+        self.contextManager = contextManager
+    }
+
     let sentryDSN: String = ApiCredentials.sentryDSN
 
     var userHasOptedOut: Bool {
@@ -48,12 +56,11 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     }
 
     var currentUser: TracksUser? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
-            return nil
+        return contextManager.performQuery { context -> TracksUser? in
+            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+                return nil
+            }
+            return TracksUser(userID: account.userID.stringValue, email: account.email, username: account.username)
         }
-
-        return TracksUser(userID: account.userID.stringValue, email: account.email, username: account.username)
     }
 }

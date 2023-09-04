@@ -7,7 +7,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     private(set) var totalComments = 0
     private var post: ReaderPost?
-    private var presentingViewController: UIViewController?
+    private weak var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
     var followButtonTappedClosure: (() ->Void)?
@@ -83,7 +83,13 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             }
 
             cell.configureForPostDetails(with: comment) { _ in
-                tableView.performBatchUpdates({})
+                do {
+                    try WPException.objcTry {
+                        tableView.performBatchUpdates({})
+                    }
+                } catch {
+                    WordPressAppDelegate.crashLogging?.logError(error)
+                }
             }
 
             return cell

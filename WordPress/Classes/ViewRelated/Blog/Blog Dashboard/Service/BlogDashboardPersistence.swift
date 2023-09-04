@@ -27,3 +27,34 @@ class BlogDashboardPersistence {
         "cards_\(blogID).json"
     }
 }
+
+extension BlogDashboardPersistence: DashboardBlazeStoreProtocol {
+    func getBlazeCampaign(forBlogID blogID: Int) -> BlazeCampaign? {
+        do {
+            let url = try makeBlazeCampaignURL(for: blogID)
+            let data = try Data(contentsOf: url)
+            return try JSONDecoder().decode(BlazeCampaign.self, from: data)
+        } catch {
+            DDLogError("Failed to retrieve blaze campaign: \(error)")
+            return nil
+        }
+    }
+
+    func setBlazeCampaign(_ campaign: BlazeCampaign?, forBlogID blogID: Int) {
+        do {
+            let url = try makeBlazeCampaignURL(for: blogID)
+            if let campaign {
+                try JSONEncoder().encode(campaign).write(to: url)
+            } else {
+                try? FileManager.default.removeItem(at: url)
+            }
+        } catch {
+            DDLogError("Failed to store blaze campaign: \(error)")
+        }
+    }
+
+    private func makeBlazeCampaignURL(for blogID: Int) throws -> URL {
+        try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            .appendingPathComponent("recent_blaze_campaign_\(blogID).json", isDirectory: false)
+    }
+}

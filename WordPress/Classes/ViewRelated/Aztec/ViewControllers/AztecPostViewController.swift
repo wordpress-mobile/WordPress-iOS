@@ -12,6 +12,7 @@ import AVKit
 import MobileCoreServices
 import AutomatticTracks
 import MediaEditor
+import UniformTypeIdentifiers
 
 // MARK: - Aztec's Native Editor!
 //
@@ -54,10 +55,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     var editorSession: PostEditorAnalyticsSession
-
-    /// Indicates if Aztec was launched for Photo Posting
-    ///
-    var isOpenedDirectlyForPhotoPost = false
 
     var postIsReblogged: Bool = false
 
@@ -469,7 +466,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-    private let database: KeyValueDatabase = UserDefaults()
+    private let database: KeyValueDatabase = UserDefaults.standard
     private enum Key {
         static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
     }
@@ -503,6 +500,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
+        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -546,10 +544,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         // Setup Autolayout
         configureConstraints()
         view.setNeedsUpdateConstraints()
-
-        if isOpenedDirectlyForPhotoPost {
-            presentMediaPickerFullScreen(animated: false)
-        }
 
         if !editorSession.started {
             editorSession.start()
@@ -781,7 +775,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
+        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItemsAztec
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
@@ -861,7 +855,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func refreshInterface() {
-        reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
         refreshTitleViewForMediaUploadIfNeeded()
@@ -913,15 +906,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         titleTextField.text = post.postTitle
         setHTML(content)
-    }
-
-    func reloadBlogTitleView() {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
-
-        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     func reloadPublishButton() {
@@ -1208,10 +1192,9 @@ private extension AztecPostViewController {
     ///
     /// - Parameter documentURL: the document URL to act upon
     func displayInsertionOpensAlertIfNeeded(for documentURL: URL) {
-        let documentType = documentURL.pathExtension
         guard
-            let uti = String.typeIdentifier(for: documentType),
-            uti == String(kUTTypePDF) || uti == String(kUTTypePlainText)
+            let uti = UTType(filenameExtension: documentURL.pathExtension)?.identifier,
+            uti == UTType.pdf.identifier || uti == UTType.plainText.identifier
         else {
             insertExternalMediaWithURL(documentURL)
             return
@@ -1234,7 +1217,7 @@ private extension AztecPostViewController {
         let addContentsToPostTitle = NSLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
 
         let addContentsActionHandler: (() -> Void)
-        if uti == String(kUTTypePDF) {
+        if uti == UTType.pdf.identifier {
             addContentsActionHandler = { [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -1915,7 +1898,7 @@ extension AztecPostViewController {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPNavigationMediaPickerViewController()
@@ -1962,7 +1945,7 @@ extension AztecPostViewController {
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.badgedUTTypes = [UTType.gif.identifier]
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPInputMediaPickerViewController(options: options)
@@ -2845,10 +2828,12 @@ extension AztecPostViewController {
            let videoPressID = videoSrcURL.host {
             // It's videoPress video so let's fetch the information for the video
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                videoAttachment.updateURL(URL(string: videoURLString))
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
+            mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { (metadata) in
+                if let originalURL = metadata.originalURL {
+                    videoAttachment.updateURL(metadata.getURLWithToken(url: originalURL) ?? originalURL)
+                }
+                if let posterURL = metadata.posterURL {
+                    videoAttachment.posterURL = metadata.getURLWithToken(url: posterURL) ?? posterURL
                 }
                 self.richTextView.refresh(videoAttachment)
             }, failure: { (error) in
@@ -3021,20 +3006,21 @@ extension AztecPostViewController {
         }
         // It's videoPress video so let's fetch the information for the video
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { [weak self] (videoURLString, posterURLString) in
+        mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { [weak self] (metadata) in
             guard let `self` = self else {
                 return
             }
-            guard let videoURL = URL(string: videoURLString) else {
+            guard let originalURL = metadata.originalURL else {
                 self.displayUnableToPlayVideoAlert()
                 return
             }
-            videoAttachment.updateURL(videoURL)
-            if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                videoAttachment.posterURL = posterURL
+            let newVideoURL = metadata.getURLWithToken(url: originalURL) ?? originalURL
+            videoAttachment.updateURL(newVideoURL)
+            if let posterURL = metadata.posterURL {
+                videoAttachment.posterURL = metadata.getURLWithToken(url: posterURL) ?? posterURL
             }
             self.richTextView.refresh(videoAttachment)
-            self.displayVideoPlayer(for: videoURL)
+            self.displayVideoPlayer(for: newVideoURL)
         }, failure: { [weak self] (error) in
             self?.displayUnableToPlayVideoAlert()
             DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
@@ -3298,6 +3284,12 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         updateFormatBarInsertAssetCount()
     }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
+        let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error)
+        present(alert, animated: true)
+        return true
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
         if let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
             edit(fromMediaPicker: picker, assets: phAssets)
@@ -3540,12 +3532,14 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         closeWasPressed()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-        moreWasPressed()
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        blogPickerWasPressed()
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+        moreWasPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {

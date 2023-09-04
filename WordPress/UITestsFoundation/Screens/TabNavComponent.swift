@@ -8,37 +8,40 @@ public class TabNavComponent: ScreenObject {
     }
 
     private let mySitesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        TabNavComponent.tabBarGetter($0).buttons["mySitesTabButton"]
+        $0.tabBars["Main Navigation"].buttons["mySitesTabButton"]
     }
 
     private let readerTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        TabNavComponent.tabBarGetter($0).buttons["readerTabButton"]
+        $0.tabBars["Main Navigation"].buttons["readerTabButton"]
     }
 
     private let notificationsTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        TabNavComponent.tabBarGetter($0).buttons["notificationsTabButton"]
+        $0.tabBars["Main Navigation"].buttons["notificationsTabButton"]
     }
 
+    private let meTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tabBars["Main Navigation"].buttons["meTabButton"]
+    }
+
+    var meTabButton: XCUIElement { meTabButtonGetter(app) }
     var mySitesTabButton: XCUIElement { mySitesTabButtonGetter(app) }
-    var readerTabButton: XCUIElement { readerTabButtonGetter(app) }
     var notificationsTabButton: XCUIElement { notificationsTabButtonGetter(app) }
+    var readerTabButton: XCUIElement { readerTabButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 mySitesTabButtonGetter,
-                readerTabButtonGetter,
-                notificationsTabButtonGetter
+                notificationsTabButtonGetter,
+                readerTabButtonGetter
             ],
-            app: app,
-            waitTimeout: 3
+            app: app
         )
     }
 
     public func goToMeScreen() throws -> MeTabScreen {
         try goToMySiteScreen()
-        let meButton = app.navigationBars.buttons["meBarButton"]
-        meButton.tap()
+        meTabButton.tap()
         return try MeTabScreen()
     }
 
@@ -56,14 +59,16 @@ public class TabNavComponent: ScreenObject {
         return try AztecEditorScreen(mode: .rich)
     }
 
-    public func gotoBlockEditorScreen() throws -> BlockEditorScreen {
-        let mySite = try goToMySiteScreen()
-        let actionSheet = try mySite.goToCreateSheet()
-        actionSheet.goToBlogPost()
+    @discardableResult
+    public func goToBlockEditorScreen() throws -> BlockEditorScreen {
+        try goToMySiteScreen()
+            .goToCreateSheet()
+            .goToBlogPost()
 
         return try BlockEditorScreen()
     }
 
+    @discardableResult
     public func goToReaderScreen() throws -> ReaderScreen {
         readerTabButton.tap()
         return try ReaderScreen()

@@ -49,8 +49,7 @@ public class AztecEditorScreen: ScreenObject {
 
         try super.init(
             expectedElementGetters: [ textViewGetter(textField) ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
 
         showOptionsStrip()
@@ -253,7 +252,7 @@ public class AztecEditorScreen: ScreenObject {
 
         try confirmPublish()
 
-        return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+        return try EditorNoticeComponent(withNotice: "Post published")
     }
 
     private func confirmPublish() throws {

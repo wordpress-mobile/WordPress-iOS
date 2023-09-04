@@ -14,7 +14,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryHome,
     BlogDetailsSectionCategoryGeneral,
     BlogDetailsSectionCategoryJetpack,
-    BlogDetailsSectionCategoryPublish,
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
@@ -22,6 +21,9 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryMigrationSuccess,
     BlogDetailsSectionCategoryJetpackBrandingCard,
     BlogDetailsSectionCategoryJetpackInstallCard,
+    BlogDetailsSectionCategoryContent,
+    BlogDetailsSectionCategoryTraffic,
+    BlogDetailsSectionCategoryMaintenance
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
@@ -36,6 +38,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionPages,
     BlogDetailsSubsectionActivity,
     BlogDetailsSubsectionJetpackSettings,
+    BlogDetailsSubsectionMe,
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
@@ -165,9 +168,11 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
 @property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
+@property (nonatomic, strong, nullable) BlogDetailsRow *meRow;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
+- (NSIndexPath * _Nonnull)indexPathForSubsection:(BlogDetailsSubsection)subsection;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;

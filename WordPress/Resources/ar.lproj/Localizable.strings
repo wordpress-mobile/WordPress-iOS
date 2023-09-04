@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-03-08 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-08-29 12:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -250,11 +250,8 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "مكوِّن %s. يحتوي هذا المكوِّن على محتوى غير صالح";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "تم تحويل %s إلى مكوّن عادي";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "تم تحويل %s إلى مكوِّنات عادية";
+/* translators: %s: name of the synced block */
+"%s detached" = "تم فصل %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "ستتوفر ميزة معاينات مكوّن التضمين %s قريبًا";
@@ -264,6 +261,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "ليس لدى %s عنوان URL معين";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s رابط";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "معاينات %s غير متاحة حتى الآن";
@@ -416,9 +416,6 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "إضافة صورة أو فيديو";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "إضافة رابط";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "إضافة وسائط";
 
 /* No comment provided by engineer. */
@@ -567,6 +564,9 @@ translators: Block name. %s: The localized block name */
 "Add button text" = "إضافة نصّ للزر";
 
 /* No comment provided by engineer. */
+"Add description" = "إضافة وصف";
+
+/* No comment provided by engineer. */
 "Add image or video" = "إضافة صورة أو فيديو";
 
 /* Accessibility hint text for adding an image to a new user account. */
@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "أضف رابط الهاتف هذا";
 
+/* No comment provided by engineer. */
+"Add title" = "إضافة عنوان";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "إضافة ميزات الموقع";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "الكل";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -729,10 +733,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "النص البديل";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "وبدلاً من ذلك، يمكنك فصل هذه المكوّنات وتحريرها على حدة عن طريق الضغط على \"التحويل إلى مكوّنات عادية\".";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "وبدلاً من ذلك، يمكنك فصل هذه المكوّنات وتحريرها على حدة عن طريق الضغط على \"فصل الأنماط\".";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "وبدلاً من ذلك، يمكنك فصل هذا المكوّن وتحريره على حدة عن طريق النقر على \"التحويل إلى مكوّن عادي\".";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "وبدلاً من ذلك، يمكنك فصل هذا المكوّن وتحريره على حدة عن طريق النقر على \"فصل النمط\".";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "بدلاً من ذلك، قد تقوم بإدخال كلمة مرور هذا الحساب.";
@@ -1111,9 +1115,6 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "أفضل المشاهدات على الإطلاق";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "تحديث iPhone\/iPad كبير متوفر الآن";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "تم إنشاء صفحة فارغة";
 
@@ -1136,6 +1137,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "تم تمكين محرر المكوّنات";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "تم تجميع المكوّنات";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "تم حظر محاولات تسجيل الدخول الضارة";
 
@@ -1150,6 +1154,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "حظر هذا الموقع";
+
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "تم إلغاء تجميع المكوّنات";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
@@ -1408,9 +1415,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "تغيير الإعدادات";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "تغيير الموقع";
-
 /* Change site icon button */
 "Change Site Icon" = "تغيير رمز الموقع";
 
@@ -1586,9 +1590,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests subtitle label text */
 "Choose your topics" = "اختر مواضيعك";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "سيؤدي اختيار موقع مختلف إلى فقد التعديلات التي تمت على محتوى موقع معين مثل الوسائط والتصنيفات. هل أنت متأكد من ذلك؟";
-
 /* Register Domain - Address information field City */
 "City" = "المدينة";
 
@@ -1628,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1963,9 +1965,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "نسخ الإصدار من هذا التطبيق";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "قد يكون أفضل";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "يتعذر متابعة الموضوع";
 
@@ -2155,12 +2154,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Create link" = "إنشاء رابط";
-
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "إنشاء تدوينتك الأولى";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "أنشئ تدوينتك التالية";
 
 /* Title of a Quick Start Tour */
 "Create your site" = "إنشاء موقعك";
@@ -2365,7 +2358,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "رفض";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "صف غرض الصورة. اترك ذلك الحقل فارغًا إذا كانت صورة للزينة فقط.";
+"Describe the purpose of the image. Leave empty if decorative." = "صف غرض الصورة. اترك ذلك الحقل فارغًا إذا كان للزخرفة.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2374,6 +2367,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "التصميم";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "تصميم نظام";
 
 /* Title for the desktop web preview */
 "Desktop" = "جهاز سطح المكتب";
@@ -2587,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "انقر نقرًا مزدوجًا لمعاينة مقالة.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "الضغط المزدوج لإعادة آخر تغيير";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "الضغط المزدوج للتحديد";
 
 /* No comment provided by engineer. */
@@ -2612,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "الضغط المزدوج لتبديل الإعداد";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "الضغط المزدوج للتراجع عن آخر تغيير";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "اضغط ضغطًا مزدوجًا لعرض خيارات التضمين.";
@@ -2661,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "تكرار المكوِّن";
 
+/* No comment provided by engineer. */
+"Dynamic" = "ديناميكية";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "على سبيل المثال الموضة والشعر والسياسة";
 
@@ -2683,9 +2676,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "تحرير %@";
-
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "تحرير مكوّن %@";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "تحرير كلمة قائمة الحظر";
@@ -2734,11 +2724,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "تحرير الفيديو";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "تحرير المكوِّنات القابلة لإعادة الاستخدام غير مدعوم بعد على ووردبريس لنظام تشغيل Android";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "تحرير الأنماط التي تمت مزامنتها غير مدعوم حتى الآن على %s لنظام التشغيل Android";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "تحرير المكوِّنات القابلة لإعادة الاستخدام غير مدعوم بعد على ووردبريس لنظام تشغيل iOS";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "تحرير الأنماط التي تمت مزامنتها غير مدعوم حتى الآن على %s لنظام التشغيل iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "سيؤدي تحرير ملف GIF هذا إلى إزالة الرسوم المتحركة الخاصة به.";
@@ -3145,9 +3135,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "تمييز العلامات";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "بارز";
 
@@ -3492,9 +3479,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "الحصول على عنوان URL للموقع";
 
 /* No comment provided by engineer. */
-"Gradient" = "التدرّج";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "نوع التدرج";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3606,8 +3590,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "فيما يلي طريقة تنفيذ المقالة حتى الآن.";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "مخفي";
 
 /* Hides a site from the site picker list
@@ -3675,9 +3658,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "كيف سنقوم بإصلاحه؟";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "يعجبني هذا";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "لقد ألهمتني أعمال المصور كاميرون كارستن للغاية. سأجرِّب هذه التقنيات في المحاولة التالية";
@@ -3814,8 +3794,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "أدرج %@";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "إدراج مكوّن الملفات الصوتية";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "إدراج مكوّن المعرض";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "إدراج مسطرة أفقية";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "إدراج مكوّن الصور";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3824,6 +3813,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "أضف وسائط";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "إدراج مكوّن الفيديوهات";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "إدراج مقالة في عدد من المجموعات الإخبارية في وقت واحد";
@@ -4237,6 +4229,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "تحميل المزيد من المقالات";
 
+/* No comment provided by engineer. */
+"Loading" = "تحميل";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "جاري تحميل الأنشطة...";
 
@@ -4418,6 +4413,9 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "إدارة الموقع";
+
+/* No comment provided by engineer. */
+"Manual" = "يدوي";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "تعديلات يدويّة";
@@ -4845,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "لا يتوفر عنوان URL للمعاينة";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "لا شكرًا";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "بلا عنوان";
 
@@ -4906,6 +4901,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "لم يتم تحديد أي نطاق تاريخ";
+
+/* No comment provided by engineer. */
+"No description" = "من دون وصف";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "لا توجد تهديدات معالجة";
@@ -5032,6 +5030,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "No threats found";
+
+/* No comment provided by engineer. */
+"No title" = "من دون عنوان";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5337,9 +5338,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "خارجي";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "تم التجاوز";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "الهاتف";
 
@@ -5502,6 +5500,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to play a video on the editor. */
 "Play video" = "تشغيل الفيديو";
+
+/* No comment provided by engineer. */
+"Playback Bar Color" = "لون شريط التشغيل";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "إعدادات التشغيل";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "يرجى إضافة بعض المحتوى قبل محاولة النشر.";
@@ -5745,9 +5749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "نشاط النشر";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "النشر بانتظام يساعد في بناء جمهورك!";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5763,9 +5764,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "المقالات والصفحات";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "تظهر التدوينات على صفحة مدونتك بترتيب زمني عكسي. حان الوقت لمشاركة أفكارك مع العالم!";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "صفحة المقالات";
@@ -5798,7 +5796,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "جاري الإعداد...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -5842,8 +5839,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "رابط الموقع الأساسي";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "الخصوصية";
 
 /* Title of button that displays the App's privacy policy */
@@ -5856,12 +5852,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "إعدادات الخصوصية";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "الخصوصية والتصنيف";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "إشعار الخصوصية الخاص بالمستخدمين في كاليفورنيا";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "خاص";
 
@@ -5897,8 +5895,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "المطالبات";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "عام";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5963,9 +5960,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "دفع التنبيهات";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "تم إيقاف تشغيل التنبيهات أثناء التجوال في إعدادات iOS";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "تم إيقاف تشغيل التنبيهات أثناء التجوال في تطبيق إعدادات iOS. قم بتبديل \"السماح بالتنبيهات\" لتشغيلها من جديد.";
@@ -6040,6 +6034,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "تمت إعادة الاتصال";
 
+/* Action button to redo last change */
+"Redo" = "إعادة";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "توجيه";
 
@@ -6070,13 +6067,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "إعادة بدء المحادثة: اكتب مقالة جديدة.";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "المقالات ذات الصلة";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "تعرض المقالات ذات الصلة المحتوى ذا الصلة من موقعك أسفل مقالاتك";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "ذكِّرني";
@@ -6127,6 +6119,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "إزالة المكوِّن";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "إزالة المكوّنات";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "إزالة من الرؤى";
@@ -6505,6 +6500,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "البحث عن نطاق";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "ابحث عن كلمة مفتاحية قصيرة لا تُنسى لمساعدة الأشخاص على العثور على موقعك على الويب وزيارته.";
+
 /* No comment provided by engineer. */
 "Search input field." = "حقل إدخال البحث.";
 
@@ -6696,9 +6694,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "يُحدِّد هذا الموضوع بوصفه هدف موقعك.";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "إرسال الملاحظات";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "إرسال رابط";
 
@@ -6842,12 +6837,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "خطأ في المشاركة";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "عرض الترويسة";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "عرض الصور";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "عرض زر \"إعجاب\"";
 
@@ -6856,9 +6845,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "عرض رز \"إعادة تدوين\"";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "عرض المقالات ذات الصلة";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "خذني في جولة";
@@ -7434,9 +7420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "اضغط لتحديد الفترة السابقة";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "انقر لتحديد المدونة التي ستنشر عليها";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "أنقر للتبديل إلى موقع آخر، أو إضافة موقع جديد";
 
@@ -7481,6 +7464,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "نص فقط";
+
+/* No comment provided by engineer. */
+"Text color" = "لون النص";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "توجد عناصر التحكم في تنسيق النص ضمن شريط الأدوات الذي يوجد فوق لوحة المفاتيح في أثناء تحرير مكوِّن نص";
@@ -7537,9 +7523,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "يفتقد عنوان URL إلى مضيف صالح.";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "تجري حاليًا صيانة تطبيق ووردبريس للأندرويد";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "أفضل المعجبين بالعالم";
@@ -7829,9 +7812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "تساعدنا هذه المعلومات على تحسين منتجاتنا، وجعل التسويق أكثر ملاءمة لك، وتخصيص تجربة WordPress.com، والمزيد كما يرد بالتفصيل في سياسة الخصوصية لدينا.";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "هذا هو المكان الذي سيجدك فيه الأشخاص على الإنترنت.";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "هذا تذكير لك للتدوين اليوم ✍️";
 
@@ -7941,9 +7921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "لإنشاء حسابك الجديد على WordPress.com، يرجى إدخال عنوان بريدك الإلكتروني.";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "لتمكين الاشعارات:\n\n1. فتح **إعدادات iOS**\n2. النقر على **الإشعارات**\n3. تحديد **ووردبريس**\n4. قم بتشغيل **السماح بالاشعارات**";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "للحصول على إشعارات مساعدة على هاتفك من موقع ووردبريس الخاص بك، سيتعين عليك تنصيب إضافة Jetpack.";
 
@@ -7982,8 +7959,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "مطالبة اليوم 💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "إحصاءات اليوم";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8055,7 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "سلة المهملات";
@@ -8338,7 +8313,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "تحته خط";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -8382,7 +8358,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "إظهار";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "غير معروف";
 
@@ -8400,6 +8375,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "مصطلحات بحث غير معروفة";
+
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "لون غير مصنّف. %s";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "إلغاء الإعجاب بالتعليق.";
@@ -8478,9 +8456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "جاري التحديث...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "نطاق الترقية: VideoPress لحفلات الزفاف";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "ترقية خطتك لرفع مقاطع الصوت";
@@ -9072,9 +9047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "لقد حدَّثنا أيقونات التطبيقات المخصصة بمظهر جديد وعصري. هناك 10 أنماط جديدة للاختيار من بينها، أو يمكنك ببساطة الاحتفاظ بالأيقونة الحالية إذا كنت تُفضل ذلك.";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "ما هو رأيك في ووردبريس؟";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "ما الذي ترغب في فعله بهذا الملف: هل ترغب في رفعه وإضافة رابط للملف إلى مقالتك، أو إضافة محتويات الملف مباشرة إلى المقالة؟";
 
@@ -9230,9 +9202,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "العمل معنا";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "العمل على مسودة تدوينة";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "تُظهر خريطة العالم المشاهدات حسب البلد.";
@@ -9438,7 +9407,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "لقد أجريت مؤخرًا تغييرات على هذه المقالة، ولكنك لم تحفظها. اختر نسخة لتحميلها:\n\nمن هذا الجهاز\nتم الحفظ في %1$@\n\nمن جهاز آخر\nتم الحفظ في %2$@\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "لقد قمتَ بالرد على هذا التعليق.";
 
 /* No comment provided by engineer. */
@@ -9505,12 +9475,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "عنوان ووردبريس.كوم المجاني الخاص بك هو";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "لقد تلقت تدوينتك الأخيرة <a href=\"\">%1$@<\/a> <strong>%2$d<\/strong> من الإعجابات.";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "لقد تلقت تدوينتك الأخيرة <a href=\"\">%@<\/a> <strong>إعجابًا<\/strong> واحدًا.";
-
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "لا يمكن تصدير ملفات الوسائط الخاصة بك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
 
@@ -9565,17 +9529,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "جاري الآن استعادة موقعك";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "سيكون موقعك مرئيًا لك وللمستخدمين الذين توافق عليهم فقط.";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "يكون موقعك خارج مساحة التخزين لعمليات رفع الوسائط.";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "سيكون موقعك مرئيًا لأي شخص، ويمكن فهرسته بواسطة محركات البحث.";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "إن موقعك مرئي للجميع، ولكنه يطلب من محركات البحث عدم فهرسة موقعك.";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "قد يكون موقعك معرَّضًا للخطر";
@@ -9640,6 +9595,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "ساعة";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "ما رأيك في Jetpack؟";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "ما هو رأيك في ووردبريس؟";
+
 /* Label displayed on audio media items. */
 "audio" = "صوت";
 
@@ -9652,11 +9613,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "تجاهُل";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "إنشاء";
+
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "لم تنشئ أي حملات حتى الآن. انقر هنا للبدء.";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "ليست لديك حملات";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "كان هناك خطأ في أثناء تحميل الحملات.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "عذرًا";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "جارٍ تحميل الحملات...";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "حملات Blaze";
+
 /* Description for the Blaze dashboard card. */
 "blaze.dashboard.card.description" = "اعرض عملك عبر ملايين المواقع.";
 
-/* Title for a menu action in the context menu on the Jetpack install card. */
+/* Title for a menu action in the context menu on the Blaze card. */
 "blaze.dashboard.card.menu.hide" = "إخفاء هذا";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "معرفة المزيد";
 
 /* Title for the Blaze dashboard card. */
 "blaze.dashboard.card.title" = "الترويج لمحتواك من خلال Blaze";
@@ -9668,7 +9653,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blaze.overlay.descriptionOne" = "روّج لأي تدوينة أو صفحة في غضون دقائق قليلة فقط مقابل بضعة دولارات فقط في اليوم.";
 
 /* Description for the Blaze overlay. */
-"blaze.overlay.descriptionThree" = "تعقّب الأداء في حملاتك وألغِ ذلك في أي وقت.";
+"blaze.overlay.descriptionThree" = "تعقّب الأداء في حملتك وألغِ ذلك في أي وقت.";
 
 /* Description for the Blaze overlay. */
 "blaze.overlay.descriptionTwo" = "سيظهر محتواك على ملايين من مواقع ووردبريس وTumblr.";
@@ -9682,6 +9667,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for the Blaze overlay prompting users to blaze the selected post. */
 "blaze.overlay.withPost.buttonTitle" = "توهج هذه التدوينة";
 
+/* Short status description */
+"blazeCampaign.status.active" = "نشط";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "تم الإلغاء";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "مكتمل";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "قيد الإشراف";
+
+/* Short status description */
+"blazeCampaign.status.processing" = "معالجة";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "مرفوض";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "الميزانية";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "النقرات";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "الانطباعات";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "إخفاء هذا";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "تجاهُل";
 
@@ -9691,8 +9706,44 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "بواسطة %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "التقييم بأنه مفيد";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "التعليق";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "تعليقات على";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "التعليق على";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "الرد على %1$@";
+
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "تسمح لنا ملفات تعريف الارتباط هذه بتحسين الأداء عن طريق جمع المعلومات حول كيفية تفاعل المستخدمين مع مواقعنا على الويب.";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "حفظ";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "الانتقال إلى الإعدادات";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "نعالج بياناتك الشخصية لتحسين موقعنا على الويب وأنشطة التسويق استنادًا إلى موافقتك ومصلحتنا المشروعة.";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "إدارة الخصوصية";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "التحليلات";
 
 /* The menu item to select during a guided tour. */
 "connections" = "الاتصالات";
@@ -9715,6 +9766,138 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "تجربة ذلك الآن";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "أضف البطاقات التي تناسب احتياجاتك للاطلاع على معلومات حول موقعك.";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "لا توجد بطاقات لعرضها";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "علامة تبويب تخصيص صفحتك الرئيسية";
+
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "إخفاء ذلك";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "المشاركة عبر شبكات التواصل الاجتماعي الخاصة بك";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "نفدت المشاركات!";
+
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "كل النشاط";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "آخر نشاط";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "كل الصفحات";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "الصفحات";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "النقرات";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "إنشاء حملة";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "الانطباعات";
+
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "معرفة المزيد";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "حملة Blaze";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "عرض كل الحملات";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "إضافة صفحات إلى موقعك";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "مسودة";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "منشور";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "مجدول";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "إنشاء صفحة أخرى";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "ابدأ بتخطيطات معدة حسب الطلب ومناسبة للهواتف المحمولة.";
+
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "عرض الإحصاءات";
+
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "تمييز العلامات";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "عام";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "يُشار إلى المعلمات التي تم تجاوزها بعلامة اختيار.";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "تجاوز المعلمة المختارة عن طريق تحديد قيمة جديدة هنا.";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "لا توجد قيمة بعيدة أو افتراضية";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "تكوين بعيد";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "شارك مطالبتك في زاوية الويب لديك مع عنوان الموقع الذي يسهل العثور عليه ومشاركته ومتابعته.";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "إخفاء هذا";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "العثور على نطاق مخصص";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك المخصص بالعمل.";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "ثم سنساعدك على جعله جاهزًا للتصفح.";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "لقد أرسلنا إليك الإيصال الخاص بك في رسالة عبر البريد الإلكتروني. بعدها، سنساعدك على جعله جاهزًا للجميع.";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "أحسنت، أصبح موقعك نابضًا بالحياة!";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "أفضل بديل";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "للعام الأول";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "مجانًا";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "موصى به";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "تخفيض";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "سنوياً";
+
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "تجاهل";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "عذرًا، يتعذر شراء النطاق الذي تحاول إضافته على تطبيق Jetpack في هذه المرة.";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "أنقر نقرًا مزدوجًا لتغيير الوحدة";
 
@@ -9732,11 +9915,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "تفاصيل الحملة";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "التوهج";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "متابعة";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "احصل على نطاق مجاني للعام الأول، وأزل الإعلانات على موقعك، وارفع مساحة التخزين لديك.";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "إخفاء ذلك";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "نطاق مجاني مع خطة سنوية";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "تم";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك بالعمل بشكل صحيح";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "يجري إعداد نطاقك الجديد %@.";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "كل شيء جاهز الآن!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "حدث خطأ";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "إعادة المحاولة";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "تعيين تذكيرات التدوين";
@@ -9804,15 +10017,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on image media items. */
 "image" = "صورة";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "في \"التطبيقات\"";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "في \"المحمول\"";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "في \"الترقية\"";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "لالتقاط صور أو مقاطع فيديو لاستخدامها في مقالاتك.";
 
@@ -9872,6 +10076,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "سينتقل %1$@ في غضون %2$@";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "الانتقال إلى تطبيق Jetpack في بضعة أيام.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "ستنتقل %@ قريبًا";
@@ -10008,6 +10215,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "تم";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "ربط حساب المستخدم الخاص بك";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "للحصول على إشعارات مساعدة على هاتفك من موقع ووردبريس الخاص بك، سيتعين عليك الاتصال بحساب المستخدم الخاص بك.";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "لاستخدام الإحصاءات على موقعك، سيتعين عليك ربط إضافة Jetpack بحساب المستخدم الخاص بك.";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "ستنتقل ميزات الإحصاءات والقارئ والتنبيهات وغيرها من الميزات إلى تطبيق Jetpack للهاتف المحمول قريبًا.";
 
@@ -10111,7 +10327,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "تجاهُل";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "يبدو أن تطبيق ووردبريس لا يزال مثبتًا لديك. نوصي بأن تحذف تطبيق ووردبريس لتفادي تعارضات البيانات.";
+"migration.deleteWordpress.description" = "يبدو أن تطبيق ووردبريس لا يزال مثبتًا لديك.";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "فهمت";
@@ -10120,16 +10336,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "هل تحتاج إلى مساعدة؟";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "لن تحتاج إلى تطبيق ووردبريس بعد الآن";
+"migration.deleteWordpress.title" = "لن تحتاج إلى تطبيق ووردبريس على جهازك بعد الآن";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "إنهاء";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "يرجى حذف تطبيق ووردبريس لتفادي تعارضات البيانات.";
+"migration.done.footer" = "نوصي بأن تحذف تطبيق ووردبريس لتفادي تعارضات البيانات.";
 
 /* Highlighted text in the footer of the migration done screen. */
-"migration.done.footer.highlighted" = "حذف تطبيق ووردبريس";
+"migration.done.footer.highlighted" = "إلغاء تثبيت تطبيق ووردبريس";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "لقد نقلنا كل بياناتك وإعداداتك. يصبح كل شيء صحيحًا عندما تتركه.";
@@ -10182,11 +10398,77 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "مرحبًا بك في Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "يحتوي تطبيق Jetpack على كل وظائف تطبيق ووردبريس، إلى جانب وصول حصري الآن إلى ميزات Stats وReader وNotifications والمزيد.";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "التبديل مجاني، ولا يستغرق سوى بضع دقائق.";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "التبديل إلى تطبيق Jetpack";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "معرفة المزيد على jetpack.com";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "استخدم ووردبريس مع ميزة Notifications في تطبيق Jetpack.";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "استخدم ووردبريس مع ميزة Reader في تطبيق Jetpack.";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "استخدم ووردبريس مع ميزة Stats في تطبيق Jetpack.";
+
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "المحتوى";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "صيانة";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "اجتماعي";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "حركة المرور";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "العمل على إعداد مسودة للتدوينة";
+
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "عرض كل المسودات";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "عرض كل التدوينات المجدولة";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "إحصاءات اليوم";
+
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "الأخبار";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "نقل نطاقاتك";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "مثلما تعرف، تم بيع Google Domains لـ Squarespace. انقل نطاقاتك إلى ووردبريس.كوم الآن، وسندفع كل رسوم النقل بالإضافة إلى عام إضافي من تسجيلك للنطاق.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "استعادة Google Domains الخاصة بك";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "تجاهل";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "تجاهُل";
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "يمكن التحسين";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "أعجبت به";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "لا شكرًا";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "إرسال الملاحظات";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "من";
@@ -10197,8 +10479,50 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Promote the page with Blaze. */
 "pages.blaze.actionTitle" = "الترويج مع الإبراز";
 
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "تستخدم صفحتك الرئيسية قالب القالب وستفتح في محرر الويب.";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "الصفحة الرئيسية";
+
 /* No comment provided by engineer. */
 "password" = "كلمة المرور";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "قد تعرض البطاقات محتوى مختلفًا استنادًا إلى ما يحدث على موقعك. إننا نعمل على مزيد من البطاقات وضوابط التحكم.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "إضافة بطاقات أو إخفاؤها";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "آخر نشاط";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "التوهج";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "إعداد مسودة للتدوينات";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "التعرُّف على التطبيق";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "الخطوات التالية";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "الصفحات";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "مطالبات التدوين";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "تدوينات مجدولة";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "إحصاءات اليوم";
+
+/* Page title */
+"personalizeHome.title" = "علامة تبويب تخصيص الصفحة الرئيسية";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "رقم الهاتف";
@@ -10215,8 +10539,69 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "خيارات الصور المتميزة";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "لا تتوافر ميزة المشاركة التلقائية في تويتر بعد الآن";
+
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
+
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "الاشتراك الآن لمشاركة المزيد";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " في غضون الأيام الـ 30 المقبلة";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "المشاركة إلى ⁦%1$d⁩ من الحسابات";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "لم تتم المشاركة على شبكات التواصل الاجتماعي";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "المشاركة إلى ⁦%1$d⁩ من أصل ⁦%2$d⁩ من الحسابات";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "المشاركة إلى %1$@";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "تحذير";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "تخصيص الرسالة";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "الاشتراك لمشاركة المزيد";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "تتبقى ⁦%1$d⁩ من المشاركات على شبكات التواصل الاجتماعي في الثلاثين يومًا المقبلة";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "تحذير";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "رسالة";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "اجتماعي";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "عرض كل الردود";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "زيارة إعدادات الموقع لإعادة التشغيل";
@@ -10232,6 +10617,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "لقد قمت بتسجيل الدخول!";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "البحث";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "إعدادات القارئ";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "هذا الموقع";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "حظر هذا المستخدم";
@@ -10272,6 +10670,48 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "جديد";
 
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "تعرض التدوينات ذات الصلة المحتوى ذا الصلة من موقعك أسفل تدويناتك.";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "في \"الهاتف المحمول\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.title" = "يتوافر الآن تحديث iPhone\/iPad الكبير";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "في \"التطبيقات\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "يحصل تطبيق ووردبريس لنظام التشغيل Android على عناية كبيرة";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "في \"الترقية\"";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "ترقية التركيز: فيديوبرس لحفلات الزفاف";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "معاينة";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "التدوينات ذات الصلة";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "فشل تحديث الإعدادات";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "عرض الترويسة";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "عرض المقالات ذات الصلة";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "عرض الصور";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "التدوينات ذات الصلة";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "تجاهل";
 
@@ -10293,11 +10733,83 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "خطأ في المشاركة";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "تم إنشاء موقعك على الويب بنجاح، لكننا واجهنا مشكلة في أثناء إعداد نطاقك المخصص للسداد. يرجى المحاولة مجددًا أو الاتصال بالدعم للحصول على المساعدة.";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "على غرار المثال أعلاه، يسمح النطاق للأشخاص بالعثور على موقعك وزيارته من متصفح الويب لديهم.";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "الخصوصية";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "إن موقعك مرئي للجميع، ولكنه يطلب من محركات البحث عدم فهرسة موقعك.";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "مخفي";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "سيكون موقعك مرئيًا لك وللمستخدمين الذين توافق عليهم فقط.";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "خاص";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "سيكون موقعك مرئيًا لأي شخص، ويمكن فهرسته بواسطة محركات البحث.";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "عام";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "غير معروف";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "غير معروف";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "إظهار المطالبات";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "التذكيرات";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "قم بزيادة حركة المرور لديك من حلال مشاركة تدويناتك تلقائيًا مع أصدقائك على شبكات التواصل الاجتماعي.";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "ربط الحسابات";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "أيقونات شبكات التواصل الاجتماعي";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "ليس الآن";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "لن تتم مشاركة تدويناتك على ⁦%1$d⁩ من حساباتك على شبكات التواصل الاجتماعي.";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "لن تتم مشاركة تدويناتك على حسابك على شبكات التواصل الاجتماعي.";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "أيقونات شبكات التواصل الاجتماعي";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "الاشتراك لمشاركة المزيد";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "لا تتوافر ميزة المشاركة التلقائية في تويتر بعد الآن";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "اكتشاف المزيد";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "لا تتوافر ميزة المشاركة التلقائية على تويتر بعد الآن بسبب التغييرات التي أجرتها تويتر في الشروط والأسعار.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "آخر 7 أيام";
@@ -10392,6 +10904,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "لا يوجد نشاط كافٍ. تحقَّق من هذا مرة أخرى لاحقًا عندما يكون لدى موقعك مزيد من الزائرين!";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
+"stats.insights.totalLikes.guideText.singular" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "تجاهُل";
 
@@ -10418,6 +10936,69 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "زيارة وردبرس.أورج";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "جارٍ التفكير...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "إغلاق";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "الاتصال بالدعم";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "ما الذي يمكنني مساعدتك على القيام به؟ إذا لم أتمكن من الإجابة عن سؤالك، فإنني سأساعدك على فتح بطاقة دعم من خلال فريقنا!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "إرسال رسالة...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "نسيتُ معلومات تسجيل الدخول الخاصة بي";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "ما السبب في عدم تسجيلي الدخول؟";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "ما عنوان موقعي؟";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "كيف يمكنني استخدام نطاقي المخصص في التطبيق؟";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "يتعذر عليَّ رفع الصور\/الفيديوهات";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "ساعدوني، لقد تعطَّل موقعي!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "الإبلاغ بأنه غير دقيق";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "مصادر";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "ألست متأكدًا مما تسأل؟";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "خطأ في إرسال بطاقة الدعم";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "جارٍ إنشاء بطاقة الدعم...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "تم إنشاء بطاقة";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "الاتصال بالدعم";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "إجابة";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "سؤال";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "النص المكتوب في Jetpack Mobile Bot";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "اطرح سؤالاً في المنتدى الاجتماعي واحصل على المساعدة من مجموعة المتطوعين لدينا.";
@@ -10608,8 +11189,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "ووردبريس، المواقع، الموقع، المدونات، المدونة";
 
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "التبديل إلى تطبيق Jetpack";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "الاستمرار من دون Jetpack";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "تستخدم %1$@ إضافات Jetpack الفردية، غير المدعومة من تطبيق ووردبريس.";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "تستخدم %1$@ إضافة %2$@، غير المدعومة من تطبيق ووردبريس.";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "يرجى التبديل إلى تطبيق Jetpack، حيث سنرشدك من خلال الاتصال بإضافة Jetpack الكاملة حتى تتمكن من استخدام كل ميزات التطبيقات في هذا الموقع.";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "عذرًا، هذا الموقع غير مدعوم من تطبيق ووردبريس";
+
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "يرجى حذف تطبيق ووردبريس";
+"wp.migration.successCard.description" = "مرحبًا في تطبيق Jetpack. يمكنك إلغاء تثبيت تطبيق ووردبريس.";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "معرفة المزيد";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "موقعك";

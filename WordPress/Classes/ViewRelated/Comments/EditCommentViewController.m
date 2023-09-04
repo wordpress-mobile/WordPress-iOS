@@ -2,7 +2,6 @@
 #import "CommentService.h"
 #import "CoreDataStack.h"
 
-#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 
@@ -194,7 +193,7 @@
                                 handler:nil];
     [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"")
                                   style:UIAlertActionStyleDestructive
-                                handler:^(UIAlertAction *alertAction) {
+                                handler:^(UIAlertAction * __unused alertAction) {
                                     [self finishWithoutUpdates];
                                 }];
     alertController.popoverPresentationController.barButtonItem = self.navigationItem.leftBarButtonItem;

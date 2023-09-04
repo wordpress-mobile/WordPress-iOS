@@ -1,0 +1,39 @@
+.docsbot-chat-header,
+.mobile-close-button,
+a.floating-button {
+    display: none !important;
+}
+
+.docsbot-wrapper {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+.docsbot-chat-input-form {
+    margin-bottom: 0px;
+}
+
+.docsbot-chat-bot-message-container span {
+    color: black !important;
+}
+
+.docsbot-user-chat-message-container span {
+    color: black !important;
+}
+
+.docsbot-chat-input {
+    height: 48px !important;
+}
+
+.docsbot-chat-btn-send-icon {
+  width: 24px; !important;
+}
+
+.docsbot-chat-bot-message-meta {
+    margin-top: 16px;
+}
+
+.docsbot-chat-suggested-questions-container button {
+    height: 48px;
+}

@@ -199,9 +199,7 @@ final class BlogTests: CoreDataTestCase {
         // Create an account with duplicated blogs
         let xmlrpc = "https://xmlrpc.test.wordpress.com"
         let account = try await contextManager.performAndSave { context in
-            let account = WPAccount(context: context)
-            account.username = "username"
-            account.authToken = "authToken"
+            let account = WPAccount.fixture(context: context)
             account.blogs = Set(
                 (1...10).map { _ in
                     let blog = BlogBuilder(context).build()
@@ -220,5 +218,56 @@ final class BlogTests: CoreDataTestCase {
         }
 
         try XCTAssertEqual(mainContext.count(for: Blog.fetchRequest()), 1)
+    }
+
+    // MARK: - Blog Feature Domains
+
+    func testBlogSupportsDomainsHostedAtWPcom() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(atomic: false)
+            .with(isAdmin: true)
+            .build()
+
+        let result = blog.supports(.domains)
+
+        XCTAssertTrue(result, "Domains should be supported for WPcom hosted blogs")
+    }
+
+    func testBlogSupportsDomainsAtomic() {
+        let blog = BlogBuilder(mainContext)
+            .isNotHostedAtWPcom()
+            .with(atomic: true)
+            .with(isAdmin: true)
+            .build()
+
+        let result = blog.supports(.domains)
+
+        XCTAssertTrue(result, "Domains should be supported for Atomic blogs")
+    }
+
+    func testShouldNotSupportDomainsNotAdmin() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(atomic: false)
+            .with(isAdmin: false)
+            .build()
+
+        let result = blog.supports(.domains)
+
+        XCTAssertFalse(result, "Domains should not be supported for non-admin users")
+    }
+
+    func testShouldNotSupportDomainsForP2s() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(atomic: false)
+            .with(isAdmin: true)
+            .with(isWPForTeamsSite: true)
+            .build()
+
+        let result = blog.supports(.domains)
+
+        XCTAssertFalse(result, "Domains should not be supported when the site is P2 site")
     }
 }

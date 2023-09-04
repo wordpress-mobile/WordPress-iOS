@@ -24,7 +24,7 @@ public class GetStartedScreen: ScreenObject {
     }
 
     var navBar: XCUIElement { navBarGetter(app) }
-    public var emailTextField: XCUIElement { emailTextFieldGetter(app) }
+    var emailTextField: XCUIElement { emailTextFieldGetter(app) }
     var continueButton: XCUIElement { continueButtonGetter(app) }
     var helpButton: XCUIElement { helpButtonGetter(app) }
     var backButton: XCUIElement { backButtonGetter(app) }
@@ -38,8 +38,7 @@ public class GetStartedScreen: ScreenObject {
                 emailTextFieldGetter,
                 helpButtonGetter
             ],
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 

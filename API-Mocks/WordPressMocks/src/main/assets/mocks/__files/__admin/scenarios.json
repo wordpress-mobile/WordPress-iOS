@@ -1,0 +1,16 @@
+{
+  "scenarios" : [ 
+    {
+      "id" : "comment_flow",
+      "name" : "comment_flow",
+      "state" : "Started",
+      "possibleStates" : [ "Started", "initial_list", "replied", "new_list" ]
+    },
+    {
+      "id" : "reader_like_post_flow",
+      "name" : "reader_like_post_flow",
+      "state" : "Started",
+      "possibleStates" : [ "Started", "initial_list", "post_liked", "new_list" ]
+    }
+  ]
+}

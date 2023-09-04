@@ -73,18 +73,20 @@ import WordPressFlux
         }
 
         let uploadStatus = postUploadOp.currentStatus
-        var uploadedMediaCount = 0
 
         if uploadStatus == .error {
             // The post upload failed
-            let model = ShareNoticeViewModel(post: nil, uploadStatus: uploadStatus, uploadedMediaCount: uploadedMediaCount)
+            let model = ShareNoticeViewModel(post: nil, uploadStatus: uploadStatus, uploadedMediaCount: 0)
             if let notice = model?.notice {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))
             }
         } else {
+            let uploadedMediaCount: Int
             // The post upload was successful
             if let groupID = postUploadOp.groupID, let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) {
                 uploadedMediaCount = mediaUploadOps.count
+            } else {
+                uploadedMediaCount = 0
             }
 
             let context = ContextManager.sharedInstance().mainContext
@@ -94,18 +96,24 @@ import WordPressFlux
             }
 
             // Sync the remote post to WPiOS so that we can open it for editing if needed.
-            let postService = PostService(managedObjectContext: context)
-            postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { post in
-                guard let post = post as? Post else {
-                    return
-                }
+            let repository = PostRepository(coreDataStack: ContextManager.shared)
+            let blogID = TaggedManagedObjectID(saved: blog)
+            let postID = postUploadOp.remotePostID
+            Task { @MainActor in
+                do {
+                    let postObjectID = try await repository.getPost(withID: .init(value: postID), from: blogID)
+                    let postObject = try ContextManager.shared.mainContext.existingObject(with: postObjectID)
+                    guard let post = postObject as? Post else {
+                        return
+                    }
 
-                let model = ShareNoticeViewModel(post: post, uploadStatus: uploadStatus, uploadedMediaCount: uploadedMediaCount)
-                if let notice = model?.notice {
-                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                    let model = ShareNoticeViewModel(post: post, uploadStatus: uploadStatus, uploadedMediaCount: uploadedMediaCount)
+                    if let notice = model?.notice {
+                        ActionDispatcher.dispatch(NoticeAction.post(notice))
+                    }
+                } catch {
+                    DDLogError("Unable to create user notification for share extension session with.")
                 }
-            }) { error in
-                DDLogError("Unable to create user notification for share extension session with.")
             }
         }
     }

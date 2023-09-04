@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-03-03 10:54:08+0000 */
+/* Translation-Revision-Date: 2023-08-30 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.4 */
+/* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -250,11 +250,8 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s ブロック。このブロックは無効なコンテンツです";
 
-/* translators: %s: name of the reusable block */
-"%s converted to regular block" = "%s が通常のブロックに変換されました";
-
-/* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%sを通常のブロックへ変換しました";
+/* translators: %s: name of the synced block */
+"%s detached" = "%sを切り離しました";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s 埋め込みブロックのプレビューがまもなく公開予定です ";
@@ -264,6 +261,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s リンク";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%sプレビューはまだご利用いただけません";
@@ -416,9 +416,6 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "画像または動画を追加";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "リンクを追加";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "メディアを追加";
 
 /* No comment provided by engineer. */
@@ -567,6 +564,9 @@ translators: Block name. %s: The localized block name */
 "Add button text" = "ボタンのテキストを追加";
 
 /* No comment provided by engineer. */
+"Add description" = "説明を追加";
+
+/* No comment provided by engineer. */
 "Add image or video" = "画像または動画を追加";
 
 /* Accessibility hint text for adding an image to a new user account. */
@@ -624,6 +624,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Add this telephone link" = "この電話リンクを追加";
 
+/* No comment provided by engineer. */
+"Add title" = "タイトルを追加";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "サイト機能の追加";
 
@@ -661,7 +664,8 @@ translators: Block name. %s: The localized block name */
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
    Title of all Blogging Prompts filter.
-   Title of all Comments filter. */
+   Title of all Comments filter.
+   Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "すべて";
 
 /* Footer of the free domain registration section for a paid plan.
@@ -729,10 +733,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "代替テキスト";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "「通常のブロックへ変換」をタップして、これらのブロックを個別に切り離して編集できます。";
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "または、「パターンを切り離す」をタップして、これらのブロックを個別に切り離して編集できます。";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "または、「通常のブロックへ変換」をタップして、このブロックを個別に切り離して編集できます。";
+"Alternatively, you can detach and edit this block separately by tapping “Detach pattern”." = "または、「パターンを切り離す」をタップして、このブロックを個別に切り離して編集できます。";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "または、このアカウントのパスワードを入力することもできます。";
@@ -1111,11 +1115,11 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "過去最高の表示数";
 
-/* Text for related post cell preview */
-"Big iPhone\/iPad Update Now Available" = "iPhone\/iPad の大幅なアップデートが利用できるようになりました";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "空白ページが作成されました";
+
+/* Noun. Links to a blog's Blaze screen. */
+"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -1133,6 +1137,9 @@ translators: Block name. %s: The localized block name */
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "ブロックエディターを有効にしました";
 
+/* translators: displayed right after the block is grouped */
+"Block grouped" = "ブロックがグループ化されました";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "悪意のあるログイン試行をブロックする";
 
@@ -1148,8 +1155,14 @@ translators: Block name. %s: The localized block name */
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "このサイトをブロック";
 
+/* translators: displayed right after the block is ungrouped. */
+"Block ungrouped" = "ブロックのグループが解除されました";
+
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "サイトがブロックされました";
+
+/* Notice title when blocking a user succeeds. */
+"Blocked user" = "ブロック済みのユーザー";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -1402,9 +1415,6 @@ translators: Block name. %s: The localized block name */
 /* Title of button that takes user to the system Settings section for the app */
 "Change Settings" = "設定を変更";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "サイトを変更";
-
 /* Change site icon button */
 "Change Site Icon" = "サイトアイコンを変更";
 
@@ -1580,9 +1590,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests subtitle label text */
 "Choose your topics" = "トピックを選択";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "別のサイトを選択するとサイト特定のコンテンツ (メディア、カテゴリーなど) に関する編集が失われます。変更しますか ?";
-
 /* Register Domain - Address information field City */
 "City" = "市区町村";
 
@@ -1622,6 +1629,7 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
+   Action button to close the editor
    Dismiss the current view
    Dismiss the media picker for Stock Photos
    Dismisses the current screen
@@ -1957,9 +1965,6 @@ translators: Block name. %s: The localized block name */
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "このアプリからバージョンをコピー";
 
-/* This is one of the buttons we display inside of the prompt to review the app */
-"Could Be Better" = "不満がある";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "トピックをフォローできませんでした";
 
@@ -2149,12 +2154,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Create link" = "リンクを作成";
-
-/* Title for the card prompting the user to create their first post. */
-"Create your first post" = "最初の投稿を作成";
-
-/* Title for the card prompting the user to create a new post. */
-"Create your next post" = "次の投稿を作成";
 
 /* Title of a Quick Start Tour */
 "Create your site" = "サイトを作成";
@@ -2359,7 +2358,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "非承認";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative." = "画像の目的を説明します。 画像が単にデザインである場合は、空欄のままにします。";
+"Describe the purpose of the image. Leave empty if decorative." = "画像の目的を説明します。 デザインである場合は、空欄のままにします。";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2368,6 +2367,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shortened version of the main title to be used in back navigation. */
 "Design" = "デザイン";
+
+/* Navigates to design system gallery only available in development builds */
+"Design System" = "デザインシステム";
 
 /* Title for the desktop web preview */
 "Desktop" = "デスクトップ";
@@ -2581,9 +2583,6 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview post." = "ダブルタップで投稿をプレビューできます。";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "ダブルタップして前回の変更をやり直す";
-
-/* No comment provided by engineer. */
 "Double tap to select" = "ダブルタップして選択";
 
 /* No comment provided by engineer. */
@@ -2606,9 +2605,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "ダブルタップして設定を切り替え";
-
-/* No comment provided by engineer. */
-"Double tap to undo last change" = "ダブルタップして前回の変更を元に戻す";
 
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "ダブルタップして埋め込みオプションを表示します。";
@@ -2655,6 +2651,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Duplicate block" = "ブロックを複製";
 
+/* No comment provided by engineer. */
+"Dynamic" = "ダイナミック";
+
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "例: ファッション、詩、政治";
 
@@ -2677,9 +2676,6 @@ translators: Block name. %s: The localized block name */
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "%@ を編集";
-
-/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "%@ ブロックを編集";
 
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "ブロックリストの単語を編集";
@@ -2728,11 +2724,11 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "動画を編集";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "再利用ブロックの編集は WordPress for Android ではまだサポートされていません";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for Android" = "同期済みパターンの編集は Android 用 %s ではまだサポートされていません";
 
-/* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "再利用ブロックの編集は WordPress for iOS ではまだサポートされていません";
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "同期済みパターンの編集は iOS 用 %s ではまだサポートされていません";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "この GIF を編集するとアニメーションが削除されます。";
@@ -3139,9 +3135,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
 
-/* Title of the Feature Flags screen used in debug builds of the app */
-"Feature flags" = "機能フラグ";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "おすすめ";
 
@@ -3486,9 +3479,6 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "サイト URL を取得";
 
 /* No comment provided by engineer. */
-"Gradient" = "グラデーション";
-
-/* No comment provided by engineer. */
 "Gradient Type" = "グラデーションタイプ";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3600,8 +3590,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "投稿のこれまでのパフォーマンスは次のとおりです。";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
-   Text for privacy settings: Hidden */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "非表示";
 
 /* Hides a site from the site picker list
@@ -3669,9 +3658,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "修正方法";
-
-/* This is one of the buttons we display inside of the prompt to review the app */
-"I Like It" = "満足している";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "写真家の Cameron Karsten 氏の作品にはとても感銘を受けました。 この技術を今度試すつもりです";
@@ -3808,8 +3794,17 @@ translators: Block name. %s: The localized block name */
    Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
 "Insert %@" = "%@個を挿入";
 
+/* No comment provided by engineer. */
+"Insert Audio Block" = "音声ブロックを挿入";
+
+/* No comment provided by engineer. */
+"Insert Gallery Block" = "ギャラリーブロックを挿入";
+
 /* Accessibility label for insert horizontal ruler button on formatting toolbar. */
 "Insert Horizontal Ruler" = "水平線を挿入";
+
+/* No comment provided by engineer. */
+"Insert Image Block" = "画像ブロックを挿入";
 
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
@@ -3818,6 +3813,9 @@ translators: Block name. %s: The localized block name */
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "メディアを挿入";
+
+/* No comment provided by engineer. */
+"Insert Video Block" = "動画ブロックを挿入";
 
 /* No comment provided by engineer. */
 "Insert crosspost" = "クロスポストを挿入";
@@ -4231,6 +4229,9 @@ translators: Block name. %s: The localized block name */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "さらに投稿を読み込む";
 
+/* No comment provided by engineer. */
+"Loading" = "読み込み中";
+
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "アクティビティの読み込み中...";
 
@@ -4412,6 +4413,9 @@ translators: Block name. %s: The localized block name */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "サイトの管理";
+
+/* No comment provided by engineer. */
+"Manual" = "手動";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "マニュアルオフセット";
@@ -4839,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "利用可能なプレビューの URL がありません";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"No Thanks" = "いいえ";
-
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "無題";
 
@@ -4900,6 +4901,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for no currently selected range. */
 "No date range selected" = "期間が選択されていません";
+
+/* No comment provided by engineer. */
+"No description" = "説明はありません";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "修正された脅威はありません";
@@ -5026,6 +5030,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "脅威は見つかりませんでした";
+
+/* No comment provided by engineer. */
+"No title" = "タイトルなし";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -5331,9 +5338,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Outside" = "外側";
 
-/* Used to indicate a setting is overridden in debug builds of the app */
-"Overridden" = "上書き済み";
-
 /* Register Domain - Phone number section header title */
 "PHONE" = "電話";
 
@@ -5496,6 +5500,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to play a video on the editor. */
 "Play video" = "動画を再生";
+
+/* No comment provided by engineer. */
+"Playback Bar Color" = "再生バーの色";
+
+/* No comment provided by engineer. */
+"Playback Settings" = "再生設定";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "投稿する前にいくつかコンテンツを追加してください。";
@@ -5739,9 +5749,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "投稿アクティビティ";
 
-/* Description for the card prompting the user to create a new post. */
-"Posting regularly helps build your audience!" = "定期的に投稿することで、読者を増やすことができます。";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title for posts button.
@@ -5757,9 +5764,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "投稿とページ";
-
-/* Description for the card prompting the user to create their first post. */
-"Posts appear on your blog page in reverse chronological order. It's time to share your ideas with the world!" = "投稿はブログページに新しいものから順に表示されます。 あなたのアイデアを世界中のユーザーとシェアしましょう !";
 
 /* Title of the Posts Page Badge */
 "Posts page" = "投稿ページ";
@@ -5792,7 +5796,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preparing..." = "準備中…";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -5836,8 +5839,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary site address" = "主要サイトのアドレス";
 
 /* Label for the privacy setting
-   Privacy settings section header
-   Title for screen to select the privacy options for a blog */
+   Privacy settings section header */
 "Privacy" = "プライバシー";
 
 /* Title of button that displays the App's privacy policy */
@@ -5850,12 +5852,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Privacy Settings Title */
 "Privacy Settings" = "プライバシー設定";
 
+/* No comment provided by engineer. */
+"Privacy and Rating" = "プライバシーと評価";
+
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "カリフォルニア州のユーザーへのプライバシー通知";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
-   Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "プライベート";
 
@@ -5891,8 +5895,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "プロンプト";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
-   Text for privacy settings: Public */
+/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "公開";
 
 /* Button shown when the author is asked for publishing confirmation.
@@ -5957,9 +5960,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Mobile Push Notifications */
 "Push Notifications" = "プッシュ通知";
-
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "iOS 設定でプッシュ通知が無効になっています";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "iOS 設定でプッシュ通知が無効になっています。「通知を許可」に切り替えて有効化してください。";
@@ -6034,6 +6034,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "再連携完了";
 
+/* Action button to redo last change */
+"Redo" = "やり直す";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "リファラ";
 
@@ -6064,13 +6067,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "ディスカッションを再開する:新規投稿を書く。";
 
-/* Label for Related Post header preview
-   Label for selecting the related posts options
-   Title for screen that allows configuration of your blog/site related posts settings. */
+/* Label for selecting the related posts options */
 "Related Posts" = "関連記事";
-
-/* Information of what related post are and how they are presented */
-"Related Posts displays relevant content from your site below your posts" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します";
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "後で再通知";
@@ -6121,6 +6119,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "ブロックを削除";
+
+/* No comment provided by engineer. */
+"Remove blocks" = "ブロックを削除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "統計概要から削除";
@@ -6499,6 +6500,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* title of the button that searches the first domain. */
 "Search for a domain" = "ドメインを検索";
 
+/* Select domain name. Subtitle */
+"Search for a short and memorable keyword to help people find and visit your website." = "ユーザーがあなたのサイトを探し、アクセスしやすくなる短く覚えやすいキーワードを検索します。";
+
 /* No comment provided by engineer. */
 "Search input field." = "検索用の入力フィールド。";
 
@@ -6690,9 +6694,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "サイトの目的としてこのテーマを選択します。";
 
-/* This is one of the buttons we display when prompting the user for a review */
-"Send Feedback" = "意見を送る";
-
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "リンクを送信";
 
@@ -6836,12 +6837,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "共有エラー";
 
-/* Label for configuration switch to show/hide the header for the related posts section */
-"Show Header" = "ヘッダーを表示";
-
-/* Label for configuration switch to show/hide images thumbnail for the related posts */
-"Show Images" = "画像を表示";
-
 /* Title for the `show like button` setting */
 "Show Like button" = "いいねボタンを表示";
 
@@ -6850,9 +6845,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "リブログボタンを表示";
-
-/* Label for configuration switch to enable/disable related posts */
-"Show Related Posts" = "関連記事を表示";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
 "Show me around" = "表示";
@@ -7428,9 +7420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint */
 "Tap to select the previous period" = "タップして前の期間を選択";
 
-/* This is the blog picker in the editor */
-"Tap to select which blog to post to" = "投稿先のブログを選択";
-
 /* Accessibility hint for button used to switch site */
 "Tap to switch to another site, or add a new site" = "タップして別のサイトに切り替え、または新しいサイトを追加";
 
@@ -7475,6 +7464,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "テキストのみ";
+
+/* No comment provided by engineer. */
+"Text color" = "テキスト色";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "書式設定コントロールは、テキストブロックの編集中に表示されるキーボードの上に位置するツールバー内にあります";
@@ -7531,9 +7523,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "この URL には有効なホストがありません。";
-
-/* Text for related post cell preview */
-"The WordPress for Android App Gets a Big Facelift" = "WordPress for Android アプリが大幅リニューアル";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "世界最高のファン";
@@ -7823,9 +7812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "この情報は、製品を改善し、マーケティングをより関連性の高いものとし、WordPress.com の利用をパーソナライズするのに役立ちます。さらに詳しくは、個人情報保護方針をご覧ください。";
 
-/* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "ドメインとは、インターネット上の住所です。";
-
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "本日はブログ投稿日です✍️";
 
@@ -7935,9 +7921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "新しい WordPress.com アカウントを作成するには、メールアドレスを入力してください。";
 
-/* Displayed when Push Notifications are disabled (iOS 7) */
-"To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "通知を有効化するには:\n\n1. **iOS 設定**画面を開く\n2. **通知**をタップ\n3. **WordPress** を選択\n4. **通知を許可**を有効化";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、Jetpack プラグインをインストールする必要があります。";
 
@@ -7976,8 +7959,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a push notification showing today's blogging prompt. */
 "Today's Prompt 💡" = "今日の通知💡";
 
-/* Insights Management 'Today's Stats' title
-   Title for the card displaying today's stats. */
+/* Insights Management 'Today's Stats' title */
 "Today's Stats" = "今日の統計情報";
 
 /* Discoverability title for HTML keyboard shortcut. */
@@ -8049,7 +8031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for trash button to delete items from the user's media library
    Accessibility label for trash buttons in nav bars
-   Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
 "Trash" = "ゴミ箱";
@@ -8332,7 +8313,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "下線";
 
-/* Button in the notification presented in Reader when a post removed from saved for later
+/* Action button to undo last change
+   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -8376,7 +8358,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unhide" = "表示";
 
 /* Label for size of media when it's not possible to calculate it.
-   Text for unknown privacy setting
    Unknown Tag Name */
 "Unknown" = "不明";
 
@@ -8394,6 +8375,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "不明な検索キーワード";
+
+/* translators: %s: the hex color value */
+"Unlabeled color. %s" = "ラベルない色。 %s";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment */
 "Unlike the Comment." = "コメントのいいねを解除。";
@@ -8472,9 +8456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "更新中...";
-
-/* Text for related post cell preview */
-"Upgrade Focus: VideoPress For Weddings" = "アップグレードフォーカス: ウェディング向け VideoPress";
 
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "プランをアップグレードして音声をアップロードする";
@@ -9066,9 +9047,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "カスタムアプリのアイコンを新しく更新しました。新しいスタイル10個から選択できますが、もしこれまでのアイコンのほうがお好みでしたらそのまま使用することもできます。";
 
-/* This is the string we display when prompting the user to review the app */
-"What do you think about WordPress?" = "WordPress アプリについてどう思いますか ?";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "このファイルで行う操作:アップロードし、そのファイルへのリンクを投稿に追加するか、ファイルのコンテンツを直接投稿を追加しますか ?";
 
@@ -9224,9 +9202,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "求人情報";
-
-/* Title for the card displaying draft posts. */
-"Work on a draft post" = "下書き投稿を作成";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "国別表示数の世界地図。";
@@ -9432,7 +9407,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "最近この投稿に変更を加えましたが、それを保存していません。読み込むバージョンを選択してください。\n\nこの端末から\n%1$@に保存\n\n別の端末から\n%2$@に保存\n";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "このコメントに返信しました。";
 
 /* No comment provided by engineer. */
@@ -9499,12 +9475,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "あなたの WordPress.com の無料アドレスは";
 
-/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "最新の投稿 <a href=\"\">%1$@<\/a> が<strong>%2$d<\/strong>回「いいね」されました。";
-
-/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
-"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "最新の投稿 <a href=\"\">%@<\/a> が<strong>1<\/strong>回「いいね」されました。";
-
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません。問題が解決しない場合、「自分 > ヘルプ & サポート」画面からお問い合わせください。";
 
@@ -9559,17 +9529,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "現在サイトを復元中です";
 
-/* Hint for users when private privacy setting is set */
-"Your site is only visible to you and users you approve." = "サイトはあなたと承認したユーザーのみが表示できます。";
-
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "このサイトにはメディアをアップロードするスペースが足りません。";
-
-/* Hint for users when public privacy setting is set */
-"Your site is visible to everyone, and it may be indexed by search engines." = "誰でもサイトを閲覧することができ、検索エンジンにインデックスされる可能性があります。";
-
-/* Hint for users when hidden privacy setting is set */
-"Your site is visible to everyone, but asks search engines not to index your site." = "誰でもサイトを閲覧可能にし、検索エンジンにはインデックスしないよう要求します。";
 
 /* Title for label when there are threats on the users site */
 "Your site may be at risk" = "サイトが危険にさらされている可能性があります";
@@ -9634,6 +9595,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "1時間";
 
+/* This is the string we display when prompting the user to review the Jetpack app */
+"appRatings.jetpack.prompt" = "Jetpack についてどう思いますか ?";
+
+/* This is the string we display when prompting the user to review the WordPress app */
+"appRatings.wordpress.prompt" = "WordPress アプリについてどう思いますか ?";
+
 /* Label displayed on audio media items. */
 "audio" = "音声ファイル";
 
@@ -9646,6 +9613,93 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "削除";
 
+/* Button title for the button that shows the Blaze flow when tapped. */
+"blaze.campaigns.create.button.title" = "作成";
+
+/* Text displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.subtitle" = "まだキャンペーンを作成していません。 開始するには「作成」をクリックしてください。";
+
+/* Title displayed when there are no Blaze campaigns to display. */
+"blaze.campaigns.empty.title" = "キャンペーンがありません";
+
+/* Text displayed when there is a failure loading Blaze campaigns. */
+"blaze.campaigns.errorMessage" = "キャンペーンの読み込みでエラーが発生しました。";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "エラー発生";
+
+/* Displayed while Blaze campaigns are being loaded. */
+"blaze.campaigns.loading.title" = "キャンペーンを読み込んでいます…";
+
+/* Title for the screen that allows users to manage their Blaze campaigns. */
+"blaze.campaigns.title" = "Blaze キャンペーン";
+
+/* Description for the Blaze dashboard card. */
+"blaze.dashboard.card.description" = "何百万ものサイトに作品を表示しましょう。";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.hide" = "非表示";
+
+/* Title for a menu action in the context menu on the Blaze card. */
+"blaze.dashboard.card.menu.learnMore" = "さらに詳しく";
+
+/* Title for the Blaze dashboard card. */
+"blaze.dashboard.card.title" = "Blaze を使ってコンテンツを宣伝";
+
+/* Button title for a Blaze overlay prompting users to select a post to blaze. */
+"blaze.overlay.buttonTitle" = "今すぐ投稿を目立たせる";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionOne" = "1日わずか数百円、たった数分で投稿やページを宣伝できます。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionThree" = "キャンペーンのパフォーマンスを追跡したりいつでもキャンセルしたりできます。";
+
+/* Description for the Blaze overlay. */
+"blaze.overlay.descriptionTwo" = "コンテンツは数百万もの WordPress と Tumblr のサイトに表示されます。";
+
+/* Title for the Blaze overlay. */
+"blaze.overlay.title" = "Blaze でサイトのトラフィックを増やす";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected page. */
+"blaze.overlay.withPage.buttonTitle" = "このページを目立たせる";
+
+/* Button title for the Blaze overlay prompting users to blaze the selected post. */
+"blaze.overlay.withPost.buttonTitle" = "この投稿を目立たせる";
+
+/* Short status description */
+"blazeCampaign.status.active" = "有効";
+
+/* Short status description */
+"blazeCampaign.status.approved" = "承認済み";
+
+/* Short status description */
+"blazeCampaign.status.canceled" = "キャンセル済み";
+
+/* Short status description */
+"blazeCampaign.status.completed" = "完了";
+
+/* Short status description */
+"blazeCampaign.status.inmoderation" = "モデレーション中";
+
+/* Short status description */
+"blazeCampaign.status.processing" = "処理中";
+
+/* Short status description */
+"blazeCampaign.status.rejected" = "却下";
+
+/* Title for budget stats view */
+"blazeCampaigns.budget" = "予算";
+
+/* Title for impressions stats view */
+"blazeCampaigns.clicks" = "クリック数";
+
+/* Title for impressions stats view */
+"blazeCampaigns.impressions" = "インプレッション";
+
+/* Title for the context menu action that hides the dashboard card. */
+"blogDashboard.contextMenu.hideThis" = "非表示";
+
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "削除";
 
@@ -9655,8 +9709,44 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "作成者: %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "役に立ったと評価する";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "コメント";
+
+/* Sentence fragment.
+The full phrase is 'Comments on' followed by the title of the post on a separate line. */
+"comment.header.subText.commentThread" = "次の投稿へのコメント:";
+
+/* Provides a hint that the current screen displays a comment on a post.
+The title of the post will be displayed below this text.
+Example: Comment on 
+ My First Post */
+"comment.header.subText.post" = "コメントする";
+
+/* Provides a hint that the current screen displays a reply to a comment.
+%1$@ is a placeholder for the comment author's name that's been replied to.
+Example: Reply to Pamela Nguyen */
+"comment.header.subText.reply" = "%1$@ への返信";
+
+/* Footnote for the privacy compliance popover. */
+"compliance.analytics.popover.footnote" = "これらの Cookie を使用することにより、ユーザーによるサイトの利用状況に関する情報が収集され、パフォーマンスが最適化されます。";
+
+/* Save Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.save.button" = "保存";
+
+/* Settings Button Title for the privacy compliance popover. */
+"compliance.analytics.popover.settings.button" = "「設定」に移動";
+
+/* Subtitle for the privacy compliance popover. */
+"compliance.analytics.popover.subtitle" = "個人データはサイトとマーケティングアクティビティの最適化のために、ユーザーの同意と当社の正当な関心事項に基づき処理されます。";
+
+/* Title for the privacy compliance popover. */
+"compliance.analytics.popover.title" = "プライバシーを管理";
+
+/* Toggle Title for the privacy compliance popover. */
+"compliance.analytics.popover.toggle" = "アナリティクス";
 
 /* The menu item to select during a guided tour. */
 "connections" = "連携";
@@ -9679,6 +9769,138 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "今すぐ試す";
 
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.subtitle" = "ニーズに合ったカードを追加してサイトに関する情報を表示します。";
+
+/* Title for an empty state view when no cards are displayed */
+"dasboard.emptyView.title" = "表示するカードがありません";
+
+/* Personialize home tab button title */
+"dasboard.personalizeHomeButtonTitle" = "ホームタブをパーソナライズ";
+
+/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
+"dashboard.card.social.menu.hide" = "非表示";
+
+/* Title for the Jetpack Social dashboard card when the user has no social connections. */
+"dashboard.card.social.noconnections.title" = "ソーシャルネットワーク全体で共有する";
+
+/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
+"dashboard.card.social.noshares.title" = "シェアできなくなりました。";
+
+/* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
+"dashboardCard.ActivityLog.contextMenu.allActivity" = "すべてのアクティビティ";
+
+/* Title for the Activity Log dashboard card. */
+"dashboardCard.ActivityLog.title" = "最近のアクティビティ";
+
+/* Title for an action that opens the full pages list. */
+"dashboardCard.Pages.contextMenu.allPages" = "固定ページ一覧";
+
+/* Title for the Pages dashboard card. */
+"dashboardCard.Pages.title" = "ページ";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.clicks" = "クリック数";
+
+/* Title of a button that starts the campaign creation flow. */
+"dashboardCard.blazeCampaigns.createCampaignButton" = "キャンペーンを作成";
+
+/* Title for impressions stats view */
+"dashboardCard.blazeCampaigns.impressions" = "インプレッション";
+
+/* Title for the Learn more button in the More menu. */
+"dashboardCard.blazeCampaigns.learnMore" = "さらに詳しく";
+
+/* Title for the card displaying blaze campaigns. */
+"dashboardCard.blazeCampaigns.title" = "Blaze キャンペーン";
+
+/* Title for the View All Campaigns button in the More menu */
+"dashboardCard.blazeCampaigns.viewAllCampaigns" = "すべてのキャンペーンを表示";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.add.button.title" = "サイトにページを追加する";
+
+/* Title of label marking a draft page */
+"dashboardCard.pages.cell.status.draft" = "下書き";
+
+/* Title of label marking a published page */
+"dashboardCard.pages.cell.status.publish" = "公開済み";
+
+/* Title of label marking a scheduled page */
+"dashboardCard.pages.cell.status.schedule" = "予約済み";
+
+/* Title of a button that starts the page creation flow. */
+"dashboardCard.pages.create.button.title" = "別のページを作成する";
+
+/* Title of a label that encourages the user to create a new page. */
+"dashboardCard.pages.create.description" = "カスタムメイドのスマートフォンに対応したレイアウトから始める。";
+
+/* Title for the View stats button in the More menu */
+"dashboardCard.stats.viewStats" = "統計情報を表示する";
+
+/* Feature flags menu item */
+"debugMenu.featureFlags" = "機能フラグ";
+
+/* General section title */
+"debugMenu.generalSectionTitle" = "一般";
+
+/* Remote config params debug menu footer explaining the meaning of a cell with a checkmark. */
+"debugMenu.remoteConfig.footer" = "上書きした変数はチェックマークで表示されます。";
+
+/* Hint for overriding remote config params */
+"debugMenu.remoteConfig.hint" = "ここで新しい値を定義して選択した変数を上書きします。";
+
+/* Placeholder for overriding remote config params */
+"debugMenu.remoteConfig.placeholder" = "リモート値またはデフォルト値なし";
+
+/* Remote Config debug menu title */
+"debugMenu.remoteConfig.title" = "リモート設定";
+
+/* Description for the Domains dashboard card. */
+"domain.dashboard.card.description" = "見つけやすく、共有やフォローがしやすいサイトアドレスを使って自分のサイトであることを示しましょう。";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"domain.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Domains dashboard card. */
+"domain.dashboard.card.shortTitle" = "カスタムドメインを探す";
+
+/* Domain Purchase Completion footer */
+"domain.purchase.preview.footer" = "カスタムドメインが使用可能になるまでに最大で30分かかる場合があります。";
+
+/* Domain Purchase Completion description (only for FREE domains). */
+"domain.purchase.preview.free.description" = "次に、閲覧できるように準備を整えます。";
+
+/* Domain Purchase Completion description (only for PAID domains). */
+"domain.purchase.preview.paid.description" = "領収書をメールで送信しました。 次に、すべての人に向け準備を整えます。";
+
+/* Reflects that site is live when domain purchase feature flag is ON. */
+"domain.purchase.preview.title" = "おめでとうございます ! サイトが公開されました。";
+
+/* The 'Best Alternative' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.best-alternative" = "こちらもおすすめ";
+
+/* The text to display for paid domains on sale in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.first-year" = "最初の年";
+
+/* The text to display for free domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.free" = "無料";
+
+/* The 'Recommended' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.recommended" = "おすすめ";
+
+/* The 'Sale' label under the domain name in 'Choose a domain' screen */
+"domain.suggestions.row.sale" = "セール";
+
+/* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
+"domain.suggestions.row.yearly" = "\/ 年";
+
+/* Action shown in a bottom notice to dismiss it. */
+"domains.failure.dismiss" = "閉じる";
+
+/* Content show when the domain selection action fails. */
+"domains.failure.title" = "追加しようとしているドメインは現在 Jetpack アプリでは購入できません。";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
 
@@ -9696,11 +9918,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Title of screen the displays the details of an advertisement campaign. */
+"feature.blaze.campaignDetails.title" = "キャンペーン詳細";
+
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "フォロー";
+
+/* Description for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.description" = "初年度は無料でドメインを取得でき、サイト上の広告が削除され、ストレージが増えます。";
+
+/* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.menu.hide" = "非表示";
+
+/* Title for the Free to Paid plans dashboard card. */
+"freeToPaidPlans.dashboard.card.shortTitle" = "年間プランではドメイン名が無料で利用できます";
+
+/* Done button title on the domain purchase result screen. Closes the screen. */
+"freeToPaidPlans.resultView.done" = "完了";
+
+/* Notice on the domain purchase result screen. Tells user how long it might take for their domain to be ready. */
+"freeToPaidPlans.resultView.notice" = "ドメインが正常に使用可能になるまでに最大で30分かかる場合があります";
+
+/* Sub-title for the domain purchase result screen. Tells user their domain is being set up. */
+"freeToPaidPlans.resultView.subtitle" = "新しいドメイン %@ の設定中です。";
+
+/* Title for the domain purchase result screen. Tells user their domain was obtained. */
+"freeToPaidPlans.resultView.title" = "準備完了 !";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "エラーが発生しました";
+
+/* A footer retry button */
+"general.pagingFooterView.retry" = "再試行";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "ブログ投稿のリマインダーを設定";
@@ -9768,15 +10020,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on image media items. */
 "image" = "画像";
 
-/* Text for related post cell preview */
-"in \"Apps\"" = "「アプリ」カテゴリー";
-
-/* Text for related post cell preview */
-"in \"Mobile\"" = "「モバイル」カテゴリー";
-
-/* Text for related post cell preview */
-"in \"Upgrade\"" = "「アップグレード」カテゴリー";
-
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "投稿に使用する写真または動画を撮る。";
 
@@ -9836,6 +10079,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@が%2$@で移動します";
+
+/* Title of a badge or banner indicating that this feature will be moved in a few days. */
+"jetpack.branding.badge_banner.moving_in_days.plural" = "数日後に Jetpack アプリに移動予定です。";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@がまもなく移動します";
@@ -9972,6 +10218,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完了";
 
+/* Title of a button for connecting user account to Jetpack. */
+"jetpack.install.connectUser.button.title" = "ユーザーアカウントを連携する";
+
+/* Message asking the user if they want to set up Jetpack from notifications */
+"jetpack.install.connectUser.notifications.description" = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、ユーザーアカウントに連携する必要があります。";
+
+/* Message asking the user if they want to set up Jetpack from stats by connecting their user account */
+"jetpack.install.connectUser.stats.description" = "サイトで統計情報を使用するには、Jetpack プラグインをユーザーアカウントに連携する必要があります。";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "統計、Reader、通知などの機能は、まもなく Jetpack モバイルアプリに移動します。";
 
@@ -10075,7 +10330,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "削除";
 
 /* The description in the Delete WordPress screen */
-"migration.deleteWordpress.description" = "WordPress アプリがまだインストールされているようです。 データの競合を避けるため、WordPress アプリを削除することをお勧めします。";
+"migration.deleteWordpress.description" = "WordPress アプリがまだインストールされているようです。";
 
 /* The primary button title in the Delete WordPress screen */
 "migration.deleteWordpress.primaryButton" = "OK";
@@ -10084,13 +10339,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.deleteWordpress.secondaryButton" = "ヘルプが必要ですか ?";
 
 /* The title in the Delete WordPress screen */
-"migration.deleteWordpress.title" = "WordPress アプリは不要になりました";
+"migration.deleteWordpress.title" = "お使いの端末に WordPress アプリは不要になりました";
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "完了";
 
 /* Footer for the migration done screen. */
-"migration.done.footer" = "データの競合を避けるため、WordPress アプリを削除してください。";
+"migration.done.footer" = "データの競合を避けるため、お使いの端末から WordPress アプリをアンインストールすることをおすすめします。";
 
 /* Highlighted text in the footer of the migration done screen. */
 "migration.done.footer.highlighted" = "WordPress アプリを削除";
@@ -10146,11 +10401,77 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack へようこそ !";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "Jetpack アプリで WordPress アプリの全機能に加えて統計、Reader、通知などを特別に利用できるようになりました。";
+
+/* Hint for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.hint" = "切り替えは無料で、数分で終わります。";
+
+/* Title for a button that prompts users to switch to the Jetpack app. */
+"movedToJetpack.jetpackButtonTitle" = "Jetpack アプリに切り替える";
+
+/* Title for a button that displays a blog post in a web view. */
+"movedToJetpack.learnMoreButtonTitle" = "詳細は jetpack.com をご覧ください";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.notifications.title" = "Jetpack アプリで WordPress と通知を利用できます。";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Jetpack アプリで WordPress と Reader を利用できます。";
+
+/* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.stats.title" = "Jetpack アプリで WordPress と統計を利用できます。";
+
+/* Section title for the content table section in the blog details screen */
+"my-site.menu.content.section.title" = "コンテンツ";
+
+/* Section title for the maintenance table section in the blog details screen */
+"my-site.menu.maintenance.section.title" = "メンテナンス";
+
+/* Title for the social row in the blog details screen */
+"my-site.menu.social.row.title" = "ソーシャル";
+
+/* Section title for the traffic table section in the blog details screen */
+"my-site.menu.traffic.section.title" = "トラフィック";
+
+/* Title for the card displaying draft posts. */
+"my-sites.drafts.card.title" = "下書き投稿を作成";
+
+/* Title for the View all drafts button in the More menu */
+"my-sites.drafts.card.viewAllDrafts" = "すべての下書きを表示する";
+
+/* Title for the View all scheduled drafts button in the More menu */
+"my-sites.scheduled.card.viewAllScheduledPosts" = "すべての予約済みの投稿を表示する";
+
+/* Title for the card displaying today's stats. */
+"my-sites.stats.card.title" = "今日の統計情報";
+
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "ニュース";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "ドメインを移管する";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "ご存知かもしれませんが、Google Domains は Squarespace に売却されました。 今すぐドメインを WordPress.com に移管していただければ、移管費用に加え、ドメイン登録料も当社が負担いたします。";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Google Domains を再利用する";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
-/* Dismiss the alert with instructions on how to enable push notifications. */
-"notificationSettingStreams.pushNotificationAlert.dismissButton" = "削除";
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.no.buttonTitle" = "改善してほしい";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"notifications.appRatings.prompt.yes.buttonTitle" = "気に入っている";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.no.buttonTitle" = "いいえ";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"notifications.appRatings.sendFeedback.yes.buttonTitle" = "フィードバックを送る";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -10158,8 +10479,53 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "その他";
 
+/* Promote the page with Blaze. */
+"pages.blaze.actionTitle" = "Blaze を使って宣伝";
+
+/* Subtitle of the theme template homepage cell */
+"pages.template.subtitle" = "ホームページではテーマテンプレートが使用されており、Web エディターで開きます。";
+
+/* Title of the theme template homepage cell */
+"pages.template.title" = "ホームページ";
+
 /* No comment provided by engineer. */
 "password" = "パスワード";
+
+/* Section footer displayed below the list of toggles */
+"personalizeHome.cardsSectionFooter" = "サイトで発生した内容に基づいてカードにはさまざまなコンテンツが表示されることがあります。 さらに多くのカードやコントロールに取り組んでいます。";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "カードを追加または非表示";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.activityLog" = "最近のアクティビティ";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.blaze" = "Blaze";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.draftPosts" = "下書きの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.getToKnowTheApp" = "アプリについて知る";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.nextSteps" = "次のステップ";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.pages" = "ページ";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.prompts" = "ブログのプロンプト";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.scheduledPosts" = "予約済みの投稿";
+
+/* Card title for the pesonalization menu */
+"personalizeHome.dashboardCard.todaysStats" = "今日の統計情報";
+
+/* Page title */
+"personalizeHome.title" = "ホームタブのパーソナライズ";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話番号";
@@ -10176,6 +10542,79 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
 
+/* Section title for the disabled Twitter service in the Post Settings screen */
+"postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Promote the post with Blaze. */
+"posts.blaze.actionTitle" = "Blaze を使って宣伝";
+
+/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
+"postsettings.social.remainingshares.subscribe" = "今すぐ購読してさらにシェア";
+
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " 30日以内";
+
+/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
+"postsettings.social.shares.text.format" = "残りのソーシャルシェア数は%1$d件です";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+%1$d is a placeholder for the number of social network accounts that will be auto-shared.
+Example: Sharing to 3 accounts */
+"prepublishing.social.label.multipleConnections" = "%1$d件のアカウントにシェアしています";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will not be shared to any social accounts. */
+"prepublishing.social.label.notSharing" = "ソーシャルにシェアしていません";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the number of social accounts that will be sharing the blog post.
+This string is displayed when some of the social accounts are turned off for auto-sharing.
+%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
+%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
+Example: Sharing to 2 of 3 accounts */
+"prepublishing.social.label.partialConnections" = "%2$d件中%1$d件のアカウントにシェアしています";
+
+/* The primary label for the auto-sharing row on the pre-publishing sheet.
+Indicates the blog post will be shared to a social media account.
+%1$@ is a placeholder for the account name.
+Example: Sharing to @wordpress */
+"prepublishing.social.label.singleConnection" = "%1$@ にシェアしています";
+
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "残りのソーシャルシェア数は%1$d件です";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "警告";
+
+/* The navigation title for a screen that edits the sharing message for the post. */
+"prepublishing.socialAccounts.editMessage.navigationTitle" = "メッセージをカスタマイズする";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "購読してさらにシェア";
+
+/* Text shown below the list of social accounts to indicate how many social shares available for the site.
+Note that the '30 days' part is intended to be a static value.
+%1$d is a placeholder for the amount of remaining shares.
+Example: 27 social shares remaining in the next 30 days */
+"prepublishing.socialAccounts.footer.remainingShares.text" = "今後30日間の残りのソーシャルシェア数は%1$d件です";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "メッセージ";
+
+/* The navigation title for the pre-publishing social accounts screen. */
+"prepublishing.socialAccounts.navigationTitle" = "ソーシャル";
+
+/* Title for a tappable string that opens the reader with a prompts tag */
+"prompts.card.viewprompts.title" = "すべての回答を表示";
+
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "「サイトの設定」に移動して表示をオンに戻す";
 
@@ -10190,6 +10629,22 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "ログインしました !";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "検索";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Reader 設定";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
+"reader.notice.follow.site.unknown" = "このサイト";
+
+/* Notice title when blocking a user fails. */
+"reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* The title of a button that triggers blocking a user from the user's reader. */
+"reader.post.menu.block.user" = "このユーザーをブロックする";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "このユーザーを報告";
@@ -10227,6 +10682,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新規";
 
+/* Information of what related post are and how they are presented */
+"relatedPostsSettings.optionsFooter" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します。";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview1.details" = "「モバイル」カテゴリー";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.details" = "「アプリ」カテゴリー";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview2.title" = "Android 版 WordPress アプリが大幅リニューアル";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.details" = "「アップグレード」カテゴリー";
+
+/* Text for related post cell preview */
+"relatedPostsSettings.preview3.title" = "注目のアップグレード: ウェディング用の VideoPress";
+
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "プレビュー";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "関連記事";
+
+/* Message to show when setting save failed */
+"relatedPostsSettings.settingsUpdateFailed" = "設定更新に失敗";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"relatedPostsSettings.showHeader" = "ヘッダーを表示";
+
+/* Label for configuration switch to enable/disable related posts */
+"relatedPostsSettings.showRelatedPosts" = "関連記事を表示";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"relatedPostsSettings.showThumbnail" = "画像を表示";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "関連記事";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "閉じる";
 
@@ -10248,11 +10742,83 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "共有エラー";
 
+/* Template site address for the search bar. */
+"site.cration.domain.site.address" = "https:\/\/yoursitename.com";
+
+/* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "サイトは正常に作成されましたが、カスタムドメインの購入手続きの準備中に問題が発生しました。 もう一度お試しいただくか、ヘルプが必要な場合はサポートにご連絡ください。";
+
+/* Site name description that sits in the template website view. */
+"site.creation.domain.tooltip.description" = "上記の例のように、ドメインを使用するとユーザーは、Web ブラウザーからサイトを見つけてアクセスできます。";
+
+/* Site name that is placed in the tooltip view. */
+"site.creation.domain.tooltip.site.name" = "YourSiteName.com";
+
+/* Title for screen to select the privacy options for a blog */
+"siteSettings.privacy.title" = "プライバシー";
+
+/* Hint for users when hidden privacy setting is set */
+"siteVisibility.hidden.hint" = "誰でもサイトを閲覧可能にし、検索エンジンにはインデックスしないよう要求します。";
+
+/* Text for privacy settings: Hidden */
+"siteVisibility.hidden.title" = "非表示";
+
+/* Hint for users when private privacy setting is set */
+"siteVisibility.private.hint" = "サイトはあなたと承認したユーザーのみが表示できます。";
+
+/* Text for privacy settings: Private */
+"siteVisibility.private.title" = "非公開";
+
+/* Hint for users when public privacy setting is set */
+"siteVisibility.public.hint" = "誰でもサイトを閲覧することができ、検索エンジンにインデックスされる可能性があります。";
+
+/* Text for privacy settings: Public */
+"siteVisibility.public.title" = "公開";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.hint" = "不明";
+
+/* Text for unknown privacy setting */
+"siteVisibility.unknown.title" = "不明";
+
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "プロンプトを表示";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "リマインダー";
+
+/* Body text for the Jetpack Social no connection view */
+"social.noconnection.body" = "ソーシャルメディアで自分の投稿を友人に自動共有してトラフィックを増やします。";
+
+/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
+"social.noconnection.connectAccounts" = "アカウントを接続する";
+
+/* Accessibility label for the social media icons in the Jetpack Social no connection view */
+"social.noconnection.icons.accessibility.label" = "ソーシャルメディアアイコン";
+
+/* Title for the not now button to hide the Jetpack Social no connection view */
+"social.noconnection.notnow" = "後で";
+
+/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
+"social.noshares.body.plural" = "投稿は%1$d個のソーシャルアカウントに共有されません。";
+
+/* Singular body text for the Jetpack Social no shares dashboard card. */
+"social.noshares.body.singular" = "投稿はソーシャルアカウントに共有されません。";
+
+/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
+"social.noshares.icons.accessibility.label" = "ソーシャルメディアアイコン";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "購読してさらにシェア";
+
+/* Section title for the disabled Twitter service in the Social screen */
+"social.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
+"social.twitterDeprecation.link" = "さらに詳しく";
+
+/* A smallprint that hints the reason behind why Twitter is deprecated. */
+"social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去7日間";
@@ -10347,6 +10913,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "アクティビティが足りません。 サイトの訪問者数が増えたら後でもう一度確認してください。";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
+"stats.insights.totalLikes.guideText.singular" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "削除";
 
@@ -10359,6 +10931,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss the current view */
 "support.button.close.title" = "完了";
 
+/* Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigation.accessibilityHint" = "タップして外部ブラウザーで Jetpack アプリの FAQ にアクセスする";
+
+/* Option in Support view to visit the Jetpack migration FAQ website. */
+"support.button.jetpackMigration.title" = "FAQ にアクセス";
+
 /* Button for confirming logging out from WordPress.com account */
 "support.button.logOut.title" = "ログアウト";
 
@@ -10367,6 +10945,69 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "WordPress.org にアクセス";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "考えています...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "閉じる";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "サポートに連絡";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "何かお困りですか ? 問題が解決しない場合は、当社のチームがサポートチケットを開くお手伝いをいたします。";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "メッセージを送信...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "ログイン情報を忘れました";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "なぜログインできないのでしょうか ?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "サイトのアドレスがわかりません。";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "アプリで自分のカスタムドメインを使用するにはどうすればいいですか ?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "写真や動画をアップロードできません";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "サイトがダウンしていまいました。";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "不正確として報告";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "ソース";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "どうすればいいかわからない場合";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "サポートチケットの送信中にエラーが発生しました";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "サポートチケットを作成しています...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "チケットが作成されました";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "サポートに連絡";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "回答";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "質問";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack モバイルのボットのトランスクリプト";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "コミュニティーフォーラムで質問して、ボランティアグループからサポートを受けましょう。";
@@ -10394,6 +11035,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress ヘルプセンター";
+
+/* An informational card description in Support view explaining what tapping the link on card does */
+"support.row.jetpackMigration.description" = "FAQ ではよくある質問に対する回答を提供しています。";
+
+/* An informational card title in Support view */
+"support.row.jetpackMigration.title" = "Jetpack アプリにお切り替えいただきありがとうございます !";
 
 /* Option in Support view to see activity logs. */
 "support.row.logs.title" = "ログ";
@@ -10551,8 +11198,29 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, サイト, サイト, ブログ, ブログ";
 
+/* Jetpack Plugin Modal on WordPress primary button title */
+"wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack アプリに切り替える";
+
+/* Jetpack Plugin Modal on WordPress secondary button title */
+"wordpress.jetpack.plugin.modal.secondary.button.title" = "Jetpack なしで連携";
+
+/* Jetpack Plugin Modal (multiple plugins) on WordPress subtitle with formatted texts. %1$@ is for the site name. */
+"wordpress.jetpack.plugin.modal.subtitle.plural" = "%1$@ は WordPress アプリでサポートされていない個々の Jetpack プラグインを使用しています。";
+
+/* Jetpack Plugin Modal on WordPress (single plugin) subtitle with formatted texts. %1$@ is for the site name and %2$@ is for the specific plugin name. */
+"wordpress.jetpack.plugin.modal.subtitle.singular" = "%1$@ は WordPress アプリでサポートされていない %2$@ プラグインを使用しています。";
+
+/* Second paragraph of the Jetpack Plugin Modal on WordPress asking the user to switch to Jetpack. */
+"wordpress.jetpack.plugin.modal.subtitle.switch" = "Jetpack アプリに切り替えてください。このサイトでアプリの全機能を使用できるよう完全な Jetpack プラグインを接続する方法についてご案内します。";
+
+/* Jetpack Plugin Modal title in WordPress */
+"wordpress.jetpack.plugin.modal.title" = "申し訳ございませんが、このサイトは WordPress アプリでサポートされていません";
+
 /* Description of the jetpack migration success card, used in My site. */
-"wp.migration.successcard.description" = "WordPress アプリを削除してください";
+"wp.migration.successCard.description" = "Jetpack アプリへようこそ。WordPress アプリはアンインストールできます。";
+
+/* Title of a button that displays a blog post in a web view. */
+"wp.migration.successCard.learnMore" = "さらに詳しく";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "あなたのサイト";

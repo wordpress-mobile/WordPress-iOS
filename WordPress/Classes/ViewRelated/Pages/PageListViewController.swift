@@ -19,13 +19,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let pageCellNibName = "PageListTableViewCell"
             static let restorePageCellIdentifier = "RestorePageCellIdentifier"
             static let restorePageCellNibName = "RestorePageTableViewCell"
+            static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
 
         struct Events {
             static let source = "page_list"
             static let pagePostType = "page"
+            static let editHomepageSource = "page_list_edit_homepage"
         }
+
+        static let editorUrl = "site-editor.php?canvas=edit"
     }
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
@@ -60,6 +64,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.createPost()
         }, source: Constant.Events.source)
         return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
+    }()
+
+    private lazy var editorSettingsService = {
+        return BlockEditorSettingsService(blog: blog, coreDataStack: ContextManager.shared)
     }()
 
     // MARK: - GUI
@@ -199,6 +207,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
         tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
 
+        tableView.register(TemplatePageTableViewCell.self, forCellReuseIdentifier: Constant.Identifiers.templatePageCellIdentifier)
+
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
@@ -232,6 +242,48 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override internal func postTypeToSync() -> PostServiceType {
         return .page
+    }
+
+    override func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> ())?, failure: ((NSError) -> ())?) {
+        // The success and failure blocks are called in the parent class `AbstractPostListViewController` by the `syncPosts` method. Since that class is
+        // used by both this one and the "Posts" screen, making changes to the sync helper is tough. To get around that, we make the fetch settings call
+        // async and then just await it before calling either the final success or failure block. This ensures that both the `syncPosts` call in the parent
+        // and the `fetchSettings` call here finish before calling the final success or failure block.
+        let (wrappedSuccess, wrappedFailure) = fetchEditorSettings(success: success, failure: failure)
+        super.syncHelper(syncHelper, syncContentWithUserInteraction: userInteraction, success: wrappedSuccess, failure: wrappedFailure)
+    }
+
+    private func fetchEditorSettings(success: ((Bool) -> ())?, failure: ((NSError) -> ())?) -> (success: (_ hasMore: Bool) -> (), failure: (NSError) -> ()) {
+        let fetchTask = Task { @MainActor [weak self] in
+            guard RemoteFeatureFlag.siteEditorMVP.enabled(),
+                  let result = await self?.editorSettingsService?.fetchSettings() else {
+                return
+            }
+            switch result {
+            case .success(let serviceResult):
+                if serviceResult.hasChanges {
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                DDLogError("Error fetching editor settings: \(error)")
+            }
+        }
+
+        let wrappedSuccess: (_ hasMore: Bool) -> () = { hasMore in
+            Task { @MainActor in
+                await fetchTask.value
+                success?(hasMore)
+            }
+        }
+
+        let wrappedFailure: (NSError) -> () = { error in
+            Task { @MainActor in
+                await fetchTask.value
+                failure?(error)
+            }
+        }
+
+        return (success: wrappedSuccess, failure: wrappedFailure)
     }
 
     override internal func lastSyncDate() -> Date? {
@@ -310,7 +362,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if let text = searchController.searchBar.text,
             text.isEmpty ||
-            tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
             showNoResultsView()
         }
     }
@@ -344,6 +396,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested page.
     ///
     fileprivate func pageAtIndexPath(_ indexPath: IndexPath) -> Page {
+        if _tableViewHandler.showEditorHomepage {
+            // Since we're adding a fake homepage cell, we need to adjust the index path to match
+            let adjustedIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
+            return _tableViewHandler.page(at: adjustedIndexPath)
+        }
         return _tableViewHandler.page(at: indexPath)
     }
 
@@ -378,6 +435,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         if searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
+        }
+
+        if RemoteFeatureFlag.siteEditorMVP.enabled(),
+           blog.blockEditorSettings?.isFSETheme ?? false,
+           let homepageID = blog.homepagePageID,
+           let homepageType = blog.homepageType,
+           homepageType == .page {
+            let homepagePredicate = NSPredicate(format: "postID != %i", homepageID)
+            predicates.append(homepagePredicate)
         }
 
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -418,33 +484,32 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let page = pageAtIndexPath(indexPath)
-        if page.isSiteHomepage {
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        } else if page.isSitePostsPage {
-            showSitePostPageUneditableNotice()
-            return
+        if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+            WPAnalytics.track(.pageListEditHomepageTapped)
+            guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
+                return
+            }
+
+            let webViewController = WebViewControllerFactory.controller(url: editorUrl,
+                                                                        blog: blog,
+                                                                        source: Constant.Events.editHomepageSource)
+            let navigationController = UINavigationController(rootViewController: webViewController)
+            present(navigationController, animated: true)
         } else {
-            QuickStartTourGuide.shared.endCurrentTour()
-            tableView.reloadData()
+            let page = pageAtIndexPath(indexPath)
+            editPage(page)
         }
-
-        guard page.status != .trash else {
-            return
-        }
-
-        editPage(page)
-    }
-
-    private func showSitePostPageUneditableNotice() {
-        let sitePostPageUneditableNotice =  NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
-        let notice = Notice(title: sitePostPageUneditableNotice, feedbackType: .warning)
-        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
             return windowlessCell
+        }
+
+        if indexPath.row == 0 && _tableViewHandler.showEditorHomepage {
+            let identifier = Constant.Identifiers.templatePageCellIdentifier
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+            return cell
         }
 
         let page = pageAtIndexPath(indexPath)
@@ -453,7 +518,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
-
         return cell
     }
 
@@ -520,14 +584,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func editPage(_ page: Page) {
-        guard !PostCoordinator.shared.isUploading(post: page) else {
-            presentAlertForPageBeingUploaded()
-            return
-        }
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
+        let didOpenEditor = PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
 
-        let editorViewController = EditPageViewController(page: page)
-        present(editorViewController, animated: false)
+        if didOpenEditor {
+            WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
+        }
     }
 
     fileprivate func copyPage(_ page: Page) {
@@ -554,18 +615,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate func retryPage(_ apost: AbstractPost) {
         PostCoordinator.shared.save(apost)
-    }
-
-    // MARK: - Alert
-
-    func presentAlertForPageBeingUploaded() {
-        let message = NSLocalizedString("This page is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
-
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        alertController.presentFromRootViewController()
     }
 
     fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
@@ -1106,6 +1155,8 @@ private extension PageListViewController {
             return NoResultsText.noTrashedTitle
         case .published:
             return NoResultsText.noPublishedTitle
+        case .allNonTrashed:
+            return ""
         }
     }
 

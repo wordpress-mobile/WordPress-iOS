@@ -97,14 +97,9 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         button.setTitle(Strings.learnMoreButtonText, for: .normal)
         button.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
 
-        if #available(iOS 15.0, *) {
-            var learnMoreButtonConfig: UIButton.Configuration = .plain()
-            learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
-            button.configuration = learnMoreButtonConfig
-        } else {
-            button.contentEdgeInsets = Metrics.learnMoreButtonContentEdgeInsets
-            button.flipInsetsForRightToLeftLayoutDirection()
-        }
+        var learnMoreButtonConfig: UIButton.Configuration = .plain()
+        learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
+        button.configuration = learnMoreButtonConfig
 
         return button
     }()
@@ -156,6 +151,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Cell Lifecycle
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         containerStackView.removeAllSubviews()
     }
 

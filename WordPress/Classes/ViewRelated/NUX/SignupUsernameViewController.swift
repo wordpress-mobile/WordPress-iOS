@@ -2,7 +2,7 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 
-protocol SignupUsernameViewControllerDelegate {
+protocol SignupUsernameViewControllerDelegate: AnyObject {
     func usernameSelected(_ username: String)
 }
 
@@ -12,7 +12,7 @@ class SignupUsernameViewController: UIViewController {
 
     open var currentUsername: String?
     open var displayName: String?
-    open var delegate: SignupUsernameViewControllerDelegate?
+    open weak var delegate: SignupUsernameViewControllerDelegate?
     private var usernamesTableViewController: SignupUsernameTableViewController?
 
     // MARK: - View

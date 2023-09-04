@@ -597,6 +597,7 @@ private extension ReaderPostCardCell {
         likeActionButton.tag = CardAction.like.rawValue
         likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
         likeActionButton.isSelected = contentProvider?.isLiked() ?? false
+        likeActionButton.accessibilityIdentifier = .likeActionButtonAccessibilityIdentifier
     }
 
     var shouldShowCommentActionButton: Bool {
@@ -1018,4 +1019,8 @@ extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
         topicChipsDelegate?.didSelect(topic: topic)
     }
+}
+
+private extension String {
+    static let likeActionButtonAccessibilityIdentifier = "reader-like-button"
 }

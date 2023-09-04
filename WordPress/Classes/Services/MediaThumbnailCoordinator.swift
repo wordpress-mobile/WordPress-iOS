@@ -9,7 +9,7 @@ class MediaThumbnailCoordinator: NSObject {
 
     @objc static let shared = MediaThumbnailCoordinator()
 
-    private var coreDataStack: CoreDataStack {
+    private var coreDataStack: CoreDataStackSwift {
         ContextManager.shared
     }
 
@@ -21,8 +21,8 @@ class MediaThumbnailCoordinator: NSObject {
     /// Tries to generate a thumbnail for the specified media object with the size requested
     ///
     /// - Parameters:
-    ///   - media: the media object to generate the thumbnail representation
-    ///   - size: the size of the thumbnail
+    ///   - media: The media object to generate the thumbnail representation.
+    ///   - size: The size of the thumbnail in pixels.
     ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
     @objc func thumbnail(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
         if media.remoteStatus == .stub {
@@ -48,18 +48,16 @@ class MediaThumbnailCoordinator: NSObject {
             }
         }
 
-        coreDataStack.performAndSave { context in
-            let mediaThumbnailService = MediaThumbnailService(managedObjectContext: context)
-            mediaThumbnailService.exportQueue = self.queue
-            mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
-        }
+        let mediaThumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
+        mediaThumbnailService.exportQueue = self.queue
+        mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
     }
 
     /// Tries to generate a thumbnail for the specified media object that is stub with the size requested
     ///
     /// - Parameters:
     ///   - media: the media object to generate the thumbnail representation
-    ///   - size: the size of the thumbnail
+    ///   - size: The size of the thumbnail in pixels.
     ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
     func fetchThumbnailForMediaStub(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
         fetchStubMedia(for: media) { [weak self] (fetchedMedia, error) in
@@ -80,13 +78,13 @@ class MediaThumbnailCoordinator: NSObject {
             return
         }
 
-        coreDataStack.performAndSave { context in
-            let mediaService = MediaService(managedObjectContext: context)
-            mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
-                onCompletion(loadedMedia, nil)
-            }, failure: { (error) in
-                onCompletion(nil, error)
-            })
-        }
+        // It's only safe to use the main context as this MediaService instance's context because a Media object is
+        // leaked out of MediaService's lifecycle (MediaService.managedObjectContext's to be exact).
+        let mediaService = MediaService(managedObjectContext: coreDataStack.mainContext)
+        mediaService.getMediaWithID(mediaID, in: media.blog, success: { loadedMedia in
+            onCompletion(loadedMedia, nil)
+        }, failure: { (error) in
+            onCompletion(nil, error)
+        })
     }
 }

@@ -18,6 +18,8 @@ struct BlazeOverlayViewModel {
         switch source {
         case .dashboardCard:
             fallthrough
+        case .campaignList:
+            fallthrough
         case .menuItem:
             return buttonTitleWithIcon(title: Strings.blazeButtonTitle)
         case .postsList:
@@ -67,7 +69,7 @@ struct BlazeOverlayViewModel {
 
         static let description1 = NSLocalizedString("blaze.overlay.descriptionOne", value: "Promote any post or page in only a few minutes for just a few dollars a day.", comment: "Description for the Blaze overlay.")
         static let description2 = NSLocalizedString("blaze.overlay.descriptionTwo", value: "Your content will appear on millions of WordPress and Tumblr sites.", comment: "Description for the Blaze overlay.")
-        static let description3 = NSLocalizedString("blaze.overlay.descriptionThree", value: "Track your campaigns performance and cancel at anytime.", comment: "Description for the Blaze overlay.")
+        static let description3 = NSLocalizedString("blaze.overlay.descriptionThree", value: "Track your campaign's performance and cancel at anytime.", comment: "Description for the Blaze overlay.")
 
         static let blazeButtonTitle = NSLocalizedString("blaze.overlay.buttonTitle", value: "Blaze a post now", comment: "Button title for a Blaze overlay prompting users to select a post to blaze.")
         static let blazePostButtonTitle = NSLocalizedString("blaze.overlay.withPost.buttonTitle", value: "Blaze this post", comment: "Button title for the Blaze overlay prompting users to blaze the selected post.")

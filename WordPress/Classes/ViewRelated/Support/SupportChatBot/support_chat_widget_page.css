@@ -1,0 +1,8 @@
+html {
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+
+body {
+    margin: 0 !important;
+}

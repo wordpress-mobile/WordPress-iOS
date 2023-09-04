@@ -1,10 +1,9 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+enum FeatureFlag: Int, CaseIterable {
     case bloggingPrompts
     case bloggingPromptsEnhancements
-    case bloggingPromptsSocial
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -37,18 +36,15 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
-    case jetpackMigrationPreventDuplicateNotifications
-    case jetpackFeaturesRemovalPhaseOne
-    case jetpackFeaturesRemovalPhaseTwo
-    case jetpackFeaturesRemovalPhaseThree
-    case jetpackFeaturesRemovalPhaseFour
-    case jetpackFeaturesRemovalPhaseNewUsers
-    case jetpackFeaturesRemovalPhaseSelfHosted
-    case wordPressSupportForum
     case jetpackIndividualPluginSupport
-    case blaze
     case siteCreationDomainPurchasing
     case readerUserBlocking
+    case personalizeHomeTab
+    case commentModerationUpdate
+    case compliancePopover
+    case domainFocus
+    case nativePhotoPicker
+    case readerImprovements // pcdRpT-3Eb-p2
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -61,8 +57,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return AppConfiguration.isJetpack
         case .bloggingPromptsEnhancements:
             return AppConfiguration.isJetpack
-        case .bloggingPromptsSocial:
-            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -131,61 +125,29 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .newCoreDataContext:
             return true
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return true
-        case .jetpackFeaturesRemovalPhaseOne:
-            return false
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return false
-        case .jetpackFeaturesRemovalPhaseThree:
-            return false
-        case .jetpackFeaturesRemovalPhaseFour:
-            return false
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return false
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return false
-        case .wordPressSupportForum:
-            return true
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
-        case .blaze:
-            return false
         case .siteCreationDomainPurchasing:
             return false
         case .readerUserBlocking:
             return true
+        case .personalizeHomeTab:
+            return AppConfiguration.isJetpack
+        case .commentModerationUpdate:
+            return false
+        case .compliancePopover:
+            return true
+        case .domainFocus:
+            return true
+        case .nativePhotoPicker:
+            return true
+        case .readerImprovements:
+            return false
         }
     }
 
     var disabled: Bool {
         return enabled == false
-    }
-
-    /// This key must match the server-side one for remote feature flagging
-    var remoteKey: String? {
-        switch self {
-        case .jetpackFeaturesRemovalPhaseOne:
-            return "jp_removal_one"
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return "jp_removal_two"
-        case .jetpackFeaturesRemovalPhaseThree:
-            return "jp_removal_three"
-        case .jetpackFeaturesRemovalPhaseFour:
-            return "jp_removal_four"
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return "jp_removal_new_users"
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return "jp_removal_self_hosted"
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return "prevent_duplicate_notifs_remote_field"
-        case .wordPressSupportForum:
-            return "wordpress_support_forum_remote_field"
-        case .blaze:
-            return "blaze"
-            default:
-                return nil
-        }
     }
 }
 
@@ -207,8 +169,6 @@ extension FeatureFlag {
             return "Blogging Prompts"
         case .bloggingPromptsEnhancements:
             return "Blogging Prompts Enhancements"
-        case .bloggingPromptsSocial:
-            return "Blogging Prompts Social"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
@@ -273,31 +233,32 @@ extension FeatureFlag {
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
-        case .jetpackMigrationPreventDuplicateNotifications:
-            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
-        case .jetpackFeaturesRemovalPhaseOne:
-            return "Jetpack Features Removal Phase One"
-        case .jetpackFeaturesRemovalPhaseTwo:
-            return "Jetpack Features Removal Phase Two"
-        case .jetpackFeaturesRemovalPhaseThree:
-            return "Jetpack Features Removal Phase Three"
-        case .jetpackFeaturesRemovalPhaseFour:
-            return "Jetpack Features Removal Phase Four"
-        case .jetpackFeaturesRemovalPhaseNewUsers:
-            return "Jetpack Features Removal Phase For New Users"
-        case .jetpackFeaturesRemovalPhaseSelfHosted:
-            return "Jetpack Features Removal Phase For Self-Hosted Sites"
-        case .wordPressSupportForum:
-            return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
-        case .blaze:
-            return "Blaze"
         case .siteCreationDomainPurchasing:
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
             return "Reader User Blocking"
+        case .personalizeHomeTab:
+            return "Personalize Home Tab"
+        case .commentModerationUpdate:
+            return "Comments Moderation Update"
+        case .compliancePopover:
+            return "Compliance Popover"
+        case .domainFocus:
+            return "Domain Focus"
+        case .nativePhotoPicker:
+            return "Native Photo Picker"
+        case .readerImprovements:
+            return "Reader Improvements v1"
         }
+    }
+}
+
+extension FeatureFlag: OverridableFlag {
+
+    var originalValue: Bool {
+        return enabled
     }
 
     var canOverride: Bool {

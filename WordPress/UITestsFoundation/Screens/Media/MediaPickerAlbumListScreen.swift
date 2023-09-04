@@ -7,16 +7,17 @@ public class MediaPickerAlbumListScreen: ScreenObject {
         $0.tables["AlbumTable"]
     }
 
-    public init(app: XCUIApplication = XCUIApplication()) throws {
+    var albumList: XCUIElement { albumListGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetter: albumListGetter,
-            app: app,
-            waitTimeout: 7
+            app: app
         )
     }
 
     public func selectAlbum(atIndex index: Int) throws -> MediaPickerAlbumScreen {
-        let selectedAlbum = albumListGetter(app).cells.element(boundBy: index)
+        let selectedAlbum = albumList.cells.element(boundBy: index)
         XCTAssertTrue(selectedAlbum.waitForExistence(timeout: 5), "Selected album did not load")
         waitAndTap(selectedAlbum)
 

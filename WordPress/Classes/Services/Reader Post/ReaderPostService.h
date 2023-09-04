@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "CoreDataService.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability-completeness"
+
 @import WordPressKit;
 @import WordPressShared;
 
@@ -199,3 +202,5 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 - (BOOL)canLoadMorePostsForTopic:(ReaderAbstractTopic * _Nonnull)readerTopic remotePosts:(NSArray * _Nonnull)remotePosts inContext: (NSManagedObjectContext * _Nonnull)context;
 
 @end
+
+#pragma clang diagnostic pop // -Wnullability-completeness

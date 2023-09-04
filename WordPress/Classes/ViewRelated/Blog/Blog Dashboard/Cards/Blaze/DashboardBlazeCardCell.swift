@@ -1,67 +1,58 @@
 import UIKit
+import WordPressKit
 
-class DashboardBlazeCardCell: DashboardCollectionViewCell {
-
+final class DashboardBlazeCardCell: DashboardCollectionViewCell {
     private var blog: Blog?
-    private weak var presentingViewController: BlogDashboardViewController?
-
-    // MARK: - Views
-
-    private lazy var cardViewModel: BlazeCardViewModel = {
-
-        let onViewTap: () -> Void = { [weak self] in
-            guard let presentingViewController = self?.presentingViewController,
-                  let blog = self?.blog else {
-                return
-            }
-            BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
-            BlazeFlowCoordinator.presentBlaze(in: presentingViewController, source: .dashboardCard, blog: blog)
-        }
-
-        let onEllipsisTap: () -> Void = { [weak self] in
-            BlazeEventsTracker.trackContextualMenuAccessed(for: .dashboardCard)
-        }
-
-        let onHideThisTap: UIActionHandler = { [weak self] _ in
-            BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
-            BlazeHelper.hideBlazeCard(for: self?.blog)
-            self?.presentingViewController?.reloadCardsLocally()
-        }
-
-        return BlazeCardViewModel(onViewTap: onViewTap,
-                                  onEllipsisTap: onEllipsisTap,
-                                  onHideThisTap: onHideThisTap)
-    }()
-
-    private lazy var cardView: BlazeCardView = {
-        let cardView = BlazeCardView(cardViewModel)
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        return cardView
-    }()
-
-    // MARK: - Initializers
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - View setup
-
-    private func setupView() {
-        contentView.addSubview(cardView)
-        contentView.pinSubviewToAllEdges(cardView, priority: .defaultHigh)
-    }
-
-    // MARK: - BlogDashboardCardConfigurable
+    private weak var viewController: BlogDashboardViewController?
+    private var viewModel: DashboardBlazeCardCellViewModel?
 
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
-        self.presentingViewController = viewController
+        self.viewController = viewController
+
         BlazeEventsTracker.trackEntryPointDisplayed(for: .dashboardCard)
     }
+
+    func configure(_ viewModel: DashboardBlazeCardCellViewModel) {
+        guard viewModel !== self.viewModel else { return }
+        self.viewModel = viewModel
+
+        viewModel.onRefresh = { [weak self] in
+            self?.update(with: $0)
+            self?.viewController?.collectionView.collectionViewLayout.invalidateLayout()
+        }
+        update(with: viewModel)
+    }
+
+    private func update(with viewModel: DashboardBlazeCardCellViewModel) {
+        guard let blog, let viewController else { return }
+
+        switch viewModel.state {
+        case .promo:
+            let cardView = DashboardBlazePromoCardView(.make(with: blog, viewController: viewController))
+            self.setCardView(cardView, subtype: .promo)
+        case .campaign(let campaign):
+            let cardView = DashboardBlazeCampaignsCardView()
+            cardView.configure(blog: blog, viewController: viewController, campaign: campaign)
+            self.setCardView(cardView, subtype: .campaigns)
+        }
+    }
+
+    private func setCardView(_ cardView: UIView, subtype: DashboardBlazeCardSubtype) {
+        contentView.subviews.forEach { $0.removeFromSuperview() }
+
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(cardView)
+        contentView.pinSubviewToAllEdges(cardView, priority: UILayoutPriority(999))
+
+        BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: [
+            "type": DashboardCard.blaze.rawValue,
+            "sub_type": subtype.rawValue
+        ])
+    }
+}
+
+enum DashboardBlazeCardSubtype: String {
+    case promo = "no_campaigns"
+    case campaigns = "campaigns"
 }

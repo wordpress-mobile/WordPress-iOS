@@ -4,9 +4,11 @@ protocol StatsForegroundObservable: AnyObject {
     func reloadStatsData()
 }
 
+private var observerKey = 0
+
 extension StatsForegroundObservable where Self: UIViewController {
     func addWillEnterForegroundObserver() {
-        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification,
+        enterForegroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.reloadStatsData()
@@ -14,8 +16,18 @@ extension StatsForegroundObservable where Self: UIViewController {
     }
 
     func removeWillEnterForegroundObserver() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIApplication.willEnterForegroundNotification,
-                                                  object: nil)
+        if let enterForegroundObserver {
+            NotificationCenter.default.removeObserver(enterForegroundObserver)
+        }
+        enterForegroundObserver = nil
+    }
+
+    private var enterForegroundObserver: NSObjectProtocol? {
+        get {
+            objc_getAssociatedObject(self, &observerKey) as? NSObjectProtocol
+        }
+        set {
+            objc_setAssociatedObject(self, &observerKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
     }
 }

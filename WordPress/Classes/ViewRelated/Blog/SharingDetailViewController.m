@@ -4,7 +4,6 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationHelper.h"
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 
@@ -15,6 +14,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeConnection *publicizeConnection;
+@property (nonatomic, strong) PublicizeService *publicizeService;
 @property (nonatomic, strong) SharingAuthorizationHelper *helper;
 @end
 
@@ -40,6 +40,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                                                 blog:self.blog
                                                                     publicizeService:publicizeService];
             self.helper.delegate = self;
+            self.publicizeService = publicizeService;
         }
     }
     return self;
@@ -103,12 +104,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return self.blog.managedObjectContext;
 }
 
+/// Returns true if the service is supported by Jetpack Social, but the connection is broken.
+- (BOOL)isSupportedConnectionBroken
+{
+    return [self.publicizeConnection isBroken] && self.publicizeService.isSupported;
+}
+
 
 #pragma mark - TableView Delegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([self.publicizeConnection requiresUserAction]) {
+    if ([self.publicizeConnection requiresUserAction] && self.publicizeService.isSupported) {
         return 3;
     }
 
@@ -135,7 +142,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             return [self textForFacebookFooter];
         }
 
-        if ([self.publicizeConnection isBroken]) {
+        if ([self isSupportedConnectionBroken]) {
             return [self textForBrokenConnectionFooter];
         }
     }
@@ -159,7 +166,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (indexPath.section == 0) {
         cell = [self switchTableViewCell];
 
-    } else if (indexPath.section == 1 && [self.publicizeConnection isBroken]) {
+    } else if (indexPath.section == 1 && [self isSupportedConnectionBroken]) {
         [self configureReconnectCell:cell];
 
     } else if (indexPath.section == 1 && [self.publicizeConnection mustDisconnectFacebook]) {
@@ -176,7 +183,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == 1 && [self.publicizeConnection isBroken]) {
+    // Do nothing when the service is unsupported.
+    // The first section's cell has a tap recognizer applied on the entire cell, preventing touch events from
+    // bubbling up to the table view delegate. But when the cell's interaction is disabled, this method will be called.
+    if (indexPath.section == 0 && !self.publicizeService.isSupported) {
+        return;
+    }
+
+    if (indexPath.section == 1 && [self isSupportedConnectionBroken]) {
         [self reconnectPublicizeConnection];
     } else if (indexPath.section == 1 && [self.publicizeConnection mustDisconnectFacebook]) {
             [self openFacebookFAQ];
@@ -190,6 +204,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     SwitchTableViewCell *cell = [[SwitchTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     cell.textLabel.text = NSLocalizedString(@"Available to all users", @"");
     cell.on = self.publicizeConnection.shared;
+
+    // disable interaction if the service is unsupported.
+    if (!self.publicizeService.isSupported) {
+        [cell.textLabel setTextColor:[UIColor secondaryLabelColor]];
+        cell.userInteractionEnabled = NO;
+    }
 
     __weak __typeof(self) weakSelf = self;
     cell.onChange = ^(BOOL value) {
@@ -265,7 +285,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     [alert addDestructiveActionWithTitle:NSLocalizedString(@"Disconnect", @"Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog.")
-                                 handler:^(UIAlertAction *action) {
+                                 handler:^(UIAlertAction * __unused action) {
                                      [self disconnectPublicizeConnection];
                                  }];
 
@@ -275,7 +295,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         alert.modalPresentationStyle = UIModalPresentationPopover;
         [self presentViewController:alert animated:YES completion:nil];
 
-        NSUInteger section = [self.publicizeConnection isBroken] ? 2 : 1;
+        NSUInteger section = [self isSupportedConnectionBroken] ? 2 : 1;
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
         UIPopoverPresentationController *presentationController = alert.popoverPresentationController;
         presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;

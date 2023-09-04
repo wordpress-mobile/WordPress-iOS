@@ -16,6 +16,8 @@ PROJECT_ROOT_FOLDER = File.dirname(File.expand_path(__dir__))
 WORKSPACE_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcworkspace')
 DERIVED_DATA_PATH = File.join(PROJECT_ROOT_FOLDER, 'DerivedData')
 BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
+WORDPRESS_RELEASE_NOTES_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
+JETPACK_RELEASE_NOTES_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
 
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
@@ -53,7 +55,8 @@ Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 ENV['PROJECT_NAME'] = 'WordPress'
-ENV['PUBLIC_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
+ENV['PUBLIC_CONFIG_FILE'] = PUBLIC_CONFIG_FILE
 ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
 ENV['PROJECT_ROOT_FOLDER'] = "#{PROJECT_ROOT_FOLDER}/"
 ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
@@ -65,6 +68,23 @@ def get_required_env(key)
   ENV.fetch(key, nil)
 end
 
+def get_app_version(xcconfig_path: PUBLIC_CONFIG_FILE)
+  ios_get_app_version(public_version_xcconfig_file: xcconfig_path)
+end
+
+def gutenberg_config!
+  require 'yaml'
+
+  gutenberg_config_path = File.join(PROJECT_ROOT_FOLDER, 'Gutenberg', 'config.yml')
+
+  UI.user_error!("Could not find config YAML at path #{gutenberg_config_path}") unless File.exist?(gutenberg_config_path)
+
+  begin
+    YAML.safe_load(File.read(gutenberg_config_path), symbolize_names: true)
+  rescue StandardError => e
+    UI.user_error!("Could not parse config YAML. Failed with: #{e.message}")
+  end
+end
 
 ########################################################################
 # Group buildkite logs by action

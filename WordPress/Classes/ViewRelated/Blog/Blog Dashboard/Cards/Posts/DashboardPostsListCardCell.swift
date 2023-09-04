@@ -16,10 +16,10 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
     // MARK: Views
 
-    private var frameView: BlogDashboardCardFrameView?
+    private let frameView = BlogDashboardCardFrameView()
 
     lazy var tableView: UITableView = {
-        let tableView = PostCardTableView()
+        let tableView = DashboardCardTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
@@ -68,13 +68,8 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
     }
 
     private func addSubviews() {
-        let frameView = BlogDashboardCardFrameView()
-        frameView.icon = UIImage.gridicon(.posts, size: Constants.iconSize)
         frameView.translatesAutoresizingMaskIntoConstraints = false
-
         frameView.add(subview: tableView)
-
-        self.frameView = frameView
 
         contentView.addSubview(frameView)
         contentView.pinSubviewToAllEdges(frameView, priority: Constants.constraintPriority)
@@ -95,31 +90,72 @@ extension DashboardPostsListCardCell {
 
         switch cardType {
         case .draftPosts:
+            addDraftsContextMenu(card: cardType, blog: blog)
             configureDraftsList(blog: blog)
             status = .draft
         case .scheduledPosts:
+            addScheduledContextMenu(card: cardType, blog: blog)
             configureScheduledList(blog: blog)
             status = .scheduled
         default:
             assertionFailure("Cell used with wrong card type")
             return
         }
+
         viewModel = PostsCardViewModel(blog: blog, status: status, view: self)
         viewModel?.viewDidLoad()
         tableView.dataSource = viewModel?.diffableDataSource
         viewModel?.refresh()
     }
 
+    private func addDraftsContextMenu(card: DashboardCard, blog: Blog) {
+        guard FeatureFlag.personalizeHomeTab.enabled else { return }
+
+        frameView.addMoreMenu(items: [
+            UIMenu(options: .displayInline, children: [
+                makeDraftsListMenuAction()
+            ]),
+            UIMenu(options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+            ])
+        ], card: card)
+    }
+
+    private func addScheduledContextMenu(card: DashboardCard, blog: Blog) {
+        guard FeatureFlag.personalizeHomeTab.enabled else { return }
+
+        frameView.addMoreMenu(items: [
+            UIMenu(options: .displayInline, children: [
+                makeScheduledListMenuAction()
+            ]),
+            UIMenu(options: .displayInline, children: [
+                BlogDashboardHelpers.makeHideCardAction(for: card, blog: blog)
+            ])
+        ], card: card)
+    }
+
+    private func makeDraftsListMenuAction() -> UIAction {
+        UIAction(title: Strings.viewAllDrafts, image: UIImage(systemName: "square.and.pencil")) { [weak self] _ in
+            self?.presentPostList(with: .draft)
+        }
+    }
+
+    private func makeScheduledListMenuAction() -> UIAction {
+        UIAction(title: Strings.viewAllScheduledPosts, image: UIImage(systemName: "calendar")) { [weak self] _ in
+            self?.presentPostList(with: .scheduled)
+        }
+    }
+
     private func configureDraftsList(blog: Blog) {
-        frameView?.title = Strings.draftsTitle
-        frameView?.onHeaderTap = { [weak self] in
+        frameView.setTitle(Strings.draftsTitle)
+        frameView.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .draft)
         }
     }
 
     private func configureScheduledList(blog: Blog) {
-        frameView?.title = Strings.scheduledTitle
-        frameView?.onHeaderTap = { [weak self] in
+        frameView.setTitle(Strings.scheduledTitle)
+        frameView.onHeaderTap = { [weak self] in
             self?.presentPostList(with: .scheduled)
         }
     }
@@ -179,41 +215,15 @@ extension BlogDashboardViewController: EditorAnalyticsProperties {
 private extension DashboardPostsListCardCell {
 
     private enum Strings {
-        static let draftsTitle = NSLocalizedString("Work on a draft post", comment: "Title for the card displaying draft posts.")
+        static let draftsTitle = NSLocalizedString("my-sites.drafts.card.title", value: "Work on a draft post", comment: "Title for the card displaying draft posts.")
         static let scheduledTitle = NSLocalizedString("Upcoming scheduled posts", comment: "Title for the card displaying upcoming scheduled posts.")
+        static let viewAllDrafts = NSLocalizedString("my-sites.drafts.card.viewAllDrafts", value: "View all drafts", comment: "Title for the View all drafts button in the More menu")
+        static let viewAllScheduledPosts = NSLocalizedString("my-sites.scheduled.card.viewAllScheduledPosts", value: "View all scheduled posts", comment: "Title for the View all scheduled drafts button in the More menu")
     }
 
     enum Constants {
         static let iconSize = CGSize(width: 18, height: 18)
         static let constraintPriority = UILayoutPriority(999)
         static let numberOfPosts = 3
-    }
-}
-
-// MARK: - PostCardTableView
-
-extension NSNotification.Name {
-    /// Fired when a PostCardTableView changes its size
-    static let postCardTableViewSizeChanged = NSNotification.Name("IntrinsicContentSizeUpdated")
-}
-
-private class PostCardTableView: UITableView {
-    private var previousHeight: CGFloat = 0
-
-    override var contentSize: CGSize {
-        didSet {
-            self.invalidateIntrinsicContentSize()
-        }
-    }
-
-    /// Emits a notification when the intrinsicContentSize changes
-    /// This allows subscribers to update their layouts (ie.: UICollectionViews)
-    override var intrinsicContentSize: CGSize {
-        layoutIfNeeded()
-        if contentSize.height != previousHeight, contentSize.height != 0 {
-            previousHeight = contentSize.height
-            NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
-        }
-        return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
 }

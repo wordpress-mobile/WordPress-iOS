@@ -82,7 +82,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     @objc let url: URL?
     @objc let authenticator: RequestAuthenticator?
-    @objc let navigationDelegate: WebNavigationDelegate?
+    @objc weak var navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var customTitle: String?
@@ -349,10 +349,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         appearance.backgroundColor = UIColor(light: .white, dark: .appBarBackground)
 
         toolBar.standardAppearance = appearance
-
-        if #available(iOS 15.0, *) {
-            toolBar.scrollEdgeAppearance = appearance
-        }
+        toolBar.scrollEdgeAppearance = appearance
 
         fixBarButtonsColorForBoldText(on: toolBar)
     }
@@ -546,6 +543,24 @@ extension WebKitViewController: WKNavigationDelegate {
                 decisionHandler(.cancel)
                 return
             }
+        }
+
+        /// Force cross-site navigations to be opened in the web view when the counterpart app is installed.
+        ///
+        /// The default system behavior (through `decisionHandler`) for cross-site navigation is to open the
+        /// destination URL in Safari. When both WordPress & Jetpack are installed, this caused the counterpart
+        /// app to catch the navigation intent and process the URL in the app instead.
+        ///
+        /// We can remove this workaround when the universal link routes are removed from WordPress.com.
+        if MigrationAppDetection.isCounterpartAppInstalled,
+           let originHost = webView.url?.host?.lowercased(),
+           let destinationHost = navigationAction.request.url?.host?.lowercased(),
+           navigationAction.navigationType == .linkActivated,
+           destinationHost.hasSuffix("wordpress.com"),
+           originHost != destinationHost {
+            load(request: navigationAction.request)
+            decisionHandler(.cancel)
+            return
         }
 
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)

@@ -3,7 +3,7 @@ import WordPressShared
 
 /// - Warning:
 /// This configuration struct has a **Jetpack** counterpart in the Jetpack bundle.
-/// Make sure to keep them in sync to avoid build errors when builing the Jetpack target.
+/// Make sure to keep them in sync to avoid build errors when building the Jetpack target.
 struct AppStyleGuide {
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
     static let navigationBarLargeFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
@@ -32,4 +32,11 @@ extension AppStyleGuide {
     static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
     static let aboutAppIcon = UIImage(named: "icon-wp")
     static let quickStartExistingSite = UIImage(named: "wp-illustration-quickstart-existing-site")
+}
+
+// MARK: - Fonts
+extension AppStyleGuide {
+    static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight)
+    }
 }

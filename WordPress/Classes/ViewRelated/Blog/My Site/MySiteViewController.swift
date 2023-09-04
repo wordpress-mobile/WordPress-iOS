@@ -2,7 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 
-class MySiteViewController: UIViewController, NoResultsViewHost {
+class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
 
     enum Section: Int, CaseIterable {
         case dashboard
@@ -40,6 +40,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.refreshControl = refreshControl
+        scrollView.delegate = self
         return scrollView
     }()
 
@@ -91,6 +92,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     var willDisplayPostSignupFlow: Bool = false
 
     private var createButtonCoordinator: CreateButtonCoordinator?
+    private var complianceCoordinator: CompliancePopoverCoordinator?
 
     private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
@@ -132,7 +134,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             createFABIfNeeded()
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             fetchPrompt(for: newBlog)
-            updateBlazeStatus(for: newBlog)
         }
 
         get {
@@ -140,23 +141,42 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private(set) var sitePickerViewController: SitePickerViewController?
-    private(set) var blogDetailsViewController: BlogDetailsViewController? {
+    private(set) weak var sitePickerViewController: SitePickerViewController?
+    private(set) weak var blogDetailsViewController: BlogDetailsViewController? {
         didSet {
             blogDetailsViewController?.presentationDelegate = self
         }
     }
-    private(set) var blogDashboardViewController: BlogDashboardViewController?
+    private weak var blogDashboardViewController: BlogDashboardViewController?
 
-    /// When we display a no results view, we'll do so in a scrollview so that
+    /// When we display a no sites view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
     ///
-    private var noResultsScrollView: UIScrollView?
-    private var noResultsRefreshControl: UIRefreshControl?
+    private var noSitesScrollView: UIScrollView?
+    private var noSitesRefreshControl: UIRefreshControl?
+    private lazy var noSitesViewController: UIHostingController = {
+        let viewModel = NoSitesViewModel(
+            appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType,
+            account: defaultAccount()
+        )
+        let configuration = AddNewSiteConfiguration(
+            canCreateWPComSite: defaultAccount() != nil,
+            canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
+            launchSiteCreation: self.launchSiteCreationFromNoSites,
+            launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
+        )
+        let noSiteView = NoSitesView(
+            viewModel: viewModel,
+            addNewSiteConfiguration: configuration
+        )
+        return UIHostingController(rootView: noSiteView)
+    }()
 
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         setupView()
         setupConstraints()
         setupNavigationItem()
@@ -167,7 +187,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         startObservingQuickStart()
         startObservingOnboardingPrompt()
         subscribeToWillEnterForeground()
-        subscribeToSiteSettingsUpdated()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -208,6 +227,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         createFABIfNeeded()
         fetchPrompt(for: blog)
+
+        complianceCoordinator = CompliancePopoverCoordinator()
+        complianceCoordinator?.presentIfNeeded(on: self)
     }
 
     override func viewDidLayoutSubviews() {
@@ -270,15 +292,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func subscribeToPostPublished() {
         NotificationCenter.default.addObserver(self, selector: #selector(handlePostPublished), name: .newPostPublished, object: nil)
-    }
-
-    private func subscribeToSiteSettingsUpdated() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogSettingsUpdated, object: nil, queue: nil) { [weak self] _ in
-            guard let blog = self?.blog else {
-                return
-            }
-            self?.updateBlazeStatus(for: blog)
-        }
     }
 
     private func subscribeToWillEnterForeground() {
@@ -398,14 +411,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupNavBarAppearance() {
-        let scrollEdgeAppearance = navigationController?.navigationBar.scrollEdgeAppearance
-        let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
-        scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
-        scrollEdgeAppearance?.configureWithTransparentBackground()
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     private func resetNavBarAppearance() {
-        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBar.appearance().scrollEdgeAppearance
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= 60 {
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        } else {
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
     }
 
     // MARK: - Account
@@ -440,7 +458,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         showSitePicker(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
         updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
-        updateBlazeStatus(for: mainBlog)
     }
 
     @objc
@@ -450,7 +467,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         let finishSync = { [weak self] in
-            self?.noResultsRefreshControl?.endRefreshing()
+            self?.noSitesRefreshControl?.endRefreshing()
         }
 
         blogService.syncBlogs(for: account) {
@@ -470,6 +487,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         switch section {
         case .siteMenu:
+
             blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
                 guard let self = self else {
                     return
@@ -477,8 +495,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
                 self.updateNavigationTitle(for: blog)
                 self.sitePickerViewController?.blogDetailHeaderView.blog = blog
-                self.updateBlazeStatus(for: blog)
             }
+
+
         case .dashboard:
 
             /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
@@ -487,18 +506,25 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self?.refreshControl.endRefreshing()
             }
 
-            blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-                guard let self = self else {
-                    return
-                }
+            syncBlogAndAllMetadata(blog)
 
-                self.updateNavigationTitle(for: blog)
-                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
-                self.updateBlazeStatus(for: blog)
-            }
+            /// Update today's prompt if the blog has blogging prompts enabled.
+            fetchPrompt(for: blog)
         }
 
         WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: section.analyticsDescription])
+    }
+
+    private func syncBlogAndAllMetadata(_ blog: Blog) {
+        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.updateNavigationTitle(for: blog)
+            self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+            self.blogDashboardViewController?.reloadCardsLocally()
+        }
     }
 
     // MARK: - Segmented Control
@@ -559,13 +585,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func hideNoSites() {
         // Only track if the no sites view is currently visible
-        if noResultsViewController.view.superview != nil {
+        if noSitesViewController.view.superview != nil {
             WPAnalytics.track(.mySiteNoSitesViewHidden)
         }
 
-        hideNoResults()
+        noSitesViewController.willMove(toParent: nil)
+        noSitesViewController.view.removeFromSuperview()
+        noSitesViewController.removeFromParent()
 
-        cleanupNoResultsView()
+        cleanupNoSitesView()
     }
 
     private func showNoSites() {
@@ -578,30 +606,28 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         hideSplitDetailsView()
         blogDetailsViewController = nil
 
-        guard noResultsViewController.view.superview == nil else {
+        guard noSitesViewController.view.superview == nil else {
             return
         }
 
-        addMeButtonToNavigationBar(email: defaultAccount()?.email, meScenePresenter: meScenePresenter)
-
-        makeNoResultsScrollView()
-        configureNoResultsView()
-        addNoResultsViewAndConfigureConstraints()
+        makeNoSitesScrollView()
+        configureNoSitesView()
+        addNoSitesViewAndConfigureConstraints()
         createButtonCoordinator?.removeCreateButton()
     }
 
     private func trackNoSitesVisibleIfNeeded() {
-        guard noResultsViewController.view.superview != nil else {
+        guard noSitesViewController.view.superview != nil else {
             return
         }
 
         WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 
-    private func makeNoResultsScrollView() {
+    private func makeNoSitesScrollView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .basicBackground
+        scrollView.backgroundColor = .listBackground
 
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)
@@ -609,35 +635,25 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let refreshControl = UIRefreshControl()
         scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(syncBlogs), for: .valueChanged)
-        noResultsRefreshControl = refreshControl
+        noSitesRefreshControl = refreshControl
 
-        noResultsScrollView = scrollView
+        noSitesScrollView = scrollView
     }
 
-    private func configureNoResultsView() {
-        noResultsViewController.configure(title: NSLocalizedString(
-                                            "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.",
-                                            comment: "Text shown when the account has no sites."),
-                                          buttonTitle: NSLocalizedString(
-                                            "Add new site",
-                                            comment: "Title of button to add a new site."),
-                                          image: "mysites-nosites")
-        noResultsViewController.actionButtonHandler = { [weak self] in
-            self?.presentInterfaceForAddingNewSite()
-            WPAnalytics.track(.mySiteNoSitesViewActionTapped)
-        }
+    private func configureNoSitesView() {
+        noSitesViewController.rootView.delegate = self
     }
 
-    private func addNoResultsViewAndConfigureConstraints() {
-        guard let scrollView = noResultsScrollView else {
+    private func addNoSitesViewAndConfigureConstraints() {
+        guard let scrollView = noSitesScrollView else {
             return
         }
 
-        addChild(noResultsViewController)
-        scrollView.addSubview(noResultsViewController.view)
-        noResultsViewController.view.frame = scrollView.frame
+        addChild(noSitesViewController)
+        scrollView.addSubview(noSitesViewController.view)
+        noSitesViewController.view.frame = scrollView.frame
 
-        guard let nrv = noResultsViewController.view else {
+        guard let nrv = noSitesViewController.view else {
             return
         }
 
@@ -650,16 +666,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
         ])
 
-        noResultsViewController.didMove(toParent: self)
+        noSitesViewController.didMove(toParent: self)
     }
 
-    private func cleanupNoResultsView() {
-        noResultsRefreshControl?.removeFromSuperview()
-        noResultsRefreshControl = nil
+    private func cleanupNoSitesView() {
+        noSitesRefreshControl?.removeFromSuperview()
+        noSitesRefreshControl = nil
 
-        noResultsScrollView?.refreshControl = nil
-        noResultsScrollView?.removeFromSuperview()
-        noResultsScrollView = nil
+        noSitesScrollView?.refreshControl = nil
+        noSitesScrollView?.removeFromSuperview()
+        noSitesScrollView = nil
     }
 
     // MARK: - FAB
@@ -672,41 +688,29 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
         if let blog = blog,
-           noResultsViewController.view.superview == nil {
+           noSitesViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }
     }
 
 // MARK: - Add Site Alert
 
+    func didTapAccountAndSettingsButton() {
+        let meViewController = MeViewController()
+        showDetailViewController(meViewController, sender: self)
+    }
+
     @objc
     func presentInterfaceForAddingNewSite() {
-        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
-        let addSite = {
-            self.launchSiteCreation(source: "my_site_no_sites")
-        }
+        noSitesViewController.rootView.handleAddNewSiteButtonTapped()
+    }
 
-        guard canAddSelfHostedSite else {
-            addSite()
-            return
-        }
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
-                                                                  canCreateWPComSite: defaultAccount() != nil,
-                                                                  createWPComSite: {
-            addSite()
-        }, canAddSelfHostedSite: canAddSelfHostedSite, addSelfHostedSite: {
-            WordPressAuthenticator.showLoginForSelfHostedSite(self)
-        })
+    private func launchSiteCreationFromNoSites() {
+        launchSiteCreation(source: "my_site_no_sites")
+    }
 
-        if let sourceView = noResultsViewController.actionButton,
-           let popoverPresentationController = addSiteAlert.popoverPresentationController {
-
-            popoverPresentationController.sourceView = sourceView
-            popoverPresentationController.sourceRect = sourceView.bounds
-            popoverPresentationController.permittedArrowDirections = .up
-        }
-
-        present(addSiteAlert, animated: true)
+    private func launchLoginForSelfHostedSite() {
+        WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
     @objc
@@ -737,7 +741,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
             self.present(wizard, animated: true)
-            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+            SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
         })
     }
 
@@ -772,8 +776,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         hideNoSites()
 
         let blogDetailsViewController = self.blogDetailsViewController(for: blog)
-
-        addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
         embedChildInStackView(blogDetailsViewController)
 
@@ -830,13 +832,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.updateBlazeStatus(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
+            self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
+        }
 
-            self.displayJetpackInstallOverlayIfNeeded()
+        sitePickerViewController.onBlogListDismiss = { [weak self] in
+            self?.displayJetpackInstallOverlayIfNeeded()
         }
 
         return sitePickerViewController
@@ -855,6 +859,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             blogDetailsViewController?.preloadMetadata()
             blogDetailsViewController?.showInitialDetailsForBlog()
         case .dashboard:
+            syncBlogAndAllMetadata(blog)
             blogDashboardViewController?.update(blog: blog)
         }
     }
@@ -959,20 +964,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         self.blog = blog
     }
 
-    // MARK: - Blaze
-
-    private func updateBlazeStatus(for blog: Blog) {
-        guard BlazeHelper.isBlazeFlagEnabled(),
-              let blazeService = BlazeService() else {
-            updateChildViewController(for: blog)
-            return
-        }
-
-        blazeService.updateStatus(for: blog) { [weak self] in
-            self?.updateChildViewController(for: blog)
-        }
-    }
-
     // MARK: - Blogging Prompts
 
     @objc func handlePostPublished() {
@@ -983,7 +974,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
-              let promptsService = BloggingPromptsService(blog: blog) else {
+              let promptsService = BloggingPromptsService(blog: blog),
+              let siteID = blog.dotComID?.intValue else {
+            return
+        }
+
+        let dashboardPersonalization = BlogDashboardPersonalizationService(siteID: siteID)
+        guard dashboardPersonalization.isEnabled(.prompts) else {
             return
         }
 
@@ -1078,7 +1075,9 @@ private extension MySiteViewController {
         if isViewOnScreen(), !willDisplayPostSignupFlow {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
-                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
+                let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
+                let source: JetpackFeaturesRemovalCoordinator.JetpackOverlaySource = phase == .four ? .phaseFourOverlay : .appOpen
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: source, blog: self.blog)
             }
         }
     }

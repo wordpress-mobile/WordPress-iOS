@@ -3,22 +3,43 @@ import XCTest
 
 public class PasswordScreen: ScreenObject {
 
+    private let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.secureTextFields["Password"]
+    }
+
+    private let passwordErrorLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Password Error"]
+    }
+
+    private let continueButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Continue Button"]
+    }
+
+    var passwordTextField: XCUIElement { passwordTextFieldGetter(app) }
+    var passwordErrorLabel: XCUIElement { passwordErrorLabelGetter(app) }
+    var continueButton: XCUIElement { continueButtonGetter(app) }
+
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            // swiftlint:disable:next opening_brace
-            expectedElementGetters: [ { $0.secureTextFields["Password"] } ],
-            app: app,
-            waitTimeout: 7
+            expectedElementGetters: [ passwordTextFieldGetter, continueButtonGetter ],
+            app: app
         )
     }
 
-    public func proceedWith(password: String) throws -> LoginEpilogueScreen {
-        _ = tryProceed(password: password)
+    @discardableResult
+    public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
+        try tryProceed(password: "pw")
 
         return try LoginEpilogueScreen()
     }
 
-    public func tryProceed(password: String) -> PasswordScreen {
+    public func proceedWithInvalidPassword() throws -> Self {
+        try tryProceed(password: "invalidPswd")
+
+        return self
+    }
+
+    public func tryProceed(password: String) throws {
         // A hack to make tests pass for RtL languages.
         //
         // An unintended side effect of calling passwordTextField.tap() while testing a RtL language is that the
@@ -31,21 +52,18 @@ public class PasswordScreen: ScreenObject {
         //
         // Calling passwordTextField.doubleTap() prevents tests from failing by ensuring that the text field's
         // secureTextEntry property remains 'true'.
-        let passwordTextField = expectedElement
-        passwordTextField.doubleTap()
+
+        if Locale.current.identifier.contains("ar") {
+            passwordTextField.doubleTap()
+        }
 
         passwordTextField.typeText(password)
-        let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
-
-        return self
     }
 
-    public func verifyLoginError() -> PasswordScreen {
-        let errorLabel = app.cells["Password Error"]
-        _ = errorLabel.waitForExistence(timeout: 2)
-
-        XCTAssertTrue(errorLabel.exists)
+    @discardableResult
+    public func verifyLoginError() -> Self {
+        XCTAssertTrue(passwordErrorLabel.waitForExistence(timeout: 3))
         return self
     }
 

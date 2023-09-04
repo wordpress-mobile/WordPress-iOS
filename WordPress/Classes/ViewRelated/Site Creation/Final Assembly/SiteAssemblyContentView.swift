@@ -1,4 +1,4 @@
-
+import Foundation
 import UIKit
 import Gridicons
 import WordPressShared
@@ -27,6 +27,36 @@ final class SiteAssemblyContentView: UIView {
 
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
+
+    private let completionDescription: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.font = WPStyleGuide.fontForTextStyle(.body)
+        $0.textColor = .text
+        return $0
+    }(UILabel())
+
+    private lazy var completionLabelsStack: UIStackView = {
+        $0.addArrangedSubviews([completionLabel, completionDescription])
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .vertical
+        $0.spacing = 24
+        return $0
+    }(UIStackView())
+
+    private let footnoteLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.font = WPStyleGuide.fontForTextStyle(.footnote)
+        $0.textColor = .text
+        let footerText = NSLocalizedString(
+            "domain.purchase.preview.footer",
+            value: "It may take up to 30 minutes for your custom domain to start working.",
+            comment: "Domain Purchase Completion footer"
+        )
+        $0.text = footerText
+        return $0
+    }(UILabel())
 
     /// This provides the user with some playful words while their site is being assembled
     private let statusTitleLabel: UILabel
@@ -105,11 +135,20 @@ final class SiteAssemblyContentView: UIView {
 
     let siteCreator: SiteCreator
 
+    var isFreeDomain: Bool?
+    private func shouldShowDomainPurchase() -> Bool {
+        if let isFreeDomain = isFreeDomain {
+            return !isFreeDomain
+        }
+        return siteCreator.shouldShowDomainCheckout
+    }
+
     // MARK: SiteAssemblyContentView
 
     /// The designated initializer.
     init(siteCreator: SiteCreator) {
         self.siteCreator = siteCreator
+
         self.completionLabel = {
             let label = UILabel()
 
@@ -118,12 +157,15 @@ final class SiteAssemblyContentView: UIView {
 
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
             label.textColor = .text
-            label.textAlignment = .center
 
-            let createdText = NSLocalizedString("Your site has been created!",
-                                              comment: "User-facing string, presented to reflect that site assembly completed successfully.")
-            label.text = createdText
-            label.accessibilityLabel = createdText
+            if siteCreator.domainPurchasingEnabled {
+                label.textAlignment = .natural
+            } else {
+                label.textAlignment = .center
+            }
+
+            label.text = Strings.Free.completionTitle
+            label.accessibilityLabel = Strings.Free.completionTitle
 
             return label
         }()
@@ -273,31 +315,37 @@ final class SiteAssemblyContentView: UIView {
         backgroundColor = .listBackground
 
         statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusMessageRotatingView, activityIndicator ])
-        addSubviews([ completionLabel, statusStackView ])
+        addSubviews([completionLabelsStack, statusStackView, footnoteLabel])
 
         // Increase the spacing around the illustration
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusImageView)
 
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
-        let completionLabelInitialTopConstraint = completionLabel.topAnchor.constraint(equalTo: prevailingLayoutGuide.topAnchor, constant: completionLabelTopInsetInitial)
+        let completionLabelInitialTopConstraint = completionLabelsStack.topAnchor.constraint(equalTo: prevailingLayoutGuide.topAnchor, constant: completionLabelTopInsetInitial)
         self.completionLabelTopConstraint = completionLabelInitialTopConstraint
 
         NSLayoutConstraint.activate([
             completionLabelInitialTopConstraint,
-            completionLabel.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor, constant: Parameters.horizontalMargin),
-            completionLabel.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor, constant: -Parameters.horizontalMargin),
-            completionLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            completionLabelsStack.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor, constant: Parameters.horizontalMargin),
+            prevailingLayoutGuide.trailingAnchor.constraint(equalTo: completionLabelsStack.trailingAnchor, constant: Parameters.horizontalMargin),
+            completionLabelsStack.centerXAnchor.constraint(equalTo: centerXAnchor),
             statusStackView.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor, constant: Parameters.horizontalMargin),
-            statusStackView.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor, constant: -Parameters.horizontalMargin),
+            prevailingLayoutGuide.trailingAnchor.constraint(equalTo: statusStackView.trailingAnchor, constant: Parameters.horizontalMargin),
             statusStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            statusStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            footnoteLabel.leadingAnchor.constraint(equalTo: completionLabelsStack.leadingAnchor),
+            completionLabelsStack.trailingAnchor.constraint(equalTo: footnoteLabel.trailingAnchor)
         ])
     }
 
     private func installAssembledSiteView() {
         guard let siteName = siteName, let siteURLString = siteURLString else {
             return
+        }
+
+        if let assembledSiteView {
+            assembledSiteView.removeFromSuperview()
         }
 
         let assembledSiteView = AssembledSiteView(domainName: siteName, siteURLString: siteURLString, siteCreator: siteCreator)
@@ -317,12 +365,32 @@ final class SiteAssemblyContentView: UIView {
         let assembledSiteWidthConstraint = assembledSiteView.widthAnchor.constraint(equalToConstant: preferredAssembledSiteSize.width)
         self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
 
+        let assembledSiteViewBottomConstraint: NSLayoutConstraint
+        if shouldShowDomainPurchase() {
+            assembledSiteView.layer.cornerRadius = 12
+            assembledSiteView.layer.masksToBounds = true
+            assembledSiteViewBottomConstraint = footnoteLabel.topAnchor.constraint(
+                equalTo: assembledSiteView.bottomAnchor,
+                constant: 24
+            )
+
+            completionLabel.text = Strings.Paid.completionTitle
+            completionLabel.accessibilityLabel = Strings.Paid.completionTitle
+            completionDescription.text = Strings.Paid.description
+        } else {
+            assembledSiteViewBottomConstraint = assembledSiteView.bottomAnchor.constraint(
+                equalTo: buttonContainerView?.topAnchor ?? bottomAnchor
+            )
+            completionDescription.text = Strings.Free.description
+        }
+
         NSLayoutConstraint.activate([
             initialSiteTopConstraint,
-            assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabel.bottomAnchor, constant: assembledSiteTopInset),
-            assembledSiteView.bottomAnchor.constraint(equalTo: buttonContainerView?.topAnchor ?? bottomAnchor),
+            assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabelsStack.bottomAnchor, constant: assembledSiteTopInset),
+            assembledSiteViewBottomConstraint,
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
             assembledSiteWidthConstraint,
+            (buttonContainerView?.topAnchor ?? bottomAnchor).constraint(equalTo: footnoteLabel.bottomAnchor, constant: 15)
         ])
 
         self.assembledSiteView = assembledSiteView
@@ -376,7 +444,9 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutIdle() {
-        completionLabel.alpha = 0
+        completionLabel.isHidden = true
+        completionDescription.isHidden = true
+        footnoteLabel.isHidden = true
         statusStackView.alpha = 0
         errorStateView?.alpha = 0
     }
@@ -421,7 +491,10 @@ final class SiteAssemblyContentView: UIView {
                 self.completionLabelTopConstraint?.constant = completionLabelTopInsetFinal
 
                 self.assembledSiteTopConstraint?.isActive = false
-                let transitionConstraint = self.assembledSiteView?.topAnchor.constraint(equalTo: self.completionLabel.bottomAnchor, constant: Parameters.verticalSpacing)
+                let transitionConstraint = self.assembledSiteView?.topAnchor.constraint(
+                    equalTo: self.completionLabelsStack.bottomAnchor,
+                    constant: Parameters.verticalSpacing
+                )
                 transitionConstraint?.isActive = true
                 self.assembledSiteTopConstraint = transitionConstraint
 
@@ -431,20 +504,54 @@ final class SiteAssemblyContentView: UIView {
                                delay: 0,
                                options: .curveEaseOut,
                                animations: { [weak self] in
-                                guard let self = self else {
-                                    return
-                                }
+                    guard let self = self else {
+                        return
+                    }
 
-                                self.completionLabel.alpha = 1
+                    self.completionLabel.isHidden = false
+                    self.completionDescription.isHidden = false
+                    self.completionLabel.text = self.shouldShowDomainPurchase() ? Strings.Paid.completionTitle : Strings.Free.completionTitle
+                    self.completionDescription.text = self.shouldShowDomainPurchase() ? Strings.Paid.description : Strings.Free.description
+                    self.footnoteLabel.isHidden = !self.shouldShowDomainPurchase()
 
-                                if let buttonView = self.buttonContainerView {
-                                    self.accessibilityElements = [ self.completionLabel, buttonView ]
-                                } else {
-                                    self.accessibilityElements = [ self.completionLabel ]
-                                }
 
-                                self.layoutIfNeeded()
+                    if let buttonView = self.buttonContainerView {
+                        self.accessibilityElements = [ self.completionLabel, buttonView ]
+                    } else {
+                        self.accessibilityElements = [ self.completionLabel ]
+                    }
+
+                    self.layoutIfNeeded()
                 })
-        })
+            })
+    }
+}
+
+private enum Strings {
+    enum Paid {
+        static let completionTitle = NSLocalizedString(
+            "domain.purchase.preview.title",
+            value: "Kudos, your site is live!",
+            comment: "Reflects that site is live when domain purchase feature flag is ON."
+        )
+
+        static let description = NSLocalizedString(
+            "domain.purchase.preview.paid.description",
+            value: "We’ve emailed your receipt. Next, we'll help you get it ready for everyone.",
+            comment: "Domain Purchase Completion description (only for PAID domains)."
+        )
+    }
+
+    enum Free {
+        static let completionTitle = NSLocalizedString(
+            "Your site has been created!",
+            comment: "User-facing string, presented to reflect that site assembly completed successfully."
+        )
+        static let description = NSLocalizedString(
+            "domain.purchase.preview.free.description",
+            value: "Next, we'll help you get it ready to be browsed.",
+            comment: "Domain Purchase Completion description (only for FREE domains)."
+        )
+
     }
 }

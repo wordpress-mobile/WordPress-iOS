@@ -64,21 +64,19 @@ struct StatsTotalInsightsData {
         return sparklineData
     }
 
-    public static func makeTotalInsightsGuideText(lastPostInsight: StatsLastPostInsight?, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
+    static func makeTotalInsightsGuideText(lastPostInsight: StatsLastPostInsight?, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
+
         switch statsSummaryType {
         case .likes:
             guard let summary = lastPostInsight else {
                 return nil
             }
 
-            let formattedText: String
-            if summary.likesCount == Constants.singularLikeCount {
-                formattedText = String(format: TextContent.likesTotalGuideTextSingular, summary.title)
+            if summary.likesCount == 1 {
+                return totalInsightsGuideAttributedString(text: TextContent.likesTotalGuideTextSingular, title: summary.title, count: 1)
             } else {
-                formattedText = String(format: TextContent.likesTotalGuideTextPlural, summary.title, summary.likesCount)
+                return totalInsightsGuideAttributedString(text: TextContent.likesTotalGuideTextPlural, title: summary.title, count: summary.likesCount)
             }
-
-            return NSAttributedString.attributedStringWithHTML(formattedText, attributes: StatsTotalInsightsData.guideAttributes)
         case .comments:
             return NSAttributedString(string: TextContent.commentsTotalGuideText)
         default:
@@ -86,26 +84,37 @@ struct StatsTotalInsightsData {
         }
     }
 
-    private static var guideAttributes: StyledHTMLAttributes {
-        [
-            .BodyAttribute: [
-                .font: UIFont.preferredFont(forTextStyle: .subheadline),
-                .foregroundColor: UIColor.text
-            ],
-            .ATagAttribute: [
-                .foregroundColor: UIColor.primary,
-                .underlineStyle: 0
-            ]
-        ]
-    }
+    private static func totalInsightsGuideAttributedString(text: String, title: String, count: Int) -> NSAttributedString {
+        let countString = String(count)
+        let formattedString = String.localizedStringWithFormat(text, title, countString)
 
-    private enum Constants {
-        static let singularLikeCount = 1
+        let attributedString = NSMutableAttributedString(string: formattedString)
+
+        let textRange = NSMakeRange(0, formattedString.count)
+        attributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .subheadline), range: textRange)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.text, range: textRange)
+
+        let titlePlaceholderRange = (text as NSString).range(of: "%1$@")
+        let titleRange = NSMakeRange(titlePlaceholderRange.location, title.count)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.primary, range: titleRange)
+
+        let formattedTitleString = String.localizedStringWithFormat(text, title, "%2$@")
+        let countPlaceholderRange = (formattedTitleString as NSString).range(of: "%2$@")
+        let countRange = NSMakeRange(countPlaceholderRange.location, countString.count)
+        attributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .subheadline).bold(), range: countRange)
+
+        return attributedString
     }
 
     private enum TextContent {
-        static let likesTotalGuideTextSingular = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>one</strong> like.", comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact.")
-        static let likesTotalGuideTextPlural = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>%d</strong> likes.", comment: "A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact.")
+        static let likesTotalGuideTextSingular = NSLocalizedString(
+            "stats.insights.totalLikes.guideText.singular",
+            value: "Your latest post %1$@ has received %2$@ like.",
+            comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one.")
+        static let likesTotalGuideTextPlural = NSLocalizedString(
+            "stats.insights.totalLikes.guideText.plural",
+            value: "Your latest post %1$@ has received %2$@ likes.",
+            comment: "A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes.")
         static let commentsTotalGuideText = NSLocalizedString("Tap \"View more\" to see your top commenters.", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
     }
 }

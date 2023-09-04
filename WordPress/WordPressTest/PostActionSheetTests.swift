@@ -148,10 +148,10 @@ class PostActionSheetTests: CoreDataTestCase {
     }
 
     func testCallDelegateWhenBlazeTapped() throws {
-        try featureFlags.override(FeatureFlag.blaze, withValue: true)
+        try featureFlags.override(RemoteFeatureFlag.blaze, withValue: true)
 
         let blog = BlogBuilder(mainContext)
-            .isBlazeApproved()
+            .canBlaze()
             .build()
 
         let post = PostBuilder(mainContext, blog: blog)

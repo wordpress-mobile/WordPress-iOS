@@ -15,19 +15,19 @@ class DashboardStatsViewModel {
     // MARK: Public Variables
 
     var todaysViews: String {
-        apiResponse.todaysStats?.views?.abbreviatedString(forHeroNumber: true) ?? "0"
+        apiResponse.todaysStats?.value?.views?.abbreviatedString(forHeroNumber: true) ?? "0"
     }
 
     var todaysVisitors: String {
-        apiResponse.todaysStats?.visitors?.abbreviatedString(forHeroNumber: true) ?? "0"
+        apiResponse.todaysStats?.value?.visitors?.abbreviatedString(forHeroNumber: true) ?? "0"
     }
 
     var todaysLikes: String {
-        apiResponse.todaysStats?.likes?.abbreviatedString(forHeroNumber: true) ?? "0"
+        apiResponse.todaysStats?.value?.likes?.abbreviatedString(forHeroNumber: true) ?? "0"
     }
 
     var shouldDisplayNudge: Bool {
-        guard let todaysStats = apiResponse.todaysStats else {
+        guard let todaysStats = apiResponse.todaysStats?.value else {
             return false
         }
 

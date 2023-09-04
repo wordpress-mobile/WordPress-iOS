@@ -288,7 +288,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     NSMutableArray *actions = [NSMutableArray array];
     
     // Trash Action
-    UIContextualAction *trash = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"Trash", @"Trashes a comment") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+    UIContextualAction *trash = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"Trash", @"Trashes a comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         [ReachabilityUtils onAvailableInternetConnectionDo:^{
             [weakSelf deleteComment:comment];
         }];
@@ -301,7 +301,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     if (comment.isApproved) {
 
         // Unapprove Action
-        UIContextualAction *unapprove = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        UIContextualAction *unapprove = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
             [ReachabilityUtils onAvailableInternetConnectionDo:^{
                 [weakSelf unapproveComment:comment];
             }];
@@ -312,7 +312,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         [actions addObject:unapprove];
     } else {
         // Approve Action
-        UIContextualAction *approve = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Approve", @"Approves a Comment") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        UIContextualAction *approve = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Approve", @"Approves a Comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
             [ReachabilityUtils onAvailableInternetConnectionDo:^{
                 [weakSelf approveComment:comment];
             }];
@@ -594,7 +594,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self.tableView layoutIfNeeded]; // Necessary to ensure a smooth start.
     [UIView animateWithDuration:0.25 animations:^{
         self.tableView.contentOffset = CGPointMake(0, -60);
-    } completion:^(BOOL finished) {
+    } completion:^(BOOL __unused finished) {
         [self.tableView.refreshControl beginRefreshing];
         [self refreshAndSyncWithInteraction];
     }];

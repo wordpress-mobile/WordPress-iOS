@@ -204,7 +204,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
 
     @objc func unfollowSiteAtIndexPath(_ indexPath: IndexPath) {
-        guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
+        guard let site = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
 
@@ -341,7 +341,7 @@ private extension ReaderFollowedSitesViewController {
 
         noResultsViewController.removeFromView()
 
-        if let count = tableViewHandler.resultsController.fetchedObjects?.count, count > 0 {
+        if let count = tableViewHandler.resultsController?.fetchedObjects?.count, count > 0 {
             return
         }
 
@@ -393,7 +393,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSiteTopic")
         fetchRequest.predicate = NSPredicate(format: "following = YES")
 
@@ -405,7 +405,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
+        guard let site = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
 
@@ -462,7 +462,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
             return nil
         }
 
-        let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let count = tableViewHandler.resultsController?.fetchedObjects?.count ?? 0
         if count > 0 {
             return NSLocalizedString("Followed Sites", comment: "Section title for sites the user has followed.")
         }
@@ -471,7 +471,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
+        guard let site = tableViewHandler.resultsController?.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
         showPostListForSite(site)
@@ -511,7 +511,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         // If we're not following any sites, reload the table view to ensure the
         // section header is no longer showing.
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
             tableView.reloadData()
         }
     }

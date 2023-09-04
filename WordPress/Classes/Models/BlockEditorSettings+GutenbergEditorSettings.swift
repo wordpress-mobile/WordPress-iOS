@@ -12,7 +12,14 @@ extension BlockEditorSettings: GutenbergEditorSettings {
     }
 
     public var galleryWithImageBlocks: Bool {
-        return experimentalFeature(.galleryWithImageBlocks)
+        // If site is using WP 5.9+ then return true as galleryWithImageBlocks is supported in WP 5.9+.
+        // Once support for WP 5.8 is dropped, this can be removed.
+        // https://github.com/WordPress/gutenberg/issues/47782
+        if blog.hasRequiredWordPressVersion("5.9") {
+            return true
+        } else {
+            return experimentalFeature(.galleryWithImageBlocks)
+        }
     }
 
     public var quoteBlockV2: Bool {
@@ -45,7 +52,7 @@ extension BlockEditorSettings: GutenbergEditorSettings {
 extension BlockEditorSettings {
     convenience init?(editorTheme: RemoteEditorTheme, context: NSManagedObjectContext) {
         self.init(context: context)
-        self.isFSETheme = false
+        self.isFSETheme = editorTheme.themeSupport?.blockTemplates ?? false
         self.lastUpdated = Date()
         self.checksum = editorTheme.checksum
 
