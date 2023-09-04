@@ -11,11 +11,8 @@ struct LockScreenSingleStatView: View {
             ZStack {
                 AccessoryWidgetBackground().cornerRadius(8)
                 VStack(alignment: .leading) {
-                    Text(viewModel.siteName)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11))
-                        .minimumScaleFactor(0.8)
-                        .lineLimit(1)
+                    LockScreenSiteTitleView(title: viewModel.siteName)
+                    Spacer(minLength: 0)
                     Text(viewModel.value)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.system(size: 20, weight: .bold))
@@ -23,7 +20,7 @@ struct LockScreenSingleStatView: View {
                         .foregroundColor(.white)
                     Text(viewModel.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11))
+                        .font(.system(size: 11, weight: .bold))
                         .minimumScaleFactor(0.8)
                 }
                 .padding(
