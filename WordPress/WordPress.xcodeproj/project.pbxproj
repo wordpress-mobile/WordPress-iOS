@@ -199,6 +199,16 @@
 		0186358D2A810ABA00915532 /* support_chat_widget.js in Resources */ = {isa = PBXBuildFile; fileRef = 0186358C2A810ABA00915532 /* support_chat_widget.js */; };
 		0186358E2A810ABA00915532 /* support_chat_widget.js in Resources */ = {isa = PBXBuildFile; fileRef = 0186358C2A810ABA00915532 /* support_chat_widget.js */; };
 		018635922A85376700915532 /* SupportChatBotViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018635912A85376700915532 /* SupportChatBotViewModelTests.swift */; };
+		0188FE3F2AA6137F0093EDA5 /* LockScreenMultiStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE3E2AA6137F0093EDA5 /* LockScreenMultiStatView.swift */; };
+		0188FE402AA613850093EDA5 /* LockScreenMultiStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE3E2AA6137F0093EDA5 /* LockScreenMultiStatView.swift */; };
+		0188FE422AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE412AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift */; };
+		0188FE432AA613B00093EDA5 /* LockScreenMultiStatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE412AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift */; };
+		0188FE452AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */; };
+		0188FE462AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */; };
+		0188FE482AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */; };
+		0188FE492AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */; };
+		0188FE4B2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */; };
+		0188FE4C2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
@@ -5940,6 +5950,11 @@
 		018635892A810A9600915532 /* support_chat_widget_page.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = support_chat_widget_page.html; sourceTree = "<group>"; };
 		0186358C2A810ABA00915532 /* support_chat_widget.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = support_chat_widget.js; sourceTree = "<group>"; };
 		018635912A85376700915532 /* SupportChatBotViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatBotViewModelTests.swift; sourceTree = "<group>"; };
+		0188FE3E2AA6137F0093EDA5 /* LockScreenMultiStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenMultiStatView.swift; sourceTree = "<group>"; };
+		0188FE412AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenMultiStatViewModel.swift; sourceTree = "<group>"; };
+		0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenSiteTitleView.swift; sourceTree = "<group>"; };
+		0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenMultiStatWidgetViewProvider.swift; sourceTree = "<group>"; };
+		0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTodayViewsCommentsStatWidgetConfig.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
 		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
@@ -10681,7 +10696,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -16216,6 +16231,8 @@
 				C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */,
 				C9FE383029C2053300D39841 /* LockScreenSingleStatView.swift */,
 				C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */,
+				0188FE3E2AA6137F0093EDA5 /* LockScreenMultiStatView.swift */,
+				0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -16234,6 +16251,7 @@
 			isa = PBXGroup;
 			children = (
 				C9FE382629C204C100D39841 /* LockScreenSingleStatWidgetViewProvider.swift */,
+				0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */,
 			);
 			path = ViewProvider;
 			sourceTree = "<group>";
@@ -16246,6 +16264,7 @@
 				C9FE382B29C204E700D39841 /* LockScreenSingleStatViewModel.swift */,
 				C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */,
 				C9FE382A29C204E700D39841 /* LockScreenWidgetViewModelMapper.swift */,
+				0188FE412AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -16265,6 +16284,7 @@
 			children = (
 				C9FE383F29C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift */,
 				C9FE383C29C2A3D100D39841 /* LockScreenTodayViewsStatWidgetConfig.swift */,
+				0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -19102,14 +19122,14 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -20829,11 +20849,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -21006,13 +21026,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -21057,6 +21077,7 @@
 				0107E0BA28F97D5000DE87DB /* TodayWidgetStats.swift in Sources */,
 				C9B477AD29CC15D9008CBF49 /* WidgetDataReader.swift in Sources */,
 				C9FE384129C2A3D200D39841 /* LockScreenTodayViewsStatWidgetConfig.swift in Sources */,
+				0188FE402AA613850093EDA5 /* LockScreenMultiStatView.swift in Sources */,
 				0107E16128FFE99300DE87DB /* WidgetConfiguration.swift in Sources */,
 				0107E0BB28F97D5000DE87DB /* StatsWidgetsService.swift in Sources */,
 				C9B477B729CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */,
@@ -21066,6 +21087,7 @@
 				0107E0BF28F97D5000DE87DB /* FeatureFlagOverrideStore.swift in Sources */,
 				0107E11528FD7FE500DE87DB /* AppConfiguration.swift in Sources */,
 				0107E0C028F97D5000DE87DB /* WordPressHomeWidgetToday.swift in Sources */,
+				0188FE432AA613B00093EDA5 /* LockScreenMultiStatViewModel.swift in Sources */,
 				0107E0C128F97D5000DE87DB /* FlexibleCard.swift in Sources */,
 				0107E0C228F97D5000DE87DB /* VerticalCard.swift in Sources */,
 				C9B477A929CC13CB008CBF49 /* LockScreenSiteListProvider.swift in Sources */,
@@ -21074,6 +21096,7 @@
 				C9B4778529C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
 				0107E0C528F97D5000DE87DB /* GroupedViewData.swift in Sources */,
 				C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */,
+				0188FE492AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */,
 				0107E0C628F97D5000DE87DB /* FeatureFlag.swift in Sources */,
 				0107E0C728F97D5000DE87DB /* StatsWidgets.swift in Sources */,
 				0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */,
@@ -21092,6 +21115,7 @@
 				C9FE384729C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift in Sources */,
 				C9B477BA29CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				0107E0D128F97D5000DE87DB /* SingleStatView.swift in Sources */,
+				0188FE4C2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */,
 				0107E0D228F97D5000DE87DB /* UnconfiguredView.swift in Sources */,
 				0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */,
 				0107E0D328F97D5000DE87DB /* Tracks+StatsWidgets.swift in Sources */,
@@ -21106,6 +21130,7 @@
 				0107E0D928F97D5000DE87DB /* SFHFKeychainUtils.m in Sources */,
 				0107E0DA28F97D5000DE87DB /* ListViewData.swift in Sources */,
 				0107E0DB28F97D5000DE87DB /* Double+Stats.swift in Sources */,
+				0188FE462AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */,
 				8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */,
 				0107E0DC28F97D5000DE87DB /* Tracks.swift in Sources */,
 			);
@@ -22999,6 +23024,7 @@
 				3F1FD2502548AD8B0060C53A /* TodayWidgetStats.swift in Sources */,
 				C9B477AC29CC15D9008CBF49 /* WidgetDataReader.swift in Sources */,
 				C9FE384029C2A3D200D39841 /* LockScreenTodayViewsStatWidgetConfig.swift in Sources */,
+				0188FE3F2AA6137F0093EDA5 /* LockScreenMultiStatView.swift in Sources */,
 				0107E16A28FFED1800DE87DB /* WidgetConfiguration.swift in Sources */,
 				3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */,
 				C9B477B629CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */,
@@ -23008,6 +23034,7 @@
 				3F6BC05C25B24773007369D3 /* FeatureFlagOverrideStore.swift in Sources */,
 				3FD675EA25C87A25009AB3C1 /* WordPressHomeWidgetToday.swift in Sources */,
 				3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */,
+				0188FE422AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift in Sources */,
 				3F568A1F254213B60048A9E4 /* VerticalCard.swift in Sources */,
 				3F8B306825D1D4B8005A2903 /* ThisWeekWidgetStats.swift in Sources */,
 				C9B477A829CC13C6008CBF49 /* LockScreenSiteListProvider.swift in Sources */,
@@ -23016,6 +23043,7 @@
 				C9B4778429C85949008CBF49 /* LockScreenStatsWidgetData.swift in Sources */,
 				3F6BC04B25B2474C007369D3 /* FeatureFlag.swift in Sources */,
 				C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */,
+				0188FE482AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */,
 				3F8EEC4E25B4817000EC9DAE /* StatsWidgets.swift in Sources */,
 				3FA59B9A258289E30073772F /* StatsValueView.swift in Sources */,
 				0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */,
@@ -23034,6 +23062,7 @@
 				C9FE384629C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift in Sources */,
 				C9B477B929CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				3F5689F0254209790048A9E4 /* SingleStatView.swift in Sources */,
+				0188FE4B2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */,
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,
 				0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */,
 				98390AC3254C984700868F0A /* Tracks+StatsWidgets.swift in Sources */,
@@ -23048,6 +23077,7 @@
 				3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */,
 				3FE20C3725CF211F00A15525 /* ListViewData.swift in Sources */,
 				3F71D5302548C2B200A4BA93 /* Double+Stats.swift in Sources */,
+				0188FE452AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */,
 				8031F34D29302C8100E8F95E /* ExtensionConfiguration.swift in Sources */,
 				98390AD2254C985F00868F0A /* Tracks.swift in Sources */,
 			);
@@ -30914,7 +30944,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30995,12 +31025,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
