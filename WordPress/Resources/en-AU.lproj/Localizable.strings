@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-26 13:58:42+0000 */
+/* Translation-Revision-Date: 2023-08-30 18:04:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: en_AU */
@@ -71,6 +71,12 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d unseen posts";
+
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+
+/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -683,6 +689,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt Text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”." = "Alternatively, you can detach and edit these blocks separately by tapping “Detach patterns”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatively, you may enter the password for this account.";
@@ -2074,6 +2083,9 @@ translators: Block name. %s: The localized block name */
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "Current period: %1$@ to %2$@";
 
+/* No comment provided by engineer. */
+"Current placeholder text is" = "Current placeholder text is";
+
 /* translators: %s: current cell value. */
 "Current value is %s" = "Current value is %s";
 
@@ -2396,6 +2408,15 @@ translators: Block name. %s: The localized block name */
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Double tap to dismiss";
 
+/* No comment provided by engineer. */
+"Double tap to edit button text" = "Double tap to edit button text";
+
+/* No comment provided by engineer. */
+"Double tap to edit label text" = "Double tap to edit label text";
+
+/* No comment provided by engineer. */
+"Double tap to edit placeholder text" = "Double tap to edit placeholder text";
+
 /* translators: accessibility text */
 "Double tap to edit this value" = "Double tap to edit this value";
 
@@ -2418,7 +2439,19 @@ translators: Block name. %s: The localized block name */
 "Double tap to move the block up" = "Double tap to move the block up";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Double tap to open Action Sheet with available options";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
@@ -2478,6 +2511,9 @@ translators: Block name. %s: The localized block name */
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Drafts";
+
+/* No comment provided by engineer. */
+"Drag to adjust focal point" = "Drag to adjust focal point";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
@@ -3658,6 +3694,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Invalid URL." = "Invalid URL.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+
 /* Error message shown when the input URL is invalid. */
 "Invalid URL. Please double-check and try again." = "Invalid URL. Please double-check and try again.";
 
@@ -4604,6 +4643,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "No connections found for %@";
+
+/* No comment provided by engineer. */
+"No custom placeholder set" = "No custom placeholder set";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "No data for this period";
@@ -5780,6 +5822,9 @@ translators: Block name. %s: The localized block name */
 "Remove Site Icon" = "Remove Site Icon";
 
 /* No comment provided by engineer. */
+"Remove as Featured Image" = "Remove as Featured Image";
+
+/* No comment provided by engineer. */
 "Remove block" = "Remove block";
 
 /* Option to remove Insight from view. */
@@ -6143,6 +6188,12 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Search WordPress";
+
+/* No comment provided by engineer. */
+"Search block label. Current text is" = "Search block label. Current text is";
+
+/* No comment provided by engineer. */
+"Search button. Current button text is" = "Search button. Current button text is";
 
 /* Search domain - Title for the Suggested domains screen */
 "Search domains" = "Search domains";

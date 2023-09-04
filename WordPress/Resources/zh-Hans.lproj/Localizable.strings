@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-09 16:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-29 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: zh_CN */
@@ -9706,6 +9706,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "评价为有帮助";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "评论";
 
@@ -10440,6 +10443,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "今日统计";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "新闻";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "转移域名";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "如您所知，Google Domains 业务和资产已出售给 Squarespace。 立即将您的域名转移到 WordPress.com，我们将为您支付所有转移费用，还会额外为您免除一年的域名注册费用。";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "重新获取您的 Google 域名";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "忽略";
 
@@ -10930,6 +10945,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "访问 WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "正在思考……";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "关闭";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "联系支持人员";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "我能为您提供什么帮助？ 如果我不能回答您的问题，我会帮您向我们团队开一张支持申请单！";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "发送消息……";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "我忘记了自己的登录信息";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "为什么我无法登录？";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "我的站点地址是什么？";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "我如何能在该应用程序中使用自定义域名？";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "我无法上传照片\/视频";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "帮帮我，我的站点宕机了！";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "报告不准确";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "来源";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "不确定提问内容？";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "提交支持申请单时出错";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "正在创建支持申请单……";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "申请单已创建";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "联系支持人员";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "答案";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "问题";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot 文字转录稿";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "在社区论坛中提问，从我们的志愿者群组获得帮助。";

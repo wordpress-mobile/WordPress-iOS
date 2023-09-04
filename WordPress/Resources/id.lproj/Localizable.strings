@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-09 16:54:07+0000 */
+/* Translation-Revision-Date: 2023-08-29 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: id */
@@ -9712,6 +9712,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "oleh %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Beri rating sangat membantu";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "komentar";
 
@@ -10446,6 +10449,18 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistik Hari Ini";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Berita";
+
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Transfer domain Anda";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Anda mungkin tahu bahwa Google Domains telah dibeli oleh Squarespace. Transfer domain Anda ke WordPress.com sekarang, dan kami akan menanggung semua biaya transfer beserta tambahan satu tahun untuk registrasi domain.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Klaim kembali Google Domains Anda";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
@@ -10933,6 +10948,69 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Kunjungi WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Berpikir...";
+
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Tutup";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Hubungi dukungan";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Apa yang bisa saya bantu? Jika saya tidak mampu menjawab pertanyaan Anda, saya akan membantu Anda membuka tiket dukungan dengan tim kami!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Kirimkan pesan...";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Saya lupa informasi login saya";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Mengapa saya tidak bisa login?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Apa alamat situs saya?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Bagaimana caranya menggunakan domain khusus saya di aplikasi?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Saya tidak bisa mengunggah foto\/video";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Tolong, situs saya tidak aktif!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Laporkan sebagai tidak akurat";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Sumber";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Tidak yakin ingin menanyakan apa?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Terjadi error saat mengirimkan tiket dukungan";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Membuat tiket dukungan...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Tiket dibuat";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Hubungi Dukungan";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Jawaban";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Pertanyaan";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Transkrip Bot Seluler Jetpack";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ajukan pertanyaan di forum komunitas dan dapatkan bantuan dari komunitas relawan kami.";
