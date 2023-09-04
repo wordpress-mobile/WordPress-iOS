@@ -20,7 +20,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (5.0.3):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (2.3.0):
+  - Automattic-Tracks-iOS (2.4.0):
     - Sentry (~> 8.0)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
@@ -66,12 +66,12 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - Sentry (8.9.4):
-    - Sentry/Core (= 8.9.4)
-    - SentryPrivate (= 8.9.4)
-  - Sentry/Core (8.9.4):
-    - SentryPrivate (= 8.9.4)
-  - SentryPrivate (8.9.4)
+  - Sentry (8.10.0):
+    - Sentry/Core (= 8.10.0)
+    - SentryPrivate (= 8.10.0)
+  - Sentry/Core (8.10.0):
+    - SentryPrivate (= 8.10.0)
+  - SentryPrivate (8.10.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -80,7 +80,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (6.3.0):
+  - WordPressAuthenticator (6.4.0):
     - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
@@ -95,7 +95,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.2.0)
-  - WordPressUI (1.14.2-beta.1)
+  - WordPressUI (1.15.0)
   - WPMediaPicker (1.8.10)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -143,14 +143,15 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 6.3)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
-  - WordPressUI (~> 1.14.2-beta.1)
-  - WPMediaPicker (>= 1.8.10-beta.1, ~> 1.8)
+  - WordPressUI (~> 1.15)
+  - WPMediaPicker (>= 1.8.10, ~> 1.8)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressUI
   trunk:
     - Alamofire
     - AlamofireImage
@@ -186,7 +187,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressKit
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -220,7 +220,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
-  Automattic-Tracks-iOS: 310a9b65615d03db838fad6e58823effb4f385bf
+  Automattic-Tracks-iOS: eb06b138cd65453dc565ab047f55fbb759aca133
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
@@ -240,8 +240,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  Sentry: 56c76eed917f7dffd46db50906afbf5c9aa2673a
-  SentryPrivate: f3be34b5deb9fe676fdfb1f1ad5cdb1b740c5688
+  Sentry: 71cd4427146ac56eab6e70401ac7a24384c3d3b5
+  SentryPrivate: 9334613897c85a9e30f2c9d7a331af8aaa4fe71f
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -249,10 +249,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: 9bfb316cb165e1997b73aa94d92fadc991cc9725
+  WordPressAuthenticator: 5929076e39dd5aeebeb3ea1e985d6a53f73a984f
   WordPressKit: f33a89b148d9cce96933f0900701aff592a796f7
   WordPressShared: 87f3ee89b0a3e83106106f13a8b71605fb8eb6d2
-  WordPressUI: 26130fbb5d7012f9ff7c76ad0d5b046f592ddfaf
+  WordPressUI: 4ed415c03ea5f88748d4175c1bafd90d892a49fb
   WPMediaPicker: 332812329cbdc672cdb385b8ac3a389f668d3012
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -264,6 +264,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 261cbabbbb8cc0787f67de510ac4db33b9bc72b8
+PODFILE CHECKSUM: ecda009f9b2ab8373b422cc4a4f4957dab257ddf
 
 COCOAPODS: 1.12.1
