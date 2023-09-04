@@ -1,8 +1,7 @@
-
-extension MediaService {
+class MediaHelper: NSObject {
 
     @objc(updateMedia:withRemoteMedia:)
-    func update(media: Media, with remoteMedia: RemoteMedia) {
+    static func update(media: Media, with remoteMedia: RemoteMedia) {
         if media.mediaID != remoteMedia.mediaID {
             media.mediaID =  remoteMedia.mediaID
         }

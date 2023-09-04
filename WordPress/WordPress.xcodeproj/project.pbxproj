@@ -4466,7 +4466,7 @@
 		FABB22282602FC2C00C8785C /* GutenbergAudioUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E672D94257663CE00421F13 /* GutenbergAudioUploadProcessor.swift */; };
 		FABB22292602FC2C00C8785C /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */; };
 		FABB222A2602FC2C00C8785C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
-		FABB222B2602FC2C00C8785C /* MediaService+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8791BA1FBAF4B400AD86E6 /* MediaService+Swift.swift */; };
+		FABB222B2602FC2C00C8785C /* MediaHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8791BA1FBAF4B400AD86E6 /* MediaHelper.swift */; };
 		FABB222C2602FC2C00C8785C /* ReaderActionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */; };
 		FABB222D2602FC2C00C8785C /* NoteBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */; };
 		FABB222E2602FC2C00C8785C /* WPStyleGuide+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64384821C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift */; };
@@ -5652,7 +5652,7 @@
 		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
 		FF7C89A31E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */; };
 		FF8032661EE9E22200861F28 /* MediaProgressCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8032651EE9E22200861F28 /* MediaProgressCoordinatorTests.swift */; };
-		FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8791BA1FBAF4B400AD86E6 /* MediaService+Swift.swift */; };
+		FF8791BB1FBAF4B500AD86E6 /* MediaHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8791BA1FBAF4B400AD86E6 /* MediaHelper.swift */; };
 		FF8A04E01D9BFE7400523BC4 /* CachedAnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */; };
 		FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8C54AC21F677260003ABCF /* GutenbergMediaInserterHelper.swift */; };
 		FF8CD625214184EE00A33A8D /* MediaAssetExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8CD624214184EE00A33A8D /* MediaAssetExporterTests.swift */; };
@@ -9459,7 +9459,7 @@
 		FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryPickerDataSourceTests.swift; sourceTree = "<group>"; };
 		FF7EACDD1B6CE6E100AB6AB9 /* WordPress 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 37.xcdatamodel"; sourceTree = "<group>"; };
 		FF8032651EE9E22200861F28 /* MediaProgressCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaProgressCoordinatorTests.swift; sourceTree = "<group>"; };
-		FF8791BA1FBAF4B400AD86E6 /* MediaService+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaService+Swift.swift"; sourceTree = "<group>"; };
+		FF8791BA1FBAF4B400AD86E6 /* MediaHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaHelper.swift; sourceTree = "<group>"; };
 		FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedAnimatedImageView.swift; sourceTree = "<group>"; };
 		FF8C54AC21F677260003ABCF /* GutenbergMediaInserterHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergMediaInserterHelper.swift; sourceTree = "<group>"; };
 		FF8CD624214184EE00A33A8D /* MediaAssetExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAssetExporterTests.swift; sourceTree = "<group>"; };
@@ -14132,7 +14132,7 @@
 				5DA3EE141925090A00294E0B /* MediaService.h */,
 				5DA3EE151925090A00294E0B /* MediaService.m */,
 				FF5371621FDFF64F00619A3F /* MediaService.swift */,
-				FF8791BA1FBAF4B400AD86E6 /* MediaService+Swift.swift */,
+				FF8791BA1FBAF4B400AD86E6 /* MediaHelper.swift */,
 				E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */,
 				FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */,
 				087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */,
@@ -21430,7 +21430,7 @@
 				9AA0ADB1235F11700027AB5D /* AsyncOperation.swift in Sources */,
 				C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */,
 				F48D44B6298992C30051EAA6 /* BlockedSite.swift in Sources */,
-				FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */,
+				FF8791BB1FBAF4B500AD86E6 /* MediaHelper.swift in Sources */,
 				D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */,
 				4A2C73E12A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
@@ -24307,7 +24307,7 @@
 				FABB22292602FC2C00C8785C /* AsyncOperation.swift in Sources */,
 				FABB222A2602FC2C00C8785C /* JetpackScanThreatSectionGrouping.swift in Sources */,
 				0839F88D2993C1B600415038 /* JetpackPluginOverlayCoordinator.swift in Sources */,
-				FABB222B2602FC2C00C8785C /* MediaService+Swift.swift in Sources */,
+				FABB222B2602FC2C00C8785C /* MediaHelper.swift in Sources */,
 				FABB222C2602FC2C00C8785C /* ReaderActionHelpers.swift in Sources */,
 				FABB222D2602FC2C00C8785C /* NoteBlockUserTableViewCell.swift in Sources */,
 				FABB222E2602FC2C00C8785C /* WPStyleGuide+Sharing.swift in Sources */,
