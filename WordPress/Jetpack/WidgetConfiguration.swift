@@ -28,8 +28,12 @@ import Foundation
 
             /// Lock Screen
             @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
-            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
+
+            @objc static let lockScreenAllTimeViewsKind = "JetpackLockScreenWidgetAllTimeViews"
+            @objc static let lockScreenAllTimeViewsProperties = "JetpackLockScreenWidgetAllTimeViewsProperties"
+
+            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
         }
 
