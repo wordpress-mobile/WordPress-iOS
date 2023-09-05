@@ -4,7 +4,6 @@
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
-    case unifiedPrologueCarousel
     case todayWidget
     case milestoneNotifications
     case bloggingReminders
@@ -52,8 +51,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .unifiedPrologueCarousel:
-            return true
         case .todayWidget:
             return true
         case .milestoneNotifications:
@@ -154,8 +151,6 @@ extension FeatureFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
-        case .unifiedPrologueCarousel:
-            return "Unified Prologue Carousel"
         case .todayWidget:
             return "iOS 14 Today Widget"
         case .milestoneNotifications:

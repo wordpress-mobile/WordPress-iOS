@@ -88,7 +88,7 @@ extension WordPressAuthenticationManager {
                                                    enableSignInWithApple: enableSignInWithApple,
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
+                                                   enableUnifiedCarousel: true,
                                                    enableSocialLogin: true,
                                                    googleLoginWithoutSDK: googleLogingWithoutSDK)
     }
@@ -100,11 +100,7 @@ extension WordPressAuthenticationManager {
                     return SplashPrologueViewController()
                 }
 
-                if FeatureFlag.unifiedPrologueCarousel.enabled {
-                    return UnifiedPrologueViewController()
-                }
-
-                return nil
+                return UnifiedPrologueViewController()
             }
 
             return viewController
@@ -112,7 +108,7 @@ extension WordPressAuthenticationManager {
 
         let statusBarStyle: UIStatusBarStyle = {
             guard let statusBarStyle = authenticationHandler?.statusBarStyle else {
-                return FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
+                return .default
             }
 
             return statusBarStyle
