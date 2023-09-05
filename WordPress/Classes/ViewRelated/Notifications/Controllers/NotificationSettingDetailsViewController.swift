@@ -143,7 +143,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
             // Switch on stream type to provide descriptive text in footer for more context
             switch stream.kind {
             case .Device:
-                if Feature.enabled(.bloggingReminders), JetpackNotificationMigrationService.shared.shouldPresentNotifications(), let blog = settings.blog {
+                if JetpackNotificationMigrationService.shared.shouldPresentNotifications(), let blog = settings.blog {
                     // This should only be added for the device push notifications settings view
                     rows.append(TextSettingsRow(kind: .Text, description: NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting"), value: schedule(for: blog), onTap: { [weak self] in
                         self?.presentBloggingRemindersFlow()
