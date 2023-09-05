@@ -6,12 +6,7 @@ class LandInTheEditorHelper {
     /// - Parameter navigationController: UINavigationController used to present the home page editor
     /// - Parameter completion: HomepageEditorCompletion callback to be invoked after the user finishes editing the home page, or immediately iwhen the feature flag is disabled
     static func landInTheEditorOrContinue(for blog: Blog, navigationController: UINavigationController, completion: @escaping HomepageEditorCompletion) {
-        // branch here for feature flag
-        if FeatureFlag.landInTheEditor.enabled {
-            landInTheEditor(for: blog, navigationController: navigationController, completion: completion)
-        } else {
-            completion()
-        }
+        landInTheEditor(for: blog, navigationController: navigationController, completion: completion)
     }
 
     private static func landInTheEditor(for blog: Blog, navigationController: UINavigationController, completion: @escaping HomepageEditorCompletion) {
