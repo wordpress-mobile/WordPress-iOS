@@ -41,6 +41,9 @@ import Foundation
 
             @objc static let lockScreenAllTimeViewsVisitorsKind = "JetpackLockScreenWidgetAllTimeViewsVisitors"
             @objc static let lockScreenAllTimeViewsVisitorsProperties = "JetpackLockScreenWidgetAllTimeViewsVisitorsProperties"
+
+            @objc static let lockScreenAllTimePostsBestViewsKind = "JetpackLockScreenWidgetAllTimePostsBestViews"
+            @objc static let lockScreenAllTimePostsBestViewsProperties = "JetpackLockScreenWidgetAllTimeBestViewsProperties"
         }
 
 

@@ -13,6 +13,7 @@ struct WordPressStatsWidgets: WidgetBundle {
             LockScreenStatsWidget(config: LockScreenTodayLikesCommentsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenAllTimeViewsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenAllTimeViewsVisitorsStatWidgetConfig())
+            LockScreenStatsWidget(config: LockScreenAllTimePostsBestViewsStatWidgetConfig())
         }
     }
 }
