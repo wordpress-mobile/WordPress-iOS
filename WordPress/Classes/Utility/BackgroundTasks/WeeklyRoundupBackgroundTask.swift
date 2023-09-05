@@ -307,13 +307,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     // MARK: - Misc Properties
 
-    static var identifier: String {
-        if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
-            return Constants.taskIdentifierProcessing
-        }
-
-        return Constants.taskIdentifier
-    }
+    static let identifier = Constants.taskIdentifierProcessing
     static private let secondsPerDay = 24 * 60 * 60
 
     private let store: Store

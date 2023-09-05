@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case weeklyRoundupBGProcessingTask
     case domains
     case timeZoneSuggester
     case mediaPickerPermissionsNotice
@@ -48,8 +47,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .weeklyRoundupBGProcessingTask:
-            return true
         case .domains:
             // Note: when used to control access to the domains feature, you should also check whether
             // the current AppConfiguration and blog support domains.
@@ -137,8 +134,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .weeklyRoundupBGProcessingTask:
-            return "Weekly Roundup BGProcessingTask"
         case .domains:
             return "Domain Purchases"
         case .timeZoneSuggester:
