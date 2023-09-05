@@ -21,6 +21,5 @@ import Foundation
     @objc static let showsQuickActions: Bool = true
     @objc static let showsFollowedSitesSettings: Bool = true
     @objc static let showsWhatIsNew: Bool = true
-    @objc static let showsStatsRevampV2: Bool = false
     @objc static let qrLoginEnabled: Bool = false
 }
