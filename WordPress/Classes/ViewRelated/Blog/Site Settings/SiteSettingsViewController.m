@@ -166,7 +166,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [sections addObject:@(SiteSettingsSectionBlogging)];
     }
 
-    if ([Feature enabled:FeatureFlagHomepageSettings] && [self.blog supports:BlogFeatureHomepageSettings]) {
+    if ([self.blog supports:BlogFeatureHomepageSettings]) {
         [sections addObject:@(SiteSettingsSectionHomepage)];
     }
 
