@@ -30,7 +30,7 @@ struct LockScreenSingleStatView_Previews: PreviewProvider {
     static let viewModel = LockScreenSingleStatViewModel(
         siteName: "My WordPress Site",
         title: "Views Today",
-        value: "649",
+        value: 646,
         updatedTime: Date()
     )
 

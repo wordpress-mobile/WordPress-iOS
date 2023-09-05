@@ -6,22 +6,14 @@ struct LockScreenWidgetViewModelMapper {
         title: String
     ) -> LockScreenSingleStatViewModel {
         LockScreenSingleStatViewModel(
-            siteName: getSiteName(data),
+            siteName: data.siteName,
             title: title,
-            value: getViews(data),
+            value: data.views ?? 0,
             updatedTime: data.date
         )
     }
 
     func getLockScreenUnconfiguredViewModel(_ message: String) -> LockScreenUnconfiguredViewModel {
         LockScreenUnconfiguredViewModel(message: message)
-    }
-
-    private func getSiteName(_ data: LockScreenStatsWidgetData) -> String {
-        data.siteName
-    }
-
-    private func getViews(_ data: LockScreenStatsWidgetData) -> String {
-        data.views?.abbreviatedString() ?? ""
     }
 }

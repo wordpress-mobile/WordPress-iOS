@@ -14,10 +14,10 @@ struct LockScreenMultiStatView: View {
                     LockScreenSiteTitleView(title: viewModel.siteName)
                     Spacer(minLength: 0)
                     HStack {
-                        LockScreenFieldView(title: viewModel.firstField.title, value: viewModel.firstField.value.abbreviatedString())
+                        LockScreenFieldView(title: viewModel.firstField.title, value: viewModel.firstField.value)
                         Spacer()
                         Spacer()
-                        LockScreenFieldView(title: viewModel.secondaryField.title, value: viewModel.secondaryField.value.abbreviatedString())
+                        LockScreenFieldView(title: viewModel.secondaryField.title, value: viewModel.secondaryField.value)
                         Spacer()
                     }
 
