@@ -1387,8 +1387,7 @@ extension NotificationDetailsViewController {
         onSelectedNoteChange?(note)
         trackDetailsOpened(for: note)
 
-        if FeatureFlag.notificationCommentDetails.enabled,
-           note.kind == .comment {
+        if note.kind == .comment {
             showCommentDetails(with: note)
             return
         }
