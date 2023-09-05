@@ -351,9 +351,7 @@ extension DomainSuggestionsTableViewController {
         cell.indentationWidth = 20.0
         cell.indentationLevel = 1
 
-        if Feature.enabled(.domains) {
-            cell.detailTextLabel?.attributedText = attributedCostInformation(for: suggestion)
-        }
+        cell.detailTextLabel?.attributedText = attributedCostInformation(for: suggestion)
 
         return cell
     }

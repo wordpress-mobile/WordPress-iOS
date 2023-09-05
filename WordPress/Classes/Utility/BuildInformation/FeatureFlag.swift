@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case domains
     case timeZoneSuggester
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
@@ -47,11 +46,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .domains:
-            // Note: when used to control access to the domains feature, you should also check whether
-            // the current AppConfiguration and blog support domains.
-            // See BlogDetailsViewController.shouldShowDomainRegistration for an example.
-            return true
         case .timeZoneSuggester:
             return true
         case .mediaPickerPermissionsNotice:
@@ -134,8 +128,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .domains:
-            return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
         case .mediaPickerPermissionsNotice:
