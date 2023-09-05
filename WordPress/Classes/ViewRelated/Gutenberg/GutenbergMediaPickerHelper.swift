@@ -95,10 +95,7 @@ class GutenbergMediaPickerHelper: NSObject {
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
         picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
-
-        if FeatureFlag.mediaPickerPermissionsNotice.enabled {
-            picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
-        }
+        picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
 
         picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
@@ -170,10 +167,6 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        guard FeatureFlag.mediaPickerPermissionsNotice.enabled else {
-            return false
-        }
-
         return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
     }
 

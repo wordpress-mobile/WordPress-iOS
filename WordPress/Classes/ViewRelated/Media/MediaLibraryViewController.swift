@@ -618,8 +618,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        guard FeatureFlag.mediaPickerPermissionsNotice.enabled,
-              picker != self else {
+        guard picker != self else {
             return false
         }
 
