@@ -111,7 +111,8 @@ class MeViewController: UITableViewController {
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(with: account)
 
-        if !splitViewControllerIsHorizontallyCompact {
+        let primaryViewController = (splitViewController?.viewControllers.first as? UINavigationController)?.topViewController
+        if !splitViewControllerIsHorizontallyCompact && primaryViewController is MeViewController {
             // And finally we'll reselect the selected row, if there is one
             tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
         }
@@ -126,7 +127,8 @@ class MeViewController: UITableViewController {
     }
 
     private var appSettingsRow: NavigationItemRow {
-        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let isDetailViewController = (splitViewController?.viewControllers.last as? UINavigationController)?.topViewController is MeViewController
+        let accessoryType: UITableViewCell.AccessoryType = isDetailViewController ? .disclosureIndicator : .none
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
@@ -137,7 +139,8 @@ class MeViewController: UITableViewController {
     }
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
-        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let isDetailViewController = (splitViewController?.viewControllers.last as? UINavigationController)?.topViewController is MeViewController
+        let accessoryType: UITableViewCell.AccessoryType = isDetailViewController ? .disclosureIndicator : .none
 
         let loggedIn = account != nil
 
@@ -254,7 +257,7 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             if let myProfileViewController = self.myProfileViewController {
                 WPAppAnalytics.track(.openedMyProfile)
-                self.showDetailViewController(myProfileViewController, sender: self)
+                self.showOrPushController(myProfileViewController)
             }
         }
     }
@@ -266,7 +269,7 @@ class MeViewController: UITableViewController {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-                self.showDetailViewController(controller, sender: self)
+                self.showOrPushController(controller)
             }
         }
     }
@@ -286,20 +289,14 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
             let controller = AppSettingsViewController()
-            self.showDetailViewController(controller, sender: self)
+            self.showOrPushController(controller)
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportTableViewController(style: .insetGrouped)
-
-            // If iPad, show Support from Me view controller instead of navigation controller.
-             if !self.splitViewControllerIsHorizontallyCompact {
-                 controller.showHelpFromViewController = self
-             }
-
-            self.showDetailViewController(controller, sender: self)
+            self.showOrPushController(controller)
         }
     }
 
@@ -386,6 +383,17 @@ class MeViewController: UITableViewController {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
             handler.tableView(self.tableView, didSelectRowAt: indexPath)
         }
+    }
+
+    private func showOrPushController(_ controller: UIViewController) {
+        let primaryViewController = (splitViewController?.viewControllers.first as? UINavigationController)?.topViewController
+        let shouldShowInDetailViewController = splitViewControllerIsHorizontallyCompact || primaryViewController is MeViewController
+        if shouldShowInDetailViewController {
+            self.showDetailViewController(controller, sender: self)
+            return
+        }
+
+        self.navigationController?.pushViewController(controller, animated: true, rightBarButton: self.navigationItem.rightBarButtonItem)
     }
 
     // MARK: - Helpers
