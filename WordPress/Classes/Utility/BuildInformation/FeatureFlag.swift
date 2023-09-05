@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case siteName
     case quickStartForExistingUsers
     case qrLogin
     case betaSiteDesigns
@@ -39,8 +38,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .siteName:
-            return false
         case .quickStartForExistingUsers:
             return true
         case .qrLogin:
@@ -107,8 +104,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .siteName:
-            return "Site Name"
         case .quickStartForExistingUsers:
             return "Quick Start For Existing Users"
         case .qrLogin:
