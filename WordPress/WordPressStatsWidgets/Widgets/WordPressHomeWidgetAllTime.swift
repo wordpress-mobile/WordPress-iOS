@@ -34,6 +34,6 @@ struct WordPressHomeWidgetAllTime: Widget {
         }
         .configurationDisplayName(LocalizableStrings.allTimeWidgetTitle)
         .description(LocalizableStrings.allTimePreviewDescription)
-        .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemSmall, .systemMedium] : [])
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

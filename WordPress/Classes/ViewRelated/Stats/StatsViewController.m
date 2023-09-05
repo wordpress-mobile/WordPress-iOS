@@ -94,12 +94,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
-    if (@available (iOS 14, *)) {
-        // do not install the widgets button on iOS 14 or later, if today widget feature flag is enabled
-        if (![Feature enabled:FeatureFlagTodayWidget]) {
-            [self installWidgetsButton];
-        }
-    } else if (self.presentingViewController == nil) {
+    if (self.presentingViewController == nil) {
         [self installWidgetsButton];
     }
 

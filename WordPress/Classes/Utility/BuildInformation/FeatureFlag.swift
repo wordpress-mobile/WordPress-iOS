@@ -4,7 +4,6 @@
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
-    case todayWidget
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
@@ -51,8 +50,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .todayWidget:
-            return true
         case .milestoneNotifications:
             return true
         case .bloggingReminders:
@@ -151,8 +148,6 @@ extension FeatureFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
-        case .todayWidget:
-            return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
         case .bloggingReminders:
@@ -234,8 +229,6 @@ extension FeatureFlag: OverridableFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .todayWidget:
             return false
         case .weeklyRoundup:
             return false
