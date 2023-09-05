@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case timeZoneSuggester
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
     case siteIntentQuestion
@@ -46,8 +45,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .timeZoneSuggester:
-            return true
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
@@ -128,8 +125,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .timeZoneSuggester:
-            return "TimeZone Suggester"
         case .mediaPickerPermissionsNotice:
             return "Media Picker Permissions Notice"
         case .notificationCommentDetails:

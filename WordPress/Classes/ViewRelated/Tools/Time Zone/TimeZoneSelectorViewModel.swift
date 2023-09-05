@@ -79,19 +79,12 @@ struct TimeZoneSelectorViewModel: Observable {
                     return ImmuTableSection(
                             headerText: group.name,
                             rows: group.timezones.map({ (timezone) -> ImmuTableRow in
-                                if FeatureFlag.timeZoneSuggester.enabled {
-                                    return TimeZoneRow(title: timezone.label,
-                                                       leftSubtitle: timeZoneFormatter.getZoneOffset(timezone),
-                                                       rightSubtitle: timeZoneFormatter.getTimeAtZone(timezone),
-                                                       action: { _ in
-                                        selectionHandler(timezone)
-                                    })
-                                }
-                                else {
-                                    return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
-                                        selectionHandler(timezone)
-                                    })
-                                }
+                                return TimeZoneRow(title: timezone.label,
+                                                   leftSubtitle: timeZoneFormatter.getZoneOffset(timezone),
+                                                   rightSubtitle: timeZoneFormatter.getTimeAtZone(timezone),
+                                                   action: { _ in
+                                    selectionHandler(timezone)
+                                })
                             }))
                 })
         )

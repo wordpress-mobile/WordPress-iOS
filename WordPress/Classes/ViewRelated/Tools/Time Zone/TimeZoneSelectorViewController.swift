@@ -42,12 +42,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if FeatureFlag.timeZoneSuggester.enabled {
-            ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
-        } else {
-            ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
-        }
-
+        ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
 
@@ -65,10 +60,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if FeatureFlag.timeZoneSuggester.enabled {
-            // re-using this existing functionality for xib + autolayout in TableView Header
-            tableView.layoutHeaderView()
-        }
+        tableView.layoutHeaderView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,27 +69,23 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
     }
 
     private func configureTableHeaderView() {
-        if FeatureFlag.timeZoneSuggester.enabled {
-            let timeZoneIdentifier = TimeZone.current.identifier
-            guard let headerView = TimeZoneSearchHeaderView.makeFromNib(searchBar: searchController.searchBar,
-                                                                        timezone: timeZoneIdentifier) else {
-                // fallback to default SearchBar if TimeZoneSearchHeaderView cannot be created
-                tableView.tableHeaderView = searchController.searchBar
-                return
-            }
-
-            headerView.tapped = { [weak self] in
-                // check if currentTimeZoneIdentifier has a WPTimeZone instance
-                if let selectedTimezone = self?.viewModel.getTimeZoneForIdentifier(timeZoneIdentifier) {
-                    self?.viewModel.selectedValue = timeZoneIdentifier
-                    self?.onSelectionChanged(selectedTimezone)
-                }
-            }
-
-            tableView.tableHeaderView = headerView
-        } else {
+        let timeZoneIdentifier = TimeZone.current.identifier
+        guard let headerView = TimeZoneSearchHeaderView.makeFromNib(searchBar: searchController.searchBar,
+                                                                    timezone: timeZoneIdentifier) else {
+            // fallback to default SearchBar if TimeZoneSearchHeaderView cannot be created
             tableView.tableHeaderView = searchController.searchBar
+            return
         }
+
+        headerView.tapped = { [weak self] in
+            // check if currentTimeZoneIdentifier has a WPTimeZone instance
+            if let selectedTimezone = self?.viewModel.getTimeZoneForIdentifier(timeZoneIdentifier) {
+                self?.viewModel.selectedValue = timeZoneIdentifier
+                self?.onSelectionChanged(selectedTimezone)
+            }
+        }
+
+        tableView.tableHeaderView = headerView
     }
 
     func updateSearchResults(for searchController: UISearchController) {
