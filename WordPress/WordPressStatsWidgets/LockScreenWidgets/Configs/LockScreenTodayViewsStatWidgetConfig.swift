@@ -44,9 +44,10 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
         )
     }
 
-    var viewProvider: ViewProvider {
-        LockScreenSingleStatWidgetViewProvider(
+    var viewProvider: ViewProvider<HomeWidgetTodayData> {
+        LockScreenSingleStatWidgetViewProvider<HomeWidgetTodayData>(
             title: LocalizableStrings.viewsInTodayTitle,
+            value: \.stats.views,
             widgetKind: .today
         )
     }

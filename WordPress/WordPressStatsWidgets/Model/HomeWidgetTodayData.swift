@@ -8,4 +8,9 @@ struct HomeWidgetTodayData: HomeWidgetData {
     let date: Date
     let stats: TodayWidgetStats
     static let filename = AppConfiguration.Widget.Stats.todayFilename
+
+    var statsURL: URL? {
+        let statsUrl = "https://wordpress.com/stats/day/"
+        return URL(string: statsUrl + "\(siteID)")
+    }
 }

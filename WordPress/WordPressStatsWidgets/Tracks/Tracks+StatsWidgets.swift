@@ -5,7 +5,7 @@ import WidgetKit
 ///
 extension Tracks {
 
-    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry, widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: String, widgetCountKey: String) {
         switch entry {
         case .siteSelected(_, let context):
             if !context.isPreview {

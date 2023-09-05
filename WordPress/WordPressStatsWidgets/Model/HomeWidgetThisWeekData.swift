@@ -8,4 +8,9 @@ struct HomeWidgetThisWeekData: HomeWidgetData {
     let date: Date
     let stats: ThisWeekWidgetStats
     static let filename = AppConfiguration.Widget.Stats.thisWeekFilename
+
+    var statsURL: URL? {
+        let statsUrl = "https://wordpress.com/stats/week/"
+        return URL(string: statsUrl + "\(siteID)")
+    }
 }

@@ -1,14 +1,15 @@
 import SwiftUI
 import WidgetKit
 
-protocol LockScreenStatsWidgetsViewProvider {
+protocol LockScreenStatsWidgetsViewProvider<Data> {
     associatedtype SiteSelectedView: View
     associatedtype LoggedOutView: View
     associatedtype NoSiteView: View
     associatedtype NoDataView: View
+    associatedtype Data: HomeWidgetData
 
     @ViewBuilder
-    func buildSiteSelectedView(_ data: LockScreenStatsWidgetData) -> SiteSelectedView
+    func buildSiteSelectedView(_ data: Data) -> SiteSelectedView
 
     @ViewBuilder
     func buildLoggedOutView() -> LoggedOutView
@@ -21,7 +22,7 @@ protocol LockScreenStatsWidgetsViewProvider {
 }
 
 struct LockScreenStatsWidgetsView<T: LockScreenStatsWidgetsViewProvider>: View {
-    let timelineEntry: LockScreenStatsWidgetEntry
+    let timelineEntry: LockScreenStatsWidgetEntry<T.Data>
     let viewProvider: T
 
     @ViewBuilder

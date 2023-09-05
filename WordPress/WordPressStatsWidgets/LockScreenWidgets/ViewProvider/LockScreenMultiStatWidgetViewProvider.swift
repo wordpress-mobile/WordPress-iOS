@@ -1,32 +1,31 @@
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct LockScreenMultiStatWidgetViewProvider: LockScreenStatsWidgetsViewProvider {
+struct LockScreenMultiStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockScreenStatsWidgetsViewProvider {
     typealias SiteSelectedView = LockScreenMultiStatView
     typealias LoggedOutView = LockScreenUnconfiguredView
     typealias NoSiteView = LockScreenUnconfiguredView
-    typealias NoDataView = LockScreenUnconfiguredView
+    typealias Data = WidgetData
 
     let widgetKind: StatsWidgetKind
-    let mapper = LockScreenWidgetViewModelMapper()
 
     let topTitle: String
-    let topValue: KeyPath<LockScreenStatsWidgetData, Int?>
+    let topValue: KeyPath<Data, Int>
 
     let bottomTitle: String
-    let bottomValue: KeyPath<LockScreenStatsWidgetData, Int?>
+    let bottomValue: KeyPath<Data, Int>
 
-    func buildSiteSelectedView(_ data: LockScreenStatsWidgetData) -> LockScreenMultiStatView {
+    func buildSiteSelectedView(_ data: Data) -> LockScreenMultiStatView {
         let viewModel = LockScreenMultiStatViewModel(
             siteName: data.siteName,
             updatedTime: data.date,
             firstField: .init(
                 title: topTitle,
-                value: data[keyPath: topValue] ?? 0
+                value: data[keyPath: topValue]
             ),
             secondaryField: .init(
                 title: bottomTitle,
-                value: data[keyPath: bottomValue] ?? 0
+                value: data[keyPath: bottomValue]
             )
         )
         return LockScreenMultiStatView(viewModel: viewModel)
@@ -43,7 +42,7 @@ struct LockScreenMultiStatWidgetViewProvider: LockScreenStatsWidgetsViewProvider
                 return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
             }
         }
-        let viewModel = mapper.getLockScreenUnconfiguredViewModel(message)
+        let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
@@ -58,7 +57,7 @@ struct LockScreenMultiStatWidgetViewProvider: LockScreenStatsWidgetsViewProvider
                 return LocalizableStrings.noSiteViewThisWeekTitle
             }
         }
-        let viewModel = mapper.getLockScreenUnconfiguredViewModel(message)
+        let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
@@ -73,7 +72,7 @@ struct LockScreenMultiStatWidgetViewProvider: LockScreenStatsWidgetsViewProvider
                 return LocalizableStrings.noDataViewThisWeekTitle
             }
         }
-        let viewModel = mapper.getLockScreenUnconfiguredViewModel(message)
+        let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 }

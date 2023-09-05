@@ -3,7 +3,7 @@ import WidgetKit
 @available(iOS 16.0, *)
 struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetTodayData
-    typealias ViewProvider = LockScreenMultiStatWidgetViewProvider
+    typealias ViewProvider = LockScreenMultiStatWidgetViewProvider<WidgetData>
 
     var supportFamilies: [WidgetFamily] {
         guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
@@ -48,9 +48,9 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
         LockScreenMultiStatWidgetViewProvider(
             widgetKind: .today,
             topTitle: LocalizableStrings.likesTitle,
-            topValue: \.likes,
+            topValue: \.stats.likes,
             bottomTitle: LocalizableStrings.commentsTitle,
-            bottomValue: \.comments
+            bottomValue: \.stats.comments
         )
     }
 }

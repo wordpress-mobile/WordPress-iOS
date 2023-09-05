@@ -1,21 +1,25 @@
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvider {
+struct LockScreenSingleStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockScreenStatsWidgetsViewProvider {
     typealias SiteSelectedView = LockScreenSingleStatView
     typealias LoggedOutView = LockScreenUnconfiguredView
     typealias NoSiteView = LockScreenUnconfiguredView
     typealias NoDataView = LockScreenUnconfiguredView
+    typealias Data = WidgetData
 
     let title: String
+    let value: KeyPath<Data, Int>
     let widgetKind: StatsWidgetKind
-    let mapper = LockScreenWidgetViewModelMapper()
 
-    func buildSiteSelectedView(_ data: LockScreenStatsWidgetData) -> LockScreenSingleStatView {
-        let viewModel = mapper.getLockScreenSingleStatViewModel(
-            data: data,
-            title: title
+    func buildSiteSelectedView(_ data: Data) -> LockScreenSingleStatView {
+        let viewModel = LockScreenSingleStatViewModel(
+            siteName: data.siteName,
+            title: title,
+            value: data[keyPath: value],
+            updatedTime: data.date
         )
+
         return LockScreenSingleStatView(viewModel: viewModel)
     }
 
@@ -30,7 +34,7 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
                 return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
             }
         }
-        let viewModel = mapper.getLockScreenUnconfiguredViewModel(message)
+        let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
@@ -45,7 +49,7 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
                 return LocalizableStrings.noSiteViewThisWeekTitle
             }
         }
-        let viewModel = mapper.getLockScreenUnconfiguredViewModel(message)
+        let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
@@ -60,7 +64,7 @@ struct LockScreenSingleStatWidgetViewProvider: LockScreenStatsWidgetsViewProvide
                 return LocalizableStrings.noDataViewThisWeekTitle
             }
         }
-        let viewModel = mapper.getLockScreenUnconfiguredViewModel(message)
+        let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 }
