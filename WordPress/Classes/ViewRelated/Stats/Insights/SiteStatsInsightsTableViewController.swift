@@ -70,7 +70,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
 
-        if FeatureFlag.statsNewAppearance.enabled {
+        if AppConfiguration.isJetpack {
             tableView.cellLayoutMarginsFollowReadableWidth = true
         }
 

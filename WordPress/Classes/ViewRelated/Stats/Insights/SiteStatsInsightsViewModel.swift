@@ -369,7 +369,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         tableRows.append(TableFooterRow())
 
-        if FeatureFlag.statsNewAppearance.enabled {
+        if AppConfiguration.isJetpack {
             // Remove any header rows for the new appearance
             tableRows = tableRows.filter({ !($0 is InsightCellHeaderRow || $0 is TableFooterRow) })
 
@@ -795,7 +795,7 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForFollowerType(.insightsFollowersEmail)],
                                     statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
-                                    showTotalCount: FeatureFlag.statsNewAppearance.enabled ? false : true)
+                                    showTotalCount: AppConfiguration.isJetpack ? false : true)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
@@ -824,8 +824,8 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: FeatureFlag.statsNewAppearance.enabled ? "" : followerType.itemSubtitle,
-                       dataSubtitle: FeatureFlag.statsNewAppearance.enabled ? "" : followerType.dataSubtitle,
+                       itemSubtitle: AppConfiguration.isJetpack ? "" : followerType.itemSubtitle,
+                       dataSubtitle: AppConfiguration.isJetpack ? "" : followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }

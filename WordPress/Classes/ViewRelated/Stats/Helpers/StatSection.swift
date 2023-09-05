@@ -406,7 +406,7 @@
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
         static var mostPopularTime: String {
-            if FeatureFlag.statsNewAppearance.enabled {
+            if AppConfiguration.isJetpack {
                 return NSLocalizedString("stats.insights.mostPopularCard.title", value: "🔥 Most Popular Time", comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string.")
             } else {
                 return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")

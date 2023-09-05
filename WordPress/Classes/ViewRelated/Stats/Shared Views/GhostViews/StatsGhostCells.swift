@@ -21,10 +21,6 @@ class StatsGhostBaseCell: UITableViewCell {
     }
 
     private func setupBorders() {
-        guard FeatureFlag.statsNewAppearance.disabled else {
-            return
-        }
-
         topBorder = addTopBorder(withColor: .divider)
         topBorder?.isGhostableDisabled = true
 
