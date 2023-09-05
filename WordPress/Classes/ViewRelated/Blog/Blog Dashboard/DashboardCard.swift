@@ -95,12 +95,12 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
-    func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
+    func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil) -> Bool {
         switch self {
         case .jetpackInstall:
             return JetpackInstallPluginHelper.shouldShowCard(for: blog)
         case .quickStart:
-            return QuickStartTourGuide.quickStartEnabled(for: blog) && mySiteSettings.defaultSection == .dashboard
+            return QuickStartTourGuide.quickStartEnabled(for: blog)
         case .draftPosts, .scheduledPosts:
             return shouldShowRemoteCard(apiResponse: apiResponse)
         case .todaysStats:
