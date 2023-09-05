@@ -19,7 +19,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
             mediaButton
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
         return stackView
     }()

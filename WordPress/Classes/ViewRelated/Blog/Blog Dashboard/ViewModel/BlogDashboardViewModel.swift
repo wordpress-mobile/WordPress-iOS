@@ -182,7 +182,6 @@ private extension BlogDashboardViewModel {
         } else {
             snapshot.appendSections([.quickActions, .cards])
         }
-
         snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
