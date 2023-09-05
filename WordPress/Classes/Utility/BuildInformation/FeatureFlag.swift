@@ -4,7 +4,6 @@
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
-    case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
     case weeklyRoundup
@@ -50,8 +49,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .milestoneNotifications:
-            return true
         case .bloggingReminders:
             return true
         case .siteIconCreator:
@@ -148,8 +145,6 @@ extension FeatureFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
-        case .milestoneNotifications:
-            return "Milestone notifications"
         case .bloggingReminders:
             return "Blogging Reminders"
         case .siteIconCreator:

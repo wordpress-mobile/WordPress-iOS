@@ -10,7 +10,7 @@ class BadgeContentStyles: FormattableContentStyles {
     }
 
     var attributes: [NSAttributedString.Key: Any] {
-        if FeatureFlag.milestoneNotifications.enabled && isTitle {
+        if isTitle {
             return WPStyleGuide.Notifications.badgeTitleStyle
         }
 
@@ -18,7 +18,7 @@ class BadgeContentStyles: FormattableContentStyles {
     }
 
     var quoteStyles: [NSAttributedString.Key: Any]? {
-        if FeatureFlag.milestoneNotifications.enabled && isTitle {
+        if isTitle {
             return WPStyleGuide.Notifications.badgeTitleBoldStyle
         }
 
@@ -26,7 +26,7 @@ class BadgeContentStyles: FormattableContentStyles {
     }
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
-        if FeatureFlag.milestoneNotifications.enabled && isTitle {
+        if isTitle {
             return [
                 .user: WPStyleGuide.Notifications.badgeTitleBoldStyle,
                 .post: WPStyleGuide.Notifications.badgeTitleItalicsStyle,
