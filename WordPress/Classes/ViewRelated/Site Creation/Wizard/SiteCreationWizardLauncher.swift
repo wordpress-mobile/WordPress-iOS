@@ -6,24 +6,11 @@ final class SiteCreationWizardLauncher {
         return SiteCreator()
     }()
 
-    private var shouldShowSiteIntent: Bool {
-        return FeatureFlag.siteIntentQuestion.enabled
-    }
-
     private var shouldShowSiteName: Bool {
         return FeatureFlag.siteName.enabled
     }
 
     lazy var steps: [SiteCreationStep] = {
-        // If Site Intent shouldn't be shown, fall back to the original steps.
-        guard shouldShowSiteIntent else {
-            return [
-                .design,
-                .address,
-                .siteAssembly
-            ]
-        }
-
         // If Site Intent should be shown but not the Site Name, only add Site Intent.
         guard shouldShowSiteName else {
             return [
