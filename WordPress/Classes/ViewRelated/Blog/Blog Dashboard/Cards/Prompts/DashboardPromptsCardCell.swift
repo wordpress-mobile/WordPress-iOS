@@ -314,7 +314,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             .skip(skipMenuTapped)
         ]
 
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+        if AppConfiguration.isJetpack {
             return [defaultItems, [.learnMore(learnMoreTapped)], [.remove(removeMenuTapped)]]
         }
 

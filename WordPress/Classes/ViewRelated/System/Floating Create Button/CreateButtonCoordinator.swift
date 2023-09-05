@@ -331,7 +331,7 @@ private extension CreateButtonCoordinator {
     }
 
     func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
-        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+        guard AppConfiguration.isJetpack,
               let siteID = blog.dotComID?.stringValue,
               let allSkippedPrompts = UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] else {
             return false

@@ -14,13 +14,13 @@ extension Post {
             tags = Strings.promptTag
         }
 
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+        if AppConfiguration.isJetpack {
             tags?.append(", \(Strings.promptTag)-\(prompt.promptID)")
         }
     }
 
     private func promptContent(withPromptText promptText: String) -> String {
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+        if AppConfiguration.isJetpack {
             return pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
         } else {
             return pullquoteBlock(promptText: promptText)
