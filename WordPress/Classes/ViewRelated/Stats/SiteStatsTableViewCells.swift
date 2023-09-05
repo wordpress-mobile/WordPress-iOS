@@ -171,7 +171,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
 struct LatestPostSummaryRow: ImmuTableRow {
 
     static var cell: ImmuTableCell {
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.isJetpack {
             return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
         } else {
             return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)

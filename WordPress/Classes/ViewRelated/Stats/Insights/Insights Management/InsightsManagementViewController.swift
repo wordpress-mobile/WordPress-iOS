@@ -421,7 +421,7 @@ private extension InsightsManagementViewController {
         var insights: [StatSection] {
             switch self {
             case .general:
-                if FeatureFlag.statsNewInsights.enabled {
+                if AppConfiguration.isJetpack {
                     return [.insightsViewsVisitors, .insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
                 }
                 return [.insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]

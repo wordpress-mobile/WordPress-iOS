@@ -122,7 +122,7 @@ private extension SiteStatsInsightsTableViewController {
         addViewModelListeners()
         viewModel?.fetchInsights()
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.isJetpack {
             viewModel?.startFetchingPeriodOverview()
         }
     }
@@ -427,7 +427,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.isJetpack {
             switch statSection {
             case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
                 segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)

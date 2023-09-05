@@ -35,7 +35,7 @@
     case postStatsRecentWeeks
 
     static var allInsights: [StatSection] {
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.isJetpack {
             return [.insightsViewsVisitors,
                     .insightsLikesTotals,
                     .insightsCommentsTotals,
@@ -112,7 +112,7 @@
         case .insightsAnnualSiteStats:
             return InsightsHeaders.annualSiteStats
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-            if FeatureFlag.statsNewInsights.enabled {
+            if AppConfiguration.isJetpack {
                 switch self {
                 case .insightsCommentsAuthors:
                     return InsightsHeaders.topCommenters

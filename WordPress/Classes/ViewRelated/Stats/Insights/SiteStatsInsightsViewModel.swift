@@ -70,7 +70,7 @@ class SiteStatsInsightsViewModel: Observable {
             self?.emitChange()
         }
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.isJetpack {
             periodChangeReceipt = self.periodStore.onChange { [weak self] in
                 self?.updateMostRecentChartData(self?.periodStore.getSummary())
                 self?.emitChange()
@@ -222,7 +222,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.followersTotalsStatus,
                                         block: {
-                    if FeatureFlag.statsNewInsights.enabled {
+                    if AppConfiguration.isJetpack {
                         return TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                     } else {
                                             return TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
@@ -241,7 +241,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.annualAndMostPopularTimeStatus,
                                         block: {
-                    if FeatureFlag.statsNewInsights.enabled {
+                    if AppConfiguration.isJetpack {
                         return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
                                                  siteStatsInsightsDelegate: nil)
                     } else {
