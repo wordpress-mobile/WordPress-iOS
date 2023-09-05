@@ -18,8 +18,7 @@ struct LockScreenFieldView: View {
                 .lineLimit(1)
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 11))
-                .minimumScaleFactor(0.8)
+                .font(.system(size: 10))
                 .lineLimit(1)
         }
     }

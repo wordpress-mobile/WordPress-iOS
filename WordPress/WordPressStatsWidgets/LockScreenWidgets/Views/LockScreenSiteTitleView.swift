@@ -6,7 +6,7 @@ struct LockScreenSiteTitleView: View {
     var body: some View {
         Text(title)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .font(.system(size: 11))
+            .font(.system(size: 10))
             .lineLimit(1)
     }
 }
