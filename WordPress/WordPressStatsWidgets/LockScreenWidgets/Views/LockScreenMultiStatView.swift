@@ -20,7 +20,6 @@ struct LockScreenMultiStatView: View {
                         LockScreenFieldView(title: viewModel.secondaryField.title, value: viewModel.secondaryField.value)
                         Spacer()
                     }
-
                 }
                 .padding(
                     EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)

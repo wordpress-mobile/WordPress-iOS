@@ -16,19 +16,21 @@ import Foundation
             @objc static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
             @objc static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
             @objc static let userDefaultsJetpackFeaturesDisabledKey = "JetpackJPFeaturesDisabledKey"
-            @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
-            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
             @objc static let todayKind = "JetpackHomeWidgetToday"
             @objc static let allTimeKind = "JetpackHomeWidgetAllTime"
             @objc static let thisWeekKind = "JetpackHomeWidgetThisWeek"
-            @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
-            @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
             @objc static let todayProperties = "JetpackHomeWidgetTodayProperties"
             @objc static let allTimeProperties = "JetpackHomeWidgetAllTimeProperties"
             @objc static let thisWeekProperties = "JetpackHomeWidgetThisWeekProperties"
             @objc static let todayFilename = "JetpackHomeWidgetTodayData.plist"
             @objc static let allTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
             @objc static let thisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
+
+            /// Lock Screen
+            @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
+            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
+            @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
+            @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
         }
 
 

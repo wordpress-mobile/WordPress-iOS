@@ -16,17 +16,21 @@ import Foundation
             @objc static let userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
             @objc static let userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
             @objc static let userDefaultsJetpackFeaturesDisabledKey = "WordPressJPFeaturesDisabledKey"
-            @objc static let lockScreenTodayViewsKind = "WordPressLockScreenWidgetTodayViews"
             @objc static let todayKind = "WordPressHomeWidgetToday"
             @objc static let allTimeKind = "WordPressHomeWidgetAllTime"
             @objc static let thisWeekKind = "WordPressHomeWidgetThisWeek"
-            @objc static let lockScreenTodayViewsProperties = "WordPressLockScreenWidgetTodayViewsProperties"
             @objc static let todayProperties = "WordPressHomeWidgetTodayProperties"
             @objc static let allTimeProperties = "WordPressHomeWidgetAllTimeProperties"
             @objc static let thisWeekProperties = "WordPressHomeWidgetThisWeekProperties"
             @objc static let todayFilename = "HomeWidgetTodayData.plist"
             @objc static let allTimeFilename = "HomeWidgetAllTimeData.plist"
             @objc static let thisWeekFilename = "HomeWidgetThisWeekData.plist"
+
+            /// Lock Screen
+            @objc static let lockScreenTodayViewsKind = "WordPressLockScreenWidgetTodayViews"
+            @objc static let lockScreenTodayLikesCommentsKind = "WordPressLockScreenWidgetTodayLikesComments"
+            @objc static let lockScreenTodayViewsProperties = "WordPressLockScreenWidgetTodayViewsProperties"
+            @objc static let lockScreenTodayLikesCommentsProperties = "WordPressLockScreenWidgetTodayLikesCommentsProperties"
         }
 
         // iOS13 Stats Today Widgets
