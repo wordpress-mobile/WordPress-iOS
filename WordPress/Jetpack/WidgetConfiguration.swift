@@ -35,6 +35,9 @@ import Foundation
 
             @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
+
+            @objc static let lockScreenTodayViewsVisitorsKind = "JetpackLockScreenWidgetTodayViewsVisitors"
+            @objc static let lockScreenTodayViewsVisitorsProperties = "JetpackLockScreenWidgetTodayViewsVisitorsProperties"
         }
 
 
