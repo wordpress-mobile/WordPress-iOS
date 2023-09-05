@@ -13,15 +13,7 @@ struct LockScreenSingleStatView: View {
                 VStack(alignment: .leading) {
                     LockScreenSiteTitleView(title: viewModel.siteName)
                     Spacer(minLength: 0)
-                    Text(viewModel.value)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 20, weight: .bold))
-                        .minimumScaleFactor(0.5)
-                        .foregroundColor(.white)
-                    Text(viewModel.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11, weight: .bold))
-                        .minimumScaleFactor(0.8)
+                    LockScreenFieldView(title: viewModel.title, value: viewModel.value)
                 }
                 .padding(
                     EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)

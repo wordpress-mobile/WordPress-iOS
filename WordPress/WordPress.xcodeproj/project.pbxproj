@@ -223,6 +223,8 @@
 		01CE5013290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5014290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5015290A890F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
+		01D2FF5E2AA733690038E040 /* LockScreenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */; };
+		01D2FF5F2AA733690038E040 /* LockScreenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */; };
 		01DBFD8729BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01DBFD8829BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01E61E5A29F03DEC002E544E /* DashboardDomainsCardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E61E5929F03DEC002E544E /* DashboardDomainsCardSearchView.swift */; };
@@ -5960,6 +5962,7 @@
 		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
+		01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFieldView.swift; sourceTree = "<group>"; };
 		01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNativeConnectionService.swift; sourceTree = "<group>"; };
 		01E61E5929F03DEC002E544E /* DashboardDomainsCardSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDomainsCardSearchView.swift; sourceTree = "<group>"; };
 		01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodHelperTests.swift; sourceTree = "<group>"; };
@@ -16233,6 +16236,7 @@
 				C9B477B529CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift */,
 				0188FE3E2AA6137F0093EDA5 /* LockScreenMultiStatView.swift */,
 				0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */,
+				01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -21098,6 +21102,7 @@
 				C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				0188FE492AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */,
 				0107E0C628F97D5000DE87DB /* FeatureFlag.swift in Sources */,
+				01D2FF5F2AA733690038E040 /* LockScreenFieldView.swift in Sources */,
 				0107E0C728F97D5000DE87DB /* StatsWidgets.swift in Sources */,
 				0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */,
 				0107E0C828F97D5000DE87DB /* StatsValueView.swift in Sources */,
@@ -23045,6 +23050,7 @@
 				C9C21D7729BECFC1009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				0188FE482AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */,
 				3F8EEC4E25B4817000EC9DAE /* StatsWidgets.swift in Sources */,
+				01D2FF5E2AA733690038E040 /* LockScreenFieldView.swift in Sources */,
 				3FA59B9A258289E30073772F /* StatsValueView.swift in Sources */,
 				0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */,
 				3F8EEC7025B4849A00EC9DAE /* SiteListProvider.swift in Sources */,

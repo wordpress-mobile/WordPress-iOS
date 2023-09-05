@@ -1,8 +1,7 @@
 import SwiftUI
-import WidgetKit
 
 struct LockScreenSiteTitleView: View {
-    var title: String
+    let title: String
 
     var body: some View {
         Text(title)
