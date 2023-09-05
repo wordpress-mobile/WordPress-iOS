@@ -1,5 +1,54 @@
 import UIKit
 
+#warning("TODO: reimplement spotlight thing")
+#warning("TODO: fix where separators go")
+final class DashboardQuickActionCell: UITableViewCell {
+    private let iconView = UIImageView()
+    private let titleLabel = UILabel()
+    private let detailsLabel = UILabel()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        createView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func createView() {
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        titleLabel.adjustsFontForContentSizeCategory = true
+
+        iconView.tintColor = .label
+
+        let spacer = UIView()
+        spacer.translatesAutoresizingMaskIntoConstraints = false
+        spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: 8).isActive = true
+
+        detailsLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        detailsLabel.textColor = .secondaryLabel
+        detailsLabel.adjustsFontForContentSizeCategory = true
+
+        let stackView = UIStackView(arrangedSubviews: [iconView, titleLabel, spacer, detailsLabel])
+        stackView.alignment = .center
+        stackView.spacing = 20
+        stackView.isUserInteractionEnabled = false
+
+        #warning("TODO: fix insets")
+        contentView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+    }
+
+    func configure(_ viewModel: DashboardQuickActionItemViewModel) {
+        titleLabel.text = viewModel.title
+        iconView.image = viewModel.image.withRenderingMode(.alwaysTemplate)
+        detailsLabel.text = viewModel.details
+    }
+}
+
+#warning("TODO: remove")
 final class QuickActionButton: UIButton {
 
     var onTap: (() -> Void)?

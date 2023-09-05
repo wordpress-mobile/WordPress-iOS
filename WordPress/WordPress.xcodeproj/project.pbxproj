@@ -474,8 +474,6 @@
 		0CB4057A29C8DDEE008EED0A /* BlogDashboardPersonalizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */; };
 		0CB4057D29C8DF83008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
 		0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
-		0CD223DC2AA7A670002BD761 /* DashboardMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DB2AA7A670002BD761 /* DashboardMenuCell.swift */; };
-		0CD223DD2AA7A670002BD761 /* DashboardMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DB2AA7A670002BD761 /* DashboardMenuCell.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
 		0CD382842A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
 		0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */; };
@@ -1816,8 +1814,6 @@
 		8070EB3E28D807CB005C6513 /* InMemoryUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */; };
 		8071390727D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
 		8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
-		808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
-		808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		808DB70C2A710EFE00EA1645 /* NUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DB70B2A710EFE00EA1645 /* NUXTests.swift */; };
 		808DB70D2A710EFE00EA1645 /* NUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DB70B2A710EFE00EA1645 /* NUXTests.swift */; };
 		8091019329078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */; };
@@ -4000,8 +3996,8 @@
 		FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
 		FAA4012E27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
-		FAA4013427B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
-		FAA4013527B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
+		FAA4013427B52455009E1137 /* DashboardQuickActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */; };
+		FAA4013527B52455009E1137 /* DashboardQuickActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */; };
 		FAA9084C27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
@@ -6221,7 +6217,6 @@
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
 		0CB4057229C8DD01008EED0A /* BlogDashboardPersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationView.swift; sourceTree = "<group>"; };
 		0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizeCardCell.swift; sourceTree = "<group>"; };
-		0CD223DB2AA7A670002BD761 /* DashboardMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMenuCell.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
@@ -7419,7 +7414,6 @@
 		806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModelTests.swift; sourceTree = "<group>"; };
 		8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryUserDefaults.swift; sourceTree = "<group>"; };
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
-		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
 		808DB70B2A710EFE00EA1645 /* NUXTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXTests.swift; sourceTree = "<group>"; };
 		8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFullscreenOverlayViewController.swift; sourceTree = "<group>"; };
 		8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackFullscreenOverlayViewController.xib; sourceTree = "<group>"; };
@@ -9354,7 +9348,7 @@
 		FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazePromoCardView.swift; sourceTree = "<group>"; };
 		FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeHelper.swift; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
-		FAA4013327B52455009E1137 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
+		FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionCell.swift; sourceTree = "<group>"; };
 		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -9973,7 +9967,6 @@
 				32F2565F25012D3F006B8BC4 /* LinearGradientView.swift */,
 				F18CB8952642E58700B90794 /* FixedSizeImageView.swift */,
 				FADFBD25265F580500039C41 /* MultilineButton.swift */,
-				808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */,
 				0C8078AA2A4E01A5002ABF29 /* PagingFooterView.swift */,
 				4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */,
 			);
@@ -13849,7 +13842,6 @@
 				F4026B1C2A1BC88A00CC7781 /* DashboardDomainRegistrationCardCell.swift */,
 				83796698299C048E004A92B9 /* DashboardJetpackInstallCardCell.swift */,
 				83BFAE472A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift */,
-				0CD223DB2AA7A670002BD761 /* DashboardMenuCell.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -18147,7 +18139,7 @@
 			isa = PBXGroup;
 			children = (
 				FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */,
-				FAA4013327B52455009E1137 /* QuickActionButton.swift */,
+				FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */,
 			);
 			path = "Quick Actions";
 			sourceTree = "<group>";
@@ -21347,7 +21339,6 @@
 				E1BEEC651C4E3978000B4FA0 /* PaddedLabel.swift in Sources */,
 				08BBA3502A792B4B00BDCF32 /* DashboardGoogleDomainsCardCell.swift in Sources */,
 				E1A6DBE519DC7D230071AC1E /* PostService.m in Sources */,
-				0CD223DC2AA7A670002BD761 /* DashboardMenuCell.swift in Sources */,
 				C3FBF4E828AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift in Sources */,
 				F1D8C6F026C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift in Sources */,
 				E62AFB6E1DC8E593007484FC /* WPTextAttachmentManager.swift in Sources */,
@@ -21772,7 +21763,7 @@
 				FADC40A82A8BC2A200C19997 /* UIImage+Gravatar.swift in Sources */,
 				436D55D9210F85DD00CEAA33 /* NibLoadable.swift in Sources */,
 				8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */,
-				FAA4013427B52455009E1137 /* QuickActionButton.swift in Sources */,
+				FAA4013427B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				32A218D8251109DB00D1AE6C /* ReaderReportPostAction.swift in Sources */,
 				FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */,
 				081E4B4C281C019A0085E89C /* TooltipAnchor.swift in Sources */,
@@ -22373,7 +22364,6 @@
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				3FAF9CC226D01CFE00268EA2 /* DomainsDashboardView.swift in Sources */,
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
-				808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */,
 				178DDD30266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				98BAA7C326F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
@@ -24676,7 +24666,7 @@
 				FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */,
 				FABB22982602FC2C00C8785C /* PostingActivityCollectionViewCell.swift in Sources */,
 				FABB22992602FC2C00C8785C /* NibLoadable.swift in Sources */,
-				FAA4013527B52455009E1137 /* QuickActionButton.swift in Sources */,
+				FAA4013527B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				FABB229A2602FC2C00C8785C /* BackupListViewController.swift in Sources */,
 				FABB229B2602FC2C00C8785C /* ReaderReportPostAction.swift in Sources */,
 				8B55F9B82614D819007D618E /* UnifiedPrologueEditorContentView.swift in Sources */,
@@ -25085,7 +25075,6 @@
 				3F46EECE28BC4962004F02B2 /* JetpackLandingScreenView.swift in Sources */,
 				FABB23BC2602FC2C00C8785C /* MenuItemAbstractView.m in Sources */,
 				FABB23BD2602FC2C00C8785C /* LocationService.m in Sources */,
-				808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */,
 				FABB23BE2602FC2C00C8785C /* Domain.swift in Sources */,
 				FABB23BF2602FC2C00C8785C /* PostListViewController.swift in Sources */,
 				FABB23C02602FC2C00C8785C /* FeatureItemRow.swift in Sources */,
@@ -25801,7 +25790,6 @@
 				FE9CC71B26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */,
 				F195C42B26DFBDC2000EC884 /* BackgroundTasksCoordinator.swift in Sources */,
 				FABB25CB2602FC2C00C8785C /* BlogToBlogMigration87to88.swift in Sources */,
-				0CD223DD2AA7A670002BD761 /* DashboardMenuCell.swift in Sources */,
 				FABB25CC2602FC2C00C8785C /* WPStyleGuide+Themes.swift in Sources */,
 				FABB25CD2602FC2C00C8785C /* WPStyleGuide+Reader.swift in Sources */,
 				FABB25CE2602FC2C00C8785C /* Interpolation.swift in Sources */,

@@ -119,8 +119,6 @@ class MySitesCoordinator: NSObject {
 
         if let mySiteViewController = navigationController.topViewController as? MySiteViewController {
             mySiteViewController.showBlogDetailsSubsection(subsection)
-        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
-            blogDetailsViewController.showDetailView(for: subsection)
         }
     }
 

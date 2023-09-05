@@ -3,6 +3,37 @@ import UIKit
 import SwiftUI
 
 final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
+    enum Section: Int, CaseIterable {
+        case dashboard
+        case siteMenu
+
+        var title: String {
+            switch self {
+            case .dashboard:
+                return NSLocalizedString("Home", comment: "Title for dashboard view on the My Site screen")
+            case .siteMenu:
+                return NSLocalizedString("Menu", comment: "Title for the site menu view on the My Site screen")
+            }
+        }
+
+        var analyticsDescription: String {
+            switch self {
+            case .dashboard:
+                return "dashboard"
+            case .siteMenu:
+                return "site_menu"
+            }
+        }
+    }
+
+    private var currentSection: Section {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .siteMenu
+        } else {
+            return .dashboard
+        }
+    }
+
     @objc
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -79,11 +110,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                 showBlogDetailsForMainBlogOrNoSites()
                 return
             }
-            showDashboard(for: newBlog)
-            showSitePicker(for: newBlog)
-            updateNavigationTitle(for: newBlog)
             createFABIfNeeded()
             fetchPrompt(for: newBlog)
+            configure(for: newBlog)
         }
 
         get {
@@ -318,9 +347,18 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showNoSites()
             return
         }
-        showDashboard(for: mainBlog)
-        showSitePicker(for: mainBlog)
-        updateNavigationTitle(for: mainBlog)
+        configure(for: mainBlog)
+    }
+
+    private func configure(for blog: Blog) {
+        showSitePicker(for: blog)
+        updateNavigationTitle(for: blog)
+        switch currentSection {
+        case .siteMenu:
+            showBlogDetails(for: blog)
+        case .dashboard:
+            showDashboard(for: blog)
+        }
     }
 
     @objc
@@ -345,18 +383,35 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         guard let blog = blog else {
             return
         }
-        /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
-        /// the dashboard updating fast.
-        blogDashboardViewController?.pulledToRefresh { [weak self] in
-            self?.refreshControl.endRefreshing()
+
+        switch currentSection {
+        case .siteMenu:
+
+            blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.updateNavigationTitle(for: blog)
+                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+            }
+
+
+        case .dashboard:
+
+            /// The dashboard’s refresh control is intentionally not tied to blog syncing in order to keep
+            /// the dashboard updating fast.
+            blogDashboardViewController?.pulledToRefresh { [weak self] in
+                self?.refreshControl.endRefreshing()
+            }
+
+            syncBlogAndAllMetadata(blog)
+
+            /// Update today's prompt if the blog has blogging prompts enabled.
+            fetchPrompt(for: blog)
         }
 
-        syncBlogAndAllMetadata(blog)
-
-        /// Update today's prompt if the blog has blogging prompts enabled.
-        fetchPrompt(for: blog)
-
-        WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
+        WPAnalytics.track(.mySitePullToRefresh, properties: [WPAppAnalyticsKeyTabSource: currentSection.analyticsDescription])
     }
 
     private func syncBlogAndAllMetadata(_ blog: Blog) {
@@ -412,7 +467,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         hideSplitDetailsView()
-        blogDetailsViewController = nil
 
         guard noSitesViewController.view.superview == nil else {
             return
@@ -556,7 +610,33 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Blog Details UI Logic
 
-    #warning("push this")
+    private func hideBlogDetails() {
+        guard let blogDetailsViewController = blogDetailsViewController else {
+            return
+        }
+
+        removeChildFromStackView(blogDetailsViewController)
+    }
+
+    /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// of creating it.
+    ///
+    /// - Parameters:
+    ///         - blog: The blog to show the details of.
+    ///
+    private func showBlogDetails(for blog: Blog) {
+        hideNoSites()
+
+        let blogDetailsViewController = self.blogDetailsViewController(for: blog)
+
+        embedChildInStackView(blogDetailsViewController)
+
+        // This ensures that the spotlight views embedded in the site picker don't get clipped.
+        stackView.sendSubviewToBack(blogDetailsViewController.view)
+
+        blogDetailsViewController.showInitialDetailsForBlog()
+    }
+
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
         guard let blogDetailsViewController = blogDetailsViewController else {
             let blogDetailsViewController = makeBlogDetailsViewController(for: blog)
@@ -619,10 +699,20 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func updateChildViewController(for blog: Blog) {
-        syncBlogAndAllMetadata(blog)
-        blogDashboardViewController?.update(blog: blog)
+        switch currentSection {
+        case .siteMenu:
+            blogDetailsViewController?.blog = blog
+            blogDetailsViewController?.configureTableViewData()
+            blogDetailsViewController?.tableView.reloadData()
+            blogDetailsViewController?.preloadMetadata()
+            blogDetailsViewController?.showInitialDetailsForBlog()
+        case .dashboard:
+            syncBlogAndAllMetadata(blog)
+            blogDashboardViewController?.update(blog: blog)
+        }
     }
 
+    #warning("TODO: fix this; make sure it works on iPhone")
     func presentCreateSheet() {
         blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
     }
@@ -800,8 +890,6 @@ extension MySiteViewController {
     }
 }
 
-#warning("TODO: rework this")
-
 // MARK: - Presentation
 /// Supporting presentation of BlogDetailsSubsection from both BlogDashboard and BlogDetails
 extension MySiteViewController: BlogDetailsPresentationDelegate {
@@ -816,14 +904,12 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     }
 
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
-//        switch currentSection {
-//        case .dashboard:
+        switch currentSection {
+        case .dashboard:
             blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
-//        case .siteMenu:
-//            blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
-//        case .none:
-//            return
-//        }
+        case .siteMenu:
+            blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
+        }
     }
 }
 
