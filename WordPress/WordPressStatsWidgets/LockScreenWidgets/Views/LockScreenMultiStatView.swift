@@ -52,7 +52,7 @@ struct LockScreenMultiStatView_Previews: PreviewProvider {
     static let viewModel = LockScreenMultiStatViewModel(
         siteName: "My WordPress Site",
         updatedTime: Date(),
-        firstField: .init(title: "Views", value: 12345678),
+        firstField: .init(title: "Likes", value: 12345678),
         secondaryField: .init(title: "Comments", value: 1280)
     )
 

@@ -8,6 +8,10 @@ extension HomeWidgetTodayData: LockScreenStatsWidgetData {
     var comments: Int? {
         stats.comments
     }
+
+    var likes: Int? {
+        stats.likes
+    }
 }
 
 extension HomeWidgetAllTimeData: LockScreenStatsWidgetData {
@@ -18,6 +22,10 @@ extension HomeWidgetAllTimeData: LockScreenStatsWidgetData {
     var comments: Int? {
         nil
     }
+
+    var likes: Int? {
+        nil
+    }
 }
 
 extension HomeWidgetThisWeekData: LockScreenStatsWidgetData {
@@ -26,6 +34,10 @@ extension HomeWidgetThisWeekData: LockScreenStatsWidgetData {
     }
 
     var comments: Int? {
+        nil
+    }
+
+    var likes: Int? {
         nil
     }
 }

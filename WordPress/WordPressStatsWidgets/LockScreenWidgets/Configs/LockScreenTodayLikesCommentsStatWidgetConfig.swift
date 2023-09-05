@@ -1,7 +1,7 @@
 import WidgetKit
 
 @available(iOS 16.0, *)
-struct LockScreenTodayViewsCommentsStatWidgetConfig: LockScreenStatsWidgetConfig {
+struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetTodayData
     typealias ViewProvider = LockScreenMultiStatWidgetViewProvider
 
@@ -21,11 +21,11 @@ struct LockScreenTodayViewsCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsCommentsKind
+        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsKind
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsCommentsProperties
+        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsProperties
     }
 
     var placeholderContent: HomeWidgetTodayData {
@@ -47,8 +47,8 @@ struct LockScreenTodayViewsCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     var viewProvider: ViewProvider {
         LockScreenMultiStatWidgetViewProvider(
             widgetKind: .today,
-            topTitle: LocalizableStrings.viewsTitle,
-            topValue: \.views,
+            topTitle: LocalizableStrings.likesTitle,
+            topValue: \.likes,
             bottomTitle: LocalizableStrings.commentsTitle,
             bottomValue: \.comments
         )

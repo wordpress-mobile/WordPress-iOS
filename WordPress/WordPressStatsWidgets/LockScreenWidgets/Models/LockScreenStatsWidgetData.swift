@@ -5,5 +5,6 @@ protocol LockScreenStatsWidgetData {
     var statsURL: URL? { get }
     var views: Int? { get }
     var comments: Int? { get }
+    var likes: Int? { get }
     var date: Date { get }
 }

@@ -207,8 +207,8 @@
 		0188FE462AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */; };
 		0188FE482AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */; };
 		0188FE492AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */; };
-		0188FE4B2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */; };
-		0188FE4C2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */; };
+		0188FE4B2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE4A2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift */; };
+		0188FE4C2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188FE4A2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
@@ -5954,7 +5954,7 @@
 		0188FE412AA613AD0093EDA5 /* LockScreenMultiStatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenMultiStatViewModel.swift; sourceTree = "<group>"; };
 		0188FE442AA624A40093EDA5 /* LockScreenSiteTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenSiteTitleView.swift; sourceTree = "<group>"; };
 		0188FE472AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenMultiStatWidgetViewProvider.swift; sourceTree = "<group>"; };
-		0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTodayViewsCommentsStatWidgetConfig.swift; sourceTree = "<group>"; };
+		0188FE4A2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTodayLikesCommentsStatWidgetConfig.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
 		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
@@ -16284,7 +16284,7 @@
 			children = (
 				C9FE383F29C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift */,
 				C9FE383C29C2A3D100D39841 /* LockScreenTodayViewsStatWidgetConfig.swift */,
-				0188FE4A2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift */,
+				0188FE4A2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -21115,7 +21115,7 @@
 				C9FE384729C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift in Sources */,
 				C9B477BA29CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				0107E0D128F97D5000DE87DB /* SingleStatView.swift in Sources */,
-				0188FE4C2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */,
+				0188FE4C2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift in Sources */,
 				0107E0D228F97D5000DE87DB /* UnconfiguredView.swift in Sources */,
 				0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */,
 				0107E0D328F97D5000DE87DB /* Tracks+StatsWidgets.swift in Sources */,
@@ -23062,7 +23062,7 @@
 				C9FE384629C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift in Sources */,
 				C9B477B929CD2FEF008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				3F5689F0254209790048A9E4 /* SingleStatView.swift in Sources */,
-				0188FE4B2AA62F800093EDA5 /* LockScreenTodayViewsCommentsStatWidgetConfig.swift in Sources */,
+				0188FE4B2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift in Sources */,
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,
 				0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */,
 				98390AC3254C984700868F0A /* Tracks+StatsWidgets.swift in Sources */,
