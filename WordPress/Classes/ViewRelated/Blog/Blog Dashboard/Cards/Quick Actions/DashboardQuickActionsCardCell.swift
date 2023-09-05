@@ -19,7 +19,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     private var items: [DashboardQuickActionItemViewModel] = []
     private weak var viewController: UIViewController?
     private weak var blogDetailsViewController: BlogDetailsViewController?
-    private let scenePresenter = MeScenePresenter()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -129,7 +128,7 @@ extension DashboardQuickActionsCardCell {
     private func showMoreDetails(for blog: Blog) {
         #warning("TODO: add track action")
 //        trackQuickActionsEvent(.opened, blog: <#T##Blog#>)
-        let viewController = BlogDetailsViewController(meScenePresenter: scenePresenter)
+        let viewController = BlogDetailsViewController()
         viewController.blog = blog
         viewController.presentationDelegate = self
         self.blogDetailsViewController = viewController

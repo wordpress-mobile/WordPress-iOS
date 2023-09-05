@@ -333,22 +333,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
-- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+- (instancetype)init
 {
     self = [super init];
     
     if (self) {
         self.restorationIdentifier = WPBlogDetailsRestorationID;
         self.restorationClass = [self class];
-        _meScenePresenter = meScenePresenter;
     }
     
     return self;
-}
-
-- (instancetype)init
-{
-    return [self initWithMeScenePresenter:[MeScenePresenter new]];
 }
 
 - (void)viewDidLoad

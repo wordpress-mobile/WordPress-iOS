@@ -649,7 +649,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func makeBlogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
-        let blogDetailsViewController = BlogDetailsViewController(meScenePresenter: meScenePresenter)
+        let blogDetailsViewController = BlogDetailsViewController()
         blogDetailsViewController.blog = blog
 
         return blogDetailsViewController
