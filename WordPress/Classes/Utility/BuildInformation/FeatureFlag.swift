@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case weeklyRoundup
     case weeklyRoundupStaticNotification
     case weeklyRoundupBGProcessingTask
     case domains
@@ -50,8 +49,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .weeklyRoundup:
-            return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
@@ -144,8 +141,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .weeklyRoundup:
-            return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
             return "Weekly Roundup Static Notification"
         case .weeklyRoundupBGProcessingTask:
@@ -219,8 +214,6 @@ extension FeatureFlag: OverridableFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .weeklyRoundup:
             return false
         case .weeklyRoundupStaticNotification:
             return false
