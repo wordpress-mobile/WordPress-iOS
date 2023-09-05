@@ -34,11 +34,6 @@ struct ReaderCSS {
     /// We force it to update based on the `expirationDays` property
     ///
     var address: String {
-        // Always returns a fresh CSS if the flag is enabled
-        guard !FeatureFlag.readerCSS.enabled else {
-            return url(appendingTimestamp: now)
-        }
-
         guard let lastUpdated = store.object(forKey: type(of: self).updatedKey) as? Int,
                 (now - lastUpdated < expirationDaysInSeconds
                 || !isInternetReachable()) else {
