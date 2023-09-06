@@ -1,11 +1,17 @@
 import UIKit
 
 #warning("TODO: reimplement spotlight thing")
-#warning("TODO: fix where separators go")
 final class DashboardQuickActionCell: UITableViewCell {
     private let iconView = UIImageView()
     private let titleLabel = UILabel()
     private let detailsLabel = UILabel()
+
+    var isSeparatorHidden = false {
+        didSet {
+            guard oldValue != isSeparatorHidden else { return }
+            refreshSeparator()
+        }
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -17,7 +23,7 @@ final class DashboardQuickActionCell: UITableViewCell {
     }
 
     private func createView() {
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .medium)
         titleLabel.adjustsFontForContentSizeCategory = true
 
         iconView.tintColor = .label
@@ -32,19 +38,33 @@ final class DashboardQuickActionCell: UITableViewCell {
 
         let stackView = UIStackView(arrangedSubviews: [iconView, titleLabel, spacer, detailsLabel])
         stackView.alignment = .center
-        stackView.spacing = 20
+        stackView.spacing = 16
         stackView.isUserInteractionEnabled = false
 
-        #warning("TODO: fix insets")
         contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16))
     }
 
     func configure(_ viewModel: DashboardQuickActionItemViewModel) {
         titleLabel.text = viewModel.title
-        iconView.image = viewModel.image.withRenderingMode(.alwaysTemplate)
+        iconView.image = viewModel.image?.withRenderingMode(.alwaysTemplate)
         detailsLabel.text = viewModel.details
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        refreshSeparator()
+    }
+
+    private func refreshSeparator() {
+        if isSeparatorHidden {
+            separatorInset = UIEdgeInsets(top: 0, left: bounds.width, bottom: 0, right: 0)
+        } else {
+            let titleLabelFrame = contentView.convert(titleLabel.frame, from: titleLabel.superview)
+            separatorInset = UIEdgeInsets(top: 0, left: titleLabelFrame.origin.x, bottom: 0, right: 0)
+        }
     }
 }
 

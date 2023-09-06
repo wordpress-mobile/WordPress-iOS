@@ -165,7 +165,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
-@property (nonatomic) BOOL shouldScrollToViewSite;
+@property (nonatomic) BOOL isScrollEnabled;
 @property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
 @property (nonatomic, strong, nullable) BlogDetailsRow *meRow;
 

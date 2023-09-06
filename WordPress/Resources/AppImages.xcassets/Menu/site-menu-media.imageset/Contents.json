@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "site-menu-media.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

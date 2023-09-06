@@ -1,11 +1,12 @@
 import UIKit
+import Combine
 import WordPressShared
 
-#warning("TODO: communicate willAppear here to remove selection")
+#warning("TODO: use existing IntrinsicTableView and fix how separator is hidden")
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
 
     private lazy var tableView: UITableView = {
-        let tableView = SelfSizingTableView(frame: .zero, style: .plain)
+        let tableView = IntrinsicTableView(frame: .zero, style: .plain)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
@@ -17,8 +18,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     }()
 
     private var items: [DashboardQuickActionItemViewModel] = []
-    private weak var viewController: UIViewController?
+    private var viewModel: DashboardQuickActionsViewModel?
+    private weak var parentViewController: UIViewController?
     private weak var blogDetailsViewController: BlogDetailsViewController?
+    private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +39,29 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         contentView.pinSubviewToAllEdges(tableView, priority: UILayoutPriority(999))
     }
 
+    func configure(viewModel: DashboardQuickActionsViewModel, viewController: UIViewController) {
+        self.parentViewController = viewController
+        self.viewModel = viewModel
+
+        cancellables = []
+
+        viewModel.onViewWillAppear = { [weak self] in
+            self?.deselectCurrentCell()
+        }
+
+        viewModel.$items.sink { [weak self] in
+            guard let self else { return }
+            self.items = $0
+            self.tableView.reloadData()
+        }.store(in: &cancellables)
+    }
+
+    private func deselectCurrentCell() {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,13 +72,41 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseID, for: indexPath) as! DashboardQuickActionCell
         cell.configure(items[indexPath.row])
         cell.accessoryType = .disclosureIndicator
+        cell.isSeparatorHidden = indexPath.row == (items.count - 1)
         return cell
     }
 
     // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        items[indexPath.row].action()
+        guard let blog = viewModel?.blog, let parentViewController else { return }
+
+        switch items[indexPath.row].action {
+        case .posts:
+            trackQuickActionsEvent(.openedPosts, blog: blog)
+            PostListViewController.showForBlog(blog, from: parentViewController)
+        case .pages:
+            trackQuickActionsEvent(.openedPages, blog: blog)
+            PageListViewController.showForBlog(blog, from: parentViewController)
+        case .media:
+            trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
+            MediaLibraryViewController.showForBlog(blog, from: parentViewController)
+        case .stats:
+            trackQuickActionsEvent(.statsAccessed, blog: blog)
+            StatsViewController.show(for: blog, from: parentViewController)
+        case .more:
+            let viewController = BlogDetailsViewController()
+            viewController.isScrollEnabled = true
+            viewController.tableView.isScrollEnabled = true
+            viewController.blog = blog
+            viewController.presentationDelegate = self
+            self.blogDetailsViewController = viewController
+            self.parentViewController?.show(viewController, sender: nil)
+        }
+    }
+
+    private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
+        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "quick_actions"], with: blog)
     }
 }
 
@@ -64,88 +118,8 @@ extension DashboardQuickActionsCardCell: BlogDetailsPresentationDelegate {
     }
 
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
-        self.viewController?.showDetailViewController(viewController, sender: nil)
+        self.parentViewController?.showDetailViewController(viewController, sender: nil)
     }
-}
-
-// MARK: - Button Actions
-
-extension DashboardQuickActionsCardCell {
-
-#warning("TODO: add show more")
-#warning("TODO: add details labels")
-    func configure(for blog: Blog, with viewController: UIViewController) {
-        items.removeAll()
-
-        items.append(.init(image: .gridicon(.posts), title: Strings.posts, details: nil) { [weak self] in
-            self?.showPostList(for: blog)
-        })
-        if blog.supports(.pages) {
-            items.append(.init(image: .gridicon(.pages), title: Strings.pages, details: nil) { [weak self] in
-                self?.showPageList(for: blog)
-            })
-        }
-        items.append(.init(image: .gridicon(.image), title: Strings.media, details: nil) { [weak self] in
-            self?.showMediaLibrary(for: blog)
-        })
-        if blog.supports(.stats) {
-            items.append(.init(image: .gridicon(.statsAlt), title: Strings.stats, details: nil) { [weak self] in
-                self?.showStats(for: blog)
-            })
-        }
-        items.append(.init(image: .gridicon(.ellipsis), title: Strings.more, details: nil) { [weak self] in
-            self?.showMoreDetails(for: blog)
-        })
-
-        self.tableView.reloadData()
-        self.viewController = viewController
-    }
-
-    private func showStats(for blog: Blog) {
-        guard let viewController else { return }
-        trackQuickActionsEvent(.statsAccessed, blog: blog)
-        StatsViewController.show(for: blog, from: viewController)
-    }
-
-    private func showPostList(for blog: Blog) {
-        guard let viewController else { return }
-        trackQuickActionsEvent(.openedPosts, blog: blog)
-        PostListViewController.showForBlog(blog, from: viewController)
-    }
-
-    private func showMediaLibrary(for blog: Blog) {
-        guard let viewController else { return }
-        trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
-        MediaLibraryViewController.showForBlog(blog, from: viewController)
-    }
-
-    private func showPageList(for blog: Blog) {
-        guard let viewController else { return }
-        trackQuickActionsEvent(.openedPages, blog: blog)
-        PageListViewController.showForBlog(blog, from: viewController)
-    }
-
-    private func showMoreDetails(for blog: Blog) {
-        #warning("TODO: add track action")
-//        trackQuickActionsEvent(.opened, blog: <#T##Blog#>)
-        let viewController = BlogDetailsViewController()
-        viewController.blog = blog
-        viewController.presentationDelegate = self
-        self.blogDetailsViewController = viewController
-        self.viewController?.show(viewController, sender: nil)
-
-    }
-
-    private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
-        WPAppAnalytics.track(event, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "quick_actions"], with: blog)
-    }
-}
-
-struct DashboardQuickActionItemViewModel {
-    let image: UIImage
-    let title: String
-    let details: String?
-    let action: () -> Void
 }
 
 extension DashboardQuickActionsCardCell {
@@ -191,33 +165,6 @@ extension DashboardQuickActionsCardCell {
 //    }
 }
 
-private final class SelfSizingTableView: UITableView {
-    override var contentSize: CGSize {
-        didSet {
-            invalidateIntrinsicContentSize()
-        }
-    }
-
-    override var intrinsicContentSize: CGSize {
-        let height = min(.infinity, contentSize.height)
-        return CGSize(width: contentSize.width, height: height - 1) // Hide the last separator
-    }
-}
-
-extension DashboardQuickActionsCardCell {
-
-    private enum Strings {
-        static let stats = NSLocalizedString("Stats", comment: "Noun. Title for stats button.")
-        static let posts = NSLocalizedString("Posts", comment: "Noun. Title for posts button.")
-        static let media = NSLocalizedString("Media", comment: "Noun. Title for media button.")
-        static let pages = NSLocalizedString("Pages", comment: "Noun. Title for pages button.")
-        static let more = NSLocalizedString("More", comment: "Noun. Title for more button.")
-    }
-
-    private enum Constants {
-        static let cellReuseID = "cellReuseID"
-        static let contentViewCornerRadius = 8.0
-        static let stackViewSpacing = 16.0
-        static let stackViewHorizontalPadding = 20.0
-    }
+private enum Constants {
+    static let cellReuseID = "cellReuseID"
 }

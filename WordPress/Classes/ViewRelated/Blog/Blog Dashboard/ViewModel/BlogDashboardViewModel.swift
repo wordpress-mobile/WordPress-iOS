@@ -57,8 +57,8 @@ final class BlogDashboardViewModel {
             switch item {
             case .quickActions:
                 let cellType = DashboardQuickActionsCardCell.self
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as? DashboardQuickActionsCardCell
-                cell?.configure(for: blog, with: viewController)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as! DashboardQuickActionsCardCell
+                cell.configure(viewModel: quickActionsViewModel, viewController: viewController)
                 return cell
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
@@ -79,12 +79,14 @@ final class BlogDashboardViewModel {
     }()
 
     private var blazeViewModel: DashboardBlazeCardCellViewModel
+    private var quickActionsViewModel: DashboardQuickActionsViewModel
 
     init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog)
         registerNotifications()
     }
 
@@ -93,11 +95,20 @@ final class BlogDashboardViewModel {
         loadCardsFromCache()
     }
 
+    func viewWillAppear() {
+        quickActionsViewModel.viewWillAppear()
+    }
+
+    func viewWillDisappear() {
+        quickActionsViewModel.viewWillDisappear()
+    }
+
     /// Update to display the selected blog.
     func update(blog: Blog) {
         BlogDashboardAnalytics.shared.reset()
         self.blog = blog
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog)
         self.loadCardsFromCache()
         self.loadCards()
     }
