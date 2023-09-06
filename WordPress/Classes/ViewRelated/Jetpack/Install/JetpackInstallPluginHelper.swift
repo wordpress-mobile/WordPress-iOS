@@ -132,11 +132,7 @@ class JetpackInstallPluginHelper: NSObject {
 private extension JetpackInstallPluginHelper {
 
     static var isFeatureEnabled: Bool {
-        if AppConfiguration.isJetpack {
-            return FeatureFlag.jetpackIndividualPluginSupport.enabled
-        }
-
-        return RemoteFeatureFlag.wordPressIndividualPluginSupport.enabled()
+        AppConfiguration.isJetpack
     }
 
     /// Returns true if the card has been set to hidden for `blog`. For Jetpack only.

@@ -7,7 +7,6 @@ enum FeatureFlag: Int, CaseIterable {
     case siteIconCreator
     case betaSiteDesigns
     case newCoreDataContext
-    case jetpackIndividualPluginSupport
     case siteCreationDomainPurchasing
     case readerUserBlocking
     case personalizeHomeTab
@@ -34,8 +33,6 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newCoreDataContext:
             return true
-        case .jetpackIndividualPluginSupport:
-            return AppConfiguration.isJetpack
         case .siteCreationDomainPurchasing:
             return false
         case .readerUserBlocking:
@@ -84,8 +81,6 @@ extension FeatureFlag {
             return "Fetch Beta Site Designs"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
-        case .jetpackIndividualPluginSupport:
-            return "Jetpack Individual Plugin Support"
         case .siteCreationDomainPurchasing:
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
