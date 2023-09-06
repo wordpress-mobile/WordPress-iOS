@@ -125,9 +125,9 @@ class MediaItemViewController: UITableViewController {
 
     private var metadataRows: [ImmuTableRow] {
         /// A String containing the pixel size of the asset (width X height)
-        let dimensions = "\(media.width ?? 0) ✕ \(media.height ?? 0)"
+        let dimensions = "\(attributes.width) ✕ \(attributes.height)"
         /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
-        let fileType = (media.filename as? NSString)?.pathExtension ?? ""
+        let fileType = (attributes.filename as NSString).pathExtension
 
         var rows = [ImmuTableRow]()
         rows.append(TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: attributes.filename))
@@ -531,12 +531,16 @@ private struct ReadonlyAttributes {
     let mediaType: MediaType
     let filename: String
     let creationDate: Date
+    let width: NSNumber
+    let height: NSNumber
     let siteDotComID: NSNumber?
 
     init(media: Media) {
         mediaType = media.mediaType
         filename = media.filename ?? ""
         creationDate = media.creationDate ?? Date(timeIntervalSinceReferenceDate: 0)
+        width = media.width ?? 0
+        height = media.height ?? 0
         siteDotComID = media.blog.dotComID
     }
 }
