@@ -188,12 +188,14 @@ private extension BlogDashboardViewModel {
         let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
         if MigrationSuccessCardView.shouldShowMigrationSuccessCard, !WPDeviceIdentification.isiPad() {
-            snapshot.appendSections(DashboardSection.allCases)
+            snapshot.appendSections([.migrationSuccess])
             snapshot.appendItems([.migrationSuccess], toSection: .migrationSuccess)
-        } else {
-            snapshot.appendSections([.quickActions, .cards])
         }
-        snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
+        if !WPDeviceIdentification.isiPad() {
+            snapshot.appendSections([.quickActions])
+            snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
+        }
+        snapshot.appendSections([.cards])
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
     }

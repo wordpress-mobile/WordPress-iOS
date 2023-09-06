@@ -26,11 +26,16 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
     }
 
-    private var currentSection: Section {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return .siteMenu
-        } else {
+    private var currentSection: Section = .dashboard
+
+    private func getSection(for blog: Blog) -> Section {
+        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() &&
+            blog.isAccessibleThroughWPCom() &&
+            blog.url != "https://appsp2.wordpress.com" &&
+            splitViewControllerIsHorizontallyCompact {
             return .dashboard
+        } else {
+            return .siteMenu
         }
     }
 
@@ -353,10 +358,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func configure(for blog: Blog) {
         showSitePicker(for: blog)
         updateNavigationTitle(for: blog)
-        switch currentSection {
+        let section = getSection(for: blog)
+        self.currentSection = section
+        switch section {
         case .siteMenu:
+            hideDashboard()
             showBlogDetails(for: blog)
         case .dashboard:
+            hideBlogDetails()
             showDashboard(for: blog)
         }
     }
@@ -383,7 +392,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         guard let blog = blog else {
             return
         }
-
         switch currentSection {
         case .siteMenu:
 
@@ -675,17 +683,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
 
         sitePickerViewController.onBlogSwitched = { [weak self] blog in
-
             guard let self = self else {
                 return
             }
-
-            #warning("TODO: rework this")
-//            if !blog.isAccessibleThroughWPCom() && self.isShowingDashboard {
-//                self.switchTab(to: .siteMenu)
-//            }
-
-            self.updateNavigationTitle(for: blog)
+            self.configure(for: blog)
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
@@ -719,7 +720,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: Dashboard UI Logic
 
-    #warning("TODO: cleanup")
     private func hideDashboard() {
         guard let blogDashboardViewController = blogDashboardViewController else {
             return
