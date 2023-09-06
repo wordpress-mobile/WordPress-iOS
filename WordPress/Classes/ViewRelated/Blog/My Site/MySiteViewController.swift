@@ -31,7 +31,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func getSection(for blog: Blog) -> Section {
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() &&
             blog.isAccessibleThroughWPCom() &&
-            blog.url != "https://appsp2.wordpress.com" &&
             splitViewControllerIsHorizontallyCompact {
             return .dashboard
         } else {
@@ -713,9 +712,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
     }
 
-    #warning("TODO: fix this; make sure it works on iPhone")
     func presentCreateSheet() {
-        blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
+        createButtonCoordinator?.showCreateSheet()
     }
 
     // MARK: Dashboard UI Logic
