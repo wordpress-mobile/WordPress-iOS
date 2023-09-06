@@ -22,6 +22,8 @@ class MediaItemViewController: UITableViewController {
     private var media: Media
 
     private let attributes: ReadonlyAttributes
+    private let canEditMetadata: Bool
+    private let canDeleteMedia: Bool
 
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
@@ -38,6 +40,8 @@ class MediaItemViewController: UITableViewController {
         self.media = try coreDataStack.mainContext.existingObject(with: mediaID)
         self.mediaMetadata = MediaMetadata(media: media)
         self.attributes = ReadonlyAttributes(media: media)
+        self.canDeleteMedia = media.blog.supports(.mediaDeletion)
+        self.canEditMetadata = media.blog.supports(.mediaMetadataEditing)
 
         super.init(style: .grouped)
     }
@@ -145,7 +149,7 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func editableRowIfSupported(title: String, value: String, action: @escaping ((ImmuTableRow) -> ())) -> ImmuTableRow {
-        if media.blog.supports(BlogFeature.mediaMetadataEditing) {
+        if canEditMetadata {
             return EditableTextRow(title: title, value: value, action: action)
         } else {
             return TextRow(title: title, value: value)
@@ -188,7 +192,7 @@ class MediaItemViewController: UITableViewController {
                                             action: #selector(trashTapped(_:)))
             trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
 
-            if media.blog.supports(.mediaDeletion) {
+            if canDeleteMedia {
                 navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
             } else {
                 navigationItem.rightBarButtonItems = [ shareItem ]
