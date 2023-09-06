@@ -440,8 +440,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func shouldConfigureTooltipPresenter() -> Bool {
-        FeatureFlag.featureHighlightTooltip.enabled
-        && featureHighlightStore.shouldShowTooltip
+        featureHighlightStore.shouldShowTooltip
         && (post?.canSubscribeComments ?? false)
         && (!(post?.isSubscribedComments ?? false))
     }
