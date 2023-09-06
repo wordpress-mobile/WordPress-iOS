@@ -1,11 +1,9 @@
 import WidgetKit
 import SwiftUI
 
-struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
-
+struct LockScreenSiteListProvider<T: HomeWidgetData & LockScreenStatsWidgetData>: IntentTimelineProvider {
     let service: StatsWidgetsService
     let placeholderContent: T
-    let widgetKind: StatsWidgetKind
 
     // refresh interval of the widget, in minutes
     let refreshInterval = 30
@@ -13,23 +11,21 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
-
         UserDefaults(suiteName: WPAppGroupName)?.object(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) as? Int
     }
 
     private let widgetDataLoader = WidgetDataReader<T>()
 
-    func placeholder(in context: Context) -> StatsWidgetEntry {
-        StatsWidgetEntry.siteSelected(placeholderContent, context)
+    func placeholder(in context: Context) -> LockScreenStatsWidgetEntry {
+        LockScreenStatsWidgetEntry.siteSelected(placeholderContent, context)
     }
 
-    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (StatsWidgetEntry) -> Void) {
-
+    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (LockScreenStatsWidgetEntry) -> Void) {
         let content = widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) ?? placeholderContent
         completion(.siteSelected(content, context))
     }
 
-    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
+    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<LockScreenStatsWidgetEntry>) -> Void) {
         switch widgetDataLoader.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID,
@@ -40,7 +36,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
             let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
 
-            let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
+            let privateCompletion = { (timelineEntry: LockScreenStatsWidgetEntry) in
                 let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
                 completion(timeline)
             }
@@ -53,7 +49,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             service.fetchStats(for: widgetData) { result in
                 switch result {
                 case .failure(let error):
-                    DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
+                    DDLogError("LockScreen StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
                     privateCompletion(.siteSelected(widgetData, context))
                 case .success(let newWidgetData):
                     privateCompletion(.siteSelected(newWidgetData, context))
@@ -62,20 +58,15 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         case .failure(let error):
             switch error {
             case .noData:
-                completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
+                completion(Timeline(entries: [.noData], policy: .never))
             case .noSite:
-                completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
+                completion(Timeline(entries: [.noSite], policy: .never))
             case .loggedOut:
-                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
+                completion(Timeline(entries: [.loggedOut], policy: .never))
             case .jetpackFeatureDisabled:
-                completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
+                DDLogError("LockScreen StatsWidgets: lock screen widget should have Jetpack feature disable error")
+                completion(Timeline(entries: [.noData], policy: .never))
             }
         }
     }
-}
-
-enum StatsWidgetKind {
-    case today
-    case allTime
-    case thisWeek
 }

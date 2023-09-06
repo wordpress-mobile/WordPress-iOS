@@ -372,7 +372,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let postRepository = PostRepository(coreDataStack: coreDataStack)
         Task { @MainActor in
             do {
-                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(saved: blog))
+                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(blog))
                 let apost = try coreDataStack.mainContext.existingObject(with: postObjectID)
 
                 guard let post = apost as? Post else {
