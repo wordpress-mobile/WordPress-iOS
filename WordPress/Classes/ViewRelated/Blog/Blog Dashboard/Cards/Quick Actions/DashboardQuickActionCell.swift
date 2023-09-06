@@ -1,10 +1,11 @@
 import UIKit
 
-#warning("TODO: reimplement spotlight thing")
 final class DashboardQuickActionCell: UITableViewCell {
     private let iconView = UIImageView()
     private let titleLabel = UILabel()
     private let detailsLabel = UILabel()
+    private let spotlightView = QuickStartSpotlightView()
+    private var viewModel: DashboardQuickActionItemViewModel?
 
     var isSeparatorHidden = false {
         didSet {
@@ -16,6 +17,7 @@ final class DashboardQuickActionCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createView()
+        startObservingQuickStart()
     }
 
     required init?(coder: NSCoder) {
@@ -44,12 +46,23 @@ final class DashboardQuickActionCell: UITableViewCell {
         contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16))
+
+        spotlightView.isHidden = true
+        addSubview(spotlightView)
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            spotlightView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            spotlightView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 16)
+        ])
     }
 
     func configure(_ viewModel: DashboardQuickActionItemViewModel) {
+        self.viewModel = viewModel
+
         titleLabel.text = viewModel.title
         iconView.image = viewModel.image?.withRenderingMode(.alwaysTemplate)
         detailsLabel.text = viewModel.details
+        spotlightView.isHidden = true
     }
 
     override func layoutSubviews() {
@@ -66,103 +79,20 @@ final class DashboardQuickActionCell: UITableViewCell {
             separatorInset = UIEdgeInsets(top: 0, left: titleLabelFrame.origin.x, bottom: 0, right: 0)
         }
     }
-}
 
-#warning("TODO: remove")
-final class QuickActionButton: UIButton {
+    private func startObservingQuickStart() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
+    }
 
-    var onTap: (() -> Void)?
-
-    var shouldShowSpotlight: Bool = false {
-        didSet {
-            spotlightView.isHidden = !shouldShowSpotlight
+    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
+        guard let info = notification.userInfo,
+              let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
+              element == viewModel?.tourElement,
+              QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard
+        else {
+            spotlightView.isHidden = true
+            return
         }
-    }
-
-    private lazy var spotlightView: QuickStartSpotlightView = {
-        let spotlightView = QuickStartSpotlightView()
-        spotlightView.translatesAutoresizingMaskIntoConstraints = false
-        spotlightView.isHidden = true
-        return spotlightView
-    }()
-
-    convenience init(title: String, image: UIImage) {
-        self.init(frame: .zero)
-        setTitle(title, for: .normal)
-        setImage(image, for: .normal)
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Not implemented")
-    }
-
-    private func setup() {
-        configureTitleLabel()
-        configureInsets()
-        configureSpotlightView()
-
-        layer.cornerRadius = Metrics.cornerRadius
-        backgroundColor = .listForeground
-        tintColor = .listIcon
-
-        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-    }
-
-    private func configureTitleLabel() {
-        titleLabel?.adjustsFontForContentSizeCategory = true
-        titleLabel?.font = AppStyleGuide.prominentFont(textStyle: .body, weight: .semibold)
-        setTitleColor(.text, for: .normal)
-    }
-
-    private func configureInsets() {
-        contentEdgeInsets = Metrics.contentEdgeInsets
-        titleEdgeInsets = Metrics.titleEdgeInsets
-    }
-
-    private func configureSpotlightView() {
-        addSubview(spotlightView)
-        bringSubviewToFront(spotlightView)
-
-        NSLayoutConstraint.activate(
-            [
-                spotlightView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                spotlightView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.spotlightOffset)
-            ]
-        )
-    }
-
-    @objc private func buttonTapped() {
-        onTap?()
-    }
-}
-
-extension QuickActionButton {
-
-    private enum Metrics {
-        static let cornerRadius = 8.0
-        static let titleHorizontalOffset = 12.0
-        static let contentVerticalOffset = 12.0
-        static let contentLeadingOffset = 16.0
-        static let contentTrailingOffset = 24.0
-        static let spotlightOffset = 8.0
-
-        static let contentEdgeInsets = UIEdgeInsets(
-            top: contentVerticalOffset,
-            left: contentLeadingOffset,
-            bottom: contentVerticalOffset,
-            right: contentTrailingOffset + titleHorizontalOffset
-        ).flippedForRightToLeft
-
-        static let titleEdgeInsets = UIEdgeInsets(
-            top: 0,
-            left: titleHorizontalOffset,
-            bottom: 0,
-            right: -titleHorizontalOffset
-        ).flippedForRightToLeft
+        spotlightView.isHidden = false
     }
 }

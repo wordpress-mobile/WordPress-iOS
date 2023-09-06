@@ -14,21 +14,54 @@ final class DashboardQuickActionsViewModel {
 
     init(blog: Blog) {
         self.blog = blog
-        self.refresh(blog: blog)
+        self.refresh()
     }
 
-    private func refresh(blog: Blog) {
-        var items: [DashboardQuickActionItemViewModel] = []
+    private func refresh() {
+        let posts = DashboardQuickActionItemViewModel(
+            image: UIImage(named: "site-menu-posts"),
+            title: Strings.posts,
+            details: nil,
+            action: .posts
+        )
 
-        items.append(.init(image: UIImage(named: "site-menu-posts"), title: Strings.posts, details: nil, action: .posts))
-        if blog.supports(.pages) {
-            items.append(.init(image: UIImage(named: "site-menu-pages"), title: Strings.pages, details: nil, action: .pages))
-        }
-        items.append(.init(image: UIImage(named: "site-menu-media"), title: Strings.media, details: nil, action: .media))
-        if blog.supports(.stats) {
-            items.append(.init(image: UIImage(named: "site-menu-stats"), title: Strings.stats, details: nil, action: .stats))
-        }
-        items.append(.init(image: UIImage(named: "site-menu-more"), title: Strings.more, details: nil, action: .more))
+        let pages = DashboardQuickActionItemViewModel(
+            image: UIImage(named: "site-menu-pages"),
+            title: Strings.pages,
+            details: nil,
+            action: .pages
+        )
+
+        let media = DashboardQuickActionItemViewModel(
+            image: UIImage(named: "site-menu-media"),
+            title: Strings.media,
+            details: nil,
+            tourElement: .mediaScreen,
+            action: .media
+        )
+
+        let stats = DashboardQuickActionItemViewModel(
+            image: UIImage(named: "site-menu-stats"),
+            title: Strings.stats,
+            details: nil,
+            tourElement: .stats,
+            action: .stats
+        )
+
+        let more = DashboardQuickActionItemViewModel(
+            image: UIImage(named: "site-menu-more"),
+            title: Strings.more,
+            details: nil,
+            action: .more
+        )
+
+        let items = [
+            posts,
+            blog.supports(.pages) ? pages : nil,
+            media,
+            blog.supports(.stats) ? stats : nil,
+            more
+        ].compactMap { $0 }
 
         if self.items != items {
             self.items = items
@@ -47,7 +80,8 @@ final class DashboardQuickActionsViewModel {
 struct DashboardQuickActionItemViewModel: Hashable {
     let image: UIImage?
     let title: String
-    let details: String?
+    var details: String?
+    var tourElement: QuickStartTourElement?
     let action: DashboardQuickAction
 }
 

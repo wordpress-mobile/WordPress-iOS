@@ -2,7 +2,6 @@ import UIKit
 import Combine
 import WordPressShared
 
-#warning("TODO: use existing IntrinsicTableView and fix how separator is hidden")
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
 
     private lazy var tableView: UITableView = {
@@ -27,7 +26,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         super.init(frame: frame)
 
         createView()
-        startObservingQuickStart()
     }
 
     required init?(coder: NSCoder) {
@@ -120,49 +118,6 @@ extension DashboardQuickActionsCardCell: BlogDetailsPresentationDelegate {
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         self.parentViewController?.showDetailViewController(viewController, sender: nil)
     }
-}
-
-extension DashboardQuickActionsCardCell {
-
-    private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
-    }
-
-    #warning("TODO: reimplement")
-    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
-//        guard let info = notification.userInfo,
-//              let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement
-//        else {
-//            return
-//        }
-//
-//        switch element {
-//        case .stats:
-//            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-//                return
-//            }
-//
-//            autoScrollToStatsButton()
-//        case .mediaScreen:
-//            guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
-//                return
-//            }
-//
-//            autoScrollToMediaButton()
-//        default:
-//            break
-//        }
-//        statsButton.shouldShowSpotlight = element == .stats
-//        mediaButton.shouldShowSpotlight = element == .mediaScreen
-    }
-
-//    private func autoScrollToStatsButton() {
-//        scrollView.scrollHorizontallyToView(statsButton, animated: true)
-//    }
-//
-//    private func autoScrollToMediaButton() {
-//        scrollView.scrollHorizontallyToView(mediaButton, animated: true)
-//    }
 }
 
 private enum Constants {
