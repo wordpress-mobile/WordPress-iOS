@@ -165,8 +165,26 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
 struct MediaImageRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(MediaItemImageTableViewCell.self)
 
-    let media: Media
+    let mediaID: TaggedManagedObjectID<Media>
+    let isBlogAtomic: Bool
+    let placeholderURL: URL?
+    let mediaType: MediaType
+    let size: CGSize?
     let action: ImmuTableAction?
+
+    init(media: Media, action: ImmuTableAction?) {
+        self.mediaID = .init(media)
+        self.mediaType = media.mediaType
+        if let width = media.width, let height = media.height, width.floatValue > 0 {
+            self.size = CGSize(width: width.doubleValue, height: height.doubleValue)
+        } else {
+            self.size = nil
+        }
+        self.placeholderURL = media.absoluteLocalURL ?? media.absoluteThumbnailLocalURL
+        self.isBlogAtomic = media.blog.isAtomic()
+
+        self.action = action
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
@@ -174,7 +192,7 @@ struct MediaImageRow: ImmuTableRow {
         if let cell = cell as? MediaItemImageTableViewCell {
             setAspectRatioFor(cell)
             loadImageFor(cell)
-            cell.isVideo = media.mediaType == .video
+            cell.isVideo = mediaType == .video
             cell.accessibilityTraits = .button
             cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
             cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
@@ -182,41 +200,31 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func setAspectRatioFor(_ cell: MediaItemImageTableViewCell) {
-        guard let width = media.width, let height = media.height, width.floatValue > 0 else {
+        guard let size else {
             return
         }
 
-        let mediaAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
+        let mediaAspectRatio = size.height / size.width
 
         // Set a maximum aspect ratio for videos
-        if media.mediaType == .video {
+        if mediaType == .video {
             cell.targetAspectRatio = min(mediaAspectRatio, 0.75)
         } else {
             cell.targetAspectRatio = mediaAspectRatio
         }
     }
 
-    private func addPlaceholderImageFor(_ cell: MediaItemImageTableViewCell) {
-        if let url = media.absoluteLocalURL,
-            let image = UIImage(contentsOfFile: url.path) {
-            cell.customImageView.image = image
-        } else if let url = media.absoluteThumbnailLocalURL,
-            let image = UIImage(contentsOfFile: url.path) {
-            cell.customImageView.image = image
-        }
-    }
-
     private var placeholderImage: UIImage? {
-        if let url = media.absoluteLocalURL {
-            return UIImage(contentsOfFile: url.path)
-        } else if let url = media.absoluteThumbnailLocalURL {
+        if let url = placeholderURL {
             return UIImage(contentsOfFile: url.path)
         }
         return nil
     }
 
     private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
-        let isBlogAtomic = media.blog.isAtomic()
+        guard let media = try? ContextManager.shared.mainContext.existingObject(with: mediaID) else {
+            return
+        }
         cell.imageLoader.loadImage(media: media, placeholder: placeholderImage, isBlogAtomic: isBlogAtomic, success: nil) { (error) in
             self.show(error)
         }
