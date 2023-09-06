@@ -14,9 +14,6 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private let motion: CMMotionManager? = {
-        guard FeatureFlag.newJetpackLandingScreen.enabled else {
-            return nil
-        }
         let motion = CMMotionManager()
         motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval
         return motion
@@ -54,11 +51,8 @@ class JetpackPrologueViewController: UIViewController {
         let midBottomColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.2)
         let endColor = JetpackPrologueStyleGuide.gradientColor
 
-        gradientLayer.colors = FeatureFlag.newJetpackLandingScreen.enabled ?
-        [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
-        [startColor.cgColor, endColor.cgColor]
-
-        gradientLayer.locations = FeatureFlag.newJetpackLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
+        gradientLayer.colors = [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor]
+        gradientLayer.locations = [0.0, 0.4, 0.6, 1.0]
 
         return gradientLayer
     }
@@ -68,10 +62,6 @@ class JetpackPrologueViewController: UIViewController {
 
         view.backgroundColor = JetpackPrologueStyleGuide.backgroundColor
 
-        guard FeatureFlag.newJetpackLandingScreen.enabled else {
-            loadOldPrologueView()
-            return
-        }
         loadNewPrologueView()
     }
 
@@ -134,9 +124,6 @@ class JetpackPrologueViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard FeatureFlag.newJetpackLandingScreen.enabled else {
-            return
-        }
 
         logoWidthConstraint.constant = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
 
@@ -151,9 +138,6 @@ class JetpackPrologueViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if !FeatureFlag.newJetpackLandingScreen.enabled {
-            starFieldView.frame = view.bounds
-        }
         gradientLayer.frame = view.bounds
     }
 
