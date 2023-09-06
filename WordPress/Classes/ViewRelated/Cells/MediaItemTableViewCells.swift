@@ -147,18 +147,7 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
             customImageView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
             customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-            ])
-    }
-
-    @objc func showIconForMedia(_ media: Media) {
-        let dimension = CGFloat(MediaDocumentRow.customHeight! / 2)
-        let size = CGSize(width: dimension, height: dimension)
-
-        if media.mediaType == .audio {
-            customImageView.image = .gridicon(.audio, size: size)
-        } else {
-            customImageView.image = .gridicon(.pages, size: size)
-        }
+        ])
     }
 }
 
@@ -246,7 +235,7 @@ struct MediaDocumentRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(MediaItemDocumentTableViewCell.self)
     static let customHeight: Float? = 96.0
 
-    let media: Media
+    let mediaType: MediaType
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
@@ -254,7 +243,11 @@ struct MediaDocumentRow: ImmuTableRow {
 
         if let cell = cell as? MediaItemDocumentTableViewCell {
             cell.customImageView.tintColor = cell.textLabel?.textColor
-            cell.showIconForMedia(media)
+
+            let dimension = CGFloat(MediaDocumentRow.customHeight! / 2)
+            let size = CGSize(width: dimension, height: dimension)
+            cell.customImageView.image = .gridicon(mediaType == .audio ? .audio : .pages, size: size)
+
             cell.accessibilityTraits = .button
             cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
             cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
