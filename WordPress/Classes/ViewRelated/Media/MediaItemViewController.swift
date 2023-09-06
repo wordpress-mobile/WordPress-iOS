@@ -124,15 +124,18 @@ class MediaItemViewController: UITableViewController {
     }
 
     private var metadataRows: [ImmuTableRow] {
-        let presenter = MediaMetadataPresenter(media: media)
+        /// A String containing the pixel size of the asset (width X height)
+        let dimensions = "\(media.width ?? 0) ✕ \(media.height ?? 0)"
+        /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
+        let fileType = (media.filename as? NSString)?.pathExtension ?? ""
 
         var rows = [ImmuTableRow]()
         rows.append(TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: attributes.filename))
-        rows.append(TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: fileType))
 
         switch attributes.mediaType {
         case .image, .video:
-            rows.append(TextRow(title: NSLocalizedString("Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)"), value: presenter.dimensions))
+            rows.append(TextRow(title: NSLocalizedString("Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)"), value: dimensions))
         default: break
         }
 
@@ -486,30 +489,6 @@ extension MediaItemViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
         row.action?(row)
-    }
-}
-
-/// Provides some extra formatting for a Media asset's metadata, used
-/// to present it in the MediaItemViewController
-///
-private struct MediaMetadataPresenter {
-    let media: Media
-
-    /// A String containing the pixel size of the asset (width X height)
-    var dimensions: String {
-        let width = media.width ?? 0
-        let height = media.height ?? 0
-
-        return "\(width) ✕ \(height)"
-    }
-
-    /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
-    var fileType: String? {
-        guard let filename = media.filename else {
-            return nil
-        }
-
-        return (filename as NSString).pathExtension.uppercased()
     }
 }
 
