@@ -6,7 +6,6 @@ enum FeatureFlag: Int, CaseIterable {
     case debugMenu
     case siteIconCreator
     case betaSiteDesigns
-    case jetpackPoweredBottomSheet
     case contentMigration
     case newJetpackLandingScreen
     case newWordPressLandingScreen
@@ -36,8 +35,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current != .appStore
         case .betaSiteDesigns:
             return false
-        case .jetpackPoweredBottomSheet:
-            return true
         case .contentMigration:
             return true
         case .newJetpackLandingScreen:
@@ -94,8 +91,6 @@ extension FeatureFlag {
             return "Site Icon Creator"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
-        case .jetpackPoweredBottomSheet:
-            return "Jetpack powered bottom sheet"
         case .contentMigration:
             return "Content Migration"
         case .newJetpackLandingScreen:
