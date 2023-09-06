@@ -48,7 +48,7 @@ extension JetpackWindowManager {
 
         let params = MigrationAnalyticsTracker.ContentImportEventParams(
             eligible: shouldStartMigrationFlow,
-            featureFlagEnabled: FeatureFlag.contentMigration.enabled,
+            featureFlagEnabled: true,
             compatibleWordPressInstalled: isCompatibleWordPressAppPresent,
             migrationState: UserPersistentStoreFactory.instance().jetpackContentMigrationState,
             loggedIn: AccountHelper.isLoggedIn
@@ -79,7 +79,7 @@ private extension JetpackWindowManager {
     ///  2. Or, User is logged in and the migration has started but still in progress. This scenario could happen if the migration flow starts but interrupted mid flow.
     ///
     var shouldStartMigrationFlow: Bool {
-        guard isCompatibleWordPressAppPresent && FeatureFlag.contentMigration.enabled else {
+        guard isCompatibleWordPressAppPresent else {
             return false
         }
         let migrationState = UserPersistentStoreFactory.instance().jetpackContentMigrationState
