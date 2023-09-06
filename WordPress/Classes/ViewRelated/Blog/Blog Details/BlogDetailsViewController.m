@@ -1838,16 +1838,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     int sectionCount = 0;
     int rowCount = 0;
-    
-    MySiteViewController *parentVC = (MySiteViewController *)self.parentViewController;
-    
+
     for (BlogDetailsSection *section in self.tableSections) {
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-                [parentVC.scrollView scrollVerticallyToView:cell animated:true];
+                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionMiddle animated:true];
             }
             rowCount++;
         }

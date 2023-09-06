@@ -29,6 +29,7 @@ final class DashboardQuickActionsViewModel {
             image: UIImage(named: "site-menu-pages"),
             title: Strings.pages,
             details: nil,
+            tourElement: .pages,
             action: .pages
         )
 
@@ -52,6 +53,7 @@ final class DashboardQuickActionsViewModel {
             image: UIImage(named: "site-menu-more"),
             title: Strings.more,
             details: nil,
+            tourElement: .siteMenu,
             action: .more
         )
 
