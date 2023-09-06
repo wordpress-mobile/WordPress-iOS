@@ -16,7 +16,7 @@ class MediaItemViewController: UITableViewController {
     // swiftlint:disable:next weak_delegate
     let delegate = DownloadDelegate()
 
-    @objc let media: Media
+    private let media: Media
 
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
@@ -25,7 +25,7 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    @objc init(media: Media) {
+    init(media: Media) {
         self.media = media
 
         self.mediaMetadata = MediaMetadata(media: media)
