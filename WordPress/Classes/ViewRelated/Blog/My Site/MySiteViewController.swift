@@ -884,7 +884,12 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
 //
 extension MySiteViewController {
     func startAlertTimer() {
-        blogDetailsViewController?.startAlertTimer()
+        switch currentSection {
+        case .dashboard:
+            blogDashboardViewController?.startAlertTimer()
+        case .siteMenu:
+            blogDetailsViewController?.startAlertTimer()
+        }
     }
 }
 

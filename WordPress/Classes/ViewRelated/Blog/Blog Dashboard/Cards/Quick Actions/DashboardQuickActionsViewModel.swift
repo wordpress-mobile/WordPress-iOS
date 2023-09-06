@@ -1,10 +1,6 @@
 import UIKit
 import Combine
 
-#warning("TODO: add details labels")
-#warning("TODO: make sure that hashable works as intended")
-#warning("TODO: make sure it reloads when blog changes")
-
 final class DashboardQuickActionsViewModel {
     var onViewWillAppear: (() -> Void)?
 
