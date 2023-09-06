@@ -76,7 +76,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
             self.showStats(for: blog, from: viewController)
         }
 
-        if FeatureFlag.personalizeHomeTab.enabled {
+        if AppConfiguration.isJetpack {
             frameView.addMoreMenu(items: [
                 UIMenu(options: .displayInline, children: [
                     makeShowStatsMenuAction(for: blog, in: viewController)
