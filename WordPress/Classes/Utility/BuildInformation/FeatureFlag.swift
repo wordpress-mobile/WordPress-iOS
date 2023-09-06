@@ -6,7 +6,6 @@ enum FeatureFlag: Int, CaseIterable {
     case debugMenu
     case siteIconCreator
     case betaSiteDesigns
-    case newCoreDataContext
     case siteCreationDomainPurchasing
     case readerUserBlocking
     case personalizeHomeTab
@@ -31,8 +30,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current != .appStore
         case .betaSiteDesigns:
             return false
-        case .newCoreDataContext:
-            return true
         case .siteCreationDomainPurchasing:
             return false
         case .readerUserBlocking:
@@ -79,8 +76,6 @@ extension FeatureFlag {
             return "Site Icon Creator"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
-        case .newCoreDataContext:
-            return "Use new Core Data context structure (Require app restart)"
         case .siteCreationDomainPurchasing:
             return "Site Creation Domain Purchasing"
         case .readerUserBlocking:
