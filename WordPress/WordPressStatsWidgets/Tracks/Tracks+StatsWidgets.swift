@@ -1,7 +1,7 @@
 import Foundation
 import WidgetKit
 
-/// This extension implements helper tracking methods, meant for Today Home Widget usage.
+/// This extension implements helper tracking methods meant for Home & Lock screen widgets.
 ///
 extension Tracks {
 
