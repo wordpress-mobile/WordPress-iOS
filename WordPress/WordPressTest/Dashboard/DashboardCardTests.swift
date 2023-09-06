@@ -1,14 +1,6 @@
 import XCTest
 @testable import WordPress
 
-class MockDefaultSectionProvider: DefaultSectionProvider {
-    var defaultSection: MySiteViewController.Section
-
-    init(defaultSection: MySiteViewController.Section) {
-        self.defaultSection = defaultSection
-    }
-}
-
 class DashboardCardTests: CoreDataTestCase {
 
     private var blog: Blog!
@@ -36,36 +28,22 @@ class DashboardCardTests: CoreDataTestCase {
 
     func testShouldShowQuickStartIfEnabledAndDefaultSectionIsDashboard() {
         // Given
-        let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
         QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
 
         // When
-        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
+        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog)
 
         // Then
         XCTAssertTrue(shouldShow)
     }
 
-    func testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu() {
-        // Given
-        let mySiteSettings = MockDefaultSectionProvider(defaultSection: .siteMenu)
-        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
-
-        // When
-        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
-
-        // Then
-        XCTAssertFalse(shouldShow)
-    }
-
     func testShouldNotShowQuickStartIfDisabled() {
         // Given
-        let mySiteSettings = MockDefaultSectionProvider(defaultSection: .dashboard)
         QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
         QuickStartTourGuide.shared.remove(from: blog)
 
         // When
-        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog, mySiteSettings: mySiteSettings)
+        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog)
 
         // Then
         XCTAssertFalse(shouldShow)
