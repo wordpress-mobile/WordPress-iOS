@@ -8,5 +8,6 @@ struct LockScreenSiteTitleView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .font(.system(size: 10))
             .lineLimit(1)
+            .allowsTightening(true)
     }
 }
