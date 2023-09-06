@@ -1,26 +1,34 @@
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct LockScreenSingleStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockScreenStatsWidgetsViewProvider {
-    typealias SiteSelectedView = LockScreenSingleStatView
+struct LockScreenMultiStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockScreenStatsWidgetsViewProvider {
+    typealias SiteSelectedView = LockScreenMultiStatView
     typealias LoggedOutView = LockScreenUnconfiguredView
     typealias NoSiteView = LockScreenUnconfiguredView
-    typealias NoDataView = LockScreenUnconfiguredView
     typealias Data = WidgetData
 
-    let title: String
-    let value: KeyPath<Data, Int>
     let widgetKind: StatsWidgetKind
 
-    func buildSiteSelectedView(_ data: Data) -> LockScreenSingleStatView {
-        let viewModel = LockScreenSingleStatViewModel(
-            siteName: data.siteName,
-            title: title,
-            value: data[keyPath: value],
-            updatedTime: data.date
-        )
+    let topTitle: String
+    let topValue: KeyPath<Data, Int>
 
-        return LockScreenSingleStatView(viewModel: viewModel)
+    let bottomTitle: String
+    let bottomValue: KeyPath<Data, Int>
+
+    func buildSiteSelectedView(_ data: Data) -> LockScreenMultiStatView {
+        let viewModel = LockScreenMultiStatViewModel(
+            siteName: data.siteName,
+            updatedTime: data.date,
+            primaryField: .init(
+                title: topTitle,
+                value: data[keyPath: topValue]
+            ),
+            secondaryField: .init(
+                title: bottomTitle,
+                value: data[keyPath: bottomValue]
+            )
+        )
+        return LockScreenMultiStatView(viewModel: viewModel)
     }
 
     func buildLoggedOutView() -> LockScreenUnconfiguredView {

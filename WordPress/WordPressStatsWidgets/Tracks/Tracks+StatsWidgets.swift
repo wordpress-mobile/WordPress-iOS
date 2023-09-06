@@ -1,11 +1,11 @@
 import Foundation
 import WidgetKit
 
-/// This extension implements helper tracking methods, meant for Today Home Widget usage.
+/// This extension implements helper tracking methods meant for Home & Lock screen widgets.
 ///
 extension Tracks {
 
-    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry, widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: String, widgetCountKey: String) {
         switch entry {
         case .siteSelected(_, let context):
             if !context.isPreview {

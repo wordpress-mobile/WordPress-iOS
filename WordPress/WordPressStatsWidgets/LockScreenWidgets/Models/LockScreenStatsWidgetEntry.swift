@@ -1,7 +1,7 @@
 import WidgetKit
 
-enum LockScreenStatsWidgetEntry: TimelineEntry {
-    case siteSelected(LockScreenStatsWidgetData, TimelineProviderContext)
+enum LockScreenStatsWidgetEntry<Data: HomeWidgetData>: TimelineEntry {
+    case siteSelected(Data, TimelineProviderContext)
     case loggedOut
     case noSite
     case noData

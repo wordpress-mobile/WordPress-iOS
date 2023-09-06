@@ -2,7 +2,7 @@ import WordPressKit
 
 /// Type that wraps the backend request for new stats
 class StatsWidgetsService {
-    typealias ResultType = HomeWidgetData & LockScreenStatsWidgetData
+    typealias ResultType = HomeWidgetData
 
     private enum State {
         case loading

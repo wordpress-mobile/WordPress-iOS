@@ -11,20 +11,9 @@ struct LockScreenSingleStatView: View {
             ZStack {
                 AccessoryWidgetBackground().cornerRadius(8)
                 VStack(alignment: .leading) {
-                    Text(viewModel.siteName)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11))
-                        .minimumScaleFactor(0.8)
-                        .lineLimit(1)
-                    Text(viewModel.value)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 20, weight: .bold))
-                        .minimumScaleFactor(0.5)
-                        .foregroundColor(.white)
-                    Text(viewModel.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 11))
-                        .minimumScaleFactor(0.8)
+                    LockScreenSiteTitleView(title: viewModel.siteName)
+                    Spacer(minLength: 0)
+                    LockScreenFieldView(title: viewModel.title, value: viewModel.value.abbreviatedString())
                 }
                 .padding(
                     EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
@@ -41,7 +30,7 @@ struct LockScreenSingleStatView_Previews: PreviewProvider {
     static let viewModel = LockScreenSingleStatViewModel(
         siteName: "My WordPress Site",
         title: "Views Today",
-        value: "649",
+        value: 646,
         updatedTime: Date()
     )
 

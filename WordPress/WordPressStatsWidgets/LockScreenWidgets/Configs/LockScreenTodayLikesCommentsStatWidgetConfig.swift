@@ -1,9 +1,9 @@
 import WidgetKit
 
 @available(iOS 16.0, *)
-struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
+struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetTodayData
-    typealias ViewProvider = LockScreenSingleStatWidgetViewProvider
+    typealias ViewProvider = LockScreenMultiStatWidgetViewProvider<WidgetData>
 
     var supportFamilies: [WidgetFamily] {
         guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
@@ -21,11 +21,11 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsKind
+        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsKind
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsProperties
+        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsProperties
     }
 
     var placeholderContent: HomeWidgetTodayData {
@@ -44,11 +44,13 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
         )
     }
 
-    var viewProvider: ViewProvider<HomeWidgetTodayData> {
-        LockScreenSingleStatWidgetViewProvider<HomeWidgetTodayData>(
-            title: LocalizableStrings.viewsInTodayTitle,
-            value: \.stats.views,
-            widgetKind: .today
+    var viewProvider: ViewProvider {
+        LockScreenMultiStatWidgetViewProvider(
+            widgetKind: .today,
+            topTitle: LocalizableStrings.likesTitle,
+            topValue: \.stats.likes,
+            bottomTitle: LocalizableStrings.commentsTitle,
+            bottomValue: \.stats.comments
         )
     }
 }
