@@ -16,7 +16,10 @@ class MediaItemViewController: UITableViewController {
     // swiftlint:disable:next weak_delegate
     let delegate = DownloadDelegate()
 
-    private let media: Media
+    private let coreDataStack: CoreDataStackSwift
+    private let mediaID: TaggedManagedObjectID<Media>
+    // TODO: Rename this variable to `mediaInMainContext`
+    private var media: Media
 
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
@@ -25,12 +28,19 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    init(media: Media) {
-        self.media = media
+    init(mediaID: TaggedManagedObjectID<Media>, coreDataStack: CoreDataStackSwift = ContextManager.shared) throws {
+        assert(Thread.isMainThread)
 
+        self.mediaID = mediaID
+        self.coreDataStack = coreDataStack
+        self.media = try coreDataStack.mainContext.existingObject(with: mediaID)
         self.mediaMetadata = MediaMetadata(media: media)
 
         super.init(style: .grouped)
+    }
+
+    convenience init(media: Media) {
+        try! self.init(mediaID: .init(media))
     }
 
     required init?(coder aDecoder: NSCoder) {
