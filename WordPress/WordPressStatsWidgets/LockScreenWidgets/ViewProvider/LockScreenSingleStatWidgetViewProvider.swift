@@ -24,45 +24,42 @@ struct LockScreenSingleStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockS
     }
 
     func buildLoggedOutView() -> LockScreenUnconfiguredView {
-        var message: String {
-            switch widgetKind {
-            case .today:
-                return AppConfiguration.Widget.Localization.unconfiguredViewTodayTitle
-            case .allTime:
-                return AppConfiguration.Widget.Localization.unconfiguredViewAllTimeTitle
-            case .thisWeek:
-                return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
-            }
+        let message: String
+        switch widgetKind {
+        case .today:
+            message = AppConfiguration.Widget.Localization.unconfiguredViewTodayTitle
+        case .allTime:
+            message = AppConfiguration.Widget.Localization.unconfiguredViewAllTimeTitle
+        case .thisWeek:
+            message = AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
         }
         let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
     func buildNoSiteView() -> LockScreenUnconfiguredView {
-        var message: String {
-            switch widgetKind {
-            case .today:
-                return LocalizableStrings.noSiteViewTodayTitle
-            case .allTime:
-                return LocalizableStrings.noSiteViewAllTimeTitle
-            case .thisWeek:
-                return LocalizableStrings.noSiteViewThisWeekTitle
-            }
+        let message: String
+        switch widgetKind {
+        case .today:
+            message = LocalizableStrings.noSiteViewTodayTitle
+        case .allTime:
+            message = LocalizableStrings.noSiteViewAllTimeTitle
+        case .thisWeek:
+            message = LocalizableStrings.noSiteViewThisWeekTitle
         }
         let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
     }
 
     func buildNoDataView() -> LockScreenUnconfiguredView {
-        var message: String {
-            switch widgetKind {
-            case .today:
-                return LocalizableStrings.noDataViewTodayTitle
-            case .allTime:
-                return LocalizableStrings.noDataViewAllTimeTitle
-            case .thisWeek:
-                return LocalizableStrings.noDataViewThisWeekTitle
-            }
+        let message: String
+        switch widgetKind {
+        case .today:
+            message = LocalizableStrings.noDataViewTodayTitle
+        case .allTime:
+            message = LocalizableStrings.noDataViewAllTimeTitle
+        case .thisWeek:
+            message = LocalizableStrings.noDataViewThisWeekTitle
         }
         let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)
