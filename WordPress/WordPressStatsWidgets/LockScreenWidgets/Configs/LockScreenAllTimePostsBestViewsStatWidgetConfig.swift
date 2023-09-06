@@ -49,7 +49,7 @@ struct LockScreenAllTimePostsBestViewsStatWidgetConfig: LockScreenStatsWidgetCon
             widgetKind: .today,
             topTitle: LocalizableStrings.postsTitle,
             topValue: \.stats.posts,
-            bottomTitle: LocalizableStrings.bestViewsTitle,
+            bottomTitle: LocalizableStrings.bestViewsShortTitle,
             bottomValue: \.stats.bestViews
         )
     }

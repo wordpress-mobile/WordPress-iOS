@@ -49,6 +49,10 @@ enum LocalizableStrings {
     static let bestViewsTitle = AppLocalizedString("widget.alltime.bestviews.label",
                                                    value: "Best views ever",
                                                    comment: "Title of best views ever label in all time widget")
+
+    static let bestViewsShortTitle = AppLocalizedString("widget.alltime.bestviewsshort.label",
+                                                        value: "Most Views",
+                                                        comment: "Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible.")
     // Unconfigured view
     static let unconfiguredViewTodayTitle = AppLocalizedString("widget.today.unconfigured.view.title",
                                                                value: "Log in to WordPress to see today's stats.",
