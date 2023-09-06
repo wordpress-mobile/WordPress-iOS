@@ -101,6 +101,12 @@ class MediaItemViewController: UITableViewController {
     private var headerRow: ImmuTableRow {
         switch attributes.mediaType {
         case .image, .video:
+            guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else {
+                // Return a "dummy header" if the media no longer exists in the local database, which usually means
+                // it's removed from the site's Media Library.
+                return MediaDocumentRow(mediaType: .document, action: nil)
+            }
+
             return MediaImageRow(media: media, action: { [weak self] row in
                 guard let self else { return }
 
@@ -218,7 +224,9 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func presentImageViewControllerForMedia() {
-        let controller = WPImageViewController(media: self.media)
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
+
+        let controller = WPImageViewController(media: media)
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
 
@@ -226,6 +234,8 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func presentVideoViewControllerForMedia() {
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
+
         media.videoAsset { [weak self] asset, error in
             if let asset = asset,
                 let controller = self?.videoViewControllerForAsset(asset) {
@@ -242,7 +252,8 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func presentDocumentViewControllerForMedia() {
-        guard let remoteURL = media.remoteURL,
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID),
+            let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
 
         let controller = WebViewControllerFactory.controller(url: url, blog: media.blog, source: "media_item")
@@ -269,6 +280,8 @@ class MediaItemViewController: UITableViewController {
     private var shareVideoCancellable: AnyCancellable? = nil
 
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
+
         switch attributes.mediaType {
         case .image:
             media.image(with: .zero) { [weak self] image, error in
@@ -320,6 +333,8 @@ class MediaItemViewController: UITableViewController {
             return
         }
 
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         SVProgressHUD.show(withStatus: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
@@ -334,12 +349,16 @@ class MediaItemViewController: UITableViewController {
     }
 
     @objc private func cancelTapped() {
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
+
         mediaMetadata = MediaMetadata(media: media)
         reloadViewModel()
         updateTitle()
     }
 
     @objc private func saveTapped() {
+        guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         SVProgressHUD.show(withStatus: NSLocalizedString("Saving...", comment: "Text displayed in HUD while a media item's metadata (title, etc) is being saved."))
