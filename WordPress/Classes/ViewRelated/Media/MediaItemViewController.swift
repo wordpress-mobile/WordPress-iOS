@@ -234,7 +234,6 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    private var documentInteractionController: UIDocumentInteractionController?
     private func presentDocumentViewControllerForMedia() {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
@@ -408,15 +407,6 @@ class MediaItemViewController: UITableViewController {
     }
 
     // MARK: - Sharing Logic
-
-    private func mediaURL() -> URL? {
-        guard let remoteURL = media.remoteURL,
-           let url = URL(string: remoteURL) else {
-            return nil
-        }
-
-        return url
-    }
 
     private func share(media: Any, sender: UIBarButtonItem) {
         share([media], sender: sender)
