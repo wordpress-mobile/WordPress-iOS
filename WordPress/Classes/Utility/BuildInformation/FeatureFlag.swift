@@ -7,7 +7,6 @@ enum FeatureFlag: Int, CaseIterable {
     case siteIconCreator
     case betaSiteDesigns
     case siteCreationDomainPurchasing
-    case readerUserBlocking
     case personalizeHomeTab
     case commentModerationUpdate
     case compliancePopover
@@ -32,8 +31,6 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .siteCreationDomainPurchasing:
             return false
-        case .readerUserBlocking:
-            return true
         case .personalizeHomeTab:
             return AppConfiguration.isJetpack
         case .commentModerationUpdate:
@@ -78,8 +75,6 @@ extension FeatureFlag {
             return "Fetch Beta Site Designs"
         case .siteCreationDomainPurchasing:
             return "Site Creation Domain Purchasing"
-        case .readerUserBlocking:
-            return "Reader User Blocking"
         case .personalizeHomeTab:
             return "Personalize Home Tab"
         case .commentModerationUpdate:

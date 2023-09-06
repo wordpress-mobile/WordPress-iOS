@@ -224,8 +224,7 @@ final class ReaderShowMenuAction {
     }
 
     private func shouldShowBlockUserMenuItem(topic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
-        return FeatureFlag.readerUserBlocking.enabled
-        && shouldShowReportUserMenuItem(readerTopic: topic, post: post)
+        return shouldShowReportUserMenuItem(readerTopic: topic, post: post)
         && post.isWPCom
     }
 
