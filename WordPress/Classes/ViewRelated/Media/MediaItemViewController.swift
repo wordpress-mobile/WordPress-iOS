@@ -21,6 +21,8 @@ class MediaItemViewController: UITableViewController {
     // TODO: Rename this variable to `mediaInMainContext`
     private var media: Media
 
+    private let attributes: ReadonlyAttributes
+
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
         didSet {
@@ -35,6 +37,7 @@ class MediaItemViewController: UITableViewController {
         self.coreDataStack = coreDataStack
         self.media = try coreDataStack.mainContext.existingObject(with: mediaID)
         self.mediaMetadata = MediaMetadata(media: media)
+        self.attributes = ReadonlyAttributes(media: media)
 
         super.init(style: .grouped)
     }
@@ -78,7 +81,7 @@ class MediaItemViewController: UITableViewController {
                                             action: editAlt())
 
         var mediaInfoRows = [titleRow, captionRow, descRow]
-        if media.mediaType == .image {
+        if attributes.mediaType == .image {
             mediaInfoRows.append(altRow)
         }
 
@@ -92,29 +95,29 @@ class MediaItemViewController: UITableViewController {
     }
 
     private var headerRow: ImmuTableRow {
-        switch media.mediaType {
+        switch attributes.mediaType {
         case .image, .video:
             return MediaImageRow(media: media, action: { [weak self] row in
-                guard let media = self?.media else { return }
+                guard let self else { return }
 
-                switch media.mediaType {
+                switch self.attributes.mediaType {
                 case .image:
-                    if self?.isMediaLoaded() == true {
-                        self?.presentImageViewControllerForMedia()
+                    if self.isMediaLoaded() == true {
+                        self.presentImageViewControllerForMedia()
                     }
                 case .video:
-                    self?.presentVideoViewControllerForMedia()
+                    self.presentVideoViewControllerForMedia()
                 default: break
                 }
             })
         default:
-            return MediaDocumentRow(media: media, action: { [weak self] _ in
-                guard let media = self?.media else { return }
+            return MediaDocumentRow(mediaType: attributes.mediaType, action: { [weak self] _ in
+                guard let self else { return }
 
                 // We're currently not presenting previews for audio until
                 // we can resolve an auth issue. @frosty 2017-05-02
-                if media.mediaType != .audio {
-                    self?.presentDocumentViewControllerForMedia()
+                if self.attributes.mediaType != .audio {
+                    self.presentDocumentViewControllerForMedia()
                 }
             })
         }
@@ -124,16 +127,16 @@ class MediaItemViewController: UITableViewController {
         let presenter = MediaMetadataPresenter(media: media)
 
         var rows = [ImmuTableRow]()
-        rows.append(TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: attributes.filename))
         rows.append(TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType ?? ""))
 
-        switch media.mediaType {
+        switch attributes.mediaType {
         case .image, .video:
             rows.append(TextRow(title: NSLocalizedString("Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)"), value: presenter.dimensions))
         default: break
         }
 
-        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate?.toMediumString() ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: attributes.creationDate.toMediumString()))
 
         return rows
     }
@@ -260,7 +263,7 @@ class MediaItemViewController: UITableViewController {
     private var shareVideoCancellable: AnyCancellable? = nil
 
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
-        switch media.mediaType {
+        switch attributes.mediaType {
         case .image:
             media.image(with: .zero) { [weak self] image, error in
                 guard let image = image else {
@@ -317,7 +320,7 @@ class MediaItemViewController: UITableViewController {
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.delete(media, success: { [weak self] in
-            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], with: self?.media.blog)
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], withBlogID: self?.attributes.siteDotComID)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
         }, failure: { error in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
@@ -339,7 +342,7 @@ class MediaItemViewController: UITableViewController {
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.update(media, success: { [weak self] in
-            WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, with: self?.media.blog)
+            WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, withBlogID: self?.attributes.siteDotComID)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Saved!", comment: "Text displayed in HUD when a media item's metadata (title, etc) is saved successfully."))
             self?.updateNavigationItem()
         }, failure: { error in
@@ -425,7 +428,7 @@ class MediaItemViewController: UITableViewController {
         activityController.popoverPresentationController?.barButtonItem = sender
         activityController.completionWithItemsHandler = { [weak self] _, completed, _, _ in
             if completed {
-                WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
+                WPAppAnalytics.track(.mediaLibrarySharedItemLink, withBlogID: self?.attributes.siteDotComID)
             }
         }
 
@@ -461,7 +464,7 @@ extension MediaItemViewController {
 extension MediaItemViewController {
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let row = viewModel.rowAtIndexPath(indexPath)
-        if row is MediaDocumentRow && media.mediaType == .audio {
+        if row is MediaDocumentRow && attributes.mediaType == .audio {
             return false
         }
 
@@ -551,5 +554,20 @@ private struct MediaMetadata {
         media.caption = caption
         media.desc = desc
         media.alt = alt
+    }
+}
+
+/// This type contains some of the read only attributes in WordPress Media Library items, i.e. upload date, file size, file type.
+private struct ReadonlyAttributes {
+    let mediaType: MediaType
+    let filename: String
+    let creationDate: Date
+    let siteDotComID: NSNumber?
+
+    init(media: Media) {
+        mediaType = media.mediaType
+        filename = media.filename ?? ""
+        creationDate = media.creationDate ?? Date(timeIntervalSinceReferenceDate: 0)
+        siteDotComID = media.blog.dotComID
     }
 }
