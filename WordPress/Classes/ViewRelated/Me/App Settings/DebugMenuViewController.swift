@@ -64,6 +64,12 @@ class DebugMenuViewController: UITableViewController {
             ButtonRow(title: Strings.quickStartForExistingSiteRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart(type: .existingSite)
             }),
+            ButtonRow(title: Strings.removeQuickStartRow, action: { [weak self] _ in
+                if let blog = RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog {
+                    QuickStartTourGuide.shared.remove(from: blog)
+                }
+                self?.tableView.deselectSelectedRowWithAnimationAfterDelay(true)
+            }),
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
             }),
@@ -194,5 +200,6 @@ class DebugMenuViewController: UITableViewController {
         static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
         static let general = NSLocalizedString("debugMenu.generalSectionTitle", value: "General", comment: "General section title")
         static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
+        static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")
     }
 }
