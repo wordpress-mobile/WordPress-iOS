@@ -10,7 +10,9 @@ struct HomeWidgetTodayData: HomeWidgetData {
     static let filename = AppConfiguration.Widget.Stats.todayFilename
 
     var statsURL: URL? {
-        let statsUrl = "https://wordpress.com/stats/day/"
-        return URL(string: statsUrl + "\(siteID)")
+        guard let statsUrl = URL(string: "https://wordpress.com/stats/day/") else {
+            return nil
+        }
+        return statsUrl.appendingPathComponent(String(siteID))
     }
 }

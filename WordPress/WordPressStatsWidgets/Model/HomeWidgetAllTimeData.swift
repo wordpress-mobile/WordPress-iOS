@@ -10,7 +10,9 @@ struct HomeWidgetAllTimeData: HomeWidgetData {
     static let filename = AppConfiguration.Widget.Stats.allTimeFilename
 
     var statsURL: URL? {
-        let statsUrl = "https://wordpress.com/stats/insights/"
-        return URL(string: statsUrl + "\(siteID)")
+        guard let statsUrl = URL(string: "https://wordpress.com/stats/insights/") else {
+            return nil
+        }
+        return statsUrl.appendingPathComponent(String(siteID))
     }
 }
