@@ -14,7 +14,7 @@ struct LockScreenMultiStatView: View {
                     LockScreenSiteTitleView(title: viewModel.siteName)
                     Spacer(minLength: 0)
                     HStack {
-                        LockScreenFieldView(title: viewModel.firstField.title, value: viewModel.firstField.value)
+                        LockScreenFieldView(title: viewModel.primaryField.title, value: viewModel.primaryField.value)
                         Spacer()
                         Spacer()
                         LockScreenFieldView(title: viewModel.secondaryField.title, value: viewModel.secondaryField.value)
@@ -36,8 +36,8 @@ struct LockScreenMultiStatView_Previews: PreviewProvider {
     static let viewModel = LockScreenMultiStatViewModel(
         siteName: "My WordPress Site",
         updatedTime: Date(),
-        firstField: .init(title: "Likes", value: 12345678),
-        secondaryField: .init(title: "Comments", value: 1280)
+        primaryField: .init(title: "Likes", value: 373412),
+        secondaryField: .init(title: "Comments", value: 75712)
     )
 
     static var previews: some View {

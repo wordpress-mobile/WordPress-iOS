@@ -8,6 +8,6 @@ struct LockScreenMultiStatViewModel {
 
     let siteName: String
     let updatedTime: Date
-    let firstField: Field
+    let primaryField: Field
     let secondaryField: Field
 }

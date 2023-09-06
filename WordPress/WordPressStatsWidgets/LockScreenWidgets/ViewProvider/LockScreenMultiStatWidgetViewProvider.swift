@@ -19,7 +19,7 @@ struct LockScreenMultiStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockSc
         let viewModel = LockScreenMultiStatViewModel(
             siteName: data.siteName,
             updatedTime: data.date,
-            firstField: .init(
+            primaryField: .init(
                 title: topTitle,
                 value: data[keyPath: topValue]
             ),
