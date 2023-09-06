@@ -45,7 +45,7 @@ final class DashboardQuickActionCell: UITableViewCell {
 
         contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16))
+        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16))
 
         spotlightView.isHidden = true
         addSubview(spotlightView)

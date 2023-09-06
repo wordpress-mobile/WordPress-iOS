@@ -12,6 +12,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.clipsToBounds = true
         tableView.layer.cornerRadius = 10
+        tableView.backgroundColor = .listForeground
         tableView.register(DashboardQuickActionCell.self, forCellReuseIdentifier: Constants.cellReuseID)
         return tableView
     }()
@@ -69,6 +70,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseID, for: indexPath) as! DashboardQuickActionCell
         cell.configure(items[indexPath.row])
+        cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         cell.isSeparatorHidden = indexPath.row == (items.count - 1)
         return cell
