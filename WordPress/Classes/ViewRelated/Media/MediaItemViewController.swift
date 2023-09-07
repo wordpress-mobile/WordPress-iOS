@@ -27,6 +27,8 @@ class MediaItemViewController: UITableViewController {
     fileprivate var mediaMetadata: MediaMetadata {
         didSet {
             updateNavigationItem()
+            updateTitle()
+            reloadViewModel()
         }
     }
 
@@ -353,8 +355,6 @@ class MediaItemViewController: UITableViewController {
         guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
 
         mediaMetadata = MediaMetadata(media: media)
-        reloadViewModel()
-        updateTitle()
     }
 
     @objc private func saveTapped() {
@@ -382,9 +382,7 @@ class MediaItemViewController: UITableViewController {
             let editableRow = row as! EditableTextRow
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image title", comment: "Hint for image title on image settings."),
                                         onValueChanged: { value in
-                self?.title = value
                 self?.mediaMetadata.title = value
-                self?.reloadViewModel()
             })
         }
     }
@@ -395,7 +393,6 @@ class MediaItemViewController: UITableViewController {
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings."),
                                         onValueChanged: { value in
                 self?.mediaMetadata.caption = value
-                self?.reloadViewModel()
             })
         }
     }
@@ -405,8 +402,7 @@ class MediaItemViewController: UITableViewController {
             let editableRow = row as! EditableTextRow
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
                                         onValueChanged: { value in
-                self?.mediaMetadata.desc  = value
-                self?.reloadViewModel()
+                self?.mediaMetadata.desc = value
             })
         }
     }
@@ -416,8 +412,7 @@ class MediaItemViewController: UITableViewController {
             let editableRow = row as! EditableTextRow
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings."),
                                          onValueChanged: { value in
-                                            self?.mediaMetadata.alt  = value
-                                            self?.reloadViewModel()
+                                            self?.mediaMetadata.alt = value
             })
         }
     }
