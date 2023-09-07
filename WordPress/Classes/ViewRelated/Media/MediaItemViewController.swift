@@ -32,6 +32,8 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
+    private var mediaDeletedObserver: AnyCancellable?
+
     init(mediaID: TaggedManagedObjectID<Media>, coreDataStack: CoreDataStackSwift = ContextManager.shared) throws {
         assert(Thread.isMainThread)
 
@@ -64,6 +66,21 @@ class MediaItemViewController: UITableViewController {
         updateViewModel()
         updateNavigationItem()
         updateTitle()
+
+        // Automattically exit this view controller when the media item is deleted from local database, which usually
+        // means it's removed from the site's Media Library.
+        mediaDeletedObserver = NotificationCenter.default
+            .publisher(for: NSManagedObjectContext.didSaveObjectIDsNotification)
+            .filter { [mediaID] in
+                let deletedObjectIDs = $0.userInfo?[NSDeletedObjectIDsKey] as? Set<NSManagedObjectID> ?? []
+                return deletedObjectIDs.contains(mediaID.objectID)
+            }
+            // Only need to handle the deletion notification once
+            .first()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleDeletedMedia()
+            }
     }
 
     private func updateTitle() {
@@ -163,24 +180,25 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func reloadViewModel() {
-        guard !isMediaDeleted else {
-            handleDeletedMedia()
-            return
-        }
-
         updateViewModel()
         tableView.reloadData()
     }
 
-    private var isMediaDeleted: Bool {
-        return media.isDeleted || media.managedObjectContext == nil
-    }
-
     private func handleDeletedMedia() {
+        guard let stack = navigationController?.viewControllers, let position = stack.firstIndex(of: self) else {
+            DDLogError("\(self) is not presented in a navigation controller")
+            return
+        }
+
+        guard position >= 1 else {
+            DDLogError("\(self) should not be at the root of its navigation controller")
+            return
+        }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         SVProgressHUD.showError(withStatus: NSLocalizedString("This media item has been deleted.", comment: "Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted."))
-        navigationController?.popViewController(animated: true)
+        navigationController?.popToViewController(stack[position - 1], animated: true)
     }
 
     private func updateNavigationItem() {
@@ -312,11 +330,6 @@ class MediaItemViewController: UITableViewController {
     }
 
     @objc private func trashTapped(_ sender: UIBarButtonItem) {
-        guard !isMediaDeleted else {
-            handleDeletedMedia()
-            return
-        }
-
         let alertController = UIAlertController(title: nil,
                                                 message: NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso."), preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. Button title. Tapping cancels an action."))
@@ -328,11 +341,6 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func deleteMediaItem() {
-        guard !isMediaDeleted else {
-            handleDeletedMedia()
-            return
-        }
-
         guard let media = try? coreDataStack.mainContext.existingObject(with: mediaID) else { return }
 
         SVProgressHUD.setDefaultMaskType(.clear)
