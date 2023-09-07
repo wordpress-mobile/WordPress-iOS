@@ -548,7 +548,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
     }
 
-// MARK: - Add Site Alert
+    // MARK: - Add Site Alert
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
