@@ -90,6 +90,11 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         case .pages:
             trackQuickActionsEvent(.openedPages, blog: blog)
             PageListViewController.showForBlog(blog, from: parentViewController)
+        case .comments:
+            if let viewController = CommentsViewController(blog: blog) {
+                trackQuickActionsEvent(.openedComments, blog: blog)
+                parentViewController.show(viewController, sender: nil)
+            }
         case .media:
             trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
             MediaLibraryViewController.showForBlog(blog, from: parentViewController)
