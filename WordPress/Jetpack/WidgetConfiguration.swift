@@ -45,18 +45,5 @@ import Foundation
             @objc static let lockScreenAllTimePostsBestViewsKind = "JetpackLockScreenWidgetAllTimePostsBestViews"
             @objc static let lockScreenAllTimePostsBestViewsProperties = "JetpackLockScreenWidgetAllTimeBestViewsProperties"
         }
-
-
-        // iOS13 Stats Today Widgets
-        @objc(AppConfigurationWidgetStatsToday)
-        class StatsToday: NSObject {
-            @objc static let userDefaultsSiteIdKey = "JetpackTodayWidgetSiteId"
-            @objc static let userDefaultsSiteNameKey = "JetpackTodayWidgetSiteName"
-            @objc static let userDefaultsSiteUrlKey = "JetpackTodayWidgetSiteUrl"
-            @objc static let userDefaultsSiteTimeZoneKey = "JetpackTodayWidgetTimeZone"
-            @objc static let todayFilename = "JetpackTodayData.plist"
-            @objc static let thisWeekFilename = "JetpackThisWeekData.plist"
-            @objc static let allTimeFilename = "JetpackAllTimeData.plist"
-        }
     }
 }

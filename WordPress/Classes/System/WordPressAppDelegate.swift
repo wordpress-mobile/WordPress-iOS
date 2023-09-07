@@ -812,7 +812,6 @@ extension WordPressAppDelegate {
             AccountService.loadDefaultAccountCookies()
         } else {
             trackLogoutIfNeeded()
-            removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             windowManager.showFullscreenSignIn()
@@ -841,12 +840,6 @@ extension WordPressAppDelegate {
         ShareExtensionService.configureShareExtensionMaximumMediaDimension(maxImagesize)
 
         saveRecentSitesForExtensions()
-    }
-
-    // MARK: - Today Extension
-
-    func removeTodayWidgetConfiguration() {
-        TodayExtensionService().removeTodayWidgetConfiguration()
     }
 
     // MARK: - Share Extension

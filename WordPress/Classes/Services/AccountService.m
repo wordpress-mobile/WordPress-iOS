@@ -3,7 +3,6 @@
 #import "CoreDataStack.h"
 #import "Blog.h"
 #import "BlogService.h"
-#import "TodayExtensionService.h"
 
 @import WordPressKit;
 @import WordPressShared;
@@ -403,48 +402,17 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     Blog *defaultBlog = [defaultAccount defaultBlog];
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
-    NSString *blogUrl   = defaultBlog.displayURL;
     
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            TodayExtensionService *service = [TodayExtensionService new];
-            [service removeTodayWidgetConfiguration];
-
             [ShareExtensionService removeShareExtensionConfiguration];
 
             [NotificationSupportService deleteContentExtensionToken];
             [NotificationSupportService deleteServiceExtensionToken];
         });
     } else {
-        // Required Attributes
-
-        NSString *oauth2Token       = defaultAccount.authToken;
-
-        // For the Today Extensions, if the user has set a non-primary site, use that.
-        NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-        NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
-        NSString *todayExtensionBlogName = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
-        NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
-
-        Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:context];
-        NSTimeZone *timeZone = [todayExtensionBlog timeZone];
-
-        if (todayExtensionSiteID == NULL || todayExtensionBlog == nil) {
-            todayExtensionSiteID = siteId;
-            todayExtensionBlogName = blogName;
-            todayExtensionBlogUrl = blogUrl;
-            timeZone = [defaultBlog timeZone];
-        }
-
         dispatch_async(dispatch_get_main_queue(), ^{
             WPAccount *defaultAccount = [self.coreDataStack.mainContext existingObjectWithID:defaultAccountObjectID error:nil];
-
-            TodayExtensionService *service = [TodayExtensionService new];
-            [service configureTodayWidgetWithSiteID:todayExtensionSiteID
-                                           blogName:todayExtensionBlogName
-                                            blogUrl:todayExtensionBlogUrl
-                                       siteTimeZone:timeZone
-                                     andOAuth2Token:oauth2Token];
 
             [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
             [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
