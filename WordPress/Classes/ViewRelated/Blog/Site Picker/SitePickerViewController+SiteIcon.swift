@@ -9,9 +9,6 @@ import PhotosUI
 extension SitePickerViewController {
 
     func makeSiteIconMenu() -> UIMenu? {
-        guard siteIconShouldAllowDroppedImages() else {
-            return nil
-        }
         return UIMenu(children: [
             UIDeferredMenuElement.uncached { [weak self] in
                 $0(self?.makeUpdateSiteIconActions() ?? [])
@@ -36,6 +33,10 @@ extension SitePickerViewController {
     }
 
     private func makeUpdateSiteIconActions() -> [UIAction] {
+        guard siteIconShouldAllowDroppedImages() else {
+            return [] // Not eligible to change the icon
+        }
+
         let presenter = makeSiteIconPresenter()
         let mediaMenu = MediaPickerMenu(viewController: self, filter: .images)
         var actions: [UIAction] = []
