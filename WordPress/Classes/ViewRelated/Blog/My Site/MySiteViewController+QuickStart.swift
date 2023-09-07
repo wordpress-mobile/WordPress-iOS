@@ -13,8 +13,6 @@ extension MySiteViewController {
             return
         }
 
-        siteMenuSpotlightIsShown = element == .siteMenu
-
         switch element {
         case .noSuchElement, .newpost:
             additionalSafeAreaInsets = .zero

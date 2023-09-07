@@ -63,20 +63,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         return refreshControl
     }()
 
-    private lazy var siteMenuSpotlightView: UIView = {
-        let spotlightView = QuickStartSpotlightView()
-        spotlightView.translatesAutoresizingMaskIntoConstraints = false
-        spotlightView.isHidden = true
-        return spotlightView
-    }()
-
-    /// Whether or not to show the spotlight animation to illustrate tapping the site menu.
-    var siteMenuSpotlightIsShown: Bool = false {
-        didSet {
-            siteMenuSpotlightView.isHidden = !siteMenuSpotlightIsShown
-        }
-    }
-
     /// A boolean indicating whether a site creation or adding self-hosted site flow has been initiated but not yet displayed.
     var willDisplayPostSignupFlow: Bool = false
 
@@ -836,10 +822,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     // MARK: - Constants
-
-    private enum Constants {
-        static let siteMenuSpotlightOffset: CGFloat = 8
-    }
 
     private enum Strings {
         static let mySite = NSLocalizedString("My Site", comment: "Title of My Site tab")
