@@ -28,9 +28,22 @@ import Foundation
 
             /// Lock Screen
             @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
-            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
+
+            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
+
+            @objc static let lockScreenTodayViewsVisitorsKind = "JetpackLockScreenWidgetTodayViewsVisitors"
+            @objc static let lockScreenTodayViewsVisitorsProperties = "JetpackLockScreenWidgetTodayViewsVisitorsProperties"
+
+            @objc static let lockScreenAllTimeViewsKind = "JetpackLockScreenWidgetAllTimeViews"
+            @objc static let lockScreenAllTimeViewsProperties = "JetpackLockScreenWidgetAllTimeViewsProperties"
+
+            @objc static let lockScreenAllTimeViewsVisitorsKind = "JetpackLockScreenWidgetAllTimeViewsVisitors"
+            @objc static let lockScreenAllTimeViewsVisitorsProperties = "JetpackLockScreenWidgetAllTimeViewsVisitorsProperties"
+
+            @objc static let lockScreenAllTimePostsBestViewsKind = "JetpackLockScreenWidgetAllTimePostsBestViews"
+            @objc static let lockScreenAllTimePostsBestViewsProperties = "JetpackLockScreenWidgetAllTimeBestViewsProperties"
         }
 
 
