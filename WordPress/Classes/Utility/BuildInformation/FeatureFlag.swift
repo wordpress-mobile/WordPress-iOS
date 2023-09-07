@@ -35,7 +35,6 @@ enum FeatureFlag: Int, CaseIterable {
     case contentMigration
     case newJetpackLandingScreen
     case newWordPressLandingScreen
-    case newCoreDataContext
     case jetpackIndividualPluginSupport
     case siteCreationDomainPurchasing
     case readerUserBlocking
@@ -122,8 +121,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .newJetpackLandingScreen:
             return true
         case .newWordPressLandingScreen:
-            return true
-        case .newCoreDataContext:
             return true
         case .jetpackIndividualPluginSupport:
             return AppConfiguration.isJetpack
@@ -231,8 +228,6 @@ extension FeatureFlag {
             return "New Jetpack landing screen"
         case .newWordPressLandingScreen:
             return "New WordPress landing screen"
-        case .newCoreDataContext:
-            return "Use new Core Data context structure (Require app restart)"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
         case .siteCreationDomainPurchasing:
