@@ -265,12 +265,12 @@ fileprivate extension BlogDetailHeaderView {
 
         let siteSwitcherButton: UIButton = {
             let button = UIButton(frame: .zero)
-            let image = UIImage(named: "chevron-down-slim")
+            let image = UIImage(named: "chevron-down-slim")?.withRenderingMode(.alwaysTemplate)
 
             button.setImage(image, for: .normal)
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.tintColor = .gray
+            button.tintColor = .secondaryLabel
             button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
             button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
             button.accessibilityIdentifier = "SwitchSiteButton"
