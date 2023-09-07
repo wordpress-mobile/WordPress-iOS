@@ -1,7 +1,7 @@
 import WidgetKit
 
 @available(iOS 16.0, *)
-struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig {
+struct LockScreenTodayViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetTodayData
     typealias ViewProvider = LockScreenMultiStatWidgetViewProvider<WidgetData>
 
@@ -13,7 +13,7 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     }
 
     var displayName: String {
-        LocalizableStrings.todayLikesCommentsWidgetPreviewTitle
+        LocalizableStrings.todayViewsVisitorsWidgetPreviewTitle
     }
 
     var description: String {
@@ -21,11 +21,11 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsKind
+        AppConfiguration.Widget.Stats.lockScreenTodayViewsVisitorsKind
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsProperties
+        AppConfiguration.Widget.Stats.lockScreenTodayViewsVisitorsProperties
     }
 
     var placeholderContent: HomeWidgetTodayData {
@@ -47,10 +47,10 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     var viewProvider: ViewProvider {
         LockScreenMultiStatWidgetViewProvider(
             widgetKind: .today,
-            topTitle: LocalizableStrings.likesTitle,
-            topValue: \.stats.likes,
-            bottomTitle: LocalizableStrings.commentsTitle,
-            bottomValue: \.stats.comments
+            topTitle: LocalizableStrings.viewsTitle,
+            topValue: \.stats.views,
+            bottomTitle: LocalizableStrings.visitorsTitle,
+            bottomValue: \.stats.visitors
         )
     }
 }
