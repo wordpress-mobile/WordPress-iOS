@@ -1,0 +1,36 @@
+# frozen_string_literal: true
+
+def release_branch?
+  danger.github.branch_for_base.start_with?('release/') || danger.github.branch_for_base.start_with?('hotfix/')
+end
+
+def main_branch?
+  danger.github.branch_for_base == 'develop' || danger.github.branch_for_base == 'trunk' || danger.github.branch_for_base == 'main'
+end
+
+def wip_feature?
+  has_wip_label = github.pr_labels.any? { |label| label.include?('WIP Feature') || label == 'WIP' }
+  has_wip_title = github.pr_title.include?('[WIP]')
+
+  has_wip_label || has_wip_title
+end
+
+# if we have a shared Dangerfile, we can import it here
+# danger.import_dangerfile(gem: 'danger-dangermattic')
+
+return if github.pr_labels.include?('Releases')
+
+manifest_pr_checker.check_all_manifest_lock_updated
+labels_checker.check(
+  do_not_merge_labels: ['[Status] DO NOT MERGE'],
+  required_labels: [//],
+  required_labels_error: 'PR is missing at least one label.'
+)
+view_changes_need_screenshots.view_changes_need_screenshots
+pr_size_checker.check_diff_size
+
+# skip for draft PRs and for wip features unless the PR is against "develop" or "release/x.x" branches
+milestone_checker.check_milestone_due_date(days_before_due: 4) if !github.pr_draft? && (!wip_feature? || (release_branch? || main_branch?))
+
+github.dismiss_out_of_range_messages
+rubocop.lint inline_comment: true, fail_on_inline_comment: true, include_cop_names: true
