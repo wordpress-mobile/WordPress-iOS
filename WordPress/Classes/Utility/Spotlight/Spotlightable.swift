@@ -57,7 +57,7 @@ class SpotlightableButton: UIButton, Spotlightable {
 
     func startLoading() {
         originalTitle = titleLabel?.text
-        setTitle("", for: .normal)
+        setTitle(" ", for: .normal) // Non-empty title so that it retains its height
         activityIndicator.startAnimating()
     }
 
@@ -67,13 +67,13 @@ class SpotlightableButton: UIButton, Spotlightable {
     }
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .large)
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         addSubview(activityIndicator)
 
         NSLayoutConstraint.activate([
-            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityIndicator.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
 
         return activityIndicator

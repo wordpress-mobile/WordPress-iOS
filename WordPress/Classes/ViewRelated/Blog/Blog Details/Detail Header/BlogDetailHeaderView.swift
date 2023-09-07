@@ -285,7 +285,6 @@ fileprivate extension BlogDetailHeaderView {
             ])
 
             stackView.alignment = .leading
-//            stackView.distribution = .equalSpacing
             stackView.axis = .vertical
             stackView.translatesAutoresizingMaskIntoConstraints = false
 
