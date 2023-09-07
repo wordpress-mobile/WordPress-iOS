@@ -267,7 +267,7 @@ public class BlockEditorScreen: ScreenObject {
 
     public func post(action: postAction, postType: postType = .post) throws {
         let postButton = app.buttons[action.rawValue]
-        let postNowButton = postType == .post ? app.buttons["\(action.rawValue) Now"] : app.alerts.buttons[action.rawValue]
+        let postNowButton = postType == .post ? app.buttons["\(action.rawValue) Now"] : app.alerts.buttons[action.rawValue].firstMatch
 
         var tries = 0
         // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
