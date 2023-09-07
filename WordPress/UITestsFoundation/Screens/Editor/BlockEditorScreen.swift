@@ -267,17 +267,20 @@ public class BlockEditorScreen: ScreenObject {
 
     public func post(action: postAction, postType: postType = .post) throws {
         let postButton = app.buttons[action.rawValue]
-        let postNowButton = postType == .post ? app.buttons["\(action.rawValue) Now"] : app.alerts.buttons[action.rawValue].firstMatch
+        let postNowButton: XCUIElement
 
-        var tries = 0
-        // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
-        // The tests would fail sometimes in the pipeline with no apparent reason.
-        repeat {
-            postButton.tap()
-            tries += 1
-        } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
+        // To handle both post types - post and page
+        if postType == .page && XCUIDevice.isPad {
+            postNowButton = app.alerts.buttons[action.rawValue]
+        } else if postType == .page && XCUIDevice.isPhone {
+            postNowButton = app.scrollViews.buttons[action.rawValue]
+        } else {
+            postNowButton = app.buttons["\(action.rawValue) Now"]
+        }
 
-        postNowButton.tap()
+        waitForExistAndTap(postButton)
+        waitForExistAndTap(postNowButton)
+
         if action == .publish && postType == .post {
             dismissBloggingRemindersAlertIfNeeded()
         }

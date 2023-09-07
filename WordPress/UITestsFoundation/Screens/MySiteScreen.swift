@@ -64,6 +64,10 @@ public class MySiteScreen: ScreenObject {
         $0.otherElements[pagesCardId].buttons["Create another page"]
     }
 
+    private let pagesCardPublishedLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[pagesCardId].staticTexts["Published"]
+    }
+
     private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Domains Row"]
     }
@@ -129,6 +133,7 @@ public class MySiteScreen: ScreenObject {
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
+    var pagesCardPublishedLabel: XCUIElement { pagesCardPublishedLabelGetter(app) }
     var peopleButton: XCUIElement { peopleButtonGetter(app) }
     var postsButton: XCUIElement { postsButtonGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app)}
@@ -320,8 +325,9 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyPagePublished() -> Self {
-        // do something
+    public func verifyPagePublished(title: String) -> Self {
+        XCTAssertTrue(pagesCard.staticTexts[title].waitForExistence(timeout: 3))
+        XCTAssertTrue(pagesCardPublishedLabel.waitForExistence(timeout: 3))
 
         return self
     }

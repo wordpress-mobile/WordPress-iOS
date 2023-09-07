@@ -5,6 +5,7 @@ class PageTests: XCTestCase {
 
     @MainActor
     override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite()
 
         try LoginFlow.login(
@@ -13,6 +14,7 @@ class PageTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
         takeScreenshotOfFailedTest()
     }
 
@@ -29,6 +31,6 @@ class PageTests: XCTestCase {
 
         try MySiteScreen()
             .scrollToPagesCard()
-            .verifyPagePublished()
+            .verifyPagePublished(title: postTitle)
     }
 }

@@ -31,6 +31,15 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     top.press(forDuration: 0.01, thenDragTo: bottom)
 }
 
+public func waitForExistAndTap(_ element: XCUIElement, timeout: TimeInterval = 5) {
+    guard element.waitForExistence(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) did not exist after \(timeout) seconds.")
+        return
+    }
+
+    element.tap()
+}
+
 public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10, timeout: TimeInterval = 10) {
     guard element.waitForIsHittable(timeout: timeout) else {
         XCTFail("Expected element (\(element)) was not hittable after \(timeout) seconds.")
