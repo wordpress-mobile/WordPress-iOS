@@ -35,7 +35,11 @@ extension ReaderStreamViewController {
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
 
         if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
-            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)?.first as? ReaderTagStreamHeader
+            guard let nibViews = Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil) as? [ReaderTagStreamHeader] else {
+                return nil
+            }
+
+            return FeatureFlag.readerImprovements.enabled ? nibViews.last : nibViews.first
         }
 
         if ReaderHelpers.isTopicList(topic) {
@@ -169,5 +173,13 @@ extension ReaderStreamViewController {
 extension ReaderStreamViewController {
     func trackSavedListAccessed() {
         WPAnalytics.trackReader(.readerSavedListShown, properties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
+    }
+}
+
+private extension ReaderStreamViewController {
+
+    struct Constants {
+        // The number of characters allowed for the horizontal layout.
+        static let tagStreamHeaderHorizontalLengthLimit = 10
     }
 }

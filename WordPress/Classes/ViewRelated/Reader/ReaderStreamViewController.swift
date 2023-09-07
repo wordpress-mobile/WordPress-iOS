@@ -684,7 +684,11 @@ import Combine
         }
 
         if ReaderHelpers.isTopicTag(topic) {
-             title = NSLocalizedString("Topic", comment: "Topic page title")
+            // don't display any title for the tag stream for the new design.
+            if FeatureFlag.readerImprovements.enabled {
+                return
+            }
+            title = NSLocalizedString("Topic", comment: "Topic page title")
         } else {
             title = topic.title
         }

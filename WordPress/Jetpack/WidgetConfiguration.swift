@@ -25,6 +25,12 @@ import Foundation
             @objc static let todayFilename = "JetpackHomeWidgetTodayData.plist"
             @objc static let allTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
             @objc static let thisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
+
+            /// Lock Screen
+            @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
+            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
+            @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
+            @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
         }
 
 

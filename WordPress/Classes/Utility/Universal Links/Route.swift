@@ -94,6 +94,7 @@ enum DeepLinkSource: Equatable {
     case banner
     case email(campaign: String)
     case widget
+    case lockScreenWidget
     case inApp(presenter: UIViewController?)
 
     init?(sourceName: String) {
@@ -102,6 +103,8 @@ enum DeepLinkSource: Equatable {
         // add others in the future if necessary.
         case "widget":
             self = .widget
+        case "lockscreen_widget":
+            self = .lockScreenWidget
         default:
             return nil
         }

@@ -13,7 +13,7 @@ struct StatsWidgetsView: View {
 
         case .disabled(let kind):
             UnconfiguredView(timelineEntry: timelineEntry)
-                .widgetURL(kind.statsURL)
+                .widgetURL(kind.statsURL?.appendingSource(.homeScreenWidget))
         case .loggedOut, .noSite, .noData:
             UnconfiguredView(timelineEntry: timelineEntry)
                 .widgetURL(nil)
@@ -25,12 +25,12 @@ struct StatsWidgetsView: View {
 
                 case .systemSmall:
                     SingleStatView(viewData: viewData)
-                        .widgetURL(viewData.statsURL)
+                        .widgetURL(viewData.statsURL?.appendingSource(.homeScreenWidget))
                         .padding()
 
                 case .systemMedium:
                     MultiStatsView(viewData: viewData)
-                        .widgetURL(viewData.statsURL)
+                        .widgetURL(viewData.statsURL?.appendingSource(.homeScreenWidget))
                         .padding()
 
                 default:
@@ -93,33 +93,6 @@ private extension StatsWidgetsView {
                             siteName: thisWeekWidgetData.siteName,
                             items: thisWeekWidgetData.stats.days,
                             statsURL: thisWeekWidgetData.statsURL)
-    }
-}
-
-
-private extension HomeWidgetTodayData {
-    static let statsUrl = "https://wordpress.com/stats/day/"
-
-    var statsURL: URL? {
-        URL(string: Self.statsUrl + "\(siteID)?source=widget")
-    }
-}
-
-
-private extension HomeWidgetAllTimeData {
-    static let statsUrl = "https://wordpress.com/stats/insights/"
-
-    var statsURL: URL? {
-        URL(string: Self.statsUrl + "\(siteID)?source=widget")
-    }
-}
-
-
-private extension HomeWidgetThisWeekData {
-    static let statsUrl = "https://wordpress.com/stats/week/"
-
-    var statsURL: URL? {
-        URL(string: Self.statsUrl + "\(siteID)?source=widget")
     }
 }
 

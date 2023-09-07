@@ -10,6 +10,7 @@ enum FeatureFlag: Int, CaseIterable {
     case homepageSettings
     case unifiedPrologueCarousel
     case todayWidget
+    case lockScreenWidget
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
@@ -43,6 +44,7 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case domainFocus
     case nativePhotoPicker
+    case readerImprovements // pcdRpT-3Eb-p2
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -67,6 +69,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .todayWidget:
             return true
+        case .lockScreenWidget:
+            return false
         case .milestoneNotifications:
             return true
         case .bloggingReminders:
@@ -137,6 +141,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .nativePhotoPicker:
             return true
+        case .readerImprovements:
+            return false
         }
     }
 
@@ -175,6 +181,8 @@ extension FeatureFlag {
             return "Unified Prologue Carousel"
         case .todayWidget:
             return "iOS 14 Today Widget"
+        case .lockScreenWidget:
+            return "iOS 16 Widget in Lock Screen"
         case .milestoneNotifications:
             return "Milestone notifications"
         case .bloggingReminders:
@@ -241,6 +249,8 @@ extension FeatureFlag {
             return "Domain Focus"
         case .nativePhotoPicker:
             return "Native Photo Picker"
+        case .readerImprovements:
+            return "Reader Improvements v1"
         }
     }
 }
@@ -256,6 +266,8 @@ extension FeatureFlag: OverridableFlag {
         case .debugMenu:
             return false
         case .todayWidget:
+            return false
+        case .lockScreenWidget:
             return false
         case .weeklyRoundup:
             return false

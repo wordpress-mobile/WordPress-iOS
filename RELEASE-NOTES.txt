@@ -1,3 +1,7 @@
+23.3
+-----
+
+
 23.2
 -----
 * [**] Integrate the native media picker (`PHPickerViewController`), which is familiar to all Apple Photos users. It has a powerful search; you can filter by favorites, zoom in, filter by different media types, and more. And it doesn't require any access permissions or dialogs to work and handles large Photos libaries with ease. [#21190](https://github.com/wordpress-mobile/WordPress-iOS/issues/21190).
@@ -9,8 +13,12 @@
 * [*] [internal] Change how a post is fetched when selecting a post in Spotlight search result. [#21439]
 * [*] [internal] Change how a post's revision is fetched from the post history screen. [#21440]
 * [**] [internal] Replace the progress indicator implementation in uploading featured image from "Post Settings" [#21438]
+* [**] [Jetpack-only] Block Editor: Add basic support to view, relocate, and remove the Jetpack Paywall block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6076]
+* [*] Block Editor: Columns block - Fix transforming into a Group block crash [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6129]
+* [**] Block Editor: Add block outline to all Social Link blocks when selected [https://github.com/WordPress/gutenberg/pull/54011]
 * [***] [Jetpack-only] Contact Support: Add a new chat-based support channel where users can get answers from a bot trained to help app users. Users can still create a support ticket to talk to a Happiness Engineer if they don't find the answer they're looking for [#21467]
 * [*] Fix a crash on the pages list when the authentication token is invalid. [#21471]
+* [**] Me tab: move Me to the bottom tab bar [https://github.com/wordpress-mobile/WordPress-iOS/pull/21348]
 
 23.0.1
 -----
@@ -27,6 +35,7 @@
 * [*] Fixed a crash that could occur when following sites in Reader. [#21341]
 * [**] [Jetpack-only] Add a "Domain Focus" Card to the Dashboard that opens a screen that allows tranfer of Google Domains. This card can also be hidden across all sites of the account by accesing the More button. [#21368]
 * [**] Fix Voice Over and assistive keyboards [https://github.com/WordPress/gutenberg/pull/53895]
+* [*] Fix an issue with widget data sometimes showing zeros [https://github.com/wordpress-mobile/WordPress-iOS/pull/21430]
 
 23.0
 -----

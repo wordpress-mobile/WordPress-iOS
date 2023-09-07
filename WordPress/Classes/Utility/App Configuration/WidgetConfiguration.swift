@@ -25,6 +25,12 @@ import Foundation
             @objc static let todayFilename = "HomeWidgetTodayData.plist"
             @objc static let allTimeFilename = "HomeWidgetAllTimeData.plist"
             @objc static let thisWeekFilename = "HomeWidgetThisWeekData.plist"
+
+            /// Lock Screen
+            @objc static let lockScreenTodayViewsKind = "WordPressLockScreenWidgetTodayViews"
+            @objc static let lockScreenTodayLikesCommentsKind = "WordPressLockScreenWidgetTodayLikesComments"
+            @objc static let lockScreenTodayViewsProperties = "WordPressLockScreenWidgetTodayViewsProperties"
+            @objc static let lockScreenTodayLikesCommentsProperties = "WordPressLockScreenWidgetTodayLikesCommentsProperties"
         }
 
         // iOS13 Stats Today Widgets

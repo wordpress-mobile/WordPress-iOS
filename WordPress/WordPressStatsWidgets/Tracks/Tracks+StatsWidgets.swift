@@ -1,9 +1,23 @@
 import Foundation
 import WidgetKit
 
-/// This extension implements helper tracking methods, meant for Today Home Widget usage.
+/// This extension implements helper tracking methods meant for Home & Lock screen widgets.
 ///
 extension Tracks {
+
+    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: String, widgetCountKey: String) {
+        switch entry {
+        case .siteSelected(_, let context):
+            if !context.isPreview {
+                trackWidgetUpdated(widgetKind: widgetKind,
+                                   widgetCountKey: widgetCountKey)
+            }
+
+        case .loggedOut, .noSite, .noData:
+            trackWidgetUpdated(widgetKind: widgetKind,
+                               widgetCountKey: widgetCountKey)
+        }
+    }
 
     func trackWidgetUpdatedIfNeeded(entry: StatsWidgetEntry, widgetKind: String, widgetCountKey: String) {
         switch entry {
@@ -39,10 +53,13 @@ extension Tracks {
 
     private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetPropertiesKey: String) {
 
-        let properties = ["total_widgets": widgetInfo.count,
+        var properties = ["total_widgets": widgetInfo.count,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
                           "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
+        if #available(iOS 16.0, *) {
+            properties["rectangular_widgets"] = widgetInfo.filter { $0.family == .accessoryRectangular }.count
+        }
 
         let previousProperties = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: widgetPropertiesKey) as? [String: Int]
 
@@ -71,6 +88,8 @@ extension Tracks {
         case allTimeWidgetUpdated = "alltime_home_extension_widget_updated"
         // Users installs an instance of the this week widget
         case thisWeekWidgetUpdated = "thisweek_home_extension_widget_updated"
+        // Users installs an instance of the lockscreen today views widget
+        case todayViewsLockScreenWidgetUpdated = "today_views_lockscreen_extension_widget_updated"
 
         case noEvent
 
@@ -82,6 +101,8 @@ extension Tracks {
                 return .allTimeWidgetUpdated
             case AppConfiguration.Widget.Stats.thisWeekProperties:
                 return .thisWeekWidgetUpdated
+            case AppConfiguration.Widget.Stats.lockScreenTodayViewsProperties:
+                return .todayViewsLockScreenWidgetUpdated
             default:
                 return .noEvent
             }

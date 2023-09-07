@@ -49,6 +49,8 @@ class MeViewController: UITableViewController {
         tableView.accessibilityIdentifier = "Me Table"
 
         reloadViewModel()
+
+        extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewDidLayoutSubviews() {

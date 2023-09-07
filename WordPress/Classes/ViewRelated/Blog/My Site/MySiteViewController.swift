@@ -2,7 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 
-class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDelegate {
+class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
 
     enum Section: Int, CaseIterable {
         case dashboard
@@ -149,11 +149,28 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
     }
     private weak var blogDashboardViewController: BlogDashboardViewController?
 
-    /// When we display a no results view, we'll do so in a scrollview so that
+    /// When we display a no sites view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
     ///
-    private var noResultsScrollView: UIScrollView?
-    private var noResultsRefreshControl: UIRefreshControl?
+    private var noSitesScrollView: UIScrollView?
+    private var noSitesRefreshControl: UIRefreshControl?
+    private lazy var noSitesViewController: UIHostingController = {
+        let viewModel = NoSitesViewModel(
+            appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType,
+            account: defaultAccount()
+        )
+        let configuration = AddNewSiteConfiguration(
+            canCreateWPComSite: defaultAccount() != nil,
+            canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
+            launchSiteCreation: self.launchSiteCreationFromNoSites,
+            launchLoginForSelfHostedSite: self.launchLoginForSelfHostedSite
+        )
+        let noSiteView = NoSitesView(
+            viewModel: viewModel,
+            addNewSiteConfiguration: configuration
+        )
+        return UIHostingController(rootView: noSiteView)
+    }()
 
     // MARK: - View Lifecycle
 
@@ -394,17 +411,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
     }
 
     private func setupNavBarAppearance() {
-        let scrollEdgeAppearance = navigationController?.navigationBar.scrollEdgeAppearance
-        let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
-        scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
-        scrollEdgeAppearance?.configureWithTransparentBackground()
-
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     private func resetNavBarAppearance() {
-        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBar.appearance().scrollEdgeAppearance
-
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
@@ -457,7 +467,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
         }
 
         let finishSync = { [weak self] in
-            self?.noResultsRefreshControl?.endRefreshing()
+            self?.noSitesRefreshControl?.endRefreshing()
         }
 
         blogService.syncBlogs(for: account) {
@@ -575,13 +585,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
 
     private func hideNoSites() {
         // Only track if the no sites view is currently visible
-        if noResultsViewController.view.superview != nil {
+        if noSitesViewController.view.superview != nil {
             WPAnalytics.track(.mySiteNoSitesViewHidden)
         }
 
-        hideNoResults()
+        noSitesViewController.willMove(toParent: nil)
+        noSitesViewController.view.removeFromSuperview()
+        noSitesViewController.removeFromParent()
 
-        cleanupNoResultsView()
+        cleanupNoSitesView()
     }
 
     private func showNoSites() {
@@ -594,28 +606,28 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
         hideSplitDetailsView()
         blogDetailsViewController = nil
 
-        guard noResultsViewController.view.superview == nil else {
+        guard noSitesViewController.view.superview == nil else {
             return
         }
 
-        makeNoResultsScrollView()
-        configureNoResultsView()
-        addNoResultsViewAndConfigureConstraints()
+        makeNoSitesScrollView()
+        configureNoSitesView()
+        addNoSitesViewAndConfigureConstraints()
         createButtonCoordinator?.removeCreateButton()
     }
 
     private func trackNoSitesVisibleIfNeeded() {
-        guard noResultsViewController.view.superview != nil else {
+        guard noSitesViewController.view.superview != nil else {
             return
         }
 
         WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 
-    private func makeNoResultsScrollView() {
+    private func makeNoSitesScrollView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .basicBackground
+        scrollView.backgroundColor = .listBackground
 
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)
@@ -623,35 +635,25 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
         let refreshControl = UIRefreshControl()
         scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(syncBlogs), for: .valueChanged)
-        noResultsRefreshControl = refreshControl
+        noSitesRefreshControl = refreshControl
 
-        noResultsScrollView = scrollView
+        noSitesScrollView = scrollView
     }
 
-    private func configureNoResultsView() {
-        noResultsViewController.configure(title: NSLocalizedString(
-                                            "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.",
-                                            comment: "Text shown when the account has no sites."),
-                                          buttonTitle: NSLocalizedString(
-                                            "Add new site",
-                                            comment: "Title of button to add a new site."),
-                                          image: "mysites-nosites")
-        noResultsViewController.actionButtonHandler = { [weak self] in
-            self?.presentInterfaceForAddingNewSite()
-            WPAnalytics.track(.mySiteNoSitesViewActionTapped)
-        }
+    private func configureNoSitesView() {
+        noSitesViewController.rootView.delegate = self
     }
 
-    private func addNoResultsViewAndConfigureConstraints() {
-        guard let scrollView = noResultsScrollView else {
+    private func addNoSitesViewAndConfigureConstraints() {
+        guard let scrollView = noSitesScrollView else {
             return
         }
 
-        addChild(noResultsViewController)
-        scrollView.addSubview(noResultsViewController.view)
-        noResultsViewController.view.frame = scrollView.frame
+        addChild(noSitesViewController)
+        scrollView.addSubview(noSitesViewController.view)
+        noSitesViewController.view.frame = scrollView.frame
 
-        guard let nrv = noResultsViewController.view else {
+        guard let nrv = noSitesViewController.view else {
             return
         }
 
@@ -664,16 +666,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
             nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
         ])
 
-        noResultsViewController.didMove(toParent: self)
+        noSitesViewController.didMove(toParent: self)
     }
 
-    private func cleanupNoResultsView() {
-        noResultsRefreshControl?.removeFromSuperview()
-        noResultsRefreshControl = nil
+    private func cleanupNoSitesView() {
+        noSitesRefreshControl?.removeFromSuperview()
+        noSitesRefreshControl = nil
 
-        noResultsScrollView?.refreshControl = nil
-        noResultsScrollView?.removeFromSuperview()
-        noResultsScrollView = nil
+        noSitesScrollView?.refreshControl = nil
+        noSitesScrollView?.removeFromSuperview()
+        noSitesScrollView = nil
     }
 
     // MARK: - FAB
@@ -686,41 +688,29 @@ class MySiteViewController: UIViewController, NoResultsViewHost, UIScrollViewDel
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
         if let blog = blog,
-           noResultsViewController.view.superview == nil {
+           noSitesViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }
     }
 
 // MARK: - Add Site Alert
 
+    func didTapAccountAndSettingsButton() {
+        let meViewController = MeViewController()
+        showDetailViewController(meViewController, sender: self)
+    }
+
     @objc
     func presentInterfaceForAddingNewSite() {
-        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
-        let addSite = {
-            self.launchSiteCreation(source: "my_site_no_sites")
-        }
+        noSitesViewController.rootView.handleAddNewSiteButtonTapped()
+    }
 
-        guard canAddSelfHostedSite else {
-            addSite()
-            return
-        }
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites",
-                                                                  canCreateWPComSite: defaultAccount() != nil,
-                                                                  createWPComSite: {
-            addSite()
-        }, canAddSelfHostedSite: canAddSelfHostedSite, addSelfHostedSite: {
-            WordPressAuthenticator.showLoginForSelfHostedSite(self)
-        })
+    private func launchSiteCreationFromNoSites() {
+        launchSiteCreation(source: "my_site_no_sites")
+    }
 
-        if let sourceView = noResultsViewController.actionButton,
-           let popoverPresentationController = addSiteAlert.popoverPresentationController {
-
-            popoverPresentationController.sourceView = sourceView
-            popoverPresentationController.sourceRect = sourceView.bounds
-            popoverPresentationController.permittedArrowDirections = .up
-        }
-
-        present(addSiteAlert, animated: true)
+    private func launchLoginForSelfHostedSite() {
+        WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
     @objc

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-23 05:45:39+0000 */
+/* Translation-Revision-Date: 2023-08-29 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: sv_SE */
@@ -9712,6 +9712,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "av %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Betygsätt som användbart";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "kommentera";
 
@@ -10452,6 +10455,12 @@ Example: Reply to Pamela Nguyen */
 /* Button title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.button.title" = "Överför dina domäner";
 
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Google Domains har som du kanske känner till sålts till Squarespace. Överför dina domäner till WordPress.com nu så står vi för alla överföringsavgifter plus ett extra år av domänregistrering.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Få tillbaka dina Google-domäner";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Avfärda";
 
@@ -10952,6 +10961,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button for users to contact the support team directly. */
 "support.chatBot.contactSupport" = "Kontakta supporten";
 
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Vad kan jag hjälpa dig med? Om jag inte kan besvara din fråga hjälper jag dig att öppna ett supportärende med vårt team.";
+
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Skicka ett meddelande …";
 
@@ -10972,6 +10984,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* An example question shown to a user seeking support */
 "support.chatBot.questionTwo" = "Hjälp, min webbplats är nere!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Rapportera som felaktigt";
 
 /* Button title referring to the sources of information. */
 "support.chatBot.sources" = "Källor";
@@ -10996,6 +11011,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for a text that displays a transcript of user's question in a support chat */
 "support.chatBot.zendesk.question" = "Fråga";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Jetpack Mobile Bot-kopia";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Ställ en fråga i communityforumet och få hjälp av vår grupp med volontärer.";

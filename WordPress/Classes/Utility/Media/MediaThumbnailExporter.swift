@@ -270,3 +270,56 @@ class MediaThumbnailExporter: MediaExporter {
         }
     }
 }
+
+// MARK: - MediatH (Async/Await)
+
+extension MediaThumbnailExporter {
+    func exportThumbnail(forFileURL fileURL: URL) async throws -> (ThumbnailIdentifier, MediaExport) {
+        let token = MediaExportCancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.progress = exportThumbnail(forFile: fileURL, onCompletion: {
+                    continuation.resume(returning: ($0, $1))
+                }, onError: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        } onCancel: {
+            token.progress?.cancel()
+        }
+    }
+
+    func exportThumbnail(forVideoURL url: URL) async throws -> (ThumbnailIdentifier, MediaExport) {
+        let token = MediaExportCancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.progress = exportThumbnail(forVideoURL: url, onCompletion: {
+                    continuation.resume(returning: ($0, $1))
+                }, onError: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        } onCancel: {
+            token.progress?.cancel()
+        }
+    }
+
+    func exportThumbnail(forImage image: UIImage) async throws -> (ThumbnailIdentifier, MediaExport) {
+        let token = MediaExportCancelationToken()
+        return try await withTaskCancellationHandler {
+            try await withUnsafeThrowingContinuation { continuation in
+                token.progress = exportThumbnail(forImage: image, onCompletion: {
+                    continuation.resume(returning: ($0, $1))
+                }, onError: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        } onCancel: {
+            token.progress?.cancel()
+        }
+    }
+}
+
+private final class MediaExportCancelationToken {
+    var progress: Progress?
+}

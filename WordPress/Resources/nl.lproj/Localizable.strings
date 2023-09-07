@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-09 14:54:08+0000 */
+/* Translation-Revision-Date: 2023-08-29 14:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: nl */
@@ -9703,6 +9703,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when displaying author of a plugin. */
 "by %@" = "door %@";
 
+/* Option for users to rate a chat bot answer as helpful. */
+"chat.rateHelpful" = "Beoordelen als nuttig";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "reactie";
 
@@ -10434,6 +10437,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistieken van vandaag";
 
+/* Button title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.button.title" = "Je domeinen overdragen";
+
+/* Description of the domain focus card on My Site */
+"mySite.domain.focus.cardView.description" = "Zoals je misschien weet is Google Domains verkocht aan Squarespace. Draag nu je domeinen over aan WordPress.com en we betalen alle overdrachtskosten plus een extra jaar van je domeinregistratie.";
+
+/* Title of the domain focus card on My Site */
+"mySite.domain.focus.cardView.title" = "Je Google-domeinen opnieuw claimen";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
 
@@ -10884,6 +10896,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Ga naar WordPress.org";
+
+/* Indicator that the chat bot is processing user's input. */
+"support.chatBot.botThinkingIndicator" = "Aan het denken ...";
+
+/* Button for users to contact the support team directly. */
+"support.chatBot.contactSupport" = "Neem contact op met support";
+
+/* Initial message shown to the user when the chat starts. */
+"support.chatBot.firstMessage" = "Waar kan ik je mee helpen? Als ik je vraag niet kan beantwoorden, help ik je een ondersteuningsticket aan te maken bij ons team!";
+
+/* Placeholder text for the chat input field. */
+"support.chatBot.inputPlaceholder" = "Een bericht versturen …";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionFive" = "Ik ben mijn inloggegevens vergeten";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionOne" = "Wat is mijn siteadres?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionSix" = "Hoe kan ik mijn aangepaste domein gebruiken in de app?";
+
+/* An example question shown to a user seeking support */
+"support.chatBot.questionTwo" = "Help, mijn site is onbereikbaar!";
+
+/* Option for users to report a chat bot answer as inaccurate. */
+"support.chatBot.reportInaccuracy" = "Rapporteren als foutief";
+
+/* Prompt for users suggesting to select a default question from the list to start a support chat. */
+"support.chatBot.suggestionsPrompt" = "Weet je niet wat je moet vragen?";
+
+/* Notice informing user that there was an error submitting their support ticket. */
+"support.chatBot.ticketCreationFailure" = "Fout bij het indienen van het ondersteuningsticket";
+
+/* Notice informing user that their support ticket is being created. */
+"support.chatBot.ticketCreationLoading" = "Een ondersteuningsticket aanmaken ...";
+
+/* Notice informing user that their support ticket has been created. */
+"support.chatBot.ticketCreationSuccess" = "Ticket aangemaakt";
+
+/* Title of the view that shows support chat bot. */
+"support.chatBot.title" = "Neem contact op met de ondersteuning";
+
+/* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
+"support.chatBot.zendesk.transcript" = "Transcriptie Jetpack Mobile Bot";
 
 /* Suggestion in Support view to visit the Forums. */
 "support.row.communityForum.title" = "Stel een vraag in het communityforum en krijg hulp van onze groep vrijwilligers.";
