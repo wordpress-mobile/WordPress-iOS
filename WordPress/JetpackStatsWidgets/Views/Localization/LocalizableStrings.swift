@@ -44,6 +44,22 @@ enum LocalizableStrings {
                                                       value: "All-Time Views",
                                                       comment: "Title of the one-liner information consist of views field and all time date range in lock screen all time views widget")
 
+    static let viewsThisWeekTitle = AppLocalizedString("widget.lockscreen.thisweek.label",
+                                                       value: "Views This Week",
+                                                       comment: "Title of the one-liner information consist of views field and this week date range in lock screen this week views widget")
+
+    static let chartViewsLabel = AppLocalizedString("widget.lockscreen.chart.label",
+                                                    value: "%1$@ views",
+                                                    comment: "Label shown next to a chart displaying daily views. %1$@ is a placeholder for a number")
+
+    static let chartXAxisLabel = AppLocalizedString("widget.lockscreen.chart.xaxislabel",
+                                                    value: "Date",
+                                                    comment: "Label shown next to a chart explaining horizontal axis")
+
+    static let chartYAxisLabel = AppLocalizedString("widget.lockscreen.chart.yaxislabel",
+                                                    value: "Views",
+                                                    comment: "Label shown next to a chart explaining vertical axis")
+
     // Widgets content
     static let viewsTitle = AppLocalizedString("widget.today.views.label",
                                                value: "Views",
