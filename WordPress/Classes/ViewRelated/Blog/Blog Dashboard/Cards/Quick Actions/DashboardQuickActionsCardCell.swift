@@ -52,6 +52,8 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             guard let self else { return }
             self.items = $0
             self.tableView.reloadData()
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
         }.store(in: &cancellables)
     }
 

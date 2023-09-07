@@ -1,7 +1,7 @@
 class SiteIconView: UIView {
 
     private enum Constants {
-        static let imageSize: CGFloat = 48
+        static let imageSize: CGFloat = 40
         static let borderRadius: CGFloat = 4
         static let imageRadius: CGFloat = 2
         static let spotlightOffset: CGFloat = 8

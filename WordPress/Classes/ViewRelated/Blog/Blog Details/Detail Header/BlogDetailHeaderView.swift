@@ -91,19 +91,9 @@ class BlogDetailHeaderView: UIView {
         static let atSides: CGFloat = 20
         static let top: CGFloat = 10
         static let bottom: CGFloat = 16
-        static let belowActionRow: CGFloat = 24
         static func betweenTitleViewAndActionRow(_ showsActionRow: Bool) -> CGFloat {
             return showsActionRow ? 32 : 0
         }
-
-        static let spacingBelowIcon: CGFloat = 16
-        static let spacingBelowTitle: CGFloat = 8
-        static let minimumSideSpacing: CGFloat = 8
-        static let interSectionSpacing: CGFloat = 32
-        static let buttonsBottomPadding: CGFloat = 40
-        static let buttonsSidePadding: CGFloat = 40
-        static let maxButtonWidth: CGFloat = 390
-        static let siteIconSize = CGSize(width: 48, height: 48)
     }
 
     // MARK: - Initializers
@@ -206,26 +196,9 @@ class BlogDetailHeaderView: UIView {
 
 fileprivate extension BlogDetailHeaderView {
     class TitleView: UIView {
-
-        private enum LabelMinimumScaleFactor {
-            static let regular: CGFloat = 0.75
-            static let accessibility: CGFloat = 0.5
-        }
-
         private enum Dimensions {
-            static let siteIconHeight: CGFloat = 64
-            static let siteIconWidth: CGFloat = 64
             static let siteSwitcherHeight: CGFloat = 36
-            static let siteSwitcherWidth: CGFloat = 36
-        }
-
-        private enum LayoutSpacing {
-            static let betweenTitleAndSubtitleButtons: CGFloat = 4
-            static let betweenSiteIconAndTitle: CGFloat = 16
-            static let betweenTitleAndSiteSwitcher: CGFloat = 16
-            static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
-            static let subtitleButtonImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
-            static let rtlSubtitleButtonImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
+            static let siteSwitcherWidth: CGFloat = 32
         }
 
         // MARK: - Child Views
@@ -238,8 +211,9 @@ fileprivate extension BlogDetailHeaderView {
             ])
 
             stackView.alignment = .center
-            stackView.spacing = LayoutSpacing.betweenSiteIconAndTitle
+            stackView.spacing = 12
             stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.setCustomSpacing(4, after: titleStackView)
 
             return stackView
         }()
@@ -253,58 +227,45 @@ fileprivate extension BlogDetailHeaderView {
         let subtitleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
 
-            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
-            button.titleLabel?.adjustsFontForContentSizeCategory = true
-            button.titleLabel?.adjustsFontSizeToFitWidth = true
-            button.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
-            button.titleLabel?.lineBreakMode = .byTruncatingTail
+            var configuration = UIButton.Configuration.plain()
+            configuration.titleTextAttributesTransformer = .init { attributes in
+                var attributes = attributes
+                attributes.font = WPStyleGuide.fontForTextStyle(.subheadline)
+                attributes.foregroundColor = .primary
+                return attributes
+            }
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 1, trailing: 0)
+            configuration.titleLineBreakMode = .byTruncatingTail
+            button.configuration = configuration
 
-            button.setTitleColor(.primary, for: .normal)
             button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
-
-            if let pointSize = button.titleLabel?.font.pointSize {
-                button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
-            }
-
-            // Align the image to the right
-            if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-                button.semanticContentAttribute = .forceLeftToRight
-                button.imageEdgeInsets = LayoutSpacing.rtlSubtitleButtonImageInsets
-            } else {
-                button.semanticContentAttribute = .forceRightToLeft
-                button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
-            }
-
             button.translatesAutoresizingMaskIntoConstraints = false
-
             return button
         }()
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
             button.spotlightHorizontalPosition = .trailing
-            button.contentHorizontalAlignment = .leading
-            button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
-            button.titleLabel?.adjustsFontForContentSizeCategory = true
-            button.titleLabel?.adjustsFontSizeToFitWidth = true
-            button.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
-            button.titleLabel?.lineBreakMode = .byTruncatingTail
-            button.titleLabel?.numberOfLines = 1
+
+            var configuration = UIButton.Configuration.plain()
+            configuration.titleTextAttributesTransformer = .init { attributes in
+                var attributes = attributes
+                attributes.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+                attributes.foregroundColor = UIColor.label
+                return attributes
+            }
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 0, bottom: 1, trailing: 0)
+            configuration.titleLineBreakMode = .byTruncatingTail
+            button.configuration = configuration
 
             button.accessibilityHint = NSLocalizedString("Tap to change the site's title", comment: "Accessibility hint for button used to change site title")
-
-            // I don't understand why this is needed, but without it the button has additional
-            // vertical padding, so it's more difficult to get the spacing we want.
-            button.setImage(UIImage(), for: .normal)
-
-            button.setTitleColor(.text, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }()
 
         let siteSwitcherButton: UIButton = {
             let button = UIButton(frame: .zero)
-            let image = UIImage.gridicon(.chevronDown)
+            let image = UIImage(named: "chevron-down-slim")
 
             button.setImage(image, for: .normal)
             button.contentMode = .center
@@ -324,9 +285,8 @@ fileprivate extension BlogDetailHeaderView {
             ])
 
             stackView.alignment = .leading
-            stackView.distribution = .equalSpacing
+//            stackView.distribution = .equalSpacing
             stackView.axis = .vertical
-            stackView.spacing = LayoutSpacing.betweenTitleAndSubtitleButtons
             stackView.translatesAutoresizingMaskIntoConstraints = false
 
             return stackView
@@ -367,7 +327,7 @@ fileprivate extension BlogDetailHeaderView {
             NSLayoutConstraint.activate([
                 mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Length.Padding.double),
                 mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
                 mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
             ])
 
@@ -375,17 +335,7 @@ fileprivate extension BlogDetailHeaderView {
         }
 
         private func refreshMainStackViewAxis() {
-            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-                mainStackView.axis = .vertical
-
-                titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.accessibility
-                subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.accessibility
-            } else {
-                mainStackView.axis = .horizontal
-
-                titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
-                subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
-            }
+            mainStackView.axis = traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
         }
 
         // MARK: - Constraints
