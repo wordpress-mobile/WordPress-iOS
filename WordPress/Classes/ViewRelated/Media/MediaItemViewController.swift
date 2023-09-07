@@ -18,8 +18,6 @@ class MediaItemViewController: UITableViewController {
 
     private let coreDataStack: CoreDataStackSwift
     private let mediaID: TaggedManagedObjectID<Media>
-    // TODO: Rename this variable to `mediaInMainContext`
-    private var media: Media
 
     private let attributes: ReadonlyAttributes
     private let canEditMetadata: Bool
@@ -34,22 +32,17 @@ class MediaItemViewController: UITableViewController {
 
     private var mediaDeletedObserver: AnyCancellable?
 
-    init(mediaID: TaggedManagedObjectID<Media>, coreDataStack: CoreDataStackSwift = ContextManager.shared) throws {
+    init(media: Media, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         assert(Thread.isMainThread)
 
-        self.mediaID = mediaID
+        self.mediaID = .init(media)
         self.coreDataStack = coreDataStack
-        self.media = try coreDataStack.mainContext.existingObject(with: mediaID)
         self.mediaMetadata = MediaMetadata(media: media)
         self.attributes = ReadonlyAttributes(media: media)
         self.canDeleteMedia = media.blog.supports(.mediaDeletion)
         self.canEditMetadata = media.blog.supports(.mediaMetadataEditing)
 
         super.init(style: .grouped)
-    }
-
-    convenience init(media: Media) {
-        try! self.init(mediaID: .init(media))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -202,7 +195,7 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func updateNavigationItem() {
-        if mediaMetadata.matches(media) {
+        if let media = try? coreDataStack.mainContext.existingObject(with: mediaID), mediaMetadata.matches(media) {
             navigationItem.leftBarButtonItem = nil
             let shareItem = UIBarButtonItem(image: .gridicon(.shareiOS),
                                             style: .plain,
