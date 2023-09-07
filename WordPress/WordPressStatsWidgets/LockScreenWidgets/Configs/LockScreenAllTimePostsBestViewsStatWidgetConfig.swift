@@ -13,7 +13,7 @@ struct LockScreenAllTimePostsBestViewsStatWidgetConfig: LockScreenStatsWidgetCon
     }
 
     var displayName: String {
-        LocalizableStrings.allTimeWidgetTitle
+        LocalizableStrings.allTimePostMostViewsWidgetPreviewTitle
     }
 
     var description: String {

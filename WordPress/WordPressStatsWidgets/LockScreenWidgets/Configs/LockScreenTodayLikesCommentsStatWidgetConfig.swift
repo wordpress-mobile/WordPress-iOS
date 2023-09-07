@@ -13,7 +13,7 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     }
 
     var displayName: String {
-        LocalizableStrings.todayWidgetTitle
+        LocalizableStrings.todayLikesCommentsWidgetPreviewTitle
     }
 
     var description: String {

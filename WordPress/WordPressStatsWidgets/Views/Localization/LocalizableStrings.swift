@@ -17,6 +17,25 @@ enum LocalizableStrings {
                                                         comment: "Title of this week widget")
 
     // Lock Screen Widgets title
+    static let todayViewsWidgetPreviewTitle = AppLocalizedString("widget.todayViews.previewTitle",
+                                                            value: "Today's Views",
+                                                            comment: "Preview title of today's views widget")
+    static let todayViewsVisitorsWidgetPreviewTitle = AppLocalizedString("widget.todayViewsVisitors.previewTitle",
+                                                                         value: "Today's Views & Visitors",
+                                                                         comment: "Preview title of today's views and visitors widget")
+    static let todayLikesCommentsWidgetPreviewTitle = AppLocalizedString("widget.todayLikesComments.previewTitle",
+                                                                         value: "Today's Likes & Comments",
+                                                                         comment: "Preview title of today's likes and commnets widget")
+    static let allTimeViewsWidgetPreviewTitle = AppLocalizedString("widget.allTimeViews.previewTitle",
+                                                                   value: "All-Time Views",
+                                                                   comment: "Preview title of all-time views widget")
+    static let allTimeViewsVisitorsWidgetPreviewTitle = AppLocalizedString("widget.allTimeViewsVisitors.previewTitle",
+                                                                           value: "All-Time Views & Visitors",
+                                                                           comment: "Preview title of all-time views and visitors widget")
+    static let allTimePostMostViewsWidgetPreviewTitle = AppLocalizedString("widget.allTimePostViews.previewTitle",
+                                                                           value: "All-Time Posts & Most Views",
+                                                                           comment: "Preview title of all-time posts and most views widget")
+
     static let viewsInTodayTitle = AppLocalizedString("widget.lockscreen.todayview.label",
                                                    value: "Views Today",
                                                    comment: "Title of the one-liner information consist of views field and today date range in lock screen today views widget")
