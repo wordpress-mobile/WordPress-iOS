@@ -2,7 +2,7 @@ import WidgetKit
 import SwiftUI
 
 
-struct WordPressHomeWidgetThisWeek: Widget {
+struct HomeWidgetThisWeek: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     static let secondsPerDay = 86400.0

@@ -121,14 +121,6 @@ import Foundation
         }
     }
 
-    // MARK: - Widget Stored Data Support
-
-    @objc class func clearWidgetsData() {
-        TodayWidgetStats.clearSavedData()
-        AllTimeWidgetStats.clearSavedData()
-        ThisWeekWidgetStats.clearSavedData()
-    }
-
     // MARK: - Helpers
 
     class func currentDateForSite() -> Date {

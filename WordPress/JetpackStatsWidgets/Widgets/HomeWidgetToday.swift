@@ -2,7 +2,7 @@ import WidgetKit
 import SwiftUI
 
 
-struct WordPressHomeWidgetToday: Widget {
+struct HomeWidgetToday: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     private let placeholderContent = HomeWidgetTodayData(siteID: 0,

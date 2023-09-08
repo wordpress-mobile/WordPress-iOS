@@ -51,10 +51,6 @@ final class WidgetDataReader<T: HomeWidgetData> {
         guard let defaults = userDefaults else {
             return .failure(.noData)
         }
-        // Jetpack won't have disable status, only WordPress need to check is Jetpack feature disabled
-        guard isJetpack || !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
-            return .failure(.jetpackFeatureDisabled)
-        }
         guard let defaultSiteID = defaultSiteID else {
             let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 

@@ -2,11 +2,11 @@ import SwiftUI
 import WidgetKit
 
 @main
-struct WordPressStatsWidgets: WidgetBundle {
+struct JetpackStatsWidgets: WidgetBundle {
     var body: some Widget {
-        WordPressHomeWidgetToday()
-        WordPressHomeWidgetThisWeek()
-        WordPressHomeWidgetAllTime()
+        HomeWidgetToday()
+        HomeWidgetThisWeek()
+        HomeWidgetAllTime()
         if #available(iOS 16.0, *) {
             LockScreenStatsWidget(config: LockScreenTodayViewsStatWidgetConfig())
             LockScreenStatsWidget(config: LockScreenTodayViewsVisitorsStatWidgetConfig())
