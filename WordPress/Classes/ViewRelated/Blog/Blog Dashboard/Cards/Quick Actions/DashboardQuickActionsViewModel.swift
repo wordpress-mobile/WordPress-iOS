@@ -54,11 +54,11 @@ struct DashboardQuickActionItemViewModel: Hashable {
 }
 
 enum DashboardQuickAction: String, CaseIterable {
+    case stats
     case posts
     case pages
     case media
     case comments
-    case stats
     case more
 
     var localizedTitle: String {
