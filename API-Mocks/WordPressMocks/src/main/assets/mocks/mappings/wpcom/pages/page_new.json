@@ -50,6 +50,7 @@
   },
   "response": {
     "status": 200,
+    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
       "ID": 13,
       "site_ID": 106707880,

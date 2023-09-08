@@ -19,6 +19,7 @@
   },
   "response": {
     "status": 200,
+    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
       "found": 4,
       "posts": [
