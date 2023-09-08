@@ -155,6 +155,8 @@
 		011F52D82A1BECA200B04114 /* PlanSelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D72A1BECA200B04114 /* PlanSelectionScreen.swift */; };
 		011F52DA2A1CA53300B04114 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D92A1CA53300B04114 /* CheckoutViewController.swift */; };
 		011F52DB2A1CA53300B04114 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52D92A1CA53300B04114 /* CheckoutViewController.swift */; };
+		012041032AAAFE3A00E7C707 /* WidgetCenter+JetpackWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012041022AAAFE3900E7C707 /* WidgetCenter+JetpackWidgets.swift */; };
+		012041042AAAFE3A00E7C707 /* WidgetCenter+JetpackWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012041022AAAFE3900E7C707 /* WidgetCenter+JetpackWidgets.swift */; };
 		01281E9A2A0456CB00464F8F /* DomainsSuggestionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */; };
 		01281E9C2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
 		01281E9D2A051EEA00464F8F /* MenuNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */; };
@@ -5804,6 +5806,7 @@
 		011F52D22A1B84FF00B04114 /* PlansTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansTracker.swift; sourceTree = "<group>"; };
 		011F52D72A1BECA200B04114 /* PlanSelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSelectionScreen.swift; sourceTree = "<group>"; };
 		011F52D92A1CA53300B04114 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
+		012041022AAAFE3900E7C707 /* WidgetCenter+JetpackWidgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WidgetCenter+JetpackWidgets.swift"; sourceTree = "<group>"; };
 		01281E992A0456CB00464F8F /* DomainsSuggestionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsSuggestionsScreen.swift; sourceTree = "<group>"; };
 		01281E9B2A051EEA00464F8F /* MenuNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationTests.swift; sourceTree = "<group>"; };
 		0133A7BD2A8CEADD00B36E58 /* SupportCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportCoordinator.swift; sourceTree = "<group>"; };
@@ -9737,6 +9740,14 @@
 			path = "Free to Paid Plans";
 			sourceTree = "<group>";
 		};
+		012041012AAAFE3900E7C707 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				012041022AAAFE3900E7C707 /* WidgetCenter+JetpackWidgets.swift */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
 		0141929E2983F5D900CAEDB0 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -13496,6 +13507,7 @@
 				987E79C9261F8857000192B7 /* User Profile Sheet */,
 				031662E60FFB14C60045D052 /* Views */,
 				3F662C4824DC9F8300CAEA95 /* WhatsNew */,
+				012041012AAAFE3900E7C707 /* Widgets */,
 				D86572182186C36E0023A99C /* Wizards */,
 			);
 			path = ViewRelated;
@@ -21660,6 +21672,7 @@
 				F4C1FC632A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */,
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				46F584822624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */,
+				012041032AAAFE3A00E7C707 /* WidgetCenter+JetpackWidgets.swift in Sources */,
 				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
 				80D9CFFD29E711E200FE3400 /* DashboardPageCell.swift in Sources */,
 				C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */,
@@ -23636,6 +23649,7 @@
 				FABB20EA2602FC2C00C8785C /* ActivityTypeSelectorViewController.swift in Sources */,
 				FABB20EB2602FC2C00C8785C /* ActivityActionsParser.swift in Sources */,
 				FABB20ED2602FC2C00C8785C /* Routes+Me.swift in Sources */,
+				012041042AAAFE3A00E7C707 /* WidgetCenter+JetpackWidgets.swift in Sources */,
 				FABB20EE2602FC2C00C8785C /* StockPhotosResultsPage.swift in Sources */,
 				FABB20EF2602FC2C00C8785C /* QuickStartTourGuide.swift in Sources */,
 				FABB20F02602FC2C00C8785C /* ReaderDetailToolbar.swift in Sources */,

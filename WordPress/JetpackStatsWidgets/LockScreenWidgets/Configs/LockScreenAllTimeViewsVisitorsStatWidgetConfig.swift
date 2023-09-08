@@ -46,7 +46,7 @@ struct LockScreenAllTimeViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConf
 
     var viewProvider: ViewProvider<HomeWidgetAllTimeData> {
         LockScreenMultiStatWidgetViewProvider<HomeWidgetAllTimeData>(
-            widgetKind: .today,
+            widgetKind: .allTime,
             topTitle: LocalizableStrings.viewsTitle,
             topValue: \.stats.views,
             bottomTitle: LocalizableStrings.visitorsTitle,
