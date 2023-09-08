@@ -1,7 +1,4 @@
 {
-  "scenarioName": "new_page_flow",
-  "requiredScenarioState": "page_published",
-  "newScenarioState": "new_pages_list",
   "request": {
     "method": "GET",
     "urlPath": "/wpcom/v2/sites/106707880/dashboard/cards-data/",
@@ -16,7 +13,6 @@
   },
   "response": {
     "status": 200,
-    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
       "todays_stats": {
           "views": 56,
@@ -30,14 +26,6 @@
           "scheduled": []
       },
       "pages": [
-        {
-          "id": 13,
-          "title": "New Blank Page",
-          "content": "",
-          "status": "publish",
-          "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
-          "modified": "{{now format=customformat}}"
-        },
         {
           "id": 51,
           "title": "Blog",
