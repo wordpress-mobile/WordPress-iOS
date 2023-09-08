@@ -412,8 +412,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
-    
-    self.navigationItem.title = NSLocalizedString(@"My Site", @"Title of My Site tab");
 
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self configureTableViewData];
