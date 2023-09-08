@@ -2,47 +2,41 @@
 
 import Foundation
 
-/// - Warning:
-/// This configuration extension has a **WordPress** counterpart in the WordPress bundle.
-/// Make sure to keep them in sync to avoid build errors when building the WordPress target.
 @objc extension AppConfiguration {
-
-    @objc(AppConfigurationWidget)
-    class Widget: NSObject {
-        @objc(AppConfigurationWidgetStats)
-        class Stats: NSObject {
-            @objc static let keychainTokenKey = "OAuth2Token"
-            @objc static let keychainServiceName = "JetpackTodayWidget"
-            @objc static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
-            @objc static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
-            @objc static let todayKind = "JetpackHomeWidgetToday"
-            @objc static let allTimeKind = "JetpackHomeWidgetAllTime"
-            @objc static let thisWeekKind = "JetpackHomeWidgetThisWeek"
-            @objc static let todayProperties = "JetpackHomeWidgetTodayProperties"
-            @objc static let allTimeProperties = "JetpackHomeWidgetAllTimeProperties"
-            @objc static let thisWeekProperties = "JetpackHomeWidgetThisWeekProperties"
-            @objc static let todayFilename = "JetpackHomeWidgetTodayData.plist"
-            @objc static let allTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
-            @objc static let thisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
+    struct Widget {
+        struct Stats {
+            static let keychainTokenKey = "OAuth2Token"
+            static let keychainServiceName = "JetpackTodayWidget"
+            static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
+            static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
+            static let todayKind = "JetpackHomeWidgetToday"
+            static let allTimeKind = "JetpackHomeWidgetAllTime"
+            static let thisWeekKind = "JetpackHomeWidgetThisWeek"
+            static let todayProperties = "JetpackHomeWidgetTodayProperties"
+            static let allTimeProperties = "JetpackHomeWidgetAllTimeProperties"
+            static let thisWeekProperties = "JetpackHomeWidgetThisWeekProperties"
+            static let todayFilename = "JetpackHomeWidgetTodayData.plist"
+            static let allTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
+            static let thisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
 
             /// Lock Screen
-            @objc static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
-            @objc static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
+            static let lockScreenTodayViewsKind = "JetpackLockScreenWidgetTodayViews"
+            static let lockScreenTodayViewsProperties = "JetpackLockScreenWidgetTodayViewsProperties"
 
-            @objc static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
-            @objc static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
+            static let lockScreenTodayLikesCommentsKind = "JetpackLockScreenWidgetTodayLikesComments"
+            static let lockScreenTodayLikesCommentsProperties = "JetpackLockScreenWidgetTodayLikesCommentsProperties"
 
-            @objc static let lockScreenTodayViewsVisitorsKind = "JetpackLockScreenWidgetTodayViewsVisitors"
-            @objc static let lockScreenTodayViewsVisitorsProperties = "JetpackLockScreenWidgetTodayViewsVisitorsProperties"
+            static let lockScreenTodayViewsVisitorsKind = "JetpackLockScreenWidgetTodayViewsVisitors"
+            static let lockScreenTodayViewsVisitorsProperties = "JetpackLockScreenWidgetTodayViewsVisitorsProperties"
 
-            @objc static let lockScreenAllTimeViewsKind = "JetpackLockScreenWidgetAllTimeViews"
-            @objc static let lockScreenAllTimeViewsProperties = "JetpackLockScreenWidgetAllTimeViewsProperties"
+            static let lockScreenAllTimeViewsKind = "JetpackLockScreenWidgetAllTimeViews"
+            static let lockScreenAllTimeViewsProperties = "JetpackLockScreenWidgetAllTimeViewsProperties"
 
-            @objc static let lockScreenAllTimeViewsVisitorsKind = "JetpackLockScreenWidgetAllTimeViewsVisitors"
-            @objc static let lockScreenAllTimeViewsVisitorsProperties = "JetpackLockScreenWidgetAllTimeViewsVisitorsProperties"
+            static let lockScreenAllTimeViewsVisitorsKind = "JetpackLockScreenWidgetAllTimeViewsVisitors"
+            static let lockScreenAllTimeViewsVisitorsProperties = "JetpackLockScreenWidgetAllTimeViewsVisitorsProperties"
 
-            @objc static let lockScreenAllTimePostsBestViewsKind = "JetpackLockScreenWidgetAllTimePostsBestViews"
-            @objc static let lockScreenAllTimePostsBestViewsProperties = "JetpackLockScreenWidgetAllTimeBestViewsProperties"
+            static let lockScreenAllTimePostsBestViewsKind = "JetpackLockScreenWidgetAllTimePostsBestViews"
+            static let lockScreenAllTimePostsBestViewsProperties = "JetpackLockScreenWidgetAllTimeBestViewsProperties"
         }
     }
 }
