@@ -5,13 +5,6 @@ struct LockScreenAllTimePostsBestViewsStatWidgetConfig: LockScreenStatsWidgetCon
     typealias WidgetData = HomeWidgetAllTimeData
     typealias ViewProvider = LockScreenMultiStatWidgetViewProvider
 
-    var supportFamilies: [WidgetFamily] {
-        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
-            return []
-        }
-        return [.accessoryRectangular]
-    }
-
     var displayName: String {
         LocalizableStrings.allTimePostMostViewsWidgetPreviewTitle
     }

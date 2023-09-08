@@ -5,13 +5,6 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     typealias WidgetData = HomeWidgetTodayData
     typealias ViewProvider = LockScreenMultiStatWidgetViewProvider<WidgetData>
 
-    var supportFamilies: [WidgetFamily] {
-        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
-            return []
-        }
-        return [.accessoryRectangular]
-    }
-
     var displayName: String {
         LocalizableStrings.todayLikesCommentsWidgetPreviewTitle
     }

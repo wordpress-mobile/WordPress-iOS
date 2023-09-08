@@ -53,6 +53,6 @@ struct HomeWidgetThisWeek: Widget {
         }
         .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
         .description(LocalizableStrings.thisWeekPreviewDescription)
-        .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemMedium, .systemLarge] : [])
+        .supportedFamilies([.systemMedium, .systemLarge])
     }
 }
