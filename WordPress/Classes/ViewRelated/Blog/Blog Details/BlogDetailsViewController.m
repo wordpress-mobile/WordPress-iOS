@@ -340,6 +340,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self) {
         self.restorationIdentifier = WPBlogDetailsRestorationID;
         self.restorationClass = [self class];
+        self.extendedLayoutIncludesOpaqueBars = true;
         self.isScrollEnabled = false;
     }
     
