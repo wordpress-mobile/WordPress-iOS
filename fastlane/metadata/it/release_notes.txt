@@ -1,6 +1,0 @@
-Abbiamo apportato alcune importanti modifiche all'editor a blocchi.
-
-- Il blocco Link social ora include uno schema che ti permette di vedere quando è selezionato.
-- Abbiamo risolto un problema per gli utenti iOS in cui le dimensioni e gli stili dei caratteri personalizzati non venivano visualizzati correttamente.
-- I pulsanti Annulla e Ripeti non sono più visibili nell'editor HTML.
-- Ora vedrai i codici esadecimali per il colore selezionato quando usi il selettore di colori del blocco Copertina.

@@ -1,6 +1,0 @@
-Kami menghadirkan sejumlah perubahan di editor blok.
-
-- Blok Tautan Media Sosial kini punya garis tepi jadi terlihat saat terpilih.
-- Untuk pengguna iOS, kami sudah mengatasi bug yang menyebabkan font kustom tidak sesuai ukuran dan ragamnya.
-- Tombol urung dan ulangi tidak lagi ditampilkan di editor HTML.
-- Di fitur pemilih warna pada Blok Sampul, kode hex akan ditampilkan untuk warna yang dipilih.

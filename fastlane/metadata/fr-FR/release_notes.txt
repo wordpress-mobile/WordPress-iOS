@@ -1,6 +1,0 @@
-Nous avons apporté quelques changements importants à l’éditeur de blocs.
-
-- Le bloc Réseaux sociaux inclut désormais un aperçu afin que vous puissiez voir quand l’option est sélectionnée.
-- Nous avons corrigé un problème que rencontraient des utilisateurs iOS et qui entraînait l’affichage incorrect des tailles de polices et styles personnalisés.
-- Les boutons Annuler et Répéter ne sont plus visibles dans l’éditeur HTML.
-- Vous verrez désormais les codes hex pour la couleur sélectionnée lors de l’utilisation du sélecteur de couleur Bloc de bannière.
