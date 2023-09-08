@@ -1,6 +1,7 @@
 23.3
 -----
 
+* [***] [Jetpack-only] Lock Screen Widgets are now available on Jetpack. Quickly view your site stats without unlocking your phone. [#21535]
 
 23.2
 -----
