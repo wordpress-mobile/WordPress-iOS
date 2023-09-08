@@ -18,13 +18,22 @@ struct BlogDashboardPersonalizationService {
     // MARK: - Quick Actions
 
     func isEnabled(_ action: DashboardQuickAction) -> Bool {
-        let value = repository.object(forKey: makeKey(for: action)) as? Bool
-        return value ?? action.isEnabledByDefault
+        let settings = getSettings(for: makeKey(for: action))
+        return settings[siteID] ?? action.isEnabledByDefault
     }
 
     func setEnabled(_ isEnabled: Bool, for action: DashboardQuickAction) {
-        repository.set(isEnabled, forKey: makeKey(for: action))
+        let key = makeKey(for: action)
+        var settings = getSettings(for: key)
+        settings[siteID] = isEnabled
+        repository.set(settings, forKey: key)
+
         NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
+    }
+
+    // Returns a `siteID` to a boolean mapping.
+    private func getSettings(for key: String) -> [String: Bool] {
+        repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
     }
 
     // MARK: - Dashboard Cards
