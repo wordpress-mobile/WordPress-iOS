@@ -419,8 +419,7 @@
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "ลบ";
 
 /* Delete option in the confirmation alert when deleting a page from the trash.
@@ -862,6 +861,8 @@
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "ฉัน";
 
@@ -937,9 +938,6 @@
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "การจัดการคำแบบใหม่";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "รูปเรื่องใหม่";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "เรื่องใหม่";

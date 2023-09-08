@@ -1,6 +1,0 @@
-Außerdem haben wir ein paar wichtige Änderungen am Block-Editor vorgenommen.
-
-- Der Block für Links zu sozialen Netzwerken enthält jetzt einen Überblick, damit du sehen kannst, wenn er ausgewählt wird.
-- Wir haben ein Problem für iOS-Benutzer behoben, wodurch individuelle Schriftgrößen und -stile nicht richtig angezeigt wurden.
-- Die Buttons „Rückgängig machen“ und „Wiederherstellen“ werden im HTML-Editor nicht mehr angezeigt.
-- Dir werden nun Hexadezimal-Codes für die ausgewählte Farbe angezeigt, wenn du die Farbauswahl im Cover-Block verwendest.

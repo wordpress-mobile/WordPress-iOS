@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-30 18:04:44+0000 */
+/* Translation-Revision-Date: 2023-09-05 20:42:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: en_AU */
@@ -77,6 +77,9 @@
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+
+/* translators:  %1$s: Select control button label e.g. \"Button width\". %2$s: Select control option value e.g: \"Auto, 25%\". */
+"%1$s. Currently selected: %2$s" = "%1$s. Currently selected: %2$s";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -237,6 +240,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s block options";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s block, newly available";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s block. Empty";
@@ -508,6 +514,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Add a domain";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Add a self-hosted site";
@@ -898,6 +907,9 @@ translators: Block name. %s: The localized block name */
 /* Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location */
 "Are you trying to log in to your web browser near %1$@?" = "Are you trying to log in to your web browser near %1$@?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+
 /* An example tag used in the login prologue screens.
    Art site intent topic */
 "Art" = "Art";
@@ -1105,6 +1117,12 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Blocklist */
 "Blocklist" = "Blocklist";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
@@ -1144,6 +1162,9 @@ translators: Block name. %s: The localized block name */
 
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Break comment threads into multiple pages.";
+
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader user" = "Briefly describe the link to help screen reader user";
 
 /* Description of a Quick Start Tour */
 "Bring media straight from your device or camera to your site." = "Bring media straight from your device or camera to your site.";
@@ -1860,6 +1881,9 @@ translators: Block name. %s: The localized block name */
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copy Link to Comment";
 
+/* translators: Copy URL from the clipboard, https://sample.url */
+"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+
 /* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
 
@@ -2199,8 +2223,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Delete";
 
 /* Menus confirmation button for deleting a menu. */
@@ -2475,6 +2498,9 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "Double tap to select an image";
 
 /* No comment provided by engineer. */
+"Double tap to select default font size" = "Double tap to select default font size";
+
+/* No comment provided by engineer. */
 "Double tap to select font size" = "Double tap to select font size";
 
 /* translators: accessibility text (hint for selecting option) */
@@ -2513,6 +2539,9 @@ translators: Block name. %s: The localized block name */
 "Drafts" = "Drafts";
 
 /* No comment provided by engineer. */
+"Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release." = "Drag & drop makes rearranging blocks a breeze. Press and hold on a block, then drag it to its new location and release.";
+
+/* No comment provided by engineer. */
 "Drag to adjust focal point" = "Drag to adjust focal point";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
@@ -2524,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for the search field int the Site Intent screen. */
 "E.g. Fashion, Poetry, Politics" = "Eg. Fashion, Poetry, Politics";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
    Edit the post.
@@ -2963,6 +2995,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
+
+/* No comment provided by engineer. */
+"Failed to insert media.\nTap for more info." = "Failed to insert media.\nTap for more info.";
 
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
@@ -3700,6 +3735,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when the input URL is invalid. */
 "Invalid URL. Please double-check and try again." = "Invalid URL. Please double-check and try again.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Invalid endpoint";
 
@@ -3790,6 +3828,10 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the Sharing section in post Settings. Should be the same as WP core. */
 "Jetpack Social" = "Jetpack Social";
+
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social Connections";
 
 /* Message to show when Publicize connection synchronization failed */
 "Jetpack Social connection synchronization failed" = "Jetpack Social connection synchronisation failed";
@@ -4151,6 +4193,9 @@ translators: Block name. %s: The localized block name */
 /* Login Request Expired */
 "Login Request Expired" = "Login Request Expired";
 
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Log in with account password";
+
 /* No comment provided by engineer. */
 "Logs" = "Logs";
 
@@ -4254,6 +4299,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
@@ -4488,6 +4535,9 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Navigates to customise the gradient";
 
 /* No comment provided by engineer. */
+"Navigates to layout selection screen" = "Navigates to layout selection screen";
+
+/* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Navigates to the previous content sheet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -4523,9 +4573,6 @@ translators: Block name. %s: The localized block name */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "New Moderation Word";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "New Photo Post";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "New Post";
@@ -4825,6 +4872,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Note: Column layout may vary between themes and screen sizes";
 
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nothing found.";
 
@@ -4975,6 +5028,9 @@ translators: Block name. %s: The localized block name */
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Open Device Settings";
 
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Open Jetpack Security settings";
+
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Open Mail";
@@ -5027,6 +5083,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Or log in by _entering your site address_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Or log in with magic link";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Ordered List";
@@ -5575,6 +5634,9 @@ translators: Block name. %s: The localized block name */
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
    Title of the Private Badge */
 "Private" = "Private";
+
+/* No comment provided by engineer. */
+"Problem displaying block. \nTap to attempt block recovery." = "Problem displaying block. \nTap to attempt block recovery.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
@@ -6391,6 +6453,9 @@ translators: Block name. %s: The localized block name */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Send Test Crash";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Send email verification link";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Send notifications by email";
 
@@ -6468,6 +6533,9 @@ translators: Block name. %s: The localized block name */
    Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
+
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Share Jetpack with a friend";
 
 /* Label for action to share post. */
 "Share Post" = "Share Post";
@@ -6582,6 +6650,9 @@ translators: Block name. %s: The localized block name */
 
 /* View title during the sign up process. */
 "Sign Up" = "Sign Up";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Sign in with site credentials";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Sign up";
@@ -7041,6 +7112,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tap here to show help";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Tap to add new stats cards.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tap to cancel uploading.";
 
@@ -7092,6 +7166,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Tap to view media in full screen";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Tap to view more details.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Tap to view more stats for this week";
@@ -7448,6 +7525,12 @@ translators: Block name. %s: The localized block name */
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a brighter background color and\/or a darker text color." = "This colour combination may be hard for people to read. Try using a brighter background colour and\/or a darker text colour.";
+
+/* No comment provided by engineer. */
+"This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "This colour combination may be hard for people to read. Try using a darker background colour and\/or a brighter text colour.";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "This domain is unavailable";
@@ -7976,9 +8059,6 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Unfollows the blog.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "Ungroup";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Unhide";
 
@@ -8078,6 +8158,12 @@ translators: Block name. %s: The localized block name */
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Updating...";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Upgrade your plan to upload audio";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Upgrade your plan to use video covers";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Upload Media";
@@ -8473,6 +8559,9 @@ translators: Block name. %s: The localized block name */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "We just emailed a link to %@. Please check your mail app and tap the link to log in.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "We just sent a magic link to";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
 
@@ -8644,6 +8733,12 @@ translators: Block name. %s: The localized block name */
 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll still attempt to restore your site." = "We’ll still attempt to restore your site.";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
@@ -8877,6 +8972,9 @@ translators: Block name. %s: The localized block name */
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "You can display a single site's stats in the iOS Today\/Notification Center view.";
+
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "You can follow posts on a specific site by following it.";
@@ -9163,6 +9261,9 @@ translators: Block name. %s: The localized block name */
 /* Age between dates equaling one year. */
 "a year" = "a year";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "This user account cannot be closed immediately because it has active purchases. Please contact our support team to finish deleting the account.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Dismiss";
 
@@ -9196,6 +9297,9 @@ translators: Block name. %s: The localized block name */
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Create your own customised dashboard and choose what reports to see. Focus on the data you care most about.";
 
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "Tap to dismiss this card";
+
 /* Customize Insights button title */
 "customizeInsightsCell.dismissButton.title" = "Dismiss";
 
@@ -9207,6 +9311,9 @@ translators: Block name. %s: The localized block name */
 
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Try it now";
+
+/* No comment provided by engineer. */
+"double-tap to change unit" = "double-tap to change unit";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "eg. 1122334455";
@@ -9226,7 +9333,16 @@ translators: Block name. %s: The localized block name */
 "follow" = "follow";
 
 /* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "Set up blogging reminders";
+
+/* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.completed.actionButton" = "Edit reminders";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "Keep blogging and check back to see visitors arriving at your site.";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "You set up blogging reminders";
 
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Dismiss";
@@ -9330,6 +9446,15 @@ translators: Block name. %s: The localized block name */
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Try the new Jetpack app";
 
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "The new Jetpack app has Stats, Reader, Notifications, and more that make your WordPress better.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress is better with Jetpack";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Learn more at jetpack.com";
+
 /* Name of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.title" = "Stats & Insights";
 
@@ -9423,6 +9548,12 @@ translators: Block name. %s: The localized block name */
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Finish";
 
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "We’ve transferred all your data and settings. Everything is right where you left it.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Thanks for switching to Jetpack!";
+
 /* The primary button title in the Load WordPress screen */
 "migration.loadWordpress.primaryButton" = "Open WordPress";
 
@@ -9437,6 +9568,24 @@ translators: Block name. %s: The localized block name */
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Allow";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "You’ll get all the same notifications but now they’ll come from the Jetpack app.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "We’ll disable notifications for the WordPress app.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Allow notifications to keep up with your site";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "It looks like you’re switching from the WordPress app.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "We found your sites. Continue to transfer all your data and sign in to Jetpack automatically.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "We found your site. Continue to transfer all your data and sign in to Jetpack automatically.";
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welcome to Jetpack!";
@@ -9644,6 +9793,15 @@ translators: Block name. %s: The localized block name */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "Log in to WordPress to see all time stats.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Log in to Jetpack to see all time stats.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Log in to Jetpack to see this week's stats.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Log in to Jetpack to see today's stats.";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Stay up to date with this week activity on your WordPress site.";
