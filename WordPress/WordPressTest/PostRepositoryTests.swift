@@ -52,6 +52,77 @@ class PostRepositoryTests: CoreDataTestCase {
         XCTAssertEqual(content, "This is a test post")
     }
 
+    func testDeletePost() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        remoteMock.deletePostResult = .success(())
+        try await repository.delete(postID)
+
+        let isPostDeleted = await contextManager.performQuery { context in
+            (try? context.existingObject(with: postID)) == nil
+        }
+        XCTAssertTrue(isPostDeleted)
+    }
+
+    func testDeletePostWithRemoteFailure() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        remoteMock.deletePostResult = .failure(NSError.testInstance())
+        do {
+            try await repository.delete(postID)
+            XCTFail("The deletion should fail because of an API failure")
+        } catch {
+            // Do nothing
+        }
+
+        let isPostDeleted = await contextManager.performQuery { context in
+            (try? context.existingObject(with: postID)) == nil
+        }
+        XCTAssertTrue(isPostDeleted)
+    }
+
+    func testDeleteHistory() async throws {
+        let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
+            let first = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let second = first.createRevision()
+            second.postTitle = "Edited"
+            return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
+        }
+
+        remoteMock.deletePostResult = .success(())
+        try await repository.delete(firstRevision)
+
+        let isPostDeleted = await contextManager.performQuery { context in
+            (try? context.existingObject(with: firstRevision)) == nil
+              && (try? context.existingObject(with: secondRevision)) == nil
+        }
+        XCTAssertTrue(isPostDeleted)
+    }
+
+    func testDeleteLatest() async throws {
+        let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
+            let first = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            let second = first.createRevision()
+            second.postTitle = "Edited"
+            return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
+        }
+
+        remoteMock.deletePostResult = .success(())
+        try await repository.delete(secondRevision)
+
+        let isPostDeleted = await contextManager.performQuery { context in
+            (try? context.existingObject(with: firstRevision)) == nil
+              && (try? context.existingObject(with: secondRevision)) == nil
+        }
+        XCTAssertTrue(isPostDeleted)
+    }
+
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
@@ -87,6 +158,8 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     var fetchLikesShouldSucceed: Bool = true
     var remoteUsersToReturnOnGetLikes = [RemoteLikeUser]()
     var totalLikes: NSNumber = 1
+
+    var deletePostResult: Result<Void, Error> = .success(())
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -135,6 +208,15 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
             success(self.remoteUsersToReturnOnGetLikes, self.totalLikes)
         } else {
             failure(nil)
+        }
+    }
+
+    override func delete(_ post: RemotePost!, success: (() -> Void)!, failure: ((Error?) -> Void)!) {
+        switch deletePostResult {
+        case let .failure(error):
+            failure(error)
+        case .success:
+            success()
         }
     }
 }
