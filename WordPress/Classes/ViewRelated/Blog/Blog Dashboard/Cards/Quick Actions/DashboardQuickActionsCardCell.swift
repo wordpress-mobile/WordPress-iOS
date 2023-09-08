@@ -19,7 +19,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
 
     private var items: [DashboardQuickActionItemViewModel] = []
     private var viewModel: DashboardQuickActionsViewModel?
-    private weak var parentViewController: UIViewController?
+    private weak var parentViewController: BlogDashboardViewController?
     private weak var blogDetailsViewController: BlogDetailsViewController?
     private var cancellables: [AnyCancellable] = []
 
@@ -38,7 +38,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         contentView.pinSubviewToAllEdges(tableView, priority: UILayoutPriority(999))
     }
 
-    func configure(viewModel: DashboardQuickActionsViewModel, viewController: UIViewController) {
+    func configure(viewModel: DashboardQuickActionsViewModel, viewController: BlogDashboardViewController) {
         self.parentViewController = viewController
         self.viewModel = viewModel
 
@@ -54,6 +54,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             self.tableView.reloadData()
             self.setNeedsLayout()
             self.layoutIfNeeded()
+            self.parentViewController?.collectionView.collectionViewLayout.invalidateLayout()
         }.store(in: &cancellables)
     }
 

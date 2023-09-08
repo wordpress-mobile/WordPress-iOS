@@ -8,60 +8,28 @@ final class DashboardQuickActionsViewModel {
 
     let blog: Blog
 
-    init(blog: Blog) {
+    private let personalizationService: BlogDashboardPersonalizationService
+
+    init(blog: Blog, personalizationService: BlogDashboardPersonalizationService) {
         self.blog = blog
+        self.personalizationService = personalizationService
+
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .blogDashboardPersonalizationSettingsChanged, object: nil)
+
         self.refresh()
     }
 
-    private func refresh() {
-        let posts = DashboardQuickActionItemViewModel(
-            image: UIImage(named: "site-menu-posts"),
-            title: Strings.posts,
-            action: .posts
-        )
-
-        let pages = DashboardQuickActionItemViewModel(
-            image: UIImage(named: "site-menu-pages"),
-            title: Strings.pages,
-            tourElement: .pages,
-            action: .pages
-        )
-
-        let media = DashboardQuickActionItemViewModel(
-            image: UIImage(named: "site-menu-media"),
-            title: Strings.media,
-            tourElement: .mediaScreen,
-            action: .media
-        )
-
-        let comments = DashboardQuickActionItemViewModel(
-            image: UIImage(named: "site-menu-comments"),
-            title: Strings.comments,
-            action: .comments
-        )
-
-        let stats = DashboardQuickActionItemViewModel(
-            image: UIImage(named: "site-menu-stats"),
-            title: Strings.stats,
-            tourElement: .stats,
-            action: .stats
-        )
-
-        let more = DashboardQuickActionItemViewModel(
-            image: UIImage(named: "site-menu-more"),
-            title: Strings.more,
-            tourElement: .siteMenu,
-            action: .more
-        )
-
-        let items = [
-            posts,
-            blog.supports(.pages) ? pages : nil,
-            media,
-            comments,
-            blog.supports(.stats) ? stats : nil,
-            more
-        ].compactMap { $0 }
+    @objc private func refresh() {
+        let items = DashboardQuickAction.allCases
+            .filter(personalizationService.isEnabled)
+            .map {
+                DashboardQuickActionItemViewModel(
+                    image: $0.image,
+                    title: $0.localizedTitle,
+                    tourElement: $0.tourElement,
+                    action: $0
+                )
+            }
 
         if self.items != items {
             self.items = items
@@ -85,20 +53,88 @@ struct DashboardQuickActionItemViewModel: Hashable {
     let action: DashboardQuickAction
 }
 
-enum DashboardQuickAction {
+enum DashboardQuickAction: String, CaseIterable {
     case posts
     case pages
     case media
     case comments
     case stats
     case more
-}
 
-private enum Strings {
-    static let stats = NSLocalizedString("dashboard.menu.stats", value: "Stats", comment: "Title for stats button on dashboard.")
-    static let posts = NSLocalizedString("dashboard.menu.posts", value: "Posts", comment: "Title for posts button on dashboard.")
-    static let media = NSLocalizedString("dashboard.menu.media", value: "Media", comment: "Title for media button on dashboard.")
-    static let comments = NSLocalizedString("dashboard.menu.comments", value: "Comments", comment: "Title for comments button on dashboard.")
-    static let pages = NSLocalizedString("dashboard.menu.pages", value: "Pages", comment: "Title for pages button on dashboard.")
-    static let more = NSLocalizedString("dashboard.menu.more", value: "More", comment: "Title for more button on dashboard.")
+    var localizedTitle: String {
+        switch self {
+        case .posts:
+            return NSLocalizedString("dashboard.menu.posts", value: "Posts", comment: "Title for posts button on dashboard.")
+        case .pages:
+            return NSLocalizedString("dashboard.menu.pages", value: "Pages", comment: "Title for pages button on dashboard.")
+        case .media:
+            return NSLocalizedString("dashboard.menu.media", value: "Media", comment: "Title for media button on dashboard.")
+        case .comments:
+            return NSLocalizedString("dashboard.menu.comments", value: "Comments", comment: "Title for comments button on dashboard.")
+        case .stats:
+            return NSLocalizedString("dashboard.menu.stats", value: "Stats", comment: "Title for stats button on dashboard.")
+        case .more:
+            return NSLocalizedString("dashboard.menu.more", value: "More", comment: "Title for more button on dashboard.")
+        }
+    }
+
+    var image: UIImage? {
+        switch self {
+        case .posts:
+            return UIImage(named: "site-menu-posts")
+        case .pages:
+            return UIImage(named: "site-menu-pages")
+        case .media:
+            return UIImage(named: "site-menu-media")
+        case .comments:
+            return UIImage(named: "site-menu-comments")
+        case .stats:
+            return UIImage(named: "site-menu-stats")
+        case .more:
+            return UIImage(named: "site-menu-more")
+        }
+    }
+
+    var tourElement: QuickStartTourElement? {
+        switch self {
+        case .posts:
+            return nil
+        case .pages:
+            return .pages
+        case .media:
+            return .mediaScreen
+        case .comments:
+            return nil
+        case .stats:
+            return .stats
+        case .more:
+            return .siteMenu
+        }
+    }
+
+    var isEnabledByDefault: Bool {
+        switch self {
+        case .posts, .pages, .media, .stats, .more:
+            return true
+        case .comments:
+            return false
+        }
+    }
+
+    func isEligible(for blog: Blog) -> Bool {
+        switch self {
+        case .pages:
+            return blog.supports(.pages)
+        case .stats:
+            return blog.supports(.stats)
+        case .posts, .comments, .media, .more:
+            return true
+        }
+    }
+
+    static let personalizableActions: [DashboardQuickAction] = {
+        var actions = DashboardQuickAction.allCases
+        actions.removeAll(where: { $0 == .more })
+        return actions
+    }()
 }
