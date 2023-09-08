@@ -36,6 +36,7 @@ struct LockScreenFieldView: View {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 10))
+                .minimumScaleFactor(0.9)
                 .allowsTightening(true)
                 .lineLimit(1)
         }

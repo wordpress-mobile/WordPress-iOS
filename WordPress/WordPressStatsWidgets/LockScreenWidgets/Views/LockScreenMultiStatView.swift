@@ -80,7 +80,7 @@ struct LockScreenMultiStatView_Previews: PreviewProvider {
             siteName: "My WordPress Site",
             updatedTime: Date(),
             primaryField: .init(title: "Views", value: 15),
-            secondaryField: .init(title: "Visitors", value: 5)
+            secondaryField: .init(title: "Most Views", value: 5)
         ),
         LockScreenMultiStatViewModel(
             siteName: "My WordPress Site with an extremely long name",

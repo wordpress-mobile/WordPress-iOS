@@ -225,6 +225,14 @@
 		01CE5015290A890F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
 		01D2FF5E2AA733690038E040 /* LockScreenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */; };
 		01D2FF5F2AA733690038E040 /* LockScreenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */; };
+		01D2FF612AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF602AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift */; };
+		01D2FF622AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF602AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift */; };
+		01D2FF642AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */; };
+		01D2FF652AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */; };
+		01D2FF672AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF662AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift */; };
+		01D2FF682AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF662AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift */; };
+		01D2FF6A2AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF692AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift */; };
+		01D2FF6B2AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF692AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift */; };
 		01DBFD8729BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01DBFD8829BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01E61E5A29F03DEC002E544E /* DashboardDomainsCardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E61E5929F03DEC002E544E /* DashboardDomainsCardSearchView.swift */; };
@@ -5952,6 +5960,10 @@
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFieldView.swift; sourceTree = "<group>"; };
+		01D2FF602AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenAllTimeViewsStatWidgetConfig.swift; sourceTree = "<group>"; };
+		01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTodayViewsVisitorsStatWidgetConfig.swift; sourceTree = "<group>"; };
+		01D2FF662AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift; sourceTree = "<group>"; };
+		01D2FF692AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenAllTimePostsBestViewsStatWidgetConfig.swift; sourceTree = "<group>"; };
 		01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNativeConnectionService.swift; sourceTree = "<group>"; };
 		01E61E5929F03DEC002E544E /* DashboardDomainsCardSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDomainsCardSearchView.swift; sourceTree = "<group>"; };
 		01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodHelperTests.swift; sourceTree = "<group>"; };
@@ -16270,6 +16282,10 @@
 				C9FE383F29C2A3D200D39841 /* LockScreenStatsWidgetConfig.swift */,
 				C9FE383C29C2A3D100D39841 /* LockScreenTodayViewsStatWidgetConfig.swift */,
 				0188FE4A2AA62F800093EDA5 /* LockScreenTodayLikesCommentsStatWidgetConfig.swift */,
+				01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */,
+				01D2FF602AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift */,
+				01D2FF662AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift */,
+				01D2FF692AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -21067,8 +21083,11 @@
 				0107E0BB28F97D5000DE87DB /* StatsWidgetsService.swift in Sources */,
 				C9B477B729CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */,
 				0107E0BC28F97D5000DE87DB /* StatsWidgetsView.swift in Sources */,
+				01D2FF6B2AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift in Sources */,
 				0107E0BD28F97D5000DE87DB /* AppLocalizedString.swift in Sources */,
+				01D2FF682AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift in Sources */,
 				0107E0BE28F97D5000DE87DB /* MultiStatsView.swift in Sources */,
+				01D2FF622AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift in Sources */,
 				0107E0BF28F97D5000DE87DB /* FeatureFlagOverrideStore.swift in Sources */,
 				0107E11528FD7FE500DE87DB /* AppConfiguration.swift in Sources */,
 				0107E0C028F97D5000DE87DB /* WordPressHomeWidgetToday.swift in Sources */,
@@ -21104,6 +21123,7 @@
 				0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */,
 				0107E0D328F97D5000DE87DB /* Tracks+StatsWidgets.swift in Sources */,
 				0107E0D428F97D5000DE87DB /* HomeWidgetData.swift in Sources */,
+				01D2FF652AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift in Sources */,
 				0107E0D528F97D5000DE87DB /* HomeWidgetTodayData.swift in Sources */,
 				0107E0D628F97D5000DE87DB /* AllTimeWidgetStats.swift in Sources */,
 				0107E0D728F97D5000DE87DB /* Sites.intentdefinition in Sources */,
@@ -23007,8 +23027,11 @@
 				3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */,
 				C9B477B629CD2EF7008CBF49 /* LockScreenUnconfiguredView.swift in Sources */,
 				3F526D572539FAC60069706C /* StatsWidgetsView.swift in Sources */,
+				01D2FF6A2AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift in Sources */,
 				3F2656A125AF4DFA0073A832 /* AppLocalizedString.swift in Sources */,
+				01D2FF672AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift in Sources */,
 				3F568A0025420DE80048A9E4 /* MultiStatsView.swift in Sources */,
+				01D2FF612AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift in Sources */,
 				3F6BC05C25B24773007369D3 /* FeatureFlagOverrideStore.swift in Sources */,
 				3FD675EA25C87A25009AB3C1 /* WordPressHomeWidgetToday.swift in Sources */,
 				3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */,
@@ -23044,6 +23067,7 @@
 				0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */,
 				98390AC3254C984700868F0A /* Tracks+StatsWidgets.swift in Sources */,
 				3FA53ED62565860900F4D9A2 /* HomeWidgetData.swift in Sources */,
+				01D2FF642AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift in Sources */,
 				3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */,
 				3F5C863B25C9EA8200BABE64 /* AllTimeWidgetStats.swift in Sources */,
 				3FD675D925C87A15009AB3C1 /* Sites.intentdefinition in Sources */,

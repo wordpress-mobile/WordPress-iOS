@@ -28,9 +28,22 @@ import Foundation
 
             /// Lock Screen
             @objc static let lockScreenTodayViewsKind = "WordPressLockScreenWidgetTodayViews"
-            @objc static let lockScreenTodayLikesCommentsKind = "WordPressLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayViewsProperties = "WordPressLockScreenWidgetTodayViewsProperties"
+
+            @objc static let lockScreenTodayLikesCommentsKind = "WordPressLockScreenWidgetTodayLikesComments"
             @objc static let lockScreenTodayLikesCommentsProperties = "WordPressLockScreenWidgetTodayLikesCommentsProperties"
+
+            @objc static let lockScreenTodayViewsVisitorsKind = "WordPressLockScreenWidgetTodayViewsVisitors"
+            @objc static let lockScreenTodayViewsVisitorsProperties = "WordPressLockScreenWidgetTodayViewsVisitorsProperties"
+
+            @objc static let lockScreenAllTimeViewsKind = "WordPressLockScreenWidgetAllTimeViews"
+            @objc static let lockScreenAllTimeViewsProperties = "WordPressLockScreenWidgetAllTimeViewsProperties"
+
+            @objc static let lockScreenAllTimeViewsVisitorsKind = "WordPressLockScreenWidgetAllTimeViewsVisitors"
+            @objc static let lockScreenAllTimeViewsVisitorsProperties = "WordPressLockScreenWidgetAllTimeViewsVisitorsProperties"
+
+            @objc static let lockScreenAllTimePostsBestViewsKind = "WordPressLockScreenWidgetAllTimePostsBestViews"
+            @objc static let lockScreenAllTimePostsBestViewsProperties = "WordPressLockScreenWidgetAllTimeBestViewsProperties"
         }
 
         // iOS13 Stats Today Widgets
