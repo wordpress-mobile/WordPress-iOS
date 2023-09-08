@@ -120,7 +120,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
        accessibilityIdentifier:accessibilityIdentifier
              accessibilityHint:accessibilityHint
                          image:image
-                    imageColor:[UIColor murielListIcon]
+                    imageColor:[UIColor labelColor]
                  renderingMode:UIImageRenderingModeAlwaysTemplate
                       callback:callback];
 }
@@ -741,7 +741,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                         accessibilityIdentifier:@"Blog Post Row"
-                                                          image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
+                                                          image:[[UIImage imageNamed:@"site-menu-posts"] imageFlippedForRightToLeftLayoutDirection]
                                                        callback:^{
         [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -753,7 +753,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
                                         accessibilityIdentifier:@"Site Pages Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypePages]
+                                                          image:[UIImage imageNamed:@"site-menu-pages"]
                                                        callback:^{
         [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -766,7 +766,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
                                         accessibilityIdentifier:@"Media Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeImage]
+                                                          image:[UIImage imageNamed:@"site-menu-media"]
                                                        callback:^{
         [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -778,7 +778,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
-                                                          image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
+                                                          image:[[UIImage imageNamed:@"site-menu-comments"] imageFlippedForRightToLeftLayoutDirection]
                                                        callback:^{
         [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -790,7 +790,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                              accessibilityIdentifier:@"Stats Row"
-                                                               image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
+                                                               image:[UIImage imageNamed:@"site-menu-stats"]
                                                             callback:^{
         [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -824,7 +824,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     : [BlogDetailsViewControllerStrings socialRowTitle];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:title
-                                                          image:[UIImage gridiconOfType:GridiconTypeShare]
+                                                          image:[UIImage imageNamed:@"site-menu-social"]
                                                        callback:^{
         [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -837,7 +837,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
                                         accessibilityIdentifier:@"Activity Log Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                          image:[UIImage imageNamed:@"site-menu-activity"]
                                                        callback:^{
         [weakSelf showActivity];
     }];
@@ -873,7 +873,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                         accessibilityIdentifier:@"People Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeUser]
+                                                          image:[UIImage imageNamed:@"site-menu-people"]
                                                        callback:^{
         [weakSelf showPeople];
     }];
@@ -884,7 +884,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
-                                                          image:[UIImage gridiconOfType:GridiconTypePlugins]
+                                                          image:[UIImage imageNamed:@"site-menu-plugins"]
                                                        callback:^{
         [weakSelf showPlugins];
     }];
@@ -895,7 +895,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                          image:[UIImage gridiconOfType:GridiconTypeThemes]
+                                                          image:[UIImage imageNamed:@"site-menu-themes"]
                                                        callback:^{
         [weakSelf showThemes];
     }];
@@ -920,7 +920,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
                                         accessibilityIdentifier:@"Domains Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeDomains]
+                                                          image:[UIImage imageNamed:@"site-menu-domains"]
                                                        callback:^{
         [weakSelf showDomainsFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -933,7 +933,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
                                         accessibilityIdentifier:@"Settings Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeCog]
+                                                          image:[UIImage imageNamed:@"site-menu-settings"]
                                                        callback:^{
         [weakSelf showSettingsFromSource:BlogDetailsNavigationSourceRow];
     }];
@@ -1223,7 +1223,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
-                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                        image:[UIImage imageNamed:@"site-menu-activity"]
                                                      callback:^{
                                                          [weakSelf showActivity];
                                                      }]];
@@ -1266,7 +1266,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
                                       accessibilityIdentifier:@"Activity Log Row"
-                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                        image:[UIImage imageNamed:@"site-menu-activity"]
                                                      callback:^{
                                                          [weakSelf showActivity];
                                                      }]];
@@ -1295,7 +1295,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         BlogDetailsRow *settingsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Jetpack Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                          identifier:BlogDetailsSettingsCellIdentifier
                                             accessibilityIdentifier:@"Jetpack Settings Row"
-                                                              image:[UIImage gridiconOfType:GridiconTypeCog]
+                                                              image:[UIImage imageNamed:@"site-menu-settings"]
                                                            callback:^{
                                                                [weakSelf showJetpackSettings];
                                                            }];
@@ -1341,7 +1341,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
     if ([self.blog supports:BlogFeatureThemeBrowsing] && ![self.blog isWPForTeams]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                              image:[UIImage gridiconOfType:GridiconTypeThemes]
+                                                              image:[UIImage imageNamed:@"site-menu-themes"]
                                                            callback:^{
                                                                [weakSelf showThemes];
                                                            }];
@@ -1377,7 +1377,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self shouldAddSharingRow]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
-                                        image:[UIImage gridiconOfType:GridiconTypeShare]
+                                        image:[UIImage imageNamed:@"site-menu-social"]
                                      callback:^{
             [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
                                      }];
@@ -1388,7 +1388,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldAddPeopleRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                       accessibilityIdentifier:@"People Row"
-                                                        image:[UIImage gridiconOfType:GridiconTypeUser]
+                                                        image:[UIImage imageNamed:@"site-menu-people"]
                                                      callback:^{
                                                          [weakSelf showPeople];
                                                      }]];
@@ -1396,7 +1396,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self shouldAddPluginsRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
-                                                        image:[UIImage gridiconOfType:GridiconTypePlugins]
+                                                        image:[UIImage imageNamed:@"site-menu-plugins"]
                                                      callback:^{
                                                          [weakSelf showPlugins];
                                                      }]];
@@ -1405,7 +1405,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
                                         accessibilityIdentifier:@"Settings Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeCog]
+                                                          image:[UIImage imageNamed:@"site-menu-settings"]
                                                        callback:^{
         [weakSelf showSettingsFromSource:BlogDetailsNavigationSourceRow];
                                                        }];
@@ -1416,7 +1416,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
                                                                 identifier:BlogDetailsSettingsCellIdentifier
                                                    accessibilityIdentifier:@"Domains Row"
-                                                                     image:[UIImage gridiconOfType:GridiconTypeDomains]
+                                                                     image:[UIImage imageNamed:@"site-menu-domains"]
                                                                   callback:^{
                                                                     [weakSelf showDomainsFromSource:BlogDetailsNavigationSourceRow];
                                                       }];
