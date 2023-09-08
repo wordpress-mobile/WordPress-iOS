@@ -25,8 +25,7 @@ struct HomeWidgetAllTime: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeAllTime.rawValue,
-                                                  widgetCountKey: AppConfiguration.Widget.Stats.Kind.homeAllTime.countKey)
+                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeAllTime)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

@@ -20,12 +20,8 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
         LocalizableStrings.todayPreviewDescription
     }
 
-    var kind: String {
-        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews.rawValue
-    }
-
-    var countKey: String {
-        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews.countKey
+    var kind: AppConfiguration.Widget.Stats.Kind {
+        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews
     }
 
     var placeholderContent: HomeWidgetTodayData {

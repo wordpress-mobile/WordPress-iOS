@@ -5,35 +5,31 @@ import WidgetKit
 ///
 extension Tracks {
 
-    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: AppConfiguration.Widget.Stats.Kind) {
         switch entry {
         case .siteSelected(_, let context):
             if !context.isPreview {
-                trackWidgetUpdated(widgetKind: widgetKind,
-                                   widgetCountKey: widgetCountKey)
+                trackWidgetUpdated(widgetKind: widgetKind)
             }
 
         case .loggedOut, .noSite, .noData:
-            trackWidgetUpdated(widgetKind: widgetKind,
-                               widgetCountKey: widgetCountKey)
+            trackWidgetUpdated(widgetKind: widgetKind)
         }
     }
 
-    func trackWidgetUpdatedIfNeeded(entry: StatsWidgetEntry, widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdatedIfNeeded(entry: StatsWidgetEntry, widgetKind: AppConfiguration.Widget.Stats.Kind) {
         switch entry {
         case .siteSelected(_, let context):
             if !context.isPreview {
-                trackWidgetUpdated(widgetKind: widgetKind,
-                                   widgetCountKey: widgetCountKey)
+                trackWidgetUpdated(widgetKind: widgetKind)
             }
 
         case .loggedOut, .noSite, .noData, .disabled:
-            trackWidgetUpdated(widgetKind: widgetKind,
-                               widgetCountKey: widgetCountKey)
+            trackWidgetUpdated(widgetKind: widgetKind)
         }
     }
 
-    func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdated(widgetKind: AppConfiguration.Widget.Stats.Kind) {
 
         DispatchQueue.global().async {
             WidgetCenter.shared.getCurrentConfigurations { result in
@@ -41,8 +37,8 @@ extension Tracks {
                 switch result {
 
                 case .success(let widgetInfo):
-                    let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind }
-                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetPropertiesKey: widgetCountKey)
+                    let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind.rawValue }
+                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetKind: widgetKind)
 
                 case .failure(let error):
                     DDLogError("Home Widget Today error: unable to read widget information. \(error.localizedDescription)")
@@ -51,8 +47,8 @@ extension Tracks {
         }
     }
 
-    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetPropertiesKey: String) {
-
+    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetKind: AppConfiguration.Widget.Stats.Kind) {
+        let widgetPropertiesKey = widgetKind.countKey
         var properties = ["total_widgets": widgetInfo.count,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,

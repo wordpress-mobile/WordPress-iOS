@@ -45,8 +45,7 @@ struct HomeWidgetThisWeek: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeThisWeek.rawValue,
-                                                  widgetCountKey: AppConfiguration.Widget.Stats.Kind.homeThisWeek.countKey)
+                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeThisWeek)
             }
 
             return StatsWidgetsView(timelineEntry: entry)
