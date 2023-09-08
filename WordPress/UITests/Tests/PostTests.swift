@@ -34,6 +34,7 @@ class PostTests: XCTestCase {
             .post(action: .schedule)
 
         try MySiteScreen()
+            .goToMenu()
             .goToPostsScreen()
             .showOnly(.scheduled)
             .verifyPostExists(withTitle: postTitle)

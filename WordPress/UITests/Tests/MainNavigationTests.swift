@@ -21,8 +21,7 @@ class MainNavigationTests: XCTestCase {
     //
     // It would be wise to add similar tests for each item in the menu (then remove this comment).
     func testLoadsPeopleScreen() throws {
-        try MySiteScreen()
-            .assertScreenIsLoaded()
+        try MySiteMenuScreen()
             .goToPeople()
             .assertScreenIsLoaded()
     }
