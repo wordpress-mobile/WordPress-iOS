@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-24 14:21:39+0000 */
+/* Translation-Revision-Date: 2023-09-06 22:19:28+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ro */
@@ -275,7 +275,7 @@ translators: Block name. %s: The localized block name */
 "'%s' is not fully-supported" = "„%s” nu este acceptat în totalitate";
 
 /* Empty Post Title */
-"(No Title)" = "(Fără titlul)";
+"(No Title)" = "(Fără titlu)";
 
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Fără titlu)";
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Pagini accelerate pentru mobil (PAM)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "Pentru setări avansate, accesează acest bloc Paywall în navigatorul tău web.";
 
 /* Title for the account section in site settings screen */
 "Account" = "Cont";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Ștergre";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4477,6 +4479,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Eu";
 
@@ -4768,9 +4772,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "Nou cuvânt pentru moderare";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "Nou articol foto";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Articol nou";
@@ -7552,7 +7553,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The internet connection appears to be offline." = "Conexiunea la internet pare să fie decuplată.";
 
 /* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Elementul nu a putut fi adăugat în Biblioteca media.";
+"The item could not be added to the Media Library." = "Elementul nu a putut fi adăugat în biblioteca Media.";
 
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Tipurile de site care pot fi create";
@@ -8208,7 +8209,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to load the block editor right now." = "Nu pot să încarc editorul de blocuri chiar acum.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
-"Unable to load the image. Please choose a different one or try again later." = "Nu pot încărca imaginea. Te rog alege alta sau reîncearcă mai târziu.";
+"Unable to load the image. Please choose a different one or try again later." = "Nu pot să încarc imaginea. Te rog alege alta sau reîncearcă mai târziu.";
 
 /* Default title shown for no-results when the device is offline.
    Informing the user that a network request failed because the device wasn't able to establish a network connection.
@@ -8350,9 +8351,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Anulează urmărirea blogului.";
-
-/* No comment provided by engineer. */
-"Ungroup" = "Anulează gruparea";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Anulează ascunderea";
@@ -9607,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fișier audio";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "Nu pot să încarc imaginea. Te rog alege alta sau reîncearcă mai târziu.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Actualizează Gravatarul";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Refuză";
 
@@ -10323,6 +10327,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcat ca spam";
 
+/* Media screen navigation title */
+"media.title" = "Media";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "Elementul nu a putut fi adăugat în biblioteca Media";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "Tipul de conținut nu este acceptat";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "Pentru a încărca videouri mai lungi de 5 minute, trebuie să ai un plan plătit.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Refuză";
 
@@ -10331,6 +10347,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Refuză";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "Această aplicație are nevoie de permisiunea de a accesa Camera pentru a captura elemente media noi, te rog schimbă setările de confidențialitate dacă dorești să permiți asta.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "Captură media";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "Deschide setările";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "Alege din Media";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "Alege de pe dispozitiv";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "Fă o fotografie";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "Fă o fotografie sau un video";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "Fă un video";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Se pare că încă ai instalată aplicația WordPress.";
@@ -10461,6 +10501,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Revendică-ți domeniile Google";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "Adaugă un site auto-găzduit";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "Creează un site WordPress.com";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "Cont și setări";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "Adaugă site nou";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "Creează un site nou pentru afacerea, revista ta sau blogul personal; sau conectează o instalare WordPress existentă.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "Nu ai niciun site";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Închide";
 
@@ -10547,6 +10605,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Partajarea automată pe Twitter nu mai este disponibilă";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "Stabilește imaginea reprezentativă";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovează cu Blaze";
@@ -10923,7 +10984,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut o apreciere.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Refuză";
@@ -10962,7 +11023,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Contactează suportul";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Cu ce ​​te pot ajuta? Dacă nu îți pot răspunde la întrebare, te voi ajuta să deschizi un tichet pentru suport cu echipa noastră!";
+"support.chatBot.firstMessage" = "Cu ce te putem ajuta?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Trimite un mesaj...";

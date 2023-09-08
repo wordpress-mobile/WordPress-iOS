@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-30 09:54:10+0000 */
+/* Translation-Revision-Date: 2023-09-07 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ja_JP */
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "詳細設定を行うには、Web ブラウザーでこの有料区分ブロックにアクセスしてください。";
 
 /* Title for the account section in site settings screen */
 "Account" = "アカウント";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "削除";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4477,6 +4479,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "自分";
 
@@ -4768,9 +4772,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "新規承認待ちの単語";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "新しい写真投稿";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "新規投稿";
@@ -8351,9 +8352,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "ブログをフォロー解除します。";
 
-/* No comment provided by engineer. */
-"Ungroup" = "グループ解除";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "表示";
 
@@ -9607,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音声ファイル";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "画像をアップロードできません。 別の画像を選択するか、後でもう一度お試しください。";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Gravatar を更新する";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "削除";
 
@@ -10320,6 +10324,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "スパムとしてマーク";
 
+/* Media screen navigation title */
+"media.title" = "メディア";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "項目をメディアライブラリに追加できませんでした。";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "非対応のコンテンツタイプ";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "5分以上の動画ファイルのアップロードには有料プランのご利用が必要です。";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "削除";
 
@@ -10328,6 +10344,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "削除";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "このアプリが新しいメディアをキャプチャするためカメラにアクセスするには許可が必要です。許可するには、プライバシー設定を変更してください。";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "メディアのキャプチャ";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "設定を開く";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "メディアから選択";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "端末から選択";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "写真を撮影";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "写真または動画を撮影";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "動画を撮影";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "WordPress アプリがまだインストールされているようです。";
@@ -10458,6 +10498,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Google Domains を再利用する";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "インストール型サイトを追加";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "WordPress.com サイトを作成";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "アカウントと設定";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "新規サイトを追加";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "ビジネス、マガジン、個人ブログ用の新しいサイトを作成するか、既存の WordPress インストール環境を関連付けてください。";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "サイトがありません";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
@@ -10544,6 +10602,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "アイキャッチ画像を設定";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
@@ -10956,7 +11017,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "サポートに連絡";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "何かお困りですか ? 問題が解決しない場合は、当社のチームがサポートチケットを開くお手伝いをいたします。";
+"support.chatBot.firstMessage" = "サポートできることはありますか ?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "メッセージを送信...";
