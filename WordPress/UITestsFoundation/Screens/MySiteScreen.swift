@@ -8,24 +8,8 @@ public class MySiteScreen: ScreenObject {
     static let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
     static let pagesCardId = "dashboard-pages-card-frameview"
 
-    private let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Activity Log Row"]
-    }
-
-    private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Blog Post Row"]
-    }
-
     private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Reader"]
-    }
-
-    private let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Media Row"]
-    }
-
-    private let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Stats Row"]
     }
 
     private let createButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -36,12 +20,8 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["SwitchSiteButton"]
     }
 
-    private let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Home"]
-    }
-
-    private let segmentedControlMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Menu"]
+    private let moreMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables.cells.staticTexts["More"]
     }
 
     private let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -92,27 +72,10 @@ public class MySiteScreen: ScreenObject {
         $0.alerts.buttons.element(boundBy: 1)
     }
 
-    private let jetpackScanButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Scan Row"]
-    }
-
-    private let jetpackBackupButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Backup Row"]
-    }
-
-    private let settingsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Settings Row"]
-    }
-
-    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["People Row"]
-    }
-
     private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements["notice_title_and_message"]
     }
 
-    var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
     var activityLogCard: XCUIElement { activityLogCardGetter(app) }
     var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
     var blogDetailsRemoveSiteButton: XCUIElement { blogDetailsRemoveSiteButtonGetter(app) }
@@ -120,31 +83,21 @@ public class MySiteScreen: ScreenObject {
     var createButton: XCUIElement { createButtonGetter(app) }
     var domainsButton: XCUIElement { domainsButtonGetter(app) }
     var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
-    var homeButton: XCUIElement { homeButtonGetter(app) }
-    var jetpackBackupButton: XCUIElement { jetpackBackupButtonGetter(app) }
-    var jetpackScanButton: XCUIElement { jetpackScanButtonGetter(app) }
-    var mediaButton: XCUIElement { mediaButtonGetter(app) }
+    var moreMenuButton: XCUIElement { moreMenuButtonGetter(app) }
     var noticeTitle: XCUIElement { noticeTitleGetter(app) }
     var pagesCard: XCUIElement { pagesCardGetter(app) }
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
-    var peopleButton: XCUIElement { peopleButtonGetter(app) }
-    var postsButton: XCUIElement { postsButtonGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app)}
     var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
     var removeSiteButton: XCUIElement { removeSiteButtonGetter(app) }
-    var segmentedControlMenuButton: XCUIElement { segmentedControlMenuButtonGetter(app) }
-    var settingsButton: XCUIElement { settingsButtonGetter(app) }
-    var statsButton: XCUIElement { statsButtonGetter(app) }
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app)}
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 switchSiteButtonGetter,
-                postsButtonGetter,
-                mediaButtonGetter,
                 createButtonGetter
             ],
             app: app
@@ -164,52 +117,9 @@ public class MySiteScreen: ScreenObject {
         removeButton.tap()
     }
 
-    public func goToActivityLog() throws -> ActivityLogScreen {
-        activityLogButton.tap()
-        return try ActivityLogScreen()
-    }
-
-    public func goToJetpackScan() throws -> JetpackScanScreen {
-        jetpackScanButton.tap()
-        return try JetpackScanScreen()
-    }
-
-    public func goToJetpackBackup() throws -> JetpackBackupScreen {
-        jetpackBackupButton.tap()
-        return try JetpackBackupScreen()
-    }
-
-    public func goToPostsScreen() throws -> PostsScreen {
-        goToMenu()
-        postsButton.tap()
-        return try PostsScreen()
-    }
-
-    public func goToMediaScreen() throws -> MediaScreen {
-        mediaButton.tap()
-        return try MediaScreen()
-    }
-
-    public func goToStatsScreen() throws -> StatsScreen {
-        statsButton.tap()
-        return try StatsScreen()
-    }
-
-    @discardableResult
-    public func goToSettingsScreen() throws -> SiteSettingsScreen {
-        settingsButton.tap()
-        return try SiteSettingsScreen()
-    }
-
     public func goToCreateSheet() throws -> ActionSheetComponent {
         createButton.tap()
         return try ActionSheetComponent()
-    }
-
-    @discardableResult
-    public func goToHomeScreen() -> Self {
-        homeButton.tap()
-        return self
     }
 
     public func goToDomainsScreen() throws -> DomainsScreen {
@@ -218,20 +128,15 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func goToMenu() -> Self {
+    public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
+
         // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
-        guard XCUIDevice.isPhone && !segmentedControlMenuButton.isSelected else {
-            return self
+        guard XCUIDevice.isPhone && !moreMenuButton.isSelected else {
+            return try MySiteMoreMenuScreen()
         }
 
-        segmentedControlMenuButton.tap()
-        return self
-    }
-
-    @discardableResult
-    public func goToPeople() throws -> PeopleScreen {
-        peopleButton.tap()
-        return try PeopleScreen()
+        moreMenuButton.tap()
+        return try MySiteMoreMenuScreen()
     }
 
     public static func isLoaded() -> Bool {
