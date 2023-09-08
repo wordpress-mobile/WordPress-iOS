@@ -301,7 +301,7 @@ class PostServiceWPComTests: CoreDataTestCase {
         try! mainContext.save()
 
         // When
-        let remotePost = self.service.remotePost(with: post)
+        let remotePost = PostHelper.remotePost(with: post)
 
         // Then
         XCTAssertNil(remotePost.authorID)
@@ -315,7 +315,7 @@ class PostServiceWPComTests: CoreDataTestCase {
         try! mainContext.save()
 
         // When
-        let remotePost = self.service.remotePost(with: post)
+        let remotePost = PostHelper.remotePost(with: post)
 
         // Then
         XCTAssertNil(remotePost.authorID)
@@ -330,7 +330,7 @@ class PostServiceWPComTests: CoreDataTestCase {
         try! mainContext.save()
 
         // When
-        let remotePost = self.service.remotePost(with: post)
+        let remotePost = PostHelper.remotePost(with: post)
 
         // Then
         XCTAssertEqual(remotePost.authorID, expectedAuthorID)
