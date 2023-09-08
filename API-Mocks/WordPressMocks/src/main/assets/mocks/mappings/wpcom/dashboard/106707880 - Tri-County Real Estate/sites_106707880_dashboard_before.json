@@ -1,4 +1,7 @@
 {
+  "scenarioName": "new_page_flow",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "page_list",
   "request": {
     "method": "GET",
     "urlPath": "/wpcom/v2/sites/106707880/dashboard/cards-data/",

@@ -1,12 +1,49 @@
 {
   "request": {
     "method": "POST",
-    "urlPattern": "/rest/v1.2/sites/106707880/posts/new?($|\\?.*)",
+    "urlPath": "/rest/v1.2/sites/106707880/posts/new",
     "queryParameters": {
       "context": {
         "equalTo": "edit"
+      },
+      "locale": {
+        "equalTo": "en"
       }
-    }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.password",
+        "equalTo": ""
+      },
+      {
+        "matchesJsonPath": "$.status",
+        "equalTo": "publish"
+      },
+      {
+        "matchesJsonPath": "$.type",
+        "equalTo": "post"
+      },
+      {
+        "matchesJsonPath": "$.content",
+        "equalTo": ""
+      },
+      {
+        "matchesJsonPath": "$.parent",
+        "equalTo": 0
+      },
+      {
+        "matchesJsonPath": "$.featured_image",
+        "equalTo": ""
+      },
+      {
+        "matchesJsonPath": "$.title",
+        "equalTo": "New Post"
+      },
+      {
+        "matchesJsonPath": "$.date",
+        "matches": ".*"
+      }
+    ]
   },
   "response": {
     "status": 200,

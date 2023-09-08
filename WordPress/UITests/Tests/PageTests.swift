@@ -4,17 +4,17 @@ import XCTest
 class PageTests: XCTestCase {
 
     @MainActor
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
         setUpTestSuite()
+        try await WireMock.setUpScenario(scenario: "new_page_flow")
 
         try LoginFlow.login(
             email: WPUITestCredentials.testWPcomUserEmail
         )
     }
 
-    override func tearDownWithError() throws {
-        try super.tearDownWithError()
+    override func tearDown() async throws {
+        try await WireMock.resetScenario(scenario: "new_page_flow")
         takeScreenshotOfFailedTest()
     }
 
@@ -25,7 +25,6 @@ class PageTests: XCTestCase {
             .goToMySiteScreen()
             .goToCreateSheet()
             .goToSitePage()
-            .createBlankPage()
             .enterTextInTitle(text: postTitle, postType: .page)
             .post(action: .publish, postType: .page)
 

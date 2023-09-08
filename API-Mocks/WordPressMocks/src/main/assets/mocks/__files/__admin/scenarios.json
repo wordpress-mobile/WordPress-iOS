@@ -11,6 +11,12 @@
       "name" : "reader_like_post_flow",
       "state" : "Started",
       "possibleStates" : [ "Started", "initial_list", "post_liked", "new_list" ]
+    },
+    {
+      "id" : "new_page_flow",
+      "name" : "new_page_flow",
+      "state" : "Started",
+      "possibleStates" : [ "Started", "page_list", "page_published", "new_pages_list" ]
     }
   ]
 }

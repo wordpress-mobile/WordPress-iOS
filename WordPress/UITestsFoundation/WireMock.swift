@@ -28,7 +28,7 @@ public class WireMock {
         return scenarios
     }
 
-    private static func resetScenario(scenario: String) async throws {
+    public static func resetScenario(scenario: String) async throws {
         var request = URLRequest(url: Foundation.URL(string: "\(WireMock.URL())__admin/scenarios/\(scenario)/state")!)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

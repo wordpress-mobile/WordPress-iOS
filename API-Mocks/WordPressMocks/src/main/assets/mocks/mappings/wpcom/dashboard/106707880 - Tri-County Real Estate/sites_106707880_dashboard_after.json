@@ -1,0 +1,174 @@
+{
+  "scenarioName": "new_page_flow",
+  "requiredScenarioState": "page_published",
+  "newScenarioState": "new_pages_list",
+  "request": {
+    "method": "GET",
+    "urlPath": "/wpcom/v2/sites/106707880/dashboard/cards-data/",
+    "queryParameters": {
+      "_locale": {
+          "matches": "(.*)"
+      },
+      "cards": {
+          "equalTo": "todays_stats,posts,pages,activity"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "todays_stats": {
+          "views": 56,
+          "visitors": 44,
+          "likes": 19,
+          "comments": 0
+      },
+      "posts": {
+          "has_published": true,
+          "draft": [],
+          "scheduled": []
+      },
+      "pages": [
+        {
+          "id": 13,
+          "title": "New Blank Page",
+          "content": "",
+          "status": "publish",
+          "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
+          "modified": "{{now format=customformat}}"
+        },
+        {
+          "id": 51,
+          "title": "Blog",
+          "content": "Introduce yourself and your blog My Latest Posts • • • • • •",
+          "status": "publish",
+          "modified": "2023-05-18 10:33:38",
+          "date": "2023-05-18 10:33:38"
+        },
+        {
+          "id": 30,
+          "title": "Cart",
+          "content": "",
+          "status": "publish",
+          "modified": "2023-02-03 09:46:32",
+          "date": "2023-02-03 09:46:32"
+        },
+        {
+          "id": 31,
+          "title": "Checkout",
+          "content": "",
+          "status": "publish",
+          "modified": "2023-02-03 09:46:32",
+          "date": "2023-02-03 09:46:32"
+        }
+      ],
+      "activity": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        "summary": "Activity log",
+        "type": "OrderedCollection",
+        "totalItems": 3,
+        "page": 1,
+        "totalPages": 1,
+        "itemsPerPage": 5,
+        "id": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity",
+        "oldestItemTs": 1654043700542,
+        "first": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?page=1",
+        "last": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity?page=1",
+        "current": {
+          "type": "OrderedCollectionPage",
+          "id": "https://public-api.wordpress.com/wpcom/v2/sites/106707880/activity",
+          "totalItems": 1,
+          "orderedItems": [
+            {
+              "summary": "Setting changed",
+              "content": {
+                "text": "Enabled Jetpack Social for automatic social sharing"
+              },
+              "name": "setting__changed_jetpack_module_publicize",
+              "actor": {
+                "type": "Person",
+                "name": "demo",
+                "external_user_id": 1,
+                "wpcom_user_id": 195654479,
+                "icon": {
+                  "type": "Image",
+                  "url": "https://secure.gravatar.com/avatar/eea057209f5e29d6ca4103bc165d645b?s=96&d=mm&r=g",
+                  "width": 96,
+                  "height": 96
+                },
+                "role": "administrator"
+              },
+              "type": "Announce",
+              "published": "2023-04-04T10:33:09.300+00:00",
+              "generator": {
+                "jetpack_version": 0,
+                "blog_id": 106707880
+              },
+              "is_rewindable": false,
+              "rewind_id": "1680604388.4567",
+              "gridicon": "cog",
+              "status": null,
+              "activity_id": "6gjTS4cBfytF4jpL6MFT",
+              "is_discarded": false
+            },
+            {
+              "summary": "Site owner connected",
+              "content": {
+                "text": "The Jetpack connection is now complete. Welcome!"
+              },
+              "name": "jetpack__site_owner_connected",
+              "actor": {
+                "type": "Person",
+                "name": "Kevin Jorge",
+                "external_user_id": 1,
+                "wpcom_user_id": 11111111,
+                "icon": {
+                  "type": "Image",
+                  "url": "https://secure.gravatar.com/avatar/eea057209f5e29d6ca4103bc165d645b?s=96&d=mm&r=g",
+                  "width": 96,
+                  "height": 96
+                },
+                "role": "administrator"
+              },
+              "type": "Announce",
+              "published": "2023-04-04T10:33:05.614+00:00",
+              "generator": {
+                "jetpack_version": 0,
+                "blog_id": 106707880
+              },
+              "is_rewindable": false,
+              "rewind_id": "1680604385.6144",
+              "gridicon": "plans",
+              "status": "success",
+              "activity_id": "avfTS4cB98Gh8vy65ZU4",
+              "is_discarded": false
+            },
+            {
+              "summary": "Site connected",
+              "content": {
+                "text": "This site is connected to Jetpack."
+              },
+              "name": "jetpack__site_connected",
+              "actor": {
+                "type": "Application",
+                "name": "Jetpack"
+              },
+              "type": "Announce",
+              "published": "2023-04-04T10:32:54.647+00:00",
+              "generator": {
+                "jetpack_version": 0,
+                "blog_id": 106707880
+              },
+              "is_rewindable": false,
+              "rewind_id": "1680604374.6466",
+              "gridicon": "plans",
+              "status": "success",
+              "activity_id": "XvfTS4cB98Gh8vy6sI2-",
+              "is_discarded": false
+            }
+          ]
+        }
+      }
+    }
+  }
+}

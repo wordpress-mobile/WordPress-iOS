@@ -14,7 +14,7 @@ public class ChooseLayoutScreen: ScreenObject {
     var closeButton: XCUIElement { closeButtonGetter(app) }
     var createBlankPageButton: XCUIElement { createBlankPageButtonGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [closeButtonGetter],
             app: app
