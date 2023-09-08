@@ -238,6 +238,15 @@ fileprivate extension BlogDetailHeaderView {
             configuration.titleLineBreakMode = .byTruncatingTail
             button.configuration = configuration
 
+            button.menu = UIMenu(children: [
+                UIAction(title: Strings.openInBrowser, image: UIImage(systemName: "link"), handler: { [weak button] _ in
+                    button?.sendActions(for: .touchUpInside)
+                }),
+                UIAction(title: Strings.actionCopyURL, image: UIImage(systemName: "doc.on.doc"), handler: { [weak button] _ in
+                    UIPasteboard.general.url = URL(string: button?.titleLabel?.text ?? "")
+                })
+            ])
+
             button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
@@ -346,4 +355,10 @@ fileprivate extension BlogDetailHeaderView {
             ])
         }
     }
+}
+
+private enum Strings {
+    static let openInBrowser = NSLocalizedString("blogHeader.actionOpenInBrowser", value: "Open in Browser", comment: "Context menu button title")
+    static let actionCopyURL = NSLocalizedString("blogHeader.actionCopyURL", value: "Copy URL", comment: "Context menu button title")
+
 }
