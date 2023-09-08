@@ -21,11 +21,11 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsKind
+        AppConfiguration.Widget.Stats.Kind.lockScreenTodayLikesComments.rawValue
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayLikesCommentsProperties
+        AppConfiguration.Widget.Stats.Kind.lockScreenTodayLikesComments.countKey
     }
 
     var placeholderContent: HomeWidgetTodayData {

@@ -21,11 +21,11 @@ struct LockScreenTodayViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsKind
+        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews.rawValue
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsProperties
+        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews.countKey
     }
 
     var placeholderContent: HomeWidgetTodayData {

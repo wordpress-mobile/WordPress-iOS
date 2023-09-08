@@ -95,13 +95,13 @@ extension Tracks {
 
         static func widgetUpdated(for key: String) -> ExtensionEvents {
             switch key {
-            case AppConfiguration.Widget.Stats.todayProperties:
+            case AppConfiguration.Widget.Stats.Kind.homeToday.countKey:
                 return .todayWidgetUpdated
-            case AppConfiguration.Widget.Stats.allTimeProperties:
+            case AppConfiguration.Widget.Stats.Kind.homeAllTime.countKey:
                 return .allTimeWidgetUpdated
-            case AppConfiguration.Widget.Stats.thisWeekProperties:
+            case AppConfiguration.Widget.Stats.Kind.homeThisWeek.countKey:
                 return .thisWeekWidgetUpdated
-            case AppConfiguration.Widget.Stats.lockScreenTodayViewsProperties:
+            case AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews.countKey:
                 return .todayViewsLockScreenWidgetUpdated
             default:
                 return .noEvent

@@ -21,11 +21,11 @@ struct LockScreenAllTimeViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConf
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenAllTimeViewsVisitorsKind
+        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViewsVisitors.rawValue
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenAllTimeViewsVisitorsProperties
+        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViewsVisitors.countKey
     }
 
     var placeholderContent: HomeWidgetAllTimeData {

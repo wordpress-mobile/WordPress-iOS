@@ -21,11 +21,11 @@ struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     }
 
     var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenAllTimeViewsKind
+        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViews.rawValue
     }
 
     var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenAllTimeViewsProperties
+        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViews.countKey
     }
 
     var placeholderContent: HomeWidgetAllTimeData {
