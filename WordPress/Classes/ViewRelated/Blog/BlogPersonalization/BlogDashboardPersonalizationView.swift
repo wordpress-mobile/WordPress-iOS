@@ -64,13 +64,3 @@ private extension BlogDashboardPersonalizationView {
         static let cardSectionFooter = NSLocalizedString("personalizeHome.cardsSectionFooter", value: "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.", comment: "Section footer displayed below the list of toggles")
     }
 }
-
-#if DEBUG
-struct BlogDashboardPersonalizationView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            BlogDashboardPersonalizationView(viewModel: .init(service: .init(repository: UserDefaults.standard, siteID: 1), quickStartType: .newSite))
-        }
-    }
-}
-#endif

@@ -21,7 +21,10 @@ final class DashboardQuickActionsViewModel {
 
     @objc private func refresh() {
         let items = DashboardQuickAction.allCases
-            .filter(personalizationService.isEnabled)
+            .filter {
+                personalizationService.isEnabled($0) &&
+                $0.isEligible(for: blog)
+            }
             .map {
                 DashboardQuickActionItemViewModel(
                     image: $0.image,

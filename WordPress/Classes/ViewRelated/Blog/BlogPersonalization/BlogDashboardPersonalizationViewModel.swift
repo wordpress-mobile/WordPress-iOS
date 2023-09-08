@@ -4,10 +4,12 @@ final class BlogDashboardPersonalizationViewModel: ObservableObject {
     let quickActions: [DashboardPersonalizationQuickActionViewModel]
     let cards: [BlogDashboardPersonalizationCardCellViewModel]
 
-    init(service: BlogDashboardPersonalizationService, quickStartType: QuickStartType) {
-        self.quickActions = DashboardQuickAction.personalizableActions.map {
-            DashboardPersonalizationQuickActionViewModel(action: $0, service: service)
-        }
+    init(blog: Blog, service: BlogDashboardPersonalizationService, quickStartType: QuickStartType) {
+        self.quickActions = DashboardQuickAction.personalizableActions
+            .filter { $0.isEligible(for: blog) }
+            .map {
+                DashboardPersonalizationQuickActionViewModel(action: $0, service: service)
+            }
         self.cards = DashboardCard.personalizableCards.compactMap {
             if $0 == .quickStart && quickStartType == .undefined {
                 return nil
