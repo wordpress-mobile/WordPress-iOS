@@ -65,7 +65,7 @@ extension Tracks {
 
         UserDefaults(suiteName: WPAppGroupName)?.set(properties, forKey: widgetPropertiesKey)
 
-        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetPropertiesKey), properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetKind), properties: properties as [String: AnyObject]?)
     }
 
     // MARK: - Private Helpers
@@ -78,27 +78,24 @@ extension Tracks {
     // MARK: - Private Enums
 
     fileprivate enum ExtensionEvents: String {
-        // User installs an instance of the today widget
-        case todayWidgetUpdated = "today_home_extension_widget_updated"
-        // User installs an instance of the all time widget
-        case allTimeWidgetUpdated = "alltime_home_extension_widget_updated"
-        // Users installs an instance of the this week widget
-        case thisWeekWidgetUpdated = "thisweek_home_extension_widget_updated"
-        // Users installs an instance of the lockscreen today views widget
-        case todayViewsLockScreenWidgetUpdated = "today_views_lockscreen_extension_widget_updated"
+        // Events when user installs an instance of the widget
+        case homeTodayWidgetUpdated = "today_home_extension_widget_updated"
+        case homeAllTimeWidgetUpdated = "alltime_home_extension_widget_updated"
+        case homeThisWeekWidgetUpdated = "thisweek_home_extension_widget_updated"
+        case lockScreenTodayViewsWidgetUpdated = "today_views_lockscreen_widget_updated"
 
         case noEvent
 
-        static func widgetUpdated(for key: String) -> ExtensionEvents {
-            switch key {
-            case AppConfiguration.Widget.Stats.Kind.homeToday.countKey:
-                return .todayWidgetUpdated
-            case AppConfiguration.Widget.Stats.Kind.homeAllTime.countKey:
-                return .allTimeWidgetUpdated
-            case AppConfiguration.Widget.Stats.Kind.homeThisWeek.countKey:
-                return .thisWeekWidgetUpdated
-            case AppConfiguration.Widget.Stats.Kind.lockScreenTodayViews.countKey:
-                return .todayViewsLockScreenWidgetUpdated
+        static func widgetUpdated(for widgetKind: AppConfiguration.Widget.Stats.Kind) -> ExtensionEvents {
+            switch widgetKind {
+            case .homeToday:
+                return .homeTodayWidgetUpdated
+            case .homeAllTime:
+                return .homeAllTimeWidgetUpdated
+            case .homeThisWeek:
+                return .homeThisWeekWidgetUpdated
+            case .lockScreenTodayViews:
+                return .lockScreenTodayViewsWidgetUpdated
             default:
                 return .noEvent
             }
