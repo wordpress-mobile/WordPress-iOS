@@ -83,8 +83,11 @@ extension Tracks {
         case homeAllTimeWidgetUpdated = "alltime_home_extension_widget_updated"
         case homeThisWeekWidgetUpdated = "thisweek_home_extension_widget_updated"
         case lockScreenTodayViewsWidgetUpdated = "today_views_lockscreen_widget_updated"
-
-        case noEvent
+        case lockScreenTodayLikesCommentsWidgetUpdated = "today_likes_comments_lockscreen_widget_updated"
+        case lockScreenTodayViewsVisitorsWidgetUpdated = "today_views_visitors_lockscreen_widget_updated"
+        case lockScreenAllTimeViewsWidgetUpdated = "all_time_views_lockscreen_widget_updated"
+        case lockScreenAllTimeViewsVisitorsWidgetUpdated = "all_time_views_visitors_lockscreen_widget_updated"
+        case lockScreenAllTimePostsBestViewsWidgetUpdated = "all_time_posts_best_views_lockscreen_widget_updated"
 
         static func widgetUpdated(for widgetKind: AppConfiguration.Widget.Stats.Kind) -> ExtensionEvents {
             switch widgetKind {
@@ -96,8 +99,16 @@ extension Tracks {
                 return .homeThisWeekWidgetUpdated
             case .lockScreenTodayViews:
                 return .lockScreenTodayViewsWidgetUpdated
-            default:
-                return .noEvent
+            case .lockScreenTodayLikesComments:
+                 return .lockScreenTodayLikesCommentsWidgetUpdated
+             case .lockScreenTodayViewsVisitors:
+                 return .lockScreenTodayViewsVisitorsWidgetUpdated
+             case .lockScreenAllTimeViews:
+                 return .lockScreenAllTimeViewsWidgetUpdated
+             case .lockScreenAllTimeViewsVisitors:
+                 return .lockScreenAllTimeViewsVisitorsWidgetUpdated
+             case .lockScreenAllTimePostsBestViews:
+                 return .lockScreenAllTimePostsBestViewsWidgetUpdated
             }
         }
     }
