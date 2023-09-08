@@ -128,15 +128,15 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func goToMenu() throws -> MySiteMenuScreen {
+    public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
 
         // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
         guard XCUIDevice.isPhone && !moreMenuButton.isSelected else {
-            return try MySiteMenuScreen()
+            return try MySiteMoreMenuScreen()
         }
 
         moreMenuButton.tap()
-        return try MySiteMenuScreen()
+        return try MySiteMoreMenuScreen()
     }
 
     public static func isLoaded() -> Bool {

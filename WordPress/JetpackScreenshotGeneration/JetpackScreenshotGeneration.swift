@@ -35,7 +35,7 @@ class JetpackScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() throws {
 
         let mySite = try MySiteScreen()
-        let mySiteMenu = try MySiteMenuScreen()
+        let mySiteMenu = try MySiteMoreMenuScreen()
 
         // Get Site Creation screenshot
         let mySitesScreen = try mySite.showSiteSwitcher()
@@ -58,7 +58,7 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         // Open Menu to be able to access stats
         if XCUIDevice.isPhone {
-            try mySite.goToMenu()
+            try mySite.goToMoreMenu()
         }
 
         // Get Stats screenshot

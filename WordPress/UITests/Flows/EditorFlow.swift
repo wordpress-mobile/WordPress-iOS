@@ -16,7 +16,7 @@ class EditorFlow {
         if !SiteSettingsScreen.isLoaded() {
             try TabNavComponent()
                 .goToMySiteScreen()
-                .goToMenu()
+                .goToMoreMenu()
                 .goToSettingsScreen()
         }
         return try SiteSettingsScreen().toggleBlockEditor(to: state)

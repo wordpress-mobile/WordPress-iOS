@@ -1,7 +1,7 @@
 import ScreenObject
 import XCTest
 
-public class MySiteMenuScreen: ScreenObject {
+public class MySiteMoreMenuScreen: ScreenObject {
 
     private let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Activity Log Row"]
@@ -106,7 +106,7 @@ public class MySiteMenuScreen: ScreenObject {
     }
 
     @discardableResult
-    public func goToMenu() -> Self {
+    public func goToMoreMenu() -> Self {
         app.tables.cells.staticTexts["More"].tap()
 
         return self
@@ -119,6 +119,6 @@ public class MySiteMenuScreen: ScreenObject {
     }
 
     public static func isLoaded() -> Bool {
-        (try? MySiteMenuScreen().isLoaded) ?? false
+        (try? MySiteMoreMenuScreen().isLoaded) ?? false
     }
 }
