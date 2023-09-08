@@ -14,7 +14,7 @@ extension MySiteViewController {
         }
 
         switch element {
-        case .siteIcon, .siteTitle, .viewSite, .pages, .stats, .mediaScreen:
+        case .siteIcon, .siteTitle, .viewSite, .pages, .stats, .mediaScreen, .sharing:
             scrollView.scrollToTop(animated: true)
         default:
             break
