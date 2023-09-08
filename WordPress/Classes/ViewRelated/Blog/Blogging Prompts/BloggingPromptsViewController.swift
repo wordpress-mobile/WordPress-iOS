@@ -66,7 +66,7 @@ private extension BloggingPromptsViewController {
                            forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID)
 
         tableView.accessibilityIdentifier = "Blogging Prompts List"
-        tableView.allowsSelection = AppConfiguration.isJetpack
+        tableView.allowsSelection = AppConfiguration.bloggingPromptsEnabled
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
@@ -160,7 +160,7 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard AppConfiguration.isJetpack,
+        guard AppConfiguration.bloggingPromptsEnabled,
               let blog,
               let cell = tableView.cellForRow(at: indexPath) as? BloggingPromptTableViewCell,
               let prompt = cell.prompt else {

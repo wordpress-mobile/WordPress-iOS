@@ -80,7 +80,7 @@ import UIKit
     ///   - blog: The blog associated with the blogging prompt.
     ///   - completion: Closure invoked after the scheduling process completes.
     func updatePromptsIfNeeded(for blog: Blog, completion: ((Result<Void, Error>) -> Void)? = nil) {
-        guard AppConfiguration.isJetpack,
+        guard AppConfiguration.bloggingPromptsEnabled,
               let service = self.promptsServiceFactory.makeService(for: blog) else {
             return
         }

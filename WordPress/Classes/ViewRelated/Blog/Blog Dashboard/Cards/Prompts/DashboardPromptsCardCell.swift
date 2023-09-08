@@ -314,11 +314,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             .skip(skipMenuTapped)
         ]
 
-        if AppConfiguration.isJetpack {
-            return [defaultItems, [.learnMore(learnMoreTapped)], [.remove(removeMenuTapped)]]
-        }
-
-        return [defaultItems, [.learnMore(learnMoreTapped)]]
+        return [defaultItems, [.learnMore(learnMoreTapped)], [.remove(removeMenuTapped)]]
     }
 
     private var contextMenu: UIMenu {
@@ -363,7 +359,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // Specifically, it checks if today's prompt has been skipped,
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
-        guard AppConfiguration.isJetpack,
+        guard AppConfiguration.bloggingPromptsEnabled,
               blog.isAccessibleThroughWPCom(),
               let promptsService = BloggingPromptsService(blog: blog) else {
             return false
@@ -670,7 +666,8 @@ private extension DashboardPromptsCardCell {
     }
 
     static func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
-        guard let siteID = blog.dotComID?.stringValue else {
+        guard AppConfiguration.bloggingPromptsEnabled,
+            let siteID = blog.dotComID?.stringValue else {
             return false
         }
 

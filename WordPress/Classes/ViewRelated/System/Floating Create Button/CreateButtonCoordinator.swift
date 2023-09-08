@@ -297,7 +297,7 @@ private extension CreateButtonCoordinator {
     }
 
     private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
-        guard AppConfiguration.isJetpack,
+        guard AppConfiguration.bloggingPromptsEnabled,
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
               let prompt = prompt,
