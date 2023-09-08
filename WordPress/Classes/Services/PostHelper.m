@@ -11,7 +11,7 @@
     post.postID = remotePost.postID;
     // Used to populate author information for self-hosted sites.
     BlogAuthor *author = [post.blog getAuthorWithId:remotePost.authorID];
-
+    
     post.author = remotePost.authorDisplayName ?: author.displayName;
     post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
@@ -21,13 +21,13 @@
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;
-
+    
     if (remotePost.postThumbnailID != nil) {
         post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
     } else {
         post.featuredImage = nil;
     }
-
+    
     post.pathForDisplayImage = remotePost.pathForDisplayImage;
     if (post.pathForDisplayImage.length == 0) {
         [post updatePathForDisplayImageBasedOnContent];
@@ -36,21 +36,21 @@
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
     post.suggested_slug = remotePost.suggestedSlug;
-
+    
     if ([remotePost.revisions wp_isValidObject]) {
         post.revisions = [remotePost.revisions copy];
     }
-
+    
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
     }
-
+    
     post.autosaveTitle = remotePost.autosave.title;
     post.autosaveExcerpt = remotePost.autosave.excerpt;
     post.autosaveContent = remotePost.autosave.content;
     post.autosaveModifiedDate = remotePost.autosave.modifiedDate;
     post.autosaveIdentifier = remotePost.autosave.identifier;
-
+    
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
@@ -63,7 +63,7 @@
         postPost.postType = remotePost.type;
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
         [self updatePost:postPost withRemoteCategories:remotePost.categories inContext:managedObjectContext];
-
+        
         NSString *publicID = nil;
         NSString *publicizeMessage = nil;
         NSString *publicizeMessageID = nil;
@@ -88,7 +88,7 @@
         postPost.publicizeMessageID = publicizeMessageID;
         postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
     }
-
+    
     post.statusAfterSync = post.status;
 }
 
@@ -120,6 +120,103 @@
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
     // In any case, they should be sorted by id, so `lastObject` should have the newer value
     return [matchingEntries lastObject];
+}
+
++ (RemotePost *)remotePostWithPost:(AbstractPost *)post
+{
+    RemotePost *remotePost = [RemotePost new];
+    remotePost.postID = post.postID;
+    remotePost.date = post.date_created_gmt;
+    remotePost.dateModified = post.dateModified;
+    remotePost.title = post.postTitle ?: @"";
+    remotePost.content = post.content;
+    remotePost.status = post.status;
+    if (post.featuredImage) {
+        remotePost.postThumbnailID = post.featuredImage.mediaID;
+    }
+    remotePost.password = post.password;
+    remotePost.type = @"post";
+    remotePost.authorAvatarURL = post.authorAvatarURL;
+    // If a Post's authorID is 0 (the default Core Data value)
+    // or nil, don't send it to the API.
+    if (post.authorID.integerValue != 0) {
+        remotePost.authorID = post.authorID;
+    }
+    remotePost.excerpt = post.mt_excerpt;
+    remotePost.slug = post.wp_slug;
+    
+    if ([post isKindOfClass:[Page class]]) {
+        Page *pagePost = (Page *)post;
+        remotePost.parentID = pagePost.parentID;
+        remotePost.type = @"page";
+    }
+    if ([post isKindOfClass:[Post class]]) {
+        Post *postPost = (Post *)post;
+        remotePost.format = postPost.postFormat;
+        remotePost.tags = [[postPost.tags componentsSeparatedByString:@","] wp_map:^id(NSString *obj) {
+            return [obj stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+        }];
+        remotePost.categories = [self remoteCategoriesForPost:postPost];
+        remotePost.metadata = [self remoteMetadataForPost:postPost];
+        
+        // Because we can't get what's the self-hosted non Jetpack site capabilities
+        // only Admin users are allowed to set a post as sticky.
+        // This doesn't affect WPcom sites.
+        //
+        BOOL canMarkPostAsSticky = ([post.blog supports:BlogFeatureWPComRESTAPI] || post.blog.isAdmin);
+        remotePost.isStickyPost = canMarkPostAsSticky ? @(postPost.isStickyPost) : nil;
+    }
+    
+    remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
+    
+    return remotePost;
+}
+
++ (NSArray *)remoteCategoriesForPost:(Post *)post
+{
+    return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
+        return [self remoteCategoryWithCategory:category];
+    }];
+}
+
++ (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
+{
+    RemotePostCategory *remoteCategory = [RemotePostCategory new];
+    remoteCategory.categoryID = category.categoryID;
+    remoteCategory.name = category.categoryName;
+    remoteCategory.parentID = category.parentID;
+    return remoteCategory;
+}
+
++ (NSArray *)remoteMetadataForPost:(Post *)post {
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
+    
+    if (post.publicID) {
+        NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+        publicDictionary[@"id"] = [post.publicID numericValue];
+        [metadata addObject:publicDictionary];
+    }
+    
+    if (post.publicizeMessageID || post.publicizeMessage.length) {
+        NSMutableDictionary *publicizeMessageDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        if (post.publicizeMessageID) {
+            publicizeMessageDictionary[@"id"] = post.publicizeMessageID;
+        }
+        publicizeMessageDictionary[@"key"] = @"_wpas_mess";
+        publicizeMessageDictionary[@"value"] = post.publicizeMessage.length ? post.publicizeMessage : @"";
+        [metadata addObject:publicizeMessageDictionary];
+    }
+    
+    [metadata addObjectsFromArray:[PostHelper publicizeMetadataEntriesForPost:post]];
+    
+    if (post.bloggingPromptID) {
+        NSMutableDictionary *promptDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        promptDictionary[@"key"] = @"_jetpack_blogging_prompt_key";
+        promptDictionary[@"value"] = post.bloggingPromptID;
+        [metadata addObject:promptDictionary];
+    }
+    
+    return metadata;
 }
 
 @end
