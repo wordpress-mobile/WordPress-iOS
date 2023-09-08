@@ -165,7 +165,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
 
  @param post The AbstractPost used to create the RemotePost
  */
-- (RemotePost *)remotePostWithPost:(AbstractPost *)post;
++ (RemotePost *)remotePostWithPost:(AbstractPost *)post;
 
 @end
 

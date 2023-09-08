@@ -191,7 +191,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
            failure:(nullable void (^)(NSError * _Nullable error))failure
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostService remotePostWithPost:post];
 
     post.remoteStatus = AbstractPostRemoteStatusPushing;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -379,7 +379,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                              failure:(void (^)(NSError * _Nullable error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostService remotePostWithPost:post];
 
     AutosaveSuccessBlock autosaveSuccessBlock = [self wrappedAutosaveSuccessBlock:postObjectID success:success];
     AutosaveFailureBlock setPostAsFailedAndCallFailureBlock = [self wrappedAutosaveFailureBlock:post failure:failure];
@@ -452,7 +452,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     void (^privateBlock)(void) = ^void() {
         NSNumber *postID = post.postID;
         if ([postID longLongValue] > 0) {
-            RemotePost *remotePost = [self remotePostWithPost:post];
+            RemotePost *remotePost = [PostService remotePostWithPost:post];
             id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
             [remote deletePost:remotePost success:success failure:failure];
         }
@@ -546,7 +546,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         }
     };
     
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostService remotePostWithPost:post];
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote trashPost:remotePost success:successBlock failure:failureBlock];
 }
@@ -617,7 +617,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         }
     };
     
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostService remotePostWithPost:post];
     if (post.restorableStatus) {
         remotePost.status = post.restorableStatus;
     } else {
@@ -719,7 +719,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     return [remote dictionaryWithRemoteOptions:options];
 }
 
-- (RemotePost *)remotePostWithPost:(AbstractPost *)post
++ (RemotePost *)remotePostWithPost:(AbstractPost *)post
 {
     RemotePost *remotePost = [RemotePost new];
     remotePost.postID = post.postID;
@@ -769,14 +769,14 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     return remotePost;
 }
 
-- (NSArray *)remoteCategoriesForPost:(Post *)post
++ (NSArray *)remoteCategoriesForPost:(Post *)post
 {
     return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
         return [self remoteCategoryWithCategory:category];
     }];
 }
 
-- (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
++ (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
 {
     RemotePostCategory *remoteCategory = [RemotePostCategory new];
     remoteCategory.categoryID = category.categoryID;
@@ -785,7 +785,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     return remoteCategory;
 }
 
-- (NSArray *)remoteMetadataForPost:(Post *)post {
++ (NSArray *)remoteMetadataForPost:(Post *)post {
     NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
 
     if (post.publicID) {
