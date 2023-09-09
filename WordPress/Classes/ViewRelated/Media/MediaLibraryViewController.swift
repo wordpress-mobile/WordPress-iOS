@@ -784,13 +784,6 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
     }
 }
 
-fileprivate extension Blog {
-    var userCanUploadMedia: Bool {
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
-        return capabilities != nil ? isUploadingFilesAllowed() : true
-    }
-}
-
 // MARK: Stock Photos Picker Delegate
 
 extension MediaLibraryViewController: StockPhotosPickerDelegate {
