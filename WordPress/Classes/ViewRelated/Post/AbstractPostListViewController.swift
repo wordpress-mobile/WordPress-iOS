@@ -1009,6 +1009,7 @@ class AbstractPostListViewController: UIViewController,
         let postObjectID = apost.objectID
 
         guard let restorableStatus = recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID) else {
+            DDLogError("Can't find the original post status when attempting to restore a post")
             return
         }
 
