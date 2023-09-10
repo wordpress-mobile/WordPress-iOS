@@ -157,6 +157,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
  @param failure A failure block
  */
 - (void)restorePost:(AbstractPost *)post
+           toStatus:(NSString *)status
            success:(nullable void (^)(void))success
            failure:(void (^)(NSError * _Nullable error))failure;
 

@@ -477,8 +477,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     }
     
     void(^privateBodyBlock)(void) = ^void() {
-        post.restorableStatus = post.status;
-        
         NSNumber *postID = post.postID;
         
         if ([post isRevision] || [postID longLongValue] <= 0) {
@@ -533,14 +531,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     };
     
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
-        NSError *err;
-        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-        if (err) {
-            DDLogError(@"%@", err);
-        }
-        if (postInContext) {
-            postInContext.restorableStatus = nil;
-        }
         if (failure){
             failure(error);
         }
@@ -552,15 +542,16 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (void)restorePost:(AbstractPost *)post
+           toStatus:(NSString *)status
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     void (^privateBodyBlock)(void) = ^void() {
-        post.status = post.restorableStatus;
+        post.status = status;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         
         if (![post isRevision] && [post.postID longLongValue] > 0) {
-            [self restoreRemotePostWithPost:post success:success failure:failure];
+            [self restoreRemotePostWithPost:post toStatus:status success:success failure:failure];
         } else {
             if (success) {
                 success();
@@ -570,6 +561,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     
     if (post.isRevision) {
         [self restorePost:post.original
+                 toStatus:status
                   success:privateBodyBlock
                   failure:failure];
         
@@ -580,6 +572,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (void)restoreRemotePostWithPost:(AbstractPost*)post
+                         toStatus:(NSString *)status
                           success:(void (^)(void))success
                           failure:(void (^)(NSError *error))failure
 {
@@ -588,7 +581,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-        postInContext.restorableStatus = nil;
         if (err) {
             DDLogError(@"%@", err);
         }
@@ -616,10 +608,10 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             failure(error);
         }
     };
-    
+
     RemotePost *remotePost = [PostHelper remotePostWithPost:post];
-    if (post.restorableStatus) {
-        remotePost.status = post.restorableStatus;
+    if (status != nil) {
+        remotePost.status = status;
     } else {
         // Assign a status of draft to the remote post. The WordPress.com REST API will
         // ignore this and should restore the post's previous status. The XML-RPC API

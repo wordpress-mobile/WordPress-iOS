@@ -1008,8 +1008,9 @@ class AbstractPostListViewController: UIViewController,
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
         let postObjectID = apost.objectID
 
-        let restorableStatus = recentlyTrashedPostRestorableStatus[postObjectID]
-        recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID)
+        guard let restorableStatus = recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID) else {
+            return
+        }
 
         if filterSettings.currentPostListFilter().filterType != .draft {
             // Needed or else the post will remain in the published list.
@@ -1019,7 +1020,7 @@ class AbstractPostListViewController: UIViewController,
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.restore(apost, success: { [weak self] in
+        postService.restore(apost, toStatus: restorableStatus.rawValue, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return
