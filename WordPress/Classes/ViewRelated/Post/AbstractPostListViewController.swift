@@ -130,7 +130,12 @@ class AbstractPostListViewController: UIViewController,
     @IBOutlet var filterTabBar: FilterTabBar!
 
     @objc var searchController: UISearchController!
-    @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
+    /// The original status of trashed posts. Cleared on refresh or when filter changes.
+    var recentlyTrashedPostRestorableStatus = [NSManagedObjectID: BasePost.Status]()
+    /// IDs of trashed posts. Cleared on refresh or when filter changes.
+    var recentlyTrashedPostObjectIDs: [NSManagedObjectID] {
+        Array(recentlyTrashedPostRestorableStatus.keys)
+    }
 
     fileprivate var searchesSyncing = 0
 
@@ -949,7 +954,7 @@ class AbstractPostListViewController: UIViewController,
 
         let postObjectID = apost.objectID
 
-        recentlyTrashedPostObjectIDs.append(postObjectID)
+        recentlyTrashedPostRestorableStatus[postObjectID] = apost.status
 
         // Remove the trashed post from spotlight
         SearchManager.shared.deleteSearchableItem(apost)
@@ -985,8 +990,8 @@ class AbstractPostListViewController: UIViewController,
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if let index = strongSelf.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
-                strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
+            if strongSelf.recentlyTrashedPostRestorableStatus.keys.contains(postObjectID) {
+                strongSelf.recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID)
                 // We don't really know what happened here, why did the request fail?
                 // Maybe we could not delete the post or maybe the post was already deleted
                 // It is safer to re fetch the results than to reload that specific row
@@ -1003,9 +1008,8 @@ class AbstractPostListViewController: UIViewController,
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
         let postObjectID = apost.objectID
 
-        if let index = recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
-            recentlyTrashedPostObjectIDs.remove(at: index)
-        }
+        let restorableStatus = recentlyTrashedPostRestorableStatus[postObjectID]
+        recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID)
 
         if filterSettings.currentPostListFilter().filterType != .draft {
             // Needed or else the post will remain in the published list.
@@ -1061,7 +1065,7 @@ class AbstractPostListViewController: UIViewController,
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
+            strongSelf.recentlyTrashedPostRestorableStatus[postObjectID] = restorableStatus
         }
     }
 
@@ -1104,7 +1108,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Filtering
 
     @objc func refreshAndReload() {
-        recentlyTrashedPostObjectIDs.removeAll()
+        recentlyTrashedPostRestorableStatus.removeAll()
         updateSelectedFilter()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
