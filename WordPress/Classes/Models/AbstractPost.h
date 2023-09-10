@@ -37,10 +37,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, assign) BOOL metaIsLocal;
 @property (nonatomic, assign) BOOL metaPublishImmediately;
 /**
- Used to store the post's status before its sent to the trash.
- */
-@property (nonatomic, strong) NSString *restorableStatus;
-/**
  This array will contain a list of revision IDs.
  */
 @property (nonatomic, strong, nullable) NSArray *revisions;
