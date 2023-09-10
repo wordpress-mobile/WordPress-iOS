@@ -123,6 +123,57 @@ class PostRepositoryTests: CoreDataTestCase {
         XCTAssertTrue(isPostDeleted)
     }
 
+    func testTrashPost() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        // No API call should be made, because the post is a local post
+        let remotePost = RemotePost(siteID: 1, status: "trash", title: "Post: Test", content: "New content")!
+        remotePost.type = "post"
+        remoteMock.trashPostResult = .success(remotePost)
+        try await repository.trash(postID)
+
+        let content = try await contextManager.performQuery { context in
+            (try context.existingObject(with: postID)).content
+        }
+        XCTAssertEqual(content, "New content")
+    }
+
+    func testTrashLocalPost() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        // No API call should be made, because the post is a local post
+        remoteMock.trashPostResult = .failure(NSError.testInstance())
+        try await repository.trash(postID)
+
+        let status = try await contextManager.performQuery { context in
+            (try context.existingObject(with: postID)).status
+        }
+        XCTAssertEqual(status, .trash)
+    }
+
+    func testTrashTrashedPost() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).with(status: .trash).with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        // No API call should be made, because the post is a local post
+        remoteMock.trashPostResult = .failure(NSError.testInstance())
+        remoteMock.deletePostResult = .failure(NSError.testInstance())
+        try await repository.trash(postID)
+
+        let isPostDeleted = await contextManager.performQuery { context in
+            (try? context.existingObject(with: postID)) == nil
+        }
+        XCTAssertTrue(isPostDeleted)
+    }
+
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
@@ -150,7 +201,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
-    var remotePostToReturnOnTrashPost: RemotePost?
 
     var autoSaveStubbedBehavior = StubbedBehavior.success(nil)
 
@@ -160,6 +210,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     var totalLikes: NSNumber = 1
 
     var deletePostResult: Result<Void, Error> = .success(())
+    var trashPostResult: Result<RemotePost, Error> = .failure(NSError.testInstance())
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -184,7 +235,12 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     }
 
     override func trashPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostToReturnOnTrashPost)
+        switch self.trashPostResult {
+        case let .failure(error):
+            failure(error)
+        case let .success(remotePost):
+            success(remotePost)
+        }
     }
 
     override func autoSave(_ post: RemotePost, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {

@@ -103,4 +103,72 @@ final class PostRepository {
         }
     }
 
+    /// Move the given post to the trash bin. The post will not be deleted from local database, unless it's delete on it's WordPress site.
+    ///
+    /// - Parameter postID: Object ID of the post
+    func trash<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
+        // Trash the original post instead if presents
+        let original: TaggedManagedObjectID<AbstractPost>? = try await coreDataStack.performQuery { context in
+            let post = try context.existingObject(with: postID)
+            if let original = post.original {
+                return TaggedManagedObjectID(original)
+            }
+            return nil
+        }
+        if let original {
+            DDLogInfo("Trash the original post object instead")
+            try await trash(original)
+            return
+        }
+
+        // If the post is already in Trash, delete it.
+        let shouldDelete = try await coreDataStack.performQuery { context in
+            (try context.existingObject(with: postID)).status == .trash
+        }
+        if shouldDelete {
+            DDLogInfo("The post is already trashed, delete it instead")
+            try await delete(postID)
+            return
+        }
+
+        // Update local database and check if we need to call WordPress API.
+        let shouldCallRemote = try await coreDataStack.performAndSave { context in
+            let post = try context.existingObject(with: postID)
+            if post.isRevision() || (post.postID?.int64Value ?? 0) <= 0 {
+                post.status = .trash
+                return false
+            }
+
+            // The `status` will be updated when the WordPress API call is successful.
+            return true
+        }
+        guard shouldCallRemote else { return }
+
+        // Make the changes on the server
+        let (remote, remotePost) = try await coreDataStack.performQuery { [remoteFactory] context in
+            let post = try context.existingObject(with: postID)
+            return (remoteFactory.forBlog(post.blog), PostHelper.remotePost(with: post))
+        }
+        guard let remote else { return }
+
+        let updatedRemotePost = try await withCheckedThrowingContinuation { continuation in
+            remote.trashPost(
+                remotePost,
+                success: { continuation.resume(returning: $0) },
+                failure: { continuation.resume(throwing: $0!) }
+            )
+        }
+
+        try? await coreDataStack.performAndSave { context in
+            let post = try context.existingObject(with: postID)
+            if let updatedRemotePost, updatedRemotePost.status != PostStatusDeleted {
+                PostHelper.update(post, with: updatedRemotePost, in: context)
+                post.latest().statusAfterSync = post.statusAfterSync
+                post.latest().status = post.status
+            } else {
+                context.deleteObject(post)
+            }
+        }
+    }
+
 }
