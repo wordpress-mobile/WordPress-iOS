@@ -1,6 +1,6 @@
 23.3
 -----
-
+* [**] [internal] Refactor the "Undo" action after moving a post or page to trash. [#21538]
 
 23.2
 -----
