@@ -49,12 +49,17 @@ extension Tracks {
 
     private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetKind: AppConfiguration.Widget.Stats.Kind) {
         let widgetPropertiesKey = widgetKind.countKey
-        var properties = ["total_widgets": widgetInfo.count,
+
+        var properties: [String: Int] = [:]
+
+        switch widgetKind {
+        case .homeToday, .homeThisWeek, .homeAllTime:
+            properties = ["total_widgets": widgetInfo.count,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
                           "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
-        if #available(iOS 16.0, *) {
-            properties["rectangular_widgets"] = widgetInfo.filter { $0.family == .accessoryRectangular }.count
+        default:
+            break
         }
 
         let previousProperties = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: widgetPropertiesKey) as? [String: Int]
