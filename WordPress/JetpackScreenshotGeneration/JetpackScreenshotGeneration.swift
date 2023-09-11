@@ -35,6 +35,7 @@ class JetpackScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() throws {
 
         let mySite = try MySiteScreen()
+        let chooseLayoutScreen = try ChooseLayoutScreen()
 
         // Open Home
         if XCUIDevice.isPad {
@@ -55,10 +56,10 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(2, named: "CreateNew")
 
         // Get Page Builder screenshot
-        let chooseLayout = try createSheet.goToSitePage()
+        try createSheet.goToSitePage()
             .thenTakeScreenshot(3, named: "PageBuilder")
 
-        try chooseLayout.closeModal()
+        try chooseLayoutScreen.closeModal()
 
         // Open Menu to be able to access stats
         if XCUIDevice.isPhone {
