@@ -80,7 +80,7 @@ final class BlogDashboardViewModel {
 
     private var blazeViewModel: DashboardBlazeCardCellViewModel
     private var quickActionsViewModel: DashboardQuickActionsViewModel
-    private let personalizationService: BlogDashboardPersonalizationService
+    private var personalizationService: BlogDashboardPersonalizationService
 
     init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
         self.viewController = viewController
@@ -110,6 +110,7 @@ final class BlogDashboardViewModel {
         BlogDashboardAnalytics.shared.reset()
         self.blog = blog
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
+        self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
         self.loadCardsFromCache()
         self.loadCards()
