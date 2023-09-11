@@ -25,6 +25,7 @@ class PageTests: XCTestCase {
             .goToMySiteScreen()
             .goToCreateSheet()
             .goToSitePage()
+            .createBlankPage()
             .enterTextInTitle(text: postTitle, postType: .page)
             .post(action: .publish, postType: .page)
 

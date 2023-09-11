@@ -27,10 +27,10 @@ public class ActionSheetComponent: ScreenObject {
         blogPostButton.tap()
     }
 
-    public func goToSitePage() throws -> BlockEditorScreen {
+    public func goToSitePage() throws -> ChooseLayoutScreen {
         XCTAssert(sitePageButton.waitForIsHittable(timeout: 3))
         sitePageButton.tap()
 
-        return try BlockEditorScreen()
+        return try ChooseLayoutScreen()
     }
 }

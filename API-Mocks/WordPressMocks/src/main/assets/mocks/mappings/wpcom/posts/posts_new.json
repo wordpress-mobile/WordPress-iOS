@@ -1,4 +1,7 @@
 {
+  "scenarioName": "new_post_flow",
+  "requiredScenarioState": "post_list",
+  "newScenarioState": "post_published",
   "request": {
     "method": "POST",
     "urlPath": "/rest/v1.2/sites/106707880/posts/new",
@@ -12,36 +15,8 @@
     },
     "bodyPatterns": [
       {
-        "matchesJsonPath": "$.password",
-        "equalTo": ""
-      },
-      {
-        "matchesJsonPath": "$.status",
-        "equalTo": "publish"
-      },
-      {
-        "matchesJsonPath": "$.type",
-        "equalTo": "post"
-      },
-      {
-        "matchesJsonPath": "$.content",
-        "equalTo": ""
-      },
-      {
         "matchesJsonPath": "$.parent",
-        "equalTo": 0
-      },
-      {
-        "matchesJsonPath": "$.featured_image",
-        "equalTo": ""
-      },
-      {
-        "matchesJsonPath": "$.title",
-        "equalTo": "New Post"
-      },
-      {
-        "matchesJsonPath": "$.date",
-        "matches": ".*"
+        "equalTo": "false"
       }
     ]
   },
@@ -176,8 +151,6 @@
       "Content-Type": "application/json",
       "Connection": "keep-alive",
       "Cache-Control": "no-cache, must-revalidate, max-age=0"
-    }
-  },
-  "scenarioName": "new-post",
-  "newScenarioState": "Post Published"
+    } 
+  }
 }

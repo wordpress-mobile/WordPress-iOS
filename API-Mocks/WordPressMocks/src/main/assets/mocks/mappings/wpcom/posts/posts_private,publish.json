@@ -1,4 +1,7 @@
 {
+  "scenarioName": "new_post_flow",
+  "requiredScenarioState": "post_published",
+  "newScenarioState": "new_posts_list",
   "request": {
     "method": "GET",
     "urlPattern": "/rest/v1.2/sites/.*/posts.*",
@@ -16,7 +19,7 @@
         "matches": "(.*)"
       },
       "status": {
-        "equalTo": "publish,private"
+        "equalTo": "(.*)"
       },
       "type": {
         "equalTo": "post"

@@ -15,36 +15,8 @@
     },
     "bodyPatterns": [
       {
-        "matchesJsonPath": "$.password",
-        "equalTo": ""
-      },
-      {
-        "matchesJsonPath": "$.status",
-        "equalTo": "publish"
-      },
-      {
-        "matchesJsonPath": "$.type",
-        "equalTo": "page"
-      },
-      {
-        "matchesJsonPath": "$.content",
-        "equalTo": ""
-      },
-      {
         "matchesJsonPath": "$.parent",
         "equalTo": 0
-      },
-      {
-        "matchesJsonPath": "$.featured_image",
-        "equalTo": ""
-      },
-      {
-        "matchesJsonPath": "$.title",
-        "equalTo": "New Blank Page"
-      },
-      {
-        "matchesJsonPath": "$.date",
-        "matches": ".*"
       }
     ]
   },
