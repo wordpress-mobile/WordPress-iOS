@@ -40,7 +40,7 @@ PODS:
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
-  - Gutenberg (1.103.1)
+  - Gutenberg (1.103.2)
   - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.9):
     - CropViewController
@@ -126,7 +126,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.103.1.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-614aa1a3832d2c253af109fe670c7b4004051748.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -203,7 +203,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.103.1.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-614aa1a3832d2c253af109fe670c7b4004051748.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -230,7 +230,7 @@ SPEC CHECKSUMS:
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  Gutenberg: 4dc5d0ede9bf17fb00045ab9d1d12f32a80ca55e
+  Gutenberg: a10d736100f96b9701595e007f7a0ea01cb8d1c8
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
