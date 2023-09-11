@@ -24,4 +24,5 @@ import Foundation
     @objc static let qrLoginEnabled: Bool = false
     @objc static let bloggingPromptsEnabled = false
     @objc static let statsRevampV2Enabled: Bool = false
+    @objc static let personalizeHomeTabEnabled: Bool = false
 }

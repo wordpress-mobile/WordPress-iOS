@@ -109,7 +109,7 @@ extension DashboardPostsListCardCell {
     }
 
     private func addDraftsContextMenu(card: DashboardCard, blog: Blog) {
-        guard AppConfiguration.isJetpack else { return }
+        guard AppConfiguration.personalizeHomeTabEnabled else { return }
 
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [
@@ -122,7 +122,7 @@ extension DashboardPostsListCardCell {
     }
 
     private func addScheduledContextMenu(card: DashboardCard, blog: Blog) {
-        guard AppConfiguration.isJetpack else { return }
+        guard AppConfiguration.personalizeHomeTabEnabled else { return }
 
         frameView.addMoreMenu(items: [
             UIMenu(options: .displayInline, children: [

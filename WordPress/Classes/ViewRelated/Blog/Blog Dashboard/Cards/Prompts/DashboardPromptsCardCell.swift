@@ -513,7 +513,7 @@ private extension DashboardPromptsCardCell {
         BlogDashboardAnalytics.trackHideTapped(for: .prompts)
         let service = BlogDashboardPersonalizationService(siteID: siteID)
         service.setEnabled(false, for: .prompts)
-        if !AppConfiguration.isJetpack {
+        if !AppConfiguration.personalizeHomeTabEnabled {
             let notice = Notice(title: Strings.promptRemovedTitle, message: Strings.promptRemovedSubtitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { _ in
                 service.setEnabled(true, for: .prompts)
             }
