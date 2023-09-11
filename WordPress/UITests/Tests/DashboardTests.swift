@@ -5,8 +5,9 @@ import XCTest
 class DashboardTests: XCTestCase {
 
     @MainActor
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         setUpTestSuite()
+        try await WireMock.resetScenario(scenario: "new_page_flow")
 
         try LoginFlow
             .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
