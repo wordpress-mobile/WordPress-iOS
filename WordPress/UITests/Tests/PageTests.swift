@@ -15,6 +15,7 @@ class PageTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
+        try super.tearDownWithError()
     }
 
     let postTitle = "New Blank Page"
