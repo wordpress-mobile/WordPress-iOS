@@ -61,9 +61,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
-        let controller = MediaLibraryViewController(blog: blog)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        sourceController.navigationController?.pushViewController(controller, animated: true)
+        if FeatureFlag.mediaModernization.enabled {
+            let controller = MediaViewController(blog: blog)
+            sourceController.show(controller, sender: nil)
+        } else {
+            let controller = MediaLibraryViewController(blog: blog)
+            controller.navigationItem.largeTitleDisplayMode = .never
+            sourceController.navigationController?.pushViewController(controller, animated: true)
+        }
 
         QuickStartTourGuide.shared.visited(.mediaScreen)
     }
