@@ -34,16 +34,14 @@ final class MediaCollectionCellViewModel {
     }
 
     /// Starts loading the image for the given media assets.
-    func loadThumbnail(targetSize: CGSize) {
-        assert(targetSize != .zero, "Invalid target size")
-
+    func loadThumbnail() {
         requestCount += 1
         guard requestCount == 1 else {
             return // Already loading
         }
         let task = Task { [service, media, weak self] in
             do {
-                let image = try await service.image(for: media, preferredSize: targetSize)
+                let image = try await service.thumbnail(for: media)
                 self?.didFinishLoading(with: image, error: nil)
             } catch {
                 self?.didFinishLoading(with: nil, error: error)

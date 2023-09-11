@@ -5,19 +5,38 @@ import Foundation
 final class MediaImageService: NSObject {
     static let shared = MediaImageService()
 
+    private let session: URLSession
     private let coreDataStack: CoreDataStackSwift
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
+
+        let configuration = URLSessionConfiguration.default
+        // `MediaImageService` has its own disk cache, so it's important to
+        // disable the native url cache which is by default set to `URLCache.shared`
+        configuration.urlCache = nil
+        self.session = URLSession(configuration: configuration)
     }
 
-    /// Returns a decompressed thumbnail for the given media asset.
+    // MARK: - Thumbnails
+
+    /// Returns a preferred thumbnail size optimized for the device.
     ///
-    /// - Parameters:
-    ///   - media: The Media object.
-    ///   - preferredSize: An ideal size of the thumbnail in pixels. If `zero`, the maximum dimension of the UIScreen is used.
+    /// - important: It makes sure the app uses the same thumbnails across
+    /// different screens and presentation modes to avoid fetching and caching
+    /// more than one version of the same image.
+    private static let preferredThumbnailSize: CGSize = {
+        let screenSide = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+        let itemPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 5 : 4
+        let availableWidth = screenSide - MediaViewController.spacing * CGFloat(itemPerRow - 1)
+        let scale = UIScreen.main.scale
+        let targetSize = (availableWidth / CGFloat(itemPerRow)).rounded(.down) * scale
+        return CGSize(width: targetSize, height: targetSize)
+    }()
+
+    /// Returns a decompressed thumbnail optimized for the device.
     @MainActor
-    func image(for media: Media, preferredSize: CGSize) async throws -> UIImage {
+    func thumbnail(for media: Media) async throws -> UIImage {
         guard media.remoteStatus != .stub else {
             let media = try await fetchStubMedia(for: media)
             // This should never happen, but adding it just in case to avoid recusion
@@ -25,34 +44,34 @@ final class MediaImageService: NSObject {
                 assertionFailure("The fetched media still has a .stub status")
                 throw MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL
             }
-            return try await image(for: media, preferredSize: preferredSize)
+            return try await _thumbnail(for: media)
         }
 
-        let imageURL = try await imageURL(for: media, preferredSize: preferredSize)
-        return try await Task.detached {
-            guard let image = UIImage(data: try Data(contentsOf: imageURL)) else {
-                throw URLError(.cannotDecodeContentData)
-            }
-            // Forces decompression (or bitmapping) to happen in the background.
-            // It's very expensive for some image formats, such as JPEG.
-            return image.preparingForDisplay() ?? image
-        }.value
+        return try await _thumbnail(for: media)
     }
 
-    /// Generate a URL to a thumbnail of the Media, saves it locally, and returns
-    /// a URL pointing to the saved file.
+    @MainActor
+    private func _thumbnail(for media: Media) async throws -> UIImage {
+        if let fileURL = media.absoluteThumbnailLocalURL,
+           let image = try? await decompressedImage(forFileURL: fileURL) {
+            return image
+        }
+        let targetSize = MediaImageService.preferredThumbnailSize
+        let fileURL = try await fetchRemoteThumbnail(for: media, targetSize: targetSize)
+        return try await decompressedImage(forFileURL: fileURL)
+    }
+
+    /// Downloads thumbnail for the given media object and saves it locally.
     ///
     /// - Parameters:
     ///   - media: The Media object.
-    ///   - preferredSize: An ideal size of the thumbnail in pixels. If `zero`, the maximum dimension of the UIScreen is used.
-    ///
-    /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
-    ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
-    ///
+    ///   - targetSize: An ideal size of the thumbnail in pixels.
     @MainActor
-    func imageURL(for media: Media, preferredSize: CGSize) async throws -> URL {
+    private func fetchRemoteThumbnail(for media: Media, targetSize: CGSize) async throws -> URL {
         do {
-            return try await _imageURL(for: media, preferredSize: preferredSize)
+            let fileURL = try await _fetchRemoteThumbnail(for: media, targetSize: targetSize)
+            try await saveLocalThumbnailURL(fileURL, for: TaggedManagedObjectID(media))
+            return fileURL
         } catch {
             if let error = error as? MediaExportError {
                 MediaImportService.logExportError(error)
@@ -61,123 +80,57 @@ final class MediaImageService: NSObject {
         }
     }
 
-    @MainActor
-    private func _imageURL(for media: Media, preferredSize: CGSize) async throws -> URL {
-        let mediaID = TaggedManagedObjectID(saved: media)
-        let exporter = makeThumbnailExporter(for: media, preferredSize: preferredSize)
-
-        // Check if there is already an exported thumbnail available
-        if let identifier = media.localThumbnailIdentifier, let imageURL = await getLocalThumbnailURL(for: identifier, exporter: exporter) {
-            return imageURL
-        }
-
-        // Downloads the remote thumbnail for the asset.
-        @MainActor func getRemoteThumbnail() async throws -> URL {
-            let image = try await downloadThumbnail(forMedia: media, preferredSize: preferredSize)
-            let (identifier, export) = try await exporter.exportThumbnail(forImage: image)
-            try await saveLocalIdentifier(identifier: identifier, for: mediaID)
-            return export.url
-        }
-
-        // If the asset is available locally, export thumbnails from the local asset
-        if let localAssetURL = media.absoluteLocalURL,
-           exporter.supportsThumbnailExport(forFile: localAssetURL) {
-            let (identifier, export) = try await exporter.exportThumbnail(forFileURL: localAssetURL)
-            try await saveLocalIdentifier(identifier: identifier, for: mediaID)
-            return export.url
-        }
-
-        // If the Media item is a video and has a remote video URL, try and export from the remote video URL.
-        if media.mediaType == .video, let videoURL = media.remoteURL.flatMap(URL.init) {
-            do {
-                let (identifier, export) = try await exporter.exportThumbnail(forVideoURL: videoURL)
-                try await saveLocalIdentifier(identifier: identifier, for: mediaID)
-                return export.url
-            } catch {
-                // If an error occurred with the remote video URL, try and download the Media's
-                // remote thumbnail instead.
-                return try await getRemoteThumbnail()
-            }
-        }
-
-        return try await getRemoteThumbnail()
-    }
-
-    @MainActor
-    private func makeThumbnailExporter(for media: Media, preferredSize: CGSize) -> MediaThumbnailExporter {
-        let exporter = MediaThumbnailExporter()
-        exporter.mediaDirectoryType = .cache
-        if preferredSize == CGSize.zero {
-            // When using a zero size, default to the maximum screen dimension.
-            let screenSize = UIScreen.main.bounds
-            let screenSizeMax = max(screenSize.width, screenSize.height)
-            exporter.options.preferredSize = CGSize(width: screenSizeMax, height: screenSizeMax)
-        } else {
-            exporter.options.preferredSize = preferredSize
-        }
-        if let identifier = media.localThumbnailIdentifier {
-            exporter.options.identifier = identifier
-        } else {
-            exporter.options.identifier = media.objectID.uriRepresentation().lastPathComponent
-        }
-        return exporter
-    }
-
-    private func getLocalThumbnailURL(for identifier: String, exporter: MediaThumbnailExporter) async -> URL? {
-        // Checking if the URL is available uses disk I/O, so moving it to background
-        await Task.detached {
-            exporter.availableThumbnail(with: identifier)
-        }.value
-    }
-
     /// Download a thumbnail image for a Media item, if available.
     ///
     /// - Parameters:
     ///   - media: The Media object.
-    ///   - preferredSize: The preferred size of the image, in points, to configure remote URLs for.
+    ///   - targetSize: The preferred size of the image, in points, to configure remote URLs for.
     @MainActor
-    private func downloadThumbnail(forMedia media: Media, preferredSize: CGSize) async throws -> UIImage {
-        guard let imageURL = getRemoteThumbnailURL(for: media, preferredSize: preferredSize) else {
+    private func _fetchRemoteThumbnail(for media: Media, targetSize: CGSize) async throws -> URL {
+        guard let imageURL = getRemoteThumbnailURL(for: media, targetSize: targetSize) else {
             throw URLError(.badURL)
         }
         let host = MediaHost(with: media.blog)
         let request = try await MediaRequestAuthenticator().authenticatedRequest(for: imageURL, host: host)
-        return try await ImageDownloader.shared.image(for: request)
+        let (data, _) = try await session.data(for: request)
+        return try await Task.detached {
+            let fileURL = try MediaFileManager.cache.directoryURL()
+                .appendingPathComponent(UUID().uuidString, isDirectory: false)
+                .appendingPathExtension(imageURL.pathExtension)
+            try data.write(to: fileURL)
+            return fileURL
+        }.value
     }
 
     @MainActor
-    private func getRemoteThumbnailURL(for media: Media, preferredSize: CGSize) -> URL? {
-        var remoteURL: URL?
-        // Check if the Media item is a video or image.
-        if media.mediaType == .video {
-            // If a video, ensure there is a remoteThumbnailURL
-            if let remoteThumbnailURL = media.remoteThumbnailURL {
-                remoteURL = URL(string: remoteThumbnailURL)
+    private func getRemoteThumbnailURL(for media: Media, targetSize: CGSize) -> URL? {
+        switch media.mediaType {
+        case .image:
+            guard let remoteURL = media.remoteURL.flatMap(URL.init) else {
+                return nil
             }
-        } else {
-            // Check if a remote URL for the media itself is available.
-            if let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) {
-                // Get an expected WP URL, for sizing.
-                if media.blog.isPrivateAtWPCom() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
-                    remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
-                } else {
-                    let scale = 1.0 / UIScreen.main.scale
-                    let preferredSize = preferredSize.applying(CGAffineTransform(scaleX: scale, y: scale))
-                    remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
-                }
+            if media.blog.isPrivateAtWPCom() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
+                return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: remoteURL)
+            } else {
+                let scale = 1.0 / UIScreen.main.scale
+                let targetSize = targetSize.applying(CGAffineTransform(scaleX: scale, y: scale))
+                return PhotonImageURLHelper.photonURL(with: targetSize, forImageURL: remoteURL)
             }
+        default:
+            return media.remoteThumbnailURL.flatMap(URL.init)
         }
-        return remoteURL
     }
 
-    private func saveLocalIdentifier(identifier: MediaThumbnailExporter.ThumbnailIdentifier, for mediaID: TaggedManagedObjectID<Media>) async throws {
+    private func saveLocalThumbnailURL(_ fileURL: URL, for mediaID: TaggedManagedObjectID<Media>) async throws {
         try await coreDataStack.performAndSave { context in
             let media = try context.existingObject(with: mediaID)
-            if media.localThumbnailIdentifier != identifier {
-                media.localThumbnailIdentifier = identifier
+            if media.absoluteThumbnailLocalURL != fileURL {
+                media.absoluteThumbnailLocalURL = fileURL
             }
         }
     }
+
+    // MARK: - Stubs
 
     @MainActor
     private func fetchStubMedia(for media: Media) async throws -> Media {
@@ -193,4 +146,34 @@ final class MediaImageService: NSObject {
             })
         }
     }
+}
+
+// MARK: - Decompression
+
+// Forces decompression (or bitmapping) to happen in the background.
+// It's very expensive for some image formats, such as JPEG.
+private func decompressedImage(forFileURL fileURL: URL) async throws -> UIImage {
+    assert(fileURL.isFileURL, "Unsupported URL: \(fileURL)")
+
+    return try await Task.detached {
+        let data = try Data(contentsOf: fileURL)
+        guard let image = UIImage(data: data) else {
+            throw URLError(.cannotDecodeContentData)
+        }
+        guard isDecompressionNeeded(for: fileURL) else {
+            return image
+        }
+        return image.preparingForDisplay() ?? image
+    }.value
+}
+
+private func isDecompressionNeeded(for url: URL) -> Bool {
+    let fileExtension = url.pathExtension
+    // This check is required to avoid the following error messages when
+    // using `preparingForDisplay`:
+    //
+    //    [Decompressor] Error -17102 decompressing image -- possibly corrupt
+    //
+    // More info: https://github.com/SDWebImage/SDWebImage/issues/3365
+    return fileExtension == "jpeg" || fileExtension == "jpg"
 }

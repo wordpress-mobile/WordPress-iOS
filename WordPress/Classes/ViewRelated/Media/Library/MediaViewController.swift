@@ -13,6 +13,8 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     private let blog: Blog
     private let coordinator = MediaCoordinator.shared
 
+    static let spacing: CGFloat = 2
+
     init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -66,10 +68,10 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     }
 
     private func updateFlowLayoutItemSize() {
-        let spacing = Constants.minCellSpacing
+        let spacing = MediaViewController.spacing
         let availableWidth = collectionView.bounds.width
-        let maxNumColumns = Int(availableWidth / Constants.minColumnWidth)
-        let cellWidth = ((availableWidth - spacing * CGFloat(maxNumColumns - 1)) / CGFloat(maxNumColumns)).rounded(.down)
+        let itemsPerRow = availableWidth < 450 ? 4 : 5
+        let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
 
         flowLayout.minimumInteritemSpacing = spacing
         flowLayout.minimumLineSpacing = spacing
@@ -193,17 +195,16 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
         let media = fetchController.object(at: indexPath)
         let viewModel = makeViewModel(for: media)
-        cell.configure(viewModel: viewModel, targetSize: getImageTargetSize())
+        cell.configure(viewModel: viewModel)
         return cell
     }
 
     // MARK: - UICollectionViewDataSourcePrefetching
 
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        let targetSize = getImageTargetSize()
         for indexPath in indexPaths {
             makeViewModel(for: fetchController.object(at: indexPath))
-                .loadThumbnail(targetSize: targetSize)
+                .loadThumbnail()
         }
     }
 
@@ -224,12 +225,6 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         let viewModel = MediaCollectionCellViewModel(media: media)
         viewModels[media.objectID] = viewModel
         return viewModel
-    }
-
-    private func getImageTargetSize() -> CGSize {
-        let scale = UIScreen.main.scale
-        let transform = CGAffineTransform(scaleX: scale, y: scale)
-        return CGSizeApplyAffineTransform(flowLayout.itemSize, transform)
     }
 }
 
@@ -256,8 +251,6 @@ extension MediaViewController: NoResultsViewHost, NoResultsViewControllerDelegat
 }
 
 private enum Constants {
-    static let minColumnWidth: CGFloat = 96
-    static let minCellSpacing: CGFloat = 2
     static let cellID = "cellID"
 }
 

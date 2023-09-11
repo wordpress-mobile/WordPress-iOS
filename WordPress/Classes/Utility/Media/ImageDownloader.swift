@@ -19,9 +19,9 @@ extension URLSession: ImageDownloaderTask {
     }
 }
 
-// MARK: - Image Downloading Tool
+// MARK: - Image Downloading
 
-class ImageDownloader {
+final class ImageDownloader {
 
     /// Shared Instance!
     ///
@@ -29,12 +29,24 @@ class ImageDownloader {
 
     /// Internal URLSession Instance
     ///
-    private let session = URLSession(configuration: .default)
+    private let session = URLSession(configuration: {
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = ImageDownloader.sharedUrlCache
+        return configuration
+    }())
 
+    /// Shared url cached used by a default ``ImageDownloader``. The cache is
+    /// initialized with 0 MB memory capacity and 256 MB disk capacity.
+    static let sharedUrlCache: URLCache = {
+        let diskCapacity = 256 * 1048576 // 256 MB
+        let cachePath = "com.automattic.ImageDownloader.Cache"
+        return URLCache(memoryCapacity: 0, diskCapacity: diskCapacity, diskPath: cachePath)
+    }()
 
     deinit {
         session.invalidateAndCancel()
     }
+
     /// Downloads image for the given URL.
     func image(at url: URL) async throws -> UIImage {
         var request = URLRequest(url: url)
