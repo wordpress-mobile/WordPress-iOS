@@ -106,10 +106,9 @@ extension MigrationSuccessCardView {
             return false
         }
 
-        let isFeatureFlagEnabled = true
         let isWordPressInstalled = MigrationAppDetection.getWordPressInstallationState().isWordPressInstalled
         let isMigrationCompleted = UserPersistentStoreFactory.instance().jetpackContentMigrationState == .completed
-        let newValue = isFeatureFlagEnabled && isWordPressInstalled && isMigrationCompleted
+        let newValue = isWordPressInstalled && isMigrationCompleted
 
         if newValue != Self.cachedShouldShowMigrationSuccessCard {
             let tracker = MigrationAnalyticsTracker()
