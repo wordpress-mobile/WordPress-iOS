@@ -174,6 +174,46 @@ class PostRepositoryTests: CoreDataTestCase {
         XCTAssertTrue(isPostDeleted)
     }
 
+    func testRestorePost() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        let remotePost = RemotePost(siteID: 1, status: "draft", title: "Post: Test", content: "New content")!
+        remotePost.type = "post"
+        remoteMock.restorePostResult = .success(remotePost)
+        try await repository.restore(postID, to: .publish)
+
+        // The restored post should match the post returned by WordPress API.
+        let (status, content) = try await contextManager.performQuery { context in
+            let post = try context.existingObject(with: postID)
+            return (post.status, post.content)
+        }
+        XCTAssertEqual(status, .draft)
+        XCTAssertEqual(content, "New content")
+    }
+
+    func testRestorePostFailure() async throws {
+        let postID = try await contextManager.performAndSave { context in
+            let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
+            return TaggedManagedObjectID(post)
+        }
+
+        remoteMock.restorePostResult = .failure(NSError.testInstance())
+
+        do {
+            try await repository.restore(postID, to: .publish)
+            XCTFail("The restore call should throw an error")
+        } catch {
+            let status = try await contextManager.performQuery { context in
+                let post = try context.existingObject(with: postID)
+                return post.status
+            }
+            XCTAssertEqual(status, .trash)
+        }
+    }
+
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
@@ -211,6 +251,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     var deletePostResult: Result<Void, Error> = .success(())
     var trashPostResult: Result<RemotePost, Error> = .failure(NSError.testInstance())
+    var restorePostResult: Result<RemotePost, Error> = .failure(NSError.testInstance())
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -236,6 +277,15 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     override func trashPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         switch self.trashPostResult {
+        case let .failure(error):
+            failure(error)
+        case let .success(remotePost):
+            success(remotePost)
+        }
+    }
+
+    override func restore(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
+        switch self.restorePostResult {
         case let .failure(error):
             failure(error)
         case let .success(remotePost):
