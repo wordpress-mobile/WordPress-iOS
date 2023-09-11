@@ -8,13 +8,13 @@ class EditPageViewController: UIViewController {
     fileprivate var content: String?
     fileprivate var hasShownEditor = false
     fileprivate var isHomePageEditor = false
-    private var homepageEditorCompletion: HomepageEditorCompletion?
+    private var homepageEditorCompletion: (() -> Void)?
 
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
     }
 
-    convenience init(homepage: Page, completion: @escaping HomepageEditorCompletion) {
+    convenience init(homepage: Page, completion: @escaping () -> Void) {
         self.init(page: homepage)
         isHomePageEditor = true
         homepageEditorCompletion = completion
