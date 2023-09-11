@@ -174,7 +174,7 @@ private extension OverviewCell {
         filterTabBar.equalWidthSpacing = 12
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             filterTabBar.dividerColor = .clear
         }
     }

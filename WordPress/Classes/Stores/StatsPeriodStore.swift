@@ -380,7 +380,7 @@ private extension StatsPeriodStore {
 
         let group = DispatchGroup()
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching posts.")
         }
@@ -393,14 +393,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching posts.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching referrers.")
         }
@@ -413,14 +413,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching referrers.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching published.")
         }
@@ -433,14 +433,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching published.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching clicks.")
         }
@@ -453,14 +453,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedClicks(clicks, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching clicks.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching authors.")
         }
@@ -473,14 +473,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching authors.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching search terms.")
         }
@@ -493,14 +493,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedSearchTerms(searchTerms, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching search terms.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching countries.")
         }
@@ -513,14 +513,14 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching countries.")
                     group.leave()
                 }
             }
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching videos.")
         }
@@ -533,7 +533,7 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching videos.")
                     group.leave()
                 }
@@ -542,7 +542,7 @@ private extension StatsPeriodStore {
 
         // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
         // 'num' relates to the "number of periods to include in the query".
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching file downloads.")
         }
@@ -555,7 +555,7 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     DDLogInfo("Stats Period: Leave group fetching file downloads.")
                     group.leave()
                 }
@@ -573,7 +573,7 @@ private extension StatsPeriodStore {
                                       topFileDownloads],
                                      waitUntilFinished: false)
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             group.notify(queue: .main) { [weak self] in
                 DDLogInfo("Stats Period: Finished fetchAsyncData.")
                 self?.storeDataInCache()

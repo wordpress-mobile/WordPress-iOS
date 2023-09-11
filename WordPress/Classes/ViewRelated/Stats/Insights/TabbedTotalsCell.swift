@@ -103,7 +103,7 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
 private extension TabbedTotalsCell {
 
     func setupFilterBar(selectedIndex: Int) {
-        if AppConfiguration.isJetpack && (statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail) {
+        if AppConfiguration.statsRevampV2Enabled && (statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail) {
             WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forNewInsightsCard: true)
         } else {
             WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)

@@ -53,7 +53,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     convenience init(insightsDelegate: SiteStatsInsightsDelegate, insightsManagementDelegate: StatsInsightsManagementDelegate? = nil, insightsShown: [StatSection]) {
-        self.init(style: AppConfiguration.isJetpack ? .insetGrouped : .grouped)
+        self.init(style: AppConfiguration.statsRevampV2Enabled ? .insetGrouped : .grouped)
         self.insightsDelegate = insightsDelegate
         self.insightsManagementDelegate = insightsManagementDelegate
         let insightsShownSupportedForManagement = insightsShown.filter { !InsightsManagementViewController.insightsNotSupportedForManagement.contains($0) }
@@ -73,7 +73,7 @@ class InsightsManagementViewController: UITableViewController {
         tableView.estimatedSectionHeaderHeight = 38
         tableView.accessibilityIdentifier = TextContent.title
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             tableView.isEditing = true
             tableView.allowsSelectionDuringEditing = true
         }
@@ -82,7 +82,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     func handleDismissViaGesture(from presenter: UIViewController) {
-        if AppConfiguration.isJetpack && hasChanges {
+        if AppConfiguration.statsRevampV2Enabled && hasChanges {
             promptToSave(from: presenter)
         } else {
             trackDismiss()
@@ -100,7 +100,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        guard AppConfiguration.isJetpack else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return false
         }
 
@@ -108,7 +108,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard AppConfiguration.isJetpack else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return
         }
 
@@ -120,7 +120,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard AppConfiguration.isJetpack else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return false
         }
 
@@ -146,7 +146,7 @@ class InsightsManagementViewController: UITableViewController {
     // MARK: - Actions
 
     private func updateSaveButton() {
-        guard AppConfiguration.isJetpack else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return
         }
 
@@ -158,7 +158,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     @objc private func doneTapped() {
-        if AppConfiguration.isJetpack && hasChanges {
+        if AppConfiguration.statsRevampV2Enabled && hasChanges {
             promptToSave(from: self)
         } else {
             dismiss()
@@ -228,7 +228,7 @@ private extension InsightsManagementViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             return ImmuTable(sections: [ selectedStatsSection(),
                                          inactiveCardsSection() ].compactMap({$0})
             )
@@ -244,7 +244,7 @@ private extension InsightsManagementViewController {
     // MARK: - Table Sections
 
     func selectedStatsSection() -> ImmuTableSection? {
-        guard AppConfiguration.isJetpack else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return nil
         }
 
@@ -276,7 +276,7 @@ private extension InsightsManagementViewController {
     }
 
     func sectionForCategory(_ category: InsightsCategories) -> ImmuTableSection? {
-        guard AppConfiguration.isJetpack else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return ImmuTableSection(headerText: category.title,
                                     rows: category.insights.map {
                                         let enabled = !insightsShown.contains($0)
@@ -301,7 +301,7 @@ private extension InsightsManagementViewController {
 
     func rowActionFor(_ statSection: StatSection) -> ImmuTableAction {
         return { [unowned self] row in
-            if AppConfiguration.isJetpack {
+            if AppConfiguration.statsRevampV2Enabled {
                 toggleRow(for: statSection)
             } else {
                 self.selectedStat = statSection
@@ -421,7 +421,7 @@ private extension InsightsManagementViewController {
         var insights: [StatSection] {
             switch self {
             case .general:
-                if AppConfiguration.isJetpack {
+                if AppConfiguration.statsRevampV2Enabled {
                     return [.insightsViewsVisitors, .insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
                 }
                 return [.insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]

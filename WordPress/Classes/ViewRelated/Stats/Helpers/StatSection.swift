@@ -35,7 +35,7 @@
     case postStatsRecentWeeks
 
     static var allInsights: [StatSection] {
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             return [.insightsViewsVisitors,
                     .insightsLikesTotals,
                     .insightsCommentsTotals,
@@ -112,7 +112,7 @@
         case .insightsAnnualSiteStats:
             return InsightsHeaders.annualSiteStats
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-            if AppConfiguration.isJetpack {
+            if AppConfiguration.statsRevampV2Enabled {
                 switch self {
                 case .insightsCommentsAuthors:
                     return InsightsHeaders.topCommenters
@@ -406,7 +406,7 @@
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
         static var mostPopularTime: String {
-            if AppConfiguration.isJetpack {
+            if AppConfiguration.statsRevampV2Enabled {
                 return NSLocalizedString("stats.insights.mostPopularCard.title", value: "🔥 Most Popular Time", comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string.")
             } else {
                 return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")

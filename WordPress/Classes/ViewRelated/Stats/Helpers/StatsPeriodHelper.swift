@@ -106,7 +106,7 @@ class StatsPeriodHelper {
             return adjustedDate.normalizedDate()
 
         case .week:
-            if AppConfiguration.isJetpack {
+            if AppConfiguration.statsRevampV2Enabled {
                 guard let endDate = currentDate.lastDayOfTheWeek(in: calendar, with: count) else {
                     DDLogError("[Stats] Couldn't determine the last day of the week for a given date in Stats. Returning original value.")
                     return currentDate

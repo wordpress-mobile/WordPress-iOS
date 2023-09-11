@@ -21,6 +21,10 @@ class StatsGhostBaseCell: UITableViewCell {
     }
 
     private func setupBorders() {
+        if AppConfiguration.statsRevampV2Enabled {
+            return
+        }
+
         topBorder = addTopBorder(withColor: .divider)
         topBorder?.isGhostableDisabled = true
 

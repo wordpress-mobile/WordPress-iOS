@@ -70,7 +70,7 @@ class SiteStatsInsightsViewModel: Observable {
             self?.emitChange()
         }
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             periodChangeReceipt = self.periodStore.onChange { [weak self] in
                 self?.updateMostRecentChartData(self?.periodStore.getSummary())
                 self?.emitChange()
@@ -222,7 +222,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.followersTotalsStatus,
                                         block: {
-                    if AppConfiguration.isJetpack {
+                    if AppConfiguration.statsRevampV2Enabled {
                         return TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                     } else {
                                             return TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
@@ -241,7 +241,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.annualAndMostPopularTimeStatus,
                                         block: {
-                    if AppConfiguration.isJetpack {
+                    if AppConfiguration.statsRevampV2Enabled {
                         return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
                                                  siteStatsInsightsDelegate: nil)
                     } else {
@@ -369,7 +369,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         tableRows.append(TableFooterRow())
 
-        if AppConfiguration.isJetpack {
+        if AppConfiguration.statsRevampV2Enabled {
             // Remove any header rows for the new appearance
             tableRows = tableRows.filter({ !($0 is InsightCellHeaderRow || $0 is TableFooterRow) })
 
@@ -795,7 +795,7 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForFollowerType(.insightsFollowersEmail)],
                                     statSection: .insightsFollowersWordPress,
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
-                                    showTotalCount: AppConfiguration.isJetpack ? false : true)
+                                    showTotalCount: AppConfiguration.statsRevampV2Enabled ? false : true)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
@@ -824,8 +824,8 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: AppConfiguration.isJetpack ? "" : followerType.itemSubtitle,
-                       dataSubtitle: AppConfiguration.isJetpack ? "" : followerType.dataSubtitle,
+                       itemSubtitle: AppConfiguration.statsRevampV2Enabled ? "" : followerType.itemSubtitle,
+                       dataSubtitle: AppConfiguration.statsRevampV2Enabled ? "" : followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }
