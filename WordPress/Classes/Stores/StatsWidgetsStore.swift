@@ -7,12 +7,10 @@ class StatsWidgetsStore {
     init(coreDataStack: CoreDataStack = ContextManager.shared) {
         self.coreDataStack = coreDataStack
 
-        updateJetpackFeaturesDisabled()
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
         observeApplicationLaunched()
         observeSiteUpdatesForWidgets()
-        observeJetpackFeaturesState()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -21,18 +19,17 @@ class StatsWidgetsStore {
 
         if let newTodayData = refreshStats(type: HomeWidgetTodayData.self) {
             HomeWidgetTodayData.write(items: newTodayData)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
+            WidgetCenter.shared.reloadTodayTimelines()
         }
 
         if let newAllTimeData = refreshStats(type: HomeWidgetAllTimeData.self) {
             HomeWidgetAllTimeData.write(items: newAllTimeData)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
+            WidgetCenter.shared.reloadAllTimeTimelines()
         }
 
         if let newThisWeekData = refreshStats(type: HomeWidgetThisWeekData.self) {
             HomeWidgetThisWeekData.write(items: newThisWeekData)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
+            WidgetCenter.shared.reloadThisWeekTimelines()
         }
     }
 
@@ -43,20 +40,19 @@ class StatsWidgetsStore {
         if !HomeWidgetTodayData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
+            WidgetCenter.shared.reloadTodayTimelines()
         }
 
         if !HomeWidgetThisWeekData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
             HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
+            WidgetCenter.shared.reloadThisWeekTimelines()
         }
 
         if !HomeWidgetAllTimeData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
             HomeWidgetAllTimeData.write(items: initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
+            WidgetCenter.shared.reloadAllTimeTimelines()
         }
     }
 
@@ -82,10 +78,11 @@ class StatsWidgetsStore {
             T.write(items: homeWidgetCache)
             return
         }
-        var widgetKind = ""
-        if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
 
-            widgetKind = AppConfiguration.Widget.Stats.todayKind
+        var widgetReload: (() -> ())?
+
+        if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
+            widgetReload = WidgetCenter.shared.reloadTodayTimelines
 
             homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                                    siteName: blog.title ?? oldData.siteName,
@@ -96,7 +93,7 @@ class StatsWidgetsStore {
 
 
         } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
-            widgetKind = AppConfiguration.Widget.Stats.allTimeKind
+            widgetReload = WidgetCenter.shared.reloadAllTimeTimelines
 
             homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
                                                                      siteName: blog.title ?? oldData.siteName,
@@ -106,6 +103,7 @@ class StatsWidgetsStore {
                                                                      stats: stats) as? T
 
         } else if widgetType == HomeWidgetThisWeekData.self, let stats = stats as? ThisWeekWidgetStats {
+            widgetReload = WidgetCenter.shared.reloadThisWeekTimelines
 
             homeWidgetCache[siteID.intValue] = HomeWidgetThisWeekData(siteID: siteID.intValue,
                                                                       siteName: blog.title ?? oldData.siteName,
@@ -116,10 +114,7 @@ class StatsWidgetsStore {
         }
 
         T.write(items: homeWidgetCache)
-        WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
-        if widgetKind == AppConfiguration.Widget.Stats.todayKind {
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
-        }
+        widgetReload?()
     }
 }
 
@@ -250,7 +245,7 @@ extension StatsWidgetsStore {
             let stats = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
             StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetThisWeekData.self, stats: stats)
         case .week:
-            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
+            WidgetCenter.shared.reloadThisWeekTimelines()
         default:
             break
         }
@@ -278,10 +273,9 @@ private extension StatsWidgetsStore {
         HomeWidgetAllTimeData.delete()
 
         userDefaults?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
-        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
-        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
-        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
-        WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.lockScreenTodayViewsKind)
+        WidgetCenter.shared.reloadTodayTimelines()
+        WidgetCenter.shared.reloadThisWeekTimelines()
+        WidgetCenter.shared.reloadAllTimeTimelines()
     }
 
     /// Observes WPSigninDidFinishNotification and wordpressLoginFinishedJetpackLogin notifications and initializes the widget.
@@ -298,26 +292,6 @@ private extension StatsWidgetsStore {
 
     @objc private func handleApplicationLaunchCompleted() {
         handleJetpackWidgetsMigration()
-    }
-
-    func observeJetpackFeaturesState() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateJetpackFeaturesDisabled),
-                                               name: .WPAppUITypeChanged,
-                                               object: nil)
-    }
-
-    @objc func updateJetpackFeaturesDisabled() {
-        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
-            return
-        }
-        let key = AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey
-        let oldValue = defaults.bool(forKey: key)
-        let newValue = !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
-        defaults.setValue(newValue, forKey: key)
-        if oldValue != newValue {
-            refreshStatsWidgetsSiteList()
-        }
     }
 }
 

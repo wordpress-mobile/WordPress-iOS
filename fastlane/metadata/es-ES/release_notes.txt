@@ -1,6 +1,0 @@
-Hemos hecho algunos cambios en el editor de bloques.
-
-- El bloque de enlaces sociales ahora incluye un contorno para que puedas ver cuándo está seleccionado.
-- Hemos solucionado un problema para los usuarios de iOS por el que los tamaños y estilos de fuente personalizados no se mostraban correctamente.
-- Los botones de deshacer y rehacer ya no están visibles en el editor HTML.
-- Ahora verás los códigos hexadecimales del color seleccionado cuando utilices el selector de color del bloque de fondo.

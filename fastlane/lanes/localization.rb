@@ -94,7 +94,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'Resources', 'en.lproj', 'InfoPlist.strings') => 'infoplist.', # For now WordPress and Jetpack share the same InfoPlist.strings
   File.join('WordPress', 'WordPressDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-sharesheet.', # CFBundleDisplayName for the "Save as Draft" share action
   File.join('WordPress', 'JetpackDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-jetpack-sharesheet.', # CFBundleDisplayName for the "Save to Jetpack" share action
-  File.join('WordPress', 'WordPressIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
+  File.join('WordPress', 'JetpackIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
 # Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).

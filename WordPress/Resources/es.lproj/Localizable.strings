@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-27 11:17:13+0000 */
+/* Translation-Revision-Date: 2023-09-05 06:16:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: es */
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Páginas aceleradas móviles (AMP)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "Accede a este bloque de Paywall en tu navegador web para realizar ajustes avanzados.";
 
 /* Title for the account section in site settings screen */
 "Account" = "Cuenta";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Borrar";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4477,6 +4479,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Yo";
 
@@ -4768,9 +4772,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "Nueva clave de moderación";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "Nueva entrada de fotos";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nueva entrada";
@@ -8351,9 +8352,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Deja de seguir el blog.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "Desagrupar";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Dejar de ocultar";
 
@@ -9607,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "archivo de audio";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "No ha sido posible subir la imagen. Por favor, elige una distinta o inténtalo de nuevo más tarde.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Actualizar Gravatar";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Descartar";
 
@@ -10323,6 +10327,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcado como spam";
 
+/* Media screen navigation title */
+"media.title" = "Medios";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "El elemento no se pudo añadir a la biblioteca de medios";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "Tipo de contenido no compatible";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "Subir vídeos de más de 5 minutos requiere un plan de pago.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Descartar";
 
@@ -10331,6 +10347,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Descartar";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "Esta aplicación necesita permiso para acceder a la cámara con el fin de capturar nuevos elementos multimedia; cambia la configuración de privacidad si deseas permitir esta acción.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "Captura de medios";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "Abrir los ajustes";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "Elige entre los medios";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "Elegir del dispositivo";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "Hacer foto";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "Hacer foto o vídeo";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "Grabar vídeo";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Parece que todavía tienes la aplicación WordPress instalada.";
@@ -10461,6 +10501,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Reclama tus dominios de Google";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "Añadir sitio autoalojado";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "Crear sitio en WordPress.com";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "Cuenta y ajustes";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "Añadir sitio nuevo";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "Crea un nuevo sitio para tu negocio, revista o blog personal; o conecta con una instalación de WordPress existente.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "No tienes sitios";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Descartar";
 
@@ -10547,6 +10605,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "La opción de compartir automáticamente en Twitter ya no está disponible";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "Establecer la imagen destacada";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
@@ -10962,7 +11023,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Contactar con soporte";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "¿En qué puedo ayudarte? ¡Si no puedo responder a tu pregunta te ayudaré a abrir un tique de soporte con nuestro equipo!";
+"support.chatBot.firstMessage" = "¿En qué podemos ayudarte?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Enviar un mensaje...";

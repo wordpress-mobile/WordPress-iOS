@@ -2292,8 +2292,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Fshije";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4426,6 +4425,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Unë";
 
@@ -4717,9 +4718,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "Fjalë e Re Moderimi";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "Postim i Ri Fotosh";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Postim i Ri";
@@ -8287,9 +8285,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Ndal ndjekjen e blogut.";
-
-/* No comment provided by engineer. */
-"Ungroup" = "Hiqe Grupin";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Shfshihe";

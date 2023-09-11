@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-29 09:54:09+0000 */
+/* Translation-Revision-Date: 2023-09-06 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: id */
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "Access this Paywall block on your web browser for advanced settings.";
 
 /* Title for the account section in site settings screen */
 "Account" = "Akun";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Hapus";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4477,6 +4479,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Saya";
 
@@ -4768,9 +4772,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "Kunci Moderasi Baru";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "Pos Foto Baru";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Postingan Baru";
@@ -8351,9 +8352,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Berhenti mengikuti blog.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "Batalkan pengelompokan";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Tampilkan";
 
@@ -9607,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "Tidak dapat memuat gambar. Pilih yang lainnya atau coba lagi nanti.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Perbarui Gravatar";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Tutup";
 
@@ -10323,6 +10327,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "ditandai sebagai spam";
 
+/* Media screen navigation title */
+"media.title" = "Media";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "Item tidak bisa ditambahkan ke Pustaka Media.";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "Jenis konten tidak didukung";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "Diperlukan paket berbayar untuk mengunggah video berdurasi lebih dari 5 menit.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Tutup";
 
@@ -10331,6 +10347,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Tutup";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "Aplikasi ini memerlukan izin untuk mengakses Kamera untuk menangkap media baru, harap ganti pengaturan privasi jika Anda ingin mengizinkan.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "Tangkapan Media";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "Buka Pengaturan";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "Pilih dari Media";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "Pilih dari Perangkat";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "Ambil Foto";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "Ambil Foto atau Video";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "Ambil Video";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Aplikasi WordPress sepertinya masih terinstal.";
@@ -10461,6 +10501,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Klaim kembali Google Domains Anda";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "Tambahkan situs yang dikelola sendiri";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "Buat situs WordPress.com";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "Akun dan pengaturan";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "Tambah situs baru";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "Buat situs baru untuk bisnis, majalah, atau blog personal Anda; atau hubungkan instalasi WordPress yang sudah ada.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "Anda belum memiliki situs";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
@@ -10547,6 +10605,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "Atur sebagai Gambar Andalan";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
@@ -10959,7 +11020,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Hubungi dukungan";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Apa yang bisa saya bantu? Jika saya tidak mampu menjawab pertanyaan Anda, saya akan membantu Anda membuka tiket dukungan dengan tim kami!";
+"support.chatBot.firstMessage" = "Apa yang bisa kami bantu?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Kirimkan pesan...";

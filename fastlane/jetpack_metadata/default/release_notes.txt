@@ -1,10 +1,16 @@
-We added a Domain Focus card to your dashboard so you can more easily transfer Google domains. (Don’t want to see this card across multiple sites? Tap the “More” button to hide it.)
+We’ve added a new chat-based support channel with a specially trained bot that provides answers to all your app-related questions. That’ll do, bot. That’ll do. (Still want to talk to a human? As always, you can create a support ticket and talk to a Happiness Engineer.)
 
-We also made some changes in the block editor.
+We added everyone’s favorite native media picker, which you’ll recognize from your Apple Photos app. Filter by different media types and search for albums and photos, no matter how many there are. That’s good news for your 3,591 cat photos.
 
-- The Social Link block now includes an outline so you can see when it’s selected.
-- We fixed an issue for iOS users where custom font sizes and styles weren’t displaying properly.
-- The undo and redo buttons are no longer visible in the HTML editor.
-- You’ll now see hex codes for the selected color when you’re using the Cover Block color picker.
+You can now view, relocate, and remove the Jetpack Paywall block in the block editor.
 
-Finally, we squashed a bug that could cause the app to crash when following new sites in the Reader.
+We moved the “Me” button to the bottom tab bar, which comes with a few small design tweaks. The Social Link block also includes an outline so you can see when it’s selected.
+
+We removed the “New Photo Post” shortcut in the app to create a shorter, clearer menu. So long, farewell.
+
+Finally, we squashed a few bugs.
+
+- You can now take a photo within the app and upload it to your site, even if you haven’t given the app full access to your photos.
+- Errors now process and display properly when you run into trouble while uploading media.
+- The Pages list shouldn’t crash anymore if your authentication token is invalid.
+- When you’re working in the block editor, the app should no longer crash when you transform a nested Columns block into a Group block.
