@@ -669,7 +669,7 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
 private extension BloggingRemindersFlowSettingsViewController {
 
     var isBloggingPromptsEnabled: Bool {
-        return AppConfiguration.bloggingPromptsEnabled && blog.isAccessibleThroughWPCom()
+        return FeatureFlag.bloggingPrompts.enabled && blog.isAccessibleThroughWPCom()
     }
 
     var promptRemindersEnabled: Bool {

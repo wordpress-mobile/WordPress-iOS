@@ -157,7 +157,7 @@ private extension ReminderScheduleCoordinator {
     }
 
     func reminderType(for blog: Blog) -> ReminderType {
-        guard AppConfiguration.bloggingPromptsEnabled else {
+        guard FeatureFlag.bloggingPrompts.enabled else {
             return .bloggingReminders
         }
 

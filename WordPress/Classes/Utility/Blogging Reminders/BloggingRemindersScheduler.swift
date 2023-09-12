@@ -103,7 +103,7 @@ class BloggingRemindersScheduler {
             return daysWithTime.time
         default:
             let defaultTime = Calendar.current.date(from: DateComponents(calendar: Calendar.current, hour: Weekday.defaultHour, minute: 0)) ?? Date()
-            guard AppConfiguration.bloggingPromptsEnabled else {
+            guard FeatureFlag.bloggingPrompts.enabled else {
                 return defaultTime
             }
 

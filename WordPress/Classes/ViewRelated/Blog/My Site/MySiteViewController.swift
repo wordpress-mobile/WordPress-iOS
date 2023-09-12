@@ -971,7 +971,7 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     }
 
     func fetchPrompt(for blog: Blog?) {
-        guard AppConfiguration.bloggingPromptsEnabled,
+        guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
               let promptsService = BloggingPromptsService(blog: blog),

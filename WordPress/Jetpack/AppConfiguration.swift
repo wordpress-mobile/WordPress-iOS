@@ -22,7 +22,6 @@ import Foundation
     @objc static let showsFollowedSitesSettings: Bool = true
     @objc static let showsWhatIsNew: Bool = true
     @objc static let qrLoginEnabled: Bool = true
-    @objc static let bloggingPromptsEnabled = true
     @objc static let statsRevampV2Enabled: Bool = true
     @objc static let personalizeHomeTabEnabled: Bool = true
 }
