@@ -17,7 +17,7 @@ struct HomeWidgetToday: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.todayKind,
+            kind: AppConfiguration.Widget.Stats.Kind.homeToday.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(),
                                                             placeholderContent: placeholderContent,
@@ -26,8 +26,7 @@ struct HomeWidgetToday: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.todayKind,
-                                                  widgetCountKey: AppConfiguration.Widget.Stats.todayProperties)
+                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeToday)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

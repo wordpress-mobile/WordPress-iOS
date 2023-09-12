@@ -5,35 +5,31 @@ import WidgetKit
 ///
 extension Tracks {
 
-    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdatedIfNeeded(entry: LockScreenStatsWidgetEntry<some HomeWidgetData>, widgetKind: AppConfiguration.Widget.Stats.Kind) {
         switch entry {
         case .siteSelected(_, let context):
             if !context.isPreview {
-                trackWidgetUpdated(widgetKind: widgetKind,
-                                   widgetCountKey: widgetCountKey)
+                trackWidgetUpdated(widgetKind: widgetKind)
             }
 
         case .loggedOut, .noSite, .noData:
-            trackWidgetUpdated(widgetKind: widgetKind,
-                               widgetCountKey: widgetCountKey)
+            trackWidgetUpdated(widgetKind: widgetKind)
         }
     }
 
-    func trackWidgetUpdatedIfNeeded(entry: StatsWidgetEntry, widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdatedIfNeeded(entry: StatsWidgetEntry, widgetKind: AppConfiguration.Widget.Stats.Kind) {
         switch entry {
         case .siteSelected(_, let context):
             if !context.isPreview {
-                trackWidgetUpdated(widgetKind: widgetKind,
-                                   widgetCountKey: widgetCountKey)
+                trackWidgetUpdated(widgetKind: widgetKind)
             }
 
         case .loggedOut, .noSite, .noData, .disabled:
-            trackWidgetUpdated(widgetKind: widgetKind,
-                               widgetCountKey: widgetCountKey)
+            trackWidgetUpdated(widgetKind: widgetKind)
         }
     }
 
-    func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdated(widgetKind: AppConfiguration.Widget.Stats.Kind) {
 
         DispatchQueue.global().async {
             WidgetCenter.shared.getCurrentConfigurations { result in
@@ -41,8 +37,8 @@ extension Tracks {
                 switch result {
 
                 case .success(let widgetInfo):
-                    let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind }
-                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetPropertiesKey: widgetCountKey)
+                    let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind.rawValue }
+                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetKind: widgetKind)
 
                 case .failure(let error):
                     DDLogError("Home Widget Today error: unable to read widget information. \(error.localizedDescription)")
@@ -51,14 +47,19 @@ extension Tracks {
         }
     }
 
-    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetPropertiesKey: String) {
+    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetKind: AppConfiguration.Widget.Stats.Kind) {
+        let widgetPropertiesKey = widgetKind.countKey
 
-        var properties = ["total_widgets": widgetInfo.count,
+        var properties: [String: Int] = [:]
+
+        switch widgetKind {
+        case .homeToday, .homeThisWeek, .homeAllTime:
+            properties = ["total_widgets": widgetInfo.count,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
                           "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
-        if #available(iOS 16.0, *) {
-            properties["rectangular_widgets"] = widgetInfo.filter { $0.family == .accessoryRectangular }.count
+        default:
+            break
         }
 
         let previousProperties = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: widgetPropertiesKey) as? [String: Int]
@@ -69,7 +70,7 @@ extension Tracks {
 
         UserDefaults(suiteName: WPAppGroupName)?.set(properties, forKey: widgetPropertiesKey)
 
-        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetPropertiesKey), properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetKind), properties: properties as [String: AnyObject]?)
     }
 
     // MARK: - Private Helpers
@@ -82,29 +83,37 @@ extension Tracks {
     // MARK: - Private Enums
 
     fileprivate enum ExtensionEvents: String {
-        // User installs an instance of the today widget
-        case todayWidgetUpdated = "today_home_extension_widget_updated"
-        // User installs an instance of the all time widget
-        case allTimeWidgetUpdated = "alltime_home_extension_widget_updated"
-        // Users installs an instance of the this week widget
-        case thisWeekWidgetUpdated = "thisweek_home_extension_widget_updated"
-        // Users installs an instance of the lockscreen today views widget
-        case todayViewsLockScreenWidgetUpdated = "today_views_lockscreen_extension_widget_updated"
+        // Events when user installs an instance of the widget
+        case homeTodayWidgetUpdated = "today_home_extension_widget_updated"
+        case homeAllTimeWidgetUpdated = "alltime_home_extension_widget_updated"
+        case homeThisWeekWidgetUpdated = "thisweek_home_extension_widget_updated"
+        case lockScreenTodayViewsWidgetUpdated = "today_views_lockscreen_widget_updated"
+        case lockScreenTodayLikesCommentsWidgetUpdated = "today_likes_comments_lockscreen_widget_updated"
+        case lockScreenTodayViewsVisitorsWidgetUpdated = "today_views_visitors_lockscreen_widget_updated"
+        case lockScreenAllTimeViewsWidgetUpdated = "all_time_views_lockscreen_widget_updated"
+        case lockScreenAllTimeViewsVisitorsWidgetUpdated = "all_time_views_visitors_lockscreen_widget_updated"
+        case lockScreenAllTimePostsBestViewsWidgetUpdated = "all_time_posts_best_views_lockscreen_widget_updated"
 
-        case noEvent
-
-        static func widgetUpdated(for key: String) -> ExtensionEvents {
-            switch key {
-            case AppConfiguration.Widget.Stats.todayProperties:
-                return .todayWidgetUpdated
-            case AppConfiguration.Widget.Stats.allTimeProperties:
-                return .allTimeWidgetUpdated
-            case AppConfiguration.Widget.Stats.thisWeekProperties:
-                return .thisWeekWidgetUpdated
-            case AppConfiguration.Widget.Stats.lockScreenTodayViewsProperties:
-                return .todayViewsLockScreenWidgetUpdated
-            default:
-                return .noEvent
+        static func widgetUpdated(for widgetKind: AppConfiguration.Widget.Stats.Kind) -> ExtensionEvents {
+            switch widgetKind {
+            case .homeToday:
+                return .homeTodayWidgetUpdated
+            case .homeAllTime:
+                return .homeAllTimeWidgetUpdated
+            case .homeThisWeek:
+                return .homeThisWeekWidgetUpdated
+            case .lockScreenTodayViews:
+                return .lockScreenTodayViewsWidgetUpdated
+            case .lockScreenTodayLikesComments:
+                 return .lockScreenTodayLikesCommentsWidgetUpdated
+             case .lockScreenTodayViewsVisitors:
+                 return .lockScreenTodayViewsVisitorsWidgetUpdated
+             case .lockScreenAllTimeViews:
+                 return .lockScreenAllTimeViewsWidgetUpdated
+             case .lockScreenAllTimeViewsVisitors:
+                 return .lockScreenAllTimeViewsVisitorsWidgetUpdated
+             case .lockScreenAllTimePostsBestViews:
+                 return .lockScreenAllTimePostsBestViewsWidgetUpdated
             }
         }
     }

@@ -36,7 +36,7 @@ struct HomeWidgetThisWeek: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.thisWeekKind,
+            kind: AppConfiguration.Widget.Stats.Kind.homeThisWeek.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetThisWeekData>(service: StatsWidgetsService(),
                                                                placeholderContent: placeholderContent,
@@ -45,8 +45,7 @@ struct HomeWidgetThisWeek: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.thisWeekKind,
-                                                  widgetCountKey: AppConfiguration.Widget.Stats.thisWeekProperties)
+                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeThisWeek)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

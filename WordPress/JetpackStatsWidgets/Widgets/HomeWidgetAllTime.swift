@@ -16,7 +16,7 @@ struct HomeWidgetAllTime: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.allTimeKind,
+            kind: AppConfiguration.Widget.Stats.Kind.homeAllTime.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetAllTimeData>(service: StatsWidgetsService(),
                                                               placeholderContent: placeholderContent,
@@ -25,8 +25,7 @@ struct HomeWidgetAllTime: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.Stats.allTimeKind,
-                                                  widgetCountKey: AppConfiguration.Widget.Stats.allTimeProperties)
+                                                  widgetKind: AppConfiguration.Widget.Stats.Kind.homeAllTime)
             }
 
             return StatsWidgetsView(timelineEntry: entry)
