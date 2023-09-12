@@ -249,10 +249,6 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     }
 
-    func restore(_ post: AbstractPost) {
-
-    }
-
     func retry(_ post: AbstractPost) {
         didCallRetry = true
     }

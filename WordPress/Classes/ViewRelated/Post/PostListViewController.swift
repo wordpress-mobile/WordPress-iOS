@@ -8,10 +8,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private let postCompactCellIdentifier = "PostCompactCellIdentifier"
     private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
-    private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
     private let postCompactCellNibName = "PostCompactCell"
     private let postCardTextCellNibName = "PostCardCell"
-    private let postCardRestoreCellNibName = "RestorePostTableViewCell"
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
     private var postCellIdentifier: String {
@@ -285,9 +283,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: bundle)
         tableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
 
-        let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
-        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
-
         let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
 
@@ -468,15 +463,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let searchText = currentSearchTerm() ?? ""
         let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
 
-        // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
-        // or posts that were recently deleted.
-        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
-            let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
-
-            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
-        } else {
-            predicates.append(filterPredicate)
-        }
+        predicates.append(filterPredicate)
 
         if filterSettings.shouldShowOnlyMyPosts() {
             let myAuthorID = blogUserID() ?? 0
@@ -515,9 +502,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return windowlessCell
         }
 
-        let post = postAtIndexPath(indexPath)
-        let identifier = cellIdentifierForPost(post)
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: postCellIdentifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
 
@@ -540,19 +525,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configurablePostView.configure(with: post)
 
         configurePostCell(cell)
-        configureRestoreCell(cell)
-    }
-
-    fileprivate func cellIdentifierForPost(_ post: Post) -> String {
-        var identifier: String
-
-        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
-            identifier = postCardRestoreCellIdentifier
-        } else {
-            identifier = postCellIdentifier
-        }
-
-        return identifier
     }
 
     private func configurePostCell(_ cell: UITableViewCell) {
@@ -561,14 +533,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         cell.shouldHideAuthor = showingJustMyPosts
-    }
-
-    private func configureRestoreCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? RestorePostTableViewCell else {
-            return
-        }
-
-        cell.isCompact = isCompact
     }
 
     // MARK: - Post Actions
@@ -711,12 +675,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.deletePost(post)
         }
         alertController.presentFromRootViewController()
-    }
-
-    func restore(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            restorePost(post)
-        }
     }
 
     func draft(_ post: AbstractPost) {

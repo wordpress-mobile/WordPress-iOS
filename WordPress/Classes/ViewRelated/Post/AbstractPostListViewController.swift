@@ -130,12 +130,6 @@ class AbstractPostListViewController: UIViewController,
     @IBOutlet var filterTabBar: FilterTabBar!
 
     @objc var searchController: UISearchController!
-    /// The original status of trashed posts. Cleared on refresh or when filter changes.
-    var recentlyTrashedPostRestorableStatus = [NSManagedObjectID: BasePost.Status]()
-    /// IDs of trashed posts. Cleared on refresh or when filter changes.
-    var recentlyTrashedPostObjectIDs: [NSManagedObjectID] {
-        Array(recentlyTrashedPostRestorableStatus.keys)
-    }
 
     fileprivate var searchesSyncing = 0
 
@@ -637,10 +631,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
-        if recentlyTrashedPostObjectIDs.count > 0 {
-            refreshAndReload()
-        }
-
         let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
@@ -952,10 +942,6 @@ class AbstractPostListViewController: UIViewController,
     @objc func deletePost(_ apost: AbstractPost) {
         WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
 
-        let postObjectID = apost.objectID
-
-        recentlyTrashedPostRestorableStatus[postObjectID] = apost.status
-
         // Remove the trashed post from spotlight
         SearchManager.shared.deleteSearchableItem(apost)
 
@@ -990,28 +976,20 @@ class AbstractPostListViewController: UIViewController,
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if strongSelf.recentlyTrashedPostRestorableStatus.keys.contains(postObjectID) {
-                strongSelf.recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID)
-                // We don't really know what happened here, why did the request fail?
-                // Maybe we could not delete the post or maybe the post was already deleted
-                // It is safer to re fetch the results than to reload that specific row
-                DispatchQueue.main.async {
-                    strongSelf.updateAndPerformFetchRequestRefreshingResults()
-                }
+            // We don't really know what happened here, why did the request fail?
+            // Maybe we could not delete the post or maybe the post was already deleted
+            // It is safer to re fetch the results than to reload that specific row
+            DispatchQueue.main.async {
+                strongSelf.updateAndPerformFetchRequestRefreshingResults()
             }
         })
     }
 
-    @objc func restorePost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
+    func restorePost(_ apost: AbstractPost, toStatus status: BasePost.Status, completion: (() -> Void)? = nil) {
         WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
 
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
         let postObjectID = apost.objectID
-
-        guard let restorableStatus = recentlyTrashedPostRestorableStatus.removeValue(forKey: postObjectID) else {
-            DDLogError("Can't find the original post status when attempting to restore a post")
-            return
-        }
 
         if filterSettings.currentPostListFilter().filterType != .draft {
             // Needed or else the post will remain in the published list.
@@ -1021,7 +999,7 @@ class AbstractPostListViewController: UIViewController,
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.restore(apost, toStatus: restorableStatus.rawValue, success: { [weak self] in
+        postService.restore(apost, toStatus: status.rawValue, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return
@@ -1066,8 +1044,6 @@ class AbstractPostListViewController: UIViewController,
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
-
-            strongSelf.recentlyTrashedPostRestorableStatus[postObjectID] = restorableStatus
         }
     }
 
@@ -1110,7 +1086,6 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Filtering
 
     @objc func refreshAndReload() {
-        recentlyTrashedPostRestorableStatus.removeAll()
         updateSelectedFilter()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
