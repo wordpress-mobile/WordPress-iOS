@@ -139,7 +139,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
-  - WordPress-Editor-iOS (~> 1.19.8)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `00875730d92e22031aec8ae47f0b24042da64aed`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `00875730d92e22031aec8ae47f0b24042da64aed`)
   - WordPressAuthenticator (~> 6.3)
   - WordPressKit (~> 8.5)
   - WordPressShared (~> 2.2)
@@ -183,8 +184,6 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftLint
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressKit
     - WordPressShared
     - WPMediaPicker
@@ -204,6 +203,12 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.103.2.podspec
+  WordPress-Aztec-iOS:
+    :commit: 00875730d92e22031aec8ae47f0b24042da64aed
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: 00875730d92e22031aec8ae47f0b24042da64aed
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -213,6 +218,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.100.2
+  WordPress-Aztec-iOS:
+    :commit: 00875730d92e22031aec8ae47f0b24042da64aed
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: 00875730d92e22031aec8ae47f0b24042da64aed
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -264,6 +275,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: b99ef82bab1e59cf8ae03a030caae5e2a50d5522
+PODFILE CHECKSUM: dfe08e206cc77e20bf5437d53fb30ae6fe8b1655
 
 COCOAPODS: 1.12.1
