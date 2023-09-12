@@ -87,7 +87,7 @@ struct WeeklyRoundupDebugScreen: View {
                 HStack {
                     Spacer()
 
-                    Button("Schedule in 10 sec / 5 min") {
+                    Button("Schedule in 10 sec") {
                         self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 5 * 60)
                     }
                     .buttonStyle(BlueButton())
@@ -102,7 +102,7 @@ struct WeeklyRoundupDebugScreen: View {
                 HStack {
                     Spacer()
 
-                    Button("Schedule in 10 sec / 30 min") {
+                    Button("Schedule in 10 sec") {
                         self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 30 * 60)
                     }
                     .buttonStyle(BlueButton())
@@ -117,7 +117,7 @@ struct WeeklyRoundupDebugScreen: View {
                 HStack {
                     Spacer()
 
-                    Button("Schedule in 10 sec / 60 min") {
+                    Button("Schedule in 10 sec") {
                         self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 60 * 60)
                     }
                     .buttonStyle(BlueButton())
@@ -130,7 +130,7 @@ struct WeeklyRoundupDebugScreen: View {
                     .frame(height: settings.spacerHeight)
             }
 
-            Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification which depend on the weeklyRoundupStaticNotification feature flag being enabled.  The static notification will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
+            Text("The values represent when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.")
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(settings.defaultPadding)
 

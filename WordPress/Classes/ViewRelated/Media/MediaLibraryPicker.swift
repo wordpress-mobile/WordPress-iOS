@@ -24,10 +24,7 @@ final class MediaLibraryPicker: NSObject {
         picker.dataSource = dataSource
         picker.delegate = delegate
         picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
-
-        if FeatureFlag.mediaPickerPermissionsNotice.enabled {
-            picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
-        }
+        picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
 
         origin.present(picker, animated: true)
     }

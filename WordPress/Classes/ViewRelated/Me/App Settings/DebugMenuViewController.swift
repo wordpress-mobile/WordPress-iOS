@@ -78,11 +78,9 @@ class DebugMenuViewController: UITableViewController {
             }),
         ]
 
-        if Feature.enabled(.weeklyRoundup) {
-            toolsRows.append(ButtonRow(title: "Weekly Roundup", action: { [weak self] _ in
-                self?.displayWeeklyRoundupDebugTools()
-            }))
-        }
+        toolsRows.append(ButtonRow(title: "Weekly Roundup", action: { [weak self] _ in
+            self?.displayWeeklyRoundupDebugTools()
+        }))
 
         return toolsRows
     }

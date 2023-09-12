@@ -3,7 +3,7 @@ class StatsStackViewCell: StatsBaseCell, NibLoadable {
 
     @IBOutlet private(set) var stackView: UIStackView! {
         didSet {
-            if FeatureFlag.statsNewAppearance.disabled {
+            if !AppConfiguration.statsRevampV2Enabled {
                 contentView.addTopBorder(withColor: Style.separatorColor)
                 contentView.addBottomBorder(withColor: Style.separatorColor)
             }

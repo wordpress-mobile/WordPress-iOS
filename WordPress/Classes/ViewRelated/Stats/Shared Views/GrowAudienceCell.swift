@@ -76,7 +76,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         selectionStyle = .none
         backgroundColor = .listForeground
 
-        if FeatureFlag.statsNewAppearance.disabled {
+        if !AppConfiguration.statsRevampV2Enabled {
             addBottomBorder(withColor: .divider)
         }
 
