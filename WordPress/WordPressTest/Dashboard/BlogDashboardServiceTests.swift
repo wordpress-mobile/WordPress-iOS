@@ -24,6 +24,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
         service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, repository: repositoryMock, postsParser: postsParserMock)
 
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
     }
@@ -32,6 +33,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         super.tearDown()
         context = nil
 
+        try? featureFlags.override(FeatureFlag.personalizeHomeTab, withValue: FeatureFlag.personalizeHomeTab.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
     }

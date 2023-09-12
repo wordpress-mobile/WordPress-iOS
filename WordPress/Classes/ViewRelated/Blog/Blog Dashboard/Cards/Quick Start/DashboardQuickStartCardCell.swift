@@ -65,7 +65,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
     }
 
     private func configureOnEllipsisButtonTap(sourceRect: CGRect, blog: Blog) {
-        if AppConfiguration.personalizeHomeTabEnabled {
+        if FeatureFlag.personalizeHomeTab.enabled {
             cardFrameView.addMoreMenu(items: [
                 BlogDashboardHelpers.makeHideCardAction(for: .quickStart, blog: blog)
             ], card: .quickStart)
