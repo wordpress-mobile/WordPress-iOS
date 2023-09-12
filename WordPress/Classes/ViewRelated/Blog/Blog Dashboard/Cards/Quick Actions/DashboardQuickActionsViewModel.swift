@@ -84,13 +84,13 @@ enum DashboardQuickAction: String, CaseIterable {
     var image: UIImage? {
         switch self {
         case .posts:
-            return UIImage(named: "site-menu-posts")
+            return UIImage(named: "site-menu-posts")?.imageFlippedForRightToLeftLayoutDirection()
         case .pages:
             return UIImage(named: "site-menu-pages")
         case .media:
             return UIImage(named: "site-menu-media")
         case .comments:
-            return UIImage(named: "site-menu-comments")
+            return UIImage(named: "site-menu-comments")?.imageFlippedForRightToLeftLayoutDirection()
         case .stats:
             return UIImage(named: "site-menu-stats")
         case .more:
