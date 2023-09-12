@@ -7,6 +7,7 @@ enum FeatureFlag: Int, CaseIterable {
     case debugMenu
     case lockScreenWidget
     case siteIconCreator
+    case statsNewInsights
     case betaSiteDesigns
     case siteCreationDomainPurchasing
     case personalizeHomeTab
@@ -33,6 +34,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
+        case .statsNewInsights:
+            return AppConfiguration.statsRevampV2Enabled
         case .betaSiteDesigns:
             return false
         case .siteCreationDomainPurchasing:
@@ -81,6 +84,8 @@ extension FeatureFlag {
             return "iOS 16 Widget in Lock Screen"
         case .siteIconCreator:
             return "Site Icon Creator"
+        case .statsNewInsights:
+            return "New Cards for Stats Insights"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
         case .siteCreationDomainPurchasing:
