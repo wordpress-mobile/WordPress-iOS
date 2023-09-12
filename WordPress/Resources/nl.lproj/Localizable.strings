@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-29 14:54:09+0000 */
+/* Translation-Revision-Date: 2023-09-06 15:54:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: nl */
@@ -432,6 +432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "Krijg toegang tot deze betaalmuurblokkering in je webbrowser voor geavanceerde instellingen.";
 
 /* Title for the account section in site settings screen */
 "Account" = "Account";
@@ -2310,8 +2313,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "Verwijderen";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4474,6 +4476,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ik";
 
@@ -4765,9 +4769,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "Nieuwe Moderatiesleutel";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "Nieuw Fotobericht";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nieuw bericht";
@@ -8348,9 +8349,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Wordt gebruikt om te stoppen met het volgen van een blog.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "Niet groeperen";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Verbergen uitschakelen";
 
@@ -9604,6 +9602,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audiobestand";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "Kan de afbeelding niet laden. Voer een andere in of probeer het later opnieuw.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "Update Gravatar";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Negeren";
 
@@ -10311,6 +10315,12 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "gemarkeerd als spam";
 
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "Het item kon niet worden toegevoegd aan de mediabibliotheek.";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "HTTP inhoudstype niet ondersteund";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Negeren";
 
@@ -10319,6 +10329,21 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "Deze app heeft toestemming nodig om de camera te openen voor het registreren van nieuwe media; wijzig de privacyinstellingen als je dit wilt toestaan.";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "Instellingen openen";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "Kies media";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "\"Kiezen op apparaat\"";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "Video maken";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Het lijkt erop dat je de WordPress app nog steeds geïnstalleerd hebt.";
@@ -10446,6 +10471,18 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Je Google-domeinen opnieuw claimen";
 
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "Accountinstellingen";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "Nieuwe site toevoegen";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "Maak een nieuwe site aan voor je bedrijf, tijdschrift of persoonlijke blog, of maak verbinding met je bestaande WordPress-installatie.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "Je hebt geen sites";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
 
@@ -10532,6 +10569,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "Stel uitgelichte afbeelding in";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promoten met Blaze";
@@ -10904,7 +10944,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Neem contact op met support";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "Waar kan ik je mee helpen? Als ik je vraag niet kan beantwoorden, help ik je een ondersteuningsticket aan te maken bij ons team!";
+"support.chatBot.firstMessage" = "Waarmee kunnen we je helpen?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Een bericht versturen …";

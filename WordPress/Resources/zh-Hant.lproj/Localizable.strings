@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-29 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-09-07 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: zh_TW */
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速行動版網頁 (AMP)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "請在網頁瀏覽器上存取此付費閱讀區塊，以便進階設定。";
 
 /* Title for the account section in site settings screen */
 "Account" = "帳號";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "刪除";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4474,6 +4476,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "我";
 
@@ -4765,9 +4769,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "新增審核關鍵字";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "新增照片文章";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "新增文章";
@@ -8348,9 +8349,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "取消關注此網誌。";
 
-/* No comment provided by engineer. */
-"Ungroup" = "取消群組";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "取消隱藏";
 
@@ -9604,6 +9602,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音訊檔案";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "無法載入圖片。 請選擇其他圖片，或稍後再試。";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "更新 Gravatar";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "關閉";
 
@@ -10317,6 +10321,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
 
+/* Media screen navigation title */
+"media.title" = "媒體";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "無法將該項目新增到媒體庫";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "不支援的內容類型";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "須購買付費方案才能上傳長度超過 5 分鐘的影片。";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "關閉";
 
@@ -10325,6 +10341,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "關閉";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "此應用程式需要取得權限才能存取相機，以擷取新的媒體。若你願意允許此應用程式功能，請變更隱私設定。";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "媒體擷取";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "開啟設定";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "從媒體中選擇";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "從裝置中選擇";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "拍攝照片";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "拍攝照片或影片";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "拍攝影片";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "你似乎仍有安裝 WordPress 應用程式。";
@@ -10455,6 +10495,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "重新申請你的 Google Domains 網域";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "新增自助託管網站";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "建立 WordPress.com 網站";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "帳號與設定";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "新增網站";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "為你的公司、雜誌或個人網誌建立新網站；或連結至現有的 WordPress 安裝項目。";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "你沒有任何網站";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
 
@@ -10541,6 +10599,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 自動分享功能已無法使用";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "設定精選圖片";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "使用 Blaze 進行宣傳";
@@ -10950,7 +11011,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "聯絡支援團隊";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "我能為你提供什麼協助？ 如果我無法解答你的問題，會協助你開立客服支援單並提交給我們的團隊！";
+"support.chatBot.firstMessage" = "你需要什麼協助？";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "傳送訊息…";

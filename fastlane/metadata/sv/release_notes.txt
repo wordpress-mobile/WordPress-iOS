@@ -1,6 +1,0 @@
-Vi har gjort några ändringar i blockredigeraren.
-
-- Blocket Sociala länkar inkluderar nu en ytterkant så att du kan se när det är valt.
-- Vi har åtgärdat ett fel som gjorde anpassade textstorlekar och -stilar inte visades korrekt för iOS-användare.
-- Knapparna Ångra och Gör om är inte längre synliga i HTML-redigeraren.
-- Du kommer nu att kunna se hex-koder för valda färger när du använder omslagsblockets färgväljare.

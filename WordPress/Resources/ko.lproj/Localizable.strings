@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-29 09:54:09+0000 */
+/* Translation-Revision-Date: 2023-09-07 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ko_KR */
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "AMP(Accelerated Mobile Page)";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "웹 브라우저에서 유료 서비스 블록의 고급 설정에 접근하세요.";
 
 /* Title for the account section in site settings screen */
 "Account" = "계정";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "삭제";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4477,6 +4479,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "나";
 
@@ -4768,9 +4772,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "새 중재 키";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "새 사진 글";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "새 글";
@@ -8351,9 +8352,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "블로그 팔로우를 취소합니다.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "그룹 해제";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "숨기기 취소";
 
@@ -9607,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "오디오 파일";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "이미지를 로드할 수 없습니다. 다른 하나를 선택하거나 나중에 다시 시도하세요.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "그라바타 업데이트";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "무시";
 
@@ -10323,6 +10327,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
 
+/* Media screen navigation title */
+"media.title" = "미디어";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "아이템을 미디어 라이브러리에 추가할 수 없습니다";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "지원되지 않는 콘텐츠 유형";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "5분을 초과하는 비디오를 업로드하려면 유료 요금제가 필요합니다.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "무시";
 
@@ -10331,6 +10347,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "새 미디어를 캡처하려면 카메라에 접근하는 권한이 이 앱에 필요합니다. 접근을 허용하려면 프라이버시 설정을 변경하세요.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "미디어 캡처";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "설정 열기";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "미디어에서 선택";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "기기에서 선택";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "사진 촬영";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "사진 또는 비디오 촬영";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "비디오 촬영";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "아직 워드프레스 앱이 설치되어 있는 것 같습니다.";
@@ -10461,6 +10501,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Google 도메인 되찾기";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "독립 호스트 사이트 추가";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "워드프레스닷컴 사이트 생성";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "계정 및 설정";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "새 사이트 추가";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "새로운 비즈니스, 잡지 또는 개인 블로그를 생성하거나 기존 워드프레스 설치를 연결하세요.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "사이트가 없습니다";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
 
@@ -10547,6 +10605,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 자동 공유를 더는 이용할 수 없음";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "특성 이미지 설정";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze로 홍보";
@@ -10962,7 +11023,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "지원 문의";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "무엇을 도와드릴까요? 질문에 답변해 드릴 수 없는 경우에는 담당 팀에 지원 티켓을 접수하도록 도와드리겠습니다!";
+"support.chatBot.firstMessage" = "무엇을 도와 드릴까요?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "메시지 보내기...";

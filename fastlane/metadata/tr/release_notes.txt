@@ -1,6 +1,0 @@
-Blok düzenleyicide bazı değişiklikler yaptık.
-
-- Sosyal Bağlantı bloku artık seçili olduğunu görebilmeniz için bir taslak içeriyor.
-- iOS kullanıcıları için özel yazı tipi boyutlarının ve stillerinin düzgün görüntülenmemesine neden olan bir sorunu düzelttik.
-- Geri al ve yinele düğmeleri artık HTML düzenleyicisinde görünmüyor.
-- Bundan sonra Kapak Bloku renk seçicisini kullanırken seçilen rengin hex kodlarını göreceksiniz.

@@ -2,27 +2,13 @@ import XCTest
 @testable import WordPress
 
 final class WidgetDataReaderTests: XCTestCase {
-    func testDisabled() {
-        let intent = SelectSiteIntent()
-        intent.site = Site(identifier: nil, display: "")
-        let sut = makeSUT(
-            makeUserDefaults(suiteName: #function),
-            makeCacheReader(isCacheExisted: true),
-            isLoggedIn: true,
-            isJetpackDisabled: true
-        )
-
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, isJetpack: false, expectDisabled: true)
-    }
-
     func testNoSite() {
         let intent = SelectSiteIntent()
         intent.site = Site(identifier: nil, display: "")
         let sut = makeSUT(
             makeUserDefaults(suiteName: #function),
             makeCacheReader(isCacheExisted: true),
-            isLoggedIn: true,
-            isJetpackDisabled: false
+            isLoggedIn: true
         )
 
         verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, isJetpack: true, expectNoSite: true)
@@ -34,8 +20,7 @@ final class WidgetDataReaderTests: XCTestCase {
         let sut = makeSUT(
             makeUserDefaults(suiteName: #function),
             makeCacheReader(isCacheExisted: true),
-            isLoggedIn: false,
-            isJetpackDisabled: false
+            isLoggedIn: false
         )
 
         verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, isJetpack: true, expectLoggedOut: true)
@@ -47,8 +32,7 @@ final class WidgetDataReaderTests: XCTestCase {
         let sut = makeSUT(
             nil,
             makeCacheReader(isCacheExisted: true),
-            isLoggedIn: false,
-            isJetpackDisabled: false
+            isLoggedIn: false
         )
 
         verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, isJetpack: true, expectNoData: true)
@@ -60,8 +44,7 @@ final class WidgetDataReaderTests: XCTestCase {
         let sut = makeSUT(
             makeUserDefaults(suiteName: #function),
             makeCacheReader(isCacheExisted: false),
-            isLoggedIn: true,
-            isJetpackDisabled: false
+            isLoggedIn: true
         )
 
         verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, isJetpack: true, expectNoData: true)
@@ -73,8 +56,7 @@ final class WidgetDataReaderTests: XCTestCase {
         let sut = makeSUT(
             makeUserDefaults(suiteName: #function),
             makeCacheReader(isCacheExisted: true),
-            isLoggedIn: true,
-            isJetpackDisabled: false
+            isLoggedIn: true
         )
 
         verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, isJetpack: true, expectSiteSelected: true)
@@ -85,11 +67,9 @@ extension WidgetDataReaderTests {
     func makeSUT(
         _ userDefaults: UserDefaults?,
         _ cacheReader: WidgetDataCacheReader,
-        isLoggedIn: Bool,
-        isJetpackDisabled: Bool
+        isLoggedIn: Bool
     ) -> WidgetDataReader<HomeWidgetTodayData> {
         userDefaults?.set(isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-        userDefaults?.set(isJetpackDisabled, forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey)
         return WidgetDataReader<HomeWidgetTodayData>(userDefaults, cacheReader)
     }
 

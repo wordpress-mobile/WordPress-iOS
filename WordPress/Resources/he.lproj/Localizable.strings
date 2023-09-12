@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-08-29 16:54:09+0000 */
+/* Translation-Revision-Date: 2023-09-06 15:54:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: he_IL */
@@ -435,6 +435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "תוסף Accelerated Mobile Pages (AMP)‎";
+
+/* No comment provided by engineer. */
+"Access this Paywall block on your web browser for advanced settings." = "יש לגשת לבלוק 'חומת תשלום' בדפדפן להגדרות מתקדמות.";
 
 /* Title for the account section in site settings screen */
 "Account" = "חשבון";
@@ -2313,8 +2316,7 @@ translators: Block name. %s: The localized block name */
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
    Title of a delete button
-   Title of the trash confirmation alert.
-   User action to delete media. */
+   Title of the trash confirmation alert. */
 "Delete" = "מחק";
 
 /* Menus confirmation button for deleting a menu. */
@@ -4477,6 +4479,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
+   Noun. Title. Links to the Me screen.
+   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "אני";
 
@@ -4768,9 +4772,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Moderation Keyword Insertion Title */
 "New Moderation Word" = "מפתח ניהול חדש";
-
-/* New Photo Post 3D Touch Shortcut */
-"New Photo Post" = "פוסט תמונה חדש";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "פוסט חדש";
@@ -8351,9 +8352,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "ביטול המעקב אחרי הבלוג.";
 
-/* No comment provided by engineer. */
-"Ungroup" = "לפרק קבוצה";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "ביטול הסתרה";
 
@@ -9607,6 +9605,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "קובץ אודיו";
 
+/* Alert message when something goes wrong with the selected image. */
+"avatarMenu.failedToSetAvatarAlertMessage" = "לא ניתן לטעון את התמונה. יש לספק תמונה אחרת או לנסות שוב מאוחר יותר.";
+
+/* Title for menu that is shown when you tap your gravatar */
+"avatarMenu.title" = "לעדכן את Gravatar";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "ביטול";
 
@@ -10320,6 +10324,18 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "סומן כ'זבל'";
 
+/* Media screen navigation title */
+"media.title" = "מדיה";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unknown" = "לא ניתן להוסיף את הפריט לספריית המדיה";
+
+/* An error message the app shows if media import fails */
+"mediaExporter.error.unsupportedContentType" = "סוג תוכן לא נתמך";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"mediaExporter.videoLimitExceededError" = "להעלאת סרטון שאורכו מעל חמש דקות נדרשת תוכנית בתשלום.";
+
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "ביטול";
 
@@ -10328,6 +10344,30 @@ Example: Reply to Pamela Nguyen */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "ביטול";
+
+/* Message for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessMessage" = "אפליקציה זו זקוקה להרשאה כדי לגשת למצלמה ולצלם מדיה חדשה, יש לשנות את הגדרות הפרטיות אם ברצונך לאפשר זאת.";
+
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "צילום מדיה";
+
+/* Button that opens the Settings app */
+"mediaPicker.openSettings" = "לפתוח את ההגדרות";
+
+/* The name of the action in the context menu (user's WordPress Media Library */
+"mediaPicker.pickFromMediaLibrary" = "לבחור ממדיה";
+
+/* The name of the action in the context menu */
+"mediaPicker.pickFromPhotosLibrary" = "לבחור מהמכשיר";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhoto" = "צילום תמונה";
+
+/* The name of the action in the context menu */
+"mediaPicker.takePhotoOrVideo" = "צילום תמונה או וידאו";
+
+/* The name of the action in the context menu */
+"mediaPicker.takeVideo" = "צילום וידאו";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "נראה שהאפליקציה של WordPress עדיין מותקנת אצלך.";
@@ -10458,6 +10498,24 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "לקבל בעלות על הדומיינים שלך ב-Google Domains";
 
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "להוסיף אתר באחסון עצמי";
+
+/* Action sheet button title. Launches the flow to create a WordPress.com site. */
+"mySite.noSites.actionSheet.createWPComSite" = "ליצור אתר WordPress.com";
+
+/* Button title. Displays the account and setting screen. */
+"mySite.noSites.button.accountAndSettings" = "חשבון והגדרות";
+
+/* Button title. Displays a screen to add a new site when tapped. */
+"mySite.noSites.button.addNewSite" = "להוסיף אתר חדש";
+
+/* Message description for when a user has no sites. */
+"mySite.noSites.description" = "יצירה של אתר חדש לעסק שלך, מגזין, או בלוג אישי; או חיבור אתר WordPress קיים.";
+
+/* Message title for when a user has no sites. */
+"mySite.noSites.title" = "אין לך עוד אתרים";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "ביטול";
 
@@ -10544,6 +10602,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה";
+
+/* Button in Post Settings */
+"postSettings.setFeaturedImageButton" = "קביעת תמונה מרכזית";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "לקדם עם Blaze";
@@ -10959,7 +11020,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "לפנות לתמיכה";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "איך אוכל לעזור? אם לא אצליח לענות על השאלה שלך, אוכל לעזור לך לפתוח קריאה לצוות התמיכה שלנו!";
+"support.chatBot.firstMessage" = "איך אוכל לעזור?";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "לשלוח הודעה...";
