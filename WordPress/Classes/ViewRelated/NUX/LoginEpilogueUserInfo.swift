@@ -46,8 +46,6 @@ extension LoginEpilogueUserInfo {
         fullName = profile.displayName
     }
 
-    /// Updates the Epilogue properties, given a SocialService instance.
-    ///
     mutating func update(with socialUser: SocialUser) {
         fullName = socialUser.fullName
         email = socialUser.email
