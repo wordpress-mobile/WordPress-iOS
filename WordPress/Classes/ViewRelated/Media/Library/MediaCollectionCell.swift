@@ -47,8 +47,10 @@ final class MediaCollectionCell: UICollectionViewCell {
             viewModel.onLoadingFinished = { [weak self] image in
                 guard let self, self.viewModel?.mediaID == mediaID else { return }
                 // TODO: Display an asset-specific placeholder on error
-                UIView.animate(withDuration: 0.2) {
+                self.imageView.alpha = 0
+                UIView.animate(withDuration: 0.2, delay: 0, options: [.allowUserInteraction]) {
                     self.imageView.image = image
+                    self.imageView.alpha = 1
                     self.backgroundColor = image == nil ? .systemGroupedBackground : .clear
                 }
             }

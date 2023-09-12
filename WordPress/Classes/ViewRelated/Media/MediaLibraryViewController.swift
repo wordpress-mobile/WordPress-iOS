@@ -61,9 +61,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
-        let controller = MediaLibraryViewController(blog: blog)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        sourceController.navigationController?.pushViewController(controller, animated: true)
+        if FeatureFlag.mediaModernization.enabled {
+            let controller = MediaViewController(blog: blog)
+            sourceController.show(controller, sender: nil)
+        } else {
+            let controller = MediaLibraryViewController(blog: blog)
+            controller.navigationItem.largeTitleDisplayMode = .never
+            sourceController.navigationController?.pushViewController(controller, animated: true)
+        }
 
         QuickStartTourGuide.shared.visited(.mediaScreen)
     }
@@ -780,13 +785,6 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
         super.encodeRestorableState(with: coder)
 
         coder.encode(blog.objectID.uriRepresentation(), forKey: EncodingKey.blogURL)
-    }
-}
-
-fileprivate extension Blog {
-    var userCanUploadMedia: Bool {
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
-        return capabilities != nil ? isUploadingFilesAllowed() : true
     }
 }
 
