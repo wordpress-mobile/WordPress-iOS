@@ -450,6 +450,8 @@
 		0CB4057A29C8DDEE008EED0A /* BlogDashboardPersonalizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */; };
 		0CB4057D29C8DF83008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
 		0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */; };
+		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
+		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
 		0CD382842A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
 		0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */; };
@@ -804,7 +806,6 @@
 		3F107B1929B6F7E0009B3658 /* XCTestCase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F107B1829B6F7E0009B3658 /* XCTestCase+Utils.swift */; };
 		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
-		3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
 		3F28CEA52A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA42A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift */; };
 		3F28CEA92A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA82A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift */; };
@@ -868,7 +869,6 @@
 		3F435221289B2B5100CE19ED /* JetpackOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
 		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
-		3F43603323F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */; };
 		3F43703F2893201400475B6E /* JetpackOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */; };
 		3F4370412893207C00475B6E /* JetpackOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4370402893207C00475B6E /* JetpackOverlayView.swift */; };
 		3F43704428932F0100475B6E /* JetpackBrandingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */; };
@@ -1742,8 +1742,6 @@
 		8070EB3E28D807CB005C6513 /* InMemoryUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */; };
 		8071390727D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
 		8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
-		808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
-		808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		808DB70C2A710EFE00EA1645 /* NUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DB70B2A710EFE00EA1645 /* NUXTests.swift */; };
 		808DB70D2A710EFE00EA1645 /* NUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DB70B2A710EFE00EA1645 /* NUXTests.swift */; };
 		8091019329078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */; };
@@ -1992,6 +1990,7 @@
 		80F6D05D28EE88FC00953C1A /* JetpackNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 80F6D05428EE866A00953C1A /* JetpackNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */; };
 		80F8DAC2282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */; };
+		80FDF4182AAADDF2000287B1 /* MySiteMenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FDF4172AAADDF2000287B1 /* MySiteMenuScreen.swift */; };
 		820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */; };
 		820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */; };
 		821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821738081FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift */; };
@@ -3845,8 +3844,6 @@
 		FA4BC0D12996A589005EB077 /* BlazeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BC0CF2996A589005EB077 /* BlazeService.swift */; };
 		FA4EBCC12A98F00200BA3DFB /* NoSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EBCC02A98F00200BA3DFB /* NoSitesView.swift */; };
 		FA4EBCC22A98F00200BA3DFB /* NoSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4EBCC02A98F00200BA3DFB /* NoSitesView.swift */; };
-		FA4F383627D766020068AAF5 /* MySiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F383527D766020068AAF5 /* MySiteSettings.swift */; };
-		FA4F383727D766020068AAF5 /* MySiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F383527D766020068AAF5 /* MySiteSettings.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
 		FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */; };
 		FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */; };
@@ -3896,8 +3893,8 @@
 		FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
 		FAA4012E27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
-		FAA4013427B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
-		FAA4013527B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
+		FAA4013427B52455009E1137 /* DashboardQuickActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */; };
+		FAA4013527B52455009E1137 /* DashboardQuickActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */; };
 		FAA9084C27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
@@ -5303,7 +5300,6 @@
 		FABB25E92602FC2C00C8785C /* Pinghub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DA4921E03E03F00CF07A8 /* Pinghub.swift */; };
 		FABB25EA2602FC2C00C8785C /* PeopleRoleBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B912821BB01047003C25B9 /* PeopleRoleBadgeLabel.swift */; };
 		FABB25EB2602FC2C00C8785C /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FC6B7E2072E3EB00B9A1CD /* ActivityDetailViewController.swift */; };
-		FABB25EC2602FC2C00C8785C /* BlogListViewController+BlogDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */; };
 		FABB25ED2602FC2C00C8785C /* WebViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */; };
 		FABB25EE2602FC2C00C8785C /* ViewMoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */; };
 		FABB25EF2602FC2C00C8785C /* ReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BADF16424801BCE005AD038 /* ReaderWebView.swift */; };
@@ -6106,6 +6102,7 @@
 		0CB4057029C8DCF4008EED0A /* BlogDashboardPersonalizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationViewModel.swift; sourceTree = "<group>"; };
 		0CB4057229C8DD01008EED0A /* BlogDashboardPersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizationView.swift; sourceTree = "<group>"; };
 		0CB4057B29C8DEE1008EED0A /* BlogDashboardPersonalizeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersonalizeCardCell.swift; sourceTree = "<group>"; };
+		0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
@@ -6491,7 +6488,6 @@
 		3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItem.swift; sourceTree = "<group>"; };
 		3F107B1829B6F7E0009B3658 /* XCTestCase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Utils.swift"; sourceTree = "<group>"; };
 		3F170E232655917400F6F670 /* UIView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SwiftUI.swift"; sourceTree = "<group>"; };
-		3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+MeButtonTests.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
 		3F20FDF4276BF21000DA3CAD /* WordPressFlux */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = WordPressFlux; path = ../WordPressFlux; sourceTree = "<group>"; };
 		3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocalizedString.swift; sourceTree = "<group>"; };
@@ -6515,7 +6511,6 @@
 		3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotlightable.swift; sourceTree = "<group>"; };
 		3F43602E23F31D48001DEE70 /* ScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePresenter.swift; sourceTree = "<group>"; };
 		3F43603023F31E09001DEE70 /* MeScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeScenePresenter.swift; sourceTree = "<group>"; };
-		3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+BlogDetailsFactory.swift"; sourceTree = "<group>"; };
 		3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayViewController.swift; sourceTree = "<group>"; };
 		3F4370402893207C00475B6E /* JetpackOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayView.swift; sourceTree = "<group>"; };
 		3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingCoordinator.swift; sourceTree = "<group>"; };
@@ -7297,7 +7292,6 @@
 		806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModelTests.swift; sourceTree = "<group>"; };
 		8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryUserDefaults.swift; sourceTree = "<group>"; };
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
-		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
 		808DB70B2A710EFE00EA1645 /* NUXTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXTests.swift; sourceTree = "<group>"; };
 		8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFullscreenOverlayViewController.swift; sourceTree = "<group>"; };
 		8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackFullscreenOverlayViewController.xib; sourceTree = "<group>"; };
@@ -7345,6 +7339,7 @@
 		80F6D05828EE86F800953C1A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80F6D05928EE86F800953C1A /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAnalytics+QuickStart.swift"; sourceTree = "<group>"; };
+		80FDF4172AAADDF2000287B1 /* MySiteMenuScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteMenuScreen.swift; sourceTree = "<group>"; };
 		820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 64.xcdatamodel"; sourceTree = "<group>"; };
 		820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserSectionHeaderView.xib; sourceTree = "<group>"; };
 		820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -9188,7 +9183,6 @@
 		FA4B203A29AE62C00089FE68 /* BlazeOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeOverlayViewController.swift; sourceTree = "<group>"; };
 		FA4BC0CF2996A589005EB077 /* BlazeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeService.swift; sourceTree = "<group>"; };
 		FA4EBCC02A98F00200BA3DFB /* NoSitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSitesView.swift; sourceTree = "<group>"; };
-		FA4F383527D766020068AAF5 /* MySiteSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteSettings.swift; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreHeaderView.swift; sourceTree = "<group>"; };
 		FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRestoreHeaderView.xib; sourceTree = "<group>"; };
@@ -9224,7 +9218,7 @@
 		FA98B61829A3BF050071AAE8 /* DashboardBlazePromoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazePromoCardView.swift; sourceTree = "<group>"; };
 		FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeHelper.swift; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
-		FAA4013327B52455009E1137 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
+		FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionCell.swift; sourceTree = "<group>"; };
 		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -9860,7 +9854,6 @@
 				32F2565F25012D3F006B8BC4 /* LinearGradientView.swift */,
 				F18CB8952642E58700B90794 /* FixedSizeImageView.swift */,
 				FADFBD25265F580500039C41 /* MultilineButton.swift */,
-				808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */,
 				0C8078AA2A4E01A5002ABF29 /* PagingFooterView.swift */,
 				4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */,
 			);
@@ -10176,7 +10169,6 @@
 				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
 				FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */,
 				F56A33322538C0ED00E2AEF3 /* MySiteViewController+FAB.swift */,
-				FA4F383527D766020068AAF5 /* MySiteSettings.swift */,
 				C7B7CC6F2812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift */,
 				FA4EBCC02A98F00200BA3DFB /* NoSitesView.swift */,
 				FA85F5F42A9DFDCC001D8425 /* NoSitesViewModel.swift */,
@@ -11328,7 +11320,6 @@
 				BE13B3E41B2B58D800A4211D /* BlogListViewController.h */,
 				BE13B3E51B2B58D800A4211D /* BlogListViewController.m */,
 				74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */,
-				3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */,
 				D8EB1FD021900810002AE1C4 /* BlogListViewController+SiteCreation.swift */,
 				E11E77591E72932F0072AD40 /* BlogListDataSource.swift */,
 			);
@@ -11676,6 +11667,7 @@
 				F97DA41F23D67B820050E791 /* MediaScreen.swift */,
 				BE6DD3311FD6803700E55192 /* MeTabScreen.swift */,
 				BE8707162006B774004FB5A4 /* MySiteScreen.swift */,
+				80FDF4172AAADDF2000287B1 /* MySiteMenuScreen.swift */,
 				BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */,
 				BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */,
 				3F30A6AF299B412E0004452F /* PeopleScreen.swift */,
@@ -15684,7 +15676,6 @@
 				BE1071FD1BC75FCF00906AFF /* Style */,
 				02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */,
 				02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */,
-				3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -17968,7 +17959,8 @@
 			isa = PBXGroup;
 			children = (
 				FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */,
-				FAA4013327B52455009E1137 /* QuickActionButton.swift */,
+				0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */,
+				FAA4013327B52455009E1137 /* DashboardQuickActionCell.swift */,
 			);
 			path = "Quick Actions";
 			sourceTree = "<group>";
@@ -21376,7 +21368,6 @@
 				FF1FD0242091268900186384 /* URL+LinkNormalization.swift in Sources */,
 				3234BB082530D7DC0068DA40 /* ReaderTopicService+SiteInfo.swift in Sources */,
 				B5326E6F203F554D007392C3 /* WordPressSupportSourceTag+Helpers.swift in Sources */,
-				FA4F383627D766020068AAF5 /* MySiteSettings.swift in Sources */,
 				F44293D228E3B18E00D340AF /* AppIconListViewModelType.swift in Sources */,
 				9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */,
 				1759F1701FE017BF0003EC81 /* Queue.swift in Sources */,
@@ -21439,7 +21430,7 @@
 				FADC40A82A8BC2A200C19997 /* UIImage+Gravatar.swift in Sources */,
 				436D55D9210F85DD00CEAA33 /* NibLoadable.swift in Sources */,
 				8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */,
-				FAA4013427B52455009E1137 /* QuickActionButton.swift in Sources */,
+				FAA4013427B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				32A218D8251109DB00D1AE6C /* ReaderReportPostAction.swift in Sources */,
 				FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */,
 				081E4B4C281C019A0085E89C /* TooltipAnchor.swift in Sources */,
@@ -22041,7 +22032,6 @@
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				3FAF9CC226D01CFE00268EA2 /* DomainsDashboardView.swift in Sources */,
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
-				808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */,
 				178DDD30266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				98BAA7C326F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
@@ -22601,7 +22591,6 @@
 				E11DA4931E03E03F00CF07A8 /* Pinghub.swift in Sources */,
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */,
 				40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */,
-				3F43603323F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift in Sources */,
 				E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */,
 				98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */,
 				8BADF16524801BCE005AD038 /* ReaderWebView.swift in Sources */,
@@ -22616,6 +22605,7 @@
 				591AA5021CEF9BF20074934F /* Post+CoreDataProperties.swift in Sources */,
 				E19B17AE1E5C6944007517C6 /* BasePost.swift in Sources */,
 				C71AF533281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */,
+				0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */,
 				7E7947A9210BAC1D005BB851 /* NotificationContentRange.swift in Sources */,
 				8B6EA62323FDE50B004BA312 /* PostServiceUploadingList.swift in Sources */,
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
@@ -22717,6 +22707,7 @@
 				3F2F854026FAE9DC000FCDA5 /* BlockEditorScreen.swift in Sources */,
 				3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */,
 				D8599FEA2A2930CE00065193 /* PagesScreen.swift in Sources */,
+				80FDF4182AAADDF2000287B1 /* MySiteMenuScreen.swift in Sources */,
 				3F2F854726FAED51000FCDA5 /* MediaPickerAlbumListScreen.swift in Sources */,
 				3FE39A3626F8370D006E2B3A /* MySitesScreen.swift in Sources */,
 				3F762E9926784CC90088CD45 /* XCUIElementQuery+Utils.swift in Sources */,
@@ -23223,7 +23214,6 @@
 				73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */,
 				8BD34F0927D144FF005E931C /* BlogDashboardStateTests.swift in Sources */,
 				1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */,
-				3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */,
 				08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */,
 				D81C2F6220F89632002AE1F1 /* EditCommentActionTests.swift in Sources */,
 				AEE0828A2681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift in Sources */,
@@ -23875,6 +23865,7 @@
 				F1585405267D3B5000A2E966 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */,
 				8379669D299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift in Sources */,
+				0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */,
 				FABB218C2602FC2C00C8785C /* DocumentUploadProcessor.swift in Sources */,
 				FABB218D2602FC2C00C8785C /* ReaderTopicService+Interests.swift in Sources */,
 				FABB218E2602FC2C00C8785C /* JetpackService.swift in Sources */,
@@ -24023,7 +24014,6 @@
 				FABB21F52602FC2C00C8785C /* PostNoticeNavigationCoordinator.swift in Sources */,
 				FABB21F62602FC2C00C8785C /* SearchableActivityConvertable.swift in Sources */,
 				FABB21F72602FC2C00C8785C /* GridCell.swift in Sources */,
-				FA4F383727D766020068AAF5 /* MySiteSettings.swift in Sources */,
 				C72A4F68264088E4009CA633 /* JetpackNotFoundErrorViewModel.swift in Sources */,
 				FE1E201B2A473E0800CE7C90 /* JetpackSocialService.swift in Sources */,
 				FABB21F82602FC2C00C8785C /* AdaptiveNavigationController.swift in Sources */,
@@ -24235,7 +24225,7 @@
 				FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */,
 				FABB22982602FC2C00C8785C /* PostingActivityCollectionViewCell.swift in Sources */,
 				FABB22992602FC2C00C8785C /* NibLoadable.swift in Sources */,
-				FAA4013527B52455009E1137 /* QuickActionButton.swift in Sources */,
+				FAA4013527B52455009E1137 /* DashboardQuickActionCell.swift in Sources */,
 				FABB229A2602FC2C00C8785C /* BackupListViewController.swift in Sources */,
 				FABB229B2602FC2C00C8785C /* ReaderReportPostAction.swift in Sources */,
 				8B55F9B82614D819007D618E /* UnifiedPrologueEditorContentView.swift in Sources */,
@@ -24644,7 +24634,6 @@
 				3F46EECE28BC4962004F02B2 /* JetpackLandingScreenView.swift in Sources */,
 				FABB23BC2602FC2C00C8785C /* MenuItemAbstractView.m in Sources */,
 				FABB23BD2602FC2C00C8785C /* LocationService.m in Sources */,
-				808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */,
 				FABB23BE2602FC2C00C8785C /* Domain.swift in Sources */,
 				FABB23BF2602FC2C00C8785C /* PostListViewController.swift in Sources */,
 				FABB23C02602FC2C00C8785C /* FeatureItemRow.swift in Sources */,
@@ -25399,7 +25388,6 @@
 				FABB25E92602FC2C00C8785C /* Pinghub.swift in Sources */,
 				FABB25EA2602FC2C00C8785C /* PeopleRoleBadgeLabel.swift in Sources */,
 				FABB25EB2602FC2C00C8785C /* ActivityDetailViewController.swift in Sources */,
-				FABB25EC2602FC2C00C8785C /* BlogListViewController+BlogDetailsFactory.swift in Sources */,
 				F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */,
 				C32A6A2D2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift in Sources */,
 				FABB25ED2602FC2C00C8785C /* WebViewControllerConfiguration.swift in Sources */,

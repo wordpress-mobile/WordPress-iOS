@@ -6429,7 +6429,7 @@ Please install the %3$@ to use the app with this site.";
 "personalizeHome.cardsSectionFooter" = "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "Add or hide cards";
+"personalizeHome.cardsSectionHeader" = "Show or hide cards";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Recent activity";
