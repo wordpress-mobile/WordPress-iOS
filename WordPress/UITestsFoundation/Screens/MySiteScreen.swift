@@ -12,40 +12,56 @@ public class MySiteScreen: ScreenObject {
         $0.cells["Activity Log Row"]
     }
 
-    private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Blog Post Row"]
+    private let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[activityLogCardId]
     }
 
-    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Reader"]
+    private let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[activityLogCardId].buttons["Recent activity"]
     }
 
-    private let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Media Row"]
+    private let blogDetailsRemoveSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["BlogDetailsRemoveSiteCell"]
     }
 
-    private let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Stats Row"]
+    private let blogTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["Blog Details Table"]
     }
 
     private let createButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["floatingCreateButton"]
     }
 
-    private let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["SwitchSiteButton"]
+    private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Domains Row"]
+    }
+
+    private let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Free domain with an annual plan"]
     }
 
     private let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Home"]
     }
 
-    private let segmentedControlMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Menu"]
+    private let jetpackBackupButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Backup Row"]
     }
 
-    private let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Free domain with an annual plan"]
+    private let jetpackScanButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Scan Row"]
+    }
+
+    private let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Media Row"]
+    }
+
+    private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements["notice_title_and_message"]
+    }
+
+    private let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[pagesCardId].buttons["Create another page"]
     }
 
     private let pagesCardGetter: (XCUIApplication) -> XCUIElement = {
@@ -60,56 +76,56 @@ public class MySiteScreen: ScreenObject {
         $0.otherElements[pagesCardId].buttons["More"]
     }
 
-    private let pagesCardCreatePageButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[pagesCardId].buttons["Create another page"]
+    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["People Row"]
     }
 
-    private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Domains Row"]
+    private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Blog Post Row"]
     }
 
-    private let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[activityLogCardId]
+    private let previewDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Preview Device"]
     }
 
-    private let activityLogCardHeaderButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements[activityLogCardId].buttons["Recent activity"]
-    }
-
-    private let blogTableGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["Blog Details Table"]
-    }
-
-    private let blogDetailsRemoveSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["BlogDetailsRemoveSiteCell"]
-    }
-
-    private let removeSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Remove Site"]
+    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Reader"]
     }
 
     private let removeSiteAlertGetter: (XCUIApplication) -> XCUIElement = {
         $0.alerts.buttons.element(boundBy: 1)
     }
 
-    private let jetpackScanButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Scan Row"]
+    private let removeSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Remove Site"]
     }
 
-    private let jetpackBackupButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Backup Row"]
+    private let safariButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Safari"]
+    }
+
+    private let segmentedControlMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Menu"]
     }
 
     private let settingsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Settings Row"]
     }
 
-    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["People Row"]
+    private let siteTitleButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["site-title-button"]
     }
 
-    private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {
-        $0.otherElements["notice_title_and_message"]
+    private let siteUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["site-url-button"]
+    }
+
+    private let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Stats Row"]
+    }
+
+    private let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["switch-site-button"]
     }
 
     var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
@@ -131,13 +147,17 @@ public class MySiteScreen: ScreenObject {
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
     var peopleButton: XCUIElement { peopleButtonGetter(app) }
     var postsButton: XCUIElement { postsButtonGetter(app) }
-    var readerButton: XCUIElement { readerButtonGetter(app)}
+    var previewDeviceButton: XCUIElement { previewDeviceButtonGetter(app) }
+    var readerButton: XCUIElement { readerButtonGetter(app) }
     var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
     var removeSiteButton: XCUIElement { removeSiteButtonGetter(app) }
+    var safariButton: XCUIElement { safariButtonGetter(app) }
     var segmentedControlMenuButton: XCUIElement { segmentedControlMenuButtonGetter(app) }
     var settingsButton: XCUIElement { settingsButtonGetter(app) }
+    var siteTitleButton: XCUIElement { siteTitleButtonGetter(app) }
+    var siteUrlButton: XCUIElement { siteUrlButtonGetter(app) }
     var statsButton: XCUIElement { statsButtonGetter(app) }
-    var switchSiteButton: XCUIElement { switchSiteButtonGetter(app)}
+    var switchSiteButton: XCUIElement { switchSiteButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -234,44 +254,62 @@ public class MySiteScreen: ScreenObject {
         return try PeopleScreen()
     }
 
+    public func getSiteTitle() -> String {
+        return siteTitleButton.label
+    }
+
+    public func tapSiteAddress() throws -> Self {
+        siteUrlButton.tap()
+        return self
+    }
+
+    @discardableResult
+    public func verifySiteDisplayedInWebView(_ siteTitle: String, file: StaticString = #file, line: UInt = #line) throws -> Self {
+        XCTAssertTrue(safariButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(previewDeviceButton.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.webViews.otherElements.links.staticTexts[siteTitle].waitForExistence(timeout: 3))
+
+        return self
+    }
+
     public static func isLoaded() -> Bool {
         (try? MySiteScreen().isLoaded) ?? false
     }
 
     @discardableResult
-    public func verifyFreeToPaidPlansCard() -> Self {
+    public func verifyFreeToPaidPlansCard(file: StaticString = #file, line: UInt = #line) -> Self {
         let cardText = app.staticTexts["Get a free domain for the first year, remove ads on your site, and increase your storage."]
-        XCTAssertTrue(freeToPaidPlansCardButton.waitForIsHittable(), "Free to Paid plans card header was not displayed.")
-        XCTAssertTrue(cardText.waitForIsHittable(), "Free to Paid plans card text was not displayed.")
+        XCTAssertTrue(freeToPaidPlansCardButton.waitForIsHittable(), "Free to Paid plans card header was not displayed.", file: file, line: line)
+        XCTAssertTrue(cardText.waitForIsHittable(), "Free to Paid plans card text was not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
-    public func verifyPagesCard() -> Self {
-        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(), "Pages card: Header not displayed.")
-        XCTAssertTrue(pagesCardMoreButton.waitForIsHittable(), "Pages card: Context menu button not displayed.")
-        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(), "Pages card: \"Create Page\" button not displayed.")
+    public func verifyPagesCard(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(pagesCardHeaderButton.waitForIsHittable(), "Pages card: Header not displayed.", file: file, line: line)
+        XCTAssertTrue(pagesCardMoreButton.waitForIsHittable(), "Pages card: Context menu button not displayed.", file: file, line: line)
+        XCTAssertTrue(pagesCardCreatePageButton.waitForIsHittable(), "Pages card: \"Create Page\" button not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
-    public func verifyPagesCard(hasPage pageTitle: String) -> Self {
-        XCTAssertTrue(pagesCard.staticTexts[pageTitle].waitForIsHittable(), "Pages card: \"\(pageTitle)\" page not displayed.")
+    public func verifyPagesCard(hasPage pageTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(pagesCard.staticTexts[pageTitle].waitForIsHittable(), "Pages card: \"\(pageTitle)\" page not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
-    public func verifyActivityLogCard() -> Self {
-        XCTAssertTrue(activityLogCardHeaderButton.waitForIsHittable(), "Activity Log card: header not displayed.")
-        XCTAssertTrue(activityLogCard.buttons["More"].waitForIsHittable(), "Activity Log card: context menu not displayed.")
+    public func verifyActivityLogCard(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(activityLogCardHeaderButton.waitForIsHittable(), "Activity Log card: header not displayed.", file: file, line: line)
+        XCTAssertTrue(activityLogCard.buttons["More"].waitForIsHittable(), "Activity Log card: context menu not displayed.", file: file, line: line)
         return self
     }
 
     @discardableResult
-    public func verifyActivityLogCard(hasActivityPartial activityTitle: String) -> Self {
+    public func verifyActivityLogCard(hasActivityPartial activityTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(
             app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(),
-            "Activity Log card: \"\(activityTitle)\" activity not displayed.")
+            "Activity Log card: \"\(activityTitle)\" activity not displayed.", file: file, line: line)
         return self
     }
 

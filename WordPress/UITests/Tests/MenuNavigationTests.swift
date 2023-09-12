@@ -22,4 +22,14 @@ final class MenuNavigationTests: XCTestCase {
             .goToDomainsScreen()
             .assertScreenIsLoaded()
     }
+
+    func testViewSiteFromMySite() throws {
+        let siteTitle = try MySiteScreen()
+            .getSiteTitle()
+
+        try MySiteScreen()
+            .tapSiteAddress()
+            .verifySiteDisplayedInWebView(siteTitle)
+    }
+
 }

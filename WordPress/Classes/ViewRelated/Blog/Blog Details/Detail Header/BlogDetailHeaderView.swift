@@ -299,6 +299,7 @@ fileprivate extension BlogDetailHeaderView {
 
             button.setTitleColor(.text, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
+            button.accessibilityIdentifier = .siteTitleAccessibilityId
             return button
         }()
 
@@ -312,7 +313,7 @@ fileprivate extension BlogDetailHeaderView {
             button.tintColor = .gray
             button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
             button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
-            button.accessibilityIdentifier = "SwitchSiteButton"
+            button.accessibilityIdentifier = .switchSiteAccessibilityId
 
             return button
         }()
@@ -348,6 +349,7 @@ fileprivate extension BlogDetailHeaderView {
 
         func set(url: String) {
             subtitleButton.setTitle(url, for: .normal)
+            subtitleButton.accessibilityIdentifier = .siteUrlAccessibilityId
         }
 
         // MARK: - Accessibility
@@ -397,4 +399,11 @@ fileprivate extension BlogDetailHeaderView {
             ])
         }
     }
+}
+
+private extension String {
+    // MARK: Accessibility Identifiers
+    static let siteTitleAccessibilityId = "site-title-button"
+    static let siteUrlAccessibilityId = "site-url-button"
+    static let switchSiteAccessibilityId = "switch-site-button"
 }
