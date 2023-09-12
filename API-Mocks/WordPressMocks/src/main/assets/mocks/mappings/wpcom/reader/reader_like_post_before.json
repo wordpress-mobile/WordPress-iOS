@@ -1,6 +1,6 @@
 {
   "scenarioName": "reader_like_post_flow",
-  "requiredScenarioState": "initial_list",
+  "requiredScenarioState": "like_initial_list",
   "newScenarioState": "post_liked",
   "request": {
     "method": "POST",

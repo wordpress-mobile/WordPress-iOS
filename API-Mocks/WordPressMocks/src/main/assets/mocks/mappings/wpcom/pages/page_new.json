@@ -1,6 +1,6 @@
 {
   "scenarioName": "new_page_flow",
-  "requiredScenarioState": "page_list",
+  "requiredScenarioState": "page_initial_list",
   "newScenarioState": "page_published",
   "request": {
     "method": "POST",
@@ -14,9 +14,8 @@
       }
     },
     "bodyPatterns": [
-      {
-        "matchesJsonPath": "$.parent",
-        "equalTo": 0
+      {           
+        "matchesJsonPath": "$[?(@.type == 'page')]"
       }
     ]
   },

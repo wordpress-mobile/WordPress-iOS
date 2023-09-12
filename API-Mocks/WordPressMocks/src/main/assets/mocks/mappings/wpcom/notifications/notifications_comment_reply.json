@@ -1,6 +1,6 @@
 {
   "scenarioName": "comment_flow",
-  "requiredScenarioState": "initial_list",
+  "requiredScenarioState": "comment_initial_list",
   "newScenarioState": "replied",
   "request": {
     "method": "POST",

@@ -1,6 +1,6 @@
 {
   "scenarioName": "new_post_flow",
-  "requiredScenarioState": "post_list",
+  "requiredScenarioState": "post_initial_list",
   "newScenarioState": "post_published",
   "request": {
     "method": "POST",
@@ -14,9 +14,8 @@
       }
     },
     "bodyPatterns": [
-      {
-        "matchesJsonPath": "$.parent",
-        "equalTo": "false"
+      {           
+        "matchesJsonPath": "$[?(@.type == 'post')]"
       }
     ]
   },
@@ -41,12 +40,12 @@
       },
       "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
       "modified": "{{now format=customformat}}",
-      "title": "{{jsonPath request.body '$.title'}}",
+      "title": "Rich post title",
       "URL": "https://lowtestingmobile.wordpress.com/2019/03/12/title-33/",
       "short_URL": "https://e/paIC9Y-1r",
       "content": "<!-- wp:paragraph -->\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue efficitur leo eget porta.</p>\n<!-- /wp:paragraph -->",
       "excerpt": "",
-      "slug": "title-33",
+      "slug": "rich-post-title",
       "guid": "https://infocusphotographers.com/2019/03/12/title-33/",
       "status": "publish",
       "sticky": false,

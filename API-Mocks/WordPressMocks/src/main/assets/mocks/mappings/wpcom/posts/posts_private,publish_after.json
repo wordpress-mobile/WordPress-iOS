@@ -4,7 +4,7 @@
   "newScenarioState": "new_posts_list",
   "request": {
     "method": "GET",
-    "urlPattern": "/rest/v1.2/sites/.*/posts.*",
+    "urlPath": "/rest/v1.2/sites/106707880/posts",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -19,7 +19,7 @@
         "matches": "(.*)"
       },
       "status": {
-        "equalTo": "(.*)"
+        "equalTo": "private,publish"
       },
       "type": {
         "equalTo": "post"
@@ -28,9 +28,134 @@
   },
   "response": {
     "status": 200,
+    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
-      "found": 3,
+      "found": 4,
       "posts": [
+        {
+        "ID": 5,
+        "site_ID": 106707880,
+        "author": {
+            "ID": 152748359,
+            "login": "e2eflowtestingmobile",
+            "email": "e2eflowtestingmobile@example.com",
+            "name": "e2eflowtestingmobile",
+            "first_name": "",
+            "last_name": "",
+            "nice_name": "e2eflowtestingmobile",
+            "URL": "https://infocusphotographers.com",
+            "avatar_URL": "https://1.gravatar.com/avatar/7a4015c11be6a342f65e0e169092d402?s=96&d=identicon&r=G",
+            "profile_URL": "http://en.gravatar.com/e2eflowtestingmobile",
+            "site_ID": 1
+        },
+        "date": "{{#assign 'customformat'}}yyyy-MM-dd'T'HH:mm:ss{{/assign}}{{now format=customformat}}",
+        "modified": "{{now format=customformat}}",
+        "title": "Rich post title",
+        "URL": "https://lowtestingmobile.wordpress.com/2019/03/12/title-33/",
+        "short_URL": "https://e/paIC9Y-1r",
+        "content": "<!-- wp:paragraph -->\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue efficitur leo eget porta.</p>\n<!-- /wp:paragraph -->",
+        "excerpt": "",
+        "slug": "rich-post-title",
+        "guid": "https://infocusphotographers.com/2019/03/12/title-33/",
+        "status": "publish",
+        "sticky": false,
+        "password": "",
+        "parent": false,
+        "type": "post",
+        "discussion": {
+            "comments_open": true,
+            "comment_status": "open",
+            "pings_open": true,
+            "ping_status": "open",
+            "comment_count": 0
+        },
+        "likes_enabled": true,
+        "sharing_enabled": true,
+        "like_count": 0,
+        "i_like": false,
+        "is_reblogged": false,
+        "is_following": true,
+        "global_ID": "127876e9017a09034bcf41ee80428027",
+        "featured_image": "",
+        "post_thumbnail": null,
+        "format": "standard",
+        "geo": false,
+        "menu_order": 0,
+        "page_template": "",
+        "publicize_URLs": [
+    
+        ],
+        "terms": {
+            "category": {
+            "Uncategorized": {
+                "ID": 1,
+                "name": "Uncategorized",
+                "slug": "uncategorized",
+                "description": "",
+                "post_count": 82,
+                "parent": 0,
+                "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
+                }
+                }
+            }
+            },
+            "post_tag": {
+            },
+            "post_format": {
+            },
+            "mentions": {
+            }
+        },
+        "tags": {
+        },
+        "categories": {
+            "Uncategorized": {
+            "ID": 1,
+            "name": "Uncategorized",
+            "slug": "uncategorized",
+            "description": "",
+            "post_count": 82,
+            "parent": 0,
+            "meta": {
+                "links": {
+                "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/categories/slug:uncategorized",
+                "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/categories/slug:uncategorized/help",
+                "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880"
+                }
+            }
+            }
+        },
+        "attachments": {
+        },
+        "attachment_count": 0,
+        "metadata": [
+            {
+            "id": "909",
+            "key": "jabber_published",
+            "value": "1552402855"
+            }
+        ],
+        "meta": {
+            "links": {
+            "self": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5",
+            "help": "https://public-api.wordpress.com/rest/v1.2/sites/106707880/posts/5/help",
+            "site": "https://public-api.wordpress.com/rest/v1.2/sites/106707880",
+            "replies": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/replies/",
+            "likes": "https://public-api.wordpress.com/rest/v1.1/sites/106707880/posts/5/likes/"
+            }
+        },
+        "capabilities": {
+            "publish_post": true,
+            "delete_post": true,
+            "edit_post": true
+        },
+        "other_URLs": {
+        }
+        },
         {
           "ID": 237,
           "site_ID": 106707880,

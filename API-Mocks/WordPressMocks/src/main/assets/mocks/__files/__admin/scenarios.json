@@ -4,25 +4,25 @@
       "id" : "comment_flow",
       "name" : "comment_flow",
       "state" : "Started",
-      "possibleStates" : [ "Started", "initial_list", "replied", "new_list" ]
+      "possibleStates" : [ "Started", "comment_initial_list", "comment_replied", "comment_new_list" ]
     },
     {
       "id" : "reader_like_post_flow",
       "name" : "reader_like_post_flow",
       "state" : "Started",
-      "possibleStates" : [ "Started", "initial_list", "post_liked", "new_list" ]
+      "possibleStates" : [ "Started", "like_initial_list", "post_liked", "like_new_list" ]
     },
     {
       "id" : "new_page_flow",
       "name" : "new_page_flow",
       "state" : "Started",
-      "possibleStates" : [ "Started", "page_list", "page_published", "new_pages_list" ]
+      "possibleStates" : [ "Started", "page_initial_list", "page_published", "new_pages_list" ]
     },
     {
       "id" : "new_post_flow",
       "name" : "new_post_flow",
       "state" : "Started",
-      "possibleStates" : [ "Started", "post_list", "post_published", "new_posts_list" ]
+      "possibleStates" : [ "Started", "post_initial_list", "post_published", "new_posts_list" ]
     }
   ]
 }
