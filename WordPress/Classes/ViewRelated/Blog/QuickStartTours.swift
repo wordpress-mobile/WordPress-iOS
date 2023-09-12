@@ -161,7 +161,7 @@ struct QuickStartShareTour: QuickStartTour {
     let title = NSLocalizedString("Social sharing", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Social sharing", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.share)
+    let icon = UIImage(named: "site-menu-social") ?? UIImage()
     let iconColor = UIColor.muriel(color: MurielColor(name: .blue, shade: .shade40)).color(for: UITraitCollection(userInterfaceStyle: .light))
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
@@ -169,7 +169,7 @@ struct QuickStartShareTour: QuickStartTour {
 
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step1DescriptionTarget = NSLocalizedString("Sharing", comment: "The menu item to select during a guided tour.")
+        let step1DescriptionTarget = NSLocalizedString("Social", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .sharing, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.share)))
 
         let step2DescriptionBase = NSLocalizedString("Select the %@ to add your social media accounts", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -300,7 +300,7 @@ struct QuickStartReviewPagesTour: QuickStartTour {
     let title = NSLocalizedString("Review site pages", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Review site pages", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Change, add, or remove your site's pages.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.pages)
+    let icon = UIImage(named: "site-menu-pages") ?? UIImage()
     let iconColor = UIColor.muriel(color: MurielColor(name: .celadon, shade: .shade30))
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
@@ -321,7 +321,7 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let title = NSLocalizedString("Check your site stats", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Check your site stats", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Keep up to date on your site’s performance.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.statsAlt)
+    let icon = UIImage(named: "site-menu-stats") ?? UIImage()
     let iconColor = UIColor.muriel(color: MurielColor(name: .orange, shade: .shade30))
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
