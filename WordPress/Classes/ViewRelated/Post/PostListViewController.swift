@@ -672,7 +672,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
+            Task { await self?.deletePost(post) }
         }
         alertController.presentFromRootViewController()
     }

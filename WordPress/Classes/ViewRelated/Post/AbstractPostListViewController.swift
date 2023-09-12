@@ -939,7 +939,10 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
-    @objc func deletePost(_ apost: AbstractPost) {
+    @MainActor
+    func deletePost(_ apost: AbstractPost) async {
+        assert(apost.managedObjectContext == ContextManager.shared.mainContext)
+
         WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
 
         // Remove the trashed post from spotlight
@@ -950,18 +953,11 @@ class AbstractPostListViewController: UIViewController,
 
         let originalStatus = apost.status
 
-        let indexPath = tableViewHandler.resultsController?.indexPath(forObject: apost)
-
-        if let indexPath = indexPath {
-            tableView.reloadRows(at: [indexPath], with: .fade)
-        }
-
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
         let trashed = (apost.status == .trash)
 
-        postService.trashPost(apost, success: {
-            // If we permanently deleted the post
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        do {
+            try await repository.trash(TaggedManagedObjectID(apost))
             if trashed {
                 PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
@@ -971,19 +967,14 @@ class AbstractPostListViewController: UIViewController,
             let undoAction = NSLocalizedString("Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.")
             let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
                 if accepted {
-                    self?.restorePost(apost, toStatus: originalStatus ?? .draft, completion: nil)
+                    self?.restorePost(apost, toStatus: originalStatus ?? .draft)
                 }
             })
             ActionDispatcher.dispatch(NoticeAction.dismiss)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
-        }, failure: { [weak self] (error) in
-
-            guard let strongSelf = self else {
-                return
-            }
-
-            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
+        } catch {
+            if let error = error as NSError?, error.code == type(of: self).HTTPErrorCodeForbidden {
+                promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
             }
@@ -992,12 +983,12 @@ class AbstractPostListViewController: UIViewController,
             // Maybe we could not delete the post or maybe the post was already deleted
             // It is safer to re fetch the results than to reload that specific row
             DispatchQueue.main.async {
-                strongSelf.updateAndPerformFetchRequestRefreshingResults()
+                self.updateAndPerformFetchRequestRefreshingResults()
             }
-        })
+        }
     }
 
-    func restorePost(_ apost: AbstractPost, toStatus status: BasePost.Status, completion: (() -> Void)? = nil) {
+    func restorePost(_ apost: AbstractPost, toStatus status: BasePost.Status) {
         WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
 
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
@@ -1009,52 +1000,31 @@ class AbstractPostListViewController: UIViewController,
             tableView.reloadData()
         }
 
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        postService.restore(apost, toStatus: status.rawValue, success: { [weak self] in
-
-            guard let strongSelf = self else {
-                return
-            }
-
-            var apost: AbstractPost
-
-            // Make sure the post still exists.
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        Task { @MainActor in
             do {
-                apost = try strongSelf.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
-            } catch {
-                DDLogError("\(error)")
-                return
-            }
+                try await repository.restore(.init(apost), to: status)
 
-            DispatchQueue.main.async {
-                completion?()
-            }
+                if let postStatus = apost.status {
+                    // If the post was restored, see if it appears in the current filter.
+                    // If not, prompt the user to let it know under which filter it appears.
+                    let filter = filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
 
-            if let postStatus = apost.status {
-                // If the post was restored, see if it appears in the current filter.
-                // If not, prompt the user to let it know under which filter it appears.
-                let filter = strongSelf.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
+                    if filter.filterType == filterSettings.currentPostListFilter().filterType {
+                        return
+                    }
 
-                if filter.filterType == strongSelf.filterSettings.currentPostListFilter().filterType {
-                    return
+                    promptThatPostRestoredToFilter(filter)
+
+                    // Reindex the restored post in spotlight
+                    SearchManager.shared.indexItem(apost)
                 }
-
-                strongSelf.promptThatPostRestoredToFilter(filter)
-
-                // Reindex the restored post in spotlight
-                SearchManager.shared.indexItem(apost)
-            }
-        }) { [weak self] (error) in
-
-            guard let strongSelf = self else {
-                return
-            }
-
-            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
+            } catch {
+                if let error = error as NSError?, error.code == AbstractPostListViewController.HTTPErrorCodeForbidden {
+                    promptForPassword()
+                } else {
+                    WPError.showXMLRPCErrorAlert(error)
+                }
             }
         }
     }

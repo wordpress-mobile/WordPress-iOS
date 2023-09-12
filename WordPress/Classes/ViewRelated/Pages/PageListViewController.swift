@@ -588,24 +588,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        let previousStatus = apost.status
-        apost.status = .draft
-
-        let contextManager = ContextManager.sharedInstance()
-        let postService = PostService(managedObjectContext: contextManager.mainContext)
-
-        postService.uploadPost(apost, success: { [weak self] _ in
-            DispatchQueue.main.async {
+        let repository = PostRepository(coreDataStack: ContextManager.shared)
+        Task { @MainActor [weak self] in
+            do {
+                try await repository.restore(TaggedManagedObjectID(apost), to: .draft)
                 self?._tableViewHandler.refreshTableView(at: indexPath)
+            } catch {
+                WPError.showXMLRPCErrorAlert(error)
             }
-        }) { [weak self] (error) in
-            apost.status = previousStatus
-
-            if let strongSelf = self {
-                contextManager.save(strongSelf.managedObjectContext())
-            }
-
-            WPError.showXMLRPCErrorAlert(error)
         }
     }
 
@@ -777,10 +767,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
         }
-    }
-
-    override func deletePost(_ apost: AbstractPost) {
-        super.deletePost(apost)
     }
 
     private func addBlazeAction(to controller: UIAlertController, for page: AbstractPost) {
@@ -998,7 +984,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
+            Task { await self?.deletePost(post) }
         }
         alertController.presentFromRootViewController()
     }

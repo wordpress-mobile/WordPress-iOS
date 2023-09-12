@@ -125,42 +125,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
          success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure;
 
-/**
- Attempts to delete the specified post outright vs moving it to the 
- trash folder.
-
- @param post The post or page to delete
- @param success A success block
- @param failure A failure block
- */
-- (void)deletePost:(AbstractPost *)post
-           success:(nullable void (^)(void))success
-           failure:(void (^)(NSError * _Nullable error))failure;
-
-/**
- Moves the specified post into the trash bin. Does not delete
- the post unless it was deleted on the server.
-
- @param post The post or page to trash
- @param success A success block
- @param failure A failure block
- */
-- (void)trashPost:(AbstractPost *)post
-          success:(nullable nullable void (^)(void))success
-          failure:(void (^)(NSError * _Nullable error))failure;
-
-/**
- Moves the specified post out of the trash bin.
-
- @param post The post or page to restore
- @param success A success block
- @param failure A failure block
- */
-- (void)restorePost:(AbstractPost *)post
-           toStatus:(NSString *)status
-           success:(nullable void (^)(void))success
-           failure:(void (^)(NSError * _Nullable error))failure;
-
 @end
 
 NS_ASSUME_NONNULL_END
