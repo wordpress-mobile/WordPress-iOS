@@ -9,6 +9,6 @@ ref:
   # Example:
   #
   #   LOCAL_GUTENBERG=../my-gutenberg-fork bundle exec pod install
-  tag: v1.103.2
+  commit: e9d475c4881fe04de018eb33d59fffbb66b40d6a
 github_org: wordpress-mobile
 repo_name: gutenberg-mobile
