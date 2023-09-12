@@ -948,6 +948,8 @@ class AbstractPostListViewController: UIViewController,
         // Update the fetch request *before* making the service call.
         updateAndPerformFetchRequest()
 
+        let originalStatus = apost.status
+
         let indexPath = tableViewHandler.resultsController?.indexPath(forObject: apost)
 
         if let indexPath = indexPath {
@@ -964,6 +966,16 @@ class AbstractPostListViewController: UIViewController,
                 PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
             }
+
+            let message = NSLocalizedString("Post moved to trash.", comment: "A short message explaining that a post was moved to the trash bin.")
+            let undoAction = NSLocalizedString("Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.")
+            let notice = Notice(title: message, actionTitle: undoAction, actionHandler: { [weak self] accepted in
+                if accepted {
+                    self?.restorePost(apost, toStatus: originalStatus ?? .draft, completion: nil)
+                }
+            })
+            ActionDispatcher.dispatch(NoticeAction.dismiss)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         }, failure: { [weak self] (error) in
 
             guard let strongSelf = self else {
