@@ -550,7 +550,7 @@
 "Add any topic" = "Add any topic";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
+"Add audio" = "Add audio";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Add Block After";
@@ -574,13 +574,10 @@
 "Add description" = "Add description";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "ADD IMAGE";
+"Add image" = "Add image";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Add image or video";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "ADD IMAGE OR VIDEO";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
@@ -656,7 +653,7 @@
 "Add URL" = "Add URL";
 
 /* No comment provided by engineer. */
-"ADD VIDEO" = "ADD VIDEO";
+"Add video" = "Add video";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Adding site features";
@@ -1674,7 +1671,7 @@
 "Choose a domain" = "Choose a domain";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"Choose a file" = "Choose a file";
 
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "Choose a Layout";
