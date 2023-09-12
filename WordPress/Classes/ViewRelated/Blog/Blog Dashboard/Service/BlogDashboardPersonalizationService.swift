@@ -15,6 +15,29 @@ struct BlogDashboardPersonalizationService {
         self.siteID = String(siteID)
     }
 
+    // MARK: - Quick Actions
+
+    func isEnabled(_ action: DashboardQuickAction) -> Bool {
+        let settings = getSettings(for: makeKey(for: action))
+        return settings[siteID] ?? action.isEnabledByDefault
+    }
+
+    func setEnabled(_ isEnabled: Bool, for action: DashboardQuickAction) {
+        let key = makeKey(for: action)
+        var settings = getSettings(for: key)
+        settings[siteID] = isEnabled
+        repository.set(settings, forKey: key)
+
+        NotificationCenter.default.post(name: .blogDashboardPersonalizationSettingsChanged, object: self)
+    }
+
+    // Returns a `siteID` to a boolean mapping.
+    private func getSettings(for key: String) -> [String: Bool] {
+        repository.dictionary(forKey: key) as? [String: Bool] ?? [:]
+    }
+
+    // MARK: - Dashboard Cards
+
     func isEnabled(_ card: DashboardCard) -> Bool {
         let key = lookUpKey(for: card)
         return getSettings(for: card)[key] ?? true
@@ -59,6 +82,10 @@ struct BlogDashboardPersonalizationService {
             return Constants.siteAgnosticVisibilityKey
         }
     }
+}
+
+private func makeKey(for action: DashboardQuickAction) -> String {
+    "quick-action-\(action.rawValue)-hidden"
 }
 
 private func makeKey(for card: DashboardCard) -> String? {
