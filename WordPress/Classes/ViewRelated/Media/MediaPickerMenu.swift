@@ -216,6 +216,30 @@ extension MediaPickerMenu {
     private static var dataSourceAssociatedKey: UInt8 = 0
 }
 
+// MARK: - MediaPickerMenu (Stock Photo)
+
+extension MediaPickerMenu {
+    func makeStockPhotos(blog: Blog, delegate: StockPhotosPickerDelegate) -> UIAction {
+        UIAction(
+            title: Strings.pickFromStockPhotos,
+            image: UIImage(systemName: "photo.artframe"),
+            attributes: [],
+            handler: { _ in showStockPhotosPicker(blog: blog, delegate: delegate) }
+        )
+    }
+
+    func showStockPhotosPicker(blog: Blog, delegate: StockPhotosPickerDelegate) {
+        guard let presentingViewController else { return }
+
+        let picker = StockPhotosPicker()
+        picker.delegate = delegate
+        picker.allowMultipleSelection = isMultipleSelectionEnabled
+        let stockPhotosViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
+
+        objc_setAssociatedObject(stockPhotosViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+}
+
 // MARK: - MediaPickerMenu (Free GIF, Tenor)
 
 extension MediaPickerMenu {
@@ -260,6 +284,7 @@ private enum Strings {
     static let takeVideo = NSLocalizedString("mediaPicker.takeVideo", value: "Take Video", comment: "The name of the action in the context menu")
     static let takePhotoOrVideo = NSLocalizedString("mediaPicker.takePhotoOrVideo", value: "Take Photo or Video", comment: "The name of the action in the context menu")
     static let pickFromMedia = NSLocalizedString("mediaPicker.pickFromMediaLibrary", value: "Choose from Media", comment: "The name of the action in the context menu (user's WordPress Media Library")
+    static let pickFromStockPhotos = NSLocalizedString("mediaPicker.pickFromStockPhotos", value: "Free Photo Library", comment: "The name of the action in the context menu for selecting photos from free stock photos")
     static let pickFromTenor = NSLocalizedString("mediaPicker.pickFromFreeGIFLibrary", value: "Free GIF Library", comment: "The name of the action in the context menu for selecting photos from Tenor (free GIF library)")
 
     // MARK: Misc

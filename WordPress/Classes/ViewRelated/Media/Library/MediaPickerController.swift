@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate, TenorPickerDelegate {
+final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -16,6 +16,7 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
         let actions: [UIAction] = [
             menu.makePhotosAction(delegate: self),
             menu.makeCameraAction(delegate: self),
+            menu.makeStockPhotos(blog: blog, delegate: self),
             menu.makeFreeGIFAction(blog: blog, delegate: self)
         ]
         return UIMenu(children: actions)
@@ -37,9 +38,9 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
     func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.presentingViewController?.dismiss(animated: true)
 
-        func addAsset(from exportableAsset: ExportableAsset) {
+        func addAsset(from asset: ExportableAsset) {
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: exportableAsset, to: blog, analyticsInfo: info)
+            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
         }
         guard let mediaType = info[.mediaType] as? String else {
             return
@@ -55,6 +56,16 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
             }
         default:
             break
+        }
+    }
+
+    // MARK: - StockPhotosPickerDelegate
+
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        for asset in assets {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.stockPhotos), selectionMethod: .fullScreenPicker)
+            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
+            WPAnalytics.track(.stockMediaUploaded)
         }
     }
 
