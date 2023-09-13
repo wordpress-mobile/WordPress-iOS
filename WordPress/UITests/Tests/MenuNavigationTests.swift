@@ -18,7 +18,7 @@ final class MenuNavigationTests: XCTestCase {
     // This test is JP only.
     func testDomainsNavigation() throws {
         try MySiteScreen()
-            .goToMenu()
+            .goToMoreMenu()
             .goToDomainsScreen()
             .assertScreenIsLoaded()
     }

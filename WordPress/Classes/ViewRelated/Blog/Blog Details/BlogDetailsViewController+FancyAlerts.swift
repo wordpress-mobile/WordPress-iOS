@@ -83,24 +83,11 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowDashboard() -> Bool {
-        guard let parentVC = parent as? MySiteViewController, isDashboardEnabled() else {
-            return false
-        }
-
-        return parentVC.mySiteSettings.defaultSection == .dashboard
+        isDashboardEnabled()
     }
 
     @objc func shouldShowQuickStartChecklist() -> Bool {
-        if isDashboardEnabled() {
-
-            guard let parentVC = parent as? MySiteViewController else {
-                return false
-            }
-
-            return QuickStartTourGuide.quickStartEnabled(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
-        }
-
-        return QuickStartTourGuide.quickStartEnabled(for: blog)
+        !isDashboardEnabled() && QuickStartTourGuide.quickStartEnabled(for: blog)
     }
 
     @objc func showQuickStart() {

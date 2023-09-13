@@ -842,8 +842,7 @@ extension NotificationsViewController {
 
             self.view.isUserInteractionEnabled = true
 
-            if FeatureFlag.notificationCommentDetails.enabled,
-               note.kind == .comment {
+            if note.kind == .comment {
                 guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
                     DDLogError("Notifications: failed creating Comment Detail view.")
                     return
@@ -974,7 +973,7 @@ private extension NotificationsViewController {
 
     // MARK: - Notifications Deletion from CommentDetailViewController
 
-    // With the `notificationCommentDetails` feature, Comment moderation is handled by the view.
+    // Comment moderation is handled by the view.
     // To avoid updating the Notifications here prematurely, affecting the previous/next buttons,
     // the Notifications are tracked in NotificationCommentDetailCoordinator when their comments are moderated.
     // Those Notifications are updated here when the view is shown to update the list accordingly.

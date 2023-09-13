@@ -19,7 +19,7 @@ final class MediaCollectionCellViewModel {
     init(media: Media,
          service: MediaImageService = .shared,
          cache: MemoryCache = .shared) {
-        self.mediaID = TaggedManagedObjectID(saved: media)
+        self.mediaID = TaggedManagedObjectID(media)
         self.media = media
         self.mediaType = media.mediaType
         self.service = service

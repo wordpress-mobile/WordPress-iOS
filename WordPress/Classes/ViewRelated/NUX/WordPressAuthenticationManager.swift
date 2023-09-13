@@ -88,7 +88,7 @@ extension WordPressAuthenticationManager {
                                                    enableSignInWithApple: enableSignInWithApple,
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
+                                                   enableUnifiedCarousel: true,
                                                    enableSocialLogin: true,
                                                    googleLoginWithoutSDK: googleLogingWithoutSDK)
     }
@@ -96,15 +96,7 @@ extension WordPressAuthenticationManager {
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
         let prologueVC: UIViewController? = {
             guard let viewController = authenticationHandler?.prologueViewController else {
-                if FeatureFlag.newWordPressLandingScreen.enabled {
-                    return SplashPrologueViewController()
-                }
-
-                if FeatureFlag.unifiedPrologueCarousel.enabled {
-                    return UnifiedPrologueViewController()
-                }
-
-                return nil
+                return SplashPrologueViewController()
             }
 
             return viewController
@@ -112,7 +104,7 @@ extension WordPressAuthenticationManager {
 
         let statusBarStyle: UIStatusBarStyle = {
             guard let statusBarStyle = authenticationHandler?.statusBarStyle else {
-                return FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
+                return .default
             }
 
             return statusBarStyle
@@ -129,7 +121,7 @@ extension WordPressAuthenticationManager {
         var prologuePrimaryButtonStyle: NUXButtonStyle?
         var prologueSecondaryButtonStyle: NUXButtonStyle?
 
-        if FeatureFlag.newWordPressLandingScreen.enabled, AppConfiguration.isWordPress {
+        if AppConfiguration.isWordPress {
             prologuePrimaryButtonStyle = SplashPrologueStyleGuide.primaryButtonStyle
             prologueSecondaryButtonStyle = SplashPrologueStyleGuide.secondaryButtonStyle
         } else {

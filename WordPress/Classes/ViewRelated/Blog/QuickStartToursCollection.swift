@@ -59,8 +59,8 @@ struct QuickStartGrowToursCollection: QuickStartToursCollection {
         self.completedImageName = "wp-illustration-tasks-complete-audience"
         self.analyticsKey = "grow"
         self.tours = [
-            QuickStartShareTour(),
             QuickStartPublishTour(),
+            QuickStartShareTour(),
             QuickStartFollowTour(),
             QuickStartCheckStatsTour()
     // Temporarily disabled

@@ -294,29 +294,22 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        LandInTheEditorHelper.landInTheEditorOrContinue(for: blog, navigationController: navigationController) { [weak self] in
+        if let onDismiss = self.onDismiss {
+            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+            quickstartPrompt.onDismiss = onDismiss
+            navigationController.pushViewController(quickstartPrompt, animated: true)
+            return
+        }
 
+        dismissTapped(viaDone: true) { [blog, weak self] in
+            RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
+
+            // present quick start, and mark site title as complete if they already selected one
             guard let self = self else {
                 return
             }
-
-            if let onDismiss = self.onDismiss {
-                let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-                quickstartPrompt.onDismiss = onDismiss
-                navigationController.pushViewController(quickstartPrompt, animated: true)
-                return
-            }
-
-            self.dismissTapped(viaDone: true) { [blog, weak self] in
-                RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
-
-                // present quick start, and mark site title as complete if they already selected one
-                guard let self = self else {
-                    return
-                }
-                let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
-                self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
-            }
+            let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
+            self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
         }
     }
 

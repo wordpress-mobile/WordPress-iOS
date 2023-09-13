@@ -56,6 +56,10 @@ public class MySiteScreen: ScreenObject {
         $0.cells["Media Row"]
     }
 
+    private let moreMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables.cells.staticTexts["More"]
+    }
+
     private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements["notice_title_and_message"]
     }
@@ -128,7 +132,6 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["switch-site-button"]
     }
 
-    var activityLogButton: XCUIElement { activityLogButtonGetter(app) }
     var activityLogCard: XCUIElement { activityLogCardGetter(app) }
     var activityLogCardHeaderButton: XCUIElement { activityLogCardHeaderButtonGetter(app) }
     var blogDetailsRemoveSiteButton: XCUIElement { blogDetailsRemoveSiteButtonGetter(app) }
@@ -136,10 +139,7 @@ public class MySiteScreen: ScreenObject {
     var createButton: XCUIElement { createButtonGetter(app) }
     var domainsButton: XCUIElement { domainsButtonGetter(app) }
     var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
-    var homeButton: XCUIElement { homeButtonGetter(app) }
-    var jetpackBackupButton: XCUIElement { jetpackBackupButtonGetter(app) }
-    var jetpackScanButton: XCUIElement { jetpackScanButtonGetter(app) }
-    var mediaButton: XCUIElement { mediaButtonGetter(app) }
+    var moreMenuButton: XCUIElement { moreMenuButtonGetter(app) }
     var noticeTitle: XCUIElement { noticeTitleGetter(app) }
     var pagesCard: XCUIElement { pagesCardGetter(app) }
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
@@ -163,8 +163,6 @@ public class MySiteScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [
                 switchSiteButtonGetter,
-                postsButtonGetter,
-                mediaButtonGetter,
                 createButtonGetter
             ],
             app: app
@@ -184,52 +182,9 @@ public class MySiteScreen: ScreenObject {
         removeButton.tap()
     }
 
-    public func goToActivityLog() throws -> ActivityLogScreen {
-        activityLogButton.tap()
-        return try ActivityLogScreen()
-    }
-
-    public func goToJetpackScan() throws -> JetpackScanScreen {
-        jetpackScanButton.tap()
-        return try JetpackScanScreen()
-    }
-
-    public func goToJetpackBackup() throws -> JetpackBackupScreen {
-        jetpackBackupButton.tap()
-        return try JetpackBackupScreen()
-    }
-
-    public func goToPostsScreen() throws -> PostsScreen {
-        goToMenu()
-        postsButton.tap()
-        return try PostsScreen()
-    }
-
-    public func goToMediaScreen() throws -> MediaScreen {
-        mediaButton.tap()
-        return try MediaScreen()
-    }
-
-    public func goToStatsScreen() throws -> StatsScreen {
-        statsButton.tap()
-        return try StatsScreen()
-    }
-
-    @discardableResult
-    public func goToSettingsScreen() throws -> SiteSettingsScreen {
-        settingsButton.tap()
-        return try SiteSettingsScreen()
-    }
-
     public func goToCreateSheet() throws -> ActionSheetComponent {
         createButton.tap()
         return try ActionSheetComponent()
-    }
-
-    @discardableResult
-    public func goToHomeScreen() -> Self {
-        homeButton.tap()
-        return self
     }
 
     public func goToDomainsScreen() throws -> DomainsScreen {
@@ -238,20 +193,15 @@ public class MySiteScreen: ScreenObject {
     }
 
     @discardableResult
-    public func goToMenu() -> Self {
+    public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
+
         // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
-        guard XCUIDevice.isPhone && !segmentedControlMenuButton.isSelected else {
-            return self
+        guard XCUIDevice.isPhone && !moreMenuButton.isSelected else {
+            return try MySiteMoreMenuScreen()
         }
 
-        segmentedControlMenuButton.tap()
-        return self
-    }
-
-    @discardableResult
-    public func goToPeople() throws -> PeopleScreen {
-        peopleButton.tap()
-        return try PeopleScreen()
+        moreMenuButton.tap()
+        return try MySiteMoreMenuScreen()
     }
 
     public func getSiteTitle() -> String {

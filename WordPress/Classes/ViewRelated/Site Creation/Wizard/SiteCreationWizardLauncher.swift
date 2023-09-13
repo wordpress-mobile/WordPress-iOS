@@ -6,42 +6,12 @@ final class SiteCreationWizardLauncher {
         return SiteCreator()
     }()
 
-    private var shouldShowSiteIntent: Bool {
-        return FeatureFlag.siteIntentQuestion.enabled
-    }
-
-    private var shouldShowSiteName: Bool {
-        return FeatureFlag.siteName.enabled
-    }
-
-    lazy var steps: [SiteCreationStep] = {
-        // If Site Intent shouldn't be shown, fall back to the original steps.
-        guard shouldShowSiteIntent else {
-            return [
-                .design,
-                .address,
-                .siteAssembly
-            ]
-        }
-
-        // If Site Intent should be shown but not the Site Name, only add Site Intent.
-        guard shouldShowSiteName else {
-            return [
-                .intent,
-                .design,
-                .address,
-                .siteAssembly
-            ]
-        }
-
-        // If Site Name should be shown, swap out the Site Address step.
-        return [
-            .intent,
-            .name,
-            .design,
-            .siteAssembly
-        ]
-    }()
+    let steps: [SiteCreationStep] = [
+        .intent,
+        .design,
+        .address,
+        .siteAssembly
+    ]
 
     private lazy var wizard: SiteCreationWizard = {
         return SiteCreationWizard(steps: steps.map { initStep($0) })
@@ -79,8 +49,6 @@ final class SiteCreationWizardLauncher {
             return SiteDesignStep(creator: self.creator, isLastStep: isLastStep)
         case .intent:
             return SiteIntentStep(creator: self.creator)
-        case .name:
-            return SiteNameStep(creator: self.creator)
         case .segments:
             let segmentsService = SiteCreationSegmentsService(coreDataStack: ContextManager.sharedInstance())
             return SiteSegmentsStep(creator: self.creator, service: segmentsService)
