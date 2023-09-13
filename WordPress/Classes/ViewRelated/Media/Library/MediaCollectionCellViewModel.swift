@@ -129,9 +129,9 @@ final class MediaCollectionCellViewModel {
             self.overlayState = .indeterminate
         case .failed:
             self.overlayState = .retry
-        case .sync, .stub, .local:
+        case .sync:
             self.overlayState = nil
-        @unknown default:
+        default:
             break
         }
     }
