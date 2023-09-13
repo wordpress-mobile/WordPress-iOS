@@ -63,16 +63,6 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        let googleLogingWithoutSDK: Bool = {
-            switch BuildConfiguration.current {
-            case .appStore:
-                // Rely on the remote flag in production
-                return RemoteFeatureFlag.sdkLessGoogleSignIn.enabled(using: remoteFeaturesStore)
-            default:
-                return true
-            }
-        }()
-
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
@@ -89,8 +79,7 @@ extension WordPressAuthenticationManager {
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
                                                    enableUnifiedCarousel: true,
-                                                   enableSocialLogin: true,
-                                                   googleLoginWithoutSDK: googleLogingWithoutSDK)
+                                                   enableSocialLogin: true)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
@@ -400,7 +389,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
-    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, socialUser: SocialUser?) {
 
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
@@ -408,7 +397,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.socialService = service
+        epilogueViewController.socialUser = socialUser
         epilogueViewController.onContinue = { [weak self, weak navigationController] in
             guard let self, let navigationController else {
                 return
