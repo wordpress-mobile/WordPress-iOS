@@ -29,8 +29,11 @@ public class ChooseLayoutScreen: ScreenObject {
 
     @discardableResult
     public func createBlankPage() throws -> BlockEditorScreen {
-        createBlankPageButton.tap()
+        guard XCUIDevice.isPhone else {
+            return try BlockEditorScreen()
+        }
 
+        createBlankPageButton.tap()
         return try BlockEditorScreen()
     }
 
