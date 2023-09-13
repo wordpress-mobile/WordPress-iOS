@@ -19,7 +19,7 @@ extension RootViewCoordinator {
     ///
     /// - Parameter userInfo: Notification payload.
     func showPromptAnsweringFlow(with userInfo: NSDictionary) {
-        guard Feature.enabled(.bloggingPrompts),
+        guard FeatureFlag.bloggingPrompts.enabled,
               let siteID = userInfo[BloggingPrompt.NotificationKeys.siteID] as? Int,
               let blog = accountSites?.first(where: { $0.dotComID == NSNumber(value: siteID) }),
               let viewController = Self.sharedPresenter.currentViewController else {

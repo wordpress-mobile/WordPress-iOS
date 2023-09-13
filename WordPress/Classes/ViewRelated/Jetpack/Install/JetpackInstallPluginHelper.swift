@@ -133,7 +133,7 @@ private extension JetpackInstallPluginHelper {
 
     static var isFeatureEnabled: Bool {
         if AppConfiguration.isJetpack {
-            return FeatureFlag.jetpackIndividualPluginSupport.enabled
+            return true
         }
 
         return RemoteFeatureFlag.wordPressIndividualPluginSupport.enabled()

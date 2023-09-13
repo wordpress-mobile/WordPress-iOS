@@ -183,9 +183,7 @@ class MeViewController: UITableViewController {
 
         let wordPressComAccount = HeaderTitles.wpAccount
 
-        let shouldShowQRLoginRow = AppConfiguration.qrLoginEnabled
-        && FeatureFlag.qrLogin.enabled
-        && !(account?.settings?.twoStepEnabled ?? false)
+        let shouldShowQRLoginRow = AppConfiguration.qrLoginEnabled && !(account?.settings?.twoStepEnabled ?? false)
 
         return ImmuTable(sections: [
             // first section

@@ -307,13 +307,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     // MARK: - Misc Properties
 
-    static var identifier: String {
-        if FeatureFlag.weeklyRoundupBGProcessingTask.enabled {
-            return Constants.taskIdentifierProcessing
-        }
-
-        return Constants.taskIdentifier
-    }
+    static let identifier = Constants.taskIdentifierProcessing
     static private let secondsPerDay = 24 * 60 * 60
 
     private let store: Store
@@ -417,13 +411,6 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     }
 
     func didSchedule(completion: @escaping (Result<Void, Error>) -> Void) {
-        if Feature.enabled(.weeklyRoundupStaticNotification) {
-            // We're scheduling a static notification in case the BG task won't run.
-            // This will happen when the App has been explicitly killed by the user as of 2021/08/03,
-            // as Apple doesn't let background tasks run in this scenario.
-            notificationScheduler.scheduleStaticNotification(completion: completion)
-        }
-
         completion(.success(()))
     }
 
@@ -451,27 +438,6 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         // called, the operation queue will cancell any pending operations, ensuring
         // that the task will exit as soon as possible.
 
-        let cancelStaticNotification = BlockOperation {
-            if Feature.enabled(.weeklyRoundupStaticNotification) {
-                let group = DispatchGroup()
-                group.enter()
-
-                self.notificationScheduler.cancelStaticNotification { cancelled in
-                    defer {
-                        group.leave()
-                    }
-
-                    guard cancelled else {
-                        onError(RunError.staticNotificationAlreadyDelivered)
-                        self.operationQueue.cancelAllOperations()
-                        return
-                    }
-                }
-
-                group.wait()
-            }
-        }
-
         let dataProvider = WeeklyRoundupDataProvider(coreDataStack: coreDataStack, onError: onError)
         var siteStats: WeeklyRoundupDataProvider.SiteStats? = nil
 
@@ -487,14 +453,12 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
                 switch result {
                 case .success(let topSiteStats):
                     guard let topSiteStats = topSiteStats else {
-                        self.cancelExecution()
                         return
                     }
 
                     siteStats = topSiteStats
                 case .failure(let error):
                     onError(error)
-                    self.cancelExecution()
                 }
             }
 
@@ -532,7 +496,6 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             completion(completionOperation.isCancelled)
         }
 
-        operationQueue.addOperation(cancelStaticNotification)
         operationQueue.addOperation(requestData)
         operationQueue.addOperation(scheduleNotification)
         operationQueue.addOperation(completionOperation)
@@ -770,19 +733,6 @@ class WeeklyRoundupNotificationScheduler {
 
     func cancelStaticNotification(completion: @escaping (Bool) -> Void = { _ in }) {
         userNotificationCenter.getPendingNotificationRequests { requests in
-            if Feature.enabled(.weeklyRoundupStaticNotification) {
-                guard requests.contains( where: { $0.identifier == self.staticNotificationIdentifier }) else {
-                    // The reason why we're cancelling the background task if there's no static notification scheduled is because
-                    // it means we've already shown the static notification to the user.  Since iOS doesn't ensure an execution time
-                    // for background tasks, we assume this is the case where the static notification was shown before the dynamic
-                    // task was run.
-                    completion(false)
-                    return
-                }
-
-                self.userNotificationCenter.removePendingNotificationRequests(withIdentifiers: [self.staticNotificationIdentifier])
-            }
-
             completion(true)
         }
     }

@@ -33,6 +33,6 @@ struct HomeWidgetToday: Widget {
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)
-        .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemSmall, .systemMedium] : [])
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

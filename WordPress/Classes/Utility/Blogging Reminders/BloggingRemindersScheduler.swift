@@ -155,10 +155,6 @@ class BloggingRemindersScheduler {
     }
 
     static func handleRemindersMigration() {
-        guard FeatureFlag.contentMigration.enabled else {
-            return
-        }
-
         if AppConfiguration.isWordPress {
             copyStoreToSharedFile()
         } else if AppConfiguration.isJetpack {
@@ -169,8 +165,7 @@ class BloggingRemindersScheduler {
     /// Deletes backup reminders if it exists.
     ///
     static func deleteBackupReminders() {
-        guard FeatureFlag.contentMigration.enabled,
-              let sharedFileURL = sharedDataFileURL() else {
+        guard let sharedFileURL = sharedDataFileURL() else {
             return
         }
 

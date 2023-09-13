@@ -65,7 +65,7 @@ private struct Strings {
 
 struct QuickStartSiteMenu {
     private static let descriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen.")
-    private static let descriptionTarget = NSLocalizedString("Menu", comment: "The segmented control item to select during a guided tour.")
+    private static let descriptionTarget = NSLocalizedString("quickStart.moreMenu", value: "More", comment: "The quick tour actions item to select during a guided tour.")
     static let waypoint = QuickStartTour.WayPoint(element: .siteMenu, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))
 }
 
@@ -193,7 +193,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let showWaypointNotices = false
-    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDashboard]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
@@ -304,7 +304,7 @@ struct QuickStartReviewPagesTour: QuickStartTour {
     let iconColor = UIColor.muriel(color: MurielColor(name: .celadon, shade: .shade30))
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails]
+    let possibleEntryPoints: Set<QuickStartTourEntryPoint> = [.blogDetails, .blogDashboard]
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
