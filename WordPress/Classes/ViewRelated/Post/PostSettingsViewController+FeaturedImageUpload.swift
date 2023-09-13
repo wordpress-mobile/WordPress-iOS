@@ -55,6 +55,8 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
     }
 }
 
+extension PostSettingsViewController: MediaPickerViewControllerDelegate {}
+
 // MARK: - PostSettingsViewController (Featured Image Upload)
 
 extension PostSettingsViewController {
