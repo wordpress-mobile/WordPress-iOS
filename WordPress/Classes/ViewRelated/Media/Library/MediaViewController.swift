@@ -12,10 +12,18 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     private let buttonAddMedia: SpotlightableButton = SpotlightableButton(type: .custom)
 
     private var isSyncing = false
+    private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
     private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let coordinator = MediaCoordinator.shared
+
+    private var emptyViewState: EmptyViewState = .hidden {
+        didSet {
+            guard oldValue != emptyViewState else { return }
+            displayEmptyViewState(emptyViewState)
+        }
+    }
 
     static let spacing: CGFloat = 2
 
@@ -47,11 +55,8 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             WordPressAppDelegate.crashLogging?.logError(error) // Should never happen
         }
 
-        if collectionView.numberOfItems(inSection: 0) == 0 {
-            showLoadingView()
-        }
-
         syncMedia()
+        updateEmptyViewState()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -138,22 +143,15 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     private func didFinishRefreshing(error: Error?) {
         isSyncing = false
+        syncError = error
         refreshControl.endRefreshing()
         pendingRefreshWorkItem = nil
 
-        hideNoResults()
         let isEmpty = collectionView.numberOfItems(inSection: 0) == 0
-        if let error {
-            if isEmpty {
-                showErrorView()
-            } else {
-                WPError.showNetworkingNotice(title: Strings.syncFailed, error: error as NSError)
-            }
-        } else {
-            if isEmpty {
-                showEmptyView()
-            }
+        if let error, !isEmpty {
+            WPError.showNetworkingNotice(title: Strings.syncFailed, error: error as NSError)
         }
+        updateEmptyViewState()
     }
 
     // MARK: - NSFetchedResultsController
@@ -219,6 +217,8 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             didFinishRefreshing(error: nil)
             pendingRefreshWorkItem = nil
         }
+
+        updateEmptyViewState()
     }
 
     // MARK: - UICollectionViewDataSource
@@ -307,19 +307,44 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 // MARK: - MediaViewController (NoResults)
 
 extension MediaViewController: NoResultsViewHost {
-    private func showLoadingView() {
-        noResultsViewController.configureForFetching()
-        displayNoResults(on: view)
+    private func updateEmptyViewState() {
+        let isEmpty = collectionView.numberOfItems(inSection: 0) == 0
+        guard isEmpty else {
+            emptyViewState = .hidden
+            return
+        }
+        if isSyncing {
+            emptyViewState = .synching
+        } else if syncError != nil {
+            emptyViewState = .failed
+        } else {
+            emptyViewState = .empty(isAddButtonShown: blog.userCanUploadMedia)
+        }
     }
 
-    private func showEmptyView() {
-        noResultsViewController.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
-        noResultsViewController.buttonMenu = mediaPickerController.makeMenu(for: self)
-        displayNoResults(on: view)
+    private func displayEmptyViewState(_ state: EmptyViewState) {
+        hideNoResults() // important: it doesn't refresh without it
+
+        switch state {
+        case .hidden:
+            hideNoResults()
+        case .synching:
+            noResultsViewController.configureForFetching()
+            displayNoResults(on: view)
+        case .empty(let isAddButtonShown):
+            noResultsViewController.configureForNoAssets(userCanUploadMedia: isAddButtonShown)
+            noResultsViewController.buttonMenu = mediaPickerController.makeMenu(for: self)
+            displayNoResults(on: view)
+        case .failed:
+            configureAndDisplayNoResults(on: view, title: Strings.syncFailed)
+        }
     }
 
-    private func showErrorView() {
-        configureAndDisplayNoResults(on: view, title: Strings.syncFailed)
+    private enum EmptyViewState: Hashable {
+        case hidden
+        case synching
+        case empty(isAddButtonShown: Bool)
+        case failed
     }
 }
 
