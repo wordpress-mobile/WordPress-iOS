@@ -1,7 +1,4 @@
 {
-  "scenarioName": "new_page_flow",
-  "requiredScenarioState": "Started",
-  "newScenarioState": "initial_pages_list",
   "request": {
     "method": "GET",
     "urlPath": "/rest/v1.2/sites/106707880/posts",
@@ -11,12 +8,11 @@
       },
       "type": {
         "equalTo": "page"
-      }       
+      }
     }
   },
   "response": {
     "status": 200,
-    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
       "found": 3,
       "posts": [
