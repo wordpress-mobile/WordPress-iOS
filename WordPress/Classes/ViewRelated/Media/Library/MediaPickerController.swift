@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate {
+final class MediaPickerController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, StockPhotosPickerDelegate, TenorPickerDelegate, UIDocumentPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -17,7 +17,8 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
             menu.makePhotosAction(delegate: self),
             menu.makeCameraAction(delegate: self),
             menu.makeStockPhotos(blog: blog, delegate: self),
-            menu.makeFreeGIFAction(blog: blog, delegate: self)
+            menu.makeFreeGIFAction(blog: blog, delegate: self),
+            makeDocumentPickerAction(from: viewController)
         ]
         return UIMenu(children: actions)
     }
@@ -78,4 +79,36 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
             WPAnalytics.track(.tenorUploaded)
         }
     }
+
+    // MARK: - Document Picker
+
+    private func makeDocumentPickerAction(from presentingViewController: UIViewController) -> UIAction {
+        UIAction(
+            title: Strings.pickFromOtherApps,
+            image: UIImage(systemName: "folder"),
+            attributes: [],
+            handler: { [weak presentingViewController, blog] _ in
+                let allowedFileTypes = blog.allowedTypeIdentifiers.compactMap(UTType.init)
+                let viewController = UIDocumentPickerViewController(forOpeningContentTypes: allowedFileTypes, asCopy: true)
+                viewController.delegate = self
+                viewController.allowsMultipleSelection = true
+                presentingViewController?.present(viewController, animated: true)
+            }
+        )
+    }
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        for documentURL in urls as [NSURL] {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.otherApps), selectionMethod: .documentPicker)
+            coordinator.addMedia(from: documentURL, to: blog, analyticsInfo: info)
+        }
+    }
+
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        controller.presentingViewController?.dismiss(animated: true)
+    }
+}
+
+private enum Strings {
+    static let pickFromOtherApps = NSLocalizedString("mediaPicker.pickFromOtherApps", value: "Other Apps", comment: "The name of the action in the context menu for selecting photos from other apps (Files app)")
 }
