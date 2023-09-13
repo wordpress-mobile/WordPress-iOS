@@ -306,7 +306,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
 // MARK: - MediaViewController (NoResults)
 
-extension MediaViewController: NoResultsViewHost, NoResultsViewControllerDelegate {
+extension MediaViewController: NoResultsViewHost {
     private func showLoadingView() {
         noResultsViewController.configureForFetching()
         displayNoResults(on: view)
@@ -314,15 +314,12 @@ extension MediaViewController: NoResultsViewHost, NoResultsViewControllerDelegat
 
     private func showEmptyView() {
         noResultsViewController.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+        noResultsViewController.buttonMenu = mediaPickerController.makeMenu(for: self)
         displayNoResults(on: view)
     }
 
     private func showErrorView() {
         configureAndDisplayNoResults(on: view, title: Strings.syncFailed)
-    }
-
-    func actionButtonPressed() {
-        // TODO: implement somehow (pass the menu)
     }
 }
 
