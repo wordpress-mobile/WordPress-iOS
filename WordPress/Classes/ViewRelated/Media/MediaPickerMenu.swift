@@ -216,6 +216,32 @@ extension MediaPickerMenu {
     private static var dataSourceAssociatedKey: UInt8 = 0
 }
 
+// MARK: - MediaPickerMenu (Free GIF, Tenor)
+
+extension MediaPickerMenu {
+    func makeFreeGIFAction(blog: Blog, delegate: TenorPickerDelegate) -> UIAction {
+        UIAction(
+            title: Strings.pickFromTenor,
+            image: UIImage(systemName: "play.square.stack"),
+            attributes: [],
+            handler: { _ in showFreeGIFPicker(blog: blog, delegate: delegate) }
+        )
+    }
+
+    func showFreeGIFPicker(blog: Blog, delegate: TenorPickerDelegate) {
+        guard let presentingViewController else { return }
+
+        let picker = TenorPicker()
+        picker.allowMultipleSelection = isMultipleSelectionEnabled
+        picker.delegate = delegate
+        let tenorViewController = picker.presentPicker(origin: presentingViewController, blog: blog)
+
+        objc_setAssociatedObject(tenorViewController, &MediaPickerMenu.dataSourceAssociatedKey, picker, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+
+    private static var tenorPickereAssociatedKey: UInt8 = 0
+}
+
 extension MediaPickerMenu.MediaFilter {
     init?(_ mediaType: WPMediaType) {
         switch mediaType {
@@ -234,6 +260,7 @@ private enum Strings {
     static let takeVideo = NSLocalizedString("mediaPicker.takeVideo", value: "Take Video", comment: "The name of the action in the context menu")
     static let takePhotoOrVideo = NSLocalizedString("mediaPicker.takePhotoOrVideo", value: "Take Photo or Video", comment: "The name of the action in the context menu")
     static let pickFromMedia = NSLocalizedString("mediaPicker.pickFromMediaLibrary", value: "Choose from Media", comment: "The name of the action in the context menu (user's WordPress Media Library")
+    static let pickFromTenor = NSLocalizedString("mediaPicker.pickFromFreeGIFLibrary", value: "Free GIF Library", comment: "The name of the action in the context menu for selecting photos from Tenor (free GIF library)")
 
     // MARK: Misc
 

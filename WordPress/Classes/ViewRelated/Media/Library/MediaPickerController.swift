@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate {
+final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerControllerDelegate, TenorPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -15,7 +15,8 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
         let menu = MediaPickerMenu(viewController: viewController, isMultipleSelectionEnabled: true)
         let actions: [UIAction] = [
             menu.makePhotosAction(delegate: self),
-            menu.makeCameraAction(delegate: self)
+            menu.makeCameraAction(delegate: self),
+            menu.makeFreeGIFAction(blog: blog, delegate: self)
         ]
         return UIMenu(children: actions)
     }
@@ -54,6 +55,16 @@ final class MediaPickerController: PHPickerViewControllerDelegate, ImagePickerCo
             }
         default:
             break
+        }
+    }
+
+    // MARK: - TenorPickerDelegate
+
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+        for asset in assets {
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
+            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
+            WPAnalytics.track(.tenorUploaded)
         }
     }
 }
