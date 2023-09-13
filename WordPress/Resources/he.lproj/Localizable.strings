@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "פעיל";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "להוסיף אודיו";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "להוסיף את הבלוק כאן";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "להוסיף תמונה";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "להוסיף תמונה או וידאו";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "הוספת מדיה";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "להוסיף וידאו";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "כתובת";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "ביצוע ההרשמה מהווה את הסכמתך לתנאי השימוש שלנו.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "לבחור קובץ";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "התאמה אישית";
@@ -10551,9 +10536,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "הכרטיסים עשויים להציג תוכן שונה בהתאם לפעילות באתר שלך. אנחנו עובדים על הוספה של כרטיסים ופקדים נוספים.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "להוסיף או להסתיר כרטיסים";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "פעילות אחרונה";

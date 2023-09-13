@@ -401,22 +401,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ACTIEF";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "AUDIO TOEVOEGEN";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "BLOK HIER TOEVOEGEN";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "AFBEELDING TOEVOEGEN";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "AFBEELDING OF VIDEO TOEVOEGEN";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "MEDIA TOEVOEGEN";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "VIDEO TOEVOEGEN";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRES";
@@ -1268,9 +1256,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Door aan te melden, ga je akkoord met onze _algemene voorwaarden_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "KIES EEN BESTAND";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "AANPASSEN";
@@ -10518,9 +10503,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kaarten kunnen verschillende inhoud weergeven, afhankelijk van wat er op je site gebeurt. We zijn bezig meer kaarten en beheermogelijkheden te creëren.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Kaarten toevoegen of verbergen";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Recente activiteit";

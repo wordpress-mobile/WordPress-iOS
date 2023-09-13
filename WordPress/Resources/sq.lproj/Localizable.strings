@@ -401,22 +401,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIVE";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "SHTONI AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "SHTONI BLLOK KËTU";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "SHTONI FIGURË";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "SHTONI FIGURË OSE VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "SHTONI MEDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "SHTONI VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESË";
@@ -1250,9 +1238,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Duke u regjistruar, pajtoheni me _Kushtet tona të Shërbimit_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "ZGJIDHNI NJË KARTELË";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "PËRSHTATENI";
@@ -10407,9 +10392,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kartat mund të shfaqin lëndë të ndryshme, në varësi të çka ndodh në sajtin tuaj. Po punojmë për më tepër karta dhe kontrolle.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Shtoni ose fshihni karta";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Veprimtari së fundi";

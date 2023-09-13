@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ATTIVO";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "AGGIUNGI AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "AGGIUNGI IL BLOCCO QUI";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "AGGIUNGI IMMAGINE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "AGGIUNGI IMMAGINE O VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "AGGIUNGI ELEMENTO MULTIMEDIALE";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "AGGIUNGI VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "INDIRIZZO";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Iscrivendoti, accetti i nostri _Termini di servizio_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "SCEGLI UN FILE";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "PERSONALIZZA";
@@ -10554,9 +10539,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Le schede possono mostrare contenuti diversi a seconda di ciò che sta accadendo sul tuo sito. Stiamo lavorando su più schede e controlli.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Aggiungi o nascondi schede";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Attività recente";

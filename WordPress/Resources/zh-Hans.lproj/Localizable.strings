@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "活动";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "添加音频";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "在此处添加区块";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "添加图片";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "添加图片或视频";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "添加媒体";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "添加视频";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "注册即表示您同意我们的_服务条款_。";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "选择文件";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "定制";
@@ -10548,9 +10533,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "卡片可能会显示不同的内容，具体取决于您站点上的情况。 我们正在开发更多卡片和控件。";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "添加或隐藏卡片";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "近期的动态";

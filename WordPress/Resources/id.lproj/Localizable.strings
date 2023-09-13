@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIF";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "TAMBAHKAN AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "TAMBAHKAN BLOK DI SINI";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "TAMBAHKAN GAMBAR";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "TAMBAHKAN GAMBAR ATAU VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "TAMBAHKAN MEDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "TAMBAHKAN VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ALAMAT";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Dengan mendaftar, berarti Anda menyetujui _Ketentuan Layanan_ kami.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "PILIH FILE";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "SESUAIKAN";
@@ -10554,9 +10539,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kartu bisa saja menampilkan konten yang berbeda, tergantung pada apa yang terjadi di situs Anda. Kami terus mengembangkan fitur kartu dan kontrol.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Tambahkan atau sembunyikan kartu";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Aktivitas terbaru";

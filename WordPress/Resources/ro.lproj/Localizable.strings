@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 22:19:28+0000 */
+/* Translation-Revision-Date: 2023-09-12 18:30:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ro */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ACTIVĂ";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADAUGĂ UN FIȘIER AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ADAUGĂ BLOC AICI";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "ADAUGĂ IMAGINE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "ADAUGĂ IMAGINE SAU VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "ADAUGĂ MEDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "ADAUGĂ VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESĂ";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Adaugă orice subiect";
 
 /* No comment provided by engineer. */
+"Add audio" = "Adaugă audio";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Adaugă blocuri";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Adaugă o descriere";
+
+/* No comment provided by engineer. */
+"Add image" = "Adaugă imagine";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Adaugă o imagine sau un video";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Adaugă un titlu";
+
+/* No comment provided by engineer. */
+"Add video" = "Adaugă video";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Adaug funcționalitățile site-ului";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "Prin înregistrare, ești de acord cu _Termenii noștri de utilizare ai serviciului_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "ALEGE UN FIȘIER";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "PERSONALIZEAZĂ";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Alege un domeniu";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Alege un fișier";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Alege un icon nou pentru aplicație";
@@ -10556,7 +10553,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "Cartușele pot să afișeze conținut diferit în funcție de ceea ce se întâmplă pe site-ul tău. Lucrăm la mai multe cartușe și comenzi.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "Adaugă cartușe sau ascunde-le";
+"personalizeHome.cardsSectionHeader" = "Arată sau ascunde cartușele";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Activități recente";
@@ -10984,7 +10981,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
-"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
+"stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut o apreciere.";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Refuză";

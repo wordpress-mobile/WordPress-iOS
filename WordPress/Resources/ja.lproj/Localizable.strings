@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "有効";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "音声を追加";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ここにブロックを追加";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "画像を追加";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "画像または動画を追加";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "メディアを追加";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "動画を追加";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "住所";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "登録することで、利用規約に合意したことになります。";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "ファイルを選択";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "カスタマイズ";
@@ -10551,9 +10536,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "サイトで発生した内容に基づいてカードにはさまざまなコンテンツが表示されることがあります。 さらに多くのカードやコントロールに取り組んでいます。";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "カードを追加または非表示";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "最近のアクティビティ";

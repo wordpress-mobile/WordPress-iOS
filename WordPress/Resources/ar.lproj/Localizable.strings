@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "مفعّل";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "أضف ملف صوتي";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "إضافة مكوّن هنا";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "إضافة صورة";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "إضافة صورة أو فيديو";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "إضافة وسائط";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "إضافة فيديو";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "العنوان";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "يعني تسجيل الدخول موافقتك على _Terms of Service_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "اختيار ملف";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "تخصيص";
@@ -10548,9 +10533,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "قد تعرض البطاقات محتوى مختلفًا استنادًا إلى ما يحدث على موقعك. إننا نعمل على مزيد من البطاقات وضوابط التحكم.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "إضافة بطاقات أو إخفاؤها";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "آخر نشاط";

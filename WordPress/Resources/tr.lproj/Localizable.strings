@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ETKİN";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "SES EKLE";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "BURAYA BLOK EKLE";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "GÖRSEL EKLE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "GÖRSEL VEYA VİDEO EKLE";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "ORTAM EKLE";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "VİDEO EKLE";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRES";
@@ -1271,9 +1259,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Kaydolarak _hizmet koşullarını_ kabul etmiş olursunuz.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "DOSYA SEÇ";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "Özelleştir";
@@ -10554,9 +10539,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Web sitenizde olanlara göre kartlar farklı içerik gösterebilir. Daha fazla kart ve kontrol üzerinde çalışıyoruz.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Kart ekle veya gizle";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Son etkinlik";
