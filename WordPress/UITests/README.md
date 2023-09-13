@@ -53,7 +53,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [x] Add Comment to Post
     - [x] Follow New Topic on Discover Tab
     - [x] Save a Post
-    - [x] Like a Post 
+    - [x] Like a Post
 9. Jetpack Settings
     - [ ] Open and View Jetpack Settings Options
     - [ ] Search and View a Plugin
