@@ -12,6 +12,10 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["Reader"]
     }
 
+    private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["Blog Post Row"]
+    }
+
     private let createButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["floatingCreateButton"]
     }
@@ -74,6 +78,10 @@ public class MySiteScreen: ScreenObject {
 
     private let removeSiteAlertGetter: (XCUIApplication) -> XCUIElement = {
         $0.alerts.buttons.element(boundBy: 1)
+    }
+
+    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["People Row"]
     }
 
     private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {
