@@ -12,6 +12,9 @@ a.floating-button {
 
 .docsbot-chat-input-form {
     margin-bottom: 0px;
+    height: 48px !important;
+    display: flex;
+    align-items: center;
 }
 
 .docsbot-chat-bot-message-container span {
@@ -23,7 +26,7 @@ a.floating-button {
 }
 
 .docsbot-chat-input {
-    height: 48px !important;
+    height: auto !important;
 }
 
 .docsbot-chat-btn-send-icon {
