@@ -27,8 +27,9 @@ final class AvatarMenuController: PHPickerViewControllerDelegate, ImagePickerCon
     // MARK: - PHPickerViewControllerDelegate
 
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        presentingViewController?.dismiss(animated: true)
+
         guard let result = results.first else {
-            presentingViewController?.dismiss(animated: true)
             return
         }
         PHPickerResult.loadImage(for: result) { [weak self] image, _ in
