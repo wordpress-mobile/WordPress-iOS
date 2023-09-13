@@ -21,7 +21,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
     init(blog: Blog) {
         self.blog = blog
-        self.mediaPickerController = MediaPickerController(blog: blog)
+        self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
     }
 
