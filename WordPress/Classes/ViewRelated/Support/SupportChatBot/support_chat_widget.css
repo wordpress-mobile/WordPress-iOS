@@ -33,6 +33,10 @@ a.floating-button {
   width: 24px; !important;
 }
 
+.docsbot-chat-btn-send {
+    fill: rgb(16, 135, 0) !important;
+}
+
 .docsbot-chat-bot-message-meta {
     margin-top: 16px;
 }
