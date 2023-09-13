@@ -8,10 +8,6 @@ public class MySiteScreen: ScreenObject {
     static let freeToPaidPlansCardId = "dashboard-free-to-paid-plans-card-contentview"
     static let pagesCardId = "dashboard-pages-card-frameview"
 
-    private let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Activity Log Row"]
-    }
-
     private let activityLogCardGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements[activityLogCardId]
     }
@@ -32,28 +28,8 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["floatingCreateButton"]
     }
 
-    private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Domains Row"]
-    }
-
     private let freeToPaidPlansCardButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Free domain with an annual plan"]
-    }
-
-    private let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Home"]
-    }
-
-    private let jetpackBackupButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Backup Row"]
-    }
-
-    private let jetpackScanButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Scan Row"]
-    }
-
-    private let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Media Row"]
     }
 
     private let moreMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -80,14 +56,6 @@ public class MySiteScreen: ScreenObject {
         $0.otherElements[pagesCardId].buttons["More"]
     }
 
-    private let peopleButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["People Row"]
-    }
-
-    private let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Blog Post Row"]
-    }
-
     private let previewDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Preview Device"]
     }
@@ -112,20 +80,12 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["Menu"]
     }
 
-    private let settingsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Settings Row"]
-    }
-
     private let siteTitleButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["site-title-button"]
     }
 
     private let siteUrlButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["site-url-button"]
-    }
-
-    private let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Stats Row"]
     }
 
     private let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -137,7 +97,6 @@ public class MySiteScreen: ScreenObject {
     var blogDetailsRemoveSiteButton: XCUIElement { blogDetailsRemoveSiteButtonGetter(app) }
     var blogTable: XCUIElement { blogTableGetter(app) }
     var createButton: XCUIElement { createButtonGetter(app) }
-    var domainsButton: XCUIElement { domainsButtonGetter(app) }
     var freeToPaidPlansCardButton: XCUIElement { freeToPaidPlansCardButtonGetter(app) }
     var moreMenuButton: XCUIElement { moreMenuButtonGetter(app) }
     var noticeTitle: XCUIElement { noticeTitleGetter(app) }
@@ -145,18 +104,14 @@ public class MySiteScreen: ScreenObject {
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
-    var peopleButton: XCUIElement { peopleButtonGetter(app) }
-    var postsButton: XCUIElement { postsButtonGetter(app) }
     var previewDeviceButton: XCUIElement { previewDeviceButtonGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app) }
     var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
     var removeSiteButton: XCUIElement { removeSiteButtonGetter(app) }
     var safariButton: XCUIElement { safariButtonGetter(app) }
     var segmentedControlMenuButton: XCUIElement { segmentedControlMenuButtonGetter(app) }
-    var settingsButton: XCUIElement { settingsButtonGetter(app) }
     var siteTitleButton: XCUIElement { siteTitleButtonGetter(app) }
     var siteUrlButton: XCUIElement { siteUrlButtonGetter(app) }
-    var statsButton: XCUIElement { statsButtonGetter(app) }
     var switchSiteButton: XCUIElement { switchSiteButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
@@ -185,11 +140,6 @@ public class MySiteScreen: ScreenObject {
     public func goToCreateSheet() throws -> ActionSheetComponent {
         createButton.tap()
         return try ActionSheetComponent()
-    }
-
-    public func goToDomainsScreen() throws -> DomainsScreen {
-        domainsButton.tap()
-        return try DomainsScreen()
     }
 
     @discardableResult
