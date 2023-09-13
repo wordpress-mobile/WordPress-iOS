@@ -13,14 +13,19 @@ final class MediaPickerController: NSObject, PHPickerViewControllerDelegate, Ima
 
     func makeMenu(for viewController: UIViewController) -> UIMenu {
         let menu = MediaPickerMenu(viewController: viewController, isMultipleSelectionEnabled: true)
-        let actions: [UIAction] = [
-            menu.makePhotosAction(delegate: self),
-            menu.makeCameraAction(delegate: self),
-            menu.makeStockPhotos(blog: blog, delegate: self),
-            menu.makeFreeGIFAction(blog: blog, delegate: self),
-            makeDocumentPickerAction(from: viewController)
-        ]
-        return UIMenu(children: actions)
+        return UIMenu(options: [.displayInline], children: [
+            UIMenu(options: [.displayInline], children: [
+                menu.makePhotosAction(delegate: self),
+            ]),
+            UIMenu(options: [.displayInline], children: [
+                menu.makeCameraAction(delegate: self),
+                makeDocumentPickerAction(from: viewController)
+            ]),
+            UIMenu(options: [.displayInline], children: [
+                menu.makeStockPhotos(blog: blog, delegate: self),
+                menu.makeFreeGIFAction(blog: blog, delegate: self)
+            ])
+        ])
     }
 
     // MARK: - PHPickerViewControllerDelegate
@@ -110,5 +115,5 @@ final class MediaPickerController: NSObject, PHPickerViewControllerDelegate, Ima
 }
 
 private enum Strings {
-    static let pickFromOtherApps = NSLocalizedString("mediaPicker.pickFromOtherApps", value: "Other Apps", comment: "The name of the action in the context menu for selecting photos from other apps (Files app)")
+    static let pickFromOtherApps = NSLocalizedString("mediaPicker.pickFromOtherApps", value: "Other Files", comment: "The name of the action in the context menu for selecting photos from other apps (Files app)")
 }

@@ -222,7 +222,7 @@ extension MediaPickerMenu {
     func makeStockPhotos(blog: Blog, delegate: StockPhotosPickerDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromStockPhotos,
-            image: UIImage(systemName: "photo.artframe"),
+            image: UIImage(systemName: "photo.on.rectangle"),
             attributes: [],
             handler: { _ in showStockPhotosPicker(blog: blog, delegate: delegate) }
         )
