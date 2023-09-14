@@ -66,7 +66,7 @@ window.prepareDocsBotForPresentation = function () {
       // https://github.com/wordpress-mobile/WordPress-iOS/issues/21549
       onElementMounted(sendButtonSelector, shadowRoot, function (sendButton) {
         sendButton.addEventListener("click", function () {
-          setTimeout(() => {
+          setTimeout(function () {
             document.activeElement.blur();
           }, 0);
         });
