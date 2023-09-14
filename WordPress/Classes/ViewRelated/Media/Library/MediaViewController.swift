@@ -239,6 +239,8 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped)))
         self.toolbarItems = toolbarItems
         navigationController?.setToolbarHidden(!isEditing, animated: true)
+
+        updateToolbarItemsState()
     }
 
     private func setSelect(_ isSelected: Bool, for media: Media) {
@@ -256,6 +258,13 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             } else {
                 assertionFailure("Invalid selection")
             }
+        }
+        updateToolbarItemsState()
+    }
+
+    private func updateToolbarItemsState() {
+        for toolbarItem in toolbarItems ?? [] {
+            toolbarItem.isEnabled = selection.count > 0
         }
     }
 
