@@ -151,10 +151,19 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     }
 
     @objc private func buttonDeleteTapped() {
+        deleteSelectedMedia(selectedMedia)
+    }
+
+    @objc private func buttonShareTapped(sender: UIBarButtonItem) {
+        shareSelectedMedia(selectedMedia, barButtonItem: sender)
+    }
+
+    private var selectedMedia: [Media] {
         guard let selection = selection.array as? [Media] else {
-            return assertionFailure("Invalid selection")
+            assertionFailure("Invalid selection")
+            return []
         }
-        deleteSelectedMedia(selection)
+        return selection
     }
 
     // MARK: - Actions (Delete)
@@ -185,7 +194,6 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
 
-        // Initialize the progress HUD before we start
         updateProgress(nil)
         coordinator.delete(media: selection, onProgress: updateProgress, success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
@@ -193,6 +201,27 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         }, failure: {
             SVProgressHUD.showError(withStatus: Strings.deletionFailureMessage)
         })
+    }
+
+    // MARK: - Actions (Share)
+
+    private func shareSelectedMedia(_ selection: [Media], barButtonItem: UIBarButtonItem? = nil) {
+        guard !selection.isEmpty else {
+            return
+        }
+        // TODO: Add spinner (cancellable?)
+        Task {
+            do {
+                // TODO: Add analytics
+                let fileURLs = try await Media.downloadRemoteData(for: selection, blog: blog)
+
+                let activityViewController = UIActivityViewController(activityItems: fileURLs, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+                present(activityViewController, animated: true, completion: nil)
+            } catch {
+                // TODO: Add error handling
+            }
+        }
     }
 
     // MARK: - Editing
@@ -213,6 +242,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped)))
         }
         toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped)))
         self.toolbarItems = toolbarItems
         navigationController?.setToolbarHidden(!isEditing, animated: true)
     }
