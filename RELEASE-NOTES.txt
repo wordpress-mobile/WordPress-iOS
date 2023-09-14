@@ -1,6 +1,6 @@
 23.3
 -----
-
+* [**] [internal] Refactor fetching one single media item. [#21567]
 
 23.2
 -----
