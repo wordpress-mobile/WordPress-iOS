@@ -24,6 +24,7 @@ a.floating-button {
 
 .docsbot-chat-input {
     height: 48px !important;
+    font: -apple-system-body !important;
 }
 
 .docsbot-chat-btn-send-icon {
@@ -34,6 +35,23 @@ a.floating-button {
     margin-top: 16px;
 }
 
+.docsbot-chat-bot-message-meta button {
+    font: -apple-system-footnote !important;
+}
+
+.docsbot-chat-message-container div {
+    font: -apple-system-body !important;
+}
+
 .docsbot-chat-suggested-questions-container button {
     height: 48px;
+    font: -apple-system-body !important;
+}
+
+.docsbot-chat-suggested-questions-container span {
+    font: -apple-system-footnote !important;
+}
+
+.docsbot-chat-bot-message-support a {
+    font: -apple-system-body !important;
 }
