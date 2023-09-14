@@ -36,6 +36,7 @@ class StatsWidgetsStore {
     /// Initialize the local cache for widgets, if it does not exist
     @objc func initializeStatsWidgetsIfNeeded() {
         UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        storeCredentials()
 
         if !HomeWidgetTodayData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
@@ -316,6 +317,24 @@ private extension StatsWidgetsStore {
     func observeSiteUpdatesForWidgets() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteDeleted, object: nil)
+    }
+}
+
+private extension StatsWidgetsStore {
+    func storeCredentials() {
+        guard let token = AccountHelper.authToken else { return }
+
+        do {
+            try SFHFKeychainUtils.storeUsername(
+                AppConfiguration.Widget.Stats.keychainTokenKey,
+                andPassword: token,
+                forServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
+            )
+        } catch {
+            DDLogDebug("Error while saving Widgets OAuth token: \(error)")
+        }
     }
 }
 
