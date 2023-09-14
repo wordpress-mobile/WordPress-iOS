@@ -13,7 +13,9 @@ class PageTests: XCTestCase {
         )
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
+        try await WireMock.resetScenario(scenario: "new_page_flow")
+
         takeScreenshotOfFailedTest()
         try super.tearDownWithError()
     }
