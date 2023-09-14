@@ -269,6 +269,7 @@ fileprivate extension BlogDetailHeaderView {
 
             button.accessibilityHint = NSLocalizedString("Tap to change the site's title", comment: "Accessibility hint for button used to change site title")
             button.translatesAutoresizingMaskIntoConstraints = false
+            button.accessibilityIdentifier = .siteTitleAccessibilityId
             return button
         }()
 
@@ -282,7 +283,7 @@ fileprivate extension BlogDetailHeaderView {
             button.tintColor = .secondaryLabel
             button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
             button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
-            button.accessibilityIdentifier = "SwitchSiteButton"
+            button.accessibilityIdentifier = .switchSiteAccessibilityId
 
             return button
         }()
@@ -316,6 +317,7 @@ fileprivate extension BlogDetailHeaderView {
 
         func set(url: String) {
             subtitleButton.setTitle(url, for: .normal)
+            subtitleButton.accessibilityIdentifier = .siteUrlAccessibilityId
         }
 
         // MARK: - Accessibility
@@ -355,6 +357,13 @@ fileprivate extension BlogDetailHeaderView {
             ])
         }
     }
+}
+
+private extension String {
+    // MARK: Accessibility Identifiers
+    static let siteTitleAccessibilityId = "site-title-button"
+    static let siteUrlAccessibilityId = "site-url-button"
+    static let switchSiteAccessibilityId = "switch-site-button"
 }
 
 private enum Strings {

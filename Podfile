@@ -147,7 +147,7 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-  pod 'WordPressAuthenticator', '~> 6.3'
+  pod 'WordPressAuthenticator', '~> 7.0-beta'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -322,7 +322,7 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-  gutenberg_post_install(installer: installer)
+  gutenberg_post_install(installer:)
 
   project_root = File.dirname(__FILE__)
 
