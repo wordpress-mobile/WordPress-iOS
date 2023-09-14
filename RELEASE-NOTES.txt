@@ -1,6 +1,6 @@
 23.3
 -----
-
+* [**] [internal] Refactored how the total number of WordPress Media is fetched. [#21568]
 
 23.2
 -----
