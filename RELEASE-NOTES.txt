@@ -1,6 +1,6 @@
 23.3
 -----
-
+* [**] Update the main site navigation on the My Site screen, making it easier to access the common site sections. The new shortcuts can be modified using the Personalize Home Tab screen. [21502](https://github.com/wordpress-mobile/WordPress-iOS/pull/21502).
 
 23.2
 -----
