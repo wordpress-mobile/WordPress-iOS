@@ -150,6 +150,51 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         setEditing(false)
     }
 
+    @objc private func buttonDeleteTapped() {
+        guard let selection = selection.array as? [Media] else {
+            return assertionFailure("Invalid selection")
+        }
+        deleteSelectedMedia(selection)
+    }
+
+    // MARK: - Actions (Delete)
+
+    private func deleteSelectedMedia(_ selection: [Media]) {
+        guard !selection.isEmpty else {
+            return
+        }
+        let alert = UIAlertController(
+            title: nil,
+            message: selection.count == 1 ? Strings.deleteConfirmationMessageOne : Strings.deleteConfirmationMessageMany,
+            preferredStyle: UIDevice.current.userInterfaceIdiom == .phone ? .actionSheet : .alert
+        )
+        alert.addCancelActionWithTitle(Strings.deleteConfirmationCancel)
+        alert.addDestructiveActionWithTitle(Strings.deleteConfirmationConfirm) { _ in
+            self.didConfirmDeletion(for: selection)
+        }
+        present(alert, animated: true)
+    }
+
+    private func didConfirmDeletion(for selection: [Media]) {
+        let deletedItemsCount = selection.count
+
+        let updateProgress = { (progress: Progress?) in
+            let fractionCompleted = progress?.fractionCompleted ?? 0
+            SVProgressHUD.showProgress(Float(fractionCompleted), status: Strings.deletionProgressViewTitle)
+        }
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+
+        // Initialize the progress HUD before we start
+        updateProgress(nil)
+        coordinator.delete(media: selection, onProgress: updateProgress, success: { [weak self] in
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
+            SVProgressHUD.showSuccess(withStatus: Strings.deletionSuccessMessage)
+        }, failure: {
+            SVProgressHUD.showError(withStatus: Strings.deletionFailureMessage)
+        })
+    }
+
     // MARK: - Editing
 
     private func setEditing(_ isEditing: Bool) {
@@ -163,10 +208,12 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
             deselectAll()
         }
 
-        // TODO: configure toolbar dynamically
-        toolbarItems = [
-            UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: nil)
-        ]
+        var toolbarItems: [UIBarButtonItem] = []
+        if blog.supports(.mediaDeletion) {
+            toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped)))
+        }
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        self.toolbarItems = toolbarItems
         navigationController?.setToolbarHidden(!isEditing, animated: true)
     }
 
@@ -270,6 +317,11 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         case .delete:
             guard let indexPath else { return }
             pendingChanges.append({ $0.deleteItems(at: [indexPath]) })
+            if let media = anObject as? Media {
+                setSelect(false, for: media)
+            } else {
+                assertionFailure("Invalid object: \(anObject)")
+            }
         case .update:
             // No interested in these. The screen observe these changes separately
             // to minimize the number of reloads: `.update` is emitted too often.
@@ -446,12 +498,20 @@ private enum Constants {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("media.title", value: "Media", comment: "Media screen navigation title")
-    static let select = NSLocalizedString("media.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
+    static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
+    static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
     static let syncFailed = NSLocalizedString("media.syncFailed", value: "Unable to sync media", comment: "Title of error prompt shown when a sync fails.")
     static let retryMenuRetry = NSLocalizedString("mediaLibrary.retryOptionsAlert.retry", value: "Retry Upload", comment: "User action to retry media upload.")
     static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
     static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
+
+    static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
+    static let deleteConfirmationMessageMany = NSLocalizedString("mediaLibrary.deleteConfirmationMessageMany", value: "Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
+    static let deleteConfirmationCancel = NSLocalizedString("mediaLibrary.deleteConfirmationCancel", value: "Cancel", comment: "Verb. Button title. Tapping cancels an action.")
+    static let deleteConfirmationConfirm = NSLocalizedString("mediaLibrary.deleteConfirmationConfirm", value: "Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)")
+    static let deletionProgressViewTitle = NSLocalizedString("mediaLibrary.deletionProgressViewTitle", value: "Deleting...", comment: "Text displayed in HUD while a media item is being deleted.")
+    static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
+    static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
 }
 
 extension Blog {
