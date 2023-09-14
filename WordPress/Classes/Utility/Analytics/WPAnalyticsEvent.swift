@@ -274,7 +274,6 @@ import Foundation
 
     // App Settings
     case settingsDidChange
-    case initialScreenChanged
 
     // Account Close
     case accountCloseTapped
@@ -335,7 +334,6 @@ import Foundation
     case dashboardCardItemTapped
     case dashboardCardContextualMenuAccessed
     case dashboardCardHideTapped
-    case mySiteTabTapped
     case mySiteSiteMenuShown
     case mySiteDashboardShown
     case mySiteDefaultTabExperimentVariantAssigned
@@ -994,8 +992,6 @@ import Foundation
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
-        case .initialScreenChanged:
-            return "app_settings_initial_screen_changed"
         case .appSettingsClearMediaCacheTapped:
             return "app_settings_clear_media_cache_tapped"
         case .appSettingsClearSpotlightIndexTapped:
@@ -1088,8 +1084,6 @@ import Foundation
             return "my_site_dashboard_contextual_menu_accessed"
         case .dashboardCardHideTapped:
             return "my_site_dashboard_card_hide_tapped"
-        case .mySiteTabTapped:
-            return "my_site_tab_tapped"
         case .mySiteSiteMenuShown:
             return "my_site_site_menu_shown"
         case .mySiteDashboardShown:

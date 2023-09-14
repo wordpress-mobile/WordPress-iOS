@@ -59,10 +59,8 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         let photoPicker = WPMediaPickerForKanvas(options: options, delegate: mediaPickerDelegate)
         photoPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         photoPicker.tabBarItem = UITabBarItem(title: Constants.photosTabBarTitle, image: Constants.photosTabBarIcon, tag: 0)
+        photoPicker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
 
-        if FeatureFlag.mediaPickerPermissionsNotice.enabled {
-            photoPicker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
-        }
 
         let mediaPicker = WPMediaPickerForKanvas(options: options, delegate: mediaPickerDelegate)
         mediaPicker.startOnGroupSelector = false
@@ -181,8 +179,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        guard FeatureFlag.mediaPickerPermissionsNotice.enabled,
-              picker.dataSource is WPPHAssetDataSource else {
+        guard picker.dataSource is WPPHAssetDataSource else {
             return false
         }
 

@@ -219,7 +219,7 @@ extension Notification {
     }
 
     var isViewMilestone: Bool {
-        return FeatureFlag.milestoneNotifications.enabled && type == "view_milestone"
+        return type == "view_milestone"
     }
 
     /// Returns the Meta ID's collection, if any.

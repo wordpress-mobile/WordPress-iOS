@@ -13,17 +13,18 @@ extension MySiteViewController {
             return
         }
 
-        siteMenuSpotlightIsShown = element == .siteMenu
+        switch element {
+        case .siteIcon, .siteTitle, .viewSite, .pages, .stats, .mediaScreen, .sharing:
+            scrollView.scrollToTop(animated: true)
+        default:
+            break
+        }
 
         switch element {
         case .noSuchElement, .newpost:
             additionalSafeAreaInsets = .zero
 
-        case .siteIcon, .siteTitle, .viewSite:
-            scrollView.scrollToTop(animated: true)
-            fallthrough
-
-        case .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications, .mediaScreen:
+        case .siteIcon, .siteTitle, .viewSite, .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications, .mediaScreen:
             additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
         default:

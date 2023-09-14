@@ -13,12 +13,8 @@ struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
         LocalizableStrings.allTimePreviewDescription
     }
 
-    var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenAllTimeViewsKind
-    }
-
-    var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenAllTimeViewsProperties
+    var kind: AppConfiguration.Widget.Stats.Kind {
+        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViews
     }
 
     var placeholderContent: HomeWidgetAllTimeData {

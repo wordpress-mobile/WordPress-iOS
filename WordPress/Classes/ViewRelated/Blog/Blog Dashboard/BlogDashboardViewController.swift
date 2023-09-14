@@ -14,7 +14,6 @@ final class BlogDashboardViewController: UIViewController {
         BlogDashboardViewModel(viewController: self, blog: blog)
     }()
 
-
     lazy var collectionView: DynamicHeightCollectionView = {
         let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,6 +66,12 @@ final class BlogDashboardViewController: UIViewController {
         collectionView.layoutIfNeeded()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewModel.viewWillAppear()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -85,6 +90,7 @@ final class BlogDashboardViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        viewModel.viewWillDisappear()
         stopAlertTimer()
     }
 
@@ -234,7 +240,7 @@ extension BlogDashboardViewController {
         let section = NSCollectionLayoutSection(group: group)
         let isQuickActionSection = viewModel.isQuickActionsSection(sectionIndex)
         let isMigrationSuccessCardSection = viewModel.isMigrationSuccessCardSection(sectionIndex)
-        let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
+        let horizontalInset = Constants.horizontalSectionInset
         let bottomInset = isQuickActionSection || isMigrationSuccessCardSection ? 0 : Constants.bottomSectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,

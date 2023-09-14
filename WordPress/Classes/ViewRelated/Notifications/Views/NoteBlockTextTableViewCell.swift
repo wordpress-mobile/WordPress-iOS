@@ -42,10 +42,6 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     ///
     var isTitle: Bool = false {
         didSet {
-            guard FeatureFlag.milestoneNotifications.enabled else {
-                return
-            }
-
             let spacing: CGFloat = isTitle ? Metrics.titleHorizontalSpacing : Metrics.standardHorizontalSpacing
             // Conditional chaining here means this won't crash for any subclasses
             // that don't have edge constraints (such as comment cells)

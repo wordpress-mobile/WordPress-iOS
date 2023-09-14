@@ -1342,8 +1342,7 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 private extension NotificationDetailsViewController {
 
     func showConfettiIfNeeded() {
-        guard FeatureFlag.milestoneNotifications.enabled,
-              note.isViewMilestone,
+        guard note.isViewMilestone,
               !confettiWasShown,
               let view = UIApplication.shared.mainWindow,
               let frame = navigationController?.view.frame else {
@@ -1388,8 +1387,7 @@ extension NotificationDetailsViewController {
         onSelectedNoteChange?(note)
         trackDetailsOpened(for: note)
 
-        if FeatureFlag.notificationCommentDetails.enabled,
-           note.kind == .comment {
+        if note.kind == .comment {
             showCommentDetails(with: note)
             return
         }

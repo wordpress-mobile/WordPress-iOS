@@ -63,16 +63,6 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        let googleLogingWithoutSDK: Bool = {
-            switch BuildConfiguration.current {
-            case .appStore:
-                // Rely on the remote flag in production
-                return RemoteFeatureFlag.sdkLessGoogleSignIn.enabled(using: remoteFeaturesStore)
-            default:
-                return true
-            }
-        }()
-
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
@@ -88,23 +78,14 @@ extension WordPressAuthenticationManager {
                                                    enableSignInWithApple: enableSignInWithApple,
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
-                                                   enableSocialLogin: true,
-                                                   googleLoginWithoutSDK: googleLogingWithoutSDK)
+                                                   enableUnifiedCarousel: true,
+                                                   enableSocialLogin: true)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
         let prologueVC: UIViewController? = {
             guard let viewController = authenticationHandler?.prologueViewController else {
-                if FeatureFlag.newWordPressLandingScreen.enabled {
-                    return SplashPrologueViewController()
-                }
-
-                if FeatureFlag.unifiedPrologueCarousel.enabled {
-                    return UnifiedPrologueViewController()
-                }
-
-                return nil
+                return SplashPrologueViewController()
             }
 
             return viewController
@@ -112,7 +93,7 @@ extension WordPressAuthenticationManager {
 
         let statusBarStyle: UIStatusBarStyle = {
             guard let statusBarStyle = authenticationHandler?.statusBarStyle else {
-                return FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
+                return .default
             }
 
             return statusBarStyle
@@ -129,7 +110,7 @@ extension WordPressAuthenticationManager {
         var prologuePrimaryButtonStyle: NUXButtonStyle?
         var prologueSecondaryButtonStyle: NUXButtonStyle?
 
-        if FeatureFlag.newWordPressLandingScreen.enabled, AppConfiguration.isWordPress {
+        if AppConfiguration.isWordPress {
             prologuePrimaryButtonStyle = SplashPrologueStyleGuide.primaryButtonStyle
             prologueSecondaryButtonStyle = SplashPrologueStyleGuide.secondaryButtonStyle
         } else {
@@ -408,7 +389,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
-    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, socialUser: SocialUser?) {
 
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
@@ -416,7 +397,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.socialService = service
+        epilogueViewController.socialUser = socialUser
         epilogueViewController.onContinue = { [weak self, weak navigationController] in
             guard let self, let navigationController else {
                 return

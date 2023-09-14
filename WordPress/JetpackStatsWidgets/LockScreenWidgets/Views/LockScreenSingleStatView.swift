@@ -19,6 +19,7 @@ struct LockScreenSingleStatView: View {
                     EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
                 )
             }
+            .accessibilityElement(children: .combine)
         } else {
             Text("Not implemented for widget family \(family.debugDescription)")
         }

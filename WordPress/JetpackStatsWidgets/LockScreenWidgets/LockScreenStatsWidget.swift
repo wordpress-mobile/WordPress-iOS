@@ -17,7 +17,7 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: config.kind,
+            kind: config.kind.rawValue,
             intent: SelectSiteIntent.self,
             provider: LockScreenSiteListProvider<T.WidgetData>(
                 service: StatsWidgetsService(),
@@ -26,8 +26,7 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
         ) { (entry: LockScreenStatsWidgetEntry) -> LockScreenStatsWidgetsView in
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: config.kind,
-                                                  widgetCountKey: config.countKey)
+                                                  widgetKind: config.kind)
             }
             return LockScreenStatsWidgetsView(
                 timelineEntry: entry,

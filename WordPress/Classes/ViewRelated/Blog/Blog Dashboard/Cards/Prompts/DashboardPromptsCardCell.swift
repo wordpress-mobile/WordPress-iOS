@@ -314,11 +314,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             .skip(skipMenuTapped)
         ]
 
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
-            return [defaultItems, [.learnMore(learnMoreTapped)], [.remove(removeMenuTapped)]]
-        }
-
-        return [defaultItems, [.learnMore(learnMoreTapped)]]
+        return [defaultItems, [.learnMore(learnMoreTapped)], [.remove(removeMenuTapped)]]
     }
 
     private var contextMenu: UIMenu {
@@ -670,7 +666,8 @@ private extension DashboardPromptsCardCell {
     }
 
     static func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
-        guard let siteID = blog.dotComID?.stringValue else {
+        guard FeatureFlag.bloggingPrompts.enabled,
+            let siteID = blog.dotComID?.stringValue else {
             return false
         }
 

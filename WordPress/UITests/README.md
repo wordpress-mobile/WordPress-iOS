@@ -58,7 +58,7 @@ The following flows are covered/planned to be covered by UI tests. Tests that ar
     - [ ] Open and View Jetpack Settings Options
     - [ ] Search and View a Plugin
 10. View Site
-    - [ ] View Site from My Site Screen
+    - [x] View Site from My Site Screen
     - [ ] Update Site and Validate Changes
 11. Dashboard (Jetpack Only)
     - [x] Free to Paid Plans Card

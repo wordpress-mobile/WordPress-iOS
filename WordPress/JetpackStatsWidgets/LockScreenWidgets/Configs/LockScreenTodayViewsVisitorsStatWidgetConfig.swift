@@ -13,12 +13,8 @@ struct LockScreenTodayViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConfig
         LocalizableStrings.todayPreviewDescription
     }
 
-    var kind: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsVisitorsKind
-    }
-
-    var countKey: String {
-        AppConfiguration.Widget.Stats.lockScreenTodayViewsVisitorsProperties
+    var kind: AppConfiguration.Widget.Stats.Kind {
+        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViewsVisitors
     }
 
     var placeholderContent: HomeWidgetTodayData {

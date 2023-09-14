@@ -70,7 +70,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
 
-        if FeatureFlag.statsNewAppearance.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             tableView.cellLayoutMarginsFollowReadableWidth = true
         }
 
@@ -122,7 +122,7 @@ private extension SiteStatsInsightsTableViewController {
         addViewModelListeners()
         viewModel?.fetchInsights()
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             viewModel?.startFetchingPeriodOverview()
         }
     }
@@ -427,7 +427,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             switch statSection {
             case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
                 segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
