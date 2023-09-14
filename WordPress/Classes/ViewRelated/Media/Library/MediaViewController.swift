@@ -14,7 +14,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     private var isSyncing = false
     private var syncError: Error?
     private var pendingChanges: [(UICollectionView) -> Void] = []
-    private var selection = NSMutableOrderedSet() // Media
+    private var selection = NSMutableOrderedSet() // `Media`
     private var viewModels: [NSManagedObjectID: MediaCollectionCellViewModel] = [:]
     private let blog: Blog
     private let coordinator = MediaCoordinator.shared
@@ -32,12 +32,6 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         self.blog = blog
         self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
-        self.hidesBottomBarWhenPushed = true
-    }
-
-    override var hidesBottomBarWhenPushed: Bool {
-        set { }
-        get { true }
     }
 
     required init?(coder: NSCoder) {
