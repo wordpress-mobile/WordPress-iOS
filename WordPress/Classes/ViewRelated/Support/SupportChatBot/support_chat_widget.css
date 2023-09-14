@@ -44,12 +44,16 @@ a.floating-button {
 }
 
 .docsbot-chat-suggested-questions-container button {
-    height: 48px;
+    min-height: 48px !important;
     font: -apple-system-body !important;
 }
 
 .docsbot-chat-suggested-questions-container span {
     font: -apple-system-footnote !important;
+}
+
+.docsbot-chat-suggested-questions-container {
+    min-height: 48px !important;
 }
 
 .docsbot-chat-bot-message-support a {
