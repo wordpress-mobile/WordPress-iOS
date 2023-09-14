@@ -4,19 +4,24 @@ import Combine
 final class MediaCollectionCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let overlayView = CircularProgressView()
+    private let placeholderView = UIView()
     private var viewModel: MediaCollectionCellViewModel?
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .secondarySystemBackground
+        placeholderView.backgroundColor = .secondarySystemBackground
 
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.accessibilityIgnoresInvertColors = true
 
         overlayView.backgroundColor = .neutral(.shade70).withAlphaComponent(0.5)
+
+        contentView.addSubview(placeholderView)
+        placeholderView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewToAllEdges(placeholderView)
 
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +44,8 @@ final class MediaCollectionCell: UICollectionViewCell {
         viewModel = nil
 
         imageView.image = nil
-        backgroundColor = .secondarySystemBackground
+        imageView.alpha = 0
+        placeholderView.alpha = 1
     }
 
     func configure(viewModel: MediaCollectionCellViewModel) {
@@ -48,7 +54,8 @@ final class MediaCollectionCell: UICollectionViewCell {
         if let image = viewModel.getCachedThubmnail() {
             // Display with no animations. It should happen often thanks to prefetchig
             imageView.image = image
-            backgroundColor = .clear
+            imageView.alpha = 1
+            placeholderView.alpha = 0
         } else {
             let mediaID = viewModel.mediaID
             viewModel.onImageLoaded = { [weak self] in
@@ -74,11 +81,10 @@ final class MediaCollectionCell: UICollectionViewCell {
         guard viewModel?.mediaID == mediaID else { return }
 
         // TODO: Display an asset-specific placeholder on error
-        imageView.alpha = 0
-        UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction]) {
-            self.imageView.image = image
+        imageView.image = image
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.beginFromCurrentState, .allowUserInteraction]) {
             self.imageView.alpha = 1
-            self.backgroundColor = .clear
+            self.placeholderView.alpha = 0
         }
     }
 }
