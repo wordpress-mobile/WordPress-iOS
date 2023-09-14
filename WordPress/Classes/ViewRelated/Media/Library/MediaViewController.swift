@@ -1,11 +1,15 @@
 import UIKit
 import PhotosUI
 
-final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
+final class MediaViewController: UIViewController, NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private lazy var refreshControl = UIRefreshControl()
+
     private lazy var fetchController = makeFetchController()
+    private let mediaPickerController: MediaPickerController
+
+    private let buttonAddMedia: SpotlightableButton = SpotlightableButton(type: .custom)
 
     private var isSyncing = false
     private var pendingChanges: [(UICollectionView) -> Void] = []
@@ -13,8 +17,11 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     private let blog: Blog
     private let coordinator = MediaCoordinator.shared
 
+    static let spacing: CGFloat = 2
+
     init(blog: Blog) {
         self.blog = blog
+        self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -31,6 +38,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         extendedLayoutIncludesOpaqueBars = true
 
         configureCollectionView()
+        configureNavigationItems()
 
         fetchController.delegate = self
         do {
@@ -46,17 +54,10 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         syncMedia()
     }
 
-    private func configureCollectionView() {
-        collectionView.register(MediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.pinSubviewToAllEdges(view)
-
-        collectionView.dataSource = self
-        collectionView.prefetchDataSource = self
-        collectionView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
+        buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
     }
 
     override func viewDidLayoutSubviews() {
@@ -65,11 +66,45 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         updateFlowLayoutItemSize()
     }
 
+    private func configureCollectionView() {
+        collectionView.register(MediaCollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+
+        view.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.pinSubviewToAllEdges(view)
+
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.prefetchDataSource = self
+        collectionView.refreshControl = refreshControl
+
+        refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
+    }
+
+    private func configureNavigationItems() {
+        if blog.userCanUploadMedia {
+            buttonAddMedia.spotlightOffset = Constants.addButtonSpotlightOffset
+            let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
+            let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
+            buttonAddMedia.setImage(image, for: .normal)
+            buttonAddMedia.addAction(UIAction { [weak self] _ in
+                QuickStartTourGuide.shared.visited(.mediaUpload)
+                self?.buttonAddMedia.shouldShowSpotlight = false
+            }, for: .menuActionTriggered)
+            buttonAddMedia.menu = mediaPickerController.makeMenu(for: self)
+            buttonAddMedia.showsMenuAsPrimaryAction = true
+            buttonAddMedia.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button to add items to the user's media library")
+            buttonAddMedia.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
+
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonAddMedia)
+        }
+    }
+
     private func updateFlowLayoutItemSize() {
-        let spacing = Constants.minCellSpacing
+        let spacing = MediaViewController.spacing
         let availableWidth = collectionView.bounds.width
-        let maxNumColumns = Int(availableWidth / Constants.minColumnWidth)
-        let cellWidth = ((availableWidth - spacing * CGFloat(maxNumColumns - 1)) / CGFloat(maxNumColumns)).rounded(.down)
+        let itemsPerRow = availableWidth < 450 ? 4 : 5
+        let cellWidth = ((availableWidth - spacing * CGFloat(itemsPerRow - 1)) / CGFloat(itemsPerRow)).rounded(.down)
 
         flowLayout.minimumInteritemSpacing = spacing
         flowLayout.minimumLineSpacing = spacing
@@ -168,6 +203,9 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard !pendingChanges.isEmpty else {
+            return
+        }
         let updates = pendingChanges
         collectionView.performBatchUpdates {
             for update in updates {
@@ -192,44 +230,77 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! MediaCollectionCell
         let media = fetchController.object(at: indexPath)
-        let viewModel = makeViewModel(for: media)
-        cell.configure(viewModel: viewModel, targetSize: getImageTargetSize())
+        let viewModel = getViewModel(for: media)
+        cell.configure(viewModel: viewModel)
         return cell
+    }
+
+    // MARK: - UICollectionViewDelegate
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+
+        let media = fetchController.object(at: indexPath)
+        switch media.remoteStatus {
+        case .failed, .pushing, .processing:
+            showRetryOptions(for: media)
+        case .sync:
+            let viewController = MediaItemViewController(media: media)
+            WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
+            navigationController?.pushViewController(viewController, animated: true)
+        default: break
+        }
     }
 
     // MARK: - UICollectionViewDataSourcePrefetching
 
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        let targetSize = getImageTargetSize()
         for indexPath in indexPaths {
-            makeViewModel(for: fetchController.object(at: indexPath))
-                .loadThumbnail(targetSize: targetSize)
+            let media = fetchController.object(at: indexPath)
+            getViewModel(for: media).startPrefetching()
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            makeViewModel(for: fetchController.object(at: indexPath))
-                .cancelLoading()
+            let media = fetchController.object(at: indexPath)
+            getViewModel(for: media).cancelPrefetching()
         }
+    }
+
+    // MARK: - Menus
+
+    private func showRetryOptions(for media: Media) {
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
+        alertController.addDestructiveActionWithTitle(Strings.retryMenuDelete) { _ in
+            self.coordinator.delete(media: [media])
+        }
+        if media.remoteStatus == .failed {
+            if let error = media.error {
+                alertController.message = error.localizedDescription
+            }
+            if media.canRetry {
+                alertController.addDefaultActionWithTitle(Strings.retryMenuRetry) { _ in
+                    let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary))
+                    self.coordinator.retryMedia(media, analyticsInfo: info)
+                }
+            }
+        }
+        alertController.addCancelActionWithTitle(Strings.retryMenuDismiss)
+        present(alertController, animated: true)
     }
 
     // MARK: - Helpers
 
     // Create ViewModel lazily to avoid fetching more managed objects than needed.
-    private func makeViewModel(for media: Media) -> MediaCollectionCellViewModel {
+    private func getViewModel(for media: Media) -> MediaCollectionCellViewModel {
         if let viewModel = viewModels[media.objectID] {
             return viewModel
         }
         let viewModel = MediaCollectionCellViewModel(media: media)
         viewModels[media.objectID] = viewModel
         return viewModel
-    }
-
-    private func getImageTargetSize() -> CGSize {
-        let scale = UIScreen.main.scale
-        let transform = CGAffineTransform(scaleX: scale, y: scale)
-        return CGSizeApplyAffineTransform(flowLayout.itemSize, transform)
     }
 }
 
@@ -251,19 +322,22 @@ extension MediaViewController: NoResultsViewHost, NoResultsViewControllerDelegat
     }
 
     func actionButtonPressed() {
-        // TODO: Implement "Add Media" button
+        // TODO: implement somehow (pass the menu)
     }
 }
 
 private enum Constants {
-    static let minColumnWidth: CGFloat = 96
-    static let minCellSpacing: CGFloat = 2
     static let cellID = "cellID"
+    static let addButtonSpotlightOffset = UIOffset(horizontal: 20, vertical: -10)
+    static let addButtonContentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
 }
 
 private enum Strings {
     static let title = NSLocalizedString("media.title", value: "Media", comment: "Media screen navigation title")
     static let syncFailed = NSLocalizedString("media.syncFailed", value: "Unable to sync media", comment: "Title of error prompt shown when a sync fails.")
+    static let retryMenuRetry = NSLocalizedString("mediaLibrary.retryOptionsAlert.retry", value: "Retry Upload", comment: "User action to retry media upload.")
+    static let retryMenuDelete = NSLocalizedString("mediaLibrary.retryOptionsAlert.delete", value: "Delete", comment: "User action to delete un-uploaded media.")
+    static let retryMenuDismiss = NSLocalizedString("mediaLibrary.retryOptionsAlert.dismissButton", value: "Dismiss", comment: "Verb. Button title. Tapping dismisses a prompt.")
 }
 
 extension Blog {
