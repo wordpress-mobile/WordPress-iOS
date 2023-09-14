@@ -170,7 +170,7 @@ struct QuickStartShareTour: QuickStartTour {
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Social", comment: "The menu item to select during a guided tour.")
-        let step1: WayPoint = (element: .sharing, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.share)))
+        let step1: WayPoint = (element: .sharing, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: UIImage(named: "site-menu-social")))
 
         let step2DescriptionBase = NSLocalizedString("Select the %@ to add your social media accounts", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step2DescriptionTarget = NSLocalizedString("connections", comment: "The menu item to select during a guided tour.")
@@ -197,7 +197,7 @@ struct QuickStartPublishTour: QuickStartTour {
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]
+        return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.plus)))]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of publishing a new post on your site.", comment: "This value is used to set the accessibility hint text for publishing a new post on the user's site.")
@@ -309,7 +309,7 @@ struct QuickStartReviewPagesTour: QuickStartTour {
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let descriptionTarget = NSLocalizedString("Pages", comment: "The item to select during a guided tour.")
-        return [(element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages)))]
+        return [(element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: UIImage(named: "site-menu-pages")))]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
@@ -336,7 +336,7 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let descriptionTarget = NSLocalizedString("Stats", comment: "The item to select during a guided tour.")
-        return [(element: .stats, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.stats)))]
+        return [(element: .stats, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: UIImage(named: "site-menu-stats")))]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of reviewing statistics for your site.", comment: "This value is used to set the accessibility hint text for viewing Stats on the user's site.")
@@ -405,7 +405,7 @@ struct QuickStartMediaUploadTour: QuickStartTour {
     var waypoints: [WayPoint] = {
         let step1DescriptionBase = NSLocalizedString("Select %@ to see your current library.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Media", comment: "The menu item to select during a guided tour.")
-        let step1: WayPoint = (element: .mediaScreen, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.image)))
+        let step1: WayPoint = (element: .mediaScreen, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: UIImage(named: "site-menu-media")))
 
         let step2DescriptionBase = NSLocalizedString("Select %@to upload media. You can add it to your posts / pages from any device.", comment: "A step in a guided tour for quick start. %@ will be a plus icon.")
         let step2DescriptionTarget = ""
