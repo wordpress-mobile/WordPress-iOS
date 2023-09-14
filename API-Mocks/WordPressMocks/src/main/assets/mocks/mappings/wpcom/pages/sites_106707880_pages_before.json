@@ -1,4 +1,7 @@
 {
+  "scenarioName": "new_page_flow",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "initial_pages_list",
   "request": {
     "method": "GET",
     "urlPath": "/rest/v1.2/sites/106707880/posts",

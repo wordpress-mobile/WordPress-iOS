@@ -7,9 +7,14 @@ public class ChooseLayoutScreen: ScreenObject {
         $0.buttons["Close"]
     }
 
-    var closeButton: XCUIElement { closeButtonGetter(app) }
+    private let createBlankPageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Create Blank Page"]
+    }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var createBlankPageButton: XCUIElement { createBlankPageButtonGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [closeButtonGetter],
             app: app
@@ -20,6 +25,16 @@ public class ChooseLayoutScreen: ScreenObject {
     public func closeModal() throws -> MySiteScreen {
         closeButton.tap()
         return try MySiteScreen()
+    }
+
+    @discardableResult
+    public func createBlankPage() throws -> BlockEditorScreen {
+        guard XCUIDevice.isPhone else {
+            return try BlockEditorScreen()
+        }
+
+        createBlankPageButton.tap()
+        return try BlockEditorScreen()
     }
 
     public static func isLoaded() -> Bool {

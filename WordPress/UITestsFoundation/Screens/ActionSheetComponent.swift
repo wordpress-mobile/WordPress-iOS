@@ -4,39 +4,38 @@ import XCUITestHelpers
 
 public class ActionSheetComponent: ScreenObject {
 
-    private static let getBlogPostButton: (XCUIApplication) -> XCUIElement = {
+    private let blogPostButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["blogPostButton"]
     }
 
-    private static let getSitePageButton: (XCUIApplication) -> XCUIElement = {
+    private let sitePageButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["sitePageButton"]
     }
 
-    var blogPostButton: XCUIElement { Self.getBlogPostButton(app) }
-    var sitePageButton: XCUIElement { Self.getSitePageButton(app) }
+    var blogPostButton: XCUIElement { blogPostButtonGetter(app) }
+    var sitePageButton: XCUIElement { sitePageButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [Self.getBlogPostButton, Self.getSitePageButton],
+            expectedElementGetters: [blogPostButtonGetter, sitePageButtonGetter],
             app: app
         )
     }
 
     public func goToBlogPost() {
-        XCTAssert(blogPostButton.waitForExistence(timeout: 3))
         XCTAssert(blogPostButton.waitForIsHittable(timeout: 3))
-
-        XCTAssert(blogPostButton.isHittable)
         blogPostButton.tap()
     }
 
-    public func goToSitePage() throws -> ChooseLayoutScreen {
-        XCTAssert(sitePageButton.waitForExistence(timeout: 3))
+    @discardableResult
+    public func goToSitePage() throws -> ScreenObject {
         XCTAssert(sitePageButton.waitForIsHittable(timeout: 3))
-
-        XCTAssert(sitePageButton.isHittable)
         sitePageButton.tap()
 
-        return try ChooseLayoutScreen()
+        if XCUIDevice.isPhone {
+            return try ChooseLayoutScreen()
+        } else {
+            return try BlockEditorScreen()
+        }
     }
 }

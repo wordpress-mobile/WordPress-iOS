@@ -44,6 +44,10 @@ public class MySiteScreen: ScreenObject {
         $0.otherElements[pagesCardId].buttons["Create another page"]
     }
 
+    private let pagesCardPublishedLabelGetter: (XCUIApplication) -> XCUIElement = {
+        $0.otherElements[pagesCardId].staticTexts["Published"]
+    }
+
     private let domainsButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Domains Row"]
     }
@@ -89,6 +93,7 @@ public class MySiteScreen: ScreenObject {
     var pagesCardCreatePageButton: XCUIElement { pagesCardCreatePageButtonGetter(app) }
     var pagesCardHeaderButton: XCUIElement { pagesCardHeaderButtonGetter(app) }
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
+    var pagesCardPublishedLabel: XCUIElement { pagesCardPublishedLabelGetter(app) }
     var readerButton: XCUIElement { readerButtonGetter(app)}
     var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
     var removeSiteButton: XCUIElement { removeSiteButtonGetter(app) }
@@ -220,6 +225,14 @@ public class MySiteScreen: ScreenObject {
     public func verifyCheckSiteTitleNoticeDisplayed(_ siteTitle: String, file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(noticeTitle.exists, file: file, line: line)
         XCTAssertTrue(noticeTitle.label.contains("Select \(siteTitle) to set a new title"), "Notice does not contain site title!")
+
+        return self
+    }
+
+    @discardableResult
+    public func verifyPagePublished(title: String) -> Self {
+        XCTAssertTrue(pagesCard.staticTexts[title].waitForExistence(timeout: 3))
+        XCTAssertTrue(pagesCardPublishedLabel.waitForExistence(timeout: 3))
 
         return self
     }
