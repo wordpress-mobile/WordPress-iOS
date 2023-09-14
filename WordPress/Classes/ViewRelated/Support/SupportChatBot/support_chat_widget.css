@@ -54,6 +54,7 @@ a.floating-button {
 
 .docsbot-chat-suggested-questions-container {
     min-height: 48px !important;
+    position: relative !important;
 }
 
 .docsbot-chat-bot-message-support a {
