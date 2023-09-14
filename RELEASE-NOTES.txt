@@ -1,6 +1,6 @@
 23.3
 -----
-
+* [**] [internal] Refactor fetching metadata of VideoPress videos. [#21569]
 
 23.2
 -----
