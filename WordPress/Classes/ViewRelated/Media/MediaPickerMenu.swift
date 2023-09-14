@@ -173,7 +173,7 @@ extension MediaPickerMenu {
 // MARK: - MediaPickerMenu (WordPress Media)
 
 extension MediaPickerMenu {
-    func makeMediaAction(blog: Blog, delegate: WPMediaPickerViewControllerDelegate) -> UIAction {
+    func makeMediaAction(blog: Blog, delegate: MediaPickerViewControllerDelegate) -> UIAction {
         UIAction(
             title: Strings.pickFromMedia,
             image: UIImage(systemName: "photo.stack"),
@@ -182,7 +182,7 @@ extension MediaPickerMenu {
         )
     }
 
-    func showMediaPicker(blog: Blog, delegate: WPMediaPickerViewControllerDelegate) {
+    func showMediaPicker(blog: Blog, delegate: MediaPickerViewControllerDelegate) {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         if let filter {
@@ -202,6 +202,8 @@ extension MediaPickerMenu {
         let dataSource = MediaLibraryPickerDataSource(blog: blog)
         dataSource.ignoreSyncErrors = true
 
+        let delegate = PickerMenuMediaPickerViewControllerDelegate(delegate: delegate)
+
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.showGroupSelector = false
         picker.dataSource = dataSource
@@ -209,11 +211,35 @@ extension MediaPickerMenu {
         picker.modalPresentationStyle = .formSheet
 
         objc_setAssociatedObject(picker, &MediaPickerMenu.dataSourceAssociatedKey, dataSource, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(picker, &MediaPickerMenu.delegateAssociatedKey, delegate, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         presentingViewController?.present(picker, animated: true)
     }
 
     private static var dataSourceAssociatedKey: UInt8 = 0
+    private static var delegateAssociatedKey: UInt8 = 0
+}
+
+/// Exposes only a subset of `WPMediaPickerViewControllerDelegate` to the users.
+protocol MediaPickerViewControllerDelegate: AnyObject {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset])
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController)
+}
+
+private final class PickerMenuMediaPickerViewControllerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
+    weak var delegate: MediaPickerViewControllerDelegate?
+
+    init(delegate: MediaPickerViewControllerDelegate) {
+        self.delegate = delegate
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
+        delegate?.mediaPickerController(picker, didFinishPicking: assets)
+    }
+
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        delegate?.mediaPickerControllerDidCancel(picker)
+    }
 }
 
 extension MediaPickerMenu.MediaFilter {
