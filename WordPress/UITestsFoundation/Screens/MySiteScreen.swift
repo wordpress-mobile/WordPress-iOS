@@ -60,7 +60,6 @@ public class MySiteScreen: ScreenObject {
         $0.buttons["Preview Device"]
     }
 
-
     private let pagesCardPublishedLabelGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements[pagesCardId].staticTexts["Published"]
     }
@@ -115,9 +114,7 @@ public class MySiteScreen: ScreenObject {
     var pagesCardMoreButton: XCUIElement { pagesCardMoreButtonGetter(app) }
     var pagesCardPublishedLabel: XCUIElement { pagesCardPublishedLabelGetter(app) }
     var previewDeviceButton: XCUIElement { previewDeviceButtonGetter(app) }
-    var readerButton: XCUIElement { 
-      
-      (app)}
+    var readerButton: XCUIElement { readerButtonGetter(app) }
     var removeSiteAlert: XCUIElement { removeSiteAlertGetter(app) }
     var removeSiteButton: XCUIElement { removeSiteButtonGetter(app) }
     var safariButton: XCUIElement { safariButtonGetter(app) }
