@@ -148,17 +148,22 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                    DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
                                    return;
                                }
-                               [self mergePosts:[loadedPosts copy]
-                                         ofType:postType
-                                   withStatuses:options.statuses
-                                       byAuthor:options.authorID
-                                        forBlog:blogInContext
-                                  purgeExisting:options.purgesLocalSync
-                              completionHandler:^(NSArray<AbstractPost *> *posts) {
-                                  if (success) {
-                                      success(posts);
-                                  }
-                              }];
+                               NSArray *posts = [self mergePosts:[loadedPosts copy]
+                                                          ofType:postType
+                                                    withStatuses:options.statuses
+                                                        byAuthor:options.authorID
+                                                         forBlog:blogInContext
+                                                   purgeExisting:options.purgesLocalSync];
+
+                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                   // Call the completion block after context is saved. The callback is called on the context queue because `posts`
+                                   // contains models that are bound to the `self.managedObjectContext` object.
+                                   if (success) {
+                                       [self.managedObjectContext performBlock:^{
+                                           success(posts);
+                                       }];
+                                   }
+                               } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
                            }];
                        }
                    } failure:^(NSError *error) {
@@ -634,13 +639,12 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 #pragma mark - Helpers
 
-- (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
-            ofType:(NSString *)syncPostType
-      withStatuses:(NSArray *)statuses
-          byAuthor:(NSNumber *)authorID
-           forBlog:(Blog *)blog
-     purgeExisting:(BOOL)purge
- completionHandler:(void (^)(NSArray <AbstractPost *> *posts))completion
+- (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts
+                 ofType:(NSString *)syncPostType
+           withStatuses:(NSArray *)statuses
+               byAuthor:(NSNumber *)authorID
+                forBlog:(Blog *)blog
+          purgeExisting:(BOOL)purge
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
@@ -702,15 +706,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         }
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        // Call the completion block after context is saved. The callback is called on the context queue because `posts`
-        // contains models that are bound to the `self.managedObjectContext` object.
-        if (completion) {
-            [self.managedObjectContext performBlock:^{
-                completion(posts);
-            }];
-        }
-    } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+    return posts;
 }
 
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
