@@ -148,17 +148,23 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                    DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
                                    return;
                                }
-                               [self mergePosts:[loadedPosts copy]
-                                         ofType:postType
-                                   withStatuses:options.statuses
-                                       byAuthor:options.authorID
-                                        forBlog:blogInContext
-                                  purgeExisting:options.purgesLocalSync
-                              completionHandler:^(NSArray<AbstractPost *> *posts) {
-                                  if (success) {
-                                      success(posts);
-                                  }
-                              }];
+                               NSArray *posts = [PostHelper mergePosts:[loadedPosts copy]
+                                                                ofType:postType
+                                                          withStatuses:options.statuses
+                                                              byAuthor:options.authorID
+                                                               forBlog:blogInContext
+                                                         purgeExisting:options.purgesLocalSync
+                                                             inContext:self.managedObjectContext];
+
+                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                   // Call the completion block after context is saved. The callback is called on the context queue because `posts`
+                                   // contains models that are bound to the `self.managedObjectContext` object.
+                                   if (success) {
+                                       [self.managedObjectContext performBlock:^{
+                                           success(posts);
+                                       }];
+                                   }
+                               } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
                            }];
                        }
                    } failure:^(NSError *error) {
@@ -633,85 +639,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 #pragma mark - Helpers
-
-- (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
-            ofType:(NSString *)syncPostType
-      withStatuses:(NSArray *)statuses
-          byAuthor:(NSNumber *)authorID
-           forBlog:(Blog *)blog
-     purgeExisting:(BOOL)purge
- completionHandler:(void (^)(NSArray <AbstractPost *> *posts))completion
-{
-    NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
-    for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:self.managedObjectContext];
-        if (!post) {
-            if ([remotePost.type isEqualToString:PostServiceTypePage]) {
-                // Create a Page entity for posts with a remote type of "page"
-                post = [blog createPage];
-            } else {
-                // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
-                post = [blog createPost];
-            }
-        }
-        [PostHelper updatePost:post withRemotePost:remotePost inContext:self.managedObjectContext];
-        [posts addObject:post];
-    }
-    
-    if (purge) {
-        // Set up predicate for fetching any posts that could be purged for the sync.
-        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
-        if ([statuses count] > 0) {
-            NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
-            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
-        }
-        if (authorID) {
-            NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", authorID];
-            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, authorPredicate]];
-        }
-        
-        NSFetchRequest *request;
-        if ([syncPostType isEqualToString:PostServiceTypeAny]) {
-            // If syncing "any" posts, set up the fetch for any AbstractPost entities (including child entities).
-            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-        } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
-            // If syncing "page" posts, set up the fetch for any Page entities.
-            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
-        } else {
-            // If not syncing "page" or "any" post, use the Post entity.
-            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
-            // Include the postType attribute in the predicate.
-            NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", syncPostType];
-            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, postTypePredicate]];
-        }
-        request.predicate = predicate;
-        
-        NSError *error;
-        NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:&error];
-        if (error) {
-            DDLogError(@"Error fetching existing posts for purging: %@", error);
-        } else {
-            NSSet *postsToKeep = [NSSet setWithArray:posts];
-            NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
-            // Delete the posts not being updated.
-            [postsToDelete minusSet:postsToKeep];
-            for (AbstractPost *post in postsToDelete) {
-                DDLogInfo(@"Deleting Post: %@", post);
-                [self.managedObjectContext deleteObject:post];
-            }
-        }
-    }
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        // Call the completion block after context is saved. The callback is called on the context queue because `posts`
-        // contains models that are bound to the `self.managedObjectContext` object.
-        if (completion) {
-            [self.managedObjectContext performBlock:^{
-                completion(posts);
-            }];
-        }
-    } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-}
 
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
                                               withOptions:(nonnull PostServiceSyncOptions *)options

@@ -312,7 +312,7 @@ platform :ios do
     # Download metadata translations from GlotPress
     download_localized_app_store_metadata(
       glotpress_project_url: GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL,
-      metadata_directory: metadata_directory,
+      metadata_directory:,
       locales: WORDPRESS_METADATA_GLOTPRESS_LOCALE_CODES,
       commit_message: 'Update WordPress metadata translations'
     )
@@ -335,7 +335,7 @@ platform :ios do
     download_localized_app_store_metadata(
       glotpress_project_url: GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL,
       locales: JETPACK_METADATA_GLOTPRESS_LOCALE_CODES,
-      metadata_directory: metadata_directory,
+      metadata_directory:,
       commit_message: 'Update Jetpack metadata translations'
     )
   end
@@ -357,7 +357,7 @@ platform :ios do
 
     gp_downloadmetadata(
       project_url: glotpress_project_url,
-      target_files: target_files,
+      target_files:,
       locales: locales_map,
       download_path: metadata_directory
     )
@@ -418,7 +418,7 @@ platform :ios do
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
-      skip_screenshots: skip_screenshots
+      skip_screenshots:
     )
   end
 
@@ -439,7 +439,7 @@ platform :ios do
       app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
-      skip_screenshots: skip_screenshots
+      skip_screenshots:
     )
   end
 
@@ -456,22 +456,22 @@ platform :ios do
     UI.message('Checking app strings translation status...')
     check_translation_progress(
       glotpress_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
-      abort_on_violations: abort_on_violations,
-      skip_confirm: skip_confirm
+      abort_on_violations:,
+      skip_confirm:
     )
 
     UI.message('Checking WordPress release notes strings translation status...')
     check_translation_progress(
       glotpress_url: GLOTPRESS_WORDPRESS_APP_STORE_METADATA_PROJECT_URL,
-      abort_on_violations: abort_on_violations,
-      skip_confirm: skip_confirm
+      abort_on_violations:,
+      skip_confirm:
     )
 
     UI.message('Checking Jetpack release notes strings translation status...')
     check_translation_progress(
       glotpress_url: GLOTPRESS_JETPACK_APP_STORE_METADATA_PROJECT_URL,
-      abort_on_violations: abort_on_violations,
-      skip_confirm: skip_confirm
+      abort_on_violations:,
+      skip_confirm:
     )
   end
 end

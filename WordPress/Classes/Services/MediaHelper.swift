@@ -52,6 +52,7 @@ class MediaHelper: NSObject {
         if media.length != remoteMedia.length {
             media.length = remoteMedia.length
         }
+        // TODO: The value keeps changing every time you reload media for some reason
         if media.remoteThumbnailURL != remoteMedia.remoteThumbnailURL {
             media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL
         }
