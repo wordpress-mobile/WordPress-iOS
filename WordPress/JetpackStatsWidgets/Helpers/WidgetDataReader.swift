@@ -2,6 +2,7 @@ import Foundation
 
 protocol WidgetDataCacheReader {
     func widgetData<T: HomeWidgetData>(for siteID: String) -> T?
+    func widgetData<T: HomeWidgetData>() -> [T]?
 }
 
 enum WidgetDataReadError: Error {
@@ -30,40 +31,33 @@ final class WidgetDataReader<T: HomeWidgetData> {
     ///   - configuration: Configuration of the Widget Site Selection Intent
     ///   - defaultSiteID: ID of the default site in the account
     /// - Returns: Widget data
-    func widgetData(for configuration: SelectSiteIntent, defaultSiteID: Int?) -> T? {
-
-        /// If configuration.site.identifier has value but there's no widgetData, it means that this identifier comes from previously logged in account
-        if let selectedSite = configuration.site?.identifier,
-           let widgetData: T = cacheReader.widgetData(for: selectedSite) {
-            return widgetData
-        } else if let defaultSiteID = defaultSiteID {
-            return cacheReader.widgetData(for: String(defaultSiteID))
-        } else {
-            return nil
-        }
-    }
-
     func widgetData(
         for configuration: SelectSiteIntent,
-        defaultSiteID: Int?,
-        isJetpack: Bool
+        defaultSiteID: Int?
     ) -> Result<T, WidgetDataReadError> {
         guard let defaults = userDefaults else {
             return .failure(.noData)
         }
-        guard let defaultSiteID = defaultSiteID else {
+
+        if let selectedSite = configuration.site?.identifier,
+           let widgetData: T = cacheReader.widgetData(for: selectedSite) {
+            return .success(widgetData)
+        } else if let defaultSiteID = defaultSiteID,
+                  let widgetData: T = cacheReader.widgetData(for: String(defaultSiteID)) {
+            return .success(widgetData)
+        } else {
             let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 
             if loggedIn {
-                return .failure(.noSite)
+                /// In rare cases there could be no default site and no defaultSiteId set
+                if let firstSiteData: T = cacheReader.widgetData()?.sorted(by: { $0.siteID < $1.siteID }).first {
+                    return .success(firstSiteData)
+                } else {
+                    return .failure(.noSite)
+                }
             } else {
                 return .failure(.loggedOut)
             }
         }
-        guard let widgetData = widgetData(for: configuration, defaultSiteID: defaultSiteID) else {
-            return .failure(.noData)
-        }
-
-        return .success(widgetData)
     }
 }
