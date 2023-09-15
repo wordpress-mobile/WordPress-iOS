@@ -15,13 +15,8 @@ struct CompliancePopover: View {
 
     var body: some View {
         if shouldScroll {
-            GeometryReader { reader in
-                ScrollView(showsIndicators: false) {
-                    contentVStack
-                    // Fixes the issue of scroll view content size not sizing properly.
-                    // Without this, on large dynamic fonts, the view is not properly scrollable.
-                    Spacer().frame(height: reader.size.height - screenHeight + Constants.verticalScrollBuffer)
-                }
+            ScrollView(showsIndicators: false) {
+                contentVStack
             }
         } else {
             contentVStack
@@ -35,9 +30,9 @@ struct CompliancePopover: View {
             analyticsToggle
             footnote
             buttonsHStack
+            Spacer()
         }
-        .padding(Length.Padding.small)
-        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, Length.Padding.small)
     }
 
     private var titleText: some View {

@@ -21,11 +21,13 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         }
         complianceService.getIPCountryCode { [weak self] result in
             if case .success(let countryCode) = result {
-                guard let self, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                guard let self else {
                     return
                 }
-                DispatchQueue.main.async {
-                    self.presentPopover(on: viewController)
+                Task {
+                    if await self.shouldShowPrivacyBanner(countryCode: countryCode) {
+                        await self.presentPopover(on: viewController)
+                    }
                 }
             }
         }
@@ -41,20 +43,22 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         presentingViewController?.dismiss(animated: true)
     }
 
-    private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
+    private func shouldShowPrivacyBanner(countryCode: String) async -> Bool {
         let isCountryInEU = Self.gdprCountryCodes.contains(countryCode)
         return isCountryInEU && !defaults.didShowCompliancePopup
     }
 
-    private func presentPopover(on viewController: UIViewController) {
+    @MainActor private func presentPopover(on viewController: UIViewController) {
         let complianceViewModel = CompliancePopoverViewModel(
             defaults: defaults,
             contextManager: ContextManager.shared
         )
         complianceViewModel.coordinator = self
         let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
-        let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
 
+        let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController)
+        bottomSheetViewController.isModalInPresentation = true
+        bottomSheetViewController.view.layoutIfNeeded()
         bottomSheetViewController.show(from: viewController)
 
         self.presentingViewController = viewController
