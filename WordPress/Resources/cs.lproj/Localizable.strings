@@ -401,22 +401,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIVNÍ";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "PŘIDAT ZVUK";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "PŘIDAT BLOK TADY";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "PŘIDAT OBRÁZEK";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "PŘIDAT OBRAZ NEBO VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "Přidat média";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "PŘIDAT VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Adresa";
@@ -1247,9 +1235,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Registrací vyjadřujete souhlas s našimi _podmínkami služby_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "VYBERTE SOUBOR";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "PŘIZPŮSOBIT";

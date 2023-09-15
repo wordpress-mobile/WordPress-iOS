@@ -21,6 +21,7 @@
 * [***] [Jetpack-only] Contact Support: Add a new chat-based support channel where users can get answers from a bot trained to help app users. Users can still create a support ticket to talk to a Happiness Engineer if they don't find the answer they're looking for [#21467]
 * [*] Fix a crash on the pages list when the authentication token is invalid. [#21471]
 * [**] Me tab: move Me to the bottom tab bar [https://github.com/wordpress-mobile/WordPress-iOS/pull/21348]
+* [*] Fix Stats menu option not visible for self-hosted sites without a Jetpack connection. [#21548]
 
 23.0.1
 -----

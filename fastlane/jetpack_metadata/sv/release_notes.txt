@@ -1,0 +1,16 @@
+Vi har lagt till en ny chattbaserad supportkanal med en specialtränad robot som besvarar alla dina apprelaterade frågor. Det räcker, robot. Det räcker. (Vill du fortfarande prata med en människa? Du kan som alltid skapa ett supportärende och få hjälp av en supporttekniker.)
+
+Vi har lagt till allas inbyggda favoritmediaväljare, som du känner igen från din Apple-app Bilder. Filtrera efter olika mediatyper och sök efter album och foton, oavsett hur många det finns. Det är goda nyheter för dina 3 591 kattfoton.
+
+Du kan nu visa, flytta och ta bort Jetpack-betalväggsblocket i blockredigeraren.
+
+Vi har flyttat knappen "Mig" till det nedre flikfältet, vilket medför några mindre designjusteringar. Blocket Sociala länkar inkluderar nu en ytterkant så att du kan se när det är valt.
+
+Vi har tagit bort genvägen "Nytt fotoinlägg" i appen för att göra menyn kortare och tydligare. Adjö och farväl.
+
+Slutligen har vi även åtgärdat ett antal buggar.
+
+- Du kan nu ta ett foto i appen och ladda upp det till din webbplats, även om du inte har gett appen fullständig åtkomst till dina foton.
+- Fel bearbetas och visas nu korrekt när du stöter på problem vid uppladdning av media.
+- Listan Sidor bör inte längre krascha om din autentiseringstoken är ogiltig.
+- När du arbetar i blockredigeraren ska appen inte längre krascha om du omvandlar ett inbäddat kolumnblock till ett gruppblock.

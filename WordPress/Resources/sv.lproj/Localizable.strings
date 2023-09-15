@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-05 07:14:18+0000 */
+/* Translation-Revision-Date: 2023-09-12 15:36:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: sv_SE */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIV";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "LÄGG TILL LJUD";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "LÄGG TILL BLOCK HÄR";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "LÄGG TILL BILD";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "LÄGG TILL BILD ELLER VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "LÄGG TILL MEDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "LÄGG TILL VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESS";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Lägg till något ämne";
 
 /* No comment provided by engineer. */
+"Add audio" = "Lägg till ljud";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Lägg till block";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Lägg till beskrivning";
+
+/* No comment provided by engineer. */
+"Add image" = "Lägg till bild";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Lägg till bild eller video";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Lägg till rubrik";
+
+/* No comment provided by engineer. */
+"Add video" = "Lägg till video";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Lägger till olika webbplatsfunktioner";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "Genom att registrera dig godkänner du våra _användarvillkor_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "VÄLJ EN FIL";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSA";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Välj en domän";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Välj en fil";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Välj en ny appikon";
@@ -10556,7 +10553,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "Kort kan visa olika innehåll beroende på vad som händer på din webbplats. Vi arbetar på fler kort och kontroller.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "Dölj eller visa kort";
+"personalizeHome.cardsSectionHeader" = "Visa eller dölj kort";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Senaste aktivitet";

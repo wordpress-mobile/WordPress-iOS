@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-07 09:54:08+0000 */
+/* Translation-Revision-Date: 2023-09-14 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ja_JP */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "有効";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "音声を追加";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ここにブロックを追加";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "画像を追加";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "画像または動画を追加";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "メディアを追加";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "動画を追加";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "住所";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "任意のトピックを追加";
 
 /* No comment provided by engineer. */
+"Add audio" = "音声を追加";
+
+/* No comment provided by engineer. */
 "Add blocks" = "ブロックを追加";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "説明を追加";
+
+/* No comment provided by engineer. */
+"Add image" = "画像を追加";
 
 /* No comment provided by engineer. */
 "Add image or video" = "画像または動画を追加";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "タイトルを追加";
+
+/* No comment provided by engineer. */
+"Add video" = "動画を追加";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "サイト機能の追加";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "登録することで、利用規約に合意したことになります。";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "ファイルを選択";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "カスタマイズ";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "ドメインを選択";
+
+/* No comment provided by engineer. */
+"Choose a file" = "ファイルを選択";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "新しいアイコンを選択";
@@ -10553,7 +10550,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "サイトで発生した内容に基づいてカードにはさまざまなコンテンツが表示されることがあります。 さらに多くのカードやコントロールに取り組んでいます。";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "カードを追加または非表示";
+"personalizeHome.cardsSectionHeader" = "カードを表示または非表示";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "最近のアクティビティ";

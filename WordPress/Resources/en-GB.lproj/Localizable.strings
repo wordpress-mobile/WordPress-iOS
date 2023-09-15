@@ -401,22 +401,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ACTIVE";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ADD BLOCK HERE";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "ADD IMAGE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "ADD IMAGE OR VIDEO";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "ADD MEDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "ADD VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Address";
@@ -1259,9 +1247,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "By signing up, you agree to our _Terms of Service_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "CUSTOMISE";
@@ -10281,9 +10266,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Add or hide cards";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Recent activity";

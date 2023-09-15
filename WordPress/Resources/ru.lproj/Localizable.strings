@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-05 12:39:58+0000 */
+/* Translation-Revision-Date: 2023-09-12 15:03:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: ru */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "АКТИВНО";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ДОБАВИТЬ АУДИО";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ДОБАВИТЬ БЛОК ЗДЕСЬ";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "ДОБАВИТЬ ИЗОБРАЖЕНИЕ";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "ДОБАВИТЬ ИЗОБРАЖЕНИЕ ИЛИ ВИДЕО";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "ДОБАВИТЬ МЕДИА";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "ДОБАВИТЬ ВИДЕО";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "АДРЕС";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Добавьте любую тему";
 
 /* No comment provided by engineer. */
+"Add audio" = "Добавить аудиозапись";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Добавить блоки";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Добавить описание";
+
+/* No comment provided by engineer. */
+"Add image" = "Добавить изображение";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Добавить изображение или видео";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Добавить заголовок";
+
+/* No comment provided by engineer. */
+"Add video" = "Добавить видео";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Добавление функциональности сайта";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "Регистрируясь вы соглашаетесь с нашими _Правилами пользования_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "ВЫБРАТЬ ФАЙЛ";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "НАСТРОИТЬ";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Выбрать домен";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Выберите файл";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Выберите новый значок приложения";

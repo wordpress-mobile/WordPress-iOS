@@ -220,6 +220,8 @@ extension SiteIconPickerPresenter: ImagePickerControllerDelegate {
     }
 }
 
+extension SiteIconPickerPresenter: MediaPickerViewControllerDelegate {}
+
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
