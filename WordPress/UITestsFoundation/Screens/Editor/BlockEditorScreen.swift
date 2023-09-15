@@ -191,8 +191,9 @@ public class BlockEditorScreen: ScreenObject {
     private func addMediaBlockFromUrl(blockType: String, UrlPath: String) {
         addBlock(blockType)
         insertFromUrlButton.tap()
-        app.textFields.element.typeText(UrlPath)
-        applyButton.tap()
+        app.textFields["Type a URL"].typeText(UrlPath)
+        // Tap on the modal, which is the parent of the TextField element, to dismiss it.
+        app.otherElements.containing(.textField, identifier: "Type a URL").firstMatch.tap()
     }
 
     @discardableResult
