@@ -31,7 +31,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func getSection(for blog: Blog) -> Section {
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() &&
             blog.isAccessibleThroughWPCom() &&
-            splitViewControllerIsHorizontallyCompact {
+            (splitViewControllerIsHorizontallyCompact || !MySitesCoordinator.isSplitViewEnabled) {
             return .dashboard
         } else {
             return .siteMenu

@@ -1038,7 +1038,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addNullableObject:[self quickStartSectionViewModel]];
     }
-    if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
+    if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled]) {
         [marr addNullableObject:[self homeSectionViewModel]];
     }
 
