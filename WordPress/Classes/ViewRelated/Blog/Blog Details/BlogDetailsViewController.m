@@ -384,6 +384,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[MigrationSuccessCell class] forCellReuseIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
     [self.tableView registerClass:[JetpackBrandingMenuCardCell class] forCellReuseIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
     [self.tableView registerClass:[JetpackRemoteInstallTableViewCell class] forCellReuseIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
+    
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -409,7 +411,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self observeWillEnterForegroundNotification];
 
-    if (self.splitViewControllerIsHorizontallyCompact) {
+    if (!self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
 
@@ -994,7 +996,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     BOOL isValidIndexPath = self.restorableSelectedIndexPath.section < self.tableView.numberOfSections &&
                             self.restorableSelectedIndexPath.row < [self.tableView numberOfRowsInSection:self.restorableSelectedIndexPath.section];
-    if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
+    if (isValidIndexPath && [self isSplitViewDisplayed]) {
         // And finally we'll reselect the selected row, if there is one
         [self.tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                     animated:NO
@@ -1038,7 +1040,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addNullableObject:[self quickStartSectionViewModel]];
     }
-    if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled]) {
+    if ([self isDashboardEnabled] && [self isSplitViewDisplayed]) {
         [marr addNullableObject:[self homeSectionViewModel]];
     }
 
@@ -1075,6 +1077,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
+}
+
+- (Boolean)isSplitViewDisplayed {
+    return ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled];
 }
 
 /// This section is available on Jetpack only.
@@ -1511,7 +1517,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showInitialDetailsForBlog
 {
-    if ([self splitViewControllerIsHorizontallyCompact]) {
+    if (![self isSplitViewDisplayed]) {
         return;
     }
 
@@ -1617,7 +1623,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [WPStyleGuide configureTableViewDestructiveActionCell:cell];
     } else {
         if (row.showsDisclosureIndicator) {
-            cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = [self isSplitViewDisplayed] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
@@ -1654,7 +1660,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (row.showsSelectionState) {
         self.restorableSelectedIndexPath = indexPath;
     } else {
-        if ([self splitViewControllerIsHorizontallyCompact]) {
+        if (![self isSplitViewDisplayed]) {
             // Deselect current row when not in split view layout
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         } else {

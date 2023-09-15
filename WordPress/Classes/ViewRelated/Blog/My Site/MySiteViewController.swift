@@ -893,11 +893,15 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     }
 
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
-        switch currentSection {
-        case .dashboard:
-            blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
-        case .siteMenu:
-            blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
+        if MySitesCoordinator.isSplitViewEnabled {
+            switch currentSection {
+            case .dashboard:
+                blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
+            case .siteMenu:
+                blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
+            }
+        } else {
+            blogDetailsViewController?.show(viewController, sender: nil)
         }
     }
 }
