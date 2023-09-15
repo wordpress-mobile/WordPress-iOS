@@ -43,7 +43,13 @@ private struct BlogDashboardPersonalizationQuickActionCell: View {
 
     var body: some View {
         Toggle(isOn: $viewModel.isOn) {
-            Label(title: { Text(viewModel.title) }, icon: { Image(uiImage: viewModel.image ?? UIImage()) })
+            Label(title: {
+                Text(viewModel.title)
+            }, icon: {
+                let image = viewModel.image ?? UIImage()
+                Image(uiImage: image.withRenderingMode(.alwaysTemplate))
+                    .foregroundColor(.primary)
+            })
         }
     }
 }
