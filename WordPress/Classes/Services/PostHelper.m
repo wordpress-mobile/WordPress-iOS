@@ -219,4 +219,75 @@
     return metadata;
 }
 
++ (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts
+                 ofType:(NSString *)syncPostType
+           withStatuses:(NSArray *)statuses
+               byAuthor:(NSNumber *)authorID
+                forBlog:(Blog *)blog
+          purgeExisting:(BOOL)purge
+              inContext:(NSManagedObjectContext *)context
+{
+    NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
+    for (RemotePost *remotePost in remotePosts) {
+        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        if (!post) {
+            if ([remotePost.type isEqualToString:PostServiceTypePage]) {
+                // Create a Page entity for posts with a remote type of "page"
+                post = [blog createPage];
+            } else {
+                // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
+                post = [blog createPost];
+            }
+        }
+        [PostHelper updatePost:post withRemotePost:remotePost inContext:context];
+        [posts addObject:post];
+    }
+
+    if (purge) {
+        // Set up predicate for fetching any posts that could be purged for the sync.
+        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        if ([statuses count] > 0) {
+            NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
+        }
+        if (authorID) {
+            NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", authorID];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, authorPredicate]];
+        }
+
+        NSFetchRequest *request;
+        if ([syncPostType isEqualToString:PostServiceTypeAny]) {
+            // If syncing "any" posts, set up the fetch for any AbstractPost entities (including child entities).
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
+        } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
+            // If syncing "page" posts, set up the fetch for any Page entities.
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
+        } else {
+            // If not syncing "page" or "any" post, use the Post entity.
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
+            // Include the postType attribute in the predicate.
+            NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", syncPostType];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, postTypePredicate]];
+        }
+        request.predicate = predicate;
+
+        NSError *error;
+        NSArray *existingPosts = [context executeFetchRequest:request error:&error];
+        if (error) {
+            DDLogError(@"Error fetching existing posts for purging: %@", error);
+        } else {
+            NSSet *postsToKeep = [NSSet setWithArray:posts];
+            NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
+            // Delete the posts not being updated.
+            [postsToDelete minusSet:postsToKeep];
+            for (AbstractPost *post in postsToDelete) {
+                DDLogInfo(@"Deleting Post: %@", post);
+                [context deleteObject:post];
+            }
+        }
+    }
+
+    return posts;
+}
+
 @end
