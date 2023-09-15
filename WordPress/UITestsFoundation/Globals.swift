@@ -26,7 +26,7 @@ public func navigateBack() {
 
 public func tapTopOfScreen() {
     let app = XCUIApplication()
-    app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+    app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2)).tap()
 }
 
 public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
