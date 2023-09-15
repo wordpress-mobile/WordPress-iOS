@@ -6,7 +6,6 @@
 #import "WPAccount.h"
 #import "CoreDataStack.h"
 #import "BlogService.h"
-#import "TodayExtensionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 
@@ -94,24 +93,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
-    if (@available (iOS 14, *)) {
-        // do not install the widgets button on iOS 14 or later, if today widget feature flag is enabled
-        if (![Feature enabled:FeatureFlagTodayWidget]) {
-            [self installWidgetsButton];
-        }
-    } else if (self.presentingViewController == nil) {
-        [self installWidgetsButton];
-    }
-
     [self addChildViewController:self.siteStatsDashboardVC];
     [self.view addSubview:self.siteStatsDashboardVC.view];
     [self.siteStatsDashboardVC didMoveToParentViewController:self];
-}
-
-- (void) installWidgetsButton
-{
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Widgets", @"Nav bar button title to set the site used for Stats widgets.") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-    self.navigationItem.rightBarButtonItem = settingsButton;
 }
 
 - (void)initStats
@@ -154,19 +138,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }];
 }
 
-
-- (void)saveSiteDetailsForTodayWidget
-{
-    TodayExtensionService *service = [TodayExtensionService new];
-
-    [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
-                                   blogName:self.blog.settings.name
-                                    blogUrl:self.blog.displayURL
-                               siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
-                             andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
-}
-
-
 - (void)promptForJetpackCredentials
 {
     if (self.showingJetpackLogin) {
@@ -187,25 +158,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     controller.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view pinSubviewToAllEdges:controller.view];
 }
-
-
-- (IBAction)makeSiteTodayWidgetSite:(id)sender
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
-                                                                             message:nil
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"")
-                                  style:UIAlertActionStyleCancel
-                                handler:nil];
-    [alertController addActionWithTitle:NSLocalizedString(@"Use this site", @"")
-                                  style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * __unused alertAction) {
-                                   [self saveSiteDetailsForTodayWidget];
-                                  }];
-    alertController.popoverPresentationController.barButtonItem = sender;
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 
 - (IBAction)doneButtonTapped:(id)sender
 {

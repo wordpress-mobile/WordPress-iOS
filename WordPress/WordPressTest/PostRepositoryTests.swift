@@ -19,7 +19,7 @@ class PostRepositoryTests: CoreDataTestCase {
 
         contextManager.saveContextAndWait(mainContext)
 
-        blogID = .init(saved: blog)
+        blogID = .init(blog)
         remoteMock = PostServiceRESTMock()
         let remoteFactory = PostServiceRemoteFactoryMock()
         remoteFactory.remoteToReturn = remoteMock

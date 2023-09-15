@@ -48,7 +48,8 @@ final class TenorPicker: NSObject {
         return options
     }()
 
-    func presentPicker(origin: UIViewController, blog: Blog) {
+    @discardableResult
+    func presentPicker(origin: UIViewController, blog: Blog) -> UIViewController {
         NoResultsTenorConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
@@ -69,6 +70,8 @@ final class TenorPicker: NSObject {
 
         observeDataSource()
         WPAnalytics.track(.tenorAccessed)
+
+        return picker
     }
 
     private func observeDataSource() {

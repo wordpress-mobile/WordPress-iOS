@@ -25,7 +25,7 @@ platform :ios do
     register_device(
       name: device_name,
       udid: device_id,
-      team_id: team_id,
+      team_id:,
       api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
@@ -36,13 +36,13 @@ platform :ios do
 
     # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
     add_development_certificates_to_provisioning_profiles(
-      team_id: team_id,
+      team_id:,
       app_identifier: all_bundle_ids
     )
 
     # Add all devices to the provisioning profiles
     add_all_devices_to_provisioning_profiles(
-      team_id: team_id,
+      team_id:,
       app_identifier: all_bundle_ids
     )
   end
@@ -173,9 +173,9 @@ def update_code_signing_enterprise(readonly:, app_identifiers:)
     type: 'enterprise',
     # Enterprise builds belong to the "internal" team
     team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-    readonly: readonly,
-    app_identifiers: app_identifiers,
-    api_key_path: api_key_path
+    readonly:,
+    app_identifiers:,
+    api_key_path:
   )
 end
 
@@ -184,8 +184,8 @@ def update_code_signing_app_store(readonly:, app_identifiers:)
     type: 'appstore',
     # App Store builds belong to the "external" team
     team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-    readonly: readonly,
-    app_identifiers: app_identifiers,
+    readonly:,
+    app_identifiers:,
     api_key_path: APP_STORE_CONNECT_KEY_PATH
   )
 end
@@ -197,11 +197,11 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_pa
     storage_mode: 'google_cloud',
     google_cloud_bucket_name: 'a8c-fastlane-match',
     google_cloud_keys_file: File.join(SECRETS_DIR, 'google_cloud_keys.json'),
-    type: type,
-    team_id: team_id,
-    readonly: readonly,
+    type:,
+    team_id:,
+    readonly:,
     app_identifier: app_identifiers,
-    api_key_path: api_key_path
+    api_key_path:
   )
 end
 

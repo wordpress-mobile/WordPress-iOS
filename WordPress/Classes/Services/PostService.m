@@ -191,7 +191,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
            failure:(nullable void (^)(NSError * _Nullable error))failure
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostHelper remotePostWithPost:post];
 
     post.remoteStatus = AbstractPostRemoteStatusPushing;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -379,7 +379,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                              failure:(void (^)(NSError * _Nullable error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostHelper remotePostWithPost:post];
 
     AutosaveSuccessBlock autosaveSuccessBlock = [self wrappedAutosaveSuccessBlock:postObjectID success:success];
     AutosaveFailureBlock setPostAsFailedAndCallFailureBlock = [self wrappedAutosaveFailureBlock:post failure:failure];
@@ -452,7 +452,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     void (^privateBlock)(void) = ^void() {
         NSNumber *postID = post.postID;
         if ([postID longLongValue] > 0) {
-            RemotePost *remotePost = [self remotePostWithPost:post];
+            RemotePost *remotePost = [PostHelper remotePostWithPost:post];
             id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
             [remote deletePost:remotePost success:success failure:failure];
         }
@@ -546,7 +546,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         }
     };
     
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostHelper remotePostWithPost:post];
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote trashPost:remotePost success:successBlock failure:failureBlock];
 }
@@ -617,7 +617,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         }
     };
     
-    RemotePost *remotePost = [self remotePostWithPost:post];
+    RemotePost *remotePost = [PostHelper remotePostWithPost:post];
     if (post.restorableStatus) {
         remotePost.status = post.restorableStatus;
     } else {
@@ -717,103 +717,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                                               withOptions:(nonnull PostServiceSyncOptions *)options
 {
     return [remote dictionaryWithRemoteOptions:options];
-}
-
-- (RemotePost *)remotePostWithPost:(AbstractPost *)post
-{
-    RemotePost *remotePost = [RemotePost new];
-    remotePost.postID = post.postID;
-    remotePost.date = post.date_created_gmt;
-    remotePost.dateModified = post.dateModified;
-    remotePost.title = post.postTitle ?: @"";
-    remotePost.content = post.content;
-    remotePost.status = post.status;
-    if (post.featuredImage) {
-        remotePost.postThumbnailID = post.featuredImage.mediaID;
-    }
-    remotePost.password = post.password;
-    remotePost.type = @"post";
-    remotePost.authorAvatarURL = post.authorAvatarURL;
-    // If a Post's authorID is 0 (the default Core Data value)
-    // or nil, don't send it to the API.
-    if (post.authorID.integerValue != 0) {
-        remotePost.authorID = post.authorID;
-    }
-    remotePost.excerpt = post.mt_excerpt;
-    remotePost.slug = post.wp_slug;
-
-    if ([post isKindOfClass:[Page class]]) {
-        Page *pagePost = (Page *)post;
-        remotePost.parentID = pagePost.parentID;
-        remotePost.type = @"page";
-    }
-    if ([post isKindOfClass:[Post class]]) {
-        Post *postPost = (Post *)post;
-        remotePost.format = postPost.postFormat;        
-        remotePost.tags = [[postPost.tags componentsSeparatedByString:@","] wp_map:^id(NSString *obj) {
-            return [obj stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
-        }];
-        remotePost.categories = [self remoteCategoriesForPost:postPost];
-        remotePost.metadata = [self remoteMetadataForPost:postPost];
-
-        // Because we can't get what's the self-hosted non Jetpack site capabilities
-        // only Admin users are allowed to set a post as sticky.
-        // This doesn't affect WPcom sites.
-        //
-        BOOL canMarkPostAsSticky = ([post.blog supports:BlogFeatureWPComRESTAPI] || post.blog.isAdmin);
-        remotePost.isStickyPost = canMarkPostAsSticky ? @(postPost.isStickyPost) : nil;
-    }
-
-    remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
-
-    return remotePost;
-}
-
-- (NSArray *)remoteCategoriesForPost:(Post *)post
-{
-    return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
-        return [self remoteCategoryWithCategory:category];
-    }];
-}
-
-- (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
-{
-    RemotePostCategory *remoteCategory = [RemotePostCategory new];
-    remoteCategory.categoryID = category.categoryID;
-    remoteCategory.name = category.categoryName;
-    remoteCategory.parentID = category.parentID;
-    return remoteCategory;
-}
-
-- (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
-
-    if (post.publicID) {
-        NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-        publicDictionary[@"id"] = [post.publicID numericValue];
-        [metadata addObject:publicDictionary];
-    }
-
-    if (post.publicizeMessageID || post.publicizeMessage.length) {
-        NSMutableDictionary *publicizeMessageDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.publicizeMessageID) {
-            publicizeMessageDictionary[@"id"] = post.publicizeMessageID;
-        }
-        publicizeMessageDictionary[@"key"] = @"_wpas_mess";
-        publicizeMessageDictionary[@"value"] = post.publicizeMessage.length ? post.publicizeMessage : @"";
-        [metadata addObject:publicizeMessageDictionary];
-    }
-
-    [metadata addObjectsFromArray:[PostHelper publicizeMetadataEntriesForPost:post]];
-
-    if (post.bloggingPromptID) {
-        NSMutableDictionary *promptDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        promptDictionary[@"key"] = @"_jetpack_blogging_prompt_key";
-        promptDictionary[@"value"] = post.bloggingPromptID;
-        [metadata addObject:promptDictionary];
-    }
-
-    return metadata;
 }
 
 - (NSArray *)entriesWithKeyLike:(NSString *)key inMetadata:(NSArray *)metadata

@@ -88,7 +88,7 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
+    inject_buildkite_analytics_environment(xctestrun_path:) if buildkite_ci?
     # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
     #
     # Their scheme and xctestrun name pairing are:
@@ -105,7 +105,7 @@ platform :ios do
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: scheme,
+      scheme:,
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
@@ -168,7 +168,7 @@ platform :ios do
     version = options[:beta_release] ? ios_get_build_version : get_app_version
     create_release(
       repository: GITHUB_REPO,
-      version: version,
+      version:,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
@@ -333,9 +333,9 @@ platform :ios do
 
     # Build
     gym(
-      scheme: scheme,
+      scheme:,
       workspace: WORKSPACE_PATH,
-      configuration: configuration,
+      configuration:,
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: output_app_name,
@@ -361,7 +361,7 @@ platform :ios do
       app_name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes: release_notes,
+      release_notes:,
       destinations: 'Collaborators',
       notify_testers: false
     )
@@ -377,7 +377,7 @@ platform :ios do
     # Post PR Comment
     comment_body = prototype_build_details_comment(
       app_display_name: output_app_name,
-      app_icon: app_icon,
+      app_icon:,
       app_center_org_name: APPCENTER_OWNER_NAME,
       metadata: { Configuration: configuration },
       fold: true

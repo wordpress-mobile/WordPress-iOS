@@ -62,7 +62,6 @@ struct InsightStoreState {
                                                 visitors: stats.visitorsCount,
                                                 posts: stats.postsCount,
                                                 bestViews: stats.bestViewsPerDayCount)
-            storeAllTimeWidgetData(data: widgetData)
             StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: widgetData)
         }
     }
@@ -93,7 +92,6 @@ struct InsightStoreState {
                                               likes: stats.likesCount,
                                               comments: stats.commentsCount)
 
-            storeTodayWidgetData(data: widgetData)
             StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: widgetData)
         }
     }
@@ -1035,37 +1033,6 @@ extension StatsInsightsStore {
         case .allAnnual:
             return state.allAnnualStatus == .error
         }
-    }
-}
-
-// MARK: - Widget Data
-
-private extension InsightStoreState {
-
-    func storeTodayWidgetData(data: TodayWidgetStats) {
-        guard widgetUsingCurrentSite() else {
-            return
-        }
-
-        data.saveData()
-    }
-
-    func storeAllTimeWidgetData(data: AllTimeWidgetStats) {
-        guard widgetUsingCurrentSite() else {
-            return
-        }
-
-        data.saveData()
-    }
-
-    func widgetUsingCurrentSite() -> Bool {
-        // Only store data if the widget is using the current site.
-        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
-            let widgetSiteID = sharedDefaults.object(forKey: AppConfiguration.Widget.StatsToday.userDefaultsSiteIdKey) as? NSNumber,
-            widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
-                return false
-        }
-        return true
     }
 }
 

@@ -171,7 +171,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
 struct LatestPostSummaryRow: ImmuTableRow {
 
     static var cell: ImmuTableCell {
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
         } else {
             return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)
@@ -374,17 +374,17 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         cell.textLabel?.adjustsFontForContentSizeCategory = true
-        cell.textLabel?.textColor = FeatureFlag.statsNewAppearance.enabled || enabled ? .text : .textPlaceholder
+        cell.textLabel?.textColor = AppConfiguration.statsRevampV2Enabled || enabled ? .text : .textPlaceholder
         cell.selectionStyle = .none
 
         cell.accessibilityLabel = title
         cell.isAccessibilityElement = true
 
-        let canTap = FeatureFlag.statsNewAppearance.enabled ? action != nil : enabled
+        let canTap = AppConfiguration.statsRevampV2Enabled ? action != nil : enabled
         cell.accessibilityTraits = canTap ? .button : .notEnabled
         cell.accessibilityHint = canTap && enabled ? disabledHint : enabledHint
 
-        if FeatureFlag.statsNewAppearance.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             cell.accessoryView = canTap ? UIImageView(image: UIImage(systemName: Constants.plusIconName)) : nil
 
             let editingImageView = UIImageView(image: UIImage(systemName: Constants.minusIconName))

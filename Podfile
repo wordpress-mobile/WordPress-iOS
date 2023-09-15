@@ -147,7 +147,7 @@ abstract_target 'Apps' do
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
-  pod 'WordPressAuthenticator', '~> 6.3'
+  pod 'WordPressAuthenticator', '~> 7.0-beta'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -227,18 +227,9 @@ target 'JetpackDraftActionExtension' do
   wordpress_ui
 end
 
-## Home Screen Widgets
+## Widgets
 ## ============
 ##
-target 'WordPressStatsWidgets' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-  shared_style_pods
-
-  wordpress_ui
-end
 
 target 'JetpackStatsWidgets' do
   project 'WordPress/WordPress.xcodeproj'
@@ -253,14 +244,6 @@ end
 ## Intents
 ## ============
 ##
-target 'WordPressIntents' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
 
 target 'JetpackIntents' do
   project 'WordPress/WordPress.xcodeproj'
@@ -339,7 +322,7 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-  gutenberg_post_install(installer: installer)
+  gutenberg_post_install(installer:)
 
   project_root = File.dirname(__FILE__)
 

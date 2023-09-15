@@ -1,7 +1,7 @@
 {
   "scenarioName": "comment_flow",
-  "requiredScenarioState": "replied",
-  "newScenarioState": "new_list",
+  "requiredScenarioState": "comment_replied",
+  "newScenarioState": "new_comments_list",
   "request": {
     "method": "GET",
     "urlPath": "/wp/v2/sites/181977606/comments",

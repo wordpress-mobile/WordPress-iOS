@@ -95,8 +95,8 @@ class QuickStartFactoryTests: CoreDataTestCase {
         XCTAssertTrue(tours[2] is QuickStartSiteIconTour)
         XCTAssertTrue(tours[3] is QuickStartReviewPagesTour)
         XCTAssertTrue(tours[4] is QuickStartViewTour)
-        XCTAssertTrue(tours[5] is QuickStartShareTour)
-        XCTAssertTrue(tours[6] is QuickStartPublishTour)
+        XCTAssertTrue(tours[5] is QuickStartPublishTour)
+        XCTAssertTrue(tours[6] is QuickStartShareTour)
         XCTAssertTrue(tours[7] is QuickStartFollowTour)
         XCTAssertTrue(tours[8] is QuickStartCheckStatsTour)
     }

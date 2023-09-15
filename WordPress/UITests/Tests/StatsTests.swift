@@ -9,7 +9,7 @@ class StatsTests: XCTestCase {
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
-            .goToMenu()
+            .goToMoreMenu()
             .goToStatsScreen()
             .switchTo(mode: "insights")
             .refreshStatsIfNeeded()

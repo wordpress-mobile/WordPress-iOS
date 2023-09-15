@@ -160,13 +160,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
            success:(nullable void (^)(void))success
            failure:(void (^)(NSError * _Nullable error))failure;
 
-/**
- Creates a RemotePost from an AbstractPost to be used for API calls.
-
- @param post The AbstractPost used to create the RemotePost
- */
-- (RemotePost *)remotePostWithPost:(AbstractPost *)post;
-
 @end
 
 NS_ASSUME_NONNULL_END
