@@ -2,16 +2,16 @@ import XCTest
 @testable import WordPress
 
 final class WidgetDataReaderTests: XCTestCase {
-    func testNoSite() {
+    func testNoSiteWhenWidgetDataNotFound() {
         let intent = SelectSiteIntent()
-        intent.site = Site(identifier: nil, display: "")
+        intent.site = Site(identifier: "test", display: "")
         let sut = makeSUT(
             makeUserDefaults(suiteName: #function),
             makeCacheReader(isCacheExisted: false),
             isLoggedIn: true
         )
 
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, expectNoSite: true)
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, expectNoSite: true)
     }
 
     func testSiteSelectedWithNoDefaultSiteAvailable() {
@@ -45,18 +45,6 @@ final class WidgetDataReaderTests: XCTestCase {
             nil,
             makeCacheReader(isCacheExisted: true),
             isLoggedIn: false
-        )
-
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, expectNoData: true)
-    }
-
-    func testNoDataWhenWidgetDataNotFound() {
-        let intent = SelectSiteIntent()
-        intent.site = Site(identifier: "test", display: "")
-        let sut = makeSUT(
-            makeUserDefaults(suiteName: #function),
-            makeCacheReader(isCacheExisted: false),
-            isLoggedIn: true
         )
 
         verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, expectNoData: true)
