@@ -7,11 +7,23 @@ final class WidgetDataReaderTests: XCTestCase {
         intent.site = Site(identifier: nil, display: "")
         let sut = makeSUT(
             makeUserDefaults(suiteName: #function),
+            makeCacheReader(isCacheExisted: false),
+            isLoggedIn: true
+        )
+
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, expectNoSite: true)
+    }
+
+    func testSiteSelectedWithNoDefaultSiteAvailable() {
+        let intent = SelectSiteIntent()
+        intent.site = Site(identifier: nil, display: "")
+        let sut = makeSUT(
+            makeUserDefaults(suiteName: #function),
             makeCacheReader(isCacheExisted: true),
             isLoggedIn: true
         )
 
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, isJetpack: true, expectNoSite: true)
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, expectSiteSelected: true)
     }
 
     func testLoggedOut() {
@@ -23,7 +35,7 @@ final class WidgetDataReaderTests: XCTestCase {
             isLoggedIn: false
         )
 
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, isJetpack: true, expectLoggedOut: true)
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: nil, expectLoggedOut: true)
     }
 
     func testNoDataWhenNoUserDefaults() {
@@ -35,7 +47,7 @@ final class WidgetDataReaderTests: XCTestCase {
             isLoggedIn: false
         )
 
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, isJetpack: true, expectNoData: true)
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, expectNoData: true)
     }
 
     func testNoDataWhenWidgetDataNotFound() {
@@ -47,7 +59,7 @@ final class WidgetDataReaderTests: XCTestCase {
             isLoggedIn: true
         )
 
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, isJetpack: true, expectNoData: true)
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, expectNoData: true)
     }
 
     func testSiteSelected() {
@@ -59,7 +71,7 @@ final class WidgetDataReaderTests: XCTestCase {
             isLoggedIn: true
         )
 
-        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, isJetpack: true, expectSiteSelected: true)
+        verifyWidgetStatus(sut, configuration: intent, defaultSiteID: 123, expectSiteSelected: true)
     }
 }
 
@@ -87,7 +99,6 @@ extension WidgetDataReaderTests {
         _ sut: WidgetDataReader<HomeWidgetTodayData>,
         configuration: SelectSiteIntent,
         defaultSiteID: Int?,
-        isJetpack: Bool,
         expectDisabled: Bool = false,
         expectNoData: Bool = false,
         expectNoSite: Bool = false,
@@ -107,8 +118,7 @@ extension WidgetDataReaderTests {
 
         switch sut.widgetData(
             for: configuration,
-            defaultSiteID: defaultSiteID,
-            isJetpack: isJetpack
+            defaultSiteID: defaultSiteID
         ) {
         case .success:
             siteSelectedExpectation.fulfill()
@@ -151,6 +161,14 @@ struct MockHomeWidgetDataFileReader: WidgetDataCacheReader {
     func widgetData<T: HomeWidgetData>(for siteID: String) -> T? {
         if isMockDataReturned {
             return mockData as? T
+        } else {
+            return nil
+        }
+    }
+
+    func widgetData<T: HomeWidgetData>() -> [T]? {
+        if isMockDataReturned {
+            return [mockData] as? [T]
         } else {
             return nil
         }

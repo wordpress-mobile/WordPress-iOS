@@ -35,6 +35,7 @@ class StatsWidgetsStore {
 
     /// Initialize the local cache for widgets, if it does not exist
     @objc func initializeStatsWidgetsIfNeeded() {
+        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
         UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
         storeCredentials()
 
