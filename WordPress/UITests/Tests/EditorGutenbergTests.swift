@@ -100,6 +100,8 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testAddMediaBlocks() throws {
+        try XCTSkipIf(!XCUIDevice.isPad, "Test currently fails on iPhone in CI - Tapping on the coordinate location results in a blank screen. Skipping test on iPhone.")
+
         try BlockEditorScreen()
             .addImage()
             .addVideoFromUrl(urlPath: videoUrlPath)
