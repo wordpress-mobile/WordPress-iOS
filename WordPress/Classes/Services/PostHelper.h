@@ -17,6 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (RemotePost *)remotePostWithPost:(AbstractPost *)post;
 
++ (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts
+                 ofType:(NSString *)syncPostType
+           withStatuses:(NSArray *)statuses
+               byAuthor:(NSNumber *)authorID
+                forBlog:(Blog *)blog
+          purgeExisting:(BOOL)purge
+              inContext:(NSManagedObjectContext *)context;
+
 @end
 
 NS_ASSUME_NONNULL_END
