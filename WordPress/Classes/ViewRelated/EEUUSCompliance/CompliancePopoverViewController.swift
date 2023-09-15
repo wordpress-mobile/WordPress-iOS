@@ -18,6 +18,17 @@ final class CompliancePopoverViewController: UIHostingController<CompliancePopov
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        rootView.goToSettingsAction = {
+            self.viewModel.didTapSettings()
+        }
+        rootView.saveAction = {
+            self.viewModel.didTapSave()
+        }
+        viewModel.didDisplayPopover()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
