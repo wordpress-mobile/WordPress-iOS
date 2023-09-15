@@ -187,7 +187,8 @@ public class BlockEditorScreen: ScreenObject {
         addBlock(blockType)
         insertFromUrlButton.tap()
         app.textFields.element.typeText(UrlPath)
-        app.swipeDown()
+        // to dismiss media block URL prompt
+        tapTopOfScreen()
     }
 
     @discardableResult
