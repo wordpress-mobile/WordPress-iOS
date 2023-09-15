@@ -12,7 +12,7 @@ a.floating-button {
 
 .docsbot-chat-input-form {
     margin-bottom: 0px;
-    height: 48px !important;
+    min-height: 48px !important;
     display: flex;
     align-items: center;
 }
@@ -27,6 +27,7 @@ a.floating-button {
 
 .docsbot-chat-input {
     height: auto !important;
+    font: -apple-system-body !important;
 }
 
 .docsbot-chat-btn-send-icon {
@@ -41,8 +42,30 @@ a.floating-button {
     margin-top: 16px;
 }
 
+.docsbot-chat-bot-message-meta button {
+    font: -apple-system-footnote !important;
+}
+
+.docsbot-chat-message-container div {
+    font: -apple-system-body !important;
+}
+
 .docsbot-chat-suggested-questions-container button {
-    height: 48px;
+    min-height: 48px !important;
+    font: -apple-system-body !important;
+}
+
+.docsbot-chat-suggested-questions-container span {
+    font: -apple-system-footnote !important;
+}
+
+.docsbot-chat-suggested-questions-container {
+    min-height: 48px !important;
+    position: relative !important;
+}
+
+.docsbot-chat-bot-message-support a {
+    font: -apple-system-body !important;
 }
 
 .docsbot-chat-bot-message-support {
