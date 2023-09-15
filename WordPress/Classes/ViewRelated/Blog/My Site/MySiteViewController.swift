@@ -172,6 +172,8 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
         return UIHostingController(rootView: noSiteView)
     }()
 
+    private var isNavigationBarHidden = false
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -410,14 +412,21 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
 
     private func configureNavBarAppearance(animated: Bool) {
         if scrollView.contentOffset.y >= 60 {
-            navigationController?.setNavigationBarHidden(false, animated: animated)
+            if isNavigationBarHidden {
+                navigationController?.setNavigationBarHidden(false, animated: animated)
+            }
+            isNavigationBarHidden = false
         } else {
-            navigationController?.setNavigationBarHidden(true, animated: animated)
+            if !isNavigationBarHidden {
+                navigationController?.setNavigationBarHidden(true, animated: animated)
+            }
+            isNavigationBarHidden = true
         }
     }
 
     private func resetNavBarAppearance() {
         navigationController?.setNavigationBarHidden(false, animated: false)
+        isNavigationBarHidden = false
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
