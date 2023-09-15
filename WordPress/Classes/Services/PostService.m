@@ -639,16 +639,17 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 #pragma mark - Helpers
 
-- (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts
++ (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts
                  ofType:(NSString *)syncPostType
            withStatuses:(NSArray *)statuses
                byAuthor:(NSNumber *)authorID
                 forBlog:(Blog *)blog
           purgeExisting:(BOOL)purge
+              inContext:(NSManagedObjectContext *)context
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:self.managedObjectContext];
+        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
@@ -658,7 +659,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 post = [blog createPost];
             }
         }
-        [PostHelper updatePost:post withRemotePost:remotePost inContext:self.managedObjectContext];
+        [PostHelper updatePost:post withRemotePost:remotePost inContext:context];
         [posts addObject:post];
     }
     
@@ -691,7 +692,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         request.predicate = predicate;
         
         NSError *error;
-        NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:&error];
+        NSArray *existingPosts = [context executeFetchRequest:request error:&error];
         if (error) {
             DDLogError(@"Error fetching existing posts for purging: %@", error);
         } else {
@@ -701,7 +702,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             [postsToDelete minusSet:postsToKeep];
             for (AbstractPost *post in postsToDelete) {
                 DDLogInfo(@"Deleting Post: %@", post);
-                [self.managedObjectContext deleteObject:post];
+                [context deleteObject:post];
             }
         }
     }
