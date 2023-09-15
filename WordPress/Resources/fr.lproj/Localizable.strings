@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 15:54:25+0000 */
+/* Translation-Revision-Date: 2023-09-13 14:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: fr */
@@ -549,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Ajouter un sujet";
 
 /* No comment provided by engineer. */
+"Add audio" = "Ajouter un fichier audio";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Ajouter des blocs";
 
 /* No comment provided by engineer. */
@@ -556,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Ajouter une description";
+
+/* No comment provided by engineer. */
+"Add image" = "Ajouter une image";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Ajouter une image ou une vidéo";
@@ -617,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Ajouter un titre";
+
+/* No comment provided by engineer. */
+"Add video" = "Ajouter une vidéo";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Ajout des fonctionnalités du site";
@@ -1519,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Choisir un domaine";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Choisir un fichier";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Choisir une nouvelle icône d’application";
@@ -10533,6 +10545,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Le contenu des cartes peut varier en fonction de l’activité de votre site. D’autres cartes et commandes sont en cours d’élaboration.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Afficher ou masquer des cartes";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Activité récente";

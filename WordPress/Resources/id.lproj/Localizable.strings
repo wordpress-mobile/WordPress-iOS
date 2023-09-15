@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: id */
@@ -547,6 +547,9 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Tambahkan topik yang mana saja";
+
+/* No comment provided by engineer. */
+"Add audio" = "Tambahkan audio";
 
 /* No comment provided by engineer. */
 "Add blocks" = "Tambah blok";
@@ -1519,6 +1522,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Pilih domain";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Pilih berkas";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Pilih ikon aplikasi baru";
@@ -10539,6 +10545,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Kartu bisa saja menampilkan konten yang berbeda, tergantung pada apa yang terjadi di situs Anda. Kami terus mengembangkan fitur kartu dan kontrol.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Tampilkan atau sembunyikan kartu";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Aktivitas terbaru";

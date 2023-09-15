@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 15:54:26+0000 */
+/* Translation-Revision-Date: 2023-09-14 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: he_IL */
@@ -549,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "להוסיף נושא כלשהו";
 
 /* No comment provided by engineer. */
+"Add audio" = "להוסיף אודיו";
+
+/* No comment provided by engineer. */
 "Add blocks" = "להוסיף בלוקים";
 
 /* No comment provided by engineer. */
@@ -556,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "להוסיף תיאור";
+
+/* No comment provided by engineer. */
+"Add image" = "להוסיף תמונה";
 
 /* No comment provided by engineer. */
 "Add image or video" = "להוסיף תמונה או וידאו";
@@ -617,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "הוספת כותרת";
+
+/* No comment provided by engineer. */
+"Add video" = "להוסיף וידאו";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "מוסיף תכונות אתר";
@@ -1519,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "לבחור דומיין";
+
+/* No comment provided by engineer. */
+"Choose a file" = "לבחור קובץ";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "לבחור סמל חדש לאפליקציה";

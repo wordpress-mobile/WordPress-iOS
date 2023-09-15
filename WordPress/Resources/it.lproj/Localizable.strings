@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 11:54:07+0000 */
+/* Translation-Revision-Date: 2023-09-13 10:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: it */
@@ -549,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Aggiungi qualsiasi argomento";
 
 /* No comment provided by engineer. */
+"Add audio" = "Aggiungi audio";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Aggiungi blocchi";
 
 /* No comment provided by engineer. */
@@ -556,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Aggiungi descrizione";
+
+/* No comment provided by engineer. */
+"Add image" = "Aggiungi immagine";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Aggiungi immagine o video";
@@ -617,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Aggiungi un titolo";
+
+/* No comment provided by engineer. */
+"Add video" = "Aggiungi video";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Aggiunta delle funzionalità del sito";
@@ -1519,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Scegli un dominio";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Scegli un file";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Scegli una nuova icona dell'app";

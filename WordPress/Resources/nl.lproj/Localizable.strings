@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 15:54:27+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:54:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: nl */
@@ -546,6 +546,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Voeg elk onderwerp toe";
 
 /* No comment provided by engineer. */
+"Add audio" = "Audio toevoegen";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Voeg blokken toe";
 
 /* No comment provided by engineer. */
@@ -553,6 +556,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Beschrijving toevoegen";
+
+/* No comment provided by engineer. */
+"Add image" = "Afbeelding toevoegen";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Afbeelding of video toevoegen";
@@ -614,6 +620,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Voeg titel toe";
+
+/* No comment provided by engineer. */
+"Add video" = "Video toevoegen";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Sitefuncties toevoegen";
@@ -1516,6 +1525,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Kies een domein";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Kies een bestand";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Kies een nieuw app pictogram";

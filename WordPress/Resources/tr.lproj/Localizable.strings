@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 15:54:27+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: tr */
@@ -549,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Herhangi bir konu ekle";
 
 /* No comment provided by engineer. */
+"Add audio" = "Ses ekle";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Blok ekle";
 
 /* No comment provided by engineer. */
@@ -556,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Açıklama ekle";
+
+/* No comment provided by engineer. */
+"Add image" = "Görsel ekle";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Görsel veya video ekle.";
@@ -617,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Başlık ekle";
+
+/* No comment provided by engineer. */
+"Add video" = "Video ekle";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Site özellikleri ekleme";
@@ -1519,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Alan adı seç";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Dosya seç";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Yeni bir uygulama simgesi seçin";
@@ -10539,6 +10551,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Web sitenizde olanlara göre kartlar farklı içerik gösterebilir. Daha fazla kart ve kontrol üzerinde çalışıyoruz.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Kartları göster veya gizle";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Son etkinlik";

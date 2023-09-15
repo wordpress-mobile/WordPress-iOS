@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-12 12:23:50+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:08:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: es */
@@ -10551,6 +10551,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Las tarjetas pueden mostrar contenidos diferentes en función de lo que ocurra en tu sitio. Estamos trabajando en más tarjetas y controles.";
+
+/* Section header */
+"personalizeHome.cardsSectionHeader" = "Mostrar u ocultar tarjetas";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Actividad reciente";
