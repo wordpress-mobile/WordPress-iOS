@@ -196,7 +196,7 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
             showBlogDetailsForMainBlogOrNoSites()
         }
 
-        setupNavBarAppearance()
+        configureNavBarAppearance(animated: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -222,8 +222,6 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
 
         trackNoSitesVisibleIfNeeded()
-
-        setupNavBarAppearance()
 
         createFABIfNeeded()
         fetchPrompt(for: blog)
@@ -410,8 +408,12 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }
 
-    private func setupNavBarAppearance() {
-        navigationController?.setNavigationBarHidden(true, animated: false)
+    private func configureNavBarAppearance(animated: Bool) {
+        if scrollView.contentOffset.y >= 60 {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        } else {
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
     }
 
     private func resetNavBarAppearance() {
@@ -419,11 +421,7 @@ class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewD
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= 60 {
-            navigationController?.setNavigationBarHidden(false, animated: true)
-        } else {
-            navigationController?.setNavigationBarHidden(true, animated: true)
-        }
+        configureNavBarAppearance(animated: true)
     }
 
     // MARK: - Account
