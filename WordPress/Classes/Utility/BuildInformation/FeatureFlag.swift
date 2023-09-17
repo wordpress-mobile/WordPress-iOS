@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case bloggingPrompts
     case jetpackDisconnect
     case debugMenu
-    case lockScreenWidget
     case siteIconCreator
     case statsNewInsights
     case betaSiteDesigns
@@ -31,8 +30,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .lockScreenWidget:
-            return false
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .statsNewInsights:
@@ -83,8 +80,6 @@ extension FeatureFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
-        case .lockScreenWidget:
-            return "iOS 16 Widget in Lock Screen"
         case .siteIconCreator:
             return "Site Icon Creator"
         case .statsNewInsights:
@@ -120,8 +115,6 @@ extension FeatureFlag: OverridableFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .lockScreenWidget:
             return false
         default:
             return true

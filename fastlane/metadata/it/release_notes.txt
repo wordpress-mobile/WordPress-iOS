@@ -1,0 +1,12 @@
+Abbiamo aggiunto il selettore dei contenuti multimediali locali preferiti da tutti gli utenti, che riconoscerai dall'app Apple Foto. Filtra per tipi di elementi multimediali e cerca album e foto, indipendentemente dalla quantità. È una buona notizia per le tue 3.591 foto di gatti.
+
+Abbiamo spostato il pulsante "Io" dall'angolo in alto e abbiamo apportato alcune piccole modifiche al design. Il blocco Link social include anche uno schema che ti permette di vedere quando è selezionato.
+
+Abbiamo rimosso la scorciatoia "Nuovo articolo fotografico" nell'app per creare un menu più breve e chiaro. Addio.
+
+Infine, abbiamo rimosso alcuni bug.
+
+- Ora puoi scattare una foto direttamente dall'app e caricarla sul tuo sito, anche se non hai consentito all'app di accedere alle tue foto.
+- Ora gli errori vengono elaborati e visualizzati correttamente quando si verificano problemi durante il caricamento di elementi multimediali.
+- L'elenco delle pagine non dovrebbe più arrestarsi se il token di autenticazione non è valido.
+- Quando lavori nell'editor a blocchi, l'app non dovrebbe più arrestarsi quando trasformi un blocco Colonne nidificato in un blocco Gruppo.

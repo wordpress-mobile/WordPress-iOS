@@ -24,16 +24,18 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (StatsWidgetEntry) -> Void) {
-
-        let content = widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) ?? placeholderContent
-        completion(.siteSelected(content, context))
+        switch widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) {
+        case .success(let widgetData):
+            completion(.siteSelected(widgetData, context))
+        case .failure:
+            completion(.siteSelected(placeholderContent, context))
+        }
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
         switch widgetDataLoader.widgetData(
             for: configuration,
-            defaultSiteID: defaultSiteID,
-            isJetpack: AppConfiguration.isJetpack
+            defaultSiteID: defaultSiteID
         ) {
         case .success(let widgetData):
             let date = Date()

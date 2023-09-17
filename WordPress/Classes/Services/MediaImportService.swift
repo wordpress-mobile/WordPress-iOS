@@ -318,7 +318,8 @@ class MediaImportService: NSObject {
     ///       using `absoluteThumbnailLocalURL`.
     func exportPlaceholderThumbnail(for media: Media, completion: ((URL?) -> Void)?) {
         let thumbnailService = MediaThumbnailService(coreDataStack: coreDataStack)
-        thumbnailService.thumbnailURL(forMedia: media, preferredSize: .zero) { url in
+        let targetSize: CGSize = FeatureFlag.mediaModernization.enabled ? MediaImageService.preferredThumbnailPointSize : .zero
+        thumbnailService.thumbnailURL(forMedia: media, preferredSize: targetSize) { url in
             self.coreDataStack.performAndSave({ context in
                 let mediaInContext = try context.existingObject(with: media.objectID) as! Media
                 // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.

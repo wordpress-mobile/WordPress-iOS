@@ -1,7 +1,7 @@
 {
   "scenarioName": "reader_like_post_flow",
   "requiredScenarioState": "post_liked",
-  "newScenarioState": "list_updated",
+  "newScenarioState": "new_likes_list",
   "request": {
     "method": "GET",
     "urlPath": "/rest/v1.2/read/liked",

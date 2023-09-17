@@ -12,7 +12,11 @@ gem 'fastlane', '~> 2.174'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
-# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'trunk'
+#
+# Switch to this branch for auto-retry on 429 for GlotPress strings while
+# waiting for the fix to be shipped.
+# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'mokagio/auto-retry-on-strings-glotpress-429'
+#
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.0'
 gem 'rake'
 gem 'rubocop', '~> 1.30'

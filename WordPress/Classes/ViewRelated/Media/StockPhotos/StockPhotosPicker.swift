@@ -43,7 +43,8 @@ final class StockPhotosPicker: NSObject {
         return options
     }()
 
-    func presentPicker(origin: UIViewController, blog: Blog) {
+    @discardableResult
+    func presentPicker(origin: UIViewController, blog: Blog) -> UIViewController {
         NoResultsStockPhotosConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
@@ -63,6 +64,8 @@ final class StockPhotosPicker: NSObject {
 
         observeDataSource()
         trackAccess()
+
+        return picker
     }
 
     private func observeDataSource() {

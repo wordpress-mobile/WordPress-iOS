@@ -9,4 +9,8 @@ final class HomeWidgetDataFileReader: WidgetDataCacheReader {
 
         return T.read()?[siteID]
     }
+
+    func widgetData<T: HomeWidgetData>() -> [T]? {
+        return T.read()?.map { $0.value }
+    }
 }
