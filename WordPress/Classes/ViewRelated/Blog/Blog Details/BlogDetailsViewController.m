@@ -1100,7 +1100,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     // Stats row
-    if ([self.blog supports:BlogFeatureStats]) {
+    if ([self.blog isViewingStatsAllowed]) {
         [rows addObject:[self statsRow]];
     }
 
@@ -1217,7 +1217,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     
-    if ([self.blog supports:BlogFeatureStats]) {
+    if ([self.blog isViewingStatsAllowed]) {
         [rows addObject:[self statsRow]];
     }
 
@@ -1259,7 +1259,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     
-    if ([self.blog supports:BlogFeatureStats]) {
+    if ([self.blog isViewingStatsAllowed]) {
         [rows addObject:[self statsRow]];
     }
 

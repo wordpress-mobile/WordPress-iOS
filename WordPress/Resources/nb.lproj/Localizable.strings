@@ -269,19 +269,7 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "AKTIV";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "LEGG TIL LYD";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "Legg til blokk her";
-
-/* No comment provided by engineer. */
-"ADD IMAGE" = "LEGG TIL BILDE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "LEGG TIL BILDE ELLER VIDEO";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "LEGG TIL VIDEO";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";

@@ -343,6 +343,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func configure(for blog: Blog) {
         showSitePicker(for: blog)
         updateNavigationTitle(for: blog)
+
         let section = getSection(for: blog)
         self.currentSection = section
         switch section {
@@ -350,6 +351,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             hideDashboard()
             showBlogDetails(for: blog)
         case .dashboard:
+            // It has to be allocated, otherwise deep links are not going to work
+            showBlogDetails(for: blog)
+
             hideBlogDetails()
             showDashboard(for: blog)
         }

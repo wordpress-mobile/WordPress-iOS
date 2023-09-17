@@ -401,22 +401,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ATIVO";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADICIONAR ÁUDIO";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "ADICIONAR BLOCO AQUI";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "Adicionar imagem";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "Adicionar imagem ou vídeo";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "ADICIONAR MÍDIA";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "Adicionar vídeo";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Endereço";
@@ -1253,9 +1241,6 @@ translators: Block name. %s: The localized block name */
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Ao cadastrar-se, você concorda com os nossos _Termos de serviço_.";
-
-/* No comment provided by engineer. */
-"CHOOSE A FILE" = "Escolha um arquivo";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "Personalizar";
@@ -10194,9 +10179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Os cartões podem mostrar conteúdo diferente dependendo do que está acontecendo em seu site. Estamos trabalhando em mais cartões e controles.";
-
-/* Section header */
-"personalizeHome.cardsSectionHeader" = "Adicionar ou ocultar cartões";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Atividade recente";

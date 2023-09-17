@@ -1,0 +1,12 @@
+We hebben iedereens favoriete eigen mediazoeker toegevoegd, die je zag herkennen van je Apple Photo's-app. Filter op verschillende typen media en zoek albums en foto's, ongeacht hoeveel het er zijn. Dat is goed nieuws voor je 3591 kattenfoto's.
+
+We hebben de knop 'Ik' verplaatst vanaf de bovenste hoek en wat kleine aanpassingen gedaan aan het ontwerp. Het blok Social Link heeft nu ook een omranding, zodat je kan zien wanneer het is geselecteerd.
+
+We hebben de snelkoppeling 'Nieuw fotobericht' in de app verwijderd om een kleiner en duidelijker menu te maken. Doei!
+
+Tot slot hebben we een paar bugs geplet.
+
+- Je kan nu een foto maken in de app en deze uploaden naar je site, zelfs als je de app niet volledige toegang tot je foto's hebt gegeven.
+- Fouten worden nu verwerkt en goed weergegeven als je problemen hebt bij het uploaden van media.
+- De lijst Pagina's crasht niet meer als je authenticatietoken ongeldig is.
+- Als je in de blokeditor werkt, crasht de app niet langer als je een genest kolommenblok omzet in een groepenblok.

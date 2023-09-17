@@ -8,10 +8,6 @@ public class BlockEditorScreen: ScreenObject {
         $0.buttons["add-block-button"]
     }
 
-    private let applyButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Apply"]
-    }
-
     private let chooseFromDeviceButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Choose from device"]
     }
@@ -93,7 +89,6 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
-    var applyButton: XCUIElement { applyButtonGetter(app) }
     var chooseFromDeviceButton: XCUIElement { chooseFromDeviceButtonGetter(app) }
     var closeButton: XCUIElement { closeButtonGetter(app) }
     var discardButton: XCUIElement { discardButtonGetter(app) }
@@ -192,7 +187,17 @@ public class BlockEditorScreen: ScreenObject {
         addBlock(blockType)
         insertFromUrlButton.tap()
         app.textFields.element.typeText(UrlPath)
-        applyButton.tap()
+        // to dismiss media block URL prompt
+        tapTopOfScreen()
+    }
+
+    // Can be removed once `testAddMediaBlocks()` test is fixed on iPhone
+    @discardableResult
+    public func verifyImageBlockDisplayed() -> Self {
+        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
+        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.waitForExistence(timeout: 5))
+
+        return self
     }
 
     @discardableResult

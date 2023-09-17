@@ -42,7 +42,7 @@ platform :ios do
       release_notes_file_path: release_notes_source_path,
       extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
     )
-    ios_update_release_notes(new_version: new_version)
+    ios_update_release_notes(new_version:)
 
     if prompt_for_confirmation(
       message: 'Ready to push changes to remote to let the automation configure it on GitHub?',
@@ -190,8 +190,8 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    branch = compute_release_branch_name(options: options)
-    trigger_buildkite_release_build(branch: branch, beta: true)
+    branch = compute_release_branch_name(options:)
+    trigger_buildkite_release_build(branch:, beta: true)
   end
 
   # Triggers a stable release build on CI
@@ -199,8 +199,8 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    branch = compute_release_branch_name(options: options)
-    trigger_buildkite_release_build(branch: branch, beta: false)
+    branch = compute_release_branch_name(options:)
+    trigger_buildkite_release_build(branch:, beta: false)
   end
 end
 
@@ -217,7 +217,7 @@ def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
     buildkite_organization: 'automattic',
     buildkite_pipeline: 'wordpress-ios',
-    branch: branch,
+    branch:,
     environment: { BETA_RELEASE: beta },
     pipeline_file: 'release-builds.yml',
     message: beta ? 'Beta Builds' : 'Release Builds'
