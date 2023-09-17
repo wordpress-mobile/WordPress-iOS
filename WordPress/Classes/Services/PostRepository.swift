@@ -63,7 +63,7 @@ final class PostRepository {
         }
     }
 
-    /// Permanently delete the given post from local database and the post's WrodPress site.
+    /// Permanently delete the given post from local database and the post's WordPress site.
     ///
     /// - Parameter postID: Object ID of the post
     func delete<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
@@ -103,7 +103,7 @@ final class PostRepository {
         }
     }
 
-    /// Move the given post to the trash bin. The post will not be deleted from local database, unless it's delete on it's WordPress site.
+    /// Move the given post to the trash bin. The post will not be deleted from local database, unless it's delete on its WordPress site.
     ///
     /// - Parameter postID: Object ID of the post
     func trash<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
