@@ -71,12 +71,9 @@ class SafariTests: XCTestCase {
         //     This is usually the case in CI where we use a fresh Simulator, but might not be on a dev machine.
         //     Given this is only an experiment, I skipped handling "dirty" dev machine states.
 
-        let addressBarButton = safari.buttons["Address"]
-        XCTAssertTrue(addressBarButton.waitForExistence(timeout: 5))
-        addressBarButton.tap()
-
         let addressBar = safari.textFields["Address"]
         XCTAssertTrue(addressBar.waitForExistence(timeout: 5))
+        addressBar.tap()
         addressBar.typeText("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
         addressBar.typeText("\n")
 

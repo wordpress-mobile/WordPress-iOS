@@ -24,34 +24,32 @@ class TestObserver: NSObject, XCTestObservation {
     }
 
     func disableAutoFillPasswords() -> Bool {
-        return true
+        let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        // Terminating Settings in case of a retry.
+        settings.terminate()
+        settings.activate()
 
-//        let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
-//        // Terminating Settings in case of a retry.
-//        settings.terminate()
-//        settings.activate()
-//
-//        let passwordsMenuItem = settings.staticTexts["Passwords"]
-//        guard passwordsMenuItem.waitForIsHittable() else { return false }
-//        passwordsMenuItem.tap()
-//
-//        let enterPasscodeScreen = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-//        let passwordField = enterPasscodeScreen.secureTextFields["Passcode field"]
-//        guard passwordField.waitForIsHittable() else { return false }
-//        passwordField.typeText(" \r")
-//
-//        let passwordOptions = settings.staticTexts["Password Options"]
-//        guard passwordOptions.waitForIsHittable() else { return false }
-//        passwordOptions.tap()
-//
-//        let autoFillPasswordsSwitch = settings.switches["AutoFill Passwords"]
-//        guard autoFillPasswordsSwitch.waitForIsHittable() else { return false }
-//
-//        if autoFillPasswordsSwitch.value as? String == "1" {
-//            autoFillPasswordsSwitch.tap()
-//        }
-//
-//        settings.terminate()
-//        return true
+        let passwordsMenuItem = settings.staticTexts["Passwords"]
+        guard passwordsMenuItem.waitForIsHittable() else { return false }
+        passwordsMenuItem.tap()
+
+        let enterPasscodeScreen = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let passwordField = enterPasscodeScreen.secureTextFields["Passcode field"]
+        guard passwordField.waitForIsHittable() else { return false }
+        passwordField.typeText(" \r")
+
+        let passwordOptions = settings.staticTexts["Password Options"]
+        guard passwordOptions.waitForIsHittable() else { return false }
+        passwordOptions.tap()
+
+        let autoFillPasswordsSwitch = settings.switches["AutoFill Passwords"]
+        guard autoFillPasswordsSwitch.waitForIsHittable() else { return false }
+
+        if autoFillPasswordsSwitch.value as? String == "1" {
+            autoFillPasswordsSwitch.tap()
+        }
+
+        settings.terminate()
+        return true
     }
 }
