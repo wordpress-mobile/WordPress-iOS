@@ -86,13 +86,13 @@ Note that due to the mock server setup, tests cannot be run on physical devices 
 When adding a new UI test, consider:
 
 * Whether to test a user flow (to accomplish a task or goal) or a specific feature (e.g. boundary testing).
-* What screens are being tested (defined as screen objects in [.../Screens](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITestsFoundation/Screens)).
-* Whether there are repeated flows across tests (defined in [.../Flows](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Flows)).
-* What network requests are made during the test (defined in [.../API-Mocks](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/API-Mocks)).
+* What screens are being tested (defined as screen objects in [Screens](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITestsFoundation/Screens)).
+* Whether there are repeated flows across tests (defined in [Flows](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Flows)).
+* What network requests are made during the test (defined in [API-Mocks](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/API-Mocks)).
 
-Tests classes are grouped together in [.../Tests](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Tests)
+Tests classes are grouped together in [Tests](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Tests)
 
-When you add a new test, you may need to add new screens, methods, and flows. We use page objects and method chaining for clarity in our tests. Wherever possible, use an existing `accessibilityIdentifier` (or add one to the app) instead of a string to select a UI element on the screen. This ensures tests can be run regardless of the device language.j
+When you add a new test, you may need to add new screens, methods, and flows. We use page objects and method chaining for clarity in our tests. Wherever possible, use an existing `accessibilityIdentifier` (or add one to the app) instead of a string to select a UI element on the screen. This ensures tests can be run regardless of the device language.
 
 ## Naming convention
 
