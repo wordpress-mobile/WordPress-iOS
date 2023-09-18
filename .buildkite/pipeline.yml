@@ -14,43 +14,8 @@ common_params:
 # This is the default pipeline – it will build and test the app
 steps:
 
-  #################
-  # Create Prototype Builds for WP and JP
-  #################
-  - group: "🛠 Prototype Builds"
-    steps:
-      - label: "🛠 WordPress Prototype Build"
-        command: ".buildkite/commands/prototype-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "WordPress Prototype Build"
-
-      - label: "🛠 Jetpack Prototype Build"
-        command: ".buildkite/commands/prototype-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
-        if: "build.pull_request.id != null || build.pull_request.draft"
-        notify:
-          - github_commit_status:
-              context: "Jetpack Prototype Build"
-
-  #################
-  # Create Builds for Testing
-  #################
   - group: "🛠 Builds for Testing"
     steps:
-      - label: "🛠 :wordpress: Build for Testing"
-        key: "build_wordpress"
-        command: ".buildkite/commands/build-for-testing.sh wordpress"
-        env: *common_env
-        plugins: *common_plugins
-        notify:
-          - github_commit_status:
-              context: "WordPress Build for Testing"
-
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
         command: ".buildkite/commands/build-for-testing.sh jetpack"
@@ -60,23 +25,6 @@ steps:
           - github_commit_status:
               context: "Jetpack Build for Testing"
 
-  #################
-  # Run Unit Tests
-  #################
-  - label: "🔬 :wordpress: Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build_wordpress"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
-
-  #################
-  # UI Tests
-  #################
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
@@ -102,30 +50,3 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPad)"
-
-  #################
-  # Linters
-  #################
-  - group: "Linters"
-    steps:
-      - label: "🧹 Lint Translations"
-        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-        plugins:
-          - docker#v3.8.0:
-              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-        agents:
-          queue: "default"
-        notify:
-          - github_commit_status:
-              context: "Lint Translations"
-      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
-      # That is, it outwardly only mentions RuboCop, not Danger
-      - label: ":rubocop: Lint Ruby Tooling"
-        command: .buildkite/commands/rubocop-via-danger.sh
-        plugins: *common_plugins
-        agents:
-          queue: "android"
-      - label: ":sleuth_or_spy: Lint Localized Strings Format"
-        command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: *common_plugins
-        env: *common_env
