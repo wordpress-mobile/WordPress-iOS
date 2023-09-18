@@ -32,6 +32,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         self.blog = blog
         self.mediaPickerController = MediaPickerController(blog: blog, coordinator: coordinator)
         super.init(nibName: nil, bundle: nil)
+        self.hidesBottomBarWhenPushed = true
     }
 
     required init?(coder: NSCoder) {
@@ -45,7 +46,6 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
         title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
-        hidesBottomBarWhenPushed = true
 
         configureCollectionView()
         refreshNavigationItems()
@@ -97,7 +97,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         }
 
         if isEditing {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(buttonDoneTapped))
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
             rightBarButtonItems.append(doneButton)
         } else {
             let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
