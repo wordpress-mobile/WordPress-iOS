@@ -389,9 +389,6 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "A file contains a malicious code pattern";
 
-/* Subtitle of the Site Name screen. */
-"A good name is short and memorable.\nYou can change it later." = "A good name is short and memorable.\nYou can change it later.";
-
 /* Age between dates equaling one month. */
 "a month" = "a month";
 
@@ -1355,6 +1352,12 @@
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Dismiss";
 
+/* Context menu button title */
+"blogHeader.actionCopyURL" = "Copy URL";
+
+/* Context menu button title */
+"blogHeader.actionOpenInBrowser" = "Open in Browser";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Bold";
@@ -2105,8 +2108,7 @@ Example: Reply to Pamela Nguyen */
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen.
-   Title of the Continue button in the Site Name screen. */
+   Title of the continue button for the Site Intent screen. */
 "Continue" = "Continue";
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
@@ -2484,6 +2486,24 @@ Example: Reply to Pamela Nguyen */
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "You’re out of shares!";
 
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Comments";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Media";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "More";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Pages";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Posts";
+
+/* Title for stats button on dashboard. */
+"dashboard.menu.stats" = "Stats";
+
 /* Title for the Activity Log dashboard card context menu item that navigates the user to the full Activity Logs screen. */
 "dashboardCard.ActivityLog.contextMenu.allActivity" = "All activity";
 
@@ -2581,6 +2601,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Remote Config";
+
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "Remove Current Tour";
 
 /* Only December needs to be translated */
 "December 17, 2017" = "December 17, 2017";
@@ -3834,15 +3857,8 @@ Example: Reply to Pamela Nguyen */
 /* Cancel */
 "Give Up" = "Give Up";
 
-/* Title of the Site Name screen. Takes the vertical name as a parameter. */
-"Give your %@ website a name" = "Give your %@ website a name";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
-
-/* Default title of the Site Name screen.
-   Title for Site Name screen in iPhone landscape. */
-"Give your website a name" = "Give your website a name";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -4239,10 +4255,6 @@ Example: Reply to Pamela Nguyen */
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Information on WordPress.com courses and events (online & in-person).";
-
-/* The title of the app initial screen settings screen
-   Title of the option to change the default initial screen */
-"Initial Screen" = "Initial Screen";
 
 /* Placeholder for the restore progress title. */
 "Initializing the restore process" = "Initializing the restore process";
@@ -5214,8 +5226,7 @@ Please install the %3$@ to use the app with this site.";
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
-/* Noun. Title for media button.
-   Noun. Title. Links to the blog's Media library.
+/* Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
    The menu item to select during a guided tour.
    Title for Media Library section of the app.
@@ -5268,6 +5279,9 @@ Please install the %3$@ to use the app with this site.";
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media Uploads";
 
+/* Title of error prompt shown when a sync fails. */
+"media.syncFailed" = "Unable to sync media";
+
 /* Media screen navigation title */
 "media.title" = "Media";
 
@@ -5283,8 +5297,14 @@ Please install the %3$@ to use the app with this site.";
 /* Verb. User action to dismiss error alert when failing to load media item. */
 "mediaItemTable.errorAlert.dismissButton" = "Dismiss";
 
+/* User action to delete un-uploaded media. */
+"mediaLibrary.retryOptionsAlert.delete" = "Delete";
+
 /* Verb. Button title. Tapping dismisses a prompt. */
 "mediaLibrary.retryOptionsAlert.dismissButton" = "Dismiss";
+
+/* User action to retry media upload. */
+"mediaLibrary.retryOptionsAlert.retry" = "Retry Upload";
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
@@ -5298,11 +5318,20 @@ Please install the %3$@ to use the app with this site.";
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Open Settings";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Free GIF Library";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Choose from Media";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Other Files";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "Choose from Device";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Free Photo Library";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Take Photo";
@@ -5320,7 +5349,6 @@ Please install the %3$@ to use the app with this site.";
 "Mention" = "Mention";
 
 /* The default text used for filling the name of a menu when creating it.
-   The segmented control item to select during a guided tour.
    Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
@@ -5629,8 +5657,7 @@ Please install the %3$@ to use the app with this site.";
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder
-   Shortened version of the main title to be used in back navigation. */
+   Name text field placeholder */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -6335,8 +6362,7 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Page updated";
 
-/* Noun. Title for pages button.
-   Noun. Title. Links to the blog's Pages screen.
+/* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
@@ -6457,6 +6483,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Today's stats";
+
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Show or hide shortcuts";
 
 /* Page title */
 "personalizeHome.title" = "Personalize Home Tab";
@@ -6745,7 +6774,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
@@ -7070,6 +7098,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Quick Start";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "More";
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Rate Us";
@@ -8032,7 +8063,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Noun. Name of the Social Sharing feature
    Noun. Title. Links to a blog's sharing options.
-   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Sharing";
 
@@ -8229,9 +8259,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
 
-/* Label for the blogging prompts setting */
-"sitesettings.prompts.title" = "Show prompts";
-
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";
 
@@ -8264,8 +8291,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
-   Continue without making a selection.
-   Title for the Skip button in the Site Name Screen. */
+   Continue without making a selection. */
 "Skip" = "Skip";
 
 /* Menu title to skip today's prompt. */
@@ -8288,6 +8314,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Follower Totals label for social media followers
    Label for social followers
+   The menu item to select during a guided tour.
    Title of Stats section that shows social followers. */
 "Social" = "Social";
 
@@ -8462,7 +8489,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
-   Noun. Title for stats button.
    Stats 3D Touch Shortcut
    Stats window title
    The item to select during a guided tour. */
@@ -8690,7 +8716,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.chatBot.contactSupport" = "Contact support";
 
 /* Initial message shown to the user when the chat starts. */
-"support.chatBot.firstMessage" = "What can we help you with?";
+"support.chatBot.firstMessage" = "Hi there, I'm the Jetpack AI Assistant.\\n\\nWhat can we help you with?\\n\\nIf I can't answer your question, I'll help you open a support ticket with our team!";
 
 /* Placeholder text for the chat input field. */
 "support.chatBot.inputPlaceholder" = "Send a message...";
@@ -10091,9 +10117,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Use Sandbox Store";
 
-/* No comment provided by engineer. */
-"Use this site" = "Use this site";
-
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader.";
 
@@ -10666,6 +10689,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Best views ever";
 
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Most Views";
+
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Unable to load all time stats.";
 
@@ -10684,6 +10710,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "Log in to WordPress to see all time stats.";
 
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "All-Time Posts & Most Views";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "All-Time Views";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "All-Time Views & Visitors";
+
 /* Title of the unconfigured view in all time widget */
 "widget.jetpack.alltime.unconfigured.view.title" = "Log in to Jetpack to see all time stats.";
 
@@ -10692,6 +10727,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Log in to Jetpack to see today's stats.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "All-Time Views";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Views Today";
 
 /* Title of the no data view in this week widget */
 "widget.thisweek.nodata.view.title" = "Unable to load this week's stats.";
@@ -10744,8 +10785,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Visitors";
 
-/* Nav bar button title to set the site used for Stats widgets. */
-"Widgets" = "Widgets";
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Today's Likes & Comments";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Today's Views";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Today's Views & Visitors";
 
 /* No comment provided by engineer. */
 "Width Settings" = "Width Settings";
@@ -10989,9 +11036,6 @@ from anywhere.";
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging";
-
-/* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today/Notification Center view." = "You can display a single site's stats in the iOS Today/Notification Center view.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
