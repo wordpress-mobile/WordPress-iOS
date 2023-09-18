@@ -47,6 +47,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
 
+        configureNavigationBar()
         configureCollectionView()
         refreshNavigationItems()
 
@@ -86,6 +87,14 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
         collectionView.refreshControl = refreshControl
 
         refreshControl.addTarget(self, action: #selector(syncMedia), for: .valueChanged)
+    }
+
+    private func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func refreshNavigationItems() {
