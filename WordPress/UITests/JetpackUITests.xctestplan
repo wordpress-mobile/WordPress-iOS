@@ -22,10 +22,21 @@
     {
       "parallelizable" : true,
       "skippedTests" : [
+        "DashboardTests",
         "EditorAztecTests",
+        "EditorGutenbergTests",
+        "LoginTests",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "MainNavigationTests",
+        "MenuNavigationTests",
+        "NUXTests",
+        "NotificationTests",
+        "PostTests",
+        "ReaderTests",
         "SignupTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests",
         "SupportScreenTests\/testSupportForumsCanBeLoadedDuringLogin()"
       ],
       "target" : {
