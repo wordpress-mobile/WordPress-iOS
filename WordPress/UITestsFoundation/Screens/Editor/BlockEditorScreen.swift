@@ -257,6 +257,7 @@ public class BlockEditorScreen: ScreenObject {
     public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
         try post(action: action)
         waitAndTap(noticeViewButton)
+
         return try EditorPublishEpilogueScreen()
     }
 
@@ -264,6 +265,7 @@ public class BlockEditorScreen: ScreenObject {
         let postButton = app.buttons[action.rawValue]
         let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
+
         // This loop to check for Publish/Schedule Now Button is an attempt to confirm that the postButton.tap() call took effect.
         // The tests would fail sometimes in the pipeline with no apparent reason.
         repeat {
@@ -271,7 +273,10 @@ public class BlockEditorScreen: ScreenObject {
             tries += 1
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
 
-        try confirmPost(button: postNowButton, action: action)
+        postNowButton.tap()
+        guard action == .publish else { return }
+
+        dismissBloggingRemindersAlertIfNeeded()
     }
 
     @discardableResult
@@ -403,12 +408,6 @@ public class BlockEditorScreen: ScreenObject {
         chooseFromDeviceButton.tap()
 
         return try PHPickerScreen()
-    }
-
-    private func confirmPost(button: XCUIElement, action: postAction) throws {
-        button.tap()
-        guard action == .publish else { return }
-        dismissBloggingRemindersAlertIfNeeded()
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {
