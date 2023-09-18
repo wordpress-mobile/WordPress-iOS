@@ -89,22 +89,25 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
     }
 
     private func refreshNavigationItems() {
-        var rightBarButtonItems: [UIBarButtonItem] = []
+        navigationItem.hidesBackButton = isEditing
 
-        if !isEditing, blog.userCanUploadMedia {
-            configureAddMediaButton()
-            rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
-        }
+        navigationItem.rightBarButtonItems = {
+            var rightBarButtonItems: [UIBarButtonItem] = []
 
-        if isEditing {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
-            rightBarButtonItems.append(doneButton)
-        } else {
-            let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
-            rightBarButtonItems.append(selectButton)
-        }
+            if !isEditing, blog.userCanUploadMedia {
+                configureAddMediaButton()
+                rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+            }
 
-        navigationItem.rightBarButtonItems = rightBarButtonItems
+            if isEditing {
+                let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
+                rightBarButtonItems.append(doneButton)
+            } else {
+                let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+                rightBarButtonItems.append(selectButton)
+            }
+            return rightBarButtonItems
+        }()
     }
 
     private func configureAddMediaButton() {
