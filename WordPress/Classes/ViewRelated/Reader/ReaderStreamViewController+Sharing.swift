@@ -12,8 +12,7 @@ extension ReaderStreamViewController {
     /// Exposes the Share button if the currently selected Reader topic represents a site.
     ///
     func configureShareButtonIfNeeded() {
-        guard let _ = readerTopic as? ReaderSiteTopic,
-              !FeatureFlag.readerImprovements.enabled else {
+        guard let _ = readerTopic as? ReaderSiteTopic else {
             removeShareButton()
             return
         }
