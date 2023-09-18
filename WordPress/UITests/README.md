@@ -113,7 +113,11 @@ When you add a test (or when the app changes), the request definitions for WireM
 
 If you are unsure what network requests need to be mocked for a test, an easy way to find out is to run the app through [Proxyman](https://proxyman.io/) or [Charles Proxy](https://www.charlesproxy.com/) and observe the required requests.
 
-Currently, the project does not apply strict mock matching criteria, this means that if there are unmatched requests that are not being used by the test itself, the test should still work although errors like this can be seen in the logs:
+Currently, the project does not apply strict mock matching criteria, this means that if there are unmatched requests that are not being used by the test itself. The test should still work although errors like this can be seen in the logs:
+
+<img width="1000" alt="unmatched request" src="https://github.com/wordpress-mobile/WordPress-iOS/assets/17252150/2e6595b1-6fdd-4255-9721-90c278518d75">
+
+When adding a new test however, it is recommended that all requests are matched so that the logs are not further cluttered with `Request was not matched` like in the above screenshot.
 
 ## Using stateful behavior for mocks
 1. To add scenarios that use stateful behavior, do the following:
