@@ -90,11 +90,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 mediaInContext.error = customError;
-                
+
                 if (automatedRetry) {
                     [mediaInContext incrementAutoUploadFailureCount];
                 }
-                
+
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                     if (failure) {
                         failure(customError);
@@ -122,17 +122,17 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
-            
+
             if (!automatedRetry) {
                 [mediaInContext resetAutoUploadFailureCount];
             }
-            
+
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
-            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];            
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
@@ -186,7 +186,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     } else {
         remoteMedia = [self remoteMediaFromMedia:media];
     }
-    
+
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     NSManagedObjectID *mediaObjectID = media.objectID;
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
@@ -367,7 +367,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-    
+
     [remote deleteMedia:remoteMedia
                 success:successBlock
                 failure:failure];
@@ -416,6 +416,47 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     });
 }
 
+#pragma mark - Getting media
+
+- (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
+                success:(void (^)(Media *media))success
+                failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
+
+    [remote getMediaWithID:mediaID success:^(RemoteMedia *remoteMedia) {
+       [self.managedObjectContext performBlock:^{
+           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+           if (!blog) {
+               return;
+           }
+           Media *media = [Media existingMediaWithMediaID:remoteMedia.mediaID inBlog:blog];
+           if (!media) {
+               media = [Media makeMediaWithBlog:blog];
+           }
+           [MediaHelper updateMedia:media withRemoteMedia:remoteMedia];
+
+           [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+
+           if (success){
+               success(media);
+
+               if ([media hasChanges]) {
+                   NSCAssert(NO, @"The success callback should not modify the Media instance");
+                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+               }
+           }
+       }];
+    } failure:^(NSError *error) {
+        if (failure) {
+            [self.managedObjectContext performBlock:^{
+                failure(error);
+            }];
+        }
+    }];
+}
+
 - (void)getMetadataFromVideoPressID:(NSString *)videoPressID
                              inBlog:(Blog *)blog
                             success:(void (^)(RemoteVideoPressVideo *metadata))success
@@ -436,10 +477,10 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (void)syncMediaLibraryForBlog:(Blog *)blog
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
-{    
+{
     __block BOOL onePageLoad = NO;
     NSManagedObjectID *blogObjectID = [blog objectID];
-    
+
     /// Temporary logging to try and narrow down an issue:
     ///
     /// REF: https://github.com/wordpress-mobile/WordPress-iOS/issues/15335
@@ -448,16 +489,16 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         DDLogError(@"🔴 Error: missing object ID (please contact @diegoreymendez with this log)");
         DDLogError(@"%@", [NSThread callStackSymbols]);
     }
-    
+
     [self.managedObjectContext performBlock:^{
         NSError *error = nil;
         Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
-        
+
         if (!blogInContext) {
             failure(error);
             return;
         }
-        
+
         NSSet *originalLocalMedia = blogInContext.media;
         id<MediaServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote getMediaLibraryWithPageLoad:^(NSArray *media) {
@@ -523,7 +564,7 @@ deleteUnreferencedMedia:(BOOL)deleteUnreferencedMedia
         @autoreleasepool {
             Media *local = [Media existingMediaWithMediaID:remote.mediaID inBlog:blog];
             if (!local) {
-                local = [Media makeMediaWithBlog:blog];                
+                local = [Media makeMediaWithBlog:blog];
             }
             [MediaHelper updateMedia:local withRemoteMedia:remote];
             [mediaToKeep addObject:local];

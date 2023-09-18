@@ -45,9 +45,8 @@
     }
 
     if (!url && self.videopressGUID.length > 0 ){
-        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-        [mediaService getMetadataFromVideoPressID: self.videopressGUID inBlog:self.blog success:^(RemoteVideoPressVideo *metadata) {
+        id<MediaServiceRemote> mediaServiceRemote = [[MediaServiceRemoteFactory new] remoteForBlog:self.blog];
+        [mediaServiceRemote getMetadataFromVideoPressID:self.videopressGUID isSitePrivate:self.blog.isPrivate success:^(RemoteVideoPressVideo *metadata) {
             // Let see if can create an asset with this url
             NSURL *originalURL = metadata.originalURL;
             if (!originalURL) {
