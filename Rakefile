@@ -125,7 +125,7 @@ bundle exec fastlane run configure_apply force:true
       require 'yaml'
 
       deps = YAML.load_file('Podfile.lock')['DEPENDENCIES']
-      gbm_pod_regex = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}.freeze
+      gbm_pod_regex = %r{(.*) \(from `https://raw\.githubusercontent\.com/wordpress-mobile/gutenberg-mobile/.*/third-party-podspecs/.*\.podspec\.json`\)}
       gbm_pods = deps.map do |pod|
         gbm_pod_regex.match(pod)&.captures&.first
       end.compact

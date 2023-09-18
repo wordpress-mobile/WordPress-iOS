@@ -70,6 +70,8 @@ import Reachability
     /// sets an additional/alternate handler for the dismiss button that can be directly injected
     var dismissButtonHandler: (() -> Void)?
 
+    var buttonMenu: UIMenu?
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -362,6 +364,12 @@ private extension NoResultsViewController {
             actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
             actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
             actionButton.isHidden = false
+            if let buttonMenu {
+                actionButton.menu = buttonMenu
+                actionButton.showsMenuAsPrimaryAction = true
+            } else {
+                actionButton.showsMenuAsPrimaryAction = false
+            }
         } else {
             actionButton.isHidden = true
         }

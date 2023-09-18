@@ -35,24 +35,32 @@ class StatsWidgetsStore {
 
     /// Initialize the local cache for widgets, if it does not exist
     @objc func initializeStatsWidgetsIfNeeded() {
+        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
         UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        storeCredentials()
+
+        var isReloadRequired = false
 
         if !HomeWidgetTodayData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
-            WidgetCenter.shared.reloadTodayTimelines()
+            isReloadRequired = true
         }
 
         if !HomeWidgetThisWeekData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
             HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
-            WidgetCenter.shared.reloadThisWeekTimelines()
+            isReloadRequired = true
         }
 
         if !HomeWidgetAllTimeData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
             HomeWidgetAllTimeData.write(items: initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
-            WidgetCenter.shared.reloadAllTimeTimelines()
+            isReloadRequired = true
+        }
+
+        if isReloadRequired {
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 
@@ -273,9 +281,8 @@ private extension StatsWidgetsStore {
         HomeWidgetAllTimeData.delete()
 
         userDefaults?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
-        WidgetCenter.shared.reloadTodayTimelines()
-        WidgetCenter.shared.reloadThisWeekTimelines()
-        WidgetCenter.shared.reloadAllTimeTimelines()
+
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     /// Observes WPSigninDidFinishNotification and wordpressLoginFinishedJetpackLogin notifications and initializes the widget.
@@ -316,6 +323,24 @@ private extension StatsWidgetsStore {
     func observeSiteUpdatesForWidgets() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteDeleted, object: nil)
+    }
+}
+
+private extension StatsWidgetsStore {
+    func storeCredentials() {
+        guard let token = AccountHelper.authToken else { return }
+
+        do {
+            try SFHFKeychainUtils.storeUsername(
+                AppConfiguration.Widget.Stats.keychainTokenKey,
+                andPassword: token,
+                forServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
+            )
+        } catch {
+            DDLogDebug("Error while saving Widgets OAuth token: \(error)")
+        }
     }
 }
 

@@ -48,6 +48,7 @@ DocsBotAI.init = function (c) {
  */
 window.prepareDocsBotForPresentation = function () {
   var chatBotSelector = "#docsbotai-root";
+  var sendButtonSelector = ".docsbot-chat-btn-send";
 
   // Begin observation once chat bot is mounted
   onElementMounted(chatBotSelector, document, function (element) {
@@ -60,6 +61,16 @@ window.prepareDocsBotForPresentation = function () {
       linkElem.setAttribute("rel", "stylesheet");
       linkElem.setAttribute("href", "support_chat_widget.css");
       shadowRoot.appendChild(linkElem);
+
+      // Hide keyboard after sending the message to reveal the whole content
+      // https://github.com/wordpress-mobile/WordPress-iOS/issues/21549
+      onElementMounted(sendButtonSelector, shadowRoot, function (sendButton) {
+        sendButton.addEventListener("click", function () {
+          setTimeout(function () {
+            document.activeElement.blur();
+          }, 0);
+        });
+      });
     });
   });
 

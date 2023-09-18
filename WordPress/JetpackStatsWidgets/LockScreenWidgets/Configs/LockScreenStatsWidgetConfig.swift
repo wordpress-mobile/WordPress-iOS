@@ -11,3 +11,13 @@ protocol LockScreenStatsWidgetConfig {
     var placeholderContent: WidgetData { get }
     var viewProvider: ViewProvider { get }
 }
+
+extension LockScreenStatsWidgetConfig {
+    var supportFamilies: [WidgetFamily] {
+        if #available(iOSApplicationExtension 16.0, *) {
+            return [.accessoryRectangular]
+        } else {
+            return []
+        }
+    }
+}

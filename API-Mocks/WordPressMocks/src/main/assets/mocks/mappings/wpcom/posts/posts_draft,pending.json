@@ -1,4 +1,7 @@
 {
+  "scenarioName": "new_post_flow",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "initial_posts_list",
   "request": {
     "method": "GET",
     "urlPath": "/rest/v1.2/sites/106707880/posts",
@@ -13,7 +16,7 @@
         "equalTo": "autosave"
       },
       "number": {
-        "equalTo": "40"
+        "matches": "(.*)"
       },
       "status": {
         "equalTo": "draft,pending"
@@ -25,6 +28,7 @@
   },
   "response": {
     "status": 200,
+    "fixedDelayMilliseconds": 1000,
     "jsonBody": {
       "found": 7,
       "posts": [

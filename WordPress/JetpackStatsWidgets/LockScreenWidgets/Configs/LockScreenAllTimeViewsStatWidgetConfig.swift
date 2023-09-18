@@ -5,13 +5,6 @@ struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetAllTimeData
     typealias ViewProvider = LockScreenSingleStatWidgetViewProvider
 
-    var supportFamilies: [WidgetFamily] {
-        guard AppConfiguration.isJetpack, FeatureFlag.lockScreenWidget.enabled else {
-            return []
-        }
-        return [.accessoryRectangular]
-    }
-
     var displayName: String {
         LocalizableStrings.allTimeViewsWidgetPreviewTitle
     }

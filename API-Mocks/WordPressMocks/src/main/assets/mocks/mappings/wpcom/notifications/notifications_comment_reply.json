@@ -1,7 +1,7 @@
 {
   "scenarioName": "comment_flow",
-  "requiredScenarioState": "initial_list",
-  "newScenarioState": "replied",
+  "requiredScenarioState": "initial_comments_list",
+  "newScenarioState": "comment_replied",
   "request": {
     "method": "POST",
     "urlPath": "/rest/v1.1/sites/181977606/comments/2/replies/new",

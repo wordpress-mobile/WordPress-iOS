@@ -191,7 +191,7 @@ extension SupportChatBotViewController {
                                                         value: "Send a message...",
                                                         comment: "Placeholder text for the chat input field.")
         static let firstMessage = NSLocalizedString("support.chatBot.firstMessage",
-                                                    value: "What can we help you with?",
+                                                    value: "Hi there, I'm the Jetpack AI Assistant.\\n\\nWhat can we help you with?\\n\\nIf I can't answer your question, I'll help you open a support ticket with our team!",
                                                     comment: "Initial message shown to the user when the chat starts.")
         static let sources = NSLocalizedString("support.chatBot.sources",
                                                value: "Sources",

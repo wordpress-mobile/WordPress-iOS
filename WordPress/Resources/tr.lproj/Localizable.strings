@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-09-06 15:54:27+0000 */
+/* Translation-Revision-Date: 2023-09-13 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.7 */
 /* Language: tr */
@@ -404,22 +404,10 @@ translators: Block name. %s: The localized block name */
 "ACTIVE" = "ETKİN";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "SES EKLE";
-
-/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "BURAYA BLOK EKLE";
 
 /* No comment provided by engineer. */
-"ADD IMAGE" = "GÖRSEL EKLE";
-
-/* No comment provided by engineer. */
-"ADD IMAGE OR VIDEO" = "GÖRSEL VEYA VİDEO EKLE";
-
-/* No comment provided by engineer. */
 "ADD MEDIA" = "ORTAM EKLE";
-
-/* No comment provided by engineer. */
-"ADD VIDEO" = "VİDEO EKLE";
 
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRES";
@@ -561,6 +549,9 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Herhangi bir konu ekle";
 
 /* No comment provided by engineer. */
+"Add audio" = "Ses ekle";
+
+/* No comment provided by engineer. */
 "Add blocks" = "Blok ekle";
 
 /* No comment provided by engineer. */
@@ -568,6 +559,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add description" = "Açıklama ekle";
+
+/* No comment provided by engineer. */
+"Add image" = "Görsel ekle";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Görsel veya video ekle.";
@@ -629,6 +623,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Add title" = "Başlık ekle";
+
+/* No comment provided by engineer. */
+"Add video" = "Video ekle";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Site özellikleri ekleme";
@@ -1273,9 +1270,6 @@ translators: Block name. %s: The localized block name */
 "By signing up, you agree to our _Terms of Service_." = "Kaydolarak _hizmet koşullarını_ kabul etmiş olursunuz.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "DOSYA SEÇ";
-
-/* No comment provided by engineer. */
 "CUSTOMIZE" = "Özelleştir";
 
 /* Label for size of media while it's being calculated. */
@@ -1534,6 +1528,9 @@ translators: Block name. %s: The localized block name */
 
 /* Select domain name. Title */
 "Choose a domain" = "Alan adı seç";
+
+/* No comment provided by engineer. */
+"Choose a file" = "Dosya seç";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Yeni bir uygulama simgesi seçin";
@@ -10556,7 +10553,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.cardsSectionFooter" = "Web sitenizde olanlara göre kartlar farklı içerik gösterebilir. Daha fazla kart ve kontrol üzerinde çalışıyoruz.";
 
 /* Section header */
-"personalizeHome.cardsSectionHeader" = "Kart ekle veya gizle";
+"personalizeHome.cardsSectionHeader" = "Kartları göster veya gizle";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.activityLog" = "Son etkinlik";

@@ -1,23 +1,20 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/rest/v1.2/sites/106707880/posts",
+    "urlPath": "/rest/v1.2/sites/106707880/posts",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
       },
       "type": {
         "equalTo": "page"
-      },
-      "offset" : {
-        "absent" : true
-      }        
+      }
     }
   },
   "response": {
     "status": 200,
     "jsonBody": {
-      "found": 6,
+      "found": 3,
       "posts": [
         {
           "ID": 51,
