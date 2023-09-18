@@ -117,7 +117,7 @@ DEPENDENCIES:
   - MediaEditor (>= 1.2.2, ~> 1.2)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
-  - OCMock (~> 3.4.3)
+  - OCMock (~> 3.4)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - Reachability (= 3.2)
   - SDWebImage (~> 5.11.1)
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 6923d1ced869ffdb698231230e921bacec62ca10
+PODFILE CHECKSUM: ff013961e9c5df73aba2f55dc135b66dbafb584d
 
 COCOAPODS: 1.12.1
