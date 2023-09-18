@@ -47,7 +47,11 @@ extension ReaderStreamViewController {
         }
 
         if ReaderHelpers.isTopicSite(topic) && !isContentFiltered {
-            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
+            if FeatureFlag.readerImprovements.enabled {
+                return ReaderSiteHeaderView()
+            } else {
+                return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
+            }
         }
 
         return nil
