@@ -142,10 +142,4 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
                         success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
-
-- (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
-                            forMediaTypes:(nonnull NSSet *)mediaTypes
-                                  success:(nullable void (^)(NSInteger count))success
-                                  failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
 @end
