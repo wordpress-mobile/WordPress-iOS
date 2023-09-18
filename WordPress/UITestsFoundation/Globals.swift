@@ -47,6 +47,10 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10) {
         usleep(500000) // a 0.5 second delay before retrying
         retries += 1
     }
+
+    if retries == maxRetries {
+        XCTFail("Expected element (\(element)) was not hittable after \(maxRetries) tries.")
+    }
 }
 
 extension ScreenObject {
