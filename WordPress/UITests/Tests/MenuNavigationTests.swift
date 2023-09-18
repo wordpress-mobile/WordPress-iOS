@@ -17,8 +17,13 @@ final class MenuNavigationTests: XCTestCase {
 
     // This test is JP only.
     func testDomainsNavigation() throws {
-        try MySiteScreen()
-            .goToMoreMenu()
+        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
+        if XCUIDevice.isPhone {
+            try MySiteScreen()
+                .goToMoreMenu()
+        }
+
+        try MySiteMoreMenuScreen()
             .goToDomainsScreen()
             .assertScreenIsLoaded()
     }

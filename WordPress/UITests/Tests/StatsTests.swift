@@ -9,7 +9,14 @@ class StatsTests: XCTestCase {
 
         try LoginFlow
             .login(email: WPUITestCredentials.testWPcomUserEmail)
-            .goToMoreMenu()
+
+        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
+        if XCUIDevice.isPhone {
+            try MySiteScreen()
+                .goToMoreMenu()
+        }
+
+        try MySiteMoreMenuScreen()
             .goToStatsScreen()
             .switchTo(mode: "insights")
             .refreshStatsIfNeeded()
