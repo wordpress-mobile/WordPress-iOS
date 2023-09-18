@@ -1,16 +1,8 @@
-We’ve added a new chat-based support channel with a specially trained bot that provides answers to all your app-related questions. That’ll do, bot. That’ll do. (Still want to talk to a human? As always, you can create a support ticket and talk to a Happiness Engineer.)
+* [***] [Jetpack-only] Lock Screen Widgets are now available on Jetpack. Quickly view your site stats without unlocking your phone. [#21535]
+* [*] Block editor: Fix the obscurred "Insert from URL" input for media blocks when using a device in landscape orientation. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6143]
+* [**] Block editor: Updated placeholder text colors for block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6182]
+* [**] Update the main site navigation on the My Site screen, making it easier to access the common site sections. The new shortcuts can be modified using the Personalize Home Tab screen. [21502](https://github.com/wordpress-mobile/WordPress-iOS/pull/21502)
+* [**] [internal] Refactor fetching one single media item. [#21567]
+* [**] [internal] Refactored how the total number of WordPress Media is fetched. [#21568]
+* [**] [internal] Refactor fetching metadata of VideoPress videos. [#21569]
 
-We added everyone’s favorite native media picker, which you’ll recognize from your Apple Photos app. Filter by different media types and search for albums and photos, no matter how many there are. That’s good news for your 3,591 cat photos.
-
-You can now view, relocate, and remove the Jetpack Paywall block in the block editor.
-
-We moved the “Me” button to the bottom tab bar, which comes with a few small design tweaks. The Social Link block also includes an outline so you can see when it’s selected.
-
-We removed the “New Photo Post” shortcut in the app to create a shorter, clearer menu. So long, farewell.
-
-Finally, we squashed a few bugs.
-
-- You can now take a photo within the app and upload it to your site, even if you haven’t given the app full access to your photos.
-- Errors now process and display properly when you run into trouble while uploading media.
-- The Pages list shouldn’t crash anymore if your authentication token is invalid.
-- When you’re working in the block editor, the app should no longer crash when you transform a nested Columns block into a Group block.
