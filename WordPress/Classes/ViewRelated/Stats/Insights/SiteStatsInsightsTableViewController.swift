@@ -70,7 +70,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
 
-        if FeatureFlag.statsNewAppearance.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             tableView.cellLayoutMarginsFollowReadableWidth = true
         }
 
@@ -122,7 +122,7 @@ private extension SiteStatsInsightsTableViewController {
         addViewModelListeners()
         viewModel?.fetchInsights()
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             viewModel?.startFetchingPeriodOverview()
         }
     }
@@ -372,7 +372,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let postRepository = PostRepository(coreDataStack: coreDataStack)
         Task { @MainActor in
             do {
-                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(saved: blog))
+                let postObjectID = try await postRepository.getPost(withID: postID, from: .init(blog))
                 let apost = try coreDataStack.mainContext.existingObject(with: postObjectID)
 
                 guard let post = apost as? Post else {
@@ -427,7 +427,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             switch statSection {
             case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
                 segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)

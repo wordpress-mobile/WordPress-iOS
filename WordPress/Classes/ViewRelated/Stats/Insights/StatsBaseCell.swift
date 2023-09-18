@@ -72,7 +72,7 @@ class StatsBaseCell: UITableViewCell {
     }
 
     private func configureHeading(with topConstraint: NSLayoutConstraint) {
-        guard FeatureFlag.statsNewAppearance.enabled else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return
         }
 
@@ -102,7 +102,7 @@ class StatsBaseCell: UITableViewCell {
     }
 
     private func updateHeader() {
-        guard FeatureFlag.statsNewAppearance.enabled else {
+        guard AppConfiguration.statsRevampV2Enabled else {
             return
         }
 

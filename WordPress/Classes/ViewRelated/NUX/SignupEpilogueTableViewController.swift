@@ -24,7 +24,7 @@ class SignupEpilogueTableViewController: UITableViewController {
     open weak var dataSource: SignupEpilogueTableViewControllerDataSource?
     open weak var delegate: SignupEpilogueTableViewControllerDelegate?
     open var credentials: AuthenticatorCredentials?
-    open var socialService: SocialService?
+    open var socialUser: SocialUser?
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
     private var userInfoCell: EpilogueUserInfoCell?
@@ -175,9 +175,9 @@ private extension SignupEpilogueTableViewController {
         }
 
         var userInfo = LoginEpilogueUserInfo(account: account)
-        if let socialservice = socialService {
+        if let socialUser {
             showPassword = false
-            userInfo.update(with: socialservice)
+            userInfo.update(with: socialUser)
         } else {
             if let customDisplayName = dataSource?.customDisplayName {
                 userInfo.fullName = customDisplayName

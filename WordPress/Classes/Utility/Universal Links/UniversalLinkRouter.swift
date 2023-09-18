@@ -243,6 +243,8 @@ extension DeepLinkSource {
             return "email"
         case .widget:
             return "widget"
+        case .lockScreenWidget:
+            return "lockscreen_widget"
         case .inApp:
             return "internal"
         }

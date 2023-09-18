@@ -2827,17 +2827,17 @@ extension AztecPostViewController {
            videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
            let videoPressID = videoSrcURL.host {
             // It's videoPress video so let's fetch the information for the video
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { (metadata) in
-                if let originalURL = metadata.originalURL {
+            let remote = MediaServiceRemoteFactory().remote(for: self.post.blog)
+            remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate(), success: { metadata in
+                if let metadata, let originalURL = metadata.originalURL {
                     videoAttachment.updateURL(metadata.getURLWithToken(url: originalURL) ?? originalURL)
                 }
-                if let posterURL = metadata.posterURL {
+                if let metadata, let posterURL = metadata.posterURL {
                     videoAttachment.posterURL = metadata.getURLWithToken(url: posterURL) ?? posterURL
                 }
                 self.richTextView.refresh(videoAttachment)
-            }, failure: { (error) in
-                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            }, failure: { error in
+                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(String(describing: error?.localizedDescription))")
             })
         }
     }
@@ -3005,12 +3005,18 @@ extension AztecPostViewController {
             return
         }
         // It's videoPress video so let's fetch the information for the video
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMetadataFromVideoPressID(videoPressID, in: self.post.blog, success: { [weak self] (metadata) in
+        let remote = MediaServiceRemoteFactory().remote(for: self.post.blog)
+        guard let remote else {
+            displayUnableToPlayVideoAlert()
+            DDLogError("Unable to create a remote instance for \(String(describing: self.post.blog.dotComID))")
+            return
+        }
+
+        remote.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate(), success: { [weak self] (metadata) in
             guard let `self` = self else {
                 return
             }
-            guard let originalURL = metadata.originalURL else {
+            guard let metadata, let originalURL = metadata.originalURL else {
                 self.displayUnableToPlayVideoAlert()
                 return
             }
@@ -3023,7 +3029,7 @@ extension AztecPostViewController {
             self.displayVideoPlayer(for: newVideoURL)
         }, failure: { [weak self] (error) in
             self?.displayUnableToPlayVideoAlert()
-            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(String(describing: error?.localizedDescription))")
         })
     }
 

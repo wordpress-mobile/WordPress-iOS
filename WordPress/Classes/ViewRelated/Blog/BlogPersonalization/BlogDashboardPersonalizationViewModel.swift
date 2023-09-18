@@ -1,9 +1,15 @@
 import SwiftUI
 
 final class BlogDashboardPersonalizationViewModel: ObservableObject {
+    let quickActions: [DashboardPersonalizationQuickActionViewModel]
     let cards: [BlogDashboardPersonalizationCardCellViewModel]
 
-    init(service: BlogDashboardPersonalizationService, quickStartType: QuickStartType) {
+    init(blog: Blog, service: BlogDashboardPersonalizationService, quickStartType: QuickStartType) {
+        self.quickActions = DashboardQuickAction.personalizableActions
+            .filter { $0.isEligible(for: blog) }
+            .map {
+                DashboardPersonalizationQuickActionViewModel(action: $0, service: service)
+            }
         self.cards = DashboardCard.personalizableCards.compactMap {
             if $0 == .quickStart && quickStartType == .undefined {
                 return nil
@@ -11,6 +17,30 @@ final class BlogDashboardPersonalizationViewModel: ObservableObject {
             let title = $0.getLocalizedTitle(quickStartType: quickStartType)
             return BlogDashboardPersonalizationCardCellViewModel(card: $0, title: title, service: service)
         }
+    }
+}
+
+final class DashboardPersonalizationQuickActionViewModel: ObservableObject, Identifiable {
+    private let action: DashboardQuickAction
+    private let service: BlogDashboardPersonalizationService
+
+    var id: DashboardQuickAction { action }
+    let image: UIImage?
+    let title: String
+
+    var isOn: Bool {
+        get { service.isEnabled(action) }
+        set {
+            objectWillChange.send()
+            service.setEnabled(newValue, for: action)
+        }
+    }
+
+    init(action: DashboardQuickAction, service: BlogDashboardPersonalizationService) {
+        self.action = action
+        self.image = action.image
+        self.title = action.localizedTitle
+        self.service = service
     }
 }
 

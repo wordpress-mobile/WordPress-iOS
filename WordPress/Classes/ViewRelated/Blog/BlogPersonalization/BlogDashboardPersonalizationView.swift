@@ -8,11 +8,17 @@ struct BlogDashboardPersonalizationView: View {
     var body: some View {
         List {
             Section(content: {
+                ForEach(viewModel.quickActions, content: BlogDashboardPersonalizationQuickActionCell.init)
+            }, header: {
+                Text(Strings.quickActionSectionHeader)
+            })
+
+            Section(content: {
                 ForEach(viewModel.cards, content: BlogDashboardPersonalizationCardCell.init)
             }, header: {
-                Text(Strings.sectionHeader)
+                Text(Strings.cardSectionHeader)
             }, footer: {
-                Text(Strings.sectionFooter)
+                Text(Strings.cardSectionFooter)
             })
         }
         .listStyle(.insetGrouped)
@@ -32,6 +38,22 @@ struct BlogDashboardPersonalizationView: View {
     }
 }
 
+private struct BlogDashboardPersonalizationQuickActionCell: View {
+    @ObservedObject var viewModel: DashboardPersonalizationQuickActionViewModel
+
+    var body: some View {
+        Toggle(isOn: $viewModel.isOn) {
+            Label(title: {
+                Text(viewModel.title)
+            }, icon: {
+                let image = viewModel.image ?? UIImage()
+                Image(uiImage: image.withRenderingMode(.alwaysTemplate))
+                    .foregroundColor(.primary)
+            })
+        }
+    }
+}
+
 private struct BlogDashboardPersonalizationCardCell: View {
     @ObservedObject var viewModel: BlogDashboardPersonalizationCardCellViewModel
 
@@ -43,17 +65,8 @@ private struct BlogDashboardPersonalizationCardCell: View {
 private extension BlogDashboardPersonalizationView {
     struct Strings {
         static let title = NSLocalizedString("personalizeHome.title", value: "Personalize Home Tab", comment: "Page title")
-        static let sectionHeader = NSLocalizedString("personalizeHome.cardsSectionHeader", value: "Add or hide cards", comment: "Section header")
-        static let sectionFooter = NSLocalizedString("personalizeHome.cardsSectionFooter", value: "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.", comment: "Section footer displayed below the list of toggles")
+        static let quickActionSectionHeader = NSLocalizedString("personalizeHome.shortcutsSectionHeader", value: "Show or hide shortcuts", comment: "Section header for shortcuts")
+        static let cardSectionHeader = NSLocalizedString("personalizeHome.cardsSectionHeader", value: "Show or hide cards", comment: "Section header")
+        static let cardSectionFooter = NSLocalizedString("personalizeHome.cardsSectionFooter", value: "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.", comment: "Section footer displayed below the list of toggles")
     }
 }
-
-#if DEBUG
-struct BlogDashboardPersonalizationView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            BlogDashboardPersonalizationView(viewModel: .init(service: .init(repository: UserDefaults.standard, siteID: 1), quickStartType: .newSite))
-        }
-    }
-}
-#endif

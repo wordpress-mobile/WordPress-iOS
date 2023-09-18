@@ -9,8 +9,6 @@ extension SiteSettingsViewController {
         switch bloggingSettingsRows[row] {
         case .reminders:
             return remindersTableViewCell
-        case .prompts:
-            return promptsTableViewCell
         }
     }
 
@@ -18,8 +16,6 @@ extension SiteSettingsViewController {
         switch bloggingSettingsRows[indexPath.row] {
         case .reminders:
             presentBloggingRemindersFlow(indexPath: indexPath)
-        default:
-            break
         }
     }
 
@@ -30,16 +26,12 @@ extension SiteSettingsViewController {
 private extension SiteSettingsViewController {
     enum BloggingSettingsRows {
         case reminders
-        case prompts
     }
 
     var bloggingSettingsRows: [BloggingSettingsRows] {
         var rows = [BloggingSettingsRows]()
         if blog.areBloggingRemindersAllowed() {
             rows.append(.reminders)
-        }
-        if blog.isAccessibleThroughWPCom() && FeatureFlag.bloggingPromptsEnhancements.enabled && !FeatureFlag.personalizeHomeTab.enabled {
-            rows.append(.prompts)
         }
         return rows
     }
@@ -80,42 +72,11 @@ private extension SiteSettingsViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    // MARK: - Prompts
-
-    var promptsTableViewCell: SwitchTableViewCell {
-        let cell = SwitchTableViewCell()
-        cell.name = Strings.promptsTitle
-        cell.on = isPromptsSwitchEnabled
-        cell.onChange = promptsSwitchOnChange
-        return cell
-    }
-
-    var isPromptsSwitchEnabled: Bool {
-        guard let siteID = blog.dotComID else {
-            return false
-        }
-        return BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts)
-    }
-
-    var promptsSwitchOnChange: (Bool) -> () {
-        return { [weak self] isPromptsEnabled in
-            WPAnalytics.track(.promptsSettingsShowPromptsTapped, properties: ["enabled": isPromptsEnabled])
-            guard let siteID = self?.blog.dotComID else {
-                return
-            }
-            BlogDashboardPersonalizationService(siteID: siteID.intValue)
-                .setEnabled(isPromptsEnabled, for: .prompts)
-        }
-    }
-
     // MARK: - Constants
 
     struct Strings {
         static let remindersTitle = NSLocalizedString("sitesettings.reminders.title",
                                                       value: "Reminders",
                                                       comment: "Label for the blogging reminders setting")
-        static let promptsTitle = NSLocalizedString("sitesettings.prompts.title",
-                                                    value: "Show prompts",
-                                                    comment: "Label for the blogging prompts setting")
     }
 }

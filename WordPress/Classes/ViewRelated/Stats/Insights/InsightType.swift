@@ -26,7 +26,7 @@ enum InsightType: Int, SiteStatsPinnable {
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static var defaultInsights: [InsightType] {
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             return [.viewsVisitors,
                     .likesTotals,
                     .commentsTotals,
@@ -45,7 +45,7 @@ enum InsightType: Int, SiteStatsPinnable {
     // This property is here to update the default list on existing installations.
     // If the list saved on UserDefaults matches the old one, it will be updated to the new one above.
     static var oldDefaultInsights: [InsightType] {
-        if FeatureFlag.statsNewInsights.enabled {
+        if AppConfiguration.statsRevampV2Enabled {
             return [.mostPopularTime,
                     .allTimeStats,
                     .todaysStats,

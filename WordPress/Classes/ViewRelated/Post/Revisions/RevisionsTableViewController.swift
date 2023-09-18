@@ -158,7 +158,7 @@ private extension RevisionsTableViewController {
         let postRepository = PostRepository(coreDataStack: coreDataStack)
         Task { @MainActor in
             do {
-                let postID = try await postRepository.getPost(withID: revision.revisionId, from: .init(saved: blog))
+                let postID = try await postRepository.getPost(withID: revision.revisionId, from: .init(blog))
                 let post = try coreDataStack.mainContext.existingObject(with: postID)
 
                 await SVProgressHUD.dismiss()
