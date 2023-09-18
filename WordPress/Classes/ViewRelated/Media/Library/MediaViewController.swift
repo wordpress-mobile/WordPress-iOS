@@ -44,6 +44,7 @@ final class MediaViewController: UIViewController, NSFetchedResultsControllerDel
 
         title = Strings.title
         extendedLayoutIncludesOpaqueBars = true
+        hidesBottomBarWhenPushed = true
 
         configureCollectionView()
         configureNavigationItems()
