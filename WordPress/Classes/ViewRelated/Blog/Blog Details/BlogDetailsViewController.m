@@ -411,7 +411,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self observeWillEnterForegroundNotification];
 
-    if (!self.splitViewControllerIsHorizontallyCompact) {
+    if (!self.isSplitViewDisplayed) {
         self.restorableSelectedIndexPath = nil;
     }
 
