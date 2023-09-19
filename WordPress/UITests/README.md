@@ -87,7 +87,7 @@ When adding a new UI test, consider:
 
 * Whether to test a user flow (to accomplish a task or goal) or a specific feature (e.g. boundary testing).
 * What screens are being tested (defined as screen objects in [Screens](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITestsFoundation/Screens)).
-* Whether there are repeated flows across tests (defined in [Flows](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Flows)).
+* Are there repeated flows across tests (defined in [Flows](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Flows)).
 * What network requests are made during the test (defined in [API-Mocks](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/API-Mocks)).
 
 Tests classes are grouped together in [Tests](https://github.com/wordpress-mobile/WordPress-iOS/tree/trunk/WordPress/UITests/Tests)
@@ -96,16 +96,16 @@ When you add a new test, you may need to add new screens, methods, and flows. We
 
 ## Naming convention
 
-* When creating new tests, use this format for the name to make it easier to see what the test is doing: `testActionFeature` e.g. `testCreateScheduledPost()`
-* When creating new methods, use this format: `actionObject` e.g. `closePostSettings()`
-* For assert methods, use this format `verifyWhatToVerify` e.g. `verifyPostExists()`
+* When creating new tests, use the `testActionFeature` format for the test name to make it easier to see what the test is for: e.g. `testCreateScheduledPost()`
+* When creating new methods, use the `actionObject` format: e.g. `closePostSettings()`
+* For assert methods, use the `verifyWhatToVerify` format: e.g. `verifyPostExists()`
 * Note that there’s a common global method `assertScreenIsLoaded()` that can be used to assert all screens
 
 ## Passing hard-coded `Strings` | `Numbers` in tests
 
-There are some cases where we would need to pass hard-coded values in the test, this should happen on the Test level and not on the screen level (unless there’s a really good reason). 
+There are some cases where we would need to pass hard-coded values in the test, this should happen on the Test level and not on the Screen level.
 
-This is so methods are not limited to being used with a fixed value and remain flexible. In the case where those values change we would also be able to update only the test file(s) without making changes elsewhere.
+This is so that test methods are not limited to being used with a fixed value and remain flexible. In the case where those values change we would also be able to update only the test file(s) without making changes elsewhere.
 
 ## Adding or updating network mocks
 
@@ -120,13 +120,13 @@ Currently, the project does not apply strict mock matching criteria, this means 
 When adding a new test however, it is recommended that all requests are matched so that the logs are not further cluttered with `Request was not matched` like in the above screenshot.
 
 ## Using stateful behavior for mocks
-1. To add scenarios that use stateful behavior, do the following:
-Add the new scenario in [scenarios.json](https://github.com//wordpress-mobile/WordPress-iOS/tree/trunk/API-Mocks/WordPressMocks/src/main/assets/mocks/__files/__admin/scenarios.json)
+
+1. Add the new scenario in [scenarios.json](https://github.com//wordpress-mobile/WordPress-iOS/tree/trunk/API-Mocks/WordPressMocks/src/main/assets/mocks/__files/__admin/scenarios.json)
 2. Fetch and reset scenario during `SetUp()` in the test class containing the test, e.g. seen on [Notification Test](https://github.com/wordpress-mobile/WordPress-iOS/blob/5730cee6568fe43fb3a5108e396e12244c62b3e5/WordPress/UITests/Tests/NotificationTests.swift#L18-L23)
 3. Update JSON mappings to contain the following 3 new attributes, `scenarioName`, `requiredScenarioState` and `newScenarioState`, and the response matching the state of the scenario, e.g. seen on [Notification Test](https://github.com/wordpress-mobile/WordPress-iOS/blob/5730cee6568fe43fb3a5108e396e12244c62b3e5/API-Mocks/WordPressMocks/src/main/assets/mocks/mappings/wpcom/notifications/notifications_comment_reply_before.json#L2-L4)
 
 ## Tips and tricks on using mocks
-* When getting the same request with the same header but a different request body to return different responses, experiment with using [different matchers](https://docs.wiremock.io/request-matching/matcher-types/). From some experimenting, would recommend using `matchesJsonPath` which is used to differentiate [Create Page](https://github.com/wordpress-mobile/WordPress-iOS/blob/5a00e849d8877e8ae2a6ec6bc9c762e68e6e0620/API-Mocks/WordPressMocks/src/main/assets/mocks/mappings/wpcom/pages/sites_106707880_pages_new.json#L18) and [Create Post](https://github.com/wordpress-mobile/WordPress-iOS/blob/5a00e849d8877e8ae2a6ec6bc9c762e68e6e0620/API-Mocks/WordPressMocks/src/main/assets/mocks/mappings/wpcom/posts/posts_new.json#L18)
-* Use `verbose` to debug errors, this can be updated adding the verbose parameter when [starting the WireMock server](https://github.com/wordpress-mobile/WordPress-iOS/blob/5a00e849d8877e8ae2a6ec6bc9c762e68e6e0620/API-Mocks/scripts/start.sh#L20-L23) (don’t forget the slash to not break the command)
+* When getting the same request with the same header but a different request body to return different responses, experiment with using [different matchers](https://docs.wiremock.io/request-matching/matcher-types/). From some experimenting, I would recommend using `matchesJsonPath` which is used to differentiate [Create Page](https://github.com/wordpress-mobile/WordPress-iOS/blob/5a00e849d8877e8ae2a6ec6bc9c762e68e6e0620/API-Mocks/WordPressMocks/src/main/assets/mocks/mappings/wpcom/pages/sites_106707880_pages_new.json#L18) and [Create Post](https://github.com/wordpress-mobile/WordPress-iOS/blob/5a00e849d8877e8ae2a6ec6bc9c762e68e6e0620/API-Mocks/WordPressMocks/src/main/assets/mocks/mappings/wpcom/posts/posts_new.json#L18).
+* Use `verbose` to debug errors, this can be updated by adding the `verbose` parameter when [starting the WireMock server](https://github.com/wordpress-mobile/WordPress-iOS/blob/5a00e849d8877e8ae2a6ec6bc9c762e68e6e0620/API-Mocks/scripts/start.sh#L20-L23) (don’t forget the slash to not break the command).
 * If there are no errors on the console, but the mocks don’t work as expected, check out the app’s logs for errors. Sometimes it could be that the JSON mapping is not parsed correctly.
 
