@@ -32,6 +32,7 @@ class PostTests: XCTestCase {
             .closePublishDateSelector()
             .closePostSettings()
             .post(action: .schedule)
+            .waitForNoticeToDisappear()
 
         // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
         if XCUIDevice.isPhone {
