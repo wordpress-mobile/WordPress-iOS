@@ -9,13 +9,19 @@ final class CompliancePopoverViewController: UIViewController {
     private let viewModel: CompliancePopoverViewModel
 
     // MARK: - Views
+
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let hostingController: UIHostingController<CompliancePopover>
 
     private var contentView: UIView {
         return hostingController.view
     }
-
-    private var bannerIntrinsicHeight: CGFloat = 0
 
     init(viewModel: CompliancePopoverViewModel) {
         self.viewModel = viewModel
@@ -43,19 +49,25 @@ final class CompliancePopoverViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        //
         let targetSize = CGSize(width: view.bounds.width, height: 0)
         let contentViewSize = contentView.systemLayoutSizeFitting(targetSize)
         self.contentView.frame = .init(origin: .zero, size: contentViewSize)
-        self.preferredContentSize = contentView.bounds.size
 
-        self.hostingController.rootView.screenHeight = self.view.frame.height
-        self.hostingController.rootView.shouldScroll = (contentViewSize.height + 100) > self.view.frame.height
+        //
+        self.scrollView.contentSize = contentViewSize
+
+        //
+        self.preferredContentSize = .init(width: contentViewSize.width, height: contentViewSize.height)
     }
 
     private func addContentView() {
+        self.view.addSubview(scrollView)
+        self.view.pinSubviewToAllEdges(scrollView)
         self.hostingController.willMove(toParent: self)
         self.addChild(hostingController)
-        self.view.addSubview(contentView)
+        self.contentView.translatesAutoresizingMaskIntoConstraints = true
+        self.scrollView.addSubview(contentView)
         self.hostingController.didMove(toParent: self)
     }
 }
