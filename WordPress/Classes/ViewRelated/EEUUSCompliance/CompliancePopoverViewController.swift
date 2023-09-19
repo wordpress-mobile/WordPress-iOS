@@ -49,16 +49,21 @@ final class CompliancePopoverViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //
+        // Calculate the size needed for the view to fit its content
         let targetSize = CGSize(width: view.bounds.width, height: 0)
         let contentViewSize = contentView.systemLayoutSizeFitting(targetSize)
         self.contentView.frame = .init(origin: .zero, size: contentViewSize)
 
+        // Set the scrollView's content size to match the contentView's size
         //
+        // Scroll is enabled / disabled automatically depending on whether the `contentSize` is bigger than the its size.
         self.scrollView.contentSize = contentViewSize
 
+        // Set the preferred content size for the view controller to match the contentView's size
         //
-        self.preferredContentSize = .init(width: contentViewSize.width, height: contentViewSize.height)
+        // This property should be updated when `DrawerPresentable.collapsedHeight` is `intrinsicHeight`.
+        // Because under the hood the `BottomSheetViewController` reads this property to layout its subviews.
+        self.preferredContentSize = contentViewSize
     }
 
     private func addContentView() {
