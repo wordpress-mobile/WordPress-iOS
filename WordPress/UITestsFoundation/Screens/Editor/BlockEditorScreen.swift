@@ -72,6 +72,10 @@ public class BlockEditorScreen: ScreenObject {
         $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Redo"]
     }
 
+    private let returnButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Return"]
+    }
+
     private let setRemindersButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Set reminders"]
     }
@@ -105,6 +109,7 @@ public class BlockEditorScreen: ScreenObject {
     var postSettingsButton: XCUIElement { postSettingsButtonGetter(app) }
     var postTitleView: XCUIElement { postTitleViewGetter(app) }
     var redoButton: XCUIElement { redoButtonGetter(app) }
+    var returnButton: XCUIElement { returnButtonGetter(app) }
     var setRemindersButton: XCUIElement { setRemindersButtonGetter(app) }
     var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
@@ -187,18 +192,20 @@ public class BlockEditorScreen: ScreenObject {
         addBlock(blockType)
         insertFromUrlButton.tap()
         app.textFields.element.typeText(UrlPath)
-        // to dismiss media block URL prompt
+
+        // to dismiss keyboard and media block URL prompt
+        returnButton.firstMatch.tap()
         tapTopOfScreen()
     }
 
-    // Can be removed once `testAddMediaBlocks()` test is fixed on iPhone
-    @discardableResult
-    public func verifyImageBlockDisplayed() -> Self {
-        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
-        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.waitForExistence(timeout: 5))
-
-        return self
-    }
+//    // Can be removed once `testAddMediaBlocks()` test is fixed on iPhone
+//    @discardableResult
+//    public func verifyImageBlockDisplayed() -> Self {
+//        let imagePredicate = NSPredicate(format: "label == 'Image Block. Row 1'")
+//        XCTAssertTrue(app.buttons.containing(imagePredicate).firstMatch.waitForExistence(timeout: 5))
+//
+//        return self
+//    }
 
     @discardableResult
     public func verifyMediaBlocksDisplayed() -> Self {
@@ -261,7 +268,8 @@ public class BlockEditorScreen: ScreenObject {
         return try EditorPublishEpilogueScreen()
     }
 
-    public func post(action: postAction) throws {
+    @discardableResult
+    public func post(action: postAction) throws -> Self {
         let postButton = app.buttons[action.rawValue]
         let postNowButton = app.buttons["\(action.rawValue) Now"]
         var tries = 0
@@ -274,9 +282,16 @@ public class BlockEditorScreen: ScreenObject {
         } while !postNowButton.waitForIsHittable(timeout: 3) && tries <= 3
 
         postNowButton.tap()
-        guard action == .publish else { return }
 
-        dismissBloggingRemindersAlertIfNeeded()
+        if action == .publish {
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+
+        return self
+    }
+
+    public func waitForNoticeToDisappear() throws {
+        waitForElementToDisappear(noticeViewButton)
     }
 
     @discardableResult
